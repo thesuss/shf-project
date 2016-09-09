@@ -1,0 +1,15 @@
+As a visitor
+In order to find an instructor
+I need to see a list of instructors
+
+As a visitor
+In order to find an instructor near me
+I need to see instructors on a map
+
+As a visitor
+In order to learn more about dogs
+I should be able to buy webinars in a webshop
+
+As a visitor
+In order to find a class near me
+I need to be able to search for class and location
