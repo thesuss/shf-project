@@ -41,6 +41,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rake'
   gem 'coveralls', require: false
+  gem 'rack'
 end
 
 group :development do
