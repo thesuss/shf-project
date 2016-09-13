@@ -1,10 +1,19 @@
+language: ruby
+rvm:
+- 2.3.0
+before_script:
+- bundle exec rake db:create --all
+- bundle exec rake db:migrate
+script:
+- bundle exec rake ci:tests
+services:
 - postgresql
-  deploy:
-    provider: heroku
-    app: shf-project
-    on:
-      branch: deploy
-    run:
-      - rake db:migrate
-    api_key:
-       secure: "r0fSZXy+rauWghDzqksrWSU4mzLptZKwSReQ39fCwNuL8OC9zbfhtQyT4FVc722ItTPIUxx7AZ9z5g3X0yQvxVqAG/O0A4CctVuk2WV5dBLN7VNU59AGlg5KLdSul3/1ssD0yQIkyausdm8fvRG7dvuLq+COQr9xcC3DFHZx0tNii9l81SQiz9vuyNttbU2+JWRE0n5JHZczQSfDdvhStSDi5OyiyaxVPpox+ZSJiyMybZTAINTwH/Aw16usGsGDSFTf4n3JQLUR2qyut0rbVsl5giBWxdQsNdoaEcq1zppYoMk7E88oP90wo8CXk7EloXMO0LkS/dd/aYaNOgkFv3ke5FlbkH20N3tw7KYc/h+FpdQxst25rMcngmlT5oKiPpugjMbexIlquULUUmDNVnTsKEmj7HfhehLoKK81wcOO8LqGirOdB22wgfIi0dUJ/6OvNlWypp5H6R6xrXov7UeuJdPHB5gjzoxqOBqCXTqbyOtt4nwjAefz/5jKI0mcj31XnNbjl07UhZ/+GNQIk1KWHeqN+Glk1Dpso89uDA3XW66NqFvp8rivpZTjIoHkpYfckl1xifasVoLhL+FO7G1TPqNjHxTdH4ESjbaDmxqPTy20oDchN8bXTJJXReBwH4pQ3D+Rel8lFFHqrnAeYhCHI5KQEImPmoiB7rft4vQ="
+deploy:
+  provider: heroku
+  app: shf-project
+  on:
+    branch: deploy
+  run:
+    - rake db:migrate
+  api_key:
+     secure: "r0fSZXy+rauWghDzqksrWSU4mzLptZKwSReQ39fCwNuL8OC9zbfhtQyT4FVc722ItTPIUxx7AZ9z5g3X0yQvxVqAG/O0A4CctVuk2WV5dBLN7VNU59AGlg5KLdSul3/1ssD0yQIkyausdm8fvRG7dvuLq+COQr9xcC3DFHZx0tNii9l81SQiz9vuyNttbU2+JWRE0n5JHZczQSfDdvhStSDi5OyiyaxVPpox+ZSJiyMybZTAINTwH/Aw16usGsGDSFTf4n3JQLUR2qyut0rbVsl5giBWxdQsNdoaEcq1zppYoMk7E88oP90wo8CXk7EloXMO0LkS/dd/aYaNOgkFv3ke5FlbkH20N3tw7KYc/h+FpdQxst25rMcngmlT5oKiPpugjMbexIlquULUUmDNVnTsKEmj7HfhehLoKK81wcOO8LqGirOdB22wgfIi0dUJ/6OvNlWypp5H6R6xrXov7UeuJdPHB5gjzoxqOBqCXTqbyOtt4nwjAefz/5jKI0mcj31XnNbjl07UhZ/+GNQIk1KWHeqN+Glk1Dpso89uDA3XW66NqFvp8rivpZTjIoHkpYfckl1xifasVoLhL+FO7G1TPqNjHxTdH4ESjbaDmxqPTy20oDchN8bXTJJXReBwH4pQ3D+Rel8lFFHqrnAeYhCHI5KQEImPmoiB7rft4vQ="
