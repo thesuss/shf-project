@@ -1,5 +1,9 @@
 As a user
 In order to be a memeber
+I need to be able to read about how to become a member
+
+As a user
+In order to be a memeber
 I need to be able to login to user area
 
 As a user
@@ -17,3 +21,11 @@ I need to have a public user page
 As a user
 In order to showcase classdetails
 I need to have links to read more/sign up
+
+see secret info
+
+webinars
+
+member types
+
+renew membership /5 yrs

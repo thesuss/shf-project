@@ -1,4 +1,16 @@
 As a visitor
+In order to know where I am
+I need to see information about the organization
+
+As a visitor
+in order to feel safe in my provider choice
+I need to find out about 'h märkt'
+
+As a visitor
+in order to feel safe in my provider choice
+I need to see member types
+
+As a visitor
 In order to find an instructor
 I need to see a list of instructors
 
