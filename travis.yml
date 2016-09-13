@@ -7,4 +7,4 @@
     run:
       - rake db:migrate
     api_key:
-      secure:
+      secure: 7e0c0f5c-5248-4c08-b359-15032d4e0b0a
