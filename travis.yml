@@ -1,0 +1,10 @@
+- postgresql
+  deploy:
+    provider: heroku
+    app: shf-project
+    on:
+      branch: deploy
+    run:
+      - rake db:migrate
+    api_key:
+      secure:
