@@ -25,3 +25,7 @@ I should be able to buy webinars in a webshop
 As a visitor
 In order to find a class near me
 I need to be able to search for class and location
+
+As a visitor
+In order to find the person I'm looking for
+I need to be able to search by name
