@@ -1,0 +1,22 @@
+Requirements Beyond member login and authoring posts/display public profile:
+- Visitors can apply for membership but admin has to OK them before they get payment link
+- Members can list events/classes/webinars which will show up on the map when queried
+- Members will get a pretty email from the system with link and other information on how to pay when payment is due
+- Admin will be notified if payment is past due or if reminder - e-mail bounces
+- Members have company-pages. Many members will = the company, but not all. (Perhaps a ”Copy information from member info”-button on company-pages?)
+- Many members can belong to the same company (sorted by organization number)
+- Members needs a validation ”stamp” (see ca weekend project) that can be queried via URL and return valid or invalid depending on membership status
+- Some members are of ”supporting” type and can read all hidden info and will get the newsletter, but will not be able to display own information as to be found. Supporting members gets no stamp.
+- Members needs to be able to receive a newsletter (today via mailchimp)
+- Read XML file with classes from DinKurs and make them searchable from hundkurs-index: https://dinkurs.se/lxml.asp?company_key=yFKGQJ
+
+
+Hopes:
+- Members should be able to update their info and add classes via mobile app
+- Site admin should be able to update/add members via mobile app
+- Visitors should be able to see closest members in chosen category on map/list in app. (search by city should be possible too, in case of not wanting to share current location)
+- Educational platform, free for members, visitors have to pay to access.
+
+Wishes:
+- Site admin can edit site texts in frontend, preferably WYSIWYG/Website one style
+- Site admin needs to be able to compose a newsletter (WYSIWYG) (today done in mailchimp)
