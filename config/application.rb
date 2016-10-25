@@ -8,7 +8,6 @@ require "active_record/railtie"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
-require "action_cable/engine"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -16,7 +15,7 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module IMMIProjekt
+module SHFProject
   class Application < Rails::Application
 
     # Disable generation of helpers, javascripts, css, and view, helper, routing and controller specs
