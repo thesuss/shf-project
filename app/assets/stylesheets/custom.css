@@ -22,7 +22,7 @@
     background-color:#fff;
 }
 .main-navigation .menu a {
-    color:#222222;
+    color:#222;
 }
 .main-navigation .menu a:hover {
     color:#73a7bd;
@@ -49,7 +49,7 @@
     font-size:10px;
 }
 #site-navigation .menu-toggle .bar {
-    background-color:#222222;
+    background-color:#222;
 }
 .social-nav a {
     color:#888;
@@ -122,7 +122,7 @@ a, a:hover {
     border-color:#52a8ff;
 }
 .site-info {
-    background-color:#111111;
+    background-color:#111;
 }
 #footer-logo {
     padding-top:15px;
