@@ -15,6 +15,6 @@ Scenario: Apply to be a member (Type A) to SHF
   And I fill in "Organisationsnr" with "2345678901"
   And I fill in "Ange lösenordet igen" with "password"
   And I fill in "Lösenord (minst 6 tecken)" with "password"
+  Then show me the page
   And I press the "Ansök om medlemsskap" button
   Then I should see "Din ansökan är under behandling"
-  Then show me the page
