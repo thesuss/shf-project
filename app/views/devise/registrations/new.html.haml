@@ -28,6 +28,10 @@
     = f.password_field :password, autocomplete: 'off', placeholder: "#{text}", class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
     - f.label :password_confirmation
     = f.password_field :password_confirmation, autocomplete: 'off', placeholder: 'Ange lösenordet igen', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
+    %br/
+    - f.label :business_number
+    = f.number_field :business_number, placeholder: 'Organisationsnr', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
+    %br/
     .actions
       = f.submit 'Ansök om medlemsskap', class: 'wpcf7-form-control wpcf7-submit'
   = render 'devise/shared/links'
