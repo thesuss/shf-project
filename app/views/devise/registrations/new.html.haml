@@ -5,7 +5,7 @@
 .entry-content.wpcf7
   = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     = devise_error_messages!
-    - f.label :first_name
+    - f.label :first_name, 'First Name'
     = f.text_field :first_name, placeholder: 'Förnamn', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
     - f.label :last_name
     = f.text_field :first_name, placeholder: 'Efternamn', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
@@ -16,7 +16,7 @@
     - f.label :city
     = f.text_field :first_name, placeholder: 'Ort', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
     - f.label :phone
-    = f.tel_field :phone, placeholder: '0701223344', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
+    = f.telephone_field :phone, placeholder: 'Telefon (0701223344)', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
     %br/
     - f.label :email
     = f.email_field :email, placeholder: 'din@email.se', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
@@ -24,7 +24,7 @@
     = f.email_field :email_confirmation , placeholder: 'Ange e-post igen', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
     - f.label :password
     - if @minimum_password_length
-      - text = "(Minst #{@minimum_password_length} tecken)"
+      - text = "Lösenord (minst #{@minimum_password_length} tecken)"
     = f.password_field :password, autocomplete: 'off', placeholder: "#{text}", class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'
     - f.label :password_confirmation
     = f.password_field :password_confirmation, autocomplete: 'off', placeholder: 'Ange lösenordet igen', class: 'wpcf7-form-control wpcf7-text wpcf7-validates-as-required'

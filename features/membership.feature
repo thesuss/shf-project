@@ -4,17 +4,17 @@ Feature: As a user
 
 Scenario: Apply to be a member (Type A) to SHF
   Given I am on the application page
-  When I fill in "First Name" with "Susanna"
-  And I fill in "Last Name" with "Larsdotter"
-  And I fill in "Street" with "Street abc 1"
-  And I fill in "Post nr" with "30247"
-  And I fill in "City" with "Halmstad"
-  And I fill in "Phone" with "0702-123456"
-  And I fill in "E-mail" with "susanna@immi.nu"
-  And I fill in "E-mail confirmation" with "susanna@immi.nu"
-  And I fill in "Business number" with "2345678901"
-  And I fill in "Password confirmation" with "password"
-  And I fill in "Password" with "password"
-  And I press the "Register" button
-  Then I should see "Your application is being processed"
+  When I fill in "Förnamn" with "Susanna"
+  And I fill in "Efternamn" with "Larsdotter"
+  And I fill in "Gatuadress (hela)" with "Street abc 1"
+  And I fill in "Postnummer" with "30247"
+  And I fill in "Ort" with "Halmstad"
+  And I fill in "Telefon (0701223344)" with "0702-123456"
+  And I fill in "din@email.se" with "susanna@immi.nu"
+  And I fill in "Ange e-post igen" with "susanna@immi.nu"
+  And I fill in "Organisationsnr" with "2345678901"
+  And I fill in "Ange lösenordet igen" with "password"
+  And I fill in "Lösenord (minst 6 tecken)" with "password"
+  And I press the "Ansök om medlemsskap" button
+  Then I should see "Din ansökan är under behandling"
   Then show me the page
