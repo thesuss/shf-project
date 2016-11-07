@@ -21,10 +21,9 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of :street }
     it { is_expected.to validate_presence_of :postal_code }
     it { is_expected.to validate_presence_of :city }
-    it { is_expected.to validate_presence_of :business_number }
     it { is_expected.to validate_presence_of :email }
     it { is_expected.to validate_presence_of :password }
-    it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
+
     it { is_expected.to validate_confirmation_of :password }
     it { is_expected.to validate_confirmation_of :email }
     it { is_expected.to validate_length_of :password }
@@ -45,6 +44,9 @@ RSpec.describe User, type: :model do
     end
     it 'should not have a space' do
       expect(FactoryGirl.build(:user, email: "su ss@immi.nu", email_confirmation: "su ss@immi.nu")).not_to be_valid
+    end
+    it 'shold validate case insensitively' do
+      expect(FactoryGirl.create(:user)).to validate_uniqueness_of(:email).case_insensitive
     end
   end
 
