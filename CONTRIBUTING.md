@@ -21,7 +21,8 @@ _Details on all of this are below. Read on for more on how it all goes._
 **If you find a bug, but aren't going to join the project,** then [feel free to create an issue here on GitHub](https://github.com/AgileVentures/shf-project/issues) . We'd love to have your feedback.
 
 ---
-### Here's How to Join the Project:
+
+## Join the Project:
 
 1) You'll need (free) accounts for these tools:
 
@@ -46,8 +47,14 @@ _Details on all of this are below. Read on for more on how it all goes._
 
 Now start asking questions and talking on Slack, reading about what needs to be done on PivotalTracker, reviewing past meetings via the videos that were recorded, do some Pair Programming, and be a part of the project!
   
+---
+  
+## Code Style
+We recommend the [Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide)
+  
+---  
 
-### Workflow: Working on Code, coordinating with GitHub
+## Workflow: Working on Code, coordinating with GitHub
 
 Here is an overview of the general process for contributing (working on a new feature or fixing a bug): 
    
@@ -143,9 +150,7 @@ Note that you should be re-syncing daily (even hourly at very active times) on y
  
 #### Create a new branch for your work
  
-When you create a branch to work on your feature or bug-fix, the name of the branch should *start with the GitHub issue #,* followed by an underscore, then a few words that describe the issue (i.e. from the title of the issue).  
-
-The format for branch names is [YYMMDD]-[short description]
+When you create a branch to work on your feature or bug-fix, please name your branch so that others can understand the purpose for it. At least use a shortened version of the task name with words separated by hyphens.  (You can also prefix the branch with the date [YYMMDD-], which will help to give a quick visual sort.) 
 
   
 For example, if you are working on a feature on 2 Nov 2016 and the title of that issue is "Add the CONTRIBUTING.md file", you can create and check out your branch like this:
@@ -154,7 +159,8 @@ For example, if you are working on a feature on 2 Nov 2016 and the title of that
 git checkout -b 161102-add_contributing_md
 ```
 
-Once you have your tests passing (or if you're stuck and need help), create (submit) a pull request (PR).
+
+Once you have your tests passing (or if you're stuck and need help), you're ready to submit a pull request.
 
 
 #### Sync again before you create a PR
@@ -202,14 +208,5 @@ The project manager(s) will review the pull request for coherence with the speci
 
 To maximize flexibility, you can add the project managers as collaborators to your projectscope fork in order to allow them to help you fix your pull request, but this is not required.
 
-
-#### Here's a Diagram of Our GitHub Workflow
-
-![Flowchart of the Github workflow](github-flow.png)
-
-## Code Style
-
-
-We recommend the [Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide)
 
  
