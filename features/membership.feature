@@ -12,7 +12,7 @@ Scenario: Apply to be a member (Type A) to SHF
   And I fill in "user_phone" with "0702-123456"
   And I fill in "user_email" with "susanna@immi.nu"
   And I fill in "user_email_confirmation" with "susanna@immi.nu"
-  And I fill in "user_business_number" with "2345678901"
+  And I fill in "user_business_number" with "8509044643"
   And I fill in "user_password" with "password"
   And I fill in "user_password_confirmation" with "password"
   And I press the "Ansök om medlemsskap" button
