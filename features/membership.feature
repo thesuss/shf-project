@@ -16,5 +16,4 @@ Scenario: Apply to be a member (Type A) to SHF
   And I fill in "user_password" with "password"
   And I fill in "user_password_confirmation" with "password"
   And I press the "Ansök om medlemsskap" button
-  Then I should see "Din ansökan är under behandling"
-  Then show me the page
+  Then I should see "Welcome! You have signed up successfully."
