@@ -1,32 +1,66 @@
 Contributing to SFH-project
----------------------------
+===========================
 
-We welcome your help and contributions.  This project is an [AgileVentures](http://AgileVentures.org) project. It is a collaborative, open project that uses Agile methods.  This GitHub repo is one part of the project. **You should read about the project on [the main project page for this project at the AgileVentures site.](http://www.agileventures.org/projects/shf-project)**  From there you'll also be able to see [the PivotalTracker page](https://www.pivotaltracker.com/n/projects/1904891), which we use to keep track of user stories and tasks.
+We welcome your help and contributions.  This project is an [AgileVentures](http://AgileVentures.org) project. 
+It is a collaborative, open project that uses Agile methods. This GitHub repo is one part of the project. 
 
 
-Here is an overview of the process for joining the project so you can contribute:
+#### Here are the main tools we use to work together and handle our work-flow:
 
-    _(TODO go to the AV project page, read)_
-    -> Join AV? 
-    -> how/where to ask to be a member of this project? Slack? )_
-      -> a project owner will add you so you'll be able to 
-         work with the PivotalTracker information 
-         and GitHub issues and PRs
+- We use **[our Project pages](http://www.agileventures.org/projects/shf-project)** to document the main information about the project
 
-![Join the project](join-the-project.png)
+
+- We use **[PivotalTracker](https://www.pivotaltracker.com/n/projects/1904891)** to discuss, define, and track our work (tasks, issues, bugs, features, ....).  We don't use GitHub for this.
+
+- We use **[our channel on Slack](https://agileventures.slack.com/messages/shf-project/)** to have ongoing discussions and share information.  
+ 
+- We use **GitHub** as the main repository for our code (version control, branches) and merge in work (PRs).
+
+_Details on all of this are below. Read on for more on how it all goes._
+ 
+**If you find a bug, but aren't going to join the project,** then [feel free to create an issue here on GitHub](https://github.com/AgileVentures/shf-project/issues) . We'd love to have your feedback.
+
+---
+### Here's How to Join the Project:
+
+1) You'll need (free) accounts for these tools:
+
+- [GitHub](http://github.com)
+- [Pivotal Tracker](http://www.pivotaltracker.com)
+- [Slack](http://slack.com)
+
+
+2) Once you have accounts for those, create a profile on AgileVentures:
+     Go to [AgileVentures.com](http://www.agileventures.org/) and sign up (look in the upper right-hand corner).
+     You can sign up with *your GitHub account.*  That way, your work on GitHub will automatically be connected to the project and our tools.
+
+3) You should automatically get an email from info@agileventures.com that invites you to our Slack team.
+ 
+ If you don't get the invite for some reason, just send email to info@agileventures.com. (It would be helpful if you included your GitHub account name just to be complete.)
+ 
+4) Get connected to our Pivotal Tracker project:
+ 
+- Go to the Slack channel for this project: #shf-project and say hello!
+- Then ask to be connected to our Pivotal Tracker project. Tell us the email address you use with your Pivotal Tracker account.
+ 
+
+Now start asking questions and talking on Slack, reading about what needs to be done on PivotalTracker, reviewing past meetings via the videos that were recorded, do some Pair Programming, and be a part of the project!
+  
+
+### Workflow: Working on Code, coordinating with GitHub
 
 Here is an overview of the general process for contributing (working on a new feature or fixing a bug): 
    
     
-    _(TODO create an issue or feature?)_ 
-    -> checkout 'develop' branch
-    -> create a branch [issue #]_[title] 
+    -> checkout 'develop' branch  (fast foward so you're up to date)
+    -> create a branch for your work in your repo 
     -> write test(s) to pass -> get your tests passing 
     -> create a WIP PR -> discuss, revise as needed 
     -> remove 'WIP' when your PR is ready to be merged 
     -> PR is merged by a project manager 
     -> Yay!
       
+Getting Started on the AV site provides detailed instructions       
     
 ### Detailed Guidelines:
   - [Defining Tasks with PivotalTracker and GitHub](#Defining-Tasks-with-PivotalTracker-and-GitHub)
@@ -41,14 +75,13 @@ Here is an overview of the general process for contributing (working on a new fe
 
 ## Defining Tasks with PivotalTracker and GitHub
 
-We use [GitHub Issues](https://github.com/AgileVentures/shf-project/issues) to manage our work on features, chores and bugfixes.
+We use [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1904891) to manage our work on features, chores and bugfixes.
   
-_(TODO how does this relate / sync with PivotalTracker? )_
 
 Defining, discussing, voting on them...
 
 ### Features
-Any feature should include Cucumber acceptance tests and where appropriate RSpec unit tests.
+Any feature should include Cucumber acceptance tests and RSpec tests where appropriate.
 
 We try to avoid view and controller specs, and focus purely on unit tests at the model and service level where possible.  
 
@@ -108,17 +141,17 @@ git pull upstream develop
 Note that you should be re-syncing daily (even hourly at very active times) on your feature/bugfix branch to ensure that you are always building on top of very latest _develop_ code.
 
  
-#### Create a new branch for your work: [GitHub issue #]_[short description]
+#### Create a new branch for your work
  
 When you create a branch to work on your feature or bug-fix, the name of the branch should *start with the GitHub issue #,* followed by an underscore, then a few words that describe the issue (i.e. from the title of the issue).  
 
-The format for branch names is [GitHub issue #]_[short description]
+The format for branch names is [YYMMDD]-[short description]
 
   
-For example, if you are working on GitHub issue #799 and the title of that issue is "Add the CONTRIBUTING.md file", you can create and check out your branch like this:
+For example, if you are working on a feature on 2 Nov 2016 and the title of that issue is "Add the CONTRIBUTING.md file", you can create and check out your branch like this:
 
 ```
-git checkout -b 799_add_contributing_md
+git checkout -b 161102-add_contributing_md
 ```
 
 Once you have your tests passing (or if you're stuck and need help), create (submit) a pull request (PR).
@@ -151,9 +184,7 @@ Please ensure that each commit in your pull request makes a _single_ coherent ch
 This helps the project managers understand the PRs and merge them more quickly.
 
 
-##### Every Pull Request (PR) should refer to a corresponding GitHub issue.
- 
-In your pull request description please include a sensible description of your code and a tag `fixes #<issue-id>` e.g. :
+If your PR is addressing a GitHub issue, please include a sensible description of your code and a tag `fixes #<issue-id>` e.g. :
 
 ```
 This PR adds a CONTRIBUTING.md file and a docs directory
