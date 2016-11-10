@@ -11,6 +11,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'haml'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-sass'
+gem 'orgnummer'
+
 
 group :development, :test do
   gem 'rspec-rails'

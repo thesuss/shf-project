@@ -134,6 +134,7 @@ GEM
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    orgnummer (0.2.0)
     pg (0.18.4)
     pkg-config (1.1.7)
     pry (0.10.4)
@@ -259,6 +260,7 @@ DEPENDENCIES
   haml
   jbuilder (~> 2.5)
   jquery-rails
+  orgnummer
   pg (~> 0.18)
   pry
   pry-byebug
