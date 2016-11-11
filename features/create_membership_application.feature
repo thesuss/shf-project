@@ -17,21 +17,21 @@ Scenario: Visitor can submit a new Membership Application
   Then I should be on the landing page
   And I should see "Thank you, Your application has been submitted"
 
-Scenario Outline: Apply for membership - when things go wrong
-  Given I am on the landing page
-  And I click on "Apply for membership"
-  When I fill in the form with data :
-  | Company Name | Company Number | Contact Person | Company Email | Phone Number |
-  | <c_name>     | <c_number>     | <c_person>     | <c_email>     | <phone>      |
-  When I click on "Submit"
-  Then I should see <error>
+  Scenario Outline: Apply for membership - when things go wrong
+    Given I am on the landing page
+    And I click on "Apply for membership"
+    When I fill in the form with data :
+    | Company Name | Company Number | Contact Person | Company Email | Phone Number |
+    | <c_name>     | <c_number>     | <c_person>     | <c_email>     | <phone>      |
+    When I click on "Submit"
+    Then I should see <error>
 
-Scenarios:
-  | c_name     | c_number     | c_person     | c_email       | phone        | error                      |
-  | HappyMutts |  00          | Kicki        | kicki@immi.nu | 0706898525   | "Company number is the wrong length (should be 10 characters)" |
-  | HappyMutts |              | Kicki        | kicki@immi.nu | 0706898525   | "Company number can't be blank" |
-  | HappyMutts | 1234567890   |              | kicki@immi.nu | 0706898525   | "Contact person can't be blank" |
-  | HappyMutts | 1234567890   | Kicki        |               | 0706898525   | "Company email can't be blank" |
-  |            | 1234567890   | Kicki        | kicki@immi.nu | 0706898525   | "Company name can't be blank" |
-  | HappyMutts | 1234567890   | Kicki        | kicki@imminu  | 0706898525   | "Company email is invalid" |
-  | HappyMutts | 1234567890   | Kicki        | kickiimmi.nu | 0706898525    | "Company email is invalid" |
+  Scenarios:
+    | c_name     | c_number     | c_person     | c_email       | phone        | error                      |
+    | HappyMutts |  00          | Kicki        | kicki@immi.nu | 0706898525   | "Company number is the wrong length (should be 10 characters)" |
+    | HappyMutts |              | Kicki        | kicki@immi.nu | 0706898525   | "Company number can't be blank" |
+    | HappyMutts | 1234567890   |              | kicki@immi.nu | 0706898525   | "Contact person can't be blank" |
+    | HappyMutts | 1234567890   | Kicki        |               | 0706898525   | "Company email can't be blank" |
+    |            | 1234567890   | Kicki        | kicki@immi.nu | 0706898525   | "Company name can't be blank" |
+    | HappyMutts | 1234567890   | Kicki        | kicki@imminu  | 0706898525   | "Company email is invalid" |
+    | HappyMutts | 1234567890   | Kicki        | kickiimmi.nu | 0706898525    | "Company email is invalid" |
