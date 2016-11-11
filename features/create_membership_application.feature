@@ -1,7 +1,8 @@
 Feature: As a visitor
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
-  PT: https://www.pivotaltracker.com/story/show/133940725
+
+  PT Feature: https://www.pivotaltracker.com/story/show/133940725
 
 
 Scenario: Visitor can submit a new Membership Application
