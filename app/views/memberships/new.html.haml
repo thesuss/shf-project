@@ -4,8 +4,8 @@
   %span
 .entry-content.wpcf7
   = form_for @membership, url: memberships_path do |f|
-  - if @membership.errors.any?
-    - @membership.errors.full_messages.each do |msg|
-      .wpcf7-response-output
-        = msg
+    - if @membership.errors.any?
+      - @membership.errors.full_messages.each do |msg|
+        .wpcf7-response-output
+          = msg
     = render partial: 'membership_fields', locals: {f: f}

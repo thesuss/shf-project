@@ -23,7 +23,6 @@ Feature: As an applicant
     Then I should be on "Edit My Application" page
     And I fill in "Company Name" with "A Doggy Dog World"
     And I click on "Submit"
-    Then show me the page
 
 
   Scenario: Applicant can not edit applications not created by him
