@@ -13,6 +13,9 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def index
+    @membership = MembershipApplication.all
+  end
 
   private
   def membership_params
