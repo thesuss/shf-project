@@ -17,6 +17,10 @@ class MembershipsController < ApplicationController
     @membership = MembershipApplication.all
   end
 
+  def show
+    @membership = MembershipApplication.find(params[:id])
+  end
+  
   private
   def membership_params
     params.require(:membership_application).permit(:company_name,

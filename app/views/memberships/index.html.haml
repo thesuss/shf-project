@@ -1,2 +1,2 @@
 - @membership.each do | info |
-  = info.company_name
+  = link_to info.company_name, memberships_path(info.id)

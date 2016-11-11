@@ -7,5 +7,6 @@ Given(/^I am on the list applications page$/) do
 end
 
 Then(/^I should be on "([^"]*)" page$/) do |name|
-  application = MembershipApplication(find_by(name))
+  @membership = MembershipApplication.find_by(company_name: name)
+  expect(current_path).to eq memberships_path(@membership)
 end

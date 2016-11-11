@@ -16,3 +16,4 @@ Scenario: Listing incoming Applications
   And I should see "Tassa-in AB"
   When I click on "DoggieZone"
   Then I should be on "DoggieZone" page
+  And I should see "2345678901"
