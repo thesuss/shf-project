@@ -64,8 +64,10 @@ Here is an overview of the general process for contributing (working on a new fe
     
     -> checkout 'develop' branch  (fast foward so you're up to date)
     -> create a branch for your work in your repo 
-    -> write test(s) to pass -> get your tests passing 
-    -> create a WIP PR -> discuss, revise as needed 
+    -> write test(s) to pass 
+    -> get your tests passing 
+    -> create a WIP PR 
+    -> discuss, revise as needed 
     -> remove 'WIP' when your PR is ready to be merged 
     -> PR is merged by a project manager 
     -> Yay!
@@ -77,7 +79,15 @@ Here is an overview of the general process for contributing (working on a new fe
     - [Features](#Features)
     - [Bug fixes](#Bug-fixes)
   - [GitHub Workflow](#GitHub-Workflow)
-  - [Code Style](#Code-Style)      
+    - develop = The branch for doing work
+    - Fork the repo if you haven't already
+    - Create a new branch for your work
+    - Create a *WIP* PR early so others can review and help
+      -  One change per PR
+    - Pull Request Review
+    - Remove [WIP] and merge
+    
+  
   
   
 ---
@@ -87,8 +97,7 @@ Here is an overview of the general process for contributing (working on a new fe
 
 We use [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1904891) to manage our work on features, chores and bugfixes.
   
-
-Defining, discussing, voting on them...
+Work is defined in Pivotal Tracker.  Discussions take place there, in Slack, and in live conversations in scrums and pair programming (currently uses Google Hangouts). 
 
 ### Features
 Any feature should include Cucumber acceptance tests and RSpec tests where appropriate.
@@ -132,16 +141,16 @@ I would like to be able to access the project metrics via API
 ```
 
 
-### GitHub Workflow
+## GitHub Workflow
   
-#### develop = The branch for doing work
+### develop = The branch for doing work
 
 Our default working branch is currently `develop`.  We do work by creating branches off `develop` for new features and bugfixes.  
 
-##### Fork the repo if you haven't already.  
+### Fork the repo if you haven't already  
 Each developer will usually work with a [fork](https://help.github.com/articles/fork-a-repo/) of the [main repository on Agile Ventures](https://github.com/AgileVentures/shf-project).
  
-##### ...or sync your fork before starting on a new task
+#### ...or sync your fork before starting on a new task
 Before starting work on a new feature or bugfix, please ensure you have [synced your fork to upstream/develop](https://help.github.com/articles/syncing-a-fork/):
 
 ```
@@ -151,7 +160,7 @@ git pull upstream develop
 Note that you should be re-syncing daily (even hourly at very active times) on your feature/bugfix branch to ensure that you are always building on top of very latest _develop_ code.
 
  
-#### Create a new branch for your work
+### Create a new branch for your work
  
 When you create a branch to work on your feature or bug-fix, please name your branch so that others can understand the purpose for it. At least use a shortened version of the task name with words separated by hyphens.  (You can also prefix the branch with the date [YYMMDD-], which will help to give a quick visual sort.) 
 
@@ -176,7 +185,7 @@ git pull upstream develop
 ```
 
 
-#### Create a *WIP* PR early so others can review and help
+### Create a *WIP* PR early so others can review and help
 
 Be sure to create your PR against the **develop** branch!
 
@@ -190,7 +199,7 @@ Team members can review and give you feedback as you work. This helps ensure tha
 Here is [more information on creating (submitting) pull requests](how_to_submit_a_pull_request_on_github.md).
 
 
-##### One change per PR
+#### One change per PR
 
 Please ensure that each commit in your pull request makes a _single_ coherent change and that the overall pull request only includes commits related to the specific Pivotal Tracker task (feature, chore, bug) that the pull request is addressing.
 This helps the project managers understand the PRs and merge them more quickly.
@@ -207,12 +216,13 @@ which will mean that the issue is automatically linked to the pull request in th
 
 
 
-#### Pull Request Review
+### Pull Request Review
 
 The project manager(s) will review the pull request for coherence with the specified feature or bug fix, and give feedback on code quality, user experience, documentation and git style.  Please respond to comments from the project managers with explanation, or further commits to your pull request in order to get merged in as quickly as possible.
 
-To maximize flexibility, you can add the project managers as collaborators to your projectscope fork in order to allow them to help you fix your pull request, but this is not required.
+To maximize flexibility, you can add the project managers as collaborators to your fork in order to allow them to help you fix your pull request, but this is not required.
 
+### Remove [WIP] and merge
 Once your WIP PR has been reviewed and approved by a project manager and is ready to be merged, edit the PR title and remove "[WIP]"
 
 
