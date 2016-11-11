@@ -1,2 +1,7 @@
-- @membership.each do | info |
-  = link_to info.company_name, membership_path(info.id)
+%header.entry-header
+  %h1.entry-title= "Alla inkomna ansökningar"
+.post-title-divider
+  %span
+.entry-content
+  - @membership.each do | info |
+    .list-item.companies= link_to info.company_name, membership_path(info.id)

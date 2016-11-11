@@ -3,8 +3,8 @@
 .post-title-divider
   %span
 .entry-content
-  = @membership.company_number
-  = @membership.contact_person
+  %h1= @membership.company_number
+  %h2= @membership.contact_person
   - if @membership.phone_number
-    = @membership.phone_number
-  = mail_to @membership.company_email, @membership.company_email
+    %p= @membership.phone_number
+  %p= mail_to @membership.company_email, @membership.company_email
