@@ -8,8 +8,8 @@ Scenario: Visitor can submit a new Membership Application
   Given I am on the landing page
   And I click on "Apply for membership"
   And I fill in the form with data :
-    | Company Name  | Company Number | Contact Person | Company Email | Phone Number |
-    | Craft Academy | 1234561234     | Thomas         | info@craft.se | 031-1234567  |
+  | Company Name  | Company Number | Contact Person | Company Email | Phone Number |
+  | Craft Academy | 1234561234     | Thomas         | info@craft.se | 031-1234567  |
   And I click on "Submit"
   Then I should be on the landing page
   And I should see "Thank you, Your application has been submitted"

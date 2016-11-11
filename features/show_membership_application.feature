@@ -16,8 +16,8 @@ Scenario: Listing incoming Applications
   When I click on "DoggieZone"
   Then I should be on "DoggieZone" page
   And I should see:
-  | content       |
-  | 2345678901    |
-  | Pam Andersson |
-  | 0234-234567   |
-  | din@mail.se   |
+    | content       |
+    | 2345678901    |
+    | Pam Andersson |
+    | 0234-234567   |
+    | din@mail.se   |
