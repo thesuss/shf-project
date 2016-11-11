@@ -24,6 +24,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rake'
   gem 'coveralls', require: false
+  gem 'launchy'
 end
 
 group :development do

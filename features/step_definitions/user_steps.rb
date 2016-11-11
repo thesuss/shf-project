@@ -5,6 +5,7 @@ Given(/^the following users exists$/) do |table|
 end
 
 Given(/^I am logged in as "([^"]*)"$/) do |email|
-  user = User.find_by(email: email)
-  login user
+  @user = User.find_by(email: email)
+  login_as @user, scope: :user
+
 end

@@ -19,9 +19,11 @@ Feature: As an applicant
   Scenario: Applicant wants can edit his own application
     Given I am logged in as "applicant_1@random.com"
     And I am on the landing page
-    And I click on "My application"
-    Then I should be on "Edit Application" page
-    And I should see a edit application form
+    And I click on "My Application"
+    Then I should be on "Edit My Application" page
+    And I fill in "Company Name" with "A Doggy Dog World"
+    And I click on "Submit"
+    Then show me the page
 
 
   Scenario: Applicant can not edit applications not created by him

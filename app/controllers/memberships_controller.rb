@@ -13,6 +13,14 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def edit
+    @membership = current_user.membership_applications.last
+  end
+
+  def update
+
+  end
+
 
   private
   def membership_params
