@@ -3,5 +3,5 @@
 .post-title-divider
   %span
 .entry-content
-  - @membership_applications.each do | info |
-    .list-item.companies= link_to info.company_name, membership_path(info.id)
+  - @membership_applications.each do | membership_application |
+    .list-item.companies= link_to membership_application.company_name, membership_path(membership_application.id)
