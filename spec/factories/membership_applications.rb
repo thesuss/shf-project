@@ -5,5 +5,6 @@ FactoryGirl.define do
     contact_person "MyString"
     phone_number "MyString"
     company_email "MyString@email.com"
+    association :user
   end
 end

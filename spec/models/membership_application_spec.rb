@@ -27,4 +27,8 @@ RSpec.describe MembershipApplication, type: :model do
 
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
+
+  describe 'Associations' do
+    it { is_expected.to belong_to :user }
+  end
 end

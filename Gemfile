@@ -12,6 +12,8 @@ gem 'haml-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-sass'
 
+gem 'devise'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
