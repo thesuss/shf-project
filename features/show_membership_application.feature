@@ -15,7 +15,9 @@ Scenario: Listing incoming Applications
   Then I should see "3" applications
   When I click on "DoggieZone"
   Then I should be on "DoggieZone" page
-  And I should see "2345678901"
-  And I should see "Pam Andersson"
-  And I should see "0234-234567"
-  And I should see "din@mail.se"
+  And I should see:
+  | content       |
+  | 2345678901    |
+  | Pam Andersson |
+  | 0234-234567   |
+  | din@mail.se   |
