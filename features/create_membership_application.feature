@@ -7,9 +7,11 @@ Feature: As a visitor
 Scenario: Visitor can submit a new Membership Application
   Given I am on the landing page
   And I click on "Apply for membership"
-  And I fill in the form with data :
-  | Company Name  | Company Number | Contact Person | Company Email | Phone Number |
-  | Craft Academy | 1234561234     | Thomas         | info@craft.se | 031-1234567  |
+  And I fill in "Company Name" with "Craft Academy"
+  And I fill in "Company Number" with "1234561234"
+  And I fill in "Contact Person" with "Thomas"
+  And I fill in "Company Email" with "info@craft.se"
+  And I fill in "Phone Number" with "031-1234567"
   And I click on "Submit"
   Then I should be on the landing page
   And I should see "Thank you, Your application has been submitted"
