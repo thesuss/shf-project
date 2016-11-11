@@ -10,7 +10,7 @@ Given the following applications exist:
   | Tassa-in AB  | 1234367890     | Anna Knutsson  | 1234-234569  | sin@mail.se   |
 
 Scenario: Listing incoming Applications
-  Given I am on the applications page
+  Given I am on the list applications page
   Then I should see "Hunderiet"
   And I should see "DoggieZone"
   And I should see "Tassa-in AB"
