@@ -12,6 +12,8 @@ _This is a project of [AgileVentures](http://www.agileventures.org), a non-profi
 
 Sempahore status: [![Build Status](https://semaphoreci.com/api/v1/lollypop27/shf-project/branches/develop/badge.svg)](https://semaphoreci.com/lollypop27/shf-project)
 
+Coveralls status: [![Coverage Status](https://coveralls.io/repos/github/AgileVentures/shf-project/badge.svg?branch=develop)](https://coveralls.io/github/AgileVentures/shf-project?branch=develop)
+
 
 ## Requirements and Dependencies
 
