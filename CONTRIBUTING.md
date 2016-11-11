@@ -46,6 +46,9 @@ _Details on all of this are below. Read on for more on how it all goes._
  
 
 Now start asking questions and talking on Slack, reading about what needs to be done on PivotalTracker, reviewing past meetings via the videos that were recorded, do some Pair Programming, and be a part of the project!
+
+
+[**Getting Started on the AgileVentures site**](http://www.agileventures.org/getting-started) provides more details about being involved in projects and more about [AgileVentures.]((http://www.agileventures.org)
   
 ---
   
@@ -67,10 +70,10 @@ Here is an overview of the general process for contributing (working on a new fe
     -> PR is merged by a project manager 
     -> Yay!
       
-Getting Started on the AV site provides detailed instructions       
+       
     
 ### Detailed Guidelines:
-  - [Defining Tasks with PivotalTracker and GitHub](#Defining-Tasks-with-PivotalTracker-and-GitHub)
+  - [Defining Tasks with PivotalTracker](#Defining-Tasks-with-PivotalTracker)
     - [Features](#Features)
     - [Bug fixes](#Bug-fixes)
   - [GitHub Workflow](#GitHub-Workflow)
@@ -80,7 +83,7 @@ Getting Started on the AV site provides detailed instructions
 ---
 
 
-## Defining Tasks with PivotalTracker and GitHub
+## Defining Tasks with PivotalTracker
 
 We use [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/1904891) to manage our work on features, chores and bugfixes.
   
@@ -163,6 +166,7 @@ git checkout -b 161102-add_contributing_md
 Once you have your tests passing (or if you're stuck and need help), you're ready to submit a pull request.
 
 
+
 #### Sync again before you create a PR
 
 Before you make a pull request it is a great idea to sync again to the upstream develop branch to reduce the chance that there will be any merge conflicts arising from other PRs that have been merged to _develop_ since you started work:
@@ -172,25 +176,26 @@ git pull upstream develop
 ```
 
 
-#### Create a PR early so others can review/help: WIP PR
+#### Create a *WIP* PR early so others can review and help
 
 Be sure to create your PR against the **develop** branch!
 
-Whatever you are working on, please open a "Work in Progress" (WIP) [pull request](https://help.github.com/articles/creating-a-pull-request/) (just start your PR title with "[WIP]" )
-so that others in the team can comment on your approach.  Even if you hate your horrible code :-) please throw it up there and we'll help guide your code to fit in with the rest of the project.
+Put a link to the PivotTracker story this addresses so that we keep the connection between the two systems (PivotalTracker and GitHub).  
+      
 
-Once your WIP PR has been reviewed by a project manager and is ready to be merged, edit the PR title and remove "[WIP]"
+Whatever you are working on, **please open a "Work in Progress" (WIP)** [pull request](https://help.github.com/articles/creating-a-pull-request/) (just start your PR title with "[WIP]" ) so that others in the team can comment on your approach.  Even if you hate your horrible code. :-) Please throw it up there and we'll help guide your code to fit in with the rest of the project.
+
+Team members can review and give you feedback as you work. This helps ensure that you don't go too far down a path that isn't going to work out.
 
 Here is [more information on creating (submitting) pull requests](how_to_submit_a_pull_request_on_github.md).
 
 
 ##### One change per PR
 
-Please ensure that each commit in your pull request makes a _single_ coherent change and that the overall pull request only includes commits related to the specific GitHub issue that the pull request is addressing.
+Please ensure that each commit in your pull request makes a _single_ coherent change and that the overall pull request only includes commits related to the specific Pivotal Tracker task (feature, chore, bug) that the pull request is addressing.
 This helps the project managers understand the PRs and merge them more quickly.
 
-
-If your PR is addressing a GitHub issue, please include a sensible description of your code and a tag `fixes #<issue-id>` e.g. :
+If your PR is addressing a GitHub issue (which doesn't happen much in this project), please include a sensible description of your code and a tag `fixes #<issue-id>` e.g. :
 
 ```
 This PR adds a CONTRIBUTING.md file and a docs directory
@@ -207,6 +212,8 @@ which will mean that the issue is automatically linked to the pull request in th
 The project manager(s) will review the pull request for coherence with the specified feature or bug fix, and give feedback on code quality, user experience, documentation and git style.  Please respond to comments from the project managers with explanation, or further commits to your pull request in order to get merged in as quickly as possible.
 
 To maximize flexibility, you can add the project managers as collaborators to your projectscope fork in order to allow them to help you fix your pull request, but this is not required.
+
+Once your WIP PR has been reviewed and approved by a project manager and is ready to be merged, edit the PR title and remove "[WIP]"
 
 
  
