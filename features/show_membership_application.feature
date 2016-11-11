@@ -1,6 +1,7 @@
 Feature: As an Admin
   So that we can accept or reject new Memberships,
   I need to review a Membership Application that has been submitted
+  PT: https://www.pivotaltracker.com/story/show/133950343
 
 Background:
 Given the following applications exist:
@@ -11,9 +12,7 @@ Given the following applications exist:
 
 Scenario: Listing incoming Applications
   Given I am on the list applications page
-  Then I should see "Hunderiet"
-  And I should see "DoggieZone"
-  And I should see "Tassa-in AB"
+  Then I should see "3" applications
   When I click on "DoggieZone"
   Then I should be on "DoggieZone" page
   And I should see "2345678901"
