@@ -10,3 +10,9 @@ Then(/^I should be on "([^"]*)" page$/) do |company_name|
   membership = MembershipApplication.find_by(company_name: company_name)
   expect(current_path).to eq membership_path(membership)
 end
+
+
+Given(/^I am on "([^"]*)" application page$/) do |company_name|
+  membership = MembershipApplication.find_by(company_name: company_name)
+  visit membership_path(membership)
+end
