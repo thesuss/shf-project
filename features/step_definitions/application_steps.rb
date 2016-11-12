@@ -8,7 +8,6 @@ Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.companies', count: number)
 end
 
-
 When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, status|
   page.select status, from: list
 end
