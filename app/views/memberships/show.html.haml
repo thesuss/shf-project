@@ -9,11 +9,11 @@
     %p= @membership.phone_number
   %p= mail_to @membership.company_email, @membership.company_email
   = form_for @membership, url: membership_path(@membership) do |f|
-    - if @membership.status == 'Accepted'
+    - if @membership.status.to_i == 2
       - chosen = 2
-    - elsif @membership.status == 'Rejected'
+    - elsif @membership.status.to_i == 3
       - chosen = 3
     - else
       - chosen = 1
-    = f.select(:status, options_for_select([['Pending', 1],['Accepted', 2],['Rejected',3]], chosen))
+    = f.select(:status, options_for_select([['Pending', 1],['Accepted', 2],['Rejected', 3]], chosen))
     = f.submit 'Update'
