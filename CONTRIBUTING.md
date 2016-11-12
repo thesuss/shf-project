@@ -223,7 +223,7 @@ The project manager(s) will review the pull request for coherence with the speci
 To maximize flexibility, any contributor should be able to push changes to your branch to update your PR, and you should allow edits from maintainers. Doing both things lets them help your improve your PR efficiently.  
 
 ### Remove [WIP] and merge
-Once your WIP PR has been reviewed and approved by a project manager and is ready to be merged, edit the PR title and remove "[WIP]"
+Once your WIP PR is working and you believe it's ready to be merged into the project, edit the PR title and remove "[WIP]".  Removing "[WIP]" is a signal that your PR is ready for a final review.  (Others will know that you have finished working on it; that it's no longer in flux.)  Make any changes as needed from the review(s).  Once the reviewers are happy and your code is passing all integration checks, your PR will be merged into the `develop` branch and be closed!   
 
 
  
