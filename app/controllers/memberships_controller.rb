@@ -14,7 +14,11 @@ class MembershipsController < ApplicationController
   end
 
   def edit
-    @membership = current_user.membership_applications.last
+    if is_current_user_application
+    else
+      flash[:alert] = "You are not authorized to view this page"
+      redirect_to root_path
+    end
   end
 
   def update
@@ -23,6 +27,9 @@ class MembershipsController < ApplicationController
 
 
   private
+  def is_current_user_application
+    @membership = current_user.membership_applications.find_by_id(params[:id])
+  end
   def membership_params
     params.require(:membership_application).permit(:company_name,
                                                    :company_number,
