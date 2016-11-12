@@ -13,6 +13,13 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def index
+    @membership_applications = MembershipApplication.all
+  end
+
+  def show
+    @membership = MembershipApplication.find(params[:id])
+  end
 
   private
   def membership_params
