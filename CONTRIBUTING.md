@@ -220,7 +220,7 @@ which will mean that the issue is automatically linked to the pull request in th
 
 The project manager(s) will review the pull request for coherence with the specified feature or bug fix, and give feedback on code quality, user experience, documentation and git style.  Please respond to comments from the project managers with explanation, or further commits to your pull request in order to get merged in as quickly as possible.
 
-To maximize flexibility, you can add the project managers as collaborators to your fork in order to allow them to help you fix your pull request, but this is not required.
+To maximize flexibility, any contributor should be able to push changes to your branch to update your PR, and you should allow edits from maintainers. Doing both things lets them help your improve your PR efficiently.  
 
 ### Remove [WIP] and merge
 Once your WIP PR has been reviewed and approved by a project manager and is ready to be merged, edit the PR title and remove "[WIP]"
