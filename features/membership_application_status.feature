@@ -12,6 +12,6 @@ Scenario: Flag a Membership Application as approved
   Given I am on "DoggieZone" application page
   When I set "membership_application_status" to "Accepted"
   And I click on "Update"
-  Then I should see "Membership Application successfully approved"
+  Then I should see "Membership Application successfully updated"
 
 
