@@ -17,3 +17,4 @@ And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
   selected_option = dropdown.find('option[selected]').text
   expect(selected_option).to eql status
 end
+

@@ -24,9 +24,11 @@ class MembershipsController < ApplicationController
   def update
     @membership = MembershipApplication.find(params[:id])
     if @membership.update(membership_params)
-      flash[:notice] = 'Membership Application successfully updated'
+      flash[:notice] = 'Membership Application
+                        successfully updated'
     else
-      flash[:alert] = 'A problem prevented the membership application to be saved'
+      flash[:alert] = 'A problem prevented the membership
+                       application to be saved'
     end
     render :show
   end
