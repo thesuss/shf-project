@@ -13,5 +13,6 @@ Scenario: Flag a Membership Application as approved
   When I set "membership_application_status" to "Accepted"
   And I click on "Update"
   Then I should see "Membership Application successfully updated"
+  And "Accepted" should be set in "membership_application_status"
 
 

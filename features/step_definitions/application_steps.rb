@@ -12,3 +12,9 @@ end
 When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, status|
   page.select status, from: list
 end
+
+And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
+  dropdown = page.find("##{list}")
+  selected_option = dropdown.find(:xpath, 'option[1]').text
+  expect(selected_option).to eql status
+end
