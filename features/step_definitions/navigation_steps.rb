@@ -3,7 +3,6 @@ Given(/^I am on the landing page$/) do
 end
 
 Given(/^I go to "([^"]*)" page for "([^"]*)"$/) do |page, email|
-  binding.pry
   user = User.find_by(email: email)
   case page.downcase
     when 'edit my application'
