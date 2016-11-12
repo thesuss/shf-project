@@ -15,6 +15,6 @@ end
 
 And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
   dropdown = page.find("##{list}")
-  selected_option = dropdown.find(:xpath, 'option[1]').text
+  selected_option = dropdown.find('option[selected]').text
   expect(selected_option).to eql status
 end
