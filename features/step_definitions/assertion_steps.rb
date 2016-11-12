@@ -11,8 +11,9 @@ Then(/^I should be on "([^"]*)" page$/) do |page|
   case page.downcase
     when 'edit my application'
       path = edit_membership_path(@user.membership_applications.last)
+    when 'landing'
+      path = root_path
   end
 
   expect(current_path).to eq path
 end
-

@@ -24,5 +24,8 @@ Feature: As an applicant
     And I fill in "Company Name" with "A Doggy Dog World"
     And I click on "Submit"
 
-
   Scenario: Applicant can not edit applications not created by him
+    Given I am logged in as "applicant_2@random.com"
+    And I go to "Edit My Application" page for "applicant_1@random.com"
+    Then I should see "You are not authorized to view this page"
+    And I should be on "landing" page
