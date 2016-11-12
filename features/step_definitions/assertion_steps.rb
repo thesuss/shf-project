@@ -11,3 +11,9 @@ Then(/^I should see:$/) do |table|
     expect(page).to have_content hash[:content]
   end
 end
+
+And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
+  dropdown = page.find("##{list}")
+  selected_option = dropdown.find('option[selected]').text
+  expect(selected_option).to eql status
+end

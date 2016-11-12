@@ -7,13 +7,3 @@ end
 Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.companies', count: number)
 end
-
-When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, status|
-  page.select status, from: list
-end
-
-And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
-  dropdown = page.find("##{list}")
-  selected_option = dropdown.find('option[selected]').text
-  expect(selected_option).to eql status
-end
