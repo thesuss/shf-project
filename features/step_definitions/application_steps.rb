@@ -9,6 +9,6 @@ Then(/^I should see "([^"]*)" applications$/) do |number|
 end
 
 
-When(/^I set "([^"]*)" to "([^"]*)"$/) do |element, input|
-  page.find_by_id(element).find(input).select_option
+When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, status|
+  page.select status, from: list
 end
