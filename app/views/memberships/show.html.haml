@@ -8,3 +8,6 @@
   - if @membership.phone_number
     %p= @membership.phone_number
   %p= mail_to @membership.company_email, @membership.company_email
+  = form_for @membership, url: membership_path(@membership) do |f|
+    = f.select(:status, options_for_select([['Pending', 1],['Accepted', 2],['Rejected',3]], 1))
+    = f.submit 'Update'

@@ -10,8 +10,8 @@ Background:
 
 Scenario: Flag a Membership Application as approved
   Given I am on "DoggieZone" application page
-  When I set "status" to "approved"
-  And I click on "Submit"
+  When I set "membership_application_status" to "Accepted"
+  And I click on "Update"
   Then I should see "Membership Application successfully approved"
 
 

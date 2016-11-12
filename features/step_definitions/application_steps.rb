@@ -10,5 +10,5 @@ end
 
 
 When(/^I set "([^"]*)" to "([^"]*)"$/) do |element, input|
-  page.find_by_id(element).find("option[value='#{input}']").select_option
+  page.find_by_id(element).find(input).select_option
 end
