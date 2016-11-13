@@ -1,9 +1,9 @@
 %header.entry-header
-  %h1.entry-title Ansök om medlemskap
+  %h1.entry-title Redigera ansökan om medlemskap
 .post-title-divider
   %span
 .entry-content.wpcf7
-  = form_for @membership, url: memberships_path do |f|
+  = form_for @membership, url: membership_path do |f|
     - if @membership.errors.any?
       - @membership.errors.full_messages.each do |msg|
         .wpcf7-response-output
