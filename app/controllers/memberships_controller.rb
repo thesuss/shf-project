@@ -1,6 +1,7 @@
 class MembershipsController < ApplicationController
-before_action :get_membership_application, only: [:show, :edit]
-before_action :authorize_membership_application, only: [:show, :edit]
+  before_action :get_membership_application, only: [:show, :edit]
+  before_action :authorize_membership_application, only: [:show, :edit]
+
   def new
     @membership = MembershipApplication.new
   end
@@ -33,11 +34,12 @@ before_action :authorize_membership_application, only: [:show, :edit]
     if @membership.update(membership_params)
       flash[:notice] = 'Membership Application
                         successfully updated'
+      render :show
     else
       flash[:alert] = 'A problem prevented the membership
                        application to be saved'
+      redirect_to edit_membership_path(@membership)
     end
-    render :show
   end
 
   private
