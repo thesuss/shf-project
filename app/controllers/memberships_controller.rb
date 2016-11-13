@@ -1,5 +1,5 @@
 class MembershipsController < ApplicationController
-  before_action :get_membership_application, only: [:show, :edit]
+  before_action :get_membership_application, only: [:show, :edit, :update]
   before_action :authorize_membership_application, only: [:show, :edit]
 
   def new
@@ -30,7 +30,6 @@ class MembershipsController < ApplicationController
   end
 
   def update
-    @membership = MembershipApplication.find(params[:id])
     if @membership.update(membership_params)
       flash[:notice] = 'Membership Application
                         successfully updated'
