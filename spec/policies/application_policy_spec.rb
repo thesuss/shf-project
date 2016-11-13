@@ -11,7 +11,7 @@ RSpec.describe ApplicationPolicy do
   describe 'For Creator of MembershipApplication' do
     subject { described_class.new(user_1, application) }
 
-    it { is_expected.to permit_action :show }
+    it { is_expected.to forbid_action :show }
     it { is_expected.to permit_action :edit }
   end
 
