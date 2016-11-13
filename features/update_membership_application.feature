@@ -14,19 +14,21 @@ Feature: As an Admin
 
   Scenario: Flag a Membership Application as accepted
     Given I am logged in as "admin@sgf.com"
+    And time is frozen at 2016-12-16 18:00
     And I am on "DoggieZone" application page
     When I set "membership_application_status" to "Accepted"
     And I click on "Update"
     Then I should see "Membership Application successfully updated"
     And "Accepted" should be set in "membership_application_status"
-    And I should see "Membership accepted at"
+    And I should see "Membership accepted at 2016-12-15"
 
   Scenario: Flag a Membership Application as rejected
     Given I am logged in as "admin@sgf.com"
+    And time is frozen at 2016-12-16 18:00
     And I am on "DoggieZone" application page
     When I set "membership_application_status" to "Rejected"
     And I click on "Update"
     Then I should see "Membership Application successfully updated"
     And "Rejected" should be set in "membership_application_status"
-    And I should see "Membership rejected at"
+    And I should see "Membership rejected at 2016-12-15"
 

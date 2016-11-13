@@ -22,7 +22,7 @@
                                               chosen))
 
       = f.submit 'Update', class: 'wpcf7-submit'
-      -if chosen == 2
-        %p Membership accepted at #{@membership.updated_at}
-      -if chosen == 3
-        %p Membership rejected at #{@membership.updated_at}
+      - if chosen == 2
+        %p Membership accepted at #{@membership.updated_at.strftime('%F')}
+      - if chosen == 3
+        %p Membership rejected at #{@membership.updated_at.strftime('%F')}
