@@ -6,7 +6,6 @@ Feature: As an Admin
   Background:
     Given the following users exists
       | email                  | admin |
-      | applicant_1@random.com |       |
       | din@mail.se            |       |
       | admin@sgf.com          | true  |
     And the following applications exist:

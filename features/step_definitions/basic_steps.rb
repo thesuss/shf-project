@@ -16,7 +16,7 @@ When(/^I fill in the form with data :$/) do |table|
 end
 
 When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, status|
-  page.select status, from: list
+  select status, from: list
 end
 
 Then(/^show me the page$/) do
