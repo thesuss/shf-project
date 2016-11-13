@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe MembershipApplication, type: :model do
   describe 'Factory' do
     it 'has a valid factory' do
-      expect(FactoryGirl.create(:membership_application)).to be_valid
+      expect(create(:membership_application)).to be_valid
     end
   end
 
@@ -28,5 +28,9 @@ RSpec.describe MembershipApplication, type: :model do
     it { is_expected.not_to allow_value('userexample.com').for(:company_email) }
 
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
+  end
+
+  describe 'Associations' do
+    it { is_expected.to belong_to :user }
   end
 end

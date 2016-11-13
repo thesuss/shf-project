@@ -18,3 +18,7 @@ end
 When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, status|
   page.select status, from: list
 end
+
+Then(/^show me the page$/) do
+  save_and_open_page
+end
