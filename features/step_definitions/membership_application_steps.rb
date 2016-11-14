@@ -7,10 +7,10 @@ And(/^the following applications exist:$/) do |table|
 end
 
 And(/^I navigate to the edit page for "([^"]*)"$/) do |company_name|
-  application = MembershipApplication.find_by(company_name: company_name)
-  visit edit_membership_path(application)
+  membership_application = MembershipApplication.find_by(company_name: company_name)
+  visit edit_membership_application_path(membership_application)
 end
 
 Given(/^I am on the list applications page$/) do
-  visit memberships_path
+  visit membership_applications_path
 end

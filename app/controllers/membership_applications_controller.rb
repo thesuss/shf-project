@@ -1,13 +1,13 @@
-class MembershipsController < ApplicationController
+class MembershipApplicationsController < ApplicationController
 before_action :get_membership_application, only: [:show, :edit]
 before_action :authorize_membership_application, only: [:show, :edit]
   def new
-    @membership = MembershipApplication.new
+    @membership_application = MembershipApplication.new
   end
 
   def create
-    @membership = current_user.membership_applications.new(membership_params)
-    if @membership.save
+    @membership_application = current_user.membership_applications.new(membership_application_params)
+    if @membership_application.save
       flash[:notice] = 'Thank you, Your application has been submitted'
       redirect_to root_path
     else
@@ -34,7 +34,7 @@ before_action :authorize_membership_application, only: [:show, :edit]
 
 
   private
-  def membership_params
+  def membership_application_params
     params.require(:membership_application).permit(:company_name,
                                                    :company_number,
                                                    :contact_person,
@@ -43,10 +43,10 @@ before_action :authorize_membership_application, only: [:show, :edit]
   end
 
   def get_membership_application
-    @membership = MembershipApplication.find(params[:id])
+    @membership_application = MembershipApplication.find(params[:id])
   end
 
   def authorize_membership_application
-    authorize @membership
+    authorize @membership_application
   end
 end
