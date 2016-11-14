@@ -40,6 +40,14 @@ class MembershipsController < ApplicationController
     redirect_to edit_membership_path(@membership)
   end
 
+  def update_status
+    @membership = MembershipApplication.find(params[:membership_id])
+    @membership.update(membership_params)
+    flash[:notice] = 'Membership Application
+                      successfully updated'
+    redirect_back(fallback_location: memberships_path)
+  end
+
   private
   def membership_params
     params.require(:membership_application).permit(:company_name,

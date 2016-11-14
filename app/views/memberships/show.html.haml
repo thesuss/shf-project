@@ -9,7 +9,7 @@
     %p= @membership.phone_number
   %p= mail_to @membership.company_email, @membership.company_email
   .wpcf7
-    = form_for @membership, url: membership_path(@membership) do |f|
+    = form_for @membership, url: membership_update_status_path(@membership) do |f|
       - if @membership.status.to_i == 2
         - chosen = 2
       - elsif @membership.status.to_i == 3
