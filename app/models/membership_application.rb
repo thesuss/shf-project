@@ -1,4 +1,5 @@
 class MembershipApplication < ApplicationRecord
+  belongs_to :user
   validates_presence_of :company_name,
                         :company_number,
                         :company_email,

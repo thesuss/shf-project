@@ -1,4 +1,8 @@
+require 'coveralls'
+Coveralls.wear_merged!('rails')
+
 require 'cucumber/rails'
+
 ActionController::Base.allow_rescue = false
 
 begin
@@ -9,3 +13,6 @@ end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+Warden.test_mode!
+World Warden::Test::Helpers
+After { Warden.test_reset! }
