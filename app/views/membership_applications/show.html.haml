@@ -1,13 +1,13 @@
 %header.entry-header
-  %h1.entry-title= "Ansökan från #{@membership.company_name}"
+  %h1.entry-title= "Ansökan från #{@membership_application.company_name}"
 .post-title-divider
   %span
 .entry-content
-  %h1= @membership.company_number
-  %h2= @membership.contact_person
-  - if @membership.phone_number
-    %p= @membership.phone_number
-  %p= mail_to @membership.company_email, @membership.company_email
+  %h1= @membership_application.company_number
+  %h2= @membership_application.contact_person
+  - if @membership_application.phone_number
+    %p= @membership_application.phone_number
+  %p= mail_to @membership_application.company_email, @membership_application.company_email
   .wpcf7
     = form_for @membership, url: membership_update_status_path(@membership) do |f|
       - if @membership.status.to_i == 2

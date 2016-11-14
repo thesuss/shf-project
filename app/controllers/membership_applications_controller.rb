@@ -1,14 +1,13 @@
-class MembershipsController < ApplicationController
-  before_action :get_membership_application, only: [:show, :edit, :update]
-  before_action :authorize_membership_application, only: [:show, :edit]
-
+class MembershipApplicationsController < ApplicationController
+before_action :get_membership_application, only: [:show, :edit]
+before_action :authorize_membership_application, only: [:show, :edit]
   def new
-    @membership = MembershipApplication.new
+    @membership_application = MembershipApplication.new
   end
 
   def create
-    @membership = current_user.membership_applications.new(membership_params)
-    if @membership.save
+    @membership_application = current_user.membership_applications.new(membership_application_params)
+    if @membership_application.save
       flash[:notice] = 'Thank you, Your application has been submitted'
       redirect_to root_path
     else
@@ -30,26 +29,26 @@ class MembershipsController < ApplicationController
   end
 
   def update
-    if @membership.update(membership_params)
+    if @membership_application.update(membership_params)
       flash[:notice] = 'Membership Application
                         successfully updated'
     else
       flash[:alert] = 'A problem prevented the membership
                        application to be saved'
     end
-    redirect_to edit_membership_path(@membership)
+    redirect_to edit_membership_path(@membership_application)
   end
 
   def update_status
-    @membership = MembershipApplication.find(params[:membership_id])
-    @membership.update(membership_params)
+    @membership_application = MembershipApplication.find(params[:membership_id])
+    @membership_application.update(membership_params)
     flash[:notice] = 'Membership Application
                       successfully updated'
     redirect_back(fallback_location: memberships_path)
   end
 
   private
-  def membership_params
+  def membership_application_params
     params.require(:membership_application).permit(:company_name,
                                                    :company_number,
                                                    :contact_person,
@@ -59,10 +58,10 @@ class MembershipsController < ApplicationController
   end
 
   def get_membership_application
-    @membership = MembershipApplication.find(params[:id])
+    @membership_application = MembershipApplication.find(params[:id])
   end
 
   def authorize_membership_application
-    authorize @membership
+    authorize @membership_application
   end
 end
