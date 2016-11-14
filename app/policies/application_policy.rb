@@ -6,7 +6,7 @@ class ApplicationPolicy
     @record = record
   end
 
-  def show?
+  def manage?
     @user.admin?
   end
 

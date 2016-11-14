@@ -24,7 +24,9 @@ class MembershipsController < ApplicationController
   def show
 
   end
-
+  def manage
+    @membership = MembershipApplication.find(params[:membership_id])
+  end
   def edit
 
   end
