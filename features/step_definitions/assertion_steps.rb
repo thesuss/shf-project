@@ -10,7 +10,7 @@ end
 Then(/^I should be on "([^"]*)" page$/) do |page|
   case page.downcase
     when 'edit my application'
-      path = edit_membership_path(@user.membership_applications.last)
+      path = edit_membership_application_path(@user.membership_applications.last)
   end
 
   expect(current_path).to eq path
@@ -25,8 +25,8 @@ end
 
 
 Then(/^I should be on the application page for "([^"]*)"$/) do |company_name|
-  membership = MembershipApplication.find_by(company_name: company_name)
-  expect(current_path).to eq membership_path(membership)
+  membership_application = MembershipApplication.find_by(company_name: company_name)
+  expect(current_path).to eq membership_application_path(membership_application)
 end
 
 Then(/^I should see "([^"]*)" applications$/) do |number|
