@@ -42,3 +42,5 @@ Feature: As an Admin
     Given I am logged in as "applicant_2@random.com"
     And I am on the list applications page
     Then I should see "You are not authorized to perform this action."
+
+    
