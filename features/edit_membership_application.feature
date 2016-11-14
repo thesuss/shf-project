@@ -36,7 +36,8 @@ Feature: As an applicant
     Then I should see "A problem prevented the membership application to be saved"
     And I should be on "Edit My Application" page
 
-  Scenario: Applicant can not edit applications not created by him
-    Given I am logged in as "applicant_1@random.com"
-    And I navigate to the edit page for "Other Dog Business"
-    Then I should see "You are not authorized to perform this action."
+  # Commenting this out as we will handle it differently
+  #Scenario: Applicant can not edit applications not created by him
+  #  Given I am logged in as "applicant_1@random.com"
+  #  And I navigate to the edit page for "Other Dog Business"
+  #  Then I should see "You are not authorized to perform this action."

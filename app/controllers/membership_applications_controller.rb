@@ -1,5 +1,5 @@
 class MembershipApplicationsController < ApplicationController
-before_action :get_membership_application, only: [:show, :edit]
+before_action :get_membership_application, only: [:show, :edit, :update]
 before_action :authorize_membership_application, only: [:show, :edit]
   def new
     @membership_application = MembershipApplication.new
@@ -29,22 +29,22 @@ before_action :authorize_membership_application, only: [:show, :edit]
   end
 
   def update
-    if @membership_application.update(membership_params)
+    if @membership_application.update(membership_application_params)
       flash[:notice] = 'Membership Application
                         successfully updated'
     else
       flash[:alert] = 'A problem prevented the membership
                        application to be saved'
     end
-    redirect_to edit_membership_path(@membership_application)
+    redirect_to edit_membership_application_path(@membership_application)
   end
 
   def update_status
-    @membership_application = MembershipApplication.find(params[:membership_id])
-    @membership_application.update(membership_params)
+    @membership_application = MembershipApplication.find(params[:membership_application_id])
+    @membership_application.update(membership_application_params)
     flash[:notice] = 'Membership Application
                       successfully updated'
-    redirect_back(fallback_location: memberships_path)
+    redirect_back(fallback_location: membership_applications_path)
   end
 
   private
