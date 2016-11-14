@@ -24,7 +24,7 @@ Feature: As an applicant
     And I fill in "Company Name" with "A Doggy Dog World"
     And I click on "Submit"
     Then I should see "Membership Application successfully updated"
-    And I should be on "Edit My Application" page
+    And I should be on the application page for "A Doggy Dog World"
     
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "applicant_1@random.com"

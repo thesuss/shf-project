@@ -33,6 +33,16 @@ Then(/^I should be on the application page for "([^"]*)"$/) do |company_name|
   expect(current_path).to eq membership_path(membership)
 end
 
+Then(/^I should be on the management page for "([^"]*)"$/) do |company_name|
+  membership = MembershipApplication.find_by(company_name: company_name)
+  expect(current_path).to eq membership_manage_path(membership)
+end
+
 Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.companies', count: number)
+end
+
+Then(/^I should see my application for "([^"]*)"$/) do |company_name|
+  membership = MembershipApplication.find_by(company_name: company_name)
+  expect(current_path).to eq membership_path(membership)
 end

@@ -23,6 +23,7 @@ Feature: As an Admin
     Then I should see "Membership Application successfully updated"
     And "Accepted" should be set in "membership_application_status"
     And I should see "Membership accepted at 2016-12-16"
+    And I should be on the management page for "DoggieZone"
 
   Scenario: Flag a Membership Application as rejected
     And I am on "DoggieZone" application page
