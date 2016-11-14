@@ -1,6 +1,7 @@
 class MembershipsController < ApplicationController
   before_action :get_membership_application, only: [:show, :edit, :update]
-  before_action :authorize_membership_application, only: [:show, :edit]
+  before_action :get_membership_application_by_membership_id, only: [:manage, :update_status]
+  before_action :authorize_membership_application, only: [:manage, :edit]
 
   def new
     @membership = MembershipApplication.new
@@ -25,7 +26,6 @@ class MembershipsController < ApplicationController
 
   end
   def manage
-    @membership = MembershipApplication.find(params[:membership_id])
   end
   def edit
 
@@ -43,7 +43,6 @@ class MembershipsController < ApplicationController
   end
 
   def update_status
-    @membership = MembershipApplication.find(params[:membership_id])
     @membership.update(membership_params)
     flash[:notice] = 'Membership Application
                       successfully updated'
@@ -59,7 +58,9 @@ class MembershipsController < ApplicationController
                                                    :phone_number,
                                                    :status)
   end
-
+  def get_membership_application_by_membership_id
+    @membership = MembershipApplication.find(params[:membership_id])
+  end
   def get_membership_application
     @membership = MembershipApplication.find(params[:id])
   end
