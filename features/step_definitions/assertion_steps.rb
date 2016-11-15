@@ -9,6 +9,8 @@ end
 
 Then(/^I should be on "([^"]*)" page$/) do |page|
   case page.downcase
+    when  'login'
+      path = new_user_session_path
     when 'edit my application'
       path = edit_membership_application_path(@user.membership_applications.last)
   end
