@@ -10,19 +10,11 @@
   %p= mail_to @membership_application.company_email, @membership_application.company_email
   .wpcf7
     = form_for @membership_application, url: membership_application_path do |f|
-      - if @membership_application.status.to_i == 2
-        - chosen = 2
-      - elsif @membership_application.status.to_i == 3
-        - chosen = 3
-      - else
-        - chosen = 1
-      = f.select(:status, options_for_select([['Pending', 1],
-                                              ['Accepted', 2],
-                                              ['Rejected', 3]],
-                                              chosen))
-
+      = f.select(:status, [['Pending', 'Pending'],
+                           ['Accepted', 'Accepted'],
+                           ['Rejected', 'Rejected']])
       = f.submit 'Update', class: 'wpcf7-submit'
-      - if chosen == 2
+      - if @membership_application.status == 'Accepted'
         %p Membership accepted at #{@membership_application.updated_at.strftime('%F')}
-      - if chosen == 3
+      - if @membership_application.status == 'Rejected'
         %p Membership rejected at #{@membership_application.updated_at.strftime('%F')}
