@@ -55,5 +55,5 @@ Feature: As a registered user
     And I click on "Log in"
     Then I should see "Invalid Email or password"
     When I try to visit the "applications index" page
-    Then I should see "You need to sign in or sign up before continuing."
-    And I should be on "login" page
+    Then I should see "You are not authorized to perform this action."
+    And I should be on "landing" page

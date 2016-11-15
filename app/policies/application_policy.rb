@@ -11,7 +11,7 @@ class ApplicationPolicy
   end
 
   def index?
-    @user.admin?
+    @user.admin? if @user
   end
 
   def update?
