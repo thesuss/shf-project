@@ -1,8 +1,13 @@
 Feature: As a visitor
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
-
   PT: https://www.pivotaltracker.com/story/show/133940725
+
+  Secondary feature:
+  As a user
+  I need to know which Membership Application fields are required
+  So that I fill out the form correctly on my first try
+  PT: https://www.pivotaltracker.com/story/show/134192165
 
   Background:
     Given the following users exists
@@ -22,6 +27,11 @@ Feature: As a visitor
     And I click on "Submit"
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
+
+  Scenario: Visitor can see which fields are required
+    Given I am on the landing page
+    And I click on "Apply for membership"
+    Then I should see "*" by all required fields
 
   Scenario Outline: Apply for membership - when things go wrong
     Given I am on the landing page

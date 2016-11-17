@@ -36,3 +36,8 @@ end
 Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.companies', count: number)
 end
+
+
+Then(/^I should see "([^"]*)" by all required fields$/) do |star|
+  expect('.req').to have_content(star)
+end
