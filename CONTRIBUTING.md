@@ -48,7 +48,7 @@ _Details on all of this are below. Read on for more on how it all goes._
 Now start asking questions and talking on Slack, reading about what needs to be done on PivotalTracker, reviewing past meetings via the videos that were recorded, do some Pair Programming, and be a part of the project!
 
 
-[**Getting Started on the AgileVentures site**](http://www.agileventures.org/getting-started) provides more details about being involved in projects and more about [AgileVentures.]((http://www.agileventures.org)
+[**Getting Started on the AgileVentures site**](http://www.agileventures.org/getting-started) provides more details about being involved in projects and more about [AgileVentures.](http://www.agileventures.org)
   
 ---
   

@@ -16,7 +16,6 @@ Then(/^I should be on "([^"]*)" page$/) do |page|
     when 'edit my application'
       path = edit_membership_application_path(@user.membership_applications.last)
   end
-
   expect(current_path).to eq path
 end
 
@@ -27,6 +26,11 @@ Then(/^I should see:$/) do |table|
   end
 end
 
+And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
+  dropdown = page.find("##{list}")
+  selected_option = dropdown.find('option[selected]').text
+  expect(selected_option).to eql status
+end
 
 Then(/^I should be on the application page for "([^"]*)"$/) do |company_name|
   membership_application = MembershipApplication.find_by(company_name: company_name)
