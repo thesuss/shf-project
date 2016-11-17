@@ -6,6 +6,11 @@ And(/^I should see "([^"]*)"$/) do |content|
   expect(page).to have_content content
 end
 
+And(/^I should not see button "([^"]*)"$/) do |button|
+  expect(page).not_to have_button button
+end
+
+
 
 Then(/^I should be on "([^"]*)" page$/) do |page|
   case page.downcase

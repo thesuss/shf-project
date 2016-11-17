@@ -1,6 +1,7 @@
 class MembershipApplicationsController < ApplicationController
 before_action :get_membership_application, only: [:show, :edit, :update]
-before_action :authorize_membership_application, only: [:show, :edit]
+before_action :authorize_membership_application, only: [ :update, :show, :edit]
+
   def new
     @membership_application = MembershipApplication.new
   end
@@ -40,14 +41,10 @@ before_action :authorize_membership_application, only: [:show, :edit]
     end
   end
 
+
   private
   def membership_application_params
-    params.require(:membership_application).permit(:company_name,
-                                                   :company_number,
-                                                   :contact_person,
-                                                   :company_email,
-                                                   :phone_number,
-                                                   :status)
+    params.require(:membership_application).permit(*policy(@membership_application || MembershipApplication).permitted_attributes)
   end
 
   def get_membership_application

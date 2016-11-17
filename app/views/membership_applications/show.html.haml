@@ -8,13 +8,9 @@
   - if @membership_application.phone_number
     %p= @membership_application.phone_number
   %p= mail_to @membership_application.company_email, @membership_application.company_email
-  .wpcf7
-    = form_for @membership_application, url: membership_application_path do |f|
-      = f.select(:status, [['Pending', 'Pending'],
-                           ['Accepted', 'Accepted'],
-                           ['Rejected', 'Rejected']])
-      = f.submit 'Update', class: 'wpcf7-submit'
-      - if @membership_application.status == 'Accepted'
-        %p Membership accepted at #{@membership_application.updated_at.strftime('%F')}
-      - if @membership_application.status == 'Rejected'
-        %p Membership rejected at #{@membership_application.updated_at.strftime('%F')}
+
+  Application Status:
+  - if edit_status?
+    = render partial: 'application_status_form'
+
+  %p Membership #{@membership_application.status.downcase} at #{@membership_application.updated_at.strftime('%F')}
