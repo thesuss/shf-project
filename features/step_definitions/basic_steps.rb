@@ -22,3 +22,7 @@ end
 Then(/^show me the page$/) do
   save_and_open_page
 end
+
+When(/^I leave the "([^"]*)" field empty$/) do |field|
+  fill_in field, with: nil
+end

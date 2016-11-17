@@ -18,7 +18,7 @@ Feature: As an applicant
 
   Scenario: Applicant wants can edit his own application
     Given I am logged in as "applicant_1@random.com"
-    And I am on the landing page
+    And I am on the "landing" page
     And I click on "My Application"
     Then I should be on "Edit My Application" page
     And I fill in "Company Name" with "A Doggy Dog World"
@@ -28,7 +28,7 @@ Feature: As an applicant
     
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "applicant_1@random.com"
-    And I am on the landing page
+    And I am on the "landing" page
     And I click on "My Application"
     Then I should be on "Edit My Application" page
     And I fill in "Company Email" with "sussimmi.nu"
