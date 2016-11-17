@@ -176,4 +176,6 @@ select {
     box-sizing:border-box;
 }
 
-
+.req:after {
+    content: '*';
+}

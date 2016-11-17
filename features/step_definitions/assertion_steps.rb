@@ -38,6 +38,6 @@ Then(/^I should see "([^"]*)" applications$/) do |number|
 end
 
 
-Then(/^I should see "([^"]*)" by all required fields$/) do |star|
-  expect('.req').to have_content(star)
+Then(/^the required field "([^"]*)" should have class req$/) do |label_text|
+  #wip
 end
