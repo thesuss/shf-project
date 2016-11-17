@@ -12,7 +12,7 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
   visit path
 end
 
-When(/^I try to visit the "([^"]*)" page$/) do |page|
+When(/^I fail to visit the "([^"]*)" page$/) do |page|
   case page.downcase
     when 'applications index'
       path = membership_applications_path

@@ -29,13 +29,13 @@ Feature: As a registered user
     And I click on "Log in"
     Then I should see "Invalid Email or password"
 
-  Scenario: Not input email
+  Scenario: No input of email
     Given I am on the "login" page
     When I leave the "Email" field empty
     And I click on "Log in"
     Then I should see "Invalid Email or password"
 
-  Scenario: Not input email
+  Scenario: No input of password
     Given I am on the "login" page
     When I leave the "Password" field empty
     And I click on "Log in"
@@ -54,6 +54,6 @@ Feature: As a registered user
     And I fill in "Password" with "password"
     And I click on "Log in"
     Then I should see "Invalid Email or password"
-    When I try to visit the "applications index" page
+    When I fail to visit the "applications index" page
     Then I should see "You are not authorized to perform this action."
     And I should be on "landing" page
