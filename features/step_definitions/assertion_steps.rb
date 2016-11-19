@@ -47,6 +47,6 @@ Then(/^I should see "([^"]*)" applications$/) do |number|
 end
 
 
-Then(/^the required field "([^"]*)" should have class req$/) do |label_text|
-  #wip
+Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
+  page.find('label', text: label_text)[:class].include?('required')
 end

@@ -31,10 +31,10 @@ Feature: As a visitor
   Scenario: Visitor can see which fields are required
     Given I am on the "landing" page
     And I click on "Apply for membership"
-    Then the required field "Company Name" should have class req
-    And the required field "Company Number" should have class req
-    And the required field "Contact Person" should have class req
-    And the required field "Company Email" should have class req
+    Then the field "Company Name" should have a required field indicator
+    And the field "Company Number" should have a required field indicator
+    And the field "Contact Person" should have a required field indicator
+    And the field "Company Email" should have a required field indicator
     And I should see "Indicates a required field"
 
   Scenario Outline: Apply for membership - when things go wrong
