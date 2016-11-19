@@ -1,0 +1,6 @@
+.wpcf7
+  = form_for @membership_application, url: membership_application_path do |f|
+    = f.select(:status, [['Pending', 'Pending'],
+                             ['Accepted', 'Accepted'],
+                             ['Rejected', 'Rejected']])
+    = f.submit 'Update', class: 'wpcf7-submit'

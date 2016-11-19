@@ -8,15 +8,19 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
-gem 'haml'
+gem 'haml-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-sass'
 gem 'orgnummer'
 
 
+gem 'devise'
+gem 'pundit'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'pundit-matchers'
   gem 'factory_girl_rails'
   gem 'pry'
   gem 'pry-byebug'
@@ -24,6 +28,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rake'
   gem 'coveralls', require: false
+  gem 'launchy'
+  gem 'cucumber-timecop', require: false
 end
 
 group :development do

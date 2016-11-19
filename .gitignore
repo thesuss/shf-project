@@ -16,9 +16,12 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+# Ignore Coveralls report results
+coverage/
+
 
 .idea/
 /design-thoughts
 /log
 .DS_Store
-/ae-local-only/
+
