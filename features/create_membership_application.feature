@@ -17,7 +17,7 @@ Feature: As a visitor
     And I am logged in as "applicant_1@random.com"
 
   Scenario: Visitor can submit a new Membership Application
-    Given I am on the landing page
+    Given I am on the "landing" page
     And I click on "Apply for membership"
     And I fill in "Company Name" with "Craft Academy"
     And I fill in "Company Number" with "1234561234"
@@ -38,7 +38,7 @@ Feature: As a visitor
     And I should see "Indicates a required field"
 
   Scenario Outline: Apply for membership - when things go wrong
-    Given I am on the landing page
+    Given I am on the "landing" page
     And I click on "Apply for membership"
     When I fill in the form with data :
       | Company Name | Company Number | Contact Person | Company Email | Phone Number |
