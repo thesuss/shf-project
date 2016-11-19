@@ -1,18 +1,18 @@
 class MembershipApplicationsController < ApplicationController
 before_action :get_membership_application, only: [:show, :edit, :update]
 before_action :authorize_membership_application, only: [ :update, :show, :edit]
-
   def new
     @membership_application = MembershipApplication.new
   end
 
   def create
     @membership_application = current_user.membership_applications.new(membership_application_params)
-    if @membership_application.save
+    if @membership_application.save && Orgnummer.new(@membership_application.company_number).valid?
       flash[:notice] = 'Thank you, Your application has been submitted'
       redirect_to root_path
     else
-      render :new
+      flash[:alert] = 'A problem prevented the application to be sent. Make sure the organization number is valid'
+      redirect_back(fallback_location: new_membership_application_path)
     end
   end
 
@@ -31,7 +31,7 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
 
   def update
     if @membership_application.update(membership_application_params)
-      flash[:notice] = 'Membership Application
+    flash[:notice] = 'Membership Application
                         successfully updated'
       render :show
     else
@@ -54,4 +54,5 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
   def authorize_membership_application
     authorize @membership_application
   end
+
 end
