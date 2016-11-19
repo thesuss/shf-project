@@ -29,7 +29,7 @@ Feature: As a visitor
     And I should see "Thank you, Your application has been submitted"
 
   Scenario: Visitor can see which fields are required
-    Given I am on the landing page
+    Given I am on the "landing" page
     And I click on "Apply for membership"
     Then the required field "Company Name" should have class req
     And the required field "Company Number" should have class req
