@@ -35,6 +35,7 @@ Feature: As a visitor
     And the field "Company Number" should have a required field indicator
     And the field "Contact Person" should have a required field indicator
     And the field "Company Email" should have a required field indicator
+    And the field "Phone Number" should not have a required field indicator
     And I should see "Indicates a required field"
 
   Scenario Outline: Apply for membership - when things go wrong

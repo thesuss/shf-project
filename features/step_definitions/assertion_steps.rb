@@ -48,5 +48,9 @@ end
 
 
 Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
-  page.find('label', text: label_text)[:class].include?('required')
+  expect(page.find('label', text: label_text)[:class].include?('required')).to be true
+end
+
+And(/^the field "([^"]*)" should not have a required field indicator$/) do |label_text|
+  expect(page.find('label', text: label_text)[:class]).not_to have_css 'required'
 end
