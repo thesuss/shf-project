@@ -15,7 +15,7 @@ Feature: As a visitor
     Given I am on the "landing" page
     And I click on "Apply for membership"
     And I fill in "Company Name" with "Craft Academy"
-    And I fill in "Company Number" with "1234561234"
+    And I fill in "Company Number" with "5562252998"
     And I fill in "Contact Person" with "Thomas"
     And I fill in "Company Email" with "info@craft.se"
     And I fill in "Phone Number" with "031-1234567"
@@ -34,10 +34,10 @@ Feature: As a visitor
 
     Scenarios:
       | c_name     | c_number   | c_person | c_email       | phone      | error                                                          |
-      | HappyMutts | 00         | Kicki    | kicki@immi.nu | 0706898525 | "Company number is the wrong length (should be 10 characters)" |
-      | HappyMutts |            | Kicki    | kicki@immi.nu | 0706898525 | "Company number can't be blank"                                |
-      | HappyMutts | 1234567890 |          | kicki@immi.nu | 0706898525 | "Contact person can't be blank"                                |
-      | HappyMutts | 1234567890 | Kicki    |               | 0706898525 | "Company email can't be blank"                                 |
-      |            | 1234567890 | Kicki    | kicki@immi.nu | 0706898525 | "Company name can't be blank"                                  |
-      | HappyMutts | 1234567890 | Kicki    | kicki@imminu  | 0706898525 | "Company email is invalid"                                     |
-      | HappyMutts | 1234567890 | Kicki    | kickiimmi.nu  | 0706898525 | "Company email is invalid"                                     |
+      | HappyMutts | 00         | Kicki    | kicki@immi.nu | 0706898525 | "Company number 00 is not a valid company number" |
+      | HappyMutts |            | Kicki    | kicki@immi.nu | 0706898525 | "Company number is not a valid company number"                                |
+      | HappyMutts | 5562252998 |          | kicki@immi.nu | 0706898525 | "Contact person can't be blank"                                |
+      | HappyMutts | 5562252998 | Kicki    |               | 0706898525 | "Company email can't be blank"                                 |
+      |            | 5562252998 | Kicki    | kicki@immi.nu | 0706898525 | "Company name can't be blank"                                  |
+      | HappyMutts | 5562252998 | Kicki    | kicki@imminu  | 0706898525 | "Company email is invalid"                                     |
+      | HappyMutts | 5562252998 | Kicki    | kickiimmi.nu  | 0706898525 | "Company email is invalid"                                     |

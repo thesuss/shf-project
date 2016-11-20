@@ -7,12 +7,12 @@ class MembershipApplicationsController < ApplicationController
 
   def create
     @membership_application = current_user.membership_applications.new(membership_application_params)
-    if @membership_application.save && Orgnummer.new(@membership_application.company_number).valid?
+    if Orgnummer.new(@membership_application.company_number).valid? && @membership_application.save
       flash[:notice] = 'Thank you, Your application has been submitted'
       redirect_to root_path
     else
-      flash[:alert] = 'A problem prevented the application to be sent. Make sure the organization number is valid'
-      redirect_back(fallback_location: new_membership_application_path)
+      @membership_application.errors.add(:company_number, "#{@membership_application.company_number} is not a valid company number.")
+      render :new
     end
   end
 
@@ -30,13 +30,14 @@ class MembershipApplicationsController < ApplicationController
   end
 
   def update
-    if @membership_application.update(membership_application_params)
+    if Orgnummer.new(@membership_application.company_number).valid? && @membership_application.update(membership_application_params)
     flash[:notice] = 'Membership Application
                         successfully updated'
       render :show
     else
       flash[:alert] = 'A problem prevented the membership
                        application to be saved'
+      @membership_application.errors.add(@membership_application.company_number, 'is not a valid company number.')
       redirect_to edit_membership_application_path(@membership_application)
     end
   end

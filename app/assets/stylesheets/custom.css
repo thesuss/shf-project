@@ -176,4 +176,6 @@ select {
     box-sizing:border-box;
 }
 
-
+.wpcf7-response-output {
+    margin-bottom: 20px;
+}
