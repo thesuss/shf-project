@@ -4,7 +4,7 @@
   @desc: styles for PlantUML files
       Note that styles can be nested multiple times
 
-      There seems to be a BUG if some styles for an entity are nested and some aren't.
+      There seems to be a problem if some styles for an entity are nested and some aren't.
 
 
   @author: Ashley Engelund (ashley@ashleycaroline.com  weedySeaDragon @ github)
@@ -94,7 +94,7 @@ skinparam Footer {
      Activities
 '/
 
-' BUG:  activityArrowColor is changed by usecaseArrowColor
+' problem:  activityArrowColor is changed by usecaseArrowColor
 skinparam activity {
     Arrow {
         Color       DEFAULT_NOT_SO_DARK
