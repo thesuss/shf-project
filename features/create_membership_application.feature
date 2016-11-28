@@ -9,7 +9,9 @@ Feature: As a visitor
     Given the following users exists
       | email                  |
       | applicant_1@random.com |
-
+    And the following categories exist:
+      | name    |
+      | groomer |
     And I am logged in as "applicant_1@random.com"
 
   Scenario: Visitor can submit a new Membership Application
@@ -17,6 +19,7 @@ Feature: As a visitor
     And I click on "Apply for membership"
     And I fill in "First Name" with "Kicki"
     And I fill in "Last Name" with "Andersson"
+    And I tick "Groomer" in "Category"
     And I fill in "Company Number" with "5562252998"
     And I fill in "Contact Email" with "info@craft.se"
     And I fill in "Phone Number" with "031-1234567"
