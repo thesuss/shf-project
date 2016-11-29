@@ -41,7 +41,7 @@ Feature: As a visitor
       | Kicki  | 00         | Andersson  | kicki@immi.nu | 0706898525 | "Company number is the wrong length (should be 10 characters)" |
       | Kicki  |            | Andersson  | kicki@immi.nu | 0706898525 | "Company number can't be blank"                                |
       | Kicki  | 5562252998 |            | kicki@immi.nu | 0706898525 | "Last name can't be blank"                                     |
-      | Kicki  | 5562252998 | Andersson  |               | 0706898525 | "Last name can't be blank"                                     |
+      | Kicki  | 5562252998 | Andersson  |               | 0706898525 | "Contact email can't be blank"                                     |
       |        | 5562252998 | Andersson  | kicki@immi.nu | 0706898525 | "First name can't be blank"                                    |
       | Kicki  | 5562252998 | Andersson  | kicki@imminu  | 0706898525 | "Contact email is invalid"                                     |
       | Kicki  | 5562252998 | Andersson  | kickiimmi.nu  | 0706898525 | "Contact email is invalid"                                     |
