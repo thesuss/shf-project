@@ -25,15 +25,13 @@ ActiveRecord::Schema.define(version: 20161129012732) do
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "user_id"
-    t.string   "status",               default: "Pending"
+    t.string   "status",         default: "Pending"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
-    t.integer  "business_category_id"
-    t.index ["business_category_id"], name: "index_membership_applications_on_business_category_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 
@@ -55,6 +53,5 @@ ActiveRecord::Schema.define(version: 20161129012732) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  add_foreign_key "membership_applications", "business_categories"
   add_foreign_key "membership_applications", "users"
 end
