@@ -7,10 +7,11 @@ Feature: As an Admin
     Given the following users exists
       | email                  | admin |
       | din@mail.se            |       |
+      | min@mail.se            |       |
       | admin@sgf.com          | true  |
 
     And the following applications exist:
-      | company_number | user_email  | status   |
+      | company_name   | user_email  | status   |
       | 1234567890     | din@mail.se | Pending  |
       | 1234567899     | min@mail.se | Accepted |
 
@@ -23,4 +24,3 @@ Feature: As an Admin
     And I should see "Status"
     And I should see "Pending"
     And I should see "Accepted"
-    
