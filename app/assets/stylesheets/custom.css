@@ -192,15 +192,15 @@ select {
 .text-nicelabel + label {
     display: table;
     padding: 10px 20px 10px 10px;
-    background-color:rgba(0,140,186,1);
-    color: #b3b3b3;
-    border-radius:5px;
+    background-color: #52a8ff;
+    color: #fff;
     -webkit-border-radius:5px;
+    border-radius:5px;
     cursor:pointer;
     position:relative;
     overflow:hidden;
     transition:all 0.2s;
-
+    -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
 }
@@ -220,6 +220,8 @@ select {
 
     transition: all 0.2s linear;
     -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
 }
 .text-nicelabel:not(:checked) + label {
     background-color: #DDDDDD;
