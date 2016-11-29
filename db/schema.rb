@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161128080706) do
+ActiveRecord::Schema.define(version: 20161129022533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,16 +22,23 @@ ActiveRecord::Schema.define(version: 20161128080706) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "business_categories_membership_applications", force: :cascade do |t|
+    t.integer "membership_application_id"
+    t.integer "business_category_id"
+    t.index ["business_category_id"], name: "index_on_categories", using: :btree
+    t.index ["membership_application_id"], name: "index_on_applications", using: :btree
+  end
+
   create_table "membership_applications", force: :cascade do |t|
-    t.string   "company_name"
     t.string   "company_number"
-    t.string   "contact_person"
     t.string   "phone_number"
-    t.string   "company_email"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.integer  "user_id"
     t.string   "status",         default: "Pending"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "contact_email"
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 

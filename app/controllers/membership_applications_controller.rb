@@ -4,6 +4,7 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
 
   def new
     @membership_application = MembershipApplication.new
+    @business_categories = BusinessCategory.all
   end
 
   def create
@@ -22,11 +23,11 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
   end
 
   def show
-
+    @categories = @membership_application.business_categories
   end
 
   def edit
-
+    @business_categories = BusinessCategory.all
   end
 
   def update
@@ -54,4 +55,5 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
   def authorize_membership_application
     authorize @membership_application
   end
+
 end

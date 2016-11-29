@@ -11,7 +11,7 @@ Feature: As an Admin
       | admin@sgf.com          | true  |
 
     And the following applications exist:
-      | company_name   | user_email  | status   |
+      | company_number | user_email  | status   |
       | 1234567890     | din@mail.se | Pending  |
       | 1234567899     | min@mail.se | Accepted |
 

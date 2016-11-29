@@ -1,16 +1,22 @@
-= f.label :company_name, 'Company Name'
-= f.text_field :company_name, class: 'wpcf7-form-control'
+= f.label :first_name, 'First Name'
+= f.text_field :first_name, class: 'wpcf7-form-control'
+
+= f.label :last_name, 'Last Name'
+= f.text_field :last_name, class: 'wpcf7-form-control'
 
 = f.label :company_number, 'Company Number'
 = f.number_field :company_number, class: 'wpcf7-form-control'
 
-= f.label :contact_person, 'Contact Person'
-= f.text_field :contact_person, class: 'wpcf7-form-control'
-
-= f.label :company_email, 'Company Email'
-= f.email_field :company_email, class: 'wpcf7-form-control'
+= f.label :contact_email, 'Contact Email'
+= f.email_field :contact_email, class: 'wpcf7-form-control'
 
 = f.label :phone_number, 'Phone Number'
 = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
+- unless @business_categories.nil?
+  %h3 Ansöker som:
+  = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
+    .checkbox
+      = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
+  %p Blå fält = valda kategorier
 = f.submit 'Submit'

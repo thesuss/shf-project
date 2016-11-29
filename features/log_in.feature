@@ -4,13 +4,13 @@ Feature: As a registered user
 
   Background:
     Given the following users exists
-      | email             | password |
-      | emma@random.com   | password |
-      | anne@random.com   | password |
+      | email           | password |
+      | emma@random.com | password |
+      | anne@random.com | password |
 
     And the following applications exist:
-      | company_name       | user_email      |
-      | My Dog Business    | emma@random.com |
+      | first_name | user_email      | company_number |
+      | Emma       | emma@random.com | 1234567890     |
 
   Scenario: Logging in
     Given I am on the "landing" page
