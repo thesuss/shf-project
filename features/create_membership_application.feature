@@ -11,7 +11,7 @@ Feature: As a visitor
       | applicant_1@random.com |
     And the following business categories exist
       | name    |
-      | groomer |
+      | Groomer |
     And I am logged in as "applicant_1@random.com"
 
   Scenario: Visitor can submit a new Membership Application
