@@ -1,12 +1,27 @@
 %header.entry-header
-  %h1.entry-title Ansökan från #{@membership_application.first_name} #{@membership_application.last_name}
+  %h1.entry-title Ansökan från #{member_full_name}
 .post-title-divider
   %span
 .entry-content
-  %h1= @membership_application.company_number
-  - if @membership_application.phone_number
-    %p= @membership_application.phone_number
+
+  %h2 #{member_full_name}
+
   %p= mail_to @membership_application.contact_email, @membership_application.contact_email
+
+  - if @membership_application.phone_number
+    %p Phone number: #{@membership_application.phone_number}
+
+  %p Company Number: #{@membership_application.company_number}
+
+  - unless @business_categories.nil?
+    %h3 Ansöker som:
+    = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
+      .checkbox
+        = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
+
+    %p Blå fält = valda kategorier
+
+  %hr
 
   Application Status:
   - if edit_status?

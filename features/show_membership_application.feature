@@ -31,10 +31,13 @@ Feature: As an Admin
     Then I should see "3" applications
     When I click on "1234567890"
     Then I should be on the application page for "Emma"
-    And I should see:
-      | content       |
-      | 1234567890    |
-      | Emma Lastname |
+    And I should see "Emma Lastname"
+    And I should see "1234567890"
+
+    #And I should see:
+     # | content       |
+     # | 1234567890    |
+     # | Emma Lastname |
 
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "applicant_2@random.com"
