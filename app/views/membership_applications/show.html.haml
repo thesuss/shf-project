@@ -13,11 +13,12 @@
 
   %p Company Number: #{@membership_application.company_number}
 
-  - unless @business_categories.nil?
-    %h3 Ansöker som:
-    = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
-      .checkbox
-        = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
+  - unless @membership_application.business_categories.nil?
+    %h4 Ansöker som:
+    - @membership_application.business_categories.each do | business_category |
+      .checkbox.business_category
+        = business_category.name
+
 
     %p Blå fält = valda kategorier
 
