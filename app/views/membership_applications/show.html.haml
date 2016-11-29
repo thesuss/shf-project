@@ -13,11 +13,11 @@
 
   %p Company Number: #{@membership_application.company_number}
 
-  - unless @membership_application.business_categories.nil?
+  - unless @categories.nil?
     %h4 Ansöker som:
     %strong
       %ul
-        - @membership_application.business_categories.each do | business_category |
+        - @categories.each do | business_category |
           %li= business_category.name
 
   .post-title-divider

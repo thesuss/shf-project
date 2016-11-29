@@ -23,7 +23,7 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
   end
 
   def show
-
+    @categories = @membership_application.business_categories
   end
 
   def edit
@@ -55,4 +55,5 @@ before_action :authorize_membership_application, only: [ :update, :show, :edit]
   def authorize_membership_application
     authorize @membership_application
   end
+
 end
