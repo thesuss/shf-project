@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 20161129022533) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "categories_membersip_applications", force: :cascade do |t|
-    t.integer "membership_applications_id"
-    t.integer "business_categories_id"
-    t.index ["business_categories_id"], name: "index_on_categories", using: :btree
-    t.index ["membership_applications_id"], name: "index_on_applications", using: :btree
+  create_table "business_categories_membership_applications", force: :cascade do |t|
+    t.integer "membership_application_id"
+    t.integer "business_category_id"
+    t.index ["business_category_id"], name: "index_on_categories", using: :btree
+    t.index ["membership_application_id"], name: "index_on_applications", using: :btree
   end
 
   create_table "membership_applications", force: :cascade do |t|
