@@ -1,7 +1,7 @@
 %header.entry-header
-  %h1.entry-title= "Alla inkomna ansökningar"
+  %h1.entry-title Alla inkomna ansökningar
 .post-title-divider
   %span
 .entry-content
   - @membership_applications.each do | membership_application |
-    .list-item.companies= link_to membership_application.company_name, membership_application_path(membership_application.id)
+    .list-item.companies= link_to membership_application.company_number, membership_application_path(membership_application.id)
