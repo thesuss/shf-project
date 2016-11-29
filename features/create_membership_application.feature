@@ -1,9 +1,14 @@
 Feature: As a visitor
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
-
   PT: https://www.pivotaltracker.com/story/show/133940725
   &: https://www.pivotaltracker.com/story/show/135027425
+
+  Secondary feature:
+  As a user
+  I need to know which Membership Application fields are required
+  So that I fill out the form correctly on my first try
+  PT: https://www.pivotaltracker.com/story/show/134192165
 
   Background:
     Given the following users exists
@@ -46,7 +51,6 @@ Feature: As a visitor
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
 
-
   Scenario: A user can submit a new Membership Application with no categories selected
     Given I am on the "landing" page
     And I click on "Apply for membership"
@@ -59,6 +63,15 @@ Feature: As a visitor
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
 
+  Scenario: Applicant can see which fields are required
+    Given I am on the "landing" page
+    And I click on "Apply for membership"
+    Then the field "First Name" should have a required field indicator
+    And the field "Company Number" should have a required field indicator
+    And the field "Last Name" should have a required field indicator
+    And the field "Contact Email" should have a required field indicator
+    And the field "Phone Number" should not have a required field indicator
+    And I should see "Indicates a required field"
 
   Scenario Outline: Apply for membership - when things go wrong
     Given I am on the "landing" page

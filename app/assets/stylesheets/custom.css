@@ -175,6 +175,11 @@ select {
     -moz-box-sizing:border-box;
     box-sizing:border-box;
 }
+
+.required:after {
+    content: '*';
+}
+
 /*!
  *nicelabel JQuery Plugin
  *
