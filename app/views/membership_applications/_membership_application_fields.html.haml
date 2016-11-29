@@ -7,7 +7,12 @@
 = f.label :company_number, 'Company Number'
 = f.number_field :company_number, class: 'wpcf7-form-control'
 
-= f.label :contact_email, 'Company Email'
+- unless @business_categories.nil?
+  %p Applying as:
+  = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
+    = b.check_box + b.label
+
+= f.label :contact_email, 'Contact Email'
 = f.email_field :contact_email, class: 'wpcf7-form-control'
 
 = f.label :phone_number, 'Phone Number'
