@@ -15,14 +15,13 @@
 
   - unless @membership_application.business_categories.nil?
     %h4 Ansöker som:
-    - @membership_application.business_categories.each do | business_category |
-      .checkbox.business_category
-        = business_category.name
+    %strong
+      %ul
+        - @membership_application.business_categories.each do | business_category |
+          %li= business_category.name
 
-
-    %p Blå fält = valda kategorier
-
-  %hr
+  .post-title-divider
+    %span
 
   Application Status:
   - if edit_status?
