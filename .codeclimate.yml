@@ -6,6 +6,10 @@ engines:
     enabled: true
   csslint:
     enabled: true
+      config:
+        checks:
+          important:
+            enabled: false
   duplication:
     enabled: true
     config:
