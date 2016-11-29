@@ -13,7 +13,7 @@
     %tbody
       - @membership_applications.each do | membership_application |
         %tr.companies
-          %td= member_full_name
+          %td= membership_application.first_name + ' ' + membership_application.last_name
           %td= membership_application.company_number
           %td= membership_application.status
           %td= link_to 'Manage', membership_application_path(membership_application.id)
