@@ -3,5 +3,17 @@
 .post-title-divider
   %span
 .entry-content
-  - @membership_applications.each do | membership_application |
-    .list-item.companies= link_to membership_application.company_number, membership_application_path(membership_application.id)
+  %table
+    %thead
+      %tr
+        %th Namn
+        %th Org nr
+        %th Status
+        %th
+    %tbody
+      - @membership_applications.each do | membership_application |
+        %tr.companies
+          %td= membership_application.first_name + ' ' + membership_application.last_name
+          %td= membership_application.company_number
+          %td= membership_application.status
+          %td= link_to 'Manage', membership_application_path(membership_application.id)

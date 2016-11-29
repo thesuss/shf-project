@@ -34,11 +34,10 @@ Feature: As an Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    When I click on "1234567890"
+    And I click the "Manage" action for the row with "1234567890"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
     And I should see "1234567890"
-
 
   Scenario: Admin can see an application with one business categories given
     Given I am logged in as "applicant_2@random.com"
@@ -50,7 +49,7 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    When I click on "1234567899"
+    And I click the "Manage" action for the row with "1234567899"
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
     And I should see "1234567899"
@@ -69,7 +68,7 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    When I click on "1234567890"
+    And I click the "Manage" action for the row with "1234567890"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
     And I should see "1234567890"
