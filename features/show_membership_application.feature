@@ -29,7 +29,7 @@ Feature: As an Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    When I click on "DoggieZone"
+    And I click the "Manage" action for the row with "DoggieZone"
     Then I should be on the application page for "DoggieZone"
     And I should see:
       | content       |
