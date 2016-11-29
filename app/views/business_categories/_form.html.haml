@@ -4,7 +4,7 @@
       - @business_category.errors.full_messages.each do |msg|
         = msg
 
-  = f.label :name, 'Category Name'
+  = f.label :name, 'Category Name', class: 'required'
   = f.text_field :name, class: 'wpcf7-form-control'
 
   = f.label :description, 'Category Description'
