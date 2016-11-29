@@ -6,13 +6,13 @@ And(/^the following applications exist:$/) do |table|
   end
 end
 
-And(/^I navigate to the edit page for "([^"]*)"$/) do |company_name|
-  membership_application = MembershipApplication.find_by(company_name: company_name)
+And(/^I navigate to the edit page for "([^"]*)"$/) do |first_name|
+  membership_application = MembershipApplication.find_by(first_name: first_name)
   visit edit_membership_application_path(membership_application)
 end
 
-Given(/^I am on "([^"]*)" application page$/) do |company_name|
-  membership = MembershipApplication.find_by(company_name: company_name)
+Given(/^I am on "([^"]*)" application page$/) do |first_name|
+  membership = MembershipApplication.find_by(first_name: first_name)
   visit membership_application_path(membership)
 end
 

@@ -41,8 +41,8 @@ And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
   expect(selected_option).to eql status
 end
 
-Then(/^I should be on the application page for "([^"]*)"$/) do |company_name|
-  membership_application = MembershipApplication.find_by(company_name: company_name)
+Then(/^I should be on the application page for "([^"]*)"$/) do |first_name|
+  membership_application = MembershipApplication.find_by(first_name: first_name)
   expect(current_path).to eq membership_application_path(membership_application)
 end
 
