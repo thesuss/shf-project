@@ -16,7 +16,7 @@ Feature: As an applicant
       | Emma       | applicant_1@random.com |
       | Hans       | applicant_2@random.com |
 
-  Scenario: Applicant wants can edit his own application
+  Scenario: Applicant wants to edit his own application
     Given I am logged in as "applicant_1@random.com"
     And I am on the "landing" page
     And I click on "My Application"
