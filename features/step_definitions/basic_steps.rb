@@ -26,3 +26,7 @@ end
 When(/^I leave the "([^"]*)" field empty$/) do |field|
   fill_in field, with: nil
 end
+
+And(/^I click the "([^"]*)" action for the row with "([^"]*)"$/) do |action, row_content |
+  find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
+end

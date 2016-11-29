@@ -6,6 +6,10 @@ And(/^I should see "([^"]*)"$/) do |content|
   expect(page).to have_content content
 end
 
+And(/^I should not see "([^"]*)"$/) do |content|
+  expect(page).not_to have_content content
+end
+
 And(/^I should not see button "([^"]*)"$/) do |button|
   expect(page).not_to have_button button
 end
@@ -37,15 +41,14 @@ And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
   expect(selected_option).to eql status
 end
 
-Then(/^I should be on the application page for "([^"]*)"$/) do |company_name|
-  membership_application = MembershipApplication.find_by(company_name: company_name)
+Then(/^I should be on the application page for "([^"]*)"$/) do |first_name|
+  membership_application = MembershipApplication.find_by(first_name: first_name)
   expect(current_path).to eq membership_application_path(membership_application)
 end
 
 Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.companies', count: number)
 end
-
 
 Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
   expect(page.find('label', text: label_text)[:class].include?('required')).to be true

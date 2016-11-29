@@ -1,11 +1,12 @@
 class MembershipApplicationPolicy < ApplicationPolicy
 
   def user_owner_attributes
-    [:company_name,
+    [:first_name,
+     :last_name,
      :company_number,
-     :contact_person,
-     :company_email,
-     :phone_number]
+     :contact_email,
+     :phone_number,
+     {business_category_ids: []}]
   end
 
 

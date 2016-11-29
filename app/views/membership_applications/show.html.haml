@@ -1,13 +1,27 @@
 %header.entry-header
-  %h1.entry-title= "Ansökan från #{@membership_application.company_name}"
+  %h1.entry-title Ansökan från #{member_full_name}
 .post-title-divider
   %span
 .entry-content
-  %h1= @membership_application.company_number
-  %h2= @membership_application.contact_person
+
+  %h2= member_full_name
+
+  %p= mail_to @membership_application.contact_email, @membership_application.contact_email
+
   - if @membership_application.phone_number
-    %p= @membership_application.phone_number
-  %p= mail_to @membership_application.company_email, @membership_application.company_email
+    %p Phone number: #{@membership_application.phone_number}
+
+  %p Company Number: #{@membership_application.company_number}
+
+  - unless @categories.nil?
+    %h4 Ansöker som:
+    %strong
+      %ul
+        - @categories.each do | business_category |
+          %li= business_category.name
+
+  .post-title-divider
+    %span
 
   Application Status:
   - if edit_status?
