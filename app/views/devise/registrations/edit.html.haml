@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title Redigera #{resource_name.to_s.humanize}
+  %h1.entry-title Redigera användare
 .post-title-divider
   %span
 .entry-content.wpcf7
@@ -11,31 +11,31 @@
       = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
     - if devise_mapping.confirmable? && resource.pending_reconfirmation?
       %div
-        Currently waiting confirmation for: #{resource.unconfirmed_email}
+        Obekräftad mailadress för: #{resource.unconfirmed_email}
     .field
-      = f.label :password
-      %i (leave blank if you don't want to change it)
+      = f.label :password, 'Lösenord'
+      %i (lämna tomt om du inte vill byta)
       %br/
       = f.password_field :password, autocomplete: 'off', class: 'wpcf7-form-control'
       - if @minimum_password_length
         %em
           (minst #{@minimum_password_length} tecken)
     .field
-      = f.label :password_confirmation
+      = f.label :password_confirmation, 'Bekräfta lösenord'
       %br/
       = f.password_field :password_confirmation, autocomplete: 'off', class: 'wpcf7-form-control'
     .field
-      = f.label :current_password, class: 'required'
-      %i (we need your current password to confirm your changes)
+      = f.label :current_password, 'Nuvarande lösenord', class: 'required'
+      %i (behövs för att spara ändringar)
       %br/
       = f.password_field :current_password, autocomplete: 'off', class: 'wpcf7-form-control'
     .actions
       = f.submit 'Uppdatera'
   = render partial: 'partials/required_fields'
 
-  %h1.entry-title Redigera #{resource_name.to_s.humanize}
+  %h1.entry-title Avregistrera dig
   .post-title-divider
     %span
   %p
-    Unhappy? #{button_to 'Ta bort mitt konto', registration_path(resource_name), data: { confirm: 'Är du säker' }, method: :delete}
+    #{button_to 'Ta bort mitt konto', registration_path(resource_name), data: { confirm: 'Är du säker' }, method: :delete}
   = link_to 'Tillbaks', :back
