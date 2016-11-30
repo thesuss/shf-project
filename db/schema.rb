@@ -60,7 +60,22 @@ ActiveRecord::Schema.define(version: 20161201061301) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
+    t.integer  "company_id"
+    t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
+  end
+
+  create_table "uploaded_files", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "actual_file_file_name"
+    t.string   "actual_file_content_type"
+    t.integer  "actual_file_file_size"
+    t.datetime "actual_file_updated_at"
+    t.integer  "membership_application_id"
+    t.index ["membership_application_id"], name: "index_uploaded_files_on_membership_application_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

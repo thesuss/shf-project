@@ -47,6 +47,7 @@ RSpec.describe MembershipApplication, type: :model do
   describe 'Associations' do
     it { is_expected.to belong_to :user }
     it { is_expected.to have_and_belong_to_many :business_categories }
+    it { is_expected.to belong_to :company }
   end
 
   describe "Uploaded Files" do
