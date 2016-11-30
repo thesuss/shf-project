@@ -14,6 +14,7 @@ class CompaniesController < ApplicationController
 
 
   def new
+    authorize Company
     @company = Company.new
   end
 
@@ -23,6 +24,7 @@ class CompaniesController < ApplicationController
 
 
   def create
+    authorize Company
     @company = Company.new(company_params)
 
     if @company.save
