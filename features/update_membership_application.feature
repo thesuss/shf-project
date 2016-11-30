@@ -12,8 +12,8 @@ Feature: As an Admin
 
     And the following applications exist:
       | first_name | user_email             | company_number |
-      | Emma       | applicant_1@random.com | 1234567890     |
-      | Hans       | applicant_2@random.com | 1234567899     |
+      | Emma       | applicant_1@random.com | 5562252998     |
+      | Hans       | applicant_2@random.com | 2120000142     |
 
 
     And I am logged in as "admin@sgf.com"

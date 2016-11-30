@@ -10,7 +10,7 @@ Feature: As a registered user
 
     And the following applications exist:
       | first_name | user_email      | company_number |
-      | Emma       | emma@random.com | 1234567890     |
+      | Emma       | emma@random.com | 5562252998     |
 
   Scenario: Logging in
     Given I am on the "landing" page

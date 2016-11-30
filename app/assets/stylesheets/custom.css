@@ -170,11 +170,12 @@ select {
     -moz-box-sizing:border-box;
     box-sizing:border-box;
 }
-
+.wpcf7-response-output {
+    margin-bottom: 20px;
+}
 .required:after {
     content: '*';
 }
-
 /*!
  *nicelabel JQuery Plugin
  *
