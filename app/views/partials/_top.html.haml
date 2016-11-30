@@ -16,11 +16,16 @@
           %ul
             %li
               = link_to 'Hem', 'http://sverigeshundforetagare.se/'
-            %li.page_item.page-item-11.current_page_item
+            %li
               = link_to 'Om', 'http://sverigeshundforetagare.se/'
-            %li.page_item.page-item-2
+            %li
               = link_to 'Mer', 'http://sverigeshundforetagare.se/'
-            %li.page_item.page-item-2
+            %li
+              = link_to 'Medlemssidor', '#'
+              %ul.sub-menu
+                %li
+                  =link_to 'Arbetsgrupper', page_path('arbetsgrupper')
+            %li
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
                 = link_to 'My Application', edit_membership_application_path(current_user.membership_applications.last)
               - else
