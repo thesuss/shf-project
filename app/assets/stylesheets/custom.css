@@ -191,7 +191,7 @@ select {
 }
 
 .text-nicelabel + label {
-    display: table;
+    display: inline-block;
     padding: 10px 20px 10px 10px;
     background-color: #52a8ff;
     color: #fff;
