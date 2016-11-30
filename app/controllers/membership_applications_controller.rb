@@ -32,10 +32,12 @@ class MembershipApplicationsController < ApplicationController
 
   def update
     if @membership_application.update(membership_application_params)
-      flash[:notice] = 'Membership Application successfully updated'
+      flash[:notice] = 'Membership Application
+                        successfully updated'
       render :show
     else
-      flash[:alert] = 'A problem prevented the membership application to be saved'
+      flash[:alert] = 'A problem prevented the membership
+                      application to be saved'
       redirect_to edit_membership_application_path(@membership_application)
     end
   end
