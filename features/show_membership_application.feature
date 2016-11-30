@@ -20,9 +20,9 @@ Feature: As an Admin
 
     And the following applications exist:
       | first_name | user_email             | company_number |
-      | Emma       | applicant_1@random.com | 1234567890     |
-      | Hans       | applicant_2@random.com | 1234567899     |
-      | Anna       | applicant_3@random.com | 1234567999     |
+      | Emma       | applicant_1@random.com | 5562252998     |
+      | Hans       | applicant_2@random.com | 5560360793     |
+      | Anna       | applicant_3@random.com | 2120000142     |
 
     And the following business categories exist
       | name         |
@@ -34,10 +34,10 @@ Feature: As an Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    And I click the "Manage" action for the row with "1234567890"
+    And I click the "Manage" action for the row with "5562252998"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
-    And I should see "1234567890"
+    And I should see "5562252998"
 
   Scenario: Admin can see an application with one business categories given
     Given I am logged in as "applicant_2@random.com"
@@ -49,10 +49,10 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    And I click the "Manage" action for the row with "1234567899"
+    And I click the "Manage" action for the row with "5560360793"
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
-    And I should see "1234567899"
+    And I should see "5560360793"
     And I should see "Groomer"
     And I should not see "Trainer"
     And I should not see "Psychologist"
@@ -68,10 +68,10 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    And I click the "Manage" action for the row with "1234567890"
+    And I click the "Manage" action for the row with "5562252998"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
-    And I should see "1234567890"
+    And I should see "5562252998"
     And I should see "Trainer"
     And I should see "Psychologist"
     And I should not see "Groomer"

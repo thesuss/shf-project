@@ -6,17 +6,6 @@ class MembershipApplicationsController < ApplicationController
     @business_categories = BusinessCategory.all
   end
 
-  def create
-    @membership_application = current_user.membership_applications.new(membership_application_params)
-    if Orgnummer.new(@membership_application.company_number).valid? && @membership_application.save
-      flash[:notice] = 'Thank you, Your application has been submitted'
-      redirect_to root_path
-    else
-      @membership_application.errors.add(:company_number, "#{@membership_application.company_number} is not a valid company number.")
-      render :new
-    end
-  end
-
   def index
     authorize MembershipApplication
     @membership_applications = MembershipApplication.all
@@ -30,19 +19,26 @@ class MembershipApplicationsController < ApplicationController
     @business_categories = BusinessCategory.all
   end
 
-  def update
-    if Orgnummer.new(@membership_application.company_number).valid? && @membership_application.update(membership_application_params)
-    flash[:notice] = 'Membership Application
-                        successfully updated'
-      render :show
+  def create
+    @membership_application = current_user.membership_applications.new(membership_application_params)
+    if @membership_application.save
+      flash[:notice] = 'Thank you, Your application has been submitted'
+      redirect_to root_path
     else
-      flash[:alert] = 'A problem prevented the membership
-                       application to be saved'
-      @membership_application.errors.add(@membership_application.company_number, 'is not a valid company number.')
-      redirect_to edit_membership_application_path(@membership_application)
+      flash[:alert] = 'A problem prevented the membership application to be created'
+      render :new
     end
   end
 
+  def update
+    if @membership_application.update(membership_application_params)
+      flash[:notice] = 'Membership Application successfully updated'
+      render :show
+    else
+      flash[:alert] = 'A problem prevented the membership application to be saved'
+      redirect_to edit_membership_application_path(@membership_application)
+    end
+  end
 
   private
   def membership_application_params

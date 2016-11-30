@@ -1,13 +1,13 @@
-Feature: As a visitor
+Feature: As a user
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
   PT: https://www.pivotaltracker.com/story/show/133940725
   &: https://www.pivotaltracker.com/story/show/135027425
 
   Secondary feature:
-  As a user
-  I need to know which Membership Application fields are required
-  So that I fill out the form correctly on my first try
+  As an admin
+  So that we can minimize trouble signing up and sign up as many users as possible
+  I would like required aspects of the membership form to be highlighted when they are missed
   PT: https://www.pivotaltracker.com/story/show/134192165
 
   Background:
@@ -40,19 +40,12 @@ Feature: As a visitor
   Scenario: A user can submit a new Membership Application with multiple categories
     Given I am on the "landing" page
     And I click on "Apply for membership"
-<<<<<<< HEAD
-    And I fill in "Company Name" with "Craft Academy"
-    And I fill in "Company Number" with "5562252998"
-    And I fill in "Contact Person" with "Thomas"
-    And I fill in "Company Email" with "info@craft.se"
-=======
     And I fill in "First Name" with "Kicki"
     And I fill in "Last Name" with "Andersson"
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I fill in "Company Number" with "5562252998"
     And I fill in "Contact Email" with "info@craft.se"
->>>>>>> 332f6a68cdd5df439de510f544338ae3db57fa45
     And I fill in "Phone Number" with "031-1234567"
     And I click on "Submit"
     Then I should be on the landing page
