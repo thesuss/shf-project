@@ -1,0 +1,22 @@
+%header.entry-header
+  %h1.entry-title Logga in
+.post-title-divider
+  %span
+.entry-content.wpcf7
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    .field
+      = f.label :email, class: 'required'
+      %br/
+      = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
+    .field
+      = f.label :password, class: 'required'
+      %br/
+      = f.password_field :password, autocomplete: 'off', class: 'wpcf7-form-control'
+    - if devise_mapping.rememberable?
+      .checkbox
+        = f.check_box(:remember_me, class: 'text-nicelabel', position_class: 'text_checkbox')
+        = f.label :remember_me, 'Kom ihåg mig'
+    .actions
+      = f.submit 'Logga in'
+  = render partial: 'partials/required_fields'
+  = render 'devise/shared/links'
