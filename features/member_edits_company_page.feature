@@ -6,27 +6,32 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email                  | admin |
-      | applicant_1@random.com |       |
-      | admin@shf.se           | true  |
+      | email                      | admin |
+      | applicant_1@happymutts.com |       |
+      | admin@shf.se               | true  |
+
+    And the following companies exist:
+      | name                 | company_number | email                  |
+      | No More Snarky Barky | 9876543210     | snarky@snarkybarky.com |
 
     And the following applications exist:
-      | first_name | user_email             | status   | category_name |
-      | Emma       | applicant_1@random.com | approved | Awesome       |
+      | first_name | user_email                 | company_number | status   | category_name |
+      | Emma       | applicant_1@happymutts.com | 1234123456     | approved | Awesome       |
+
 
   Scenario: Member goes to company page after membership approval
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "landing" page
-    When I click on "My Company"
+    When I am on the "edit my company" page
     And I fill in the form with data :
       | Name         | Street         | Post Code | City   | Region    | Email                | Website                   |
       | Glada Jyckar | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I click on "Submit"
-    Then I should see "The company was successfully created."
-    And I should be on "View Company" page
+    Then I should see "The company was successfully updated."
     And I should see "Company: Glada Jyckar"
-    And I should see "123 45, Bromma"
-    And I should see "Awesome"
+    And I should see "123 45"
+    And I should see "Bromma"
+    #And I should see "Awesome"
 
 #  Scenario: User tries to go do company page (sad path)
 #    Given I am logged in as "applicant_2@random.com"
@@ -45,22 +50,18 @@ Feature: As a member
 
 
   Scenario: User tries to create a company
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "create a new company" page
     Then I should see "You are not authorized to perform this action"
 
   Scenario: User tries to view all companies
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "all companies" page
     Then I should see "You are not authorized to perform this action"
 
   Scenario: Visitor tries to view all companies
     Given I am Logged out
     And I am on the "all companies" page
-    Then I should see "You are not authorized to perform this action"
-
-  Scenario: Visitor tries to edit a company
-    Given I am Logged out
     Then I should see "You are not authorized to perform this action"
 
   Scenario: Visitor tries to create a company
