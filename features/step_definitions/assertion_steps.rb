@@ -1,3 +1,5 @@
+
+
 Then(/^I should be on the landing page$/) do
   expect(current_path).to eq root_path
 end
@@ -56,4 +58,10 @@ end
 
 And(/^the field "([^"]*)" should not have a required field indicator$/) do |label_text|
   expect(page.find('label', text: label_text)[:class]).not_to have_css 'required'
+end
+
+Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
+  n = n.to_i
+  expect(page).to have_selector(".#{css_class_name}", count: n)
+  expect(page).not_to have_selector(".#{css_class_name}", count: n+1)
 end

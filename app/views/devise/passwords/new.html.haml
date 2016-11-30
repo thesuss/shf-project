@@ -1,0 +1,15 @@
+%header.entry-header
+  %h1.entry-title Glömt lösenordet
+.post-title-divider
+  %span
+.entry-content.wpcf7
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+    = devise_error_messages!
+    .field
+      = f.label :email, class: 'required'
+      %br/
+      = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
+    .actions
+      = f.submit 'Skicka återställningsinstruktioner'
+  = render partial: 'partials/required_fields'
+  = render 'devise/shared/links'
