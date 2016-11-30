@@ -14,7 +14,7 @@
 = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
 - unless @business_categories.nil?
-  %h3 Ansöker som:
+  %h3 Ansöker som:*
   = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
     .checkbox
       = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label

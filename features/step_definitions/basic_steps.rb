@@ -30,3 +30,12 @@ end
 And(/^I click the "([^"]*)" action for the row with "([^"]*)"$/) do |action, row_content |
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end
+
+
+When(/^I click on "([^"]*)" link$/) do |element|
+  click_link element
+end
+
+And(/^I click on "([^"]*)" button$/) do |element|
+  click_button element
+end
