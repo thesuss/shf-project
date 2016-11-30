@@ -1,13 +1,13 @@
-Feature: As a visitor
+Feature: As a user
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
   PT: https://www.pivotaltracker.com/story/show/133940725
   &: https://www.pivotaltracker.com/story/show/135027425
 
   Secondary feature:
-  As a user
-  I need to know which Membership Application fields are required
-  So that I fill out the form correctly on my first try
+  As an admin
+  So that we can minimize trouble signing up and sign up as many users as possible
+  I would like required aspects of the membership form to be highlighted when they are missed
   PT: https://www.pivotaltracker.com/story/show/134192165
 
   Background:
@@ -84,8 +84,8 @@ Feature: As a visitor
 
     Scenarios:
       | f_name | c_number   | l_name    | c_email       | phone      | error                                                          |
-      | Kicki  | 00         | Andersson | kicki@immi.nu | 0706898525 | "Company number is the wrong length (should be 10 characters)" |
-      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | "Company number can't be blank"                                |
+      | Kicki  | 00         | Andersson | kicki@immi.nu | 0706898525 | "Company number 00 is not a valid company number" |
+      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | "Company number is not a valid company number"                                |
       | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | "Last name can't be blank"                                     |
       | Kicki  | 5562252998 | Andersson |               | 0706898525 | "Contact email can't be blank"                                 |
       |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | "First name can't be blank"                                    |

@@ -30,6 +30,20 @@ RSpec.describe MembershipApplication, type: :model do
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
   end
 
+  describe 'Validate Swedish Orgnr' do
+    let (:company) do
+      create(:membership_application)
+    end
+
+    subject { company }
+
+    before do
+      company.company_number = 1234567890
+    end
+
+    it { should_not be_valid }
+  end
+
   describe 'Associations' do
     it { is_expected.to belong_to :user }
     it { is_expected.to have_and_belong_to_many :business_categories}
