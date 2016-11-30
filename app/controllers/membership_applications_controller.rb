@@ -3,6 +3,7 @@ class MembershipApplicationsController < ApplicationController
   before_action :authorize_membership_application, only: [ :update, :show, :edit]
   def new
     @membership_application = MembershipApplication.new
+    @business_categories = BusinessCategory.all
   end
 
   def create
@@ -22,11 +23,11 @@ class MembershipApplicationsController < ApplicationController
   end
 
   def show
-
+    @categories = @membership_application.business_categories
   end
 
   def edit
-
+    @business_categories = BusinessCategory.all
   end
 
   def update

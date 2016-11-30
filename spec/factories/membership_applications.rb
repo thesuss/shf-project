@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :membership_application do
-    company_name 'MyString'
+    first_name 'Firstname'
+    last_name 'Lastname'
     company_number '5562252998'
-    contact_person 'MyString'
     phone_number 'MyString'
-    company_email 'MyString@email.com'
+    contact_email 'MyString@email.com'
     association :user
   end
 end

@@ -15,28 +15,66 @@ Feature: As an Admin
       | email                  | admin |
       | applicant_1@random.com |       |
       | applicant_2@random.com |       |
-      | applican3_2@random.com |       |
+      | applicant_3@random.com |       |
       | admin@sgf.com          | true  |
 
     And the following applications exist:
-      | company_name | company_number | contact_person | phone_number | company_email | user_email             |
-      | Hunderiet    | 1234567890     | Emma Svensson  | 1234-234567  | min@mail.se   | applicant_1@random.com |
-      | DoggieZone   | 2345678901     | Pam Andersson  | 0234-234567  | din@mail.se   | applicant_2@random.com |
-      | Tassa-in AB  | 1234367890     | Anna Knutsson  | 1234-234569  | sin@mail.se   | applican3_2@random.com |
+      | first_name | user_email             | company_number |
+      | Emma       | applicant_1@random.com | 1234567890     |
+      | Hans       | applicant_2@random.com | 1234567899     |
+      | Anna       | applicant_3@random.com | 1234567999     |
 
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+      | Psychologist |
+      | Trainer      |
 
   Scenario: Listing incoming Applications open for Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    When I click on "DoggieZone"
-    Then I should be on the application page for "DoggieZone"
-    And I should see:
-      | content       |
-      | 2345678901    |
-      | Pam Andersson |
-      | 0234-234567   |
-      | din@mail.se   |
+    And I click the "Manage" action for the row with "1234567890"
+    Then I should be on the application page for "Emma"
+    And I should see "Emma Lastname"
+    And I should see "1234567890"
+
+  Scenario: Admin can see an application with one business categories given
+    Given I am logged in as "applicant_2@random.com"
+    And I am on the "landing" page
+    And I click on "My Application"
+    And I select "Groomer" Category
+    And I click on "Submit"
+    And I am Logged out
+    And I am logged in as "admin@sgf.com"
+    And I am on the list applications page
+    Then I should see "3" applications
+    And I click the "Manage" action for the row with "1234567899"
+    Then I should be on the application page for "Hans"
+    And I should see "Hans Lastname"
+    And I should see "1234567899"
+    And I should see "Groomer"
+    And I should not see "Trainer"
+    And I should not see "Psychologist"
+
+  Scenario: Admin can see an application with multiple business categories given
+    Given I am logged in as "applicant_1@random.com"
+    And I am on the "landing" page
+    And I click on "My Application"
+    And I select "Trainer" Category
+    And I select "Psychologist" Category
+    And I click on "Submit"
+    And I am Logged out
+    And I am logged in as "admin@sgf.com"
+    And I am on the list applications page
+    Then I should see "3" applications
+    And I click the "Manage" action for the row with "1234567890"
+    Then I should be on the application page for "Emma"
+    And I should see "Emma Lastname"
+    And I should see "1234567890"
+    And I should see "Trainer"
+    And I should see "Psychologist"
+    And I should not see "Groomer"
 
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "applicant_2@random.com"
