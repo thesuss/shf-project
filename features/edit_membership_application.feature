@@ -19,7 +19,7 @@ Feature: As an applicant
   Scenario: Applicant wants to edit his own application
     Given I am logged in as "applicant_1@random.com"
     And I am on the "landing" page
-    And I click on "My Application"
+    And I click on "Min ansökan"
     Then I should be on "Edit My Application" page
     And I fill in "First Name" with "Anna"
     And I click on "Submit"
@@ -30,7 +30,7 @@ Feature: As an applicant
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "applicant_1@random.com"
     And I am on the "landing" page
-    And I click on "My Application"
+    And I click on "Min ansökan"
     Then I should be on "Edit My Application" page
     And I fill in "Contact Email" with "sussimmi.nu"
     And I click on "Submit"

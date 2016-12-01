@@ -42,7 +42,7 @@ Feature: As an Admin
   Scenario: Admin can see an application with one business categories given
     Given I am logged in as "applicant_2@random.com"
     And I am on the "landing" page
-    And I click on "My Application"
+    And I click on "Min ansökan"
     And I select "Groomer" Category
     And I click on "Submit"
     And I am Logged out
@@ -60,7 +60,7 @@ Feature: As an Admin
   Scenario: Admin can see an application with multiple business categories given
     Given I am logged in as "applicant_1@random.com"
     And I am on the "landing" page
-    And I click on "My Application"
+    And I click on "Min ansökan"
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I click on "Submit"

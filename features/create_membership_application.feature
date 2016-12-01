@@ -25,7 +25,7 @@ Feature: As a user
 
   Scenario: A user can submit a new Membership Application with 1 category
     Given I am on the "landing" page
-    And I click on "Apply for membership"
+    And I click on "Ansök om medlemsskap"
     And I fill in "First Name" with "Kicki"
     And I fill in "Last Name" with "Andersson"
     And I select "Groomer" Category
@@ -39,7 +39,7 @@ Feature: As a user
 
   Scenario: A user can submit a new Membership Application with multiple categories
     Given I am on the "landing" page
-    And I click on "Apply for membership"
+    And I click on "Ansök om medlemsskap"
     And I fill in "First Name" with "Kicki"
     And I fill in "Last Name" with "Andersson"
     And I select "Trainer" Category
@@ -53,7 +53,7 @@ Feature: As a user
 
   Scenario: A user can submit a new Membership Application with no categories selected
     Given I am on the "landing" page
-    And I click on "Apply for membership"
+    And I click on "Ansök om medlemsskap"
     And I fill in "First Name" with "Kicki"
     And I fill in "Last Name" with "Andersson"
     And I fill in "Company Number" with "5562252998"
@@ -65,7 +65,7 @@ Feature: As a user
 
   Scenario: Applicant can see which fields are required
     Given I am on the "landing" page
-    And I click on "Apply for membership"
+    And I click on "Ansök om medlemsskap"
     Then the field "First Name" should have a required field indicator
     And the field "Company Number" should have a required field indicator
     And the field "Last Name" should have a required field indicator
@@ -75,7 +75,7 @@ Feature: As a user
 
   Scenario Outline: Apply for membership - when things go wrong
     Given I am on the "landing" page
-    And I click on "Apply for membership"
+    And I click on "Ansök om medlemsskap"
     When I fill in the form with data :
       | First Name | Last Name | Company Number | Contact Email | Phone Number |
       | <f_name>   | <l_name>  | <c_number>     | <c_email>     | <phone>      |
