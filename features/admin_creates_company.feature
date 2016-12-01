@@ -1,6 +1,13 @@
 Feature: As an admin
-  So that I can help members and create companies for them
-  I need to be able to create companies
+  So that I can view and manage companies
+  I need to be able to create them
+
+  Companies are created when a membership application is approved. That
+  will not have any user interaction, but we need to have companies
+  exist and the admin needs to be able to see the list of them.
+
+  This feature exercises what happens when a company is created and is the
+  basis for a member being able to edit their company page.
 
   PT:  https://www.pivotaltracker.com/story/show/133081453
 
@@ -15,8 +22,8 @@ Feature: As an admin
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com |
 
     And the following applications exist:
-      | first_name | user_email                 | company_number | status   | category_name |
-      | Emma       | applicant_1@happymutts.com | 5562252998     | approved | Awesome       |
+      | first_name | user_email                 | company_number | status   |
+      | Emma       | applicant_1@happymutts.com | 5562252998     | approved |
 
     And the following business categories exist
       | name         |
@@ -40,7 +47,6 @@ Feature: As an admin
     And I should see "Bromma"
     And I should see "Groomer"
     And I should see "Trainer"
-    And I should not see "Awesome"
 
 
   Scenario Outline: Admin creates company - when things go wrong
