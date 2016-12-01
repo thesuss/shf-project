@@ -23,8 +23,11 @@ RSpec.describe Company, type: :model do
 
   describe 'Validations' do
     it { is_expected.to validate_presence_of :company_number }
-
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
+
+    it { is_expected.to allow_value('user@example.com').for(:contact_email) }
+    it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
+
   end
 
   describe 'Associations' do

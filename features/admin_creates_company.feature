@@ -62,7 +62,6 @@ Feature: As an admin
     Scenarios:
       | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
       | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)" |
-      |             | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Name can't be blank"                                          |
       | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
       | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
 
