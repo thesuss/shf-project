@@ -35,7 +35,7 @@ Feature: As a member
     And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully updated."
-    And I should see "Company: Happy Mutts"
+    And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Groomer"

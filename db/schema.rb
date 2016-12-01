@@ -66,8 +66,6 @@ ActiveRecord::Schema.define(version: 20161201061301) do
   end
 
   create_table "uploaded_files", force: :cascade do |t|
-    t.string   "title"
-    t.string   "description"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.string   "actual_file_file_name"

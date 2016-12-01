@@ -16,13 +16,10 @@
     %thead
       %tr
         %th Namn
-        %th Tel
-        %th Mail
         %th Län
-        %th Hemsida
         %th Org nr
+        %th
         -if current_user.try(:admin)
-          %th
           %th
           %th
 
@@ -30,17 +27,14 @@
       - @companies.each do |company|
         %tr.company
           %td= company.name
-          %td= company.phone_number
-          %td= company.email
           %td= company.region
-          %td= company.website
           %td= company.company_number
+          %td= link_to 'Visa företag', company
           - if current_user.try(:admin)
-            %td= link_to 'Show', company
             %td= link_to 'Edit', edit_company_path(company)
             %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
   %br
-  .center
-    - if current_user.try(:admin)
+  - if current_user && !current_user.try(:admin)
+    .center
       = link_to 'Skapa nytt företag', new_company_path
 

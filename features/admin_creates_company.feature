@@ -43,7 +43,7 @@ Feature: As an admin
     And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully created."
-    And I should see "Company: Happy Mutts"
+    And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Groomer"
