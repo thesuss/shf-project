@@ -33,6 +33,7 @@ class CompaniesController < ApplicationController
     if @company.save
       redirect_to @company, notice: 'The company was successfully created.'
     else
+      flash[:alert] = 'A problem prevented the company from being created.'
       render :new
     end
   end
@@ -42,6 +43,7 @@ class CompaniesController < ApplicationController
     if @company.update(company_params)
       redirect_to @company, notice: 'The company was successfully updated.'
     else
+      flash[:alert] = 'A problem prevented the company from being updated.'
       render :edit
     end
 
