@@ -21,7 +21,7 @@
             %li
               = link_to 'Mer', 'http://sverigeshundforetagare.se/'
             %li
-              = link_to 'Medlemssidor', '#'
+              = link_to 'Medlemssidor', page_path('index')
             %li
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
                 = link_to 'My Application', edit_membership_application_path(current_user.membership_applications.last)
