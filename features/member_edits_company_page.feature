@@ -18,6 +18,12 @@ Feature: As a member
       | first_name | user_email                 | company_number | status   | category_name |
       | Emma       | applicant_1@happymutts.com | 1234123456     | approved | Awesome       |
 
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+      | Psychologist |
+      | Trainer      |
+      | Awesome      |
 
   Scenario: Member goes to company page after membership approval
     Given I am logged in as "applicant_1@happymutts.com"
@@ -26,12 +32,17 @@ Feature: As a member
     And I fill in the form with data :
       | Name         | Street         | Post Code | City   | Region    | Email                | Website                   |
       | Glada Jyckar | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
+    And I select "Groomer" Category
+    And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully updated."
     And I should see "Company: Glada Jyckar"
     And I should see "123 45"
     And I should see "Bromma"
-    #And I should see "Awesome"
+    And I should see "Groomer"
+    And I should see "Trainer"
+    And I should not see "Awesome"
+
 
 #  Scenario: User tries to go do company page (sad path)
 #    Given I am logged in as "applicant_2@random.com"
@@ -44,27 +55,6 @@ Feature: As a member
     Then I should see "Companies"
 
 
-  Scenario: Admin creates a company
-
   Scenario: Admin edits a company
-
-
-  Scenario: User tries to create a company
-    Given I am logged in as "applicant_1@happymutts.com"
-    And I am on the "create a new company" page
-    Then I should see "You are not authorized to perform this action"
-
-  Scenario: User tries to view all companies
-    Given I am logged in as "applicant_1@happymutts.com"
+    Given I am logged in as "admin@shf.se"
     And I am on the "all companies" page
-    Then I should see "You are not authorized to perform this action"
-
-  Scenario: Visitor tries to view all companies
-    Given I am Logged out
-    And I am on the "all companies" page
-    Then I should see "You are not authorized to perform this action"
-
-  Scenario: Visitor tries to create a company
-    Given I am Logged out
-    And I am on the "create a new company" page
-    Then I should see "You are not authorized to perform this action"
