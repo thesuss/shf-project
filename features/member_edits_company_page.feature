@@ -27,7 +27,8 @@ Feature: As a member
 
   Scenario: Member goes to company page after membership approval
     Given I am logged in as "emma@happymutts.com"
-    And I am on the "edit my company" page
+    # we need to do user find by email and visit their particular company application
+    And I am on the "edit my company" page for "emma@happymutts.com"
     And I fill in the form with data :
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
@@ -42,9 +43,26 @@ Feature: As a member
     And I should see "Trainer"
     And I should not see "Awesome"
 
+  Scenario: Another tries to edit your company page (gets rerouted)
+    Given I am logged in as "emma@happymutts.com"
+    And I am on the "edit my company" page for "emma@happymutts.com"
+    And I fill in the form with data :
+      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
+      | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
+    And I select "Groomer" Category
+    And I select "Trainer" Category
+    And I click on "Submit"
+    And I am Logged out
+    And I am logged in as "applicant_2@random.com"
+    And I am on the "edit my company" page for "emma@happymutts.com"
+    Then I should be on the landing page
+    And I should see "You are not authorized to perform this action"
+
+
   Scenario: User tries to go do company page (gets rerouted)
     Given I am logged in as "applicant_2@random.com"
-    And I am on the "edit my company" page
+    And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the landing page
+    And I should see "You are not authorized to perform this action"
 
 

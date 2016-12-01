@@ -1,7 +1,7 @@
 %header.entry-header
-  -unless current_user.try(:admin)
+  - unless current_user.try(:admin)
     %h1.entry-title Hitta SHF-medlem
-  -if current_user.try(:admin)
+  - if current_user.try(:admin)
     %h1.entry-title Redigera medlemsföretag
 .post-title-divider
   %span
@@ -19,7 +19,7 @@
         %th Län
         %th Org nr
         %th
-        -if current_user.try(:admin)
+        - if current_user.try(:admin)
           %th
           %th
 
