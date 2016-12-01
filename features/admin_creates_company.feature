@@ -84,7 +84,7 @@ Feature: As an admin
   Scenario: Admin sees all companies listed
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
-    Then I should see 2 company rows
+    Then I should see 3 company rows
 
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"
