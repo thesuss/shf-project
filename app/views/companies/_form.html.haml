@@ -1,0 +1,39 @@
+= form_for @company do |f|
+  - if @company.errors.any?
+    .wpcf7-response-output
+      - @company.errors.full_messages.each do |msg|
+        = msg
+
+  = f.label :name, 'Företagsnamn', class: 'required'
+  = f.text_field :name, class: 'wpcf7-form-control'
+
+  = f.label :company_number, 'Org nr', class: 'required'
+  = f.text_field :company_number, class: 'wpcf7-form-control'
+
+  = f.label :phone_number, 'Telefonnummer'
+  = f.text_field :phone_number, class: 'wpcf7-form-control'
+
+  = f.label :email, 'Email', class: 'required'
+  = f.text_field :email, class: 'wpcf7-form-control'
+
+  %p Address:
+  = f.label :street, 'Gata', class: 'required'
+  = f.text_field :street, class: 'wpcf7-form-control'
+
+  = f.label :post_code, 'Post nr', class: 'required'
+  = f.text_field :post_code, class: 'wpcf7-form-control'
+
+  = f.label :city, 'Ort', class: 'required'
+  = f.text_field :city, class: 'wpcf7-form-control'
+
+  = f.label :region, 'Verksamhetslän', class: 'required'
+  = f.text_field :region, class: 'wpcf7-form-control'
+  %em Skriv Sverige om företaget är verksamt i flera delar av landet
+
+  = f.label :website, 'Webbsida', class: 'required'
+  = f.text_field :website, class: 'wpcf7-form-control'
+
+  - unless @business_categories.nil?
+    = render 'business_categories/form_collection_checkboxes', f: f, business_categories: @business_categories
+
+  = f.submit 'Submit'

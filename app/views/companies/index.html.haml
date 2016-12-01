@@ -1,0 +1,44 @@
+%header.entry-header
+  -unless current_user.try(:admin)
+    %h1.entry-title Hitta SHF-medlem
+  -if current_user.try(:admin)
+    %h1.entry-title Redigera medlemsföretag
+.post-title-divider
+  %span
+.entry-content
+  - unless current_user.try(:admin)
+    %p
+      Nedan listas anslutna H-märkta företag
+      Vi arbetar febrilt på att få denna sida mycket bättre, till dess kan du
+      söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
+
+  %table
+    %thead
+      %tr
+        %th Namn
+        %th Tel
+        %th Mail
+        %th Län
+        %th Hemsida
+        %th Org nr
+        -if current_user.try(:admin)
+          %th
+          %th
+          %th
+    %tbody
+      - @companies.each do |company|
+        %tr.company
+          %td= company.name
+          %td= company.phone_number
+          %td= company.email
+          %td= company.region
+          %td= company.website
+          %td= company.company_number
+          - if current_user.try(:admin)
+            %td= link_to 'Show', company
+            %td= link_to 'Edit', edit_company_path(company)
+            %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
+  %br
+  .center
+    - if current_user.try(:admin)
+      = link_to 'Skapa nytt företag', new_company_path
