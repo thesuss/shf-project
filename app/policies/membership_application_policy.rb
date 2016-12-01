@@ -6,7 +6,16 @@ class MembershipApplicationPolicy < ApplicationPolicy
      :company_number,
      :contact_email,
      :phone_number,
-     {business_category_ids: []}]
+     {business_category_ids: []},
+     :uploaded_files,
+     uploaded_files_attributes: [:id,
+                                :actual_file,
+                                :actual_file_file_name,
+                                :actual_file_file_size,
+                                :actual_file_content_type,
+                                :actual_file_updated_at,
+                                :_destroy]
+    ]
   end
 
 

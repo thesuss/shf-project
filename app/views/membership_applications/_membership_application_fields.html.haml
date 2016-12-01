@@ -19,4 +19,12 @@
     = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
       = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
   %p Blå fält = valda kategorier
+
+#uploaded_files
+  = render 'uploaded_files_list', membership_application: @membership_application
+
+
+%p Upload a file for this membership application:
+= f.file_field 'actual_files[]', multiple: true, name: 'uploaded_file[actual_files][]'
+
 = f.submit 'Submit'
