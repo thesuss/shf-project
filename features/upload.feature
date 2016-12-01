@@ -5,9 +5,10 @@ Feature: As an applicant
 
   Background:
     Given the following users exists
-      | email                  |
-      | applicant_1@random.com |
-      | applicant_2@random.com |
+      | email                  | admin |
+      | applicant_1@random.com |       |
+      | applicant_2@random.com |       |
+      | admin@shf.com          | true  |
 
 
     And the following applications exist:
@@ -90,3 +91,24 @@ Feature: As an applicant
     And I click on "Submit"
     Then I should see "Files uploaded for this application:"
     And I should see "diploma.pdf" uploaded for this membership application
+
+
+  Scenario: User can click on a file name to see the file
+    Given I am logged in as "applicant_1@random.com"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma.pdf" to upload
+    And I click on "Submit"
+    And I click on "diploma.pdf"
+
+
+  Scenario: Admin can click on a file name to see the file
+    Given I am logged in as "applicant_1@random.com"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma.pdf" to upload
+    And I click on "Submit"
+    And I am Logged out
+    And I am logged in as "admin@shf.com"
+    And I am on the list applications page
+    And I click the "Manage" action for the row with "5562252998"
+    And I click on "diploma.pdf"
+

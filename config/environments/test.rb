@@ -40,7 +40,11 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # location for where Paperclip will store files:
-  Paperclip::Attachment.default_options[:path] = "#{Rails.root}/spec/test_paperclip_files/:class/:id_partition/:style.:extension"
+
+  # location for where Paperclip will store files, and the url for them:
+  attachment_folder = "/storage/#{ Rails.env}_paperclip_files/:class/:id_partition/:style/:filename"
+  config.paperclip_defaults = { url: attachment_folder,
+                                path: ":rails_root/public/:url"
+  }
 
 end
