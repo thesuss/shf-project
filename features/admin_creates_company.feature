@@ -37,13 +37,8 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
     And I fill in the form with data :
-<<<<<<< HEAD
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort   | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-=======
-      | Name        | Organization Number | Street         | Post Code | City   | Region    | Email                | Website                   |
-      | Happy Mutts | 5562252998          | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
->>>>>>> 9394e0ec4da8d415c3954da6522d252e4b10ead4
     And I select "Groomer" Category
     And I select "Trainer" Category
     And I click on "Submit"
