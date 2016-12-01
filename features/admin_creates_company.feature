@@ -102,7 +102,8 @@ Feature: As an admin
   Scenario: Admin sees all companies listed
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
-    Then I should see 2 company rows
+    Then I should see "No More Snarky Barky"
+    And I should see "Bowsers"
 
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"
