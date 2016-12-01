@@ -6,17 +6,17 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email                      | admin | is_member |
-      | applicant_1@happymutts.com |       | true      |
-      | admin@shf.se               | true  | true      |
+      | email               | admin | is_member |
+      | emma@happymutts.com |       | true      |
+      | admin@shf.se        | true  | true      |
 
     And the following companies exist:
       | name                 | company_number | email                  |
       | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
 
     And the following applications exist:
-      | first_name | user_email                 | company_number | status   | category_name |
-      | Emma       | applicant_1@happymutts.com | 5562252998     | approved | Awesome       |
+      | first_name | user_email          | company_number | status   | category_name |
+      | Emma       | emma@happymutts.com | 5562252998     | approved | Awesome       |
 
     And the following business categories exist
       | name         |
@@ -26,9 +26,8 @@ Feature: As a member
       | Awesome      |
 
   Scenario: Member goes to company page after membership approval
-    Given I am logged in as "applicant_1@happymutts.com"
-    And I am on the "landing" page
-    When I am on the "edit my company" page
+    Given I am logged in as "emma@happymutts.com"
+    And I am on the "edit my company" page
     And I fill in the form with data :
       | Name         | Street         | Post Code | City   | Region    | Email                | Website                   |
       | Glada Jyckar | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
@@ -49,12 +48,4 @@ Feature: As a member
 #    And I am on the "my company page" page
 #    Then I should see "You are not authorized to perform this action"
 
-  Scenario: Admin views all companies
-    Given I am logged in as "admin@shf.se"
-    And I am on the "all companies" page
-    Then I should see "Companies"
 
-
-  Scenario: Admin edits a company
-    Given I am logged in as "admin@shf.se"
-    And I am on the "all companies" page
