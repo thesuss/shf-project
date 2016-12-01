@@ -58,6 +58,7 @@ Feature: As an admin
       | <name> | <org_number>        | <email> | <phone>      | <street> | <post_code> | <city> | <region> | <website> |
     When I click on "Submit"
     Then I should see <error>
+    And I should see "A problem prevented the company from being created."
 
     Scenarios:
       | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
@@ -80,6 +81,23 @@ Feature: As an admin
     Then I should see "The company was successfully updated."
     And I should see "kicki@gladajyckar.se"
     And I should see "http://www.snarkybarkbark.se"
+
+  Scenario Outline: Admin edits a company - when things go wrong (sad case)
+    Given I am logged in as "admin@shf.se"
+    When I am on the "all companies" page
+    And I click the "Edit" action for the row with "5560360793"
+    And I fill in the form with data :
+      | Name   | Organization Number | Email   | Phone Number | Street   | Post Code   | City   | Region   | Website   |
+      | <name> | <org_number>        | <email> | <phone>      | <street> | <post_code> | <city> | <region> | <website> |
+    When I click on "Submit"
+    Then I should see <error>
+    And I should see "A problem prevented the company from being updated."
+
+    Scenarios:
+      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)" |
+      | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
+      | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
 
 
   Scenario: Admin sees all companies listed
