@@ -27,5 +27,9 @@ RSpec.describe Company, type: :model do
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
   end
 
+  describe 'Associations' do
+    it { is_expected.to have_and_belong_to_many :business_categories }
+  end
+
 
 end
