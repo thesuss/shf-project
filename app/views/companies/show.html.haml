@@ -39,6 +39,8 @@
     %b Website:
     = @company.website
 
+  - unless @categories.nil?
+    = render 'business_categories/as_list', categories: @categories
 
   .center
   = link_to 'Edit', edit_company_path(@company)

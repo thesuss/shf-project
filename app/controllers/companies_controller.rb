@@ -10,16 +10,19 @@ class CompaniesController < ApplicationController
 
 
   def show
+    @categories = @company.business_categories
   end
 
 
   def new
     authorize Company
     @company = Company.new
+    @business_categories = BusinessCategory.all
   end
 
 
   def edit
+    @business_categories = BusinessCategory.all
   end
 
 
@@ -62,7 +65,7 @@ class CompaniesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def company_params
-    params.require(:company).permit(:name, :company_number, :phone_number, :email, :street, :post_code, :city, :region, :website)
+    params.require(:company).permit(:name, :company_number, :phone_number, :email, :street, :post_code, :city, :region, :website, {business_category_ids: []})
   end
 
   def authorize_company

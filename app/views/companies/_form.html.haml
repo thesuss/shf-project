@@ -32,5 +32,7 @@
   = f.label :website, 'Website'
   = f.text_field :website, class: 'wpcf7-form-control'
 
+  - unless @business_categories.nil?
+    = render 'business_categories/form_collection_checkboxes', f: f, business_categories: @business_categories
 
   = f.submit 'Submit'
