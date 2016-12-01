@@ -12,8 +12,8 @@
         %th
     %tbody
       - @membership_applications.each do | membership_application |
-        %tr.companies
-          %td= membership_application.first_name + ' ' + membership_application.last_name
+        %tr.applicant
+          %td= link_to "#{membership_application.first_name + ' ' + membership_application.last_name}", membership_application_path(membership_application.id)
           %td= membership_application.company_number
           %td= membership_application.status
           %td= link_to 'Manage', membership_application_path(membership_application.id)
