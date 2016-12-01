@@ -27,7 +27,7 @@
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
                 = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
               - else
-                - unless current_user.try(:admin)
+                - if current_user && !current_user.try(:admin)
                   = link_to 'Ansök om medlemsskap', new_membership_application_path
     / Social profiles
     .social-nav
