@@ -20,13 +20,15 @@
               = link_to 'Om', 'http://sverigeshundforetagare.se/'
             %li
               = link_to 'Mer', 'http://sverigeshundforetagare.se/'
-            %li
-              = link_to 'Medlemssidor', page_path('index')
+            - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
+              %li
+                = link_to 'Medlemssidor', page_path('index')
             %li
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
-                = link_to 'My Application', edit_membership_application_path(current_user.membership_applications.last)
+                = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
               - else
-                = link_to 'Apply for membership', new_membership_application_path
+                - unless current_user.try(:admin)
+                  = link_to 'Ansök om medlemsskap', new_membership_application_path
     / Social profiles
     .social-nav
       .tb
