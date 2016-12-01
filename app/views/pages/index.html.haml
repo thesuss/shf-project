@@ -1,0 +1,10 @@
+%header.entry-header
+  %h1.entry-title Medlemssiodor
+.post-title-divider
+  %span
+.entry-content
+  %p
+    %ul
+      - HighVoltage.page_ids.each do |page|
+        %li
+          = link_to page.capitalize page_path(page)
