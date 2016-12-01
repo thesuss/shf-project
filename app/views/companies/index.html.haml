@@ -25,6 +25,7 @@
           %th
           %th
           %th
+
     %tbody
       - @companies.each do |company|
         %tr.company
@@ -42,3 +43,4 @@
   .center
     - if current_user.try(:admin)
       = link_to 'Skapa nytt företag', new_company_path
+

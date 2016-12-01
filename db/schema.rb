@@ -60,10 +60,14 @@ ActiveRecord::Schema.define(version: 20161201061301) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
+    t.integer  "company_id"
+    t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 
   create_table "uploaded_files", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.string   "actual_file_file_name"
@@ -88,6 +92,7 @@ ActiveRecord::Schema.define(version: 20161201061301) do
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.boolean  "admin",                  default: false
+    t.boolean  "is_member",              default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
