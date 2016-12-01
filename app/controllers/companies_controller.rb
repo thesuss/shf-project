@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_company, only: [:update, :show, :edit, :destroy]
+  before_action :set_company, only: [:show, :edit, :update]
+  before_action :authorize_company, only: [:update, :show, :edit]
 
 
   def index
@@ -47,13 +47,6 @@ class CompaniesController < ApplicationController
 
   end
 
-
-  def destroy
-    @company.destroy
-
-    redirect_to companies_url, notice: 'The company was successfully deleted.'
-
-  end
 
 
   private
