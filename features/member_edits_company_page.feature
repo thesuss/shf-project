@@ -6,17 +6,17 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email                      | admin |
-      | applicant_1@happymutts.com |       |
-      | admin@shf.se               | true  |
+      | email                      | admin | is_member |
+      | applicant_1@happymutts.com |       | true      |
+      | admin@shf.se               | true  | true      |
 
     And the following companies exist:
       | name                 | company_number | email                  |
-      | No More Snarky Barky | 9876543210     | snarky@snarkybarky.com |
+      | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
 
     And the following applications exist:
       | first_name | user_email                 | company_number | status   | category_name |
-      | Emma       | applicant_1@happymutts.com | 1234123456     | approved | Awesome       |
+      | Emma       | applicant_1@happymutts.com | 5562252998     | approved | Awesome       |
 
     And the following business categories exist
       | name         |
