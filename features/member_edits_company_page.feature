@@ -29,23 +29,22 @@ Feature: As a member
     Given I am logged in as "emma@happymutts.com"
     And I am on the "edit my company" page
     And I fill in the form with data :
-      | Name         | Street         | Post Code | City   | Region    | Email                | Website                   |
-      | Glada Jyckar | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
+      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
+      | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I select "Groomer" Category
     And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully updated."
-    And I should see "Company: Glada Jyckar"
+    And I should see "Company: Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Groomer"
     And I should see "Trainer"
     And I should not see "Awesome"
 
-
-#  Scenario: User tries to go do company page (sad path)
-#    Given I am logged in as "applicant_2@random.com"
-#    And I am on the "my company page" page
-#    Then I should see "You are not authorized to perform this action"
+  Scenario: User tries to go do company page (gets rerouted)
+    Given I am logged in as "applicant_2@random.com"
+    And I am on the "edit my company" page
+    Then I should be on the landing page
 
 

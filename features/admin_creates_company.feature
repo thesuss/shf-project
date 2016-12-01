@@ -37,7 +37,7 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
     And I fill in the form with data :
-      | Företagsnamn | Org nr     | Gata           | Post nr | Ort   | Verksamhetslän | Email                | Webbsida                  |
+      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I select "Groomer" Category
     And I select "Trainer" Category
