@@ -20,6 +20,7 @@ Feature: As an admin
     And the following companies exist:
       | name                 | company_number | email                  |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com |
+      | Bowsers              | 2120000142     | bowwow@bowsersy.com    |
 
     And the following applications exist:
       | first_name | user_email                 | company_number | status   |
@@ -36,13 +37,13 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
     And I fill in the form with data :
-      | Name         | Organization Number | Street         | Post Code | City   | Region    | Email                | Website                   |
-      | Glada Jyckar | 5562252998          | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
+      | Name        | Organization Number | Street         | Post Code | City   | Region    | Email                | Website                   |
+      | Happy Mutts | 5562252998          | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I select "Groomer" Category
     And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully created."
-    And I should see "Company: Glada Jyckar"
+    And I should see "Company: Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Groomer"
@@ -65,6 +66,26 @@ Feature: As an admin
       | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
       | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
 
+
+  Scenario: Admin edits a company
+    Given I am logged in as "admin@shf.se"
+    When I am on the "all companies" page
+    And I click the "Edit" action for the row with "5560360793"
+    And I fill in the form with data :
+      | Email                | Website                      |
+      | kicki@gladajyckar.se | http://www.snarkybarkbark.se |
+    And I select "Groomer" Category
+    And I select "Trainer" Category
+    And I click on "Submit"
+    Then I should see "The company was successfully updated."
+    And I should see "kicki@gladajyckar.se"
+    And I should see "http://www.snarkybarkbark.se"
+
+
+  Scenario: Admin sees all companies listed
+    Given I am logged in as "admin@shf.se"
+    When I am on the "all companies" page
+    Then I should see 2 company rows
 
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"
