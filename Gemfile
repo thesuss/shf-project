@@ -16,6 +16,7 @@ gem 'orgnummer'
 
 gem 'devise'
 gem 'pundit'
+gem 'paperclip', '~> 5.0.0'
 
 group :development, :test do
   gem 'rspec-rails'

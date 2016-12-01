@@ -3,7 +3,7 @@
 .post-title-divider
   %span
 .entry-content.wpcf7
-  = form_for @membership_application, url: membership_applications_path do |f|
+  = form_for @membership_application, html: {multipart: true}, url: membership_applications_path do |f|
     - if @membership_application.errors.any?
       - @membership_application.errors.full_messages.each do |msg|
         .wpcf7-response-output

@@ -4,6 +4,7 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'pundit/matchers'
+require 'paperclip/matchers'
 
 ActiveRecord::Migration.maintain_test_schema!
 
@@ -14,12 +15,13 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include Shoulda::Matchers::ActiveRecord, type: :model
   config.include FactoryGirl::Syntax::Methods
+  config.include Paperclip::Shoulda::Matchers
 
-  Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
+  Shoulda::Matchers.configure do |shoulda_config|
+    shoulda_config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
   end
-end
 
 end
