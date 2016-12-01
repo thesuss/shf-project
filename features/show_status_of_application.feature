@@ -12,8 +12,8 @@ Feature: As an Admin
 
     And the following applications exist:
       | company_number | user_email  | status   |
-      | 1234567890     | din@mail.se | Pending  |
-      | 1234567899     | min@mail.se | Accepted |
+      | 5562252998     | din@mail.se | Pending  |
+      | 2120000142     | min@mail.se | Accepted |
 
     And I am logged in as "admin@sgf.com"
 

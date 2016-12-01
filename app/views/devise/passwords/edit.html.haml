@@ -1,0 +1,24 @@
+%header.entry-header
+  %h1.entry-title Byt lösenord
+.post-title-divider
+  %span
+.entry-content.wpcf7
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+    = devise_error_messages!
+    = f.hidden_field :reset_password_token
+    .field
+      = f.label :password, 'Nytt lösenord', class: 'required'
+      %br/
+      - if @minimum_password_length
+        %em
+          (minst #{@minimum_password_length} tecken)
+        %br/
+      = f.password_field :password, autofocus: true, autocomplete: 'off', class: 'wpcf7-form-control'
+    .field
+      = f.label :password_confirmation, 'Bekräfta lösenord', class: 'required'
+      %br/
+      = f.password_field :password_confirmation, autocomplete: 'off', class: 'wpcf7-form-control'
+    .actions
+      = f.submit 'Byt lösenord'
+  = render 'devise/shared/links'
+  = render partial: 'partials/required_fields'

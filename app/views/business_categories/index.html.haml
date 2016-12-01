@@ -3,7 +3,7 @@
 .post-title-divider
   %span
 .entry-content
-  %table
+  %table#business_categories
     %thead
       %tr
         %th Name
@@ -13,7 +13,7 @@
         %th
     %tbody
       - @business_categories.each do |business_category|
-        %tr
+        %tr.business_category
           %td= business_category.name
           %td= business_category.description
           %td= link_to 'Show', business_category

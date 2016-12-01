@@ -14,9 +14,9 @@
 = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
 - unless @business_categories.nil?
-  %h3 Ansöker som:
-  = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
-    .checkbox
+  %h3 Ansöker som hund-*
+  .checkbox
+    = f.collection_check_boxes :business_category_ids, @business_categories, :id, :name do |b|
       = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
   %p Blå fält = valda kategorier
 = f.submit 'Submit'

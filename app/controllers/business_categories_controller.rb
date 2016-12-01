@@ -14,6 +14,7 @@ class BusinessCategoriesController < ApplicationController
 
 
   def new
+    authorize BusinessCategory
     @business_category = BusinessCategory.new
   end
 
@@ -23,6 +24,7 @@ class BusinessCategoriesController < ApplicationController
 
 
   def create
+    authorize BusinessCategory
     @business_category = BusinessCategory.new(business_category_params)
 
     if @business_category.save
