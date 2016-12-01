@@ -83,4 +83,11 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # location for where Paperclip will store files, and the url for them:
+  attachment_folder = "/storage/paperclip/:class/:id_partition/:style/:filename"
+  config.paperclip_defaults = { url: attachment_folder,
+                                path: ":rails_root/public/:url"
+  }
+
 end
