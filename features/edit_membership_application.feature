@@ -12,9 +12,9 @@ Feature: As an applicant
       | applicant_2@random.com |
 
     And the following applications exist:
-      | first_name | user_email             |
-      | Emma       | applicant_1@random.com |
-      | Hans       | applicant_2@random.com |
+      | first_name | user_email             | company_number |
+      | Emma       | applicant_1@random.com |5560360793      |
+      | Hans       | applicant_2@random.com |2120000142      |
 
   Scenario: Applicant wants to edit his own application
     Given I am logged in as "applicant_1@random.com"

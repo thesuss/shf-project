@@ -49,7 +49,7 @@ Then(/^I should be on the application page for "([^"]*)"$/) do |first_name|
 end
 
 Then(/^I should see "([^"]*)" applications$/) do |number|
-  expect(page).to have_selector('.companies', count: number)
+  expect(page).to have_selector('.applicant', count: number)
 end
 
 Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
