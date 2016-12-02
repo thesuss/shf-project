@@ -14,7 +14,7 @@
             %span.bar.bar-3
         -# Visitor navigation
         - unless current_user
-          #menu-menu-1-container.menu
+          .menu#menu-menu-1-container
             %ul#menu-menu-1.menu
               %li.menu-item
                 = link_to 'Hem', 'http://sverigeshundforetagare.se/'
@@ -72,8 +72,8 @@
               %li.menu-item
                 = link_to 'Hitta hundföretagare', root_path
         - if current_user && !current_user.try(:admin)
-          #menu-menu-2-container
-            %ul#menu-menu-2.menu
+          .menu#menu-menu-2-container
+            %ul#menu-menu-2
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
               %li.menu-item
@@ -83,8 +83,8 @@
                 %ul.sub-menu
                   %li.menu-item
         - if current_user && current_user.try(:admin)
-          #menu-menu-3-container
-            %ul#menu-menu-3.menu
+          .menu#menu-menu-3-container
+            %ul#menu-menu-3
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
               %li.menu-item.menu-item-has-children
