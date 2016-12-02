@@ -41,7 +41,7 @@
                   %li.menu-item
                     = link_to 'Om oss', 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/'
                   %li.menu-item
-                    = link_to 'Bli medlem', 'http://sverigeshundforetagare.se/agare/om-ansokan/'
+                    = link_to 'Bli medlem', 'http://sverigeshundforetagare.se/foretag/bli-medlem/'
                   %li.menu-item
                     = link_to 'Bli H-märkt', 'http://sverigeshundforetagare.se/foretag/bli-h-markt/'
                   %li.menu-item
@@ -53,7 +53,7 @@
                   %li.menu-item
                     = link_to 'Kunskapsbank', 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/'
               %li.menu-item.menu-item-has-children
-                = link_to 'Kunskapsbank', '.'
+                = link_to 'Kunskapsbank', '#'
                 %ul.sub-menu
                   %li.menu-item
                     = link_to 'Bloggar', 'http://sverigeshundforetagare.se/category/bloggar/'
@@ -76,19 +76,42 @@
             %ul#menu-menu-2
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
-              %li.menu-item
-                = link_to 'Broschyr', 'http://sverigeshundforetagare.se/broschyr/'
-              %li.menu-item.menu-item-has-children
-                = link_to 'Hundägare', 'http://sverigeshundforetagare.se/agare/'
-                %ul.sub-menu
-                  %li.menu-item
+              - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
+                %li.menu-item
+                  = link_to 'Medlemssidor', page_path('index')
+                %li.menu-item
+                  = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
+                - if member_has_company?
+                  %li.menu-item.menu-item-has-children
+                    = link_to 'Hantera företag', '#'
+                    %ul.sub-menu
+                      %li.menu-item
+                        = link_to 'Visa företagssida', edit_company_path(current_user.membership_applications.last.company)
+                      %li.menu-item
+                        = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
+              - else
+                - if current_user && !current_user.try(:admin)
+                  = link_to 'Ansök om medlemsskap', new_membership_application_path
+
         - if current_user && current_user.try(:admin)
           .menu#menu-menu-3-container
             %ul#menu-menu-3
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
+              %li.menu-item
+                = link_to 'Hantera ansökningar', membership_applications_path
               %li.menu-item.menu-item-has-children
-                = link_to 'Hantera ansökningar', '#'
+                = link_to 'Kategorier', '#'
                 %ul.sub-menu
                   %li.menu-item
-                    = link_to 'testar drop down', ''
+                    = link_to 'Lista kategorier', business_categories_path
+                  %li.menu-item
+                    = link_to 'Ny kategori', new_business_category_path
+              %li.menu-item.menu-item-has-children
+                = link_to 'Företag', '#'
+                %ul.sub-menu
+                  %li.menu-item
+                    = link_to 'Lista kategorier', companies_path
+                  %li.menu-item
+                    = link_to 'Ny kategori', new_company_path
+        = render 'partials/social_nav'
