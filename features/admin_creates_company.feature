@@ -39,15 +39,12 @@ Feature: As an admin
     And I fill in the form with data :
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-    And I select "Groomer" Category
-    And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully created."
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
-    And I should see "Groomer"
-    And I should see "Trainer"
+
 
 
   Scenario Outline: Admin creates company - when things go wrong
