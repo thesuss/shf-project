@@ -45,7 +45,8 @@ Feature: As a member
 
   Scenario: Another tries to edit your company page (gets rerouted)
     Given I am logged in as "emma@happymutts.com"
-    And I am on the "edit my company" page for "emma@happymutts.com"
+    #And I am on the "edit my company" page for "emma@happymutts.com"
+    And I am on the "edit my company" page
     And I fill in the form with data :
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
