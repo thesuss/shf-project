@@ -37,13 +37,13 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
     And I fill in the form with data :
-      | Företagsnamn | Org nr     | Gata           | Post nr | Ort   | Verksamhetslän | Email                | Webbsida                  |
+      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I select "Groomer" Category
     And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully created."
-    And I should see "Company: Happy Mutts"
+    And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Groomer"
@@ -99,11 +99,11 @@ Feature: As an admin
       | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
       | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
 
-
   Scenario: Admin sees all companies listed
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
-    Then I should see 2 company rows
+    Then I should see "No More Snarky Barky"
+    And I should see "Bowsers"
 
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"

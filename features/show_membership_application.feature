@@ -12,17 +12,17 @@ Feature: As an Admin
 
   Background:
     Given the following users exists
-      | email                  | admin |
-      | applicant_1@random.com |       |
-      | applicant_2@random.com |       |
-      | applicant_3@random.com |       |
-      | admin@sgf.com          | true  |
+      | email           | admin |
+      | emma@random.com |       |
+      | hans@random.com |       |
+      | anna@random.com |       |
+      | admin@sgf.com   | true  |
 
     And the following applications exist:
-      | first_name | user_email             | company_number |
-      | Emma       | applicant_1@random.com | 5562252998     |
-      | Hans       | applicant_2@random.com | 5560360793     |
-      | Anna       | applicant_3@random.com | 2120000142     |
+      | first_name | user_email      | company_number |
+      | Emma       | emma@random.com | 5562252998     |
+      | Hans       | hans@random.com | 5560360793     |
+      | Anna       | anna@random.com | 2120000142     |
 
     And the following business categories exist
       | name         |
@@ -34,13 +34,13 @@ Feature: As an Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    And I click the "Manage" action for the row with "5562252998"
+    And I click on "Emma Lastname"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
     And I should see "5562252998"
 
   Scenario: Admin can see an application with one business categories given
-    Given I am logged in as "applicant_2@random.com"
+    Given I am logged in as "hans@random.com"
     And I am on the "landing" page
     And I click on "Min ansökan"
     And I select "Groomer" Category
@@ -49,16 +49,15 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    And I click the "Manage" action for the row with "5560360793"
+    And I click on "Hans Lastname"
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
-    And I should see "5560360793"
     And I should see "Groomer"
     And I should not see "Trainer"
     And I should not see "Psychologist"
 
   Scenario: Admin can see an application with multiple business categories given
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on "Min ansökan"
     And I select "Trainer" Category
@@ -68,7 +67,7 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "3" applications
-    And I click the "Manage" action for the row with "5562252998"
+    And I click on "Emma Lastname"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
     And I should see "5562252998"
@@ -77,6 +76,6 @@ Feature: As an Admin
     And I should not see "Groomer"
 
   Scenario: Listing incoming Applications restricted for Non-admins
-    Given I am logged in as "applicant_2@random.com"
+    Given I am logged in as "hans@random.com"
     And I am on the list applications page
     Then I should see "You are not authorized to perform this action."

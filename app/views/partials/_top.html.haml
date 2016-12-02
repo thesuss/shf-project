@@ -26,9 +26,13 @@
             %li
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
                 = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
+                - if member_has_company?
+                  = link_to 'Mitt företag', edit_company_path(current_user.membership_applications.last.company)
               - else
                 - if current_user && !current_user.try(:admin)
                   = link_to 'Ansök om medlemsskap', new_membership_application_path
+
+
     / Social profiles
     .social-nav
       .tb
