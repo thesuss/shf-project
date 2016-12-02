@@ -63,6 +63,11 @@ Feature: As a user
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
 
+  Scenario: Applicant not see membership number when submitting
+    Given I am on the "landing" page
+    And I click on "Ansök om medlemsskap"
+    Then I should not see "Membership Number"
+
   Scenario: Applicant can see which fields are required
     Given I am on the "landing" page
     And I click on "Ansök om medlemsskap"

@@ -15,6 +15,7 @@ RSpec.describe MembershipApplication, type: :model do
     it { is_expected.to have_db_column :phone_number }
     it { is_expected.to have_db_column :contact_email }
     it { is_expected.to have_db_column :status }
+    it { is_expected.to have_db_column :membership_number }
   end
 
   describe 'Validations' do

@@ -6,6 +6,8 @@
 
   %h2= member_full_name
 
+  = render 'membership_number'
+
   %p= mail_to @membership_application.contact_email, @membership_application.contact_email
 
   - if @membership_application.phone_number
