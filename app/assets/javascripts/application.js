@@ -46,12 +46,6 @@ jQuery('#site-navigation .toggle-sub-menu').on('click', function() {
     jQuery(this).next().slideToggle('fast');
 });
 
-// Menu widget sub menu toggle button click
-jQuery('.widget_nav_menu .toggle-sub-menu').on('click', function() {
-    jQuery(this).toggleClass('toggle-sub-menu-active');
-    jQuery(this).next().slideToggle('fast');
-});
-
 // Add mobile class to menu on load or resize
 if ( jQuery('body').width() <= 1200 ) {
     jQuery('#site-navigation .menu').addClass('mobile-menu');
