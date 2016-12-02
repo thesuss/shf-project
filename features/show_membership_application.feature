@@ -19,9 +19,9 @@ Feature: As an Admin
       | admin@sgf.com   | true  |
 
     And the following applications exist:
-      | first_name | user_email       | company_number | status   |
-      | Emma       | emma@random.com  | 5562252998     | Accepted |
-      | Hans       | hans@random.com  | 5560360793     | pending  |
+      | first_name | user_email      | company_number | status   |
+      | Emma       | emma@random.com | 5562252998     | Accepted |
+      | Hans       | hans@random.com | 5560360793     | pending  |
       | Anna       | anna@random.com | 2120000142     | pending  |
 
     And the following business categories exist

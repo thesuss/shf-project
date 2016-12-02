@@ -10,7 +10,7 @@ class CompaniesController < ApplicationController
 
 
   def show
-    @categories = @company.business_categories
+    @categories = @company.categories
   end
 
 
@@ -66,4 +66,5 @@ class CompaniesController < ApplicationController
   def authorize_company
     authorize @company
   end
+
 end

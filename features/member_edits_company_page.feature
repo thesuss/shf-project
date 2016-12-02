@@ -32,16 +32,11 @@ Feature: As a member
     And I fill in the form with data :
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-    And I select "Groomer" Category
-    And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully updated."
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
-    And I should see "Groomer"
-    And I should see "Trainer"
-    And I should not see "Awesome"
 
   Scenario: Another tries to edit your company page (gets rerouted)
     Given I am logged in as "emma@happymutts.com"
