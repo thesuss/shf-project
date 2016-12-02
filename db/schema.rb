@@ -60,7 +60,9 @@ ActiveRecord::Schema.define(version: 20161202101242) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
+    t.integer  "company_id"
     t.string   "membership_number"
+    t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 
@@ -89,6 +91,7 @@ ActiveRecord::Schema.define(version: 20161202101242) do
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.boolean  "admin",                  default: false
+    t.boolean  "is_member",              default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
