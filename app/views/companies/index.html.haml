@@ -34,7 +34,6 @@
             %td= link_to 'Edit', edit_company_path(company)
             %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
   %br
-  - if current_user && !current_user.try(:admin)
+  - if current_user.try(:admin)
     .center
       = link_to 'Skapa nytt företag', new_company_path
-
