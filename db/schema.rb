@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161201061301) do
+ActiveRecord::Schema.define(version: 20161202101242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,13 +53,14 @@ ActiveRecord::Schema.define(version: 20161201061301) do
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "user_id"
-    t.string   "status",         default: "Pending"
+    t.string   "status",            default: "Pending"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
+    t.string   "membership_number"
     t.integer  "company_id"
     t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
