@@ -9,9 +9,9 @@ Feature: As a visitor,
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    |
 
     And the following users exists
-      | email               | admin | is_member |
-      | emma@happymutts.com |       |     false      |
-      | admin@shf.se        | true  | true      |
+      | email               | admin |
+      | emma@happymutts.com |       |
+      | admin@shf.se        | true  |
 
 
   Scenario: Visitor sees all companies
