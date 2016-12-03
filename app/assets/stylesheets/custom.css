@@ -2,6 +2,22 @@
     padding-top: 41px;
     padding-bottom: 1px;
 }
+.site-title {
+    font-family: 'Open Sans', serif;
+    line-height: 75px;
+    font-weight: 400;
+    font-style: normal;
+    color: #222;
+    font-size: 50px;
+}
+.site-description {
+    font-family: 'Open Sans', serif;
+    line-height: 18px;
+    font-weight: 400;
+    font-style: normal;
+    color: #666;
+    font-size: 12px;
+}
 #site-navigation {
 	background-color: #fff;
 }
