@@ -1,4 +1,8 @@
+require 'active_support/logger'
+
+
 namespace :shf do
+
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
@@ -6,29 +10,73 @@ namespace :shf do
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
 
-  usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/applications-from-prev-system.csv"]'
 
-  DEFAULT_PASSWORD = 'whatever'
-  ACCEPTED_STATUS = 'Accepted'
+  desc "get valid company numbers from a text file. Expects to find them as Org no556357-3046 (no space after 'Org no'"
+  task :get_valid_companyNums, [:text_file] => [:environment] do |t, args|
+    # ex: text copied from https://foretagsfakta.bolagsverket.se/fpl-dft-ext-web/home.seam?actionMethod=home.xhtml%3Asearch.sokning.prevPage&cid=234026
 
-  require 'csv'
-  require 'logger'
+    usage = 'rake shf:get_valid_companyNums["./spec/fixtures/test-import-files/company-numbers-source.txt"]'
+    match_pattern = /Org no(\d\d\d\d\d\d-\d\d\d\d)/
+
+    start_time = Time.now
+    log = start_logging(start_time)
+
+    if args.has_key? :text_file
+
+      if File.exists? args[:text_file]
+
+        contents = File.open(args[:text_file], 'r') { |f| f.read }
+        contents = contents.scrub '*' # file has some bad encoding, so have to do this
+
+        company_numbers = contents.match
+
+        puts "found: #{company_numbers.inspect}"
+      else
+        log_and_show log, Logger::ERROR, "ERROR:  #{args[:text_file]} does not exist. Nothing imported"
+        log_finish_and_close(log, start_time, Time.now)
+        raise LoadError
+      end
+    else
+      log_and_show log, Logger::ERROR, "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
+      log_finish_and_close(log, start_time, Time.now)
+      raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
+    end
+
+    log_finish_and_close(log, start_time, Time.now)
+  end
+
+
+  desc 'copies given csv file, replaces org numbers and email with fake ones. saves as fake-<filename>'
+  task :copy_and_replace_orgNums_emails_with_fakes, [:csv_filename] => [:environment] do |t, args|
+
+    start_time = Time.now
+    log = start_logging(start_time)
+
+    log_finish_and_close(log, start_time, Time.now)
+  end
+
 
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
 
+    require 'csv'
     # TODO: handle multiple categories
-    # TODO: refactor!!!  so. much. commonality
+    # TODO: refactor!!!  so. much. commonality.
     # TODO - error handling (rescue, log errors)
     # TODO - let user map the keys with the row header names in the csv file (YML?)
+    #   smarter_csv gem? https://github.com/tilo/smarter_csv
 
-    log = ActiveSupport::Logger.new('log/import-members.log')
+    usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/applications-from-prev-system.csv"]'
+
+    DEFAULT_PASSWORD = 'whatever'
+    ACCEPTED_STATUS = 'Accepted'
+
     start_time = Time.now
+    log = start_logging(start_time)
 
     if args.has_key? :csv_filename
 
-      #if File.exists? args[:csv_filename]
-        begin
+      if File.exists? args[:csv_filename]
         csv_text = File.read(args[:csv_filename])
         csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
         num_read = 0
@@ -38,14 +86,49 @@ namespace :shf do
         end
 
         puts "\nFinished.  Read #{num_read} rows."
-      rescue LoadError
-        log.add(Logger::ERROR,"ERROR:  #{args[:csv_filename]} does not exist. Nothing imported" )
-        raise "ERROR:  #{args[:csv_filename]} does not exist. Nothing imported"
+      else
+        log.add(Logger::ERROR, "ERROR:  #{args[:csv_filename]} does not exist. Nothing imported")
+        log_finish_and_close(log, start_time, Time.now)
+        raise LoadError
       end
-    else
 
+    else
+      log.add(Logger::ERROR, "ERROR: You must specify a .csv filename to import. Ex: #{usage}")
+      log_finish_and_close(log, start_time, Time.now)
       raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
     end
+
+    log_finish_and_close(log, start_time, Time.now)
+  end
+
+
+
+
+  def start_logging(start_time = Time.now, log_fn = 'log/import-members.log')
+    log = ActiveSupport::Logger.new(log_fn)
+    log_and_show log, Logger::INFO, "\n\nImport started at #{start_time}"
+    log
+  end
+
+  # Severity label for logging (max 5 chars).
+  LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY).each(&:freeze).freeze
+
+  def log_level_text(log_level)
+    LOG_LEVEL_LABEL[log_level] || 'ANY'
+  end
+
+
+  def log_and_show(log, log_level, message)
+    log.add log_level, message
+    puts "#{log_level_text(log_level)}: #{message}"
+  end
+
+
+  def log_finish_and_close(log, start_time, end_time)
+    duration = (start_time - end_time) / 1.minute
+    log_and_show log, Logger::INFO, "Import finished at #{start_time}.\n"
+    log.close
+    log
   end
 
 
@@ -71,7 +154,6 @@ namespace :shf do
     # category
     #
     # TODO convert string keys to symbols -- then I can splat them into the methods
-
 
 
     if (user = User.find_by(email: row['email']))
@@ -143,7 +225,7 @@ namespace :shf do
                              stad:,
                              region:,
                              phone_number:,
-                             website: )
+                             website:)
 
     company = Company.find_by_company_number(company_num)
     if company
