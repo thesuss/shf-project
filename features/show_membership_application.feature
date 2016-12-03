@@ -77,7 +77,7 @@ Feature: As an Admin
     And I should not see "Groomer"
 
   Scenario: Approved member should see membership number
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on "Min ansökan"
     Then I should see "Membership number"
