@@ -1,4 +1,4 @@
-membership_number;email;company_number;first_name;last_name;company_name;street;post_code;stad;region;phone_number;website;category;category
+membership_number;email;company_number;first_name;last_name;company_name;street;post_code;stad;region;phone_number;website;category1;category2
 3;info@hundlycka.com;9696353516;Linn;Aasen;Hundlycka;Hagalundsvägen 9;632 30;Eskilstuna;Södermanland;;http;//www.hundlycka.com;Träning;
 38;bitte@hundkurserforalla.se;9696550376;Britt-Marie;Andersson;Hundkurser för Alla;Fagerängsgatan 11;521 41;Falköping;Västra Götaland;0515-155 57;http;//www.hundkurserforalla.se;Träning;
 43;sofia@heartofgold.se;9696354944;Sofia;Angleby;Heart of gold Hundcenter;Arremdevägen 9; 4 tr;175 94;Järfälla;Stockholm;070-689 8264;http;//www.heartofgold.se;Träning;Psykologi
