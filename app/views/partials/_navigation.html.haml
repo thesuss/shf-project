@@ -2,10 +2,10 @@
   %a{ href: '#' }
     = icon('angle-up')
 .container-fluid.hfeed.site
-  %header#masthead.site-header{role: 'banner'}
+  %header.site-header#masthead{role: 'banner'}
     %a.skip-link.screen-reader-text{href: '#content'} Skip to content
     / main navigation
-    %nav#site-navigation.main-navigation.fixed-nav{role: 'navigation'}
+    %nav.main-navigation.fixed-nav#site-navigation{role: 'navigation'}
       .nav-wrapper
         %a.menu-toggle{href: '#'}
           %span.bars
@@ -14,8 +14,8 @@
             %span.bar.bar-3
         -# Visitor navigation
         - unless current_user
-          #menu-menu-1-container.menu
-            %ul#menu-menu-1.menu
+          .menu#menu-menu-1-container
+            %ul.menu#menu-menu-1
               %li.menu-item
                 = link_to 'Hem', 'http://sverigeshundforetagare.se/'
               %li.menu-item
@@ -73,7 +73,7 @@
                 = link_to 'Hitta hundföretagare', root_path
         - if current_user && !current_user.try(:admin)
           .menu#menu-menu-2-container
-            %ul#menu-menu-2
+            %ul.menu#menu-menu-2
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
@@ -95,7 +95,7 @@
 
         - if current_user && current_user.try(:admin)
           .menu#menu-menu-3-container
-            %ul#menu-menu-3
+            %ul.menu#menu-menu-3
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
               %li.menu-item
