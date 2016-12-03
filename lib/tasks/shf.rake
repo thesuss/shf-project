@@ -62,7 +62,7 @@ namespace :shf do
     # TODO - let user map the keys with the row header names in the csv file (YML?)
     #   smarter_csv gem? https://github.com/tilo/smarter_csv
 
-    usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/applications-from-prev-system.csv"]'
+    usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/member-companies-sanitized-small.csv"]'
 
     DEFAULT_PASSWORD = 'whatever'
     ACCEPTED_STATUS = 'Accepted'
