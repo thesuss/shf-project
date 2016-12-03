@@ -55,6 +55,7 @@ namespace :shf do
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
 
+
     require 'csv'
     require 'smarter_csv'
 
@@ -96,23 +97,30 @@ namespace :shf do
         key_mapping: headers_to_columns_mapping
     }
 
-
     start_time = Time.now
     log = start_logging(start_time)
 
     if args.has_key? :csv_filename
 
       if File.exists? args[:csv_filename]
+
         csv = SmarterCSV.process(args[:csv_filename], csv_options)
         #csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
 
         num_read = 0
+        error_rows = 0
         csv.each do |row|
-          import_a_member_app_csv(row)
-          num_read += 1
+          begin
+            import_a_member_app_csv(row, log)
+            num_read += 1
+          rescue ActiveRecord::RecordInvalid => invalid_info
+            error_rows += 1
+            log_and_show(log, Logger::ERROR, "#{invalid_info.record.errors.full_messages.join(", ")}")
+          end
         end
 
-        puts "\nFinished.  Read #{num_read} rows."
+        log_and_show log, Logger::INFO, "\nFinished.  Read #{num_read} rows and had #{error_rows} errors."
+
       else
         log_file_doesnt_exist_and_close(log, args[:csv_filename], start_time)
         finish_and_close_log(log, start_time, Time.now)
@@ -170,9 +178,9 @@ namespace :shf do
   end
 
 
-  def import_a_member_app_csv(row)
+  def import_a_member_app_csv(row, log)
 
-    puts "Importing row: #{row.inspect} ..."
+    log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
 
     if (user = User.find_by(email: row[:email]))
       puts_already_exists 'User', row[:email]
@@ -197,7 +205,6 @@ namespace :shf do
                                                  user: user
       )
 
-
       if membership
         puts_created('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
 
@@ -214,8 +221,6 @@ namespace :shf do
           user.is_member = true
           user.save!
         end
-      else
-        puts "  Error: Membership application couldn't be created."
       end
 
     end
@@ -263,6 +268,7 @@ namespace :shf do
 
       company = Company.find_by_company_number(company_num)
       puts_created 'Company', company.company_number
+
     end
     company
   end
