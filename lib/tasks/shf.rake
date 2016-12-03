@@ -26,7 +26,7 @@ namespace :shf do
         contents = File.open(args[:text_file], 'r') { |f| f.read }
         contents = contents.scrub '*' # file has some bad encoding, so have to do this
 
-        company_numbers =  contents.scan match_pattern
+        company_numbers = contents.scan match_pattern
         log_and_show log, Logger::INFO, "#{company_numbers.flatten}"
 
       else
@@ -56,6 +56,8 @@ namespace :shf do
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
 
     require 'csv'
+    require 'smarter_csv'
+
     # TODO: handle multiple categories
     # TODO: refactor!!!  so. much. commonality.
     # TODO - error handling (rescue, log errors)
@@ -67,14 +69,43 @@ namespace :shf do
     DEFAULT_PASSWORD = 'whatever'
     ACCEPTED_STATUS = 'Accepted'
 
+    headers_to_columns_mapping = {
+        # headers:
+        membership_number: :membership_number,
+        email: :email,
+        company_number: :company_number,
+        first_name: :first_name,
+        last_name: :last_name,
+        company_name: :company_name,
+        street: :street,
+        post_code: :post_code,
+        stad: :city,
+        region: :region,
+        phone_number: :phone_number,
+        website: :website,
+        category1: :category1,
+        category2: :category2
+    }
+
+    csv_options = {
+        col_sep: ';',
+        headers_in_file: true,
+        remove_empty_values: false,
+        remove_zero_values: false,
+        file_encoding: 'ISO-8859-1',
+        key_mapping: headers_to_columns_mapping
+    }
+
+
     start_time = Time.now
     log = start_logging(start_time)
 
     if args.has_key? :csv_filename
 
       if File.exists? args[:csv_filename]
-        csv_text = File.read(args[:csv_filename])
-        csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+        csv = SmarterCSV.process(args[:csv_filename], csv_options)
+        #csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+
         num_read = 0
         csv.each do |row|
           import_a_member_app_csv(row)
@@ -97,16 +128,16 @@ namespace :shf do
   end
 
 
-
-
   def start_logging(start_time = Time.now, log_fn = 'log/import.log')
     log = ActiveSupport::Logger.new(log_fn)
     log_and_show log, Logger::INFO, "Import started at #{start_time}"
     log
   end
 
+
   # Severity label for logging (max 5 chars).
   LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY).each(&:freeze).freeze
+
 
   def log_level_text(log_level)
     LOG_LEVEL_LABEL[log_level] || 'ANY'
@@ -143,61 +174,42 @@ namespace :shf do
 
     puts "Importing row: #{row.inspect} ..."
 
-    ##
-    # row headers:
-    ## membership_number;
-    # email;
-    # company_number;
-    # first_name;
-    # last_name;
-    # company_name;
-    # street;
-    # post_code;
-    # stad;
-    # region;
-    # phone_number;
-    # website;
-    # category;
-    # category
-    #
-    # TODO convert string keys to symbols -- then I can splat them into the methods
-
-
-    if (user = User.find_by(email: row['email']))
-      puts_already_exists 'User', row['email']
+    if (user = User.find_by(email: row[:email]))
+      puts_already_exists 'User', row[:email]
     else
-      user = User.create!(email: row['email'], password: DEFAULT_PASSWORD)
-      puts_created 'User', row['email']
+      user = User.create!(email: row[:email], password: DEFAULT_PASSWORD)
+      puts_created 'User', row[:email]
     end
 
     if (membership = MembershipApplication.find_by(user: user.id))
-      puts_already_exists('Membership application', " org number: #{row['company_number']}, status: #{row['status']}")
+      puts_already_exists('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
       # TODO: update info
     else
-      category1 = find_or_create_category row['category']
+      category1 = find_or_create_category row[:category1] unless row[:category1].empty?
+      category1 = find_or_create_category row[:category2] unless row[:category2].empty?
 
-      membership = MembershipApplication.create!(company_number: row['company_number'],
-                                                 first_name: row['first_name'],
-                                                 last_name: row['last_name'],
+      membership = MembershipApplication.create!(company_number: row[:company_number],
+                                                 first_name: row[:first_name],
+                                                 last_name: row[:last_name],
                                                  contact_email: user.email,
                                                  status: ACCEPTED_STATUS,
-                                                 membership_number: row['membership_number'],
+                                                 membership_number: row[:membership_number],
                                                  user: user
       )
 
 
       if membership
-        puts_created('Membership application', " org number: #{row['orgnr']}, status: #{row['status']}")
+        puts_created('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
 
         if membership.status == ACCEPTED_STATUS
-          membership.company = find_or_create_company(row['company_number'], user.email,
-                                                      name: row['company_name'],
-                                                      street: row['street'],
-                                                      post_code: row['post_code'],
-                                                      stad: row['stad'],
-                                                      region: row['region'],
-                                                      phone_number: row['phone_number'],
-                                                      website: row['website']
+          membership.company = find_or_create_company(row[:company_number], user.email,
+                                                      name: row[:company_name],
+                                                      street: row[:street],
+                                                      post_code: row[:post_code],
+                                                      city: row[:city],
+                                                      region: row[:region],
+                                                      phone_number: row[:phone_number],
+                                                      website: row[:website]
           )
           user.is_member = true
           user.save!
@@ -229,7 +241,7 @@ namespace :shf do
                              name:,
                              street:,
                              post_code:,
-                             stad:,
+                             city:,
                              region:,
                              phone_number:,
                              website:)
@@ -244,7 +256,7 @@ namespace :shf do
                       name: name,
                       street: street,
                       post_code: post_code,
-                      city: stad,
+                      city: city,
                       region: region,
                       phone_number: phone_number,
                       website: website)
