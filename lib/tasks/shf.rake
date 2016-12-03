@@ -32,17 +32,15 @@ namespace :shf do
 
         puts "found: #{company_numbers.inspect}"
       else
-        log_and_show log, Logger::ERROR, "ERROR:  #{args[:text_file]} does not exist. Nothing imported"
-        log_finish_and_close(log, start_time, Time.now)
+        log_file_doesnt_exist_and_close(log, args[:text_file], start_time)
         raise LoadError
       end
     else
-      log_and_show log, Logger::ERROR, "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
-      log_finish_and_close(log, start_time, Time.now)
+      log_must_provide_filename_and_close(log, usage, start_time)
       raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
     end
 
-    log_finish_and_close(log, start_time, Time.now)
+    finish_and_close_log(log, start_time, Time.now)
   end
 
 
@@ -52,7 +50,7 @@ namespace :shf do
     start_time = Time.now
     log = start_logging(start_time)
 
-    log_finish_and_close(log, start_time, Time.now)
+    finish_and_close_log(log, start_time, Time.now)
   end
 
 
@@ -87,18 +85,17 @@ namespace :shf do
 
         puts "\nFinished.  Read #{num_read} rows."
       else
-        log.add(Logger::ERROR, "ERROR:  #{args[:csv_filename]} does not exist. Nothing imported")
-        log_finish_and_close(log, start_time, Time.now)
+        log_file_doesnt_exist_and_close(log, args[:csv_filename], start_time)
+        finish_and_close_log(log, start_time, Time.now)
         raise LoadError
       end
 
     else
-      log.add(Logger::ERROR, "ERROR: You must specify a .csv filename to import. Ex: #{usage}")
-      log_finish_and_close(log, start_time, Time.now)
+      log_must_provide_filename_and_close(log, usage, start_time)
       raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
     end
 
-    log_finish_and_close(log, start_time, Time.now)
+    finish_and_close_log(log, start_time, Time.now)
   end
 
 
@@ -124,7 +121,19 @@ namespace :shf do
   end
 
 
-  def log_finish_and_close(log, start_time, end_time)
+  def log_file_doesnt_exist_and_close(log, filename, start_time, end_time=Time.now)
+    log_and_show log, Logger::ERROR, "#{filename} does not exist. Nothing imported"
+    finish_and_close_log(log, start_time, end_time)
+  end
+
+
+  def log_must_provide_filename_and_close(log, usage_example, start_time, end_time=Time.now)
+    log_and_show(log, Logger::ERROR, "You must specify a .csv filename to import.\n  Ex: #{usage_example}")
+    finish_and_close_log(log, start_time, end_time)
+  end
+
+
+  def finish_and_close_log(log, start_time, end_time)
     duration = (start_time - end_time) / 1.minute
     log_and_show log, Logger::INFO, "Import finished at #{start_time}.\n"
     log.close
