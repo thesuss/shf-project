@@ -10,9 +10,9 @@ RSpec.describe 'shf:import_membership_apps' do
 
   describe 'all data is valid' do
 
-
+    VALID_FILE = 'applications-from-prev-system.csv'
     it 'should process without any errors' do
-      expect { subject.invoke(File.join(CSV_DIR, 'valid-applications.csv')) }.not_to raise_error
+      expect { subject.invoke(File.join(CSV_DIR, VALID_FILE)) }.not_to raise_error
     end
 
     describe 'should create 4 users' do
@@ -22,13 +22,13 @@ RSpec.describe 'shf:import_membership_apps' do
 
       it 'create users' do
         #orig_num_users = Users.all.count
-        subject.invoke(File.join(CSV_DIR, 'valid-applications.csv'))
+        subject.invoke(File.join(CSV_DIR, VALID_FILE))
 
       #  expect(Users.all.count).to eq(orig_num_users + 4)
       end
       it "new users have default password 'whatever' " do
         #orig_num_users = Users.all.count
-        subject.invoke(File.join(CSV_DIR, 'valid-applications.csv'))
+        subject.invoke(File.join(CSV_DIR, VALID_FILE))
 
       #  expect(Users.first.password).to eq 'whatever'
       end
