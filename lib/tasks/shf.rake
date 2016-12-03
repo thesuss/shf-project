@@ -97,8 +97,9 @@ namespace :shf do
         key_mapping: headers_to_columns_mapping
     }
 
+    logfile = 'log/import.log'
     start_time = Time.now
-    log = start_logging(start_time)
+    log = start_logging(start_time, logfile)
 
     if args.has_key? :csv_filename
 
@@ -119,7 +120,7 @@ namespace :shf do
           end
         end
 
-        log_and_show log, Logger::INFO, "\nFinished.  Read #{num_read} rows and had #{error_rows} errors."
+        log_and_show log, Logger::INFO, "\nFinished.  Read #{num_read + error_rows} rows.\n  #{num_read} were valid and their information was imported.\n  #{error_rows} had errors."
 
       else
         log_file_doesnt_exist_and_close(log, args[:csv_filename], start_time)
@@ -132,49 +133,8 @@ namespace :shf do
       raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
     end
 
+    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
     finish_and_close_log(log, start_time, Time.now)
-  end
-
-
-  def start_logging(start_time = Time.now, log_fn = 'log/import.log')
-    log = ActiveSupport::Logger.new(log_fn)
-    log_and_show log, Logger::INFO, "Import started at #{start_time}"
-    log
-  end
-
-
-  # Severity label for logging (max 5 chars).
-  LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY).each(&:freeze).freeze
-
-
-  def log_level_text(log_level)
-    LOG_LEVEL_LABEL[log_level] || 'ANY'
-  end
-
-
-  def log_and_show(log, log_level, message)
-    log.add log_level, message
-    puts "#{log_level_text(log_level)}: #{message}"
-  end
-
-
-  def log_file_doesnt_exist_and_close(log, filename, start_time, end_time=Time.now)
-    log_and_show log, Logger::ERROR, "#{filename} does not exist. Nothing imported"
-    finish_and_close_log(log, start_time, end_time)
-  end
-
-
-  def log_must_provide_filename_and_close(log, usage_example, start_time, end_time=Time.now)
-    log_and_show(log, Logger::ERROR, "You must specify a .csv filename to import.\n  Ex: #{usage_example}")
-    finish_and_close_log(log, start_time, end_time)
-  end
-
-
-  def finish_and_close_log(log, start_time, end_time)
-    duration = (start_time - end_time) / 1.minute
-    log_and_show log, Logger::INFO, "Import finished at #{start_time}.\n"
-    log.close
-    log
   end
 
 
@@ -189,13 +149,23 @@ namespace :shf do
       puts_created 'User', row[:email]
     end
 
+    # TODO - associate categories with the membership_app
+    category1 = find_or_create_category row[:category1] unless row[:category1].empty?
+    category1 = find_or_create_category row[:category2] unless row[:category2].empty?
+
+    company = find_or_create_company(row[:company_number], user.email,
+                                     name: row[:company_name],
+                                     street: row[:street],
+                                     post_code: row[:post_code],
+                                     city: row[:city],
+                                     region: row[:region],
+                                     phone_number: row[:phone_number],
+                                     website: row[:website])
+
     if (membership = MembershipApplication.find_by(user: user.id))
       puts_already_exists('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
       # TODO: update info
     else
-      category1 = find_or_create_category row[:category1] unless row[:category1].empty?
-      category1 = find_or_create_category row[:category2] unless row[:category2].empty?
-
       membership = MembershipApplication.create!(company_number: row[:company_number],
                                                  first_name: row[:first_name],
                                                  last_name: row[:last_name],
@@ -205,26 +175,15 @@ namespace :shf do
                                                  user: user
       )
 
-      if membership
-        puts_created('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
-
-        if membership.status == ACCEPTED_STATUS
-          membership.company = find_or_create_company(row[:company_number], user.email,
-                                                      name: row[:company_name],
-                                                      street: row[:street],
-                                                      post_code: row[:post_code],
-                                                      city: row[:city],
-                                                      region: row[:region],
-                                                      phone_number: row[:phone_number],
-                                                      website: row[:website]
-          )
-          user.is_member = true
-          user.save!
-        end
-      end
+      puts_created('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
 
     end
 
+    if membership.status == ACCEPTED_STATUS
+      membership.company = company
+      user.is_member = true
+      user.save!
+    end
 
   end
 
@@ -254,7 +213,7 @@ namespace :shf do
     company = Company.find_by_company_number(company_num)
     if company
       puts_already_exists 'Company', "#{company_num}"
-      # TODO: update info
+      # TODO: update info?
     else
       Company.create!(company_number: company_num,
                       email: email,
@@ -268,9 +227,50 @@ namespace :shf do
 
       company = Company.find_by_company_number(company_num)
       puts_created 'Company', company.company_number
-
     end
     company
+  end
+
+
+  def start_logging(start_time = Time.now, log_fn = 'log/import.log')
+    log = ActiveSupport::Logger.new(log_fn)
+    log_and_show log, Logger::INFO, "Import started at #{start_time}"
+    log
+  end
+
+
+# Severity label for logging (max 5 chars).
+  LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY).each(&:freeze).freeze
+
+
+  def log_level_text(log_level)
+    LOG_LEVEL_LABEL[log_level] || 'ANY'
+  end
+
+
+  def log_and_show(log, log_level, message)
+    log.add log_level, message
+    puts "#{log_level_text(log_level)}: #{message}"
+  end
+
+
+  def log_file_doesnt_exist_and_close(log, filename, start_time, end_time=Time.now)
+    log_and_show log, Logger::ERROR, "#{filename} does not exist. Nothing imported"
+    finish_and_close_log(log, start_time, end_time)
+  end
+
+
+  def log_must_provide_filename_and_close(log, usage_example, start_time, end_time=Time.now)
+    log_and_show(log, Logger::ERROR, "You must specify a .csv filename to import.\n  Ex: #{usage_example}")
+    finish_and_close_log(log, start_time, end_time)
+  end
+
+
+  def finish_and_close_log(log, start_time, end_time)
+    duration = (start_time - end_time) / 1.minute
+    log_and_show log, Logger::INFO, "Import finished at #{start_time}."
+    log.close
+    log
   end
 
 
@@ -287,6 +287,7 @@ namespace :shf do
   def puts_error_creating(item_type, item_name)
     puts " ERROR: Could not create #{item_type} #{item_name}.  Skipped"
   end
+
 
 end
 
