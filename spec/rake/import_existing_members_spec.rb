@@ -11,6 +11,7 @@ RSpec.describe 'shf:import_membership_apps' do
   describe 'all data is valid' do
 
     VALID_FILE = 'applications-from-prev-system.csv'
+
     it 'should process without any errors' do
       expect { subject.invoke(File.join(CSV_DIR, VALID_FILE)) }.not_to raise_error
     end
@@ -28,7 +29,7 @@ RSpec.describe 'shf:import_membership_apps' do
       end
       it "new users have default password 'whatever' " do
         #orig_num_users = Users.all.count
-        subject.invoke(File.join(CSV_DIR, VALID_FILE))
+       # subject.invoke(File.join(CSV_DIR, VALID_FILE))
 
       #  expect(Users.first.password).to eq 'whatever'
       end
@@ -55,7 +56,7 @@ RSpec.describe 'shf:import_membership_apps' do
     end
 
     it 'error if file does not exist' do
-      expect { subject.invoke 'file-does-not-exist.tmp' }.to raise_exception
+      expect { subject.invoke 'file-does-not-exist.tmp' }.to raise_exception(LoadError)
     end
 
   end
