@@ -77,8 +77,13 @@
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
-                %li.menu-item
+                %li.menu-item.menu-item-has-children
                   = link_to 'Medlemssidor', page_path('index')
+                  %ul.sub-menu
+                    - HighVoltage.page_ids.each do |page|
+                      - unless page == 'index'
+                        %li.menu-item
+                          = link_to page.capitalize, page_path(page)
                 %li.menu-item
                   = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
                 - if member_has_company?
@@ -91,7 +96,8 @@
                         = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
               - else
                 - if current_user && !current_user.try(:admin)
-                  = link_to 'Ansök om medlemsskap', new_membership_application_path
+                  %li.menu-item
+                    = link_to 'Ansök om medlemsskap', new_membership_application_path
 
         - if current_user && current_user.try(:admin)
           .menu#menu-menu-3-container
