@@ -88,10 +88,10 @@
                   = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
                 - if member_has_company?
                   %li.menu-item.menu-item-has-children
-                    = link_to 'Hantera företag', show_company_path(current_user.membership_applications.last.company)
+                    = link_to 'Hantera företag', company_path(current_user.membership_applications.last.company)
                     %ul.sub-menu
                       %li.menu-item
-                        = link_to 'Visa företagssida', show_company_path(current_user.membership_applications.last.company)
+                        = link_to 'Visa företagssida', company_path(current_user.membership_applications.last.company)
                       %li.menu-item
                         = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
               - else
