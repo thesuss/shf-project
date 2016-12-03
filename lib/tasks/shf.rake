@@ -3,7 +3,6 @@ require 'active_support/logger'
 
 namespace :shf do
 
-
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
     tasks = ['db:drop', 'db:setup', 'db:migrate', 'db:seed']
@@ -24,13 +23,12 @@ namespace :shf do
     if args.has_key? :text_file
 
       if File.exists? args[:text_file]
-
         contents = File.open(args[:text_file], 'r') { |f| f.read }
         contents = contents.scrub '*' # file has some bad encoding, so have to do this
 
-        company_numbers = contents.match
+        company_numbers =  contents.scan match_pattern
+        log_and_show log, Logger::INFO, "#{company_numbers.flatten}"
 
-        puts "found: #{company_numbers.inspect}"
       else
         log_file_doesnt_exist_and_close(log, args[:text_file], start_time)
         raise LoadError
@@ -101,9 +99,9 @@ namespace :shf do
 
 
 
-  def start_logging(start_time = Time.now, log_fn = 'log/import-members.log')
+  def start_logging(start_time = Time.now, log_fn = 'log/import.log')
     log = ActiveSupport::Logger.new(log_fn)
-    log_and_show log, Logger::INFO, "\n\nImport started at #{start_time}"
+    log_and_show log, Logger::INFO, "Import started at #{start_time}"
     log
   end
 
