@@ -42,16 +42,6 @@ namespace :shf do
   end
 
 
-  desc 'copies given csv file, replaces org numbers and email with fake ones. saves as fake-<filename>'
-  task :copy_and_replace_orgNums_emails_with_fakes, [:csv_filename] => [:environment] do |t, args|
-
-    start_time = Time.now
-    log = start_logging(start_time)
-
-    finish_and_close_log(log, start_time, Time.now)
-  end
-
-
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
 

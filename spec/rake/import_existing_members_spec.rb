@@ -16,10 +16,16 @@ RSpec.describe 'shf:import_membership_apps' do
       expect { subject.invoke(File.join(CSV_DIR, VALID_FILE)) }.not_to raise_error
     end
 
+    it 'should write to a log file' do
+      false
+    end
+
     describe 'should create 4 users' do
 
       before(:all) do
       end
+
+      # TODO run and get the output from the log file.
 
       it 'create users' do
         #orig_num_users = Users.all.count
