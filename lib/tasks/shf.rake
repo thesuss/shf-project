@@ -22,7 +22,7 @@ namespace :shf do
 
     if args.has_key? :text_file
 
-      if File.exists? args[:text_file]
+      if File.exist?  args[:text_file]
         contents = File.open(args[:text_file], 'r') { |f| f.read }
         contents = contents.scrub '*' # file has some bad encoding, so have to do this
 
@@ -93,7 +93,7 @@ namespace :shf do
 
     if args.has_key? :csv_filename
 
-      if File.exists? args[:csv_filename]
+      if File.exist?  args[:csv_filename]
 
         csv = SmarterCSV.process(args[:csv_filename], csv_options)
         #csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
