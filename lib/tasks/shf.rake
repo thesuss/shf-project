@@ -130,10 +130,6 @@ namespace :shf do
       puts_created 'User', row[:email]
     end
 
-    # TODO - associate categories with the membership_app
-    category1 = find_or_create_category row[:category1] unless row[:category1].empty?
-    category2 = find_or_create_category row[:category2] unless row[:category2].empty?
-
     company = find_or_create_company(row[:company_number], user.email,
                                      name: row[:company_name],
                                      street: row[:street],
@@ -145,7 +141,6 @@ namespace :shf do
 
     if (membership = MembershipApplication.find_by(user: user.id))
       puts_already_exists('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
-      # TODO: update info
     else
       membership = MembershipApplication.create!(company_number: row[:company_number],
                                                  first_name: row[:first_name],
@@ -160,6 +155,11 @@ namespace :shf do
 
     end
 
+
+    membership = find_or_create_category( row[:category1], membership) unless row[:category1].nil?
+    membership = find_or_create_category( row[:category2], membership) unless row[:category2].nil?
+    membership.save!
+
     if membership.status == ACCEPTED_STATUS
       membership.company = company
       user.is_member = true
@@ -169,16 +169,18 @@ namespace :shf do
   end
 
 
-  def find_or_create_category(category_name)
+
+
+  def find_or_create_category(category_name, membership)
     category = BusinessCategory.find_by_name(category_name)
     if category
       puts_already_exists 'Category', "#{category_name}"
-      # TODO: update info
     else
       category = BusinessCategory.create!(name: category_name)
       puts_created 'Category', "#{category_name}"
     end
-    category
+    membership.business_categories << category
+    membership
   end
 
 
@@ -194,7 +196,6 @@ namespace :shf do
     company = Company.find_by_company_number(company_num)
     if company
       puts_already_exists 'Company', "#{company_num}"
-      # TODO: update info?
     else
       Company.create!(company_number: company_num,
                       email: email,
