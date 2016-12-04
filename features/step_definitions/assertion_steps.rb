@@ -48,6 +48,12 @@ Then(/^I should be on the application page for "([^"]*)"$/) do |first_name|
   expect(current_path).to eq membership_application_path(membership_application)
 end
 
+Then(/^I should be on the edit application page for "([^"]*)"$/) do |first_name|
+  membership_application = MembershipApplication.find_by(first_name: first_name)
+  expect(current_path).to eq edit_membership_application_path(membership_application)
+end
+
+
 Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.applicant', count: number)
 end

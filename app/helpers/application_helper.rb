@@ -29,4 +29,11 @@ module ApplicationHelper
   def member_has_company?
     current_user.is_member && !current_user.membership_applications.last.company.nil?
   end
+
+  # ActiveRecord::Assocations::CollectionAssociation is a proxy and won't
+  # always load info. see the class documentation for more info
+  def assocation_empty?(assoc)
+    assoc.reload unless assoc.nil? || assoc.loaded?
+    assoc.nil? ? true : assoc.size == 0
+  end
 end
