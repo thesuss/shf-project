@@ -24,7 +24,6 @@ namespace :shf do
 
       if File.exist? args[:text_file]
         contents = File.open(args[:text_file], 'r') { |f| f.read }
-        contents = contents.scrub '*' # file has some bad encoding, so have to do this
 
         company_numbers = contents.scan match_pattern
         log_and_show log, Logger::INFO, "#{company_numbers.flatten}"
@@ -45,15 +44,8 @@ namespace :shf do
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
 
-
     require 'csv'
     require 'smarter_csv'
-
-    # TODO: handle multiple categories
-    # TODO: refactor!!!  so. much. commonality.
-    # TODO - error handling (rescue, log errors)
-    # TODO - let user map the keys with the row header names in the csv file (YML?)
-    #   smarter_csv gem? https://github.com/tilo/smarter_csv
 
     usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/member-companies-sanitized-small.csv"]'
 
@@ -61,7 +53,6 @@ namespace :shf do
     ACCEPTED_STATUS = 'Accepted'
 
     headers_to_columns_mapping = {
-        # headers:
         membership_number: :membership_number,
         email: :email,
         company_number: :company_number,
@@ -141,7 +132,7 @@ namespace :shf do
 
     # TODO - associate categories with the membership_app
     category1 = find_or_create_category row[:category1] unless row[:category1].empty?
-    category1 = find_or_create_category row[:category2] unless row[:category2].empty?
+    category2 = find_or_create_category row[:category2] unless row[:category2].empty?
 
     company = find_or_create_company(row[:company_number], user.email,
                                      name: row[:company_name],
