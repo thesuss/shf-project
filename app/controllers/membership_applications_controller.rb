@@ -32,7 +32,7 @@ class MembershipApplicationsController < ApplicationController
       new_upload_file params['uploaded_file'] if params['uploaded_file']
 
       helpers.flash_message(:notice,
-                            'Tack, din ansökan har skickats')
+                            'Tack, din ansökan har skickats.')
       redirect_to root_path
     else
       helpers.flash_message(:alert,
@@ -54,7 +54,7 @@ class MembershipApplicationsController < ApplicationController
       end
 
       helpers.flash_message(:notice,
-                            'Din ansökan har uppdaterats.')
+                            'Ansökan har uppdaterats.')
       render :show
     else
       helpers.flash_message(:alert,

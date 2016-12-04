@@ -34,7 +34,7 @@ Feature: As an applicant
     Then I should be on "Edit My Application" page
     And I fill in "Contact Email" with "sussimmi.nu"
     And I click on "Submit"
-    Then I should see "A problem prevented the membership application to be saved"
+    Then I should see "Ett eller flera problem hindrade din ansökan från att sparas."
     And I should be on "Edit My Application" page
 
   Scenario: Applicant can not edit applications not created by him
