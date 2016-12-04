@@ -86,7 +86,7 @@
                       - unless page == 'index'
                         %li.menu-item
                           = link_to page.capitalize, page_path(page)
-                %li.menu-item.menu-item-has-children
+                %li.menu-item
                   = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
                 - if member_has_company?
                   %li.menu-item.menu-item-has-children
