@@ -23,7 +23,7 @@ Feature: As an Admin
     And I am on "Hans" application page
     When I set "membership_application_status" to "Rejected"
     And I click on "Update"
-    Then I should see "Membership Application successfully updated"
+    Then I should see "Ansökan har uppdaterats."
     And "Rejected" should be set in "membership_application_status"
     And I should see "Membership rejected at 2016-12-16"
 

@@ -31,9 +31,9 @@ class CompaniesController < ApplicationController
     @company = Company.new(company_params)
 
     if @company.save
-      redirect_to @company, notice: 'The company was successfully created.'
+      redirect_to @company, notice: 'Företaget har skapats.'
     else
-      flash[:alert] = 'A problem prevented the company from being created.'
+      flash[:alert] = 'Ett eller flera problem hindrade företaget från att skapas.'
       render :new
     end
   end
@@ -41,9 +41,9 @@ class CompaniesController < ApplicationController
 
   def update
     if @company.update(company_params)
-      redirect_to @company, notice: 'The company was successfully updated.'
+      redirect_to @company, notice: 'Företaget har uppdaterats.'
     else
-      flash[:alert] = 'A problem prevented the company from being updated.'
+      flash[:alert] = 'Ett problem förhindrade uppdatering av företaget.'
       render :edit
     end
 

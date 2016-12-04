@@ -23,7 +23,7 @@ Feature: As an applicant
     Then I should be on "Edit My Application" page
     And I fill in "First Name" with "Anna"
     And I click on "Submit"
-    Then I should see "Membership Application successfully updated"
+    Then I should see "Ansökan har uppdaterats."
     And I should be on the application page for "Anna"
     And I should see "Anna Lastname"
 
@@ -40,4 +40,4 @@ Feature: As an applicant
   Scenario: Applicant can not edit applications not created by him
     Given I am logged in as "applicant_1@random.com"
     And I navigate to the edit page for "Hans"
-    Then I should see "You are not authorized to perform this action."
+    Then I should see "Du har inte behörighet att göra detta."

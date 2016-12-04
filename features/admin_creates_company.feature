@@ -40,7 +40,7 @@ Feature: As an admin
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I click on "Submit"
-    Then I should see "The company was successfully created."
+    Then I should see "Företaget har skapats"
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
@@ -55,7 +55,7 @@ Feature: As an admin
       | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
     When I click on "Submit"
     Then I should see <error>
-    And I should see "A problem prevented the company from being created."
+    And I should see "Ett eller flera problem hindrade företaget från att skapas."
 
     Scenarios:
       | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
@@ -74,7 +74,7 @@ Feature: As an admin
     And I select "Groomer" Category
     And I select "Trainer" Category
     And I click on "Submit"
-    Then I should see "The company was successfully updated."
+    Then I should see "Företaget har uppdaterats."
     And I should see "kicki@gladajyckar.se"
     And I should see "http://www.snarkybarkbark.se"
 
@@ -87,7 +87,7 @@ Feature: As an admin
       | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
     When I click on "Submit"
     Then I should see <error>
-    And I should see "A problem prevented the company from being updated."
+    And I should see "Ett problem förhindrade uppdatering av företaget."
 
     Scenarios:
       | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
@@ -104,9 +104,9 @@ Feature: As an admin
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "create a new company" page
-    Then I should see "You are not authorized to perform this action"
+    Then I should see "Du har inte behörighet att göra detta."
 
   Scenario: Visitor tries to create a company
     Given I am Logged out
     And I am on the "create a new company" page
-    Then I should see "You are not authorized to perform this action"
+    Then I should see "Du har inte behörighet att göra detta."

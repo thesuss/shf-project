@@ -55,5 +55,5 @@ Feature: As a registered user
     And I click on "Logga in" button
     Then I should see "Invalid Email or password"
     When I fail to visit the "applications index" page
-    Then I should see "You are not authorized to perform this action."
+    Then I should see "Du har inte behörighet att göra detta."
     And I should be on "landing" page

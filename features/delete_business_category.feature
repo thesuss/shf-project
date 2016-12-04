@@ -21,7 +21,7 @@ Feature: As an admin
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
     And I click the "Delete" action for the row with "dog grooming"
-    Then I should see "The business category was successfully deleted"
+    Then I should see "Kategori raderad"
     And I should not see "doggy grooming"
 
 
