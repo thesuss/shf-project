@@ -52,6 +52,7 @@ Feature: As an Admin
     And I click on "Hans Lastname"
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
+    And I should see "5560360793"
     And I should see "Groomer"
     And I should not see "Trainer"
     And I should not see "Psychologist"
