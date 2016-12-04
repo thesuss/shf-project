@@ -10,10 +10,18 @@ Feature: As an Admin
 
     And I am logged in as "admin@shf.com"
 
-  Scenario:
+  Scenario: 11 business categories are created when it's initially seeded
     Given There are no "BusinessCategories" records in the db
     When the system is seeded with initial data
     And I am on the "business categories" page
     Then I should see "Business Categories"
     And I should see 11 business_category rows
+
+  Scenario: only 11 business categories are ever created, even if it's seeded multiple times
+    Given There are no "BusinessCategories" records in the db
+    And the system is seeded with initial data
+    And the system is seeded with initial data
+    When the system is seeded with initial data
+    And I am on the "business categories" page
+    Then I should see 11 business_category rows
 
