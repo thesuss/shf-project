@@ -15,7 +15,7 @@
 
   %p Company Number: #{@membership_application.company_number}
 
-  - unless @categories.nil?
+  - unless assocation_empty?(@categories)
     %h4 Ansöker som:
     %strong
       %ul

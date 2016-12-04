@@ -1,24 +1,30 @@
 class MembershipApplicationsController < ApplicationController
   before_action :get_membership_application, only: [:show, :edit, :update]
-  before_action :authorize_membership_application, only: [ :update, :show, :edit]
+  before_action :authorize_membership_application, only: [:update, :show, :edit]
+
+
   def new
     @membership_application = MembershipApplication.new
-    @business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all
     @uploaded_file = @membership_application.uploaded_files.build
   end
+
 
   def index
     authorize MembershipApplication
     @membership_applications = MembershipApplication.all
   end
 
+
   def show
     @categories = @membership_application.business_categories
   end
 
+
   def edit
-    @business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all
   end
+
 
   def create
     @membership_application = current_user.membership_applications.new(membership_application_params)
@@ -30,38 +36,70 @@ class MembershipApplicationsController < ApplicationController
       redirect_to root_path
     else
       helpers.flash_message(:alert,
-        'A problem prevented the membership application to be created')
+                            'A problem prevented the membership application to be created')
       render :new
     end
   end
 
+
   def update
     if @membership_application.update(membership_application_params)
+
       new_upload_file params['uploaded_file'] if params['uploaded_file']
+
+      if changed_to_accepted?(params['membership_application'])
+        accept_application
+        redirect_to edit_membership_application_url(@membership_application)
+        return
+      end
 
       helpers.flash_message(:notice,
                             'Membership Application successfully updated')
       render :show
     else
       helpers.flash_message(:alert,
-        'A problem prevented the membership application to be saved')
+                            'A problem prevented the membership application to be saved')
       redirect_to edit_membership_application_path(@membership_application)
     end
   end
+
 
   private
   def membership_application_params
     params.require(:membership_application).permit(*policy(@membership_application || MembershipApplication).permitted_attributes)
   end
 
+
   def get_membership_application
     @membership_application = MembershipApplication.find(params[:id])
   end
+
 
   def authorize_membership_application
     authorize @membership_application
   end
 
+
+  def changed_to_accepted?(params)
+    params.include?('status') && params['status'] =='Accepted'
+  end
+
+
+  def accept_application
+
+    @membership_application.user.is_member = true
+    unless (company = Company.find_by_company_number(@membership_application.company_number))
+      company = Company.create!(company_number: @membership_application.company_number,
+                                email: @membership_application.contact_email)
+    end
+
+    @membership_application.company = company
+    @membership_application.save!
+
+    helpers.flash_message(:notice,
+                          'Now please enter the new membership number and submit.')
+
+  end
 
 
   def new_upload_file(upload_file_param)
@@ -71,7 +109,7 @@ class MembershipApplicationsController < ApplicationController
         @uploaded_file = @membership_application.uploaded_files.create(actual_file: upload_file)
         if @uploaded_file.valid?
           helpers.flash_message(:notice,
-               "The file was uploaded: #{@uploaded_file.actual_file_file_name}")
+                                "The file was uploaded: #{@uploaded_file.actual_file_file_name}")
         else
           helpers.flash_message :alert, @uploaded_file.errors.messages
         end

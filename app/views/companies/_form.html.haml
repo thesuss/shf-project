@@ -33,7 +33,8 @@
   = f.label :website, 'Webbsida', class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
 
-  - unless @business_categories.nil?
-    = render 'business_categories/form_collection_checkboxes', f: f, business_categories: @business_categories
+  -# # ActiveRecord::Assocations::CollectionAssociation us to use .size
+  - unless assocation_empty?(@all_business_categories)
+    = render 'business_categories/form_collection_checkboxes', f: f, business_categories: @all_business_categories
 
   = f.submit 'Submit'

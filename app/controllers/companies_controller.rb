@@ -17,12 +17,12 @@ class CompaniesController < ApplicationController
   def new
     authorize Company
     @company = Company.new
-    @business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all
   end
 
 
   def edit
-    @business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all
   end
 
 

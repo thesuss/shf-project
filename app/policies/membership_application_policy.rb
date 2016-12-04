@@ -19,41 +19,41 @@ class MembershipApplicationPolicy < ApplicationPolicy
   end
 
 
-  def attributes_and_status
-    user_owner_attributes + [:status]
+  def admin_attributes
+    user_owner_attributes + [:status, :membership_number]
   end
 
 
   def permitted_attributes
-    status_only_for_admin
+    only_for_admin
   end
 
   def permitted_attributes_for_create
-    attributes_and_status
+    admin_attributes
   end
 
   def permitted_attributes_for_show
-    user ? attributes_and_status : []
+    user ? admin_attributes : []
   end
 
   def permitted_attributes_for_edit
-    status_only_for_admin
+    only_for_admin
   end
 
   def permitted_attributes_for_update
-    status_only_for_admin
+    only_for_admin
   end
 
   def permitted_attributes_for_destroy
-    status_only_for_admin
+    only_for_admin
   end
 
 
   private
 
-  def status_only_for_admin
+  def only_for_admin
     if user && user.admin?
-      attributes_and_status
+      admin_attributes
     else
       user_owner_attributes
     end

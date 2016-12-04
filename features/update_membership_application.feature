@@ -19,14 +19,6 @@ Feature: As an Admin
     And I am logged in as "admin@sgf.com"
     And time is frozen at 2016-12-16
 
-  Scenario: Flag a Membership Application as accepted
-    Given I am on "Emma" application page
-    When I set "membership_application_status" to "Accepted"
-    And I click on "Update"
-    Then I should see "Membership Application successfully updated"
-    And "Accepted" should be set in "membership_application_status"
-    And I should see "Membership accepted at 2016-12-16"
-
   Scenario: Flag a Membership Application as rejected
     And I am on "Hans" application page
     When I set "membership_application_status" to "Rejected"
