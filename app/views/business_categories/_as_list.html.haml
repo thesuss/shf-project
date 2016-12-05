@@ -1,5 +1,4 @@
-%h4 Typ av företag
-%strong
-  %ul
-    - categories.each do | business_category |
+.post-category
+  %ul.post-categories
+    - @company.categories.each do | business_category |
       %li= business_category.name
