@@ -76,6 +76,8 @@
             %ul.menu#menu-menu-2
               %li.menu-item
                 = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
+              %li.menu-item
+                = link_to 'SHF-företag', root_path
               - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
                 %li.menu-item.menu-item-has-children
                   = link_to 'Medlemssidor', page_path('index')
@@ -117,7 +119,7 @@
                 = link_to 'Företag', companies_path
                 %ul.sub-menu
                   %li.menu-item
-                    = link_to 'Lista kategorier', companies_path
+                    = link_to 'Lista företag', companies_path
                   %li.menu-item
-                    = link_to 'Ny kategori', new_company_path
+                    = link_to 'Nytt företag', new_company_path
         = render 'partials/social_nav'
