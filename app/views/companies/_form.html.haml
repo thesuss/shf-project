@@ -29,12 +29,9 @@
   = f.label :region, 'Verksamhetslän', class: 'required'
   = f.text_field :region, class: 'wpcf7-form-control'
   %em Skriv Sverige om företaget är verksamt i flera delar av landet
+  %br
 
   = f.label :website, 'Webbsida', class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
-
-  -# # ActiveRecord::Assocations::CollectionAssociation us to use .size
-  - unless assocation_empty?(@all_business_categories)
-    = render 'business_categories/form_collection_checkboxes', f: f, business_categories: @all_business_categories
 
   = f.submit 'Submit'

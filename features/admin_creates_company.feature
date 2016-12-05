@@ -66,13 +66,10 @@ Feature: As an admin
 
   Scenario: Admin edits a company
     Given I am logged in as "admin@shf.se"
-    When I am on the "all companies" page
-    And I click the "Edit" action for the row with "5560360793"
-    And I fill in the form with data :
+    And I am on the edit company page for "5560360793"
+    When I fill in the form with data :
       | Email                | Webbsida                     |
       | kicki@gladajyckar.se | http://www.snarkybarkbark.se |
-    And I select "Groomer" Category
-    And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "Företaget har uppdaterats."
     And I should see "kicki@gladajyckar.se"
@@ -80,8 +77,7 @@ Feature: As an admin
 
   Scenario Outline: Admin edits a company - when things go wrong (sad case)
     Given I am logged in as "admin@shf.se"
-    When I am on the "all companies" page
-    And I click the "Edit" action for the row with "5560360793"
+    And I am on the edit company page for "5560360793"
     And I fill in the form with data :
       | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort   | Verksamhetslän | Webbsida  |
       | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |

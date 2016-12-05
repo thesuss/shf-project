@@ -45,8 +45,6 @@ Feature: As a member
     And I fill in the form with data :
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-    And I select "Groomer" Category
-    And I select "Trainer" Category
     And I click on "Submit"
     And I am Logged out
     And I am logged in as "applicant_2@random.com"
