@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202101242) do
+ActiveRecord::Schema.define(version: 20161206020021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20161202101242) do
     t.string   "website"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["company_number"], name: "index_companies_on_company_number", unique: true, using: :btree
   end
 
   create_table "membership_applications", force: :cascade do |t|
@@ -60,8 +61,8 @@ ActiveRecord::Schema.define(version: 20161202101242) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
-    t.string   "membership_number"
     t.integer  "company_id"
+    t.string   "membership_number"
     t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
