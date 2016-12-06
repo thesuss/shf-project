@@ -9,38 +9,6 @@ namespace :shf do
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
 
-
-  desc "get valid company numbers from a text file. Expects to find them as Org no556357-3046 (no space after 'Org no'"
-  task :get_valid_companyNums, [:text_file] => [:environment] do |t, args|
-    # ex: text copied from https://foretagsfakta.bolagsverket.se/fpl-dft-ext-web/home.seam?actionMethod=home.xhtml%3Asearch.sokning.prevPage&cid=234026
-
-    usage = 'rake shf:get_valid_companyNums["./spec/fixtures/test-import-files/company-numbers-source.txt"]'
-    match_pattern = /Org no(\d\d\d\d\d\d-\d\d\d\d)/
-
-    start_time = Time.now
-    log = start_logging(start_time)
-
-    if args.has_key? :text_file
-
-      if File.exist? args[:text_file]
-        contents = File.open(args[:text_file], 'r') { |f| f.read }
-
-        company_numbers = contents.scan match_pattern
-        log_and_show log, Logger::INFO, "#{company_numbers.flatten}"
-
-      else
-        log_file_doesnt_exist_and_close(log, args[:text_file], start_time)
-        raise LoadError
-      end
-    else
-      log_must_provide_filename_and_close(log, usage, start_time)
-      raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
-    end
-
-    finish_and_close_log(log, start_time, Time.now)
-  end
-
-
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
 
