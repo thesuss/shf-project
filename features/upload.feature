@@ -25,8 +25,8 @@ Feature: As an applicant
     And I fill in "Phone Number" with "031-1234567"
     And I choose a file named "diploma.pdf" to upload
     And I click on "Submit"
-    And I should see "Thank you, Your application has been submitted"
-    And I should see "The file was uploaded: diploma.pdf"
+    And I should see "Tack, din ansökan har skickats."
+    And I should see "Filen laddades upp: diploma.pdf"
     And I am on the "edit my application" page
     Then I should see "Files uploaded for this application:"
     And I should see "diploma.pdf" uploaded for this membership application
@@ -38,9 +38,9 @@ Feature: As an applicant
     And I click on "Submit"
     Then I should see "Files uploaded for this application:"
     And I should see "diploma.pdf" uploaded for this membership application
-    And I should see "Membership Application successfully updated"
-    And I should see "The file was uploaded: diploma.pdf"
-    And I should see "Membership Application successfully updated"
+    And I should see "Ansökan har uppdaterats."
+    And I should see "Filen laddades upp: diploma.pdf"
+    And I should see "Ansökan har uppdaterats."
 
 
   Scenario: Upload a second file

@@ -33,7 +33,7 @@ Feature: As a member
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
       | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I click on "Submit"
-    Then I should see "The company was successfully updated."
+    Then I should see "Företaget har uppdaterats."
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
@@ -50,13 +50,13 @@ Feature: As a member
     And I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the landing page
-    And I should see "You are not authorized to perform this action"
+    And I should see "Du har inte behörighet att göra detta."
 
 
   Scenario: User tries to go do company page (gets rerouted)
     Given I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the landing page
-    And I should see "You are not authorized to perform this action"
+    And I should see "Du har inte behörighet att göra detta."
 
 

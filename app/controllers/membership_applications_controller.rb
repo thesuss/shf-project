@@ -32,11 +32,11 @@ class MembershipApplicationsController < ApplicationController
       new_upload_file params['uploaded_file'] if params['uploaded_file']
 
       helpers.flash_message(:notice,
-                            'Thank you, Your application has been submitted')
+                            'Tack, din ansökan har skickats.')
       redirect_to root_path
     else
       helpers.flash_message(:alert,
-                            'A problem prevented the membership application to be created')
+                            'Ett eller flera problem hindrade din ansökan från att skickas.')
       render :new
     end
   end
@@ -54,11 +54,11 @@ class MembershipApplicationsController < ApplicationController
       end
 
       helpers.flash_message(:notice,
-                            'Membership Application successfully updated')
+                            'Ansökan har uppdaterats.')
       render :show
     else
       helpers.flash_message(:alert,
-                            'A problem prevented the membership application to be saved')
+                            'Ett eller flera problem hindrade din ansökan från att sparas.')
       redirect_to edit_membership_application_path(@membership_application)
     end
   end
@@ -97,7 +97,7 @@ class MembershipApplicationsController < ApplicationController
     @membership_application.save!
 
     helpers.flash_message(:notice,
-                          'Now please enter the new membership number and submit.')
+                          'Var god ange medlemsnummer och spara.')
 
   end
 
@@ -109,7 +109,7 @@ class MembershipApplicationsController < ApplicationController
         @uploaded_file = @membership_application.uploaded_files.create(actual_file: upload_file)
         if @uploaded_file.valid?
           helpers.flash_message(:notice,
-                                "The file was uploaded: #{@uploaded_file.actual_file_file_name}")
+                                "Filen laddades upp: #{@uploaded_file.actual_file_file_name}")
         else
           helpers.flash_message :alert, @uploaded_file.errors.messages
         end
