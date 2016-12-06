@@ -34,7 +34,7 @@ Feature: As a user
     And I fill in "Phone Number" with "031-1234567"
     And I click on "Submit"
     Then I should be on the landing page
-    And I should see "Thank you, Your application has been submitted"
+    And I should see "Tack, din ansökan har skickats."
 
 
   Scenario: A user can submit a new Membership Application with multiple categories
@@ -49,7 +49,7 @@ Feature: As a user
     And I fill in "Phone Number" with "031-1234567"
     And I click on "Submit"
     Then I should be on the landing page
-    And I should see "Thank you, Your application has been submitted"
+    And I should see "Tack, din ansökan har skickats."
 
   Scenario: A user can submit a new Membership Application with no categories selected
     Given I am on the "landing" page
@@ -61,7 +61,7 @@ Feature: As a user
     And I fill in "Phone Number" with "031-1234567"
     And I click on "Submit"
     Then I should be on the landing page
-    And I should see "Thank you, Your application has been submitted"
+    And I should see "Tack, din ansökan har skickats."
 
   Scenario: Applicant not see membership number when submitting
     Given I am on the "landing" page

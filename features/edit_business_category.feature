@@ -24,7 +24,7 @@ Feature: As an admin
     Then I should see "Editing Business Category: dog grooming"
     And I fill in "Category Name" with "doggy grooming"
     And I click on "Save"
-    Then I should see "The business category was successfully updated"
+    Then I should see "Kategori uppdaterad"
     And I should see "doggy grooming"
 
 
@@ -43,9 +43,9 @@ Feature: As an admin
   Scenario: A non-admin user cannot edit business categories
     Given I am logged in as "applicant_1@random.com"
     And I navigate to the business category edit page for "dog grooming"
-    Then I should see "You are not authorized to perform this action."
+    Then I should see "Du har inte behörighet att göra detta."
 
   Scenario: A visitor cannot edit business categories
     Given I am Logged out
     And I navigate to the business category edit page for "dog grooming"
-    Then I should see "You are not authorized to perform this action."
+    Then I should see "Du har inte behörighet att göra detta."

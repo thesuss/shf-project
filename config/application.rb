@@ -17,7 +17,6 @@ Bundler.require(*Rails.groups)
 
 module SHFProject
   class Application < Rails::Application
-
     # Disable generation of helpers, javascripts, css, and view, helper, routing and controller specs
 config.generators do |generate|
   generate.helper false

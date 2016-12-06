@@ -85,4 +85,4 @@ Feature: As an Admin
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "hans@random.com"
     And I am on the list applications page
-    Then I should see "You are not authorized to perform this action."
+    Then I should see "Du har inte behörighet att göra detta."
