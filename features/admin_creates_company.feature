@@ -38,7 +38,7 @@ Feature: As an admin
     When I am on the "create a new company" page
     And I fill in the form with data :
       | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
-      | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
+      | Happy Mutts  | 5569467466 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
     And I click on "Submit"
     Then I should see "The company was successfully created."
     And I should see "Happy Mutts"
@@ -58,21 +58,19 @@ Feature: As an admin
     And I should see "A problem prevented the company from being created."
 
     Scenarios:
-      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
-      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)" |
-      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
-      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
+      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                                 |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)"        |
+      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                                    |
+      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                                    |
+      | Happy Mutts | 5560360793 | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu.se      | http://www.gladajyckar.se | "Detta företag (org nr) finns redan i systemet." |
 
 
   Scenario: Admin edits a company
     Given I am logged in as "admin@shf.se"
-    When I am on the "all companies" page
-    And I click the "Edit" action for the row with "5560360793"
-    And I fill in the form with data :
+    And I am on the edit company page for "5560360793"
+    When I fill in the form with data :
       | Email                | Webbsida                     |
       | kicki@gladajyckar.se | http://www.snarkybarkbark.se |
-    And I select "Groomer" Category
-    And I select "Trainer" Category
     And I click on "Submit"
     Then I should see "The company was successfully updated."
     And I should see "kicki@gladajyckar.se"
@@ -80,8 +78,7 @@ Feature: As an admin
 
   Scenario Outline: Admin edits a company - when things go wrong (sad case)
     Given I am logged in as "admin@shf.se"
-    When I am on the "all companies" page
-    And I click the "Edit" action for the row with "5560360793"
+    And I am on the edit company page for "5560360793"
     And I fill in the form with data :
       | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort   | Verksamhetslän | Webbsida  |
       | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |

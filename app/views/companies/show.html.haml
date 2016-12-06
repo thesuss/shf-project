@@ -1,10 +1,10 @@
 %header.entry-header
   %h1.entry-title= @company.name
-.post-title-divider
-  %span
-.entry-content
+  .post-title-divider
+    %span
   - unless @categories.nil?
     = render 'business_categories/as_list', categories: @categories
+.entry-content
   %p
     %b Name:
     = @company.name

@@ -8,3 +8,8 @@ And(/^I am the page for company number "([^"]*)"$/) do |company_number|
   company = Company.find_by_company_number(company_number)
   visit company_path company
 end
+
+When(/^I am on the edit company page for "([^"]*)"$/) do |company_number|
+  company = Company.find_by_company_number(company_number)
+  visit edit_company_path company
+end
