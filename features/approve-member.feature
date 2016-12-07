@@ -47,8 +47,7 @@ Feature: As an admin
     Then I should see "Ansökan har uppdaterats."
     And I should see "Accepted"
     And I should see "901"
-    And I am on the "all companies" page
-    And I should see "5562252998"
+    Then I can go to the company page for "5562252998"
 
 
   Scenario: Admin approves, member is added to existing company
@@ -78,15 +77,13 @@ Feature: As an admin
     Then I should see "Ansökan har uppdaterats."
     And I should see "Accepted"
     And I should see "901"
-    And I am on the "all companies" page
-    And I should see "5562252998"
-    And I am on "Emma" application page
+    When I am on "Emma" application page
     And I set "membership_application_status" to "Rejected"
     And I click on "Update"
     Then I should see "Rejected"
     And I am Logged out
     And I am on the "landing" page
-    Then I should see "5562252998"
+    Then I should not see "5562252998"
     And I am logged in as "emma@happymutts.se"
     And I navigate to the edit page for "Emma"
     Then I should be on "Edit My Application" page
