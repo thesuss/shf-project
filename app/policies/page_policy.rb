@@ -1,4 +1,4 @@
-class PagePolicy < Struct.new(:user, :page)
+class PagePolicy < Struct.new(:user, :record)
 
 
   def show?
@@ -40,7 +40,7 @@ class PagePolicy < Struct.new(:user, :page)
   end
 
   def user_is_member?
-    user.is_member if user
+    (user.is_member || is_admin?) if user
   end
 
   def is_admin?
