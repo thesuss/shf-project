@@ -43,11 +43,11 @@
                       %li.menu-item
                         = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
 
-                = render 'navigation_edit_my_application'
+                = render 'navigation_edit_my_application', membership_app: current_user.membership_applications.last
 
               - else
                 - if user_has_membership_application?
-                  = render 'navigation_edit_my_application'
+                  = render 'navigation_edit_my_application', membership_app: current_user.membership_applications.last
                 - else
                   %li.menu-item
                     = link_to 'Ansök om medlemsskap', new_membership_application_path
