@@ -80,7 +80,7 @@ Feature: As an Admin
     Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on "Min ansökan"
-    Then I should see "Membership number"
+    Then I should see "Medlemsnummer"
 
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "hans@random.com"
