@@ -1,7 +1,9 @@
 Feature: As a user of the site
   So that I take advantage of the capabilities of the site
-  And so that I do not see what I shouldn't
+  And so that I do not see what I shouldn't have access to,
   Show me menus that are only appropriate for my role
+
+  PT https://www.pivotaltracker.com/story/show/135306757
 
 
   Background:
@@ -15,7 +17,8 @@ Feature: As a user of the site
 
   Scenario: Visitor is viewing the site
     Given I am Logged out
-    Then I should see the "log in" menu
+    Then I should see the "home" menu
+    And I should see the "log in" menu
     And I should see the "brochure and info" menu
     And I should not see the "member application" menu
     And I should not see the "member only pages" menu
@@ -23,7 +26,8 @@ Feature: As a user of the site
 
   Scenario: User (not a member) is viewing the site
     Given I am logged in as "hans@woof.se"
-    Then I should see the "log in" menu
+    Then I should see the "home" menu
+    And I should see the "log in" menu
     And I should see the "brochure and info" menu
     And I should see the "member application" menu
     And I should not see the "member only pages" menu
@@ -31,7 +35,8 @@ Feature: As a user of the site
 
   Scenario: Member is viewing the site
     Given I am logged in as "emma@happymutts.se"
-    Then I should see the "log in" menu
+    Then I should see the "home" menu
+    And I should see the "log in" menu
     And I should see the "brochure and info" menu
     And I should see the "member application" menu
     And I should see the "member only pages" menu
