@@ -1,4 +1,4 @@
-- if current_user.admin? && @membership_application.status == 'Accepted'
+- if current_user.admin? && @membership_application.status == 'Godkänd'
   = f.label :membership_number, 'Medlemsnummer', class: 'required'
   = f.text_field :membership_number, class: 'wpcf7-form-control'
 

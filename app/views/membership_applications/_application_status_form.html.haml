@@ -1,8 +1,8 @@
 = form_for @membership_application, url: membership_application_path do |f|
   = f.select(:status, [['Ny', 'Pending'],
-                       ['Behandlas', 'Started'],
-                       ['Inväntar betalning', 'Pending Payment'],
-                       ['Inväntar komplettering', 'Pending Information'],
-                       ['Godkänd', 'Accepted'],
-                       ['Avböjd', 'Rejected']])
+                       ['Behandlas', 'Behandlas'],
+                       ['Inväntar betalning', 'Inväntar betalning'],
+                       ['Inväntar komplettering', 'Inväntar komplettering'],
+                       ['Godkänd', 'Godkänd'],
+                       ['Avböjd', 'Avböjd']])
   = f.submit 'Update', class: 'wpcf7-submit'
