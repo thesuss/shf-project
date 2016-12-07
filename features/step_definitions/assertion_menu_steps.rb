@@ -1,38 +1,19 @@
-home_menu_name = 'home'
-log_in_menu_name = 'log in'
-log_out_menu_name = 'log out'
-brochure_menu_name = 'brochures and info'
-member_application_menu_name = 'member application'
-member_only_pages_menu_name = 'member only pages'
-admin_menu_name = 'admin'
 
-home_menu_content = 'Hem'
-log_in_menu_content = 'Logga in'
-log_out_menu_content = 'Logga ut'
-brochure_menu_content = 'Broschyr'
-member_application_menu_content = 'Ansök om medlemsskap'
-member_only_pages_content = 'Medlemssidor'
-admin_menu_content = 'Hantera ansökningar'
+menu_items = [{test_name: 'home', content: 'Hem'},
+              {test_name: 'log in', content: 'Logga in'},
+              {test_name: 'log out', content: 'Logga ut'},
+              {test_name: 'brochures and info', content: 'Broschyr'},
+              {test_name: 'member application', content: 'Ansök om medlemsskap'},
+              {test_name: 'edit my application', content: 'Min ansökan'},
+              {test_name: 'edit my company', content: 'Redigera företag'},
+              {test_name: 'member only pages', content: 'Medlemssidor'},
+              {test_name: 'admin', content: 'Hantera ansökningar'}
+]
 
-
-Then(/^I should ([not ]*)see the "([^"]*)" menu$/) do | should_not , menu|
-  should_have_it =  should_not.blank?
-
-  case menu.downcase
-    when home_menu_name
-      expect_page_has home_menu_content, should_have_it
-    when log_in_menu_name
-      expect_page_has log_in_menu_content, should_have_it
-    when brochure_menu_name
-      expect_page_has brochure_menu_content, should_have_it
-    when member_application_menu_name
-      expect_page_has member_application_menu_content, should_have_it
-    when member_only_pages_menu_name
-      expect_page_has member_only_pages_content, should_have_it
-    when admin_menu_name
-      expect_page_has admin_menu_content, should_have_it
-  end
-
+Then(/^I should ([not ]*)see the "([^"]*)" menu item$/) do |should_not, menu|
+  should_have_it = should_not.blank?
+  menu_item = menu_items.find { |m| m[:test_name] == menu.downcase }
+  menu_item ? expect_page_has(menu_item[:content], should_have_it) : false
 end
 
 def expect_page_has(content, expect_to_match)
