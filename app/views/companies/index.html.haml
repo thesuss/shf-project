@@ -25,14 +25,15 @@
 
     %tbody
       - @companies.each do |company|
-        %tr.company
-          %td= company.name
-          %td= company.region
-          %td= company.company_number
-          %td= link_to 'Visa företag', company
-          - if current_user.try(:admin)
-            %td= link_to 'Edit', edit_company_path(company)
-            %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
+        - if company_complete? company
+          %tr.company
+            %td= company.name
+            %td= company.region
+            %td= company.company_number
+            %td= link_to 'Visa företag', company
+            - if current_user.try(:admin)
+              %td= link_to 'Edit', edit_company_path(company)
+              %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
   %br
   - if current_user.try(:admin)
     .center
