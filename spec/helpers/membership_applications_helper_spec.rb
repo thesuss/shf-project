@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MembershipApplicationHelper, type: :helper do
+RSpec.describe MembershipApplicationsHelper, type: :helper do
 
   describe "#member_full_name" do
     it 'appends first and last with a space inbetween' do

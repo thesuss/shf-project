@@ -25,7 +25,7 @@
 
     %tbody
       - @companies.each do |company|
-        - if company_complete?
+        - if company_complete? company
           %tr.company
             %td= company.name
             %td= company.region
