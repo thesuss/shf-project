@@ -17,7 +17,7 @@ Feature: As a visitor,
   Scenario: Visitor sees all companies
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see "Hitta SHF-medlem"
+    Then I should see "Hitta H-märkt företag"
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
     And I should not see "Skapa nytt företag"
@@ -25,7 +25,7 @@ Feature: As a visitor,
   Scenario: User sees all the companies
     Given I am logged in as "emma@happymutts.com"
     And I am on the "landing" page
-    Then I should see "Hitta SHF-medlem"
+    Then I should see "Hitta H-märkt företag"
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
     And I should not see "Skapa nytt företag"
