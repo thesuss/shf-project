@@ -76,7 +76,7 @@ Feature: As a user
     And the field "Efternamn" should have a required field indicator
     And the field "E-post" should have a required field indicator
     And the field "Telefon" should not have a required field indicator
-    And I should see "Indicates a required field"
+    And I should see "Indikerar ett obligatoriskt fält"
 
   Scenario Outline: Apply for membership - when things go wrong
     Given I am on the "landing" page
