@@ -1,4 +1,4 @@
-module MembershipApplicationHelper
+module MembershipApplicationsHelper
 
   def edit_status?
     policy(@membership_application).permitted_attributes_for_edit.include? :status
