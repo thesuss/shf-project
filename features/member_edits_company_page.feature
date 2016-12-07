@@ -14,7 +14,7 @@ Feature: As a member
       | name                 | company_number | email                  |
       | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
 
-    And the following applications exist:
+    And the following applications exist:git che
       | first_name | user_email          | company_number | status   | category_name |
       | Emma       | emma@happymutts.com | 5562252998     | Accepted | Awesome       |
 
