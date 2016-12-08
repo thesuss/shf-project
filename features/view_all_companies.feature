@@ -15,10 +15,14 @@ Feature: As a visitor,
       | admin@shf.se        | true  |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | status   |
-      | Emma       | emma@happymutts.com | 5560360793     | Accepted |
-      | Anna       | a@happymutts.com    | 2120000142     | Accepted |
+      | first_name | user_email          | company_number | status   | category_name |
+      | Emma       | emma@happymutts.com | 5560360793     | Accepted | Groomer       |
+      | Anna       | a@happymutts.com    | 2120000142     | Accepted | Groomer       |
 
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+      | Psychologist |
 
   Scenario: Visitor sees all companies
     Given I am Logged out
@@ -26,6 +30,8 @@ Feature: As a visitor,
     Then I should see "Hitta H-märkt företag"
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
+    And I should see "Groomer"
+    And I should not see "Psychologist"
     And I should not see "Skapa nytt företag"
 
   Scenario: User sees all the companies
@@ -35,5 +41,3 @@ Feature: As a visitor,
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
     And I should not see "Skapa nytt företag"
-
-
