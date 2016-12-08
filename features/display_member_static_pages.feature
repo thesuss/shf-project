@@ -19,12 +19,11 @@ Feature: As a (prospective) member
     Then I should see:
       | content               |
       | Arbetsgrupper         |
-      | Mallar                |
       | Medlemsbeviset        |
       | Historiska-dokument   |
       | Nyhetsbrev            |
       | Olycksfallsforsakring |
       | Remiss                |
-      | Sociala-medier        |
+      | Traffa-dina-kollegor  |
       | Styrelse              |
     And I should not see "Index"
