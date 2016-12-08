@@ -13,12 +13,13 @@ Feature: As a user of the site
       | emma@happymutts.se |       | true      |
       | admin@shf.se       | true  | true      |
 
-    And I am on the "landing" page
 
   Scenario: Visitor is viewing the site
     Given I am Logged out
+    And I am on the "landing" page
     Then I should see the "home" menu item
     And I should see the "log in" menu item
+    And I should not see the "log out" menu item
     And I should see the "brochure and info" menu item
     And I should not see the "member application" menu item
     And I should not see the "edit my application" menu item
@@ -28,8 +29,10 @@ Feature: As a user of the site
 
   Scenario: User (not a member) is viewing the site
     Given I am logged in as "hans@woof.se"
+    And I am on the "landing" page
     Then I should see the "home" menu item
-    And I should see the "log in" menu item
+    And I should not see the "log in" menu item
+    And I should see the "log out" menu item
     And I should see the "brochure and info" menu item
     And I should see the "member application" menu item
     And I should not see the "edit my application" menu item
@@ -39,8 +42,10 @@ Feature: As a user of the site
 
   Scenario: Member is viewing the site
     Given I am logged in as "emma@happymutts.se"
+    And I am on the "landing" page
     Then I should see the "home" menu item
-    And I should see the "log in" menu item
+    And I should not see the "log in" menu item
+    And I should see the "log out" menu item
     And I should see the "brochure and info" menu item
     And I should not see the "member application" menu item
     And I should see the "edit my application" menu item
@@ -51,7 +56,10 @@ Feature: As a user of the site
 
   Scenario: Admin is viewing the site
     Given I am logged in as "admin.shf.se"
-    Then I should see the "log in" menu item
+    And I am on the "landing" page
+    Then I should see the "home" menu item
+    And I should not see the "log in" menu item
+    And I should see the "log out" menu item
     And I should see the "brochure and info" menu item
     And I should not see the "member application" menu item
     And I should see the "edit my application" menu item
