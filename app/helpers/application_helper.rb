@@ -22,10 +22,6 @@ module ApplicationHelper
     end
   end
 
-  def user_has_membership_application?
-    current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
-  end
-
   def member_has_company?
     current_user.is_member && !current_user.membership_applications.last.company.nil?
   end
