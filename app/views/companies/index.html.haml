@@ -15,11 +15,11 @@
   %table
     %thead
       %tr
+        %th Kategori
         %th Namn
         %th Län
-        %th Org nr
-        %th
         - if current_user.try(:admin)
+          %th Org nr
           %th
           %th
 
@@ -27,14 +27,15 @@
       - @companies.each do |company|
         - if company_complete? company
           %tr.company
-            %td= company.name
+            %td= list_categories company
+            %td= link_to company.name, company
             %td= company.region
-            %td= company.company_number
-            %td= link_to 'Visa företag', company
             - if current_user.try(:admin)
+              %td= company.company_number
               %td= link_to 'Edit', edit_company_path(company)
               %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
   %br
   - if current_user.try(:admin)
     .center
       = link_to 'Skapa nytt företag', new_company_path
+
