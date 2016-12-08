@@ -11,7 +11,13 @@ Feature: As a visitor,
     And the following users exists
       | email               | admin |
       | emma@happymutts.com |       |
+      | a@happymutts.com    |       |
       | admin@shf.se        | true  |
+
+    And the following applications exist:
+      | first_name | user_email          | company_number | status   |
+      | Emma       | emma@happymutts.com | 5560360793     | Accepted |
+      | Anna       | a@happymutts.com    | 2120000142     | Accepted |
 
 
   Scenario: Visitor sees all companies
