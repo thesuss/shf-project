@@ -44,6 +44,7 @@ Feature: As an admin
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
+    And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
 
 
@@ -74,7 +75,8 @@ Feature: As an admin
     And I click on "Submit"
     Then I should see "Företaget har uppdaterats."
     And I should see "kicki@gladajyckar.se"
-    And I should see "http://www.snarkybarkbark.se"
+    And the "http://www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"
+
 
   Scenario Outline: Admin edits a company - when things go wrong (sad case)
     Given I am logged in as "admin@shf.se"
@@ -107,3 +109,13 @@ Feature: As an admin
     Given I am Logged out
     And I am on the "create a new company" page
     Then I should see "Du har inte behörighet att göra detta."
+
+  Scenario: Website path is wrong (forgets http://)
+    Given I am logged in as "admin@shf.se"
+    And I am on the edit company page for "5560360793"
+    When I fill in the form with data :
+      | Webbsida              |
+      | www.snarkybarkbark.se |
+    And I click on "Submit"
+    Then I should see "Företaget har uppdaterats."
+    And the "www.snarkybarkbark.se" should not go to "http://www.snarkybarkbark.se"
