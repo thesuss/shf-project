@@ -15,6 +15,7 @@ Feature: As an admin
     Given the following users exists
       | email                      | admin |
       | applicant_1@happymutts.com |       |
+      | applicant_3@happymutts.com |       |
       | admin@shf.se               | true  |
 
     And the following companies exist:
@@ -24,7 +25,9 @@ Feature: As an admin
 
     And the following applications exist:
       | first_name | user_email                 | company_number | status   |
-      | Emma       | applicant_1@happymutts.com | 5562252998     | Accepted |
+      | Emma       | applicant_1@happymutts.com | 5560360793     | Accepted |
+      | Anna       | applicant_3@happymutts.com | 2120000142     | Accepted |
+
 
     And the following business categories exist
       | name         |
@@ -32,6 +35,22 @@ Feature: As an admin
       | Psychologist |
       | Trainer      |
       | Awesome      |
+
+  Scenario: Admin sees all companies listed
+    Given I am logged in as "admin@shf.se"
+    When I am on the "all companies" page
+    Then I should see "No More Snarky Barky"
+    And I should see "Bowsers"
+
+  Scenario: User tries to create a company
+    Given I am logged in as "applicant_1@happymutts.com"
+    And I am on the "create a new company" page
+    Then I should see "Du har inte behörighet att göra detta."
+
+  Scenario: Visitor tries to create a company
+    Given I am Logged out
+    And I am on the "create a new company" page
+    Then I should see "Du har inte behörighet att göra detta."
 
   Scenario: Admin creates a company
     Given I am logged in as "admin@shf.se"
@@ -45,8 +64,6 @@ Feature: As an admin
     And I should see "123 45"
     And I should see "Bromma"
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
-
-
 
   Scenario Outline: Admin creates company - when things go wrong
     Given I am logged in as "admin@shf.se"
@@ -93,22 +110,6 @@ Feature: As an admin
       | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)" |
       | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
       | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
-
-  Scenario: Admin sees all companies listed
-    Given I am logged in as "admin@shf.se"
-    When I am on the "all companies" page
-    Then I should see "No More Snarky Barky"
-    And I should see "Bowsers"
-
-  Scenario: User tries to create a company
-    Given I am logged in as "applicant_1@happymutts.com"
-    And I am on the "create a new company" page
-    Then I should see "Du har inte behörighet att göra detta."
-
-  Scenario: Visitor tries to create a company
-    Given I am Logged out
-    And I am on the "create a new company" page
-    Then I should see "Du har inte behörighet att göra detta."
 
   Scenario: Website path is incomplete (does not include http://)
     Given I am logged in as "admin@shf.se"
