@@ -63,6 +63,9 @@ class MembershipApplicationsController < ApplicationController
     end
   end
 
+  def information
+
+  end
 
   private
   def membership_application_params

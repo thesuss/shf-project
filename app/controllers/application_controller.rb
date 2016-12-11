@@ -9,6 +9,16 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.admin?
+      membership_applications_path
+    elsif resource.user?
+      information_path
+    else
+      super
+    end
+  end
+
   private
 
   def user_not_authorized
