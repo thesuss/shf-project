@@ -6,9 +6,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   def admin?
-    self.admin == true
-  end
-  def user?
-    self.admin == false
+    self.admin
   end
 end
