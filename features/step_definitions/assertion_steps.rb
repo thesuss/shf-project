@@ -71,3 +71,8 @@ Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
   expect(page).to have_selector(".#{css_class_name}", count: n)
   expect(page).not_to have_selector(".#{css_class_name}", count: n+1)
 end
+
+
+And(/^I should be on the applications page$/) do
+  expect(current_path).to eq membership_applications_path
+end

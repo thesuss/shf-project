@@ -4,9 +4,10 @@ Feature: As a registered user
 
   Background:
     Given the following users exists
-      | email           | password |
-      | emma@random.com | password |
-      | anne@random.com | password |
+      | email           | password | admin   |
+      | emma@random.com | password | false   |
+      | anne@random.com | password | false   |
+      | arne@random.com | password | true    |
 
     And the following applications exist:
       | first_name | user_email      | company_number |
@@ -57,3 +58,14 @@ Feature: As a registered user
     When I fail to visit the "applications index" page
     Then I should see "Du har inte behörighet att göra detta."
     And I should be on "landing" page
+
+  Scenario: Logging in as admin
+    Given I am on the "landing" page
+    Then I should see "Logga in"
+    When I click on "Logga in" link
+    Then I should be on "login" page
+    When I fill in "Email" with "arne@random.com"
+    And I fill in "Password" with "password"
+    And I click on "Logga in" button
+    Then I should see "Signed in successfully"
+    And I should be on the applications page
