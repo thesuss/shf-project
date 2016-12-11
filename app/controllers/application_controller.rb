@@ -12,10 +12,8 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if resource.admin?
       membership_applications_path
-    elsif resource.user?
-      information_path
     else
-      super
+      information_path
     end
   end
 
