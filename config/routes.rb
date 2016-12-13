@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   as :user do
     authenticated :user, lambda {|u| u.admin? }  do
-      root to: "admin#index", as: :admin_root
+      root to: 'admin#index', as: :admin_root
     end
   end
 
@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :business_categories
   resources :membership_applications, only: [:new, :create, :edit, :update, :index, :show]
   resources :companies, only: [:new, :create, :edit, :update, :index, :show]
+
+  get 'information', to: 'membership_applications#information'
 
   root to: 'companies#index'
 

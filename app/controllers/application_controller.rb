@@ -11,6 +11,14 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def after_sign_in_path_for(resource)
+    if resource.admin?
+      admin_root_path
+    else
+      information_path
+    end
+  end
+
   def user_not_authorized
     flash[:alert] = 'Du har inte behörighet att göra detta..'
     redirect_back(fallback_location: root_path)

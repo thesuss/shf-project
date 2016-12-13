@@ -26,6 +26,10 @@ Then(/^I should be on "([^"]*)" page$/) do |page|
       path = root_path
     when 'edit my application'
       path = edit_membership_application_path(@user.membership_applications.last)
+    when 'user instructions'
+      path = information_path
+    when 'member instructions'
+      path = information_path
   end
   expect(current_path).to eq path
 end
@@ -70,4 +74,9 @@ Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
   n = n.to_i
   expect(page).to have_selector(".#{css_class_name}", count: n)
   expect(page).not_to have_selector(".#{css_class_name}", count: n+1)
+end
+
+
+And(/^I should be on the applications page$/) do
+  expect(current_path).to eq membership_applications_path
 end
