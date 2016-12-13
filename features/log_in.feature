@@ -75,15 +75,25 @@ Feature: As a registered user
     And I should not see "Hej, kul att du är intresserad"
 
   Scenario: Logging in as a member
-    Given I am logged in as "emma@random.com"
-    #Then I should be on "member instructions" page
+    Given I am on the "landing" page
+    Then I should see "Logga in"
+    When I click on "Logga in" link
+    Then I should be on "login" page
+    When I fill in "Email" with "emma@random.com"
+    And I fill in "Password" with "password"
+    And I click on "Logga in" button
     Then I should see "Välkommen"
     And I should not see "Admin:"
     And I should not see "Hej, kul att du är intresserad"
 
   Scenario: Logging in as a user
-    Given I am logged in as "lars-user@random.com"
-    #Then I should be on "user instructions" page
+    Given I am on the "landing" page
+    Then I should see "Logga in"
+    When I click on "Logga in" link
+    Then I should be on "login" page
+    When I fill in "Email" with "lars-user@random.com"
+    And I fill in "Password" with "password"
+    And I click on "Logga in" button
     Then I should not see "Välkommen"
     And I should not see "Admin:"
     And I should see "Hej, kul att du är intresserad"
