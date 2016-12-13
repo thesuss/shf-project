@@ -83,6 +83,7 @@ Feature: As a registered user
     And I fill in "Password" with "password"
     And I click on "Logga in" button
     Then I should see "Välkommen"
+    And I should be on "member instructions" page
     And I should not see "Admin:"
     And I should not see "Hej, kul att du är intresserad"
 
@@ -95,5 +96,6 @@ Feature: As a registered user
     And I fill in "Password" with "password"
     And I click on "Logga in" button
     Then I should not see "Välkommen"
+    And I should be on "user instructions" page
     And I should not see "Admin:"
     And I should see "Hej, kul att du är intresserad"
