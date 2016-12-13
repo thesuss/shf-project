@@ -68,4 +68,4 @@ Feature: As a registered user
     And I fill in "Password" with "password"
     And I click on "Logga in" button
     Then I should see "Signed in successfully"
-    And I should be on the applications page
+    And I should see "Admin:"
