@@ -8,9 +8,11 @@
 .entry-content
   - unless current_user.try(:admin)
     %p
+      %strong
+        Sidan är under uppbyggnad, mer information och funktioner kommer att komma efterhand.
+    %p
       Nedan listas anslutna H-märkta företag
-      Vi arbetar febrilt på att få denna sida mycket bättre, till dess kan du
-      söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
+      Du kan söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
 
   %table
     %thead
@@ -35,7 +37,3 @@
               %td= link_to 'Edit', edit_company_path(company)
               %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
   %br
-  - if current_user.try(:admin)
-    .center
-      = link_to 'Skapa nytt företag', new_company_path
-
