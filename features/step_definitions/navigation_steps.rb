@@ -25,6 +25,10 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
       end
     when 'static workgroups'
       path = page_path('arbetsgrupper')
+    when 'user instructions'
+      path = information_path
+    when 'member instructions'
+      path = information_path
     else
       path = 'no path set'
   end
@@ -59,6 +63,10 @@ And(/^I am on the "([^"]*)" page for "([^"]*)"$/) do |page, user_email|
           path = edit_company_path(user_from_email.membership_applications.last.company)
         end
       end
+    when 'user instructions'
+      path = information_path
+    when 'member instructions'
+      path = information_path
     else
       path = 'no path set'
   end
