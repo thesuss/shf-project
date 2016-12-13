@@ -3,7 +3,7 @@
   .post-title-divider
     %span
 .entry-content
-  - if current_user.is_member == true
+  - if current_user.is_member?
     %h2
       Välkommen
       = current_user.membership_application.first_name
