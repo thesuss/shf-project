@@ -28,7 +28,6 @@
   #uploaded_files
     = render 'uploaded_files_list', membership_application: @membership_application
   - if edit_status?
-    %p Uppdatera status:
     = render partial: 'application_status_form'
   %p Status: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}
 
