@@ -27,9 +27,10 @@
 
   #uploaded_files
     = render 'uploaded_files_list', membership_application: @membership_application
-
-  %p Status:
   - if edit_status?
+    %p Uppdatera status:
     = render partial: 'application_status_form'
-
   %p Status: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}
+
+  - if current_user && current_user.admin?
+    = link_to 'Redigera ansökan', edit_membership_application_path(@membership_application)
