@@ -232,4 +232,24 @@ RSpec.describe User, type: :model do
       it { expect(subject.is_member_or_admin?).to be_truthy }
     end
   end
+
+  describe '#is_company_owner?' do
+
+    describe 'admin' do
+      subject { create(:user, admin: true) }
+      it { expect(subject.is_company_owner?).to be_falsey }
+    end
+
+    describe 'user: no application' do
+      subject { create(:user, is_member: false) }
+      it { expect(subject.is_company_owner?).to be_falsey }
+    end
+
+    describe 'member with 1 app' do
+      let(:member) { create(:member_with_membership_app) }
+      it { expect(member.is_company_owner?).to be_truthy }
+    end
+
+  end
+
 end

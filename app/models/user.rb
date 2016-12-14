@@ -33,4 +33,11 @@ class User < ApplicationRecord
     admin? || is_member?
   end
 
+  def is_company_owner?
+    if has_company?
+      company = Company.find(self.company.id)
+      company.company_number == membership_application.company_number
+    end
+  end
+
 end
