@@ -232,5 +232,4 @@ RSpec.describe User, type: :model do
       it { expect(subject.is_member_or_admin?).to be_truthy }
     end
   end
-
 end
