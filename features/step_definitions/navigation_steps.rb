@@ -65,6 +65,8 @@ And(/^I am on the "([^"]*)" page for "([^"]*)"$/) do |page, user_email|
       end
     when 'user instructions'
       path = information_path
+    when 'application'
+      path = membership_application_path(user_from_email.membership_applications.last.company)
     when 'member instructions'
       path = information_path
     else
@@ -83,4 +85,10 @@ When(/^I fail to visit the "([^"]*)" page$/) do |page|
   end
   visit path
   expect(current_path).not_to be path
+end
+
+
+When(/^I am on the application page for "([^"]*)"$/) do |first_name|
+    membership_application = MembershipApplication.find_by(first_name: first_name)
+    visit membership_application_path(membership_application)
 end
