@@ -86,3 +86,14 @@ Feature: As an Admin
     Given I am logged in as "hans@random.com"
     And I am on the list applications page
     Then I should see "Du har inte behörighet att göra detta."
+
+  Scenario: Clicking the edit button on show page
+    Given I am logged in as "admin@sgf.com"
+    When I am on the application page for "Emma"
+    And I click on "Redigera ansökan"
+    Then I should be on the edit application page for "Emma"
+
+  Scenario: User does not see edit-link
+    Given I am logged in as "emma@random.com"
+    When I am on the application page for "Emma"
+    Then I should not see "Redigera ansökan"

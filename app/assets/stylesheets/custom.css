@@ -178,6 +178,11 @@ select {
 .required:after {
     content: '*';
 }
+
+.file {
+    margin-top: 0;
+}
+
 /*!
  *nicelabel JQuery Plugin
  *
