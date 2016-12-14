@@ -42,7 +42,7 @@ namespace :shf do
         headers_in_file: true,
         remove_empty_values: false,
         remove_zero_values: false,
-        file_encoding: 'ISO-8859-1',
+        file_encoding: 'UTF-8',
         key_mapping: headers_to_columns_mapping
     }
 
