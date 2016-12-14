@@ -5,12 +5,12 @@ Feature: As the owner of a company (or an admin)
   Background:
 
     Given the following users exists
-      | email                 | admin |
-      | emma@happymutts.com   |       |
-      | lars@happymutts.com   |       |
-      | anna@happymutts.com   |       |
-      | bowser@snarkybarky.se |       |
-      | admin@shf.se          | true  |
+      | email                 | admin | is_member |
+      | emma@happymutts.com   |       | true      |
+      | lars@happymutts.com   |       | true      |
+      | anna@happymutts.com   |       | true      |
+      | bowser@snarkybarky.se |       | true      |
+      | admin@shf.se          | true  | false     |
 
     And the following companies exist:
       | name                 | company_number | email                  |
@@ -29,22 +29,22 @@ Feature: As the owner of a company (or an admin)
     Given I am Logged out
     And I am the page for company number "5562252998"
     Then I should see "Företagets e-postadress:"
-    And I should not see "Redigera företag"
+    And I should not see "Redigera detta företag"
 
   Scenario: Admin does see edit link for company
     Given I am logged in as "admin@shf.se"
     And I am the page for company number "5562252998"
     Then I should see "Företagets e-postadress:"
-    And I should see "Redigera företag"
+    And I should see "Redigera detta företag"
 
   Scenario: Other user does not see edit link for a company
     Given I am logged in as "bowser@snarkybarky.se"
     And I am the page for company number "5562252998"
     Then I should see "Företagets e-postadress:"
-    And I should not see "Redigera företag"
+    And I should not see "Redigera detta företag"
 
   Scenario: User related to company does see edit link for company
     Given I am logged in as "emma@happymutts.com"
     And I am the page for company number "5562252998"
     Then I should see "Företagets e-postadress:"
-    And I should see "Redigera företag"
+    And I should see "Redigera detta företag"

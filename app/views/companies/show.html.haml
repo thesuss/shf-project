@@ -40,6 +40,6 @@
   - if current_user
     - if current_user.try(:admin) || current_user.is_company_owner?(@company.company_number)
       .center
-        = link_to 'Redigera företag', edit_company_path(@company)
+        = link_to 'Redigera detta företag', edit_company_path(@company)
         \|
         = link_to 'Alla företag', companies_path
