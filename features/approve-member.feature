@@ -62,6 +62,18 @@ Feature: As an admin
     And I should see "902"
     And I am on the "all companies" page
     And I should see "No More Snarky Barky"
+    And I am Logged out
+    And I am on the "landing" page
+    And I should see "No More Snarky Barky"
+    And I should see "Rehab"
+    And I am logged in as "anna@nosnarkybarky.se"
+    And I am on the "landing" page
+    Then I should see "Hantera företag"
+    And I am on the "edit my application" page for "anna@nosnarkybarky.se"
+    Then I should see "Medlemsnummer"
+    And I should see "902"
+    And I am on the "edit my company" page for "anna@nosnarkybarky.se"
+    Then I should see "No More Snarky Barky"
 
   Scenario: Admin approves, but then changes it to Rejected
     Given I am on "Emma" application page
@@ -84,6 +96,6 @@ Feature: As an admin
     And I am logged in as "emma@happymutts.se"
     And I navigate to the edit page for "Emma"
     Then I should be on "Edit My Application" page
-    And I should not see "MMedlemsnummer"
+    And I should not see "Medlemsnummer"
 
 

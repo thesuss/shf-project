@@ -92,17 +92,18 @@ class MembershipApplicationsController < ApplicationController
   def accept_application
 
     @membership_application.user.is_member = true
+    @membership_application.user.save
+
     unless (company = Company.find_by_company_number(@membership_application.company_number))
       company = Company.create!(company_number: @membership_application.company_number,
                                 email: @membership_application.contact_email)
     end
 
-    @membership_application.company = company
-    @membership_application.save!
+    @membership_application.update(company:company)
+    @membership_application.save
 
     helpers.flash_message(:notice,
                           'Var god ange medlemsnummer och spara.')
-
   end
 
 
