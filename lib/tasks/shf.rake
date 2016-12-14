@@ -3,11 +3,44 @@ require 'active_support/logger'
 
 namespace :shf do
 
+  ACCEPTED_STATUS = 'Godkänd'
+
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
     tasks = ['db:drop', 'db:setup', 'db:migrate', 'db:seed']
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
+
+
+  # This will associate ALL membership_applications
+  #   where status == '#{ACCEPTED_STATUS}' in the DB with their companies.
+  # It will set the membership_application.company_id
+  # It will OVERWRITE the existing membership_application.company_id
+  # Use this in case you don't want to import again and you need to
+  # fix the imported data.
+  desc 'connect membership to company'
+  task :connect_membership_to_company => [:environment] do
+
+    logfile = 'log/import.log'
+    start_time = Time.now
+    log = start_logging(start_time, logfile)
+
+    num_connected = 0
+
+    MembershipApplication.where(status:ACCEPTED_STATUS).find_each do |mem_app|
+      if (connected_co = Company.find_by_company_number(mem_app.company_number))
+        mem_app.company = connected_co
+        mem_app.save
+        log_and_show log, Logger::INFO, "membership_app.id #{mem_app.id} now connected to company_id #{mem_app.company_id} (company number: #{connected_co.company_number})"
+        num_connected += 1
+      end
+    end
+
+    log_and_show log, Logger::INFO, "\nFinished connecting #{num_connected} membership applications to companies, where membership_application.status == #{ACCEPTED_STATUS}."
+    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
+    finish_and_close_log(log, start_time, Time.now)
+  end
+
 
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
@@ -18,7 +51,6 @@ namespace :shf do
     usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/member-companies-sanitized-small.csv"]'
 
     DEFAULT_PASSWORD = 'whatever'
-    ACCEPTED_STATUS = 'Godkänd'
 
     headers_to_columns_mapping = {
         membership_number: :membership_number,
@@ -116,7 +148,8 @@ namespace :shf do
                                                  contact_email: user.email,
                                                  status: ACCEPTED_STATUS,
                                                  membership_number: row[:membership_number],
-                                                 user: user
+                                                 user: user,
+                                                 company: company
       )
 
       puts_created('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
@@ -135,8 +168,6 @@ namespace :shf do
     end
 
   end
-
-
 
 
   def find_or_create_category(category_name, membership)
