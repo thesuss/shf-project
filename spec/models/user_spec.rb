@@ -245,7 +245,6 @@ RSpec.describe User, type: :model do
     end
 
     describe 'member with 1 app' do
-      #This is perhaps falsly green, but I don't find any other way to test it?
       let(:member) { create(:member_with_membership_app) }
       let(:number) { member.company.company_number }
       it { expect(member.is_company_owner?(number)).to be_truthy }
