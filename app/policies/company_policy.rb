@@ -20,7 +20,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    is_admin? || @user
+    is_admin? || company?
   end
 
 
@@ -31,5 +31,9 @@ class CompanyPolicy < ApplicationPolicy
   private
   def is_admin?
     @user.admin? if @user
+  end
+
+  def company?
+    #Logic to check if the user has a company
   end
 end

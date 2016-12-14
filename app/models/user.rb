@@ -33,10 +33,4 @@ class User < ApplicationRecord
     admin? || is_member?
   end
 
-  def is_company_owner?(this_company_number)
-    if self.company
-      self.company.company_number == this_company_number
-    end
-  end
-
 end
