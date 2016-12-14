@@ -5,17 +5,12 @@ Feature: As the owner of a company (or an admin)
   Background:
 
     Given the following users exists
-      | email                 | admin | is_member |
-      | emma@happymutts.com   |       | true      |
-      | lars@happymutts.com   |       | true      |
-      | anna@happymutts.com   |       | true      |
-      | bowser@snarkybarky.se |       | true      |
-      | admin@shf.se          | true  | false     |
-
-    And the following companies exist:
-      | name                 | company_number | email                  |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com |
-      | HappyMutts           | 2120000142     | woof@happymutts.com    |
+      | email                 | admin | is_member | company_number |
+      | emma@happymutts.com   |       | true      | 5562252998     |
+      | lars@happymutts.com   |       | true      | 5562252998     |
+      | anna@happymutts.com   |       | true      | 5562252998     |
+      | bowser@snarkybarky.se |       | true      | 2120000142     |
+      | admin@shf.se          | true  | false     |                |
 
     And the following applications exist:
       | first_name | user_email            | company_number | status  |
