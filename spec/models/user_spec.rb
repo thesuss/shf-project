@@ -232,4 +232,163 @@ RSpec.describe User, type: :model do
       it { expect(subject.is_member_or_admin?).to be_truthy }
     end
   end
+
+  describe '#is_in_company_numbered?(company_num)' do
+
+    default_co_number = '5562728336'
+    describe 'not yet a member, so not in any full companies' do
+
+      describe 'user: no applications, so not in any companies' do
+        subject { create(:user, is_member: false) }
+        it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+      end
+
+      describe 'user: 1 saved application' do
+        subject { create(:user_with_membership_app) }
+        it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+      end
+
+      describe 'user: 2 application' do
+        subject { create(:user_with_2_membership_apps) }
+        it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+      end
+    end
+
+    describe 'is a member, so is in companies' do
+
+      describe 'member with 1 app' do
+        let(:member) { create(:member_with_membership_app) }
+        it { expect(member.is_in_company_numbered?(default_co_number)).to be_truthy }
+      end
+
+      describe 'member with 2 apps, both with same (1) company' do
+        let(:member) do
+          m = create(:member_with_membership_app)
+          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
+        it { expect(member.is_in_company_numbered?(default_co_number)).to be_truthy }
+      end
+
+      describe 'member with 2 apps, 2 different companies' do
+        let(:member) do
+          m = create(:member_with_membership_app, company_number: '5562252998')
+          app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
+        it { expect(member.is_in_company_numbered?('5562252998')).to be_truthy }
+        it { expect(member.is_in_company_numbered?('2120000142')).to be_truthy }
+      end
+
+
+      describe 'member with 0 apps (should not happen)' do
+        let(:member) { create(:user) }
+        it { expect(member.is_in_company_numbered?(default_co_number)).to be_falsey }
+      end
+
+    end
+
+    describe 'admin is not in any companies' do
+      subject { create(:user, admin: true) }
+      it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+      it { expect(subject.is_in_company_numbered?('5712213304')).to be_falsey }
+    end
+  end
+
+  describe '#companies' do
+    describe 'not yet a member, so not in any full companies' do
+
+      describe 'user: no applications, so not in any companies' do
+        subject { create(:user, is_member: false) }
+        it { expect(subject.companies.size).to eq(0) }
+      end
+
+      describe 'user: 1 saved application' do
+        subject { create(:user_with_membership_app) }
+        it { expect(subject.companies.size).to eq(0) }
+      end
+
+      describe 'user: 2 application' do
+        subject { create(:user_with_2_membership_apps) }
+        it { expect(subject.companies.size).to eq(0) }
+      end
+
+    end
+    describe 'is a member, so is in companies' do
+
+      describe 'member with 1 app' do
+        let(:member) { create(:member_with_membership_app) }
+        it { expect(member.companies.size).to eq(1) }
+      end
+
+      describe 'member with 2 apps, both with same (1) company' do
+        let(:member) do
+          m = create(:member_with_membership_app)
+          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
+        it { expect(member.companies.size).to eq(1), "found: size: #{member.companies.size} #{member.companies.inspect}" }
+      end
+
+      describe 'member with 2 apps, 2 different companies' do
+        let(:member) do
+          m = create(:member_with_membership_app, company_number: '5562252998')
+          app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
+        it { expect(member.companies.size).to eq(2) }
+      end
+
+      describe 'member with 2 apps, 2 for the same company, 1 different company' do
+        let(:member) do
+          m = create(:member_with_membership_app)
+          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          m.membership_applications << app2
+          app3_different_co = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          m.membership_applications << app3_different_co
+          m
+        end
+        it { expect(member.companies.size).to eq(2) }
+      end
+
+      describe 'member with 0 apps (should not happen)' do
+        let(:member) { create(:user) }
+        it { expect(member.companies.size).to eq(0) }
+      end
+
+    end
+
+    describe 'admin will get all Companies' do
+      subject { create(:user, admin: true) }
+      it do
+        create(:company, company_number: '5562252998')
+        create(:company, company_number: '5560360793')
+        create(:company, company_number: '2120000142')
+
+        num_companies = Company.all.size
+        expect(subject.companies.size).to eq(num_companies)
+      end
+    end
+  end
+
+  describe '#admin?' do
+    describe 'user: no application' do
+      subject { create(:user, is_member: false) }
+      it { expect(subject.admin?).to be_falsey }
+    end
+
+    describe 'member with 1 app' do
+      let(:member) { create(:member_with_membership_app) }
+      it { expect(member.admin?).to be_falsey }
+    end
+
+    describe 'admin' do
+      subject { create(:user, admin: true) }
+      it { expect(subject.admin?).to be_truthy }
+    end
+  end
 end

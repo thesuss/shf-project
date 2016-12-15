@@ -37,8 +37,8 @@
     %b Verksamhetslän:
     = @company.region
 
-  - if current_user.try(:admin)
+  - if policy(@company).update?
     .center
-      = link_to 'Redigera företag', edit_company_path(@company)
+      = link_to 'Redigera detta företag', edit_company_path(@company)
       \|
       = link_to 'Alla företag', companies_path
