@@ -4,10 +4,10 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email                      | admin |
-      | applicant_1@happymutts.com |       |
-      | applicant_3@happymutts.com |       |
-      | admin@shf.se               | true  |
+      | email                      | admin | is_member |
+      | applicant_1@happymutts.com |       | true      |
+      | applicant_3@happymutts.com |       | false     |
+      | admin@shf.se               | true  | true      |
 
     And the following companies exist:
       | name                 | company_number | email                  |
@@ -20,7 +20,7 @@ Feature: As a member
       | Anna       | applicant_3@happymutts.com | 2120000142     | Accepted |
 
 
-  Scenario: User can to edit their company
+  Scenario: Member can edit their company
     Given I am logged in as "applicant_1@happymutts.com"
     And I am on the edit company page for "5560360793"
     Then I should see "Webbsida (glöm inte http://)"
