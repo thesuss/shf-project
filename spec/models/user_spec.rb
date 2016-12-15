@@ -262,20 +262,22 @@ RSpec.describe User, type: :model do
       end
 
       describe 'member with 2 apps, both with same (1) company' do
-        let(:member) { m = create(:member_with_membership_app)
-        app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
-        m.membership_applications << app2
-        m
-        }
+        let(:member) do
+          m = create(:member_with_membership_app)
+          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
         it { expect(member.is_in_company_numbered?(default_co_number)).to be_truthy }
       end
 
       describe 'member with 2 apps, 2 different companies' do
-        let(:member) { m = create(:member_with_membership_app, company_number: '5562252998')
-        app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
-        m.membership_applications << app2
-        m
-        }
+        let(:member) do
+          m = create(:member_with_membership_app, company_number: '5562252998')
+          app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
         it { expect(member.is_in_company_numbered?('5562252998')).to be_truthy }
         it { expect(member.is_in_company_numbered?('2120000142')).to be_truthy }
       end
@@ -322,31 +324,34 @@ RSpec.describe User, type: :model do
       end
 
       describe 'member with 2 apps, both with same (1) company' do
-        let(:member) { m = create(:member_with_membership_app)
-        app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
-        m.membership_applications << app2
-        m
-        }
+        let(:member) do
+          m = create(:member_with_membership_app)
+          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
         it { expect(member.companies.size).to eq(1), "found: size: #{member.companies.size} #{member.companies.inspect}" }
       end
 
       describe 'member with 2 apps, 2 different companies' do
-        let(:member) { m = create(:member_with_membership_app, company_number: '5562252998')
-        app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
-        m.membership_applications << app2
-        m
-        }
+        let(:member) do
+          m = create(:member_with_membership_app, company_number: '5562252998')
+          app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          m.membership_applications << app2
+          m
+        end
         it { expect(member.companies.size).to eq(2) }
       end
 
       describe 'member with 2 apps, 2 for the same company, 1 different company' do
-        let(:member) { m = create(:member_with_membership_app)
-        app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
-        m.membership_applications << app2
-        app3_different_co = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
-        m.membership_applications << app3_different_co
-        m
-        }
+        let(:member) do
+          m = create(:member_with_membership_app)
+          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          m.membership_applications << app2
+          app3_different_co = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          m.membership_applications << app3_different_co
+          m
+        end
         it { expect(member.companies.size).to eq(2) }
       end
 
