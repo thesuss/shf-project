@@ -34,7 +34,7 @@ class User < ApplicationRecord
   end
 
   def is_in_company_numbered?(company_num)
-    is_member? && !(companies.find{|c| c.company_number == company_num}).nil?
+    is_member? && !(companies.detect{|c| c.company_number == company_num}).nil?
   end
 
   def companies
@@ -44,7 +44,7 @@ class User < ApplicationRecord
         Company.all
       else
         if has_membership_application?
-          cos = membership_applications.reload.collect{|app|  app.company }.compact
+          cos = membership_applications.reload.map{|app|  app.company }.compact
           cos.uniq{|c| c.company_number}
         else
           no_companies
