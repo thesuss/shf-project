@@ -343,7 +343,7 @@ RSpec.describe User, type: :model do
         let(:member) { m = create(:member_with_membership_app)
         app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
         m.membership_applications << app2
-        app3_different_co = app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+        app3_different_co = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
         m.membership_applications << app3_different_co
         m
         }
@@ -360,9 +360,9 @@ RSpec.describe User, type: :model do
     describe 'admin will get all Companies' do
       subject { create(:user, admin: true) }
       it do
-        c1 = create(:company, company_number: '5562252998')
-        c2 = create(:company, company_number: '5560360793')
-        c3 = create(:company, company_number: '2120000142')
+        create(:company, company_number: '5562252998')
+        create(:company, company_number: '5560360793')
+        create(:company, company_number: '2120000142')
 
         num_companies = Company.all.size
         expect(subject.companies.size).to eq(num_companies)
