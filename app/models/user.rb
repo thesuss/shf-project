@@ -33,4 +33,25 @@ class User < ApplicationRecord
     admin? || is_member?
   end
 
+  def is_in_company_numbered?(company_num)
+    is_member? && !(companies.find{|c| c.company_number == company_num}).nil?
+  end
+
+  def companies
+    no_companies = []
+    if is_member_or_admin?
+      if admin?
+        Company.all
+      else
+        if has_membership_application?
+          cos = membership_applications.reload.collect{|app|  app.company }.compact
+          cos.uniq{|c| c.company_number}
+        else
+          no_companies
+        end
+      end
+    else
+      no_companies
+    end
+  end
 end
