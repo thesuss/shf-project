@@ -16,8 +16,8 @@ Feature: As a member
 
     And the following applications exist:
       | first_name | user_email                 | company_number | status   |
-      | Emma       | applicant_1@happymutts.com | 5560360793     | Accepted |
-      | Anna       | applicant_3@happymutts.com | 2120000142     | Accepted |
+      | Emma       | applicant_1@happymutts.com | 5560360793     | Godkänd |
+      | Anna       | applicant_3@happymutts.com | 2120000142     | Godkänd |
 
 
   Scenario: Member can edit their company
