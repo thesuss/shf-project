@@ -5,7 +5,7 @@ RSpec.describe CompanyPolicy do
   let(:user_1) { create(:user, email: 'user_1@random.com') }
   let(:member) { create(:member_with_membership_app, email: 'member@random.com', company_number: '5562728336')}
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
-  let (:company) { create(:company, company_number: '5712213304')}
+  let(:company) { create(:company, company_number: '5712213304')}
 
   describe 'For admin' do
     subject { described_class.new(admin, company) }
@@ -19,7 +19,7 @@ RSpec.describe CompanyPolicy do
   end
 
   describe 'For a member that is a part of a company' do
-    let (:members_company) { Company.find_by_company_number('5562728336')}
+    let(:members_company) { Company.find_by_company_number('5562728336')}
     subject { described_class.new(member, members_company) }
 
     it { is_expected.to permit_action :index }
