@@ -11,8 +11,8 @@ Feature: As a visitor
   Scenario: Default language is Swedish
     Given I am on the "all companies" page
     Then I should see "Hitta H-märkt företag"
-    And I should not see "Swedish flag"
-    And I should see "English flag"
+    And I should not see "Swedish flag" image
+    And I should see "English flag" image
     And I should see t("theme_copyright", locale: :sv)
 
 
@@ -21,15 +21,15 @@ Feature: As a visitor
     When I click on "change-lang-to-english"
     When I click on "change-lang-to-svenska"
     Then I should see "Hitta H-märkt företag"
-    And I should not see "Swedish flag"
-    And I should see "English flag"
+    And I should not see "Swedish flag" image
+    And I should see "English flag" image
     And I should see t("theme_copyright", locale: :sv)
 
 
   Scenario: Visitor switches the site language from Swedish to English
     Given I am on the "all companies" page
     When I click on "change-lang-to-english"
-    Then I should see "Swedish flag"
-    And I should not see "English flag"
+    Then I should see "Swedish flag" image
+    And I should not see "English flag" image
     And I should see t("theme_copyright", locale: :en)
 
