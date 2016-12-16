@@ -1,15 +1,32 @@
 %header.entry-header
-  %h1.entry-title= 'Företagstyp: ' "#{@business_category.name}"
+  %h1.entry-title
+    Hundföretag av typen
+    = @business_category.name
 .post-title-divider
   %span
 .entry-content
-  %p
-    %b Namn:
-    = @business_category.name
-  %p
-    %b Beskrivning:
-    = @business_category.description
-.center
-  = link_to 'Redigera', edit_business_category_path(@business_category)
-  \|
-  = link_to 'Alla kategorier', business_categories_path
+  -unless @business_category.description.nil?
+    %p
+      %b Beskrivning:
+      = @business_category.description
+  %table
+    %thead
+      %tr
+        %th Namn
+        %th Län
+        - if current_user.try(:admin)
+          %th Org nr
+          %th
+          %th
+    %tbody
+      - @companies.each do |company|
+        - if company_complete? company
+          - company.categories.each do |category|
+            - if category.name == @business_category.name
+              %tr.company
+                %td= link_to company.name, company
+                %td= company.region
+                - if current_user.try(:admin)
+                  %td= company.company_number
+                  %td= link_to 'Edit', edit_company_path(company)
+                  %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
