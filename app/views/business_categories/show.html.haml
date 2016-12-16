@@ -5,7 +5,7 @@
 .post-title-divider
   %span
 .entry-content
-  -unless @business_category.description.nil?
+  - unless @business_category.description.nil?
     %p
       %b Beskrivning:
       = @business_category.description
