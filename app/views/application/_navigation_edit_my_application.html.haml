@@ -1,2 +1,6 @@
-%li.menu-item
-  = link_to 'Min ansökan', edit_membership_application_path(membership_app)
+- if current_user.is_member?
+  %li.menu-item
+    = link_to 'Min ansökan', membership_application_path(membership_app)
+- else
+  %li.menu-item
+    = link_to 'Min ansökan', edit_membership_application_path(membership_app)
