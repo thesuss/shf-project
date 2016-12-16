@@ -23,40 +23,40 @@ Feature: As a registered user
     When I fill in "Email" with "emma@random.com"
     And I fill in "Password" with "password"
     And I click on "Logga in" button
-    Then I should see "Signed in successfully"
+    Then I should see t("devise.sessions.signed_in")
 
   Scenario: Not proper e-mail
     Given I am on the "login" page
     When I fill in "Email" with "emmarandom.com"
     And I fill in "Password" with "password"
     And I click on "Logga in" button
-    Then I should see "Invalid Email or password"
+    Then I should see t("devise.failure.invalid")
 
   Scenario: No input of email
     Given I am on the "login" page
     When I leave the "Password" field empty
     And I click on "Logga in" button
-    Then I should see "Invalid Email or password"
+    Then I should see t("devise.failure.invalid")
 
   Scenario: No input of password
     Given I am on the "login" page
     When I leave the "Password" field empty
     And I click on "Logga in" button
-    Then I should see "Invalid Email or password"
+    Then I should see t("devise.failure.invalid")
 
   Scenario: Not registered user
     Given I am on the "login" page
     When I fill in "Email" with "anna@random.com"
     And I fill in "Password" with "password"
     And I click on "Logga in" button
-    Then I should see "Invalid Email or password"
+    Then I should see t("devise.failure.invalid")
 
   Scenario: Not accessing protected page
     Given I am on the "login" page
     When I fill in "Email" with "anna@random.com"
     And I fill in "Password" with "password"
     And I click on "Logga in" button
-    Then I should see "Invalid Email or password"
+    Then I should see t("devise.failure.invalid")
     When I fail to visit the "applications index" page
     Then I should see "Du har inte behörighet att göra detta."
     And I should be on "landing" page
@@ -69,7 +69,7 @@ Feature: As a registered user
     When I fill in "Email" with "arne@random.com"
     And I fill in "Password" with "password"
     And I click on "Logga in" button
-    Then I should see "Signed in successfully"
+    Then I should see t("devise.sessions.signed_in")
     And I should see "Admin:"
     And I should not see "Välkommen"
     And I should not see "Hej, kul att du är intresserad"

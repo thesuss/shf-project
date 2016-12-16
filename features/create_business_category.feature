@@ -41,8 +41,8 @@ Feature: As an admin
 
     Scenarios:
       | category_name | category_description | error                 |
-      |               |                      | "Name can't be blank" |
-      |               | some description     | "Name can't be blank" |
+      |               |                      | t("errors.messages.blank") |
+      |               | some description     | t("errors.messages.blank") |
 
   Scenario: Indicate required field
     Given I am on the "business categories" page

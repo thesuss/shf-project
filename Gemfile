@@ -19,6 +19,8 @@ gem 'devise'
 gem 'pundit'
 gem 'paperclip', '~> 5.0.0'
 
+gem 'routing-filter'   # for handling locale filters around routes
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'

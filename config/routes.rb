@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  filter :locale
+
   devise_for :users
 
   as :user do

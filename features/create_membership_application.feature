@@ -85,14 +85,27 @@ Feature: As a user
       | Förnamn  | Efternamn | Org nr     | E-post    | Telefon |
       | <f_name> | <l_name>  | <c_number> | <c_email> | <phone> |
     When I click on "Submit"
-    Then I should see <error>
+    Then I should see translated error <model_attribute> <error>
 
     Scenarios:
-      | f_name | c_number   | l_name    | c_email       | phone      | error                                                       |
-      | Kicki  | 00         | Andersson | kicki@immi.nu | 0706898525 | "Company number 00 är inte ett svenskt organisationsnummer" |
-      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | "Company number can't be blank"                             |
-      | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | "Last name can't be blank"                                  |
-      | Kicki  | 5562252998 | Andersson |               | 0706898525 | "Contact email can't be blank"                                      |
-      |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | "First name can't be blank"                                 |
-      | Kicki  | 5562252998 | Andersson | kicki@imminu  | 0706898525 | "Contact email is invalid"                                          |
-      | Kicki  | 5562252998 | Andersson | kickiimmi.nu  | 0706898525 | "Contact email is invalid"                                          |
+      | f_name | c_number   | l_name    | c_email       | phone      | model_attribute                                                      | error                   |
+      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | activerecord.models.attributes.membership_application.company_number | errors.messages.blank   |
+      | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | activerecord.models.attributes.membership_application.last_name      | errors.messages.blank   |
+      | Kicki  | 5562252998 | Andersson |               | 0706898525 | activerecord.models.attributes.membership_application.contact_email  | errors.messages.blank   |
+      |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | activerecord.models.attributes.membership_application.first_name     | errors.messages.blank   |
+      | Kicki  | 5562252998 | Andersson | kicki@imminu  | 0706898525 | activerecord.models.attributes.membership_application.contact_email  | errors.messages.invalid |
+      | Kicki  | 5562252998 | Andersson | kickiimmi.nu  | 0706898525 | activerecord.models.attributes.membership_application.contact_email  | errors.messages.invalid |
+
+
+  Scenario Outline: Apply for membership: company number wrong length
+    Given I am on the "landing" page
+    And I click on "Ansök om medlemsskap"
+    When I fill in the form with data :
+      | Förnamn  | Efternamn | Org nr     | E-post    | Telefon |
+      | <f_name> | <l_name>  | <c_number> | <c_email> | <phone> |
+    When I click on "Submit"
+    Then I should see <error>
+# Company number har fel längd (ska vara 10 tecken) Company number 00 är inte ett svenskt organisationsnummer
+    Scenarios:
+      | f_name | c_number | l_name    | c_email       | phone      | error                                                     |
+      | Kicki  | 00       | Andersson | kicki@immi.nu | 0706898525 | t("errors.messages.wrong_length", count: 10), locale: :sv |

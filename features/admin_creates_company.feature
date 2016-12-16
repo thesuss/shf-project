@@ -69,18 +69,18 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
     And I fill in the form with data :
-      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort   | Verksamhetslän | Webbsida  |
+      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort    | Verksamhetslän | Webbsida  |
       | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
     When I click on "Submit"
     Then I should see <error>
     And I should see "Ett eller flera problem hindrade företaget från att skapas."
 
     Scenarios:
-      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                                 |
-      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)"        |
-      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                                    |
-      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                                    |
-      | Happy Mutts | 5560360793 | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu.se      | http://www.gladajyckar.se | "Detta företag (org nr) finns redan i systemet." |
+      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                     |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10), locale: :sv |
+      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                              |
+      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                              |
+      | Happy Mutts | 5560360793 | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu.se      | http://www.gladajyckar.se | "Detta företag (org nr) finns redan i systemet."          |
 
 
   Scenario: Admin edits a company
@@ -99,17 +99,32 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
     And I fill in the form with data :
-      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort   | Verksamhetslän | Webbsida  |
+      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort    | Verksamhetslän | Webbsida  |
+      | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
+    When I click on "Submit"
+    Then I should see translated error <model_attribute> <error>
+    And I should see "Ett problem förhindrade uppdatering av företaget."
+
+    Scenarios:
+      | name        | org_number | phone | street         | post_code | city   | region    | email        | website                   | model_attribute                              | error                   |
+      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu | http://www.gladajyckar.se | activerecord.models.attributes.company.email | errors.messages.invalid |
+      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu | http://www.gladajyckar.se | activerecord.models.attributes.company.email | errors.messages.invalid |
+
+
+  Scenario Outline: Admin edits a company: company number is wrong length
+    Given I am logged in as "admin@shf.se"
+    And I am on the edit company page for "5560360793"
+    And I fill in the form with data :
+      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort    | Verksamhetslän | Webbsida  |
       | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
     When I click on "Submit"
     Then I should see <error>
     And I should see "Ett problem förhindrade uppdatering av företaget."
 
     Scenarios:
-      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                          |
-      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | "Company number is the wrong length (should be 10 characters)" |
-      | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | "Email is invalid"                                             |
-      | Happy Mutts | 5560360793 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | "Email is invalid"                                             |
+      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                     |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10), locale: :sv |
+
 
   Scenario: Website path is incomplete (does not include http://)
     Given I am logged in as "admin@shf.se"
@@ -125,7 +140,7 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
     When I fill in the form with data :
-      | Webbsida              |
+      | Webbsida                     |
       | http://www.snarkybarkbark.se |
     And I click on "Submit"
     Then I should see "Företaget har uppdaterats."

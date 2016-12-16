@@ -18,14 +18,17 @@ Bundler.require(*Rails.groups)
 module SHFProject
   class Application < Rails::Application
     # Disable generation of helpers, javascripts, css, and view, helper, routing and controller specs
-config.generators do |generate|
-  generate.helper false
-  generate.assets false
-  generate.view_specs false
-  generate.helper_specs false
-  generate.routing_specs false
-  generate.controller_specs false
-end
+    config.generators do |generate|
+      generate.helper false
+      generate.assets false
+      generate.view_specs false
+      generate.helper_specs false
+      generate.routing_specs false
+      generate.controller_specs false
+    end
+
+    config.i18n.default_locale = :sv
+    config.i18n.fallbacks = true
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
