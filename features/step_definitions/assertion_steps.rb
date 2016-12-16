@@ -58,6 +58,8 @@ Then(/^I should be on "([^"]*)" page$/) do |page|
       path = root_path
     when 'edit my application'
       path = edit_membership_application_path(@user.membership_applications.last)
+    when 'show my application'
+      path = membership_application_path(@user.membership_applications.last)
     when 'user instructions'
       path = information_path
     when 'member instructions'
