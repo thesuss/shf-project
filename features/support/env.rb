@@ -16,3 +16,7 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 Warden.test_mode!
 World Warden::Test::Helpers
 After { Warden.test_reset! }
+
+def i18n_content(content, locale='sv')
+  I18n.t(content, locale: locale.to_sym)
+end

@@ -10,7 +10,7 @@ Feature: As a visitor
 
   Scenario: Default language is Swedish
     Given I am on the "all companies" page
-    Then I should see "Hitta H-märkt företag"
+    Then I should see t("companies.index.title")
     And I should not see "Swedish flag" image
     And I should see "English flag" image
     And I should see t("theme_copyright", locale: :sv)
@@ -20,7 +20,7 @@ Feature: As a visitor
     Given I am on the "all companies" page
     When I click on "change-lang-to-english"
     When I click on "change-lang-to-svenska"
-    Then I should see "Hitta H-märkt företag"
+    Then I should see t("companies.index.title")
     And I should not see "Swedish flag" image
     And I should see "English flag" image
     And I should see t("theme_copyright", locale: :sv)

@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title Redigera användare
+  %h1.entry-title= t('.title')
 .post-title-divider
   %span
 .entry-content.wpcf7
@@ -11,31 +11,29 @@
       = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
     - if devise_mapping.confirmable? && resource.pending_reconfirmation?
       %div
-        Obekräftad mailadress för: #{resource.unconfirmed_email}
+        "#{t('.unconfirmed_email_for', unconfirmed_email: resource.unconfirmed_email )}"
     .field
-      = f.label :password, 'Lösenord'
-      %i (lämna tomt om du inte vill byta)
+      = f.label :password
+      %i= t('.leave_blank_if_no_change')
       %br/
       = f.password_field :password, autocomplete: 'off', class: 'wpcf7-form-control'
-      - if @minimum_password_length
-        %em
-          (minst #{@minimum_password_length} tecken)
+      = render 'devise/shared/min_password_length_info'
     .field
-      = f.label :password_confirmation, 'Bekräfta lösenord'
+      = f.label :password_confirmation, "#{t('.confirm_password')}"
       %br/
       = f.password_field :password_confirmation, autocomplete: 'off', class: 'wpcf7-form-control'
     .field
-      = f.label :current_password, 'Nuvarande lösenord', class: 'required'
-      %i (behövs för att spara ändringar)
+      = f.label :current_password, "#{t('.current_password')}", class: 'required'
+      %i= t('.required_to_save_changes')
       %br/
       = f.password_field :current_password, autocomplete: 'off', class: 'wpcf7-form-control'
     .actions
-      = f.submit 'Uppdatera'
-  = render 'required_fields'
+      = f.submit "#{t('.submit_button_label')}"
+  = render 'application/required_fields'
 
-  %h1.entry-title Avregistrera dig
+  %h2.entry-title= t('.unregister')
   .post-title-divider
     %span
   %p
-    #{button_to 'Ta bort mitt konto', registration_path(resource_name), data: { confirm: 'Är du säker' }, method: :delete}
-  = link_to 'Tillbaks', :back
+    #{button_to t('.delete_my_account'), registration_path(resource_name), data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
+  = link_to "#{t('.back')}", :back

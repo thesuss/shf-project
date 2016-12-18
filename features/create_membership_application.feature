@@ -88,13 +88,13 @@ Feature: As a user
     Then I should see translated error <model_attribute> <error>
 
     Scenarios:
-      | f_name | c_number   | l_name    | c_email       | phone      | model_attribute                                                      | error                   |
-      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | activerecord.models.attributes.membership_application.company_number | errors.messages.blank   |
-      | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | activerecord.models.attributes.membership_application.last_name      | errors.messages.blank   |
-      | Kicki  | 5562252998 | Andersson |               | 0706898525 | activerecord.models.attributes.membership_application.contact_email  | errors.messages.blank   |
-      |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | activerecord.models.attributes.membership_application.first_name     | errors.messages.blank   |
-      | Kicki  | 5562252998 | Andersson | kicki@imminu  | 0706898525 | activerecord.models.attributes.membership_application.contact_email  | errors.messages.invalid |
-      | Kicki  | 5562252998 | Andersson | kickiimmi.nu  | 0706898525 | activerecord.models.attributes.membership_application.contact_email  | errors.messages.invalid |
+      | f_name | c_number   | l_name    | c_email       | phone      | model_attribute                                               | error                   |
+      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | activerecord.attributes.membership_application.company_number | errors.messages.blank   |
+      | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | activerecord.attributes.membership_application.last_name      | errors.messages.blank   |
+      | Kicki  | 5562252998 | Andersson |               | 0706898525 | activerecord.attributes.membership_application.contact_email  | errors.messages.blank   |
+      |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | activerecord.attributes.membership_application.first_name     | errors.messages.blank   |
+      | Kicki  | 5562252998 | Andersson | kicki@imminu  | 0706898525 | activerecord.attributes.membership_application.contact_email  | errors.messages.invalid |
+      | Kicki  | 5562252998 | Andersson | kickiimmi.nu  | 0706898525 | activerecord.attributes.membership_application.contact_email  | errors.messages.invalid |
 
 
   Scenario Outline: Apply for membership: company number wrong length

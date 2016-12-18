@@ -107,8 +107,8 @@ Feature: As an admin
 
     Scenarios:
       | name        | org_number | phone | street         | post_code | city   | region    | email        | website                   | model_attribute                              | error                   |
-      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu | http://www.gladajyckar.se | activerecord.models.attributes.company.email | errors.messages.invalid |
-      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu | http://www.gladajyckar.se | activerecord.models.attributes.company.email | errors.messages.invalid |
+      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu | http://www.gladajyckar.se | activerecord.attributes.company.email | errors.messages.invalid |
+      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu | http://www.gladajyckar.se | activerecord.attributes.company.email | errors.messages.invalid |
 
 
   Scenario Outline: Admin edits a company: company number is wrong length
