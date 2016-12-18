@@ -45,21 +45,21 @@ Feature: As an admin
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "create a new company" page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: Visitor tries to create a company
     Given I am Logged out
     And I am on the "create a new company" page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: Admin creates a company
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
-    And I fill in the form with data :
-      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
-      | Happy Mutts  | 5569467466 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-    And I click on "Submit"
-    Then I should see "Företaget har skapats"
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.show.email | companies.website_include_http |
+      | Happy Mutts            | 5569467466                    | Ålstensgatan 4        | 123 45                   | Bromma              | Stockholm                   | kicki@gladajyckar.se | http://www.gladajyckar.se      |
+    And I click on t("submit")
+    Then I should see t("companies.create.success")
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
@@ -68,29 +68,29 @@ Feature: As an admin
   Scenario Outline: Admin creates company - when things go wrong
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
-    And I fill in the form with data :
-      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort    | Verksamhetslän | Webbsida  |
-      | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
-    When I click on "Submit"
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.email | companies.telephone_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.website_include_http |
+      | <name>                 | <org_number>                  | <email>              | <phone>                    | <street>              | <post_code>              | <city>              | <region>                    | <website>                      |
+    When I click on t("submit")
     Then I should see <error>
-    And I should see "Ett eller flera problem hindrade företaget från att skapas."
+    And I should see t("companies.create.error")
 
     Scenarios:
-      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                     |
-      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10), locale: :sv |
-      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                              |
-      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                              |
-      | Happy Mutts | 5560360793 | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu.se      | http://www.gladajyckar.se | "Detta företag (org nr) finns redan i systemet."          |
+      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                        |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10), locale: :sv    |
+      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
+      | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
+      | Happy Mutts | 5560360793 | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.company_number.taken") |
 
 
   Scenario: Admin edits a company
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
-    When I fill in the form with data :
-      | Email                | Webbsida                     |
-      | kicki@gladajyckar.se | http://www.snarkybarkbark.se |
-    And I click on "Submit"
-    Then I should see "Företaget har uppdaterats."
+    When I fill in the translated form with data:
+      | companies.show.email | companies.website_include_http |
+      | kicki@gladajyckar.se | http://www.snarkybarkbark.se   |
+    And I click on t("submit")
+    Then I should see t("companies.update.success")
     And I should see "kicki@gladajyckar.se"
     And the "http://www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"
 
@@ -98,15 +98,15 @@ Feature: As an admin
   Scenario Outline: Admin edits a company - when things go wrong (sad case)
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
-    And I fill in the form with data :
-      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort    | Verksamhetslän | Webbsida  |
-      | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
-    When I click on "Submit"
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.email | companies.telephone_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.website_include_http |
+      | <name>                 | <org_number>                  | <email>              | <phone>                    | <street>              | <post_code>              | <city>              | <region>                    | <website>                      |
+    When I click on t("submit")
     Then I should see translated error <model_attribute> <error>
-    And I should see "Ett problem förhindrade uppdatering av företaget."
+    And I should see t("companies.update.error")
 
     Scenarios:
-      | name        | org_number | phone | street         | post_code | city   | region    | email        | website                   | model_attribute                              | error                   |
+      | name        | org_number | phone | street         | post_code | city   | region    | email        | website                   | model_attribute                       | error                   |
       | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu | http://www.gladajyckar.se | activerecord.attributes.company.email | errors.messages.invalid |
       | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu | http://www.gladajyckar.se | activerecord.attributes.company.email | errors.messages.invalid |
 
@@ -114,34 +114,33 @@ Feature: As an admin
   Scenario Outline: Admin edits a company: company number is wrong length
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
-    And I fill in the form with data :
-      | Företagsnamn | Org nr       | Email   | Telefon | Gata     | Post nr     | Ort    | Verksamhetslän | Webbsida  |
-      | <name>       | <org_number> | <email> | <phone> | <street> | <post_code> | <city> | <region>       | <website> |
-    When I click on "Submit"
-    Then I should see <error>
-    And I should see "Ett problem förhindrade uppdatering av företaget."
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.email | companies.telephone_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.website_include_http |
+      | <name>                 | <org_number>                  | <email>              | <phone>                    | <street>              | <post_code>              | <city>              | <region>                    | <website>                      |
+    When I click on t("submit")
+    Then I should see t("errors.messages.wrong_length.other", count: 10), locale: :sv
 
     Scenarios:
-      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                     |
-      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10), locale: :sv |
+      | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se |
 
 
   Scenario: Website path is incomplete (does not include http://)
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
-    When I fill in the form with data :
-      | Webbsida              |
-      | www.snarkybarkbark.se |
-    And I click on "Submit"
-    Then I should see "Företaget har uppdaterats."
+    When I fill in the translated form with data:
+      | companies.website_include_http |
+      | www.snarkybarkbark.se          |
+    And I click on t("submit")
+    Then I should see t("companies.update.success")
     And the "www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"
 
   Scenario: Website path is complete (includes http://)
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
-    When I fill in the form with data :
-      | Webbsida                     |
-      | http://www.snarkybarkbark.se |
-    And I click on "Submit"
-    Then I should see "Företaget har uppdaterats."
+    When I fill in the translated form with data:
+      | companies.website_include_http |
+      | http://www.snarkybarkbark.se   |
+    And I click on t("submit")
+    Then I should see t("companies.update.success")
     And the "www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"

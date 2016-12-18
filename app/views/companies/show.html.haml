@@ -6,39 +6,39 @@
     = render 'business_categories/as_list', categories: @categories
 .entry-content
   %p
-    %b Namn:
+    %b #{t('.name')}:
     = @company.name
   %p
-    %b Org nr:
+    %b #{t('.org_nr')}:
     = @company.company_number
   %p
-    %b Telefon:
+    %b #{t('.phone_number')}:
     = @company.phone_number
   %p
-    %b Företagets e-postadress:
+    %b #{t('.email')}:
     = mail_to @company.email
   %p
-    %b Företagets webbplats:
+    %b #{t('.website')}:
     - uri = @company.website
     - uri = (uri =~ %r(https?://) ? uri : "http://#{uri}")
     %a{ href: uri, target: '_blank' } #{@company.website}
 
-  %h2 Adress
+  %h2 #{t('.address')}:
   %p
-    %b Gata:
+    %b #{t('.street')}:
     = @company.street
   %p
-    %b Postnr:
+    %b #{t('.post_code')}:
     = @company.post_code
   %p
-    %b Ort:
+    %b #{t('.city')}:
     = @company.city
   %p
-    %b Verksamhetslän:
+    %b #{t('.region')}:
     = @company.region
 
   - if policy(@company).update?
     .center
-      = link_to 'Redigera detta företag', edit_company_path(@company)
+      = link_to "#{t('companies.edit_company')}", edit_company_path(@company)
       \|
-      = link_to 'Alla företag', companies_path
+      = link_to "#{t('companies.all_companies')}", companies_path

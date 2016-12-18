@@ -2,7 +2,6 @@ Then(/^I should be on the landing page$/) do
   expect(current_path).to eq root_path
 end
 
-
 And(/^I should see "([^"]*)"$/) do |content|
   expect(page).to have_content content
 end
@@ -53,6 +52,10 @@ end
 
 And(/^I should see t\("([^"]*)", ([^:]*): (\d+)\), locale: :(.*)$/) do |content, key, value, locale|
   expect(page).to have_content I18n.t("#{content}", key.to_sym => value, locale: locale.to_sym)
+end
+
+Then(/^I should see t\("([^"]*)", ([^:]*): "([^"]*)"\), locale: :(.*)$/) do |content, key, value, l|
+  expect(page).to have_content I18n.t("#{content}", key.to_sym => value, locale: l.to_sym)
 end
 
 And(/^I should not see t\("([^"]*)", ([^:]*): (\d+)\), locale: :(.*)$/) do |content, key, value, locale|

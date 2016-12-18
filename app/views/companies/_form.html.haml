@@ -4,36 +4,36 @@
       - @company.errors.full_messages.each do |msg|
         = msg
 
-  = f.label :name, 'Företagsnamn', class: 'required'
+  = f.label :name, "#{t('companies.company_name')}", class: 'required'
   = f.text_field :name, class: 'wpcf7-form-control'
 
-  = f.label :company_number, 'Org nr', class: 'required'
+  = f.label :company_number, "#{t('companies.show.company_number')}", class: 'required'
   = f.text_field :company_number, class: 'wpcf7-form-control'
-  %em Endast siffror (ej bindestreck)
+  %em= t('companies.org_nr_no_hyphens')
   %br
 
-  = f.label :phone_number, 'Telefonnummer'
+  = f.label :phone_number, "#{t('companies.telephone_number')}"
   = f.text_field :phone_number, class: 'wpcf7-form-control'
 
-  = f.label :email, 'Email', class: 'required'
+  = f.label :email, "#{t('companies.show.email')}", class: 'required'
   = f.text_field :email, class: 'wpcf7-form-control'
 
-  %p Address:
-  = f.label :street, 'Gata', class: 'required'
+  %p #{t('companies.show.address')}:
+  = f.label :street, "#{t('companies.show.street')}", class: 'required'
   = f.text_field :street, class: 'wpcf7-form-control'
 
-  = f.label :post_code, 'Post nr', class: 'required'
+  = f.label :post_code, "#{t('companies.show.post_code')}", class: 'required'
   = f.text_field :post_code, class: 'wpcf7-form-control'
 
-  = f.label :city, 'Ort', class: 'required'
+  = f.label :city, "#{t('companies.show.city')}", class: 'required'
   = f.text_field :city, class: 'wpcf7-form-control'
 
-  = f.label :region, 'Verksamhetslän', class: 'required'
+  = f.label :region, "#{t('companies.operations_region')}", class: 'required'
   = f.text_field :region, class: 'wpcf7-form-control'
-  %em Skriv Sverige om företaget är verksamt i flera delar av landet
+  %em= t('companies.op_region_multiple_use_sweden')
   %br
 
-  = f.label :website, 'Webbsida (glöm inte http://)', class: 'required'
+  = f.label :website, "#{t('companies.website_include_http')})", class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
 
-  = f.submit 'Submit'
+  = f.submit "#{t('submit')}"
