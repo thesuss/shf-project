@@ -29,7 +29,7 @@
       - @companies.each do |company|
         - if company_complete? company
           %tr.company
-            %td= list_categories company
+            %td= last_category_name company
             %td= link_to company.name, company
             %td= company.region
             - if current_user.try(:admin)

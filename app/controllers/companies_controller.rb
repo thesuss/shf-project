@@ -10,7 +10,7 @@ class CompaniesController < ApplicationController
 
 
   def show
-    @categories = @company.categories
+    @categories = @company.business_categories
   end
 
 

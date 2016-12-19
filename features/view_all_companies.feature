@@ -16,8 +16,8 @@ Feature: As a visitor,
 
     And the following applications exist:
       | first_name | user_email          | company_number | status   | category_name |
-      | Emma       | emma@happymutts.com | 5560360793     | Accepted | Groomer       |
-      | Anna       | a@happymutts.com    | 2120000142     | Accepted | Groomer       |
+      | Emma       | emma@happymutts.com | 5560360793     | Godkänd | Groomer       |
+      | Anna       | a@happymutts.com    | 2120000142     | Godkänd | Groomer       |
 
     And the following business categories exist
       | name         |

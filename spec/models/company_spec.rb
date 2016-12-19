@@ -32,58 +32,65 @@ RSpec.describe Company, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to have_and_belong_to_many :business_categories }
+    it { is_expected.to have_many(:business_categories).through(:membership_applications) }
+    it { is_expected.to have_many(:membership_applications) }
   end
+
 
   describe 'categories = all employee categories' do
 
+    let(:company) { create(:company, company_number: '5562252998') }
+
+    let(:employee1) { create(:user) }
+    let(:employee2) { create(:user) }
+    let(:employee3) { create(:user) }
+
+    let(:cat1) { create(:business_category, name: 'cat1') }
+    let(:cat2) { create(:business_category, name: 'cat2') }
+    let(:cat3) { create(:business_category, name: 'cat3') }
+
+    let(:m1) do
+      create(:membership_application, user: employee1,
+             num_categories: 0, status: 'Godkänd',
+             company_number: company.company_number)
+    end
+    let(:m2) do
+      create(:membership_application, user: employee2,
+             num_categories: 0, status: 'Godkänd',
+             company_number: company.company_number)
+    end
+    let(:m3) do
+      create(:membership_application, user: employee3,
+             num_categories: 0, status: 'Godkänd',
+             company_number: company.company_number)
+    end
+
+    before(:all) do
+      Company.delete_all
+      MembershipApplication.delete_all
+      User.delete_all
+    end
+
     it '3 employees, each with 1 unique category' do
+      m1.business_categories << cat1
+      m2.business_categories << cat2
+      m3.business_categories << cat3
 
-      employee1 = create(:user, email: 'emp1@happymutts.com')
-      employee2 = create(:user, email: 'emp2@happymutts.com')
-      employee3 = create(:user, email: 'emp3@happymutts.com')
-
-      create(:membership_application, user: employee1, num_categories: 1, category_name: 'cat1', company_number: '5562252998')
-      create(:membership_application, user: employee2, num_categories: 1, category_name: 'cat2', company_number: '5562252998')
-      create(:membership_application, user: employee3, num_categories: 1, category_name: 'cat3', company_number: '5562252998')
-
-      company = create(:company, company_number: '5562252998')
-
-      expect(company.categories.count).to eq 3
-      expect(company.categories.map { |c| c[:name] }).to contain_exactly('cat1', 'cat2', 'cat3')
-
+      expect(company.business_categories.count).to eq 3
+      expect(company.business_categories.map(&:name))
+          .to contain_exactly('cat1', 'cat2', 'cat3')
     end
-
-
-    def has_single_category(category_holder, category)
-      category_holder.business_categories.delete_all
-      category_holder.business_categories << category
-      category_holder
-    end
-
 
     it '3 employees, each with the same category' do
+      m1.business_categories << cat1
+      m2.business_categories << cat1
+      m3.business_categories << cat1
 
-      company = create(:company, company_number: '5562252998')
-
-      employee1 = create(:user, email: 'emp1@happymutts.com')
-      employee2 = create(:user, email: 'emp2@happymutts.com')
-      employee3 = create(:user, email: 'emp3@happymutts.com')
-
-      category = create(:business_category)
-      app1 = create(:membership_application, user: employee1, company_number: '5562252998')
-      app2 = create(:membership_application, user: employee2, company_number: '5562252998')
-      app3 = create(:membership_application, user: employee3, company_number: '5562252998')
-
-      has_single_category(app1, category)
-      has_single_category(app2, category)
-      has_single_category(app3, category)
-
-      expect(company.categories.count).to eq 1
-      expect(company.categories.map { |c| c[:name] }).to contain_exactly('BusinessCategoryName')
-
+      expect(company.business_categories.distinct.count).to eq 1
+      expect(company.business_categories.count).to eq 3
+      expect(company.business_categories.distinct.map(&:name))
+          .to contain_exactly('cat1')
     end
-
-
   end
+
 end

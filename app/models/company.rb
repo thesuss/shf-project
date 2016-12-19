@@ -8,17 +8,8 @@ class Company < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validate :swedish_organisationsnummer
 
-  has_and_belongs_to_many :business_categories
+  has_many :business_categories, through: :membership_applications
 
-
-  def categories
-    cats = []
-
-    MembershipApplication.where(company_number: company_number).find_each do | employee |
-      cats << employee.business_categories.to_ary
-    end
-
-    cats.flatten.uniq{ |c1| c1.id }
-  end
+  has_many :membership_applications
 
 end
