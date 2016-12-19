@@ -35,17 +35,17 @@ run the i18n-tasks command to see if there are any translations that exist in on
 
 ## How to replace text in a menu (localizing a menu entry)
 
-Say you want to localize this text in `app/views/application/_navigation.html.haml` :
-
-```- if current_user.has_company?
-  %li.menu-item.menu-item-has-children
-    = link_to 'Hantera företag', company_path(current_user.membership_applications.last.company)
-    %ul.sub-menu
-      %li.menu-item
-        = link_to 'Visa företagssida', company_path(current_user.membership_applications.last.company)
-      %li.menu-item
-        = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
+Say you want to localize this text in `app/views/application/_navigation.html.haml` : 
 ```
+  - if current_user.has_company?
+    %li.menu-item.menu-item-has-children
+      = link_to 'Hantera företag', company_path(current_user.membership_applications.last.company)
+      %ul.sub-menu
+       %li.menu-item
+          = link_to 'Visa företagssida', company_path(current_user.membership_applications.last.company)
+       %li.menu-item
+          = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company) 
+ ```
 
 This part of the menu is for a _user_ that has a **company.**
 
