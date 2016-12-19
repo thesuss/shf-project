@@ -23,7 +23,7 @@ Feature: As a member
   Scenario: Member can edit their company
     Given I am logged in as "applicant_1@happymutts.com"
     And I am on the edit company page for "5560360793"
-    Then I should see "Webbsida (glöm inte http://)"
+    Then I should see t("companies.edit.title", company_name: "No More Snarky Barky"), locale: :sv
 
   Scenario: Visitor tries to edit a company
     Given I am Logged out

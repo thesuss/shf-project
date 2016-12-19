@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+
+  before(:all) do
+    BusinessCategory.delete_all
+    Company.delete_all
+    MembershipApplication.delete_all
+    User.delete_all
+  end
+
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:user)).to be_valid
@@ -365,10 +373,9 @@ RSpec.describe User, type: :model do
     describe 'admin will get all Companies' do
       subject { create(:user, admin: true) }
       it do
-        create(:company, company_number: '5562252998')
+        create(:company, company_number: '0000000000')
         create(:company, company_number: '5560360793')
         create(:company, company_number: '2120000142')
-
         num_companies = Company.all.size
         expect(subject.companies.size).to eq(num_companies)
       end
