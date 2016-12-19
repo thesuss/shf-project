@@ -17,16 +17,12 @@
         - if current_user.try(:admin)
           %th Org nr
           %th
-          %th
     %tbody
-      - @companies.each do |company|
+      - @business_category.companies.each do |company|
         - if company_complete? company
-          - company.categories.each do |category|
-            - if category.name == @business_category.name
-              %tr.company
-                %td= link_to company.name, company
-                %td= company.region
-                - if current_user.try(:admin)
-                  %td= company.company_number
-                  %td= link_to 'Edit', edit_company_path(company)
-                  %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
+          %tr.company
+            %td= link_to company.name, company
+            %td= company.region
+            - if current_user.try(:admin)
+              %td= company.company_number
+              %td= link_to 'Edit', edit_company_path(company)
