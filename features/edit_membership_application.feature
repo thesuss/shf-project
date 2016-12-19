@@ -7,14 +7,17 @@ Feature: As an applicant
 
   Background:
     Given the following users exists
-      | email                  |
-      | applicant_1@random.com |
-      | applicant_2@random.com |
+      | email                  | is_member |
+      | applicant_1@random.com | false     |
+      | applicant_2@random.com | false     |
+      | applicant_3@random.com | true      |
 
     And the following applications exist:
-      | first_name | user_email             | company_number |
-      | Emma       | applicant_1@random.com |5560360793      |
-      | Hans       | applicant_2@random.com |2120000142      |
+      | first_name | user_email             | company_number | status  |
+      | Emma       | applicant_1@random.com | 5560360793     | pending |
+      | Hans       | applicant_2@random.com | 2120000142     | pending |
+      | Nils       | applicant_3@random.com | 2120000142     | Godkänd |
+
 
   Scenario: Applicant wants to edit his own application
     Given I am logged in as "applicant_1@random.com"
@@ -41,3 +44,9 @@ Feature: As an applicant
     Given I am logged in as "applicant_1@random.com"
     And I navigate to the edit page for "Hans"
     Then I should see "Du har inte behörighet att göra detta."
+
+  Scenario: Applicant wants to view their own application
+    Given I am logged in as "applicant_3@random.com"
+    And I am on the "landing" page
+    And I click on "Min ansökan"
+    Then I should be on "Show My Application" page

@@ -1,4 +1,4 @@
 - if locale == :sv
-  = link_to 'English flag', {locale: :en}, class: 'language.en', id: 'change-lang-to-english'
+  = link_to image_tag('eng.png', size: '20', alt: 'English flag'), {locale: :en}, class: 'language.en', id: 'change-lang-to-english'
 - else
-  = link_to 'Swedish flag', {locale: :sv}, class: 'language.sv', id: 'change-lang-to-svenska'
+  = link_to image_tag('sv.png', size: '20', alt: 'Swedish flag'), {locale: :sv}, class: 'language.sv', id: 'change-lang-to-svenska'

@@ -3,11 +3,15 @@ And(/^I click on "([^"]*)"$/) do |element|
 end
 
 And(/^I click on t\("([^"]*)"\)$/) do |element|
-  click_link_or_button I18n.t("#{element}")
+  click_link_or_button i18n_content("#{element}")
 end
 
 And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
+end
+
+And(/^I fill in t\("([^"]*)"\) with "([^"]*)"$/) do |field, value|
+  fill_in i18n_content(field), with: value
 end
 
 When(/^I fill in the form with data :$/) do |table|
@@ -18,6 +22,16 @@ When(/^I fill in the form with data :$/) do |table|
     end
   end
 end
+
+When(/^I fill in the translated form with data:$/) do |table|
+  data = table.hashes.first
+  data.each do |label, value|
+    unless value.empty?
+      fill_in i18n_content("#{label}"), with: value
+    end
+  end
+end
+
 
 When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, option|
   select option, from: list
@@ -31,15 +45,30 @@ When(/^I leave the "([^"]*)" field empty$/) do |field|
   fill_in field, with: nil
 end
 
-And(/^I click the "([^"]*)" action for the row with "([^"]*)"$/) do |action, row_content |
+When(/^I leave the t\("([^"]*)"\) field empty$/) do |field|
+  fill_in i18n_content(field), with: nil
+end
+
+And(/^I click the "([^"]*)" action for the row with "([^"]*)"$/) do |action, row_content|
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end
 
+And(/^I click the t\("([^"]*)"\) action for the row with "([^"]*)"$/) do |action, row_content|
+  find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{i18n_content(action)}").click
+end
 
 When(/^I click on "([^"]*)" link$/) do |element|
   click_link element
 end
 
+And(/^I click on t\("([^"]*)"\) link$/) do |element|
+  click_link i18n_content("#{element}")
+end
+
 And(/^I click on "([^"]*)" button$/) do |element|
   click_button element
+end
+
+And(/^I click on t\("([^"]*)"\) button$/) do |element|
+  click_button i18n_content("#{element}")
 end

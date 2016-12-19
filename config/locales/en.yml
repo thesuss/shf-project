@@ -3,65 +3,341 @@ en:
 
   title: "SWEDEN'S ETHICAL DOG COMPANIES"
 
-  home: 'Home'
-  about: 'About'
-  more: 'More'
+  home: Home
+  about: About
+  more: More
 
-  show_in_english: "In English"
-  show_in_swedish: "På Svenska"
+  show_in_english: Show the site in English
+  show_in_swedish: Visar webbplatsen på svenska
+
+  password: Password
+
+  is_required_field: Indicates a required field
+
+  user: user
+
+  edit: Edit
+  manage: Manage
+  update: Update
+  submit: Submit
+  delete: Delete
+  send: Send
+  new: New
+  change: Change
+  save: Save
+
+  back: &back Back
+
+  confirm_are_you_sure: &are_you_sure_confirm Are you sure
+
+  info:
+    logged_in_as_admin: You are logged in as an admin.
+    under_construction: This page is under construction.  More information and features are coming.
 
   apply_for_membership: 'Apply for membership'
 
   theme_copyright: "© 2017 Theme by Theme Feeder. All Rights Reserved."
 
-  memberships:
-    new:
-      title: 'Apply for a Membership'
-      company_name: 'Company Name'
-      company_number: 'Company Number'
-      contact_person: 'Contact Person'
-      company_email: 'Company Email'
-      phone_number: 'Phone Number'
-      submit: 'Submit'
-    create:
-      submit_acknowledgement: 'Thank You. Your membership application has been submitted.'
+  name: &name Name
+  org_nr: &org_nr Org no.
 
+
+ # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
-      membership:
+      membership_application:
         one: Membership
         other: Memberships
 
-      attributes:
-        membership_application:
-          company_number: Company number
-          first_name: First name
-          last_name: Last name
-          contact_email: Email
-          status: Status
-          phone_number: Phone Number
+    attributes:
 
-        company:
-          company_number: Company number
-          name: Name
-          phone_number: Phone Number
-          email: Email
-          street: Street
-          post_code: Post code
-          city: City
-          region: Region
-          website: Website
+      user:
+        email: &email Email
+        password: Password
 
-        business_category:
-          name: Name
-          description: Description
+      membership_application:
+        company_number: Company number
+        first_name: &first_name First name
+        last_name: &last_name Last name
+        contact_email: Email
+        status: Status
+        phone_number: Phone number
+        membership_number: Membership number
+
+      company:
+        company_number: Company number
+        name: *name
+        phone_number: Phone Number
+        email: *email
+        street: Street
+        post_code: Post code
+        city: City
+        region: Region
+        website: Website
+        org_nr: *org_nr
+
+      business_category:
+        name: *name
+        description: Description
 
     errors:
-       messages:
-         record_invalid: "Validation failed: %{errors}"
-         restrict_dependent_destroy:
-           has_one: "Cannot delete record because a dependent %{record} exists"
-           has_many: "Cannot delete record because dependent %{record} exist"
+      models:
+        company:
+          company_number:
+            taken: This company (organization number) already exists in the system.
+
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Cannot delete record because a dependent %{record} exists"
+          has_many: "Cannot delete record because dependent %{record} exist"
+
+ # Automatic and manual lookup for views:
+  membership_applications:
+    new:
+      title: Apply for a Membership
+      submit: Submit
+      first_name: *first_name
+      last_name: *last_name
+      phone_number: Phone number
+      company_number: Company number
+      contact_email: *email
+    create:
+      success: Thank You. Your membership application has been submitted.
+      error: The was a problem creating and submitting your application.
+    show:
+      title: Application from %{member_full_name}
+      first_name: *first_name
+      last_name: *last_name
+      phone_number: Phone number
+      company_number: Company number
+      contact_email: *email
+      status: Status
+      membership_number: Membership number
+      with_categories: Categories
+    update:
+      success: The application was updated.
+      error: One or more problems prevented your application from being updated.
+      enter_member_number: Please enter the member number and save.
+
+    all_membership_applications: All applications
+    edit_membership_application: Edit application
+    view_membership_application: View application
+    list_all_membership_applications: List all applications
+
+    uploads:
+      no_files: No files uploaded for this application.
+      files_uploaded: 'Files uploaded for this application:'
+      filename: Filename
+      file_was_uploaded: 'This file was uploaded: %{filename}'
+      confirm_delete: 'Are you sure you want to delete %{filename}'
+      invalid_upload_type: Sorry, this is not a file type you can upload.
+
+    update_the_status: Update the status
+
+  companies:
+    new:
+      title: New company
+    create:
+      error: One or more problems prevented the company from being created.
+      success: The company was created successfully.
+    edit:
+      title: 'Redigera företag: %{company_name}'
+    update:
+      error: There was a problem updating the company.
+      success: The company was updated.
+    show:
+      company_number: Company number
+      name: *name
+      phone_number: Phone Number
+      email: Company email
+      address: Address
+      street: Street
+      post_code: Post code
+      city: City
+      region: Region
+      website: Company website
+      org_nr: *org_nr
+    index:
+      title: Find H-labeled companies
+      admin_title: Edit member companies
+      name: *name
+      company_number: *org_nr
+      category: Category
+      region_land: Region
+      h_companies_listed_below: H-labeled companies are listed below.
+      how_to_search: To search the list, use Ctrl + F (PC) or Command + F (Mac)
+      confirm_are_you_sure: *are_you_sure_confirm
+    company_name: Company name
+    telephone_number: Phone number
+    operations_region: County of operations
+    op_region_multiple_use_sweden: Enter Sweden if the company operates in several regions
+    website_include_http: Company website (please include http://)
+    org_nr_no_hyphens: Numbers only (no hyphens)
+
+    all_companies: All companies
+    edit_company: Edit company
+    view_company: View company
+    list_all_companies: List all companies
+
+  admin:
+    index:
+      title: 'Admin: All incoming applications'
+    all_applications_received: All applications received
+
+  devise:
+    min_length: '(at least %{minimum_length} characters)'
+
+    registrations:
+      new:
+        title: Create your login information
+        create_account: Create account
+        confirm_password: &confirm_password Confirm password
+        forgot_password: Forgot password
+        submit_button_label: Sign up
+      edit:
+        title: Edit your login information
+        unconfirmed_email_for: 'Unconfirmed email address for: %{unconfirmed_email}'
+        confirm_password: *confirm_password
+        current_password: Current password
+        required_to_save_changes: (required to save changes)
+        leave_blank_if_no_change: "leave blank if there's no change"
+        submit_button_label: Update
+        delete_my_account: Delete my account
+        unregister: Unregister
+        confirm_are_you_sure: *are_you_sure_confirm
+        back: *back
+    sessions:
+      new:
+        log_in: &log_in Log In
+        title: *log_in
+        remember_me: Remember me
+        submit_button_label: *log_in
+      destroy:
+        log_out: Log out
+    passwords:
+      new:
+        title: Forgot your password
+        submit_button_label: Send the reset instructions
+      edit:
+        title: Change your password
+        new_password: New password
+        confirm_password: Confirm your password
+        submit_button_label: Change Your Password
+    confirmations:
+      new:
+        do_you_need_instructions: &need_instructions Do you need instructions?
+    unlocks:
+      new:
+        do_you_need_instructions: *need_instructions
+    omniauths:
+      new:
+        log_in_with: Log in with
+
+
+  errors:
+    not_permitted: You do not have permission to do this.
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      blank: can't be blank
+      present: must be blank
+      confirmation: doesn't match %{attribute}
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      model_invalid: "Validation failed: %{errors}"
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      required: must exist
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+      other_than: must be other than %{count}
+    template:
+      body: 'There were problems with the following fields:'
+      header:
+        one: 1 error kept this %{model} from being saved
+        other: "%{count} errors prohibited this %{model} from being saved"
+
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
+
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+
   date:
     abbr_day_names:
     - Sun
@@ -113,6 +389,7 @@ en:
     - :year
     - :month
     - :day
+
   datetime:
     distance_in_words:
       about_x_hours:
@@ -159,104 +436,7 @@ en:
       month: Month
       second: Seconds
       year: Year
-  errors:
-    format: "%{attribute} %{message}"
-    messages:
-      accepted: must be accepted
-      blank: can't be blank
-      present: must be blank
-      confirmation: doesn't match %{attribute}
-      empty: can't be empty
-      equal_to: must be equal to %{count}
-      even: must be even
-      exclusion: is reserved
-      greater_than: must be greater than %{count}
-      greater_than_or_equal_to: must be greater than or equal to %{count}
-      inclusion: is not included in the list
-      invalid: is invalid
-      less_than: must be less than %{count}
-      less_than_or_equal_to: must be less than or equal to %{count}
-      model_invalid: "Validation failed: %{errors}"
-      not_a_number: is not a number
-      not_an_integer: must be an integer
-      odd: must be odd
-      required: must exist
-      taken: has already been taken
-      too_long:
-        one: is too long (maximum is 1 character)
-        other: is too long (maximum is %{count} characters)
-      too_short:
-        one: is too short (minimum is 1 character)
-        other: is too short (minimum is %{count} characters)
-      wrong_length:
-        one: is the wrong length (should be 1 character)
-        other: is the wrong length (should be %{count} characters)
-      other_than: must be other than %{count}
-    template:
-      body: 'There were problems with the following fields:'
-      header:
-        one: 1 error kept this %{model} from being saved
-        other: "%{count} errors prohibited this %{model} from being saved"
-  helpers:
-    select:
-      prompt: Please select
-    submit:
-      create: Create %{model}
-      submit: Save %{model}
-      update: Update %{model}
-  number:
-    currency:
-      format:
-        delimiter: ","
-        format: "%u%n"
-        precision: 2
-        separator: "."
-        significant: false
-        strip_insignificant_zeros: false
-        unit: "$"
-    format:
-      delimiter: ","
-      precision: 3
-      separator: "."
-      significant: false
-      strip_insignificant_zeros: false
-    human:
-      decimal_units:
-        format: "%n %u"
-        units:
-          billion: Billion
-          million: Million
-          quadrillion: Quadrillion
-          thousand: Thousand
-          trillion: Trillion
-          unit: ''
-      format:
-        delimiter: ''
-        precision: 3
-        significant: true
-        strip_insignificant_zeros: true
-      storage_units:
-        format: "%n %u"
-        units:
-          byte:
-            one: Byte
-            other: Bytes
-          gb: GB
-          kb: KB
-          mb: MB
-          tb: TB
-    percentage:
-      format:
-        delimiter: ''
-        format: "%n%"
-    precision:
-      format:
-        delimiter: ''
-  support:
-    array:
-      last_word_connector: ", and "
-      two_words_connector: " and "
-      words_connector: ", "
+
   time:
     am: am
     formats:

@@ -1,27 +1,27 @@
 %header.entry-header
   - unless current_user.try(:admin)
-    %h1.entry-title Hitta H-märkt företag
+    %h1.entry-title= t('.title')
   - if current_user.try(:admin)
-    %h1.entry-title Redigera medlemsföretag
+    %h1.entry-title= t('.admin_title')
 .post-title-divider
   %span
 .entry-content
   - unless current_user.try(:admin)
     %p
       %strong
-        Sidan är under uppbyggnad, mer information och funktioner kommer att komma efterhand.
+        #{t('info.under_construction')}
     %p
-      Nedan listas anslutna H-märkta företag
-      Du kan söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
+      #{t('.h_companies_listed_below')}
+      #{t('.how_to_search')}
 
   %table
     %thead
       %tr
-        %th Kategori
-        %th Namn
-        %th Län
+        %th= t('.category')
+        %th= t('.name')
+        %th= t('.region_land')
         - if current_user.try(:admin)
-          %th Org nr
+          %th= t('.company_number')
           %th
           %th
 
@@ -29,11 +29,11 @@
       - @companies.each do |company|
         - if company_complete? company
           %tr.company
-            %td= list_categories company
+            %td= last_category_name company
             %td= link_to company.name, company
             %td= company.region
             - if current_user.try(:admin)
               %td= company.company_number
-              %td= link_to 'Edit', edit_company_path(company)
-              %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
+              %td= link_to "#{t('edit')}", edit_company_path(company)
+              %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
   %br

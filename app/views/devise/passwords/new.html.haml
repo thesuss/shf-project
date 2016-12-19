@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title Glömt lösenordet
+  %h1.entry-title= t('.title')
 .post-title-divider
   %span
 .entry-content.wpcf7
@@ -10,6 +10,6 @@
       %br/
       = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
     .actions
-      = f.submit 'Skicka återställningsinstruktioner'
-  = render 'required_fields'
+      = f.submit "#{t('.submit_button_label')}"
+  = render 'application/required_fields'
   = render 'devise/shared/links'

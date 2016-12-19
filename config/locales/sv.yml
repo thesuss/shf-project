@@ -3,65 +3,345 @@ sv:
 
   title: 'Medlemmar i Sveriges Hundföretagare'
 
-  home: 'Hem'
-  about: 'Om'
-  more: 'Mer'
+  home: Hem
+  about: Om
+  more: Mer
 
-  show_in_english: "In English"
-  show_in_swedish: "På Svenska"
+  show_in_english: Show the site in English
+  show_in_swedish: Visar webbplatsen på svenska
 
-  apply_for_membership: 'Ansök om medlemskap'
+  password: Lösenord
+
+  is_required_field: Indikerar ett obligatoriskt fält
+
+  user: användare
+
+  edit: Redigera
+  manage: Hantera
+  update: Uppdatera
+  submit: Skicka
+  delete: Radera
+  send: Skicka
+  new: Nytt
+  change: Byt
+  save: Save
+
+  back: &back Tillbaks
+
+  confirm_are_you_sure: &are_you_sure_confirm Är du säker
+
+  info:
+    logged_in_as_admin: Du är inloggad som admin
+    under_construction: Sidan är under uppbyggnad, mer information och funktioner kommer att komma efterhand.
+
+
+  apply_for_membership: Ansök om medlemskap
 
   theme_copyright: "© 2017 Tema av Theme Feeder. Alla rättigheter förbehållna."
 
-  memberships:
-    new:
-      title: 'Ansök om medlemskap'
-      company_name: 'Företagsnamn'
-      company_number: 'Organisationsnummer'
-      contact_person: 'Kontaktperson'
-      company_email: 'Företagets e-postadress'
-      phone_number: 'Telefonnummer'
-      submit: 'Skicka'
-    create:
-      submit_acknowledgement: 'Tack, Din ansökan har skickats.'
+  name: &name Namn
+  org_nr: &org_nr Org no.
 
+  # Automatisk och manuell sökning för Active Records
   activerecord:
     models:
-      membership:
+      membership_application:
         one: Medlemskap
         other: Medlemskap
 
-      attributes:
-        membership_application:
-          company_number: Company number
-          first_name: First name
-          last_name: Last name
-          contact_email: Contact email
-          status: Status
-          phone_number: Phone Number
+    attributes:
 
-        company:
-          company_number: Company number
-          name: Name
-          phone_number: Phone Number
-          email: Email
-          street: Street
-          post_code: Post code
-          city: City
-          region: Region
-          website: Website
+      user:
+        email: &email E-post
+        password: Lösenord
 
-        business_category:
-          name: Name
-          description: Description
+      membership_application:
+        company_number: Organisationsnummer
+        first_name: &first_name Förnamn
+        last_name: &last_name Efternamn
+        contact_email: Kontakt e-post
+        status: &status Status
+        phone_number: Telefonnummer
+        membership_number: &membership_number Medlemsnummer
+
+      company:
+        company_number: *org_nr
+        name: *name
+        phone_number: Telefon
+        email: *email
+        street: Gata
+        post_code: Post nr
+        city: Ort
+        region: Verksamhetslän
+        website: Webbplats
+        org_nr: *org_nr
+
+      business_category:
+        name: *name
+        description: Beskrivning
 
     errors:
+
+      models:
+        company:
+          company_number:
+            taken: Detta företag (org nr) finns redan i systemet.
+
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
         restrict_dependent_destroy:
           has_one: Kan inte ta bort post då beroende %{record} finns
           has_many: Kan inte ta bort poster då beroende %{record} finns
+
+
+  # Automatisk och manuell sökning för views:
+  membership_applications:
+    new:
+      title: Ansök om medlemskap
+      submit: Skicka
+      company_number: &company_number Organisationsnummer
+      phone_number: &phone_number Telefonnummer
+      first_name: *first_name
+      last_name: *last_name
+      contact_email: &contact_email Kontakt e-post
+    create:
+      success: Tack, din ansökan har skickats.
+      error: Ett eller flera problem hindrade din ansökan från att skickas.
+    show:
+      title: Ansökan från %{member_full_name}
+      first_name: *first_name
+      last_name: *last_name
+      phone_number: *phone_number
+      company_number: *company_number
+      contact_email: *contact_email
+      status: *status
+      membership_number: *membership_number
+      with_categories: Ansöker inom
+    update:
+      success: Ansökan har uppdaterats.
+      error: Ett eller flera problem hindrade din ansökan från att sparas.
+      enter_member_number: Var god ange medlemsnummer och spara.
+
+
+    all_membership_applications: Alla ansökningar
+    edit_membership_application: Redigera ansökan
+    view_membership_application: Visa ansökan
+    list_all_membership_applications: Lista alla ansökningar
+
+    uploads:
+      no_files: Inga filer är uppladdade för denna ansökan.
+      files_uploaded: 'Uppladdade filer för denna ansökan:'
+      filename: Filnamn
+      file_was_uploaded: 'Filen laddades upp: %{filename}'
+      confirm_delete: 'Är du säker på att du vill radera %{filename}'
+      invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
+
+    update_the_status: Uppdatera status
+
+  companies:
+    new:
+      title: Nytt företag
+    create:
+      error: Ett eller flera problem hindrade företaget från att skapas.
+      success: Företaget har skapats.
+    update:
+      error: Ett problem förhindrade uppdatering av företaget.
+      success: Företaget har uppdaterats.
+    edit:
+      title: 'Redigera företag: %{company_name}'
+    show:
+      company_number: *org_nr
+      name: *name
+      phone_number: *phone_number
+      email: Företagets e-postadress
+      address: Adress
+      street: Gata
+      post_code: Post nr
+      city: Ort
+      region: Verksamhetslän
+      website: Företagets webbplats
+      org_nr: *org_nr
+    index:
+      title:  Hitta H-märkt företag
+      admin_title: Redigera medlemsföretag
+      category: Kategori
+      name: *name
+      company_number: *org_nr
+      region_land: Län
+      h_companies_listed_below: Nedan listas anslutna H-märkta företag
+      how_to_search: Du kan söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
+      confirm_are_you_sure: *are_you_sure_confirm
+    company_name: Företagsnamn
+    telephone_number: Telefonnummer
+    operations_region: Verksamhetslän
+    op_region_multiple_use_sweden: Skriv Sverige om företaget är verksamt i flera delar av landet
+    website_include_http: Företagets webbplats (glöm inte http://)
+    org_nr_no_hyphens: Endast siffror (ej bindestreck)
+
+    all_companies: Alla företag
+    edit_company: Redigera detta företag
+    view_company: Visa företagssida
+    list_all_companies: Lista alla företag
+
+  admin:
+    index:
+      title: 'Admin: Alla inkomna ansökningar'
+    all_applications_received: Alla inkomna ansökningar
+
+  devise:
+    min_length: '(minst %{minimum_length} tecken)'
+
+    registrations:
+      new:
+        title: Skapa användare
+        create_account: Skicka
+        forgot_password: Glömt lösenord
+        confirm_password: &confirm_password Bekräfta lösenord
+        submit_button_label: Skapa användare
+      edit:
+        title: Redigera användare
+        unconfirmed_email_for: 'Obekräftad mailadress för: %{unconfirmed_email}'
+        leave_blank_if_no_change: lämna tomt om du inte vill byta
+        confirm_password: *confirm_password
+        current_password: Nuvarande lösenord
+        required_to_save_changes: (behövs för att spara ändringar)
+        submit_button_label: Uppdatera
+        delete_my_account: Ta bort mitt konto
+        unregister: Avregistrera dig
+        confirm_are_you_sure: *are_you_sure_confirm
+        back: *back
+    sessions:
+      new:
+        log_in: &log_in Logga In
+        title: *log_in
+        remember_me: Kom ihåg mig
+        submit_button_label: *log_in
+      destroy:
+        log_out: Logga ut
+    passwords:
+      new:
+        title: Glömt lösenordet
+        submit_button_label: Skicka återställningsinstruktioner
+      edit:
+        title: &change_password Byt lösenord
+        new_password: Nytt lösenord
+        confirm_password: *confirm_password
+        submit_button_label: *change_password
+    confirmations:
+      new:
+        do_you_need_instructions: &need_instructions Fick du inga instruktioner?
+    unlocks:
+      new:
+        do_you_need_instructions: *need_instructions
+    omniauths:
+      new:
+        log_in_with: Logga in med
+
+
+  errors:
+    not_permitted: Du har inte behörighet att göra detta.
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: måste accepteras
+      blank: måste anges
+      present: får inte anges
+      confirmation: stämmer inte överens
+      empty: får ej vara tom
+      equal_to: måste vara samma som
+      even: måste vara jämnt
+      exclusion: är reserverat
+      greater_than: måste vara större än %{count}
+      greater_than_or_equal_to: måste vara större än eller lika med %{count}
+      inclusion: finns inte i listan
+      invalid: har fel format
+      less_than: måste vara mindre än %{count}
+      less_than_or_equal_to: måste vara mindre än eller lika med %{count}
+      model_invalid: "Validering lyckades inte: %{errors}"
+      not_a_number: är inte ett nummer
+      not_an_integer: måste vara ett heltal
+      odd: måste vara udda
+      required: must exist
+      taken: används redan
+      too_long:
+        one: är för lång (max är ett tecken)
+        other: är för lång (maximum är %{count} tecken)
+      too_short:
+        one: är för kort (minimum är ett tecken)
+        other: är för kort (minimum är %{count} tecken)
+      wrong_length:
+        one: är fel längd (ska vara ett tecken)
+        other: har fel längd (ska vara %{count} tecken)
+      other_than: måste vara annat än %{count}
+    template:
+      body: 'Det var problem med följande fält:'
+      header:
+        one: Ett fel förhindrade %{model} från att sparas
+        other: "%{count} fel förhindrade %{model} från att sparas"
+
+  helpers:
+    select:
+      prompt: Välj
+    submit:
+      create: Skapa %{model}
+      submit: Spara %{model}
+      update: Ändra %{model}
+
+
+  support:
+    array:
+      last_word_connector: " och "
+      two_words_connector: " och "
+      words_connector: ", "
+
+  number:
+    currency:
+      format:
+        delimiter: ''
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: kr
+    format:
+      delimiter: ''
+      precision: 2
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Miljard
+          million: Miljon
+          quadrillion: Biljard
+          thousand: Tusen
+          trillion: Biljon
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+
   date:
     abbr_day_names:
     - sön
@@ -113,6 +393,7 @@ sv:
     - :day
     - :month
     - :year
+
   datetime:
     distance_in_words:
       about_x_hours:
@@ -159,104 +440,7 @@ sv:
       month: månad
       second: sekund
       year: år
-  errors:
-    format: "%{attribute} %{message}"
-    messages:
-      accepted: måste accepteras
-      blank: måste anges
-      present: får inte anges
-      confirmation: stämmer inte överens
-      empty: får ej vara tom
-      equal_to: måste vara samma som
-      even: måste vara jämnt
-      exclusion: är reserverat
-      greater_than: måste vara större än %{count}
-      greater_than_or_equal_to: måste vara större än eller lika med %{count}
-      inclusion: finns inte i listan
-      invalid: har fel format
-      less_than: måste vara mindre än %{count}
-      less_than_or_equal_to: måste vara mindre än eller lika med %{count}
-      model_invalid: "Validering lyckades inte: %{errors}"
-      not_a_number: är inte ett nummer
-      not_an_integer: måste vara ett heltal
-      odd: måste vara udda
-      required: must exist
-      taken: används redan
-      too_long:
-        one: är för lång (max är ett tecken)
-        other: är för lång (maximum är %{count} tecken)
-      too_short:
-        one: är för kort (minimum är ett tecken)
-        other: är för kort (minimum är %{count} tecken)
-      wrong_length:
-        one: är fel längd (ska vara ett tecken)
-        other: har fel längd (ska vara %{count} tecken)
-      other_than: måste vara annat än %{count}
-    template:
-      body: 'Det var problem med följande fält:'
-      header:
-        one: Ett fel förhindrade %{model} från att sparas
-        other: "%{count} fel förhindrade %{model} från att sparas"
-  helpers:
-    select:
-      prompt: Välj
-    submit:
-      create: Skapa %{model}
-      submit: Spara %{model}
-      update: Ändra %{model}
-  number:
-    currency:
-      format:
-        delimiter: ''
-        format: "%n %u"
-        precision: 2
-        separator: ","
-        significant: false
-        strip_insignificant_zeros: false
-        unit: kr
-    format:
-      delimiter: ''
-      precision: 2
-      separator: ","
-      significant: false
-      strip_insignificant_zeros: false
-    human:
-      decimal_units:
-        format: "%n %u"
-        units:
-          billion: Miljard
-          million: Miljon
-          quadrillion: Biljard
-          thousand: Tusen
-          trillion: Biljon
-          unit: ''
-      format:
-        delimiter: ''
-        precision: 1
-        significant: true
-        strip_insignificant_zeros: true
-      storage_units:
-        format: "%n %u"
-        units:
-          byte:
-            one: Byte
-            other: Bytes
-          gb: GB
-          kb: KB
-          mb: MB
-          tb: TB
-    percentage:
-      format:
-        delimiter: ''
-        format: "%n%"
-    precision:
-      format:
-        delimiter: ''
-  support:
-    array:
-      last_word_connector: " och "
-      two_words_connector: " och "
-      words_connector: ", "
+
   time:
     am: ''
     formats:
