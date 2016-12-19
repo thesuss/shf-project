@@ -1,8 +1,8 @@
 %header.entry-header
-  %h1.entry-title Nytt företag
+  %h1.entry-title= t('.title')
   .post-title-divider
     %span
 .entry-content.wpcf7
   = render 'form'
   .center
-    = link_to ' All Companies', companies_path
+    = link_to "#{t('companies.all_companies')}", companies_path

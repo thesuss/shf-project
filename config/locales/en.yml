@@ -81,11 +81,16 @@ en:
         description: Description
 
     errors:
-       messages:
-         record_invalid: "Validation failed: %{errors}"
-         restrict_dependent_destroy:
-           has_one: "Cannot delete record because a dependent %{record} exists"
-           has_many: "Cannot delete record because dependent %{record} exist"
+      models:
+        company:
+          company_number:
+            taken: This company (organization number) already exists in the system.
+
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Cannot delete record because a dependent %{record} exists"
+          has_many: "Cannot delete record because dependent %{record} exist"
 
  # Automatic and manual lookup for views:
   membership_applications:
@@ -136,6 +141,8 @@ en:
     create:
       error: One or more problems prevented the company from being created.
       success: The company was created successfully.
+    edit:
+      title: 'Redigera företag: %{company_name}'
     update:
       error: There was a problem updating the company.
       success: The company was updated.
@@ -154,10 +161,13 @@ en:
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
+      name: *name
+      company_number: *org_nr
       category: Category
       region_land: Region
       h_companies_listed_below: H-labeled companies are listed below.
       how_to_search: To search the list, use Ctrl + F (PC) or Command + F (Mac)
+      confirm_are_you_sure: *are_you_sure_confirm
     company_name: Company name
     telephone_number: Phone number
     operations_region: County of operations

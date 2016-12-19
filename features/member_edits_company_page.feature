@@ -15,7 +15,7 @@ Feature: As a member
       | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | status   | category_name |
+      | first_name | user_email          | company_number | status  | category_name |
       | Emma       | emma@happymutts.com | 5562252998     | Godkänd | Awesome       |
 
     And the following business categories exist
@@ -29,34 +29,33 @@ Feature: As a member
     Given I am logged in as "emma@happymutts.com"
     # we need to do user find by email and visit their particular company application
     And I am on the "edit my company" page for "emma@happymutts.com"
-    And I fill in the form with data :
-      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
-      | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-    And I click on "Submit"
-    Then I should see "Företaget har uppdaterats."
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.show.email | companies.website_include_http |
+      | Happy Mutts            | 5562252998                    | Ålstensgatan 4        | 123 45                   | Bromma              | Stockholm                   | kicki@gladajyckar.se | http://www.gladajyckar.se      |
+    And I click on t("submit")
+    Then I should see t("companies.update.success")
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
 
   Scenario: Another tries to edit your company page (gets rerouted)
     Given I am logged in as "emma@happymutts.com"
-    #And I am on the "edit my company" page for "emma@happymutts.com"
     And I am on the "edit my company" page
-    And I fill in the form with data :
-      | Företagsnamn | Org nr     | Gata           | Post nr | Ort    | Verksamhetslän | Email                | Webbsida                  |
-      | Happy Mutts  | 5562252998 | Ålstensgatan 4 | 123 45  | Bromma | Stockholm      | kicki@gladajyckar.se | http://www.gladajyckar.se |
-    And I click on "Submit"
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.show.email | companies.website_include_http |
+      | Happy Mutts            | 5562252998                    | Ålstensgatan 4        | 123 45                   | Bromma              | Stockholm                   | kicki@gladajyckar.se | http://www.gladajyckar.se      |
+    And I click on t("submit")
     And I am Logged out
     And I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the landing page
-    And I should see "Du har inte behörighet att göra detta."
+    And I should see t("errors.not_permitted")
 
 
   Scenario: User tries to go do company page (gets rerouted)
     Given I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the landing page
-    And I should see "Du har inte behörighet att göra detta."
+    And I should see t("errors.not_permitted")
 
 

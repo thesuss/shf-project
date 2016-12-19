@@ -81,6 +81,12 @@ sv:
         description: Beskrivning
 
     errors:
+
+      models:
+        company:
+          company_number:
+            taken: Detta företag (org nr) finns redan i systemet.
+
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
         restrict_dependent_destroy:
@@ -141,10 +147,12 @@ sv:
     update:
       error: Ett problem förhindrade uppdatering av företaget.
       success: Företaget har uppdaterats.
+    edit:
+      title: 'Redigera företag: %{company_name}'
     show:
       company_number: *org_nr
       name: *name
-      phone_number: Telefon
+      phone_number: *phone_number
       email: Företagets e-postadress
       address: Adress
       street: Gata
@@ -157,9 +165,12 @@ sv:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
       category: Kategori
+      name: *name
+      company_number: *org_nr
       region_land: Län
       h_companies_listed_below: Nedan listas anslutna H-märkta företag
       how_to_search: Du kan söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
+      confirm_are_you_sure: *are_you_sure_confirm
     company_name: Företagsnamn
     telephone_number: Telefonnummer
     operations_region: Verksamhetslän
