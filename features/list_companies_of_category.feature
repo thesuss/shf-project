@@ -1,6 +1,6 @@
 Feature: As a visitor
-  In order to easily find a member of a certain category
-  I should be able to see the members (companies) of that category listed
+  In order to easily find a company of a certain category
+  I should be able to see the companies of that category listed
   PT: https://www.pivotaltracker.com/story/show/135684057
 
   Background:
