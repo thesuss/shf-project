@@ -18,7 +18,7 @@
           %th Org nr
           %th
     %tbody
-      - @business_category.companies.each do |company|
+      - @business_category.companies.distinct.sort {|cp1, cp2| cp1.name <=> cp2.name}.each do |company|
         - if company_complete? company
           %tr.company
             %td= link_to company.name, company
