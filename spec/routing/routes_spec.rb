@@ -32,6 +32,7 @@ RSpec.shared_examples "a swedish named resource" do |swedish_name, controller|
     assert_routing({path: "#{swedish_name}/1", method: :put}, {controller: controller, action: 'update', id: '1'})
   end
 
+<<<<<<< HEAD
   it "/#{swedish_name}/i = #destroy" do
     assert_routing({path: "#{swedish_name}/delete", method: :delete}, {controller: controller, action: 'destroy', id: 'delete'})
   end
@@ -65,9 +66,11 @@ RSpec.describe "swedish named routes", :type => :routing do
 
 end
 
+=======
+>>>>>>> delete block comment used during wip
 RSpec.shared_examples "a swedish named resource" do |swedish_name, controller|
 
-  let(:new) { 'ny' }
+  let(:new)  { 'ny' }
   let(:edit) { 'redigera' }
 
   it "/#{swedish_name} = #index" do
