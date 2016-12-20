@@ -1,14 +1,8 @@
 require 'rails_helper'
 
-#   scope(path_names: { new: 'ny', edit: 'redigera' }) do
-#     resources :business_categories, path: 'kategori'
-#     resources :membership_applications, path: 'ansokan'
-#     resources :companies, path: 'hundforetag'
-#   end
-
 RSpec.shared_examples "a swedish named resource" do |swedish_name, controller|
 
-  let(:new) { 'ny' }
+  let(:new)  { 'ny' }
   let(:edit) { 'redigera' }
 
   it "/#{swedish_name} = #index" do
