@@ -175,7 +175,7 @@ sv:
     telephone_number: Telefonnummer
     operations_region: Verksamhetslän
     op_region_multiple_use_sweden: Skriv Sverige om företaget är verksamt i flera delar av landet
-    website_include_http: Företagets webbplats (glöm inte http://)
+    website_include_http: Företagets webbplats
     org_nr_no_hyphens: Endast siffror (ej bindestreck)
 
     all_companies: Alla företag

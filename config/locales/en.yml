@@ -142,7 +142,7 @@ en:
       error: One or more problems prevented the company from being created.
       success: The company was created successfully.
     edit:
-      title: 'Redigera företag: %{company_name}'
+      title: 'Editing: %{company_name}'
     update:
       error: There was a problem updating the company.
       success: The company was updated.
@@ -172,7 +172,7 @@ en:
     telephone_number: Phone number
     operations_region: County of operations
     op_region_multiple_use_sweden: Enter Sweden if the company operates in several regions
-    website_include_http: Company website (please include http://)
+    website_include_http: Company website
     org_nr_no_hyphens: Numbers only (no hyphens)
 
     all_companies: All companies
