@@ -9,20 +9,23 @@
     %p
       %b Beskrivning:
       = @business_category.description
-  %table
-    %thead
-      %tr
-        %th Namn
-        %th Län
-        - if current_user.try(:admin)
-          %th Org nr
-          %th
-    %tbody
-      - @business_category.companies.distinct.sort {|cp1, cp2| cp1.name <=> cp2.name}.each do |company|
-        - if company_complete? company
-          %tr.company
-            %td= link_to company.name, company
-            %td= company.region
-            - if current_user.try(:admin)
-              %td= company.company_number
-              %td= link_to 'Edit', edit_company_path(company)
+  - if @business_category.companies.empty?
+    %p Ingen har ansökt om medlemsskap i denna kategori ännu.
+  - else
+    %table
+      %thead
+        %tr
+          %th Namn
+          %th Län
+          - if current_user.try(:admin)
+            %th Org nr
+            %th
+      %tbody
+        - @business_category.companies.distinct.sort {|cp1, cp2| cp1.name <=> cp2.name}.each do |company|
+          - if company_complete? company
+            %tr.company
+              %td= link_to company.name, company
+              %td= company.region
+              - if current_user.try(:admin)
+                %td= company.company_number
+                %td= link_to 'Edit', edit_company_path(company)

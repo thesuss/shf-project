@@ -43,7 +43,8 @@ Feature: As a visitor
 
   Scenario: Categories list no businesses
     Given I am on the business category "Goodies"
-    Then I should not see "No More Snarky Barky"
+    Then I should see "Ingen har ansökt om medlemsskap i denna kategori ännu."
+    And I should not see "No More Snarky Barky"
     And I should not see "Sad Sad Snarky Barky"
 
   Scenario: Another category is added
