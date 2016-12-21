@@ -28,6 +28,7 @@ Feature: As a visitor
       | Awesome |
       | Sadness |
       | Goodies |
+      | Extra   |
 
   Scenario: Categories list multiple businesses
     Given I am on the business category "Awesome"
@@ -44,3 +45,11 @@ Feature: As a visitor
     Given I am on the business category "Goodies"
     Then I should not see "No More Snarky Barky"
     And I should not see "Sad Sad Snarky Barky"
+
+  Scenario: Another category is added
+    Given I am logged in as "admin@shf.se"
+    And I am on the "edit my application" page for "ernt@mutts.com"
+    And I select "Extra" Category
+    And I click on "Submit"
+    When I am on the business category "Extra"
+    Then I should see "WOOF"
