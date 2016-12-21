@@ -1,4 +1,4 @@
-Feature: As a visitor
+Feature: As any type of visitor
   In order to easily find a company of a certain category
   I should be able to see the companies of that category listed
   PT: https://www.pivotaltracker.com/story/show/135684057
@@ -38,6 +38,10 @@ Feature: As a visitor
 
   Scenario: Categories list businesses
     Given I am on the business category "Sadness"
+    Then I should not see "No More Snarky Barky"
+    And I should see "Sad Sad Snarky Barky"
+    When I am logged in as "anna@sadmutts.com "
+    And I am on the business category "Sadness"
     Then I should not see "No More Snarky Barky"
     And I should see "Sad Sad Snarky Barky"
 
