@@ -39,29 +39,18 @@ RSpec.shared_examples "a swedish named resource" do |swedish_name, controller|
 
 end
 
-
-
 RSpec.describe "swedish named routes", :type => :routing do
 
   describe 'companies path = hundforetag, controller: CompaniesController' do
-
     it_should_behave_like "a swedish named resource", 'hundforetag', 'companies'
-
   end
-
 
   describe 'membership_applications path = ansokan, controller: MembershipApplicationsController' do
-
     it_should_behave_like "a swedish named resource", 'ansokan', 'membership_applications'
-
   end
-
 
   describe 'business_categories path = kategori, controller: BusinessCategoriesController' do
-
     it_should_behave_like "a swedish named resource", 'kategori', 'business_categories'
-
   end
-
 
 end
