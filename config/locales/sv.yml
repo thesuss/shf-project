@@ -10,22 +10,20 @@ sv:
   show_in_english: Show the site in English
   show_in_swedish: Visar webbplatsen på svenska
 
-  password: Lösenord
+  password: &password Lösenord
 
   is_required_field: Indikerar ett obligatoriskt fält
 
   user: användare
-
-  edit: Redigera
-  manage: Hantera
-  update: Uppdatera
-  submit: Skicka
+  edit: &edit Redigera
+  manage: &manage Hantera
+  update: &update Uppdatera
+  submit: &submit Skicka
   delete: &delete Radera
-  send: Skicka
-  new: Nytt
-  change: Byt
-  save: Save
-
+  send: &send Skicka
+  new: &new Nytt
+  change: &change Byt
+  save: &save Save
   back: &back Tillbaks
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker
@@ -33,7 +31,6 @@ sv:
   info:
     logged_in_as_admin: Du är inloggad som admin
     under_construction: Sidan är under uppbyggnad, mer information och funktioner kommer att komma efterhand.
-
 
   apply_for_membership: Ansök om medlemskap
 
@@ -53,13 +50,13 @@ sv:
 
       user:
         email: &email E-post
-        password: Lösenord
+        password: *password
 
       membership_application:
-        company_number: Organisationsnummer
+        company_number: &company_number Organisationsnummer
         first_name: &first_name Förnamn
         last_name: &last_name Efternamn
-        contact_email: Kontakt e-post
+        contact_email: &contact_email Kontakt e-post
         status: &status Status
         phone_number: Telefonnummer
         membership_number: &membership_number Medlemsnummer
@@ -81,7 +78,6 @@ sv:
         description: Beskrivning
 
     errors:
-
       models:
         company:
           company_number:
@@ -93,20 +89,38 @@ sv:
           has_one: Kan inte ta bort post då beroende %{record} finns
           has_many: Kan inte ta bort poster då beroende %{record} finns
 
-
-  # Automatisk och manuell sökning för views:
+ # Automatisk och manuell sökning för views:
   membership_applications:
     new:
       title: Ansök om medlemskap
-      submit: Skicka
-      company_number: &company_number Organisationsnummer
-      phone_number: &phone_number Telefonnummer
+      submit: *submit
       first_name: *first_name
       last_name: *last_name
-      contact_email: &contact_email Kontakt e-post
+      phone_number: &phone_number Telefonnummer
+      company_number: *company_number
+      contact_email: *contact_email
+
+      can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
+      application_dog_category: Ansöker som hund-*
+      clue_selected_categories: Blå fält = valda kategorier
+      upload_a_file: 'Ladda upp en fil:'
+      upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
+
+      submit_button_label: *submit
+
     create:
       success: Tack, din ansökan har skickats.
       error: Ett eller flera problem hindrade din ansökan från att skickas.
+
+    edit:
+      title: Redigera ansökan om medlemskap
+      submit_button_label: *save
+
+    update:
+      success: Ansökan har uppdaterats.
+      error: Ett eller flera problem hindrade din ansökan från att sparas.
+      enter_member_number: Var god ange medlemsnummer och spara.
+
     show:
       title: Ansökan från %{member_full_name}
       first_name: *first_name
@@ -114,16 +128,51 @@ sv:
       phone_number: *phone_number
       company_number: *company_number
       contact_email: *contact_email
-      status: *status
+      app_status: Ansökans status
       membership_number: *membership_number
       with_categories: Ansöker inom
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-    update:
-      success: Ansökan har uppdaterats.
-      error: Ett eller flera problem hindrade din ansökan från att sparas.
-      enter_member_number: Var god ange medlemsnummer och spara.
 
+    index:
+      title: Alla inkomna ansökningar
+      name: Namn
+      org_nr: *org_nr
+      status: *status
+      manage: *manage
+
+    information:
+      title: Om medlemsskap
+      member:
+        title: Välkommen
+        using_the_logo: "Det är viktigt att vi alla följer vår grafiska profil, att loggan
+                         nyttjas på ett enhetligt sätt och inga egna versioner skapas av er
+                         medlemmar. Detta för att skapa igenkänning, tydlighet gentemot kund.
+                         Och skydda oss mot förfalskningar av H-märket."
+        upload_this_image: "Vi önskar att ni lägger upp nedanstående bild på era hemsidor.
+                                  Samt länkar denna bild till:"
+        using_the_h_mark: "Vi önskar även att ni pryder er hemsida med H-märket. För att visa
+                                 att ni just H-märkta med allt vad det innebär. Bilden nedan nyttjas i
+                                 detta syfte och länkas till:"
+
+      user:
+        title: Hej, kul att du är intresserad
+        how_to_apply: "För att skicka in din medlemsansökan går du
+                       %{link} och fyller i alla nödvändiga uppgifter,
+                        markerar vilken eller vilka
+                        kategorier du vill ansöka om medlemskap i."
+        once_it_is_submitted: "När din ansökan är inskickat hamnar den hos oss för behandling, detta
+                               tar en stund, så var inte orolig om du inte hör något från oss."
+        when_we_decide: "När din ansökan sedan är godkänd får du ett mail, med en länk till
+                         att skapa din företagssida här."
+
+
+    accepted: &status_accepted Godkänd
+    rejected: &status_rejected Avböjd
+    pending: &status_pending Inlämnad
+    pending_completion: &status_pending_completion Väntar på sökande
+    treated: Behandlas
+    awaiting_payment: Inväntar betalning
     all_membership_applications: Alla ansökningar
     edit_membership_application: Redigera ansökan
     view_membership_application: Visa ansökan
@@ -134,7 +183,7 @@ sv:
       files_uploaded: 'Uppladdade filer för denna ansökan:'
       filename: Filnamn
       file_was_uploaded: 'Filen laddades upp: %{filename}'
-      confirm_delete: 'Är du säker på att du vill radera %{filename}'
+      confirm_delete: 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
 
     update_the_status: Uppdatera status
@@ -207,7 +256,7 @@ sv:
         confirm_password: *confirm_password
         current_password: Nuvarande lösenord
         required_to_save_changes: (behövs för att spara ändringar)
-        submit_button_label: Uppdatera
+        submit_button_label: *update
         delete_my_account: Ta bort mitt konto
         unregister: Avregistrera dig
         confirm_are_you_sure: *are_you_sure_confirm

@@ -62,6 +62,33 @@ RSpec.describe MembershipApplication, type: :model do
 
   end
 
+  describe '#is_accepted?' do
+    it "true: status = 'Godkänd'" do
+      subject.status = 'Godkänd'
+      expect(subject.is_accepted?).to be_truthy
+    end
+    it "true: status = 'Avböjd'" do
+      subject.status = 'Avböjd'
+      expect(subject.is_accepted?).to be_falsey
+    end
+    it "true: status = 'Pending'" do
+      subject.status = 'Pending'
+      expect(subject.is_accepted?).to be_falsey
+    end
+    it "true: status = 'Behandlas'" do
+      subject.status = 'Behandlas'
+      expect(subject.is_accepted?).to be_falsey
+    end
+    it "true: status = 'Inväntar betalning'" do
+      subject.status = 'Inväntar betalning'
+      expect(subject.is_accepted?).to be_falsey
+    end
+    it "true: status = 'Inväntar komplettering'" do
+      subject.status = 'Inväntar komplettering'
+      expect(subject.is_accepted?).to be_falsey
+    end
+  end
+
   describe 'test factories' do
 
     it 'default: 1 category with default category name' do

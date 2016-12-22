@@ -127,6 +127,13 @@ And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
   expect(selected_option).to eql status
 end
 
+And(/^t\("([^"]*)"\) should be set in "([^"]*)"$/) do |status, list|
+  dropdown = page.find("##{list}")
+  selected_option = dropdown.find('option[selected]').text
+  expect(selected_option).to eql i18n_content(status)
+end
+
+
 Then(/^I should be on the application page for "([^"]*)"$/) do |first_name|
   membership_application = MembershipApplication.find_by(first_name: first_name)
   expect(current_path).to eq membership_application_path(membership_application)
@@ -172,10 +179,16 @@ end
 Then(/^I should see translated error (.*) (.*)$/) do |model_attribute, error|
   expect(page).to have_content("#{i18n_content(model_attribute)} #{i18n_content(error)}")
 end
+
 Then(/^I should see t\("([^"]*)", member_full_name: '([^']*)'\)$/) do |i18n_key, name_value|
  expect(page).to have_content(I18n.t(i18n_key, member_full_name: name_value))
 end
 
 And(/^I should see t\("([^"]*)", filename: '([^']*)'\)$/) do |i18n_key, filename_value|
   expect(page).to have_content(I18n.t(i18n_key, filename: filename_value))
+end
+
+
+And(/^I should see status line with status t\("([^"]*)"\) and date "([^"]*)"$/) do |status, date_string|
+  expect(page).to have_content("#{i18n_content(status)} - #{date_string}")
 end

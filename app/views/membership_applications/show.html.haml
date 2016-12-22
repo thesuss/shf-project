@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title Ansökan från #{member_full_name}
+  %h1.entry-title= t('.title', member_full_name: member_full_name)
 .post-title-divider
   %span
 .entry-content
@@ -11,12 +11,12 @@
   %p= mail_to @membership_application.contact_email, @membership_application.contact_email
 
   - if @membership_application.phone_number
-    %p Phone number: #{@membership_application.phone_number}
+    %p #{t('.phone_number')}: #{@membership_application.phone_number}
 
-  %p Company Number: #{@membership_application.company_number}
+  %p #{t('.company_number')}: #{@membership_application.company_number}
 
   - unless assocation_empty?(@categories)
-    %h4 Ansöker inom:
+    %h4 #{t('.with_categories')}:
     %strong
       %ul
         - @categories.each do | business_category |
@@ -29,9 +29,8 @@
     = render 'uploaded_files_list', membership_application: @membership_application
   - if edit_status?
     = render partial: 'application_status_form'
-  %p Status: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}
+  %p #{t('.app_status')}: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}
 
   - if current_user && current_user.admin?
-    = link_to 'Redigera ansökan', edit_membership_application_path(@membership_application), class:'btn btn-warning'
+    = link_to "#{t('membership_applications.edit_membership_application')}", edit_membership_application_path(@membership_application), class:'btn btn-warning'
     = link_to "#{t('.delete')}", @membership_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
-

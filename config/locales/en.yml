@@ -10,22 +10,20 @@ en:
   show_in_english: Show the site in English
   show_in_swedish: Visar webbplatsen på svenska
 
-  password: Password
+  password: &password Password
 
   is_required_field: Indicates a required field
 
-  user: user
-
-  edit: Edit
-  manage: Manage
-  update: Update
-  submit: Submit
+  user: &user user
+  edit: &edit Edit
+  manage: &manage Manage
+  update: &update Update
+  submit: &submit Submit
   delete: &delete Delete
-  send: Send
-  new: New
-  change: Change
-  save: Save
-
+  send: &send Send
+  new: &new New
+  change: &change Change
+  save: &save Save
   back: &back Back
 
   confirm_are_you_sure: &are_you_sure_confirm Are you sure
@@ -41,8 +39,7 @@ en:
   name: &name Name
   org_nr: &org_nr Org no.
 
-
- # Automatic and manual lookup for ActiveRecords:
+  # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
       membership_application:
@@ -53,19 +50,19 @@ en:
 
       user:
         email: &email Email
-        password: Password
+        password: *password
 
       membership_application:
-        company_number: Company number
+        company_number: &company_number Company number
         first_name: &first_name First name
         last_name: &last_name Last name
-        contact_email: Email
-        status: Status
+        contact_email: &contact_email Email
+        status: &status Status
         phone_number: Phone number
         membership_number: Membership number
 
       company:
-        company_number: Company number
+        company_number: *org_nr
         name: *name
         phone_number: Phone Number
         email: *email
@@ -96,32 +93,87 @@ en:
   membership_applications:
     new:
       title: Apply for a Membership
-      submit: Submit
+      submit: *submit
       first_name: *first_name
       last_name: *last_name
       phone_number: Phone number
-      company_number: Company number
-      contact_email: *email
+      company_number: *company_number
+      contact_email: *contact_email
+
+      can_be_same_email: Can be the same that you logged in with, but need not be.
+      application_dog_category: Dog service category -*
+      clue_selected_categories: Blue box = selected categories
+      upload_a_file: 'Upload a file:'
+      upload_more_files: 'You can upload more files. After you submit your application, edit it and you can upload more there.'
+
+      submit_button_label: *submit
+
     create:
       success: Thank You. Your membership application has been submitted.
       error: The was a problem creating and submitting your application.
+
+    edit:
+      title: Edit Membership Application
+      submit_button_label: *save
+
+    update:
+      success: The application was updated.
+      error: One or more problems prevented your application from being updated.
+      enter_member_number: Please enter the member number and save.
+      
     show:
       title: Application from %{member_full_name}
       first_name: *first_name
       last_name: *last_name
       phone_number: Phone number
-      company_number: Company number
-      contact_email: *email
-      status: Status
+      company_number: *company_number
+      contact_email: *contact_email
+      app_status: Application status
       membership_number: Membership number
       with_categories: Categories
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-    update:
-      success: The application was updated.
-      error: One or more problems prevented your application from being updated.
-      enter_member_number: Please enter the member number and save.
+      
+    index:
+      title: All incoming applications
+      name: Name
+      org_nr: *org_nr
+      status: *status
+      manage: *manage
 
+    information:
+      title: About membership
+      member:
+        title: Välkommen
+        using_the_logo: "It is important that we all follow our graphic identity,
+                         that the logo is used in a uniform manner,
+                          that you do not create your own version.
+                          This is to promote recognition and clarity among customers.
+                         This also guards against counterfeits of the H mark."
+        upload_this_image: "We'd like you to put the image below on your website
+                            and link this image to:"
+        using_the_h_mark: "We'd also like you to put the H-mark on your homepage.
+                        This shows that you have achieved the H-mark and so
+                        provide more value. The H-mark image is below.
+                        It should be linked to:"
+
+      user:
+        title: "Hey -- we're glad you're interested!"
+        how_to_apply: "To submit your membership application, go to
+                       %{link} and fill in all the necessary details,
+                        including the categories that apply to you."
+        once_it_is_submitted: "Once your application is submitted, we will review it.
+                        This takes a while, so do not worry if you do not hear from us for a bit."
+        when_we_decide: "We'll send you an email with our decision.
+                        If your application is approved, we'll give you a link
+                        so you can describe and list your business here."
+
+    accepted: &status_accepted Accepted
+    rejected: &status_rejected Rejected
+    pending: &status_pending Pending
+    pending_completion: &pending_completion Pending completion
+    treated: Reviewed
+    awaiting_payment: Awaiting payment
     all_membership_applications: All applications
     edit_membership_application: Edit application
     view_membership_application: View application
@@ -132,7 +184,7 @@ en:
       files_uploaded: 'Files uploaded for this application:'
       filename: Filename
       file_was_uploaded: 'This file was uploaded: %{filename}'
-      confirm_delete: 'Are you sure you want to delete %{filename}'
+      confirm_delete: 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: Sorry, this is not a file type you can upload.
 
     update_the_status: Update the status
@@ -150,7 +202,7 @@ en:
       error: There was a problem updating the company.
       success: The company was updated.
     show:
-      company_number: Company number
+      company_number: *company_number
       name: *name
       phone_number: Phone Number
       email: Company email
@@ -205,7 +257,7 @@ en:
         current_password: Current password
         required_to_save_changes: (required to save changes)
         leave_blank_if_no_change: "leave blank if there's no change"
-        submit_button_label: Update
+        submit_button_label: *update
         delete_my_account: Delete my account
         unregister: Unregister
         confirm_are_you_sure: *are_you_sure_confirm

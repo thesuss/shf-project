@@ -1,29 +1,29 @@
-- if current_user.admin? && @membership_application.status == 'Godkänd'
-  = f.label :membership_number, 'Medlemsnummer', class: 'required'
+- if current_user.admin? && @membership_application.is_accepted?
+  = f.label :membership_number, t('membership_applications.show.membership_number'), class: 'required'
   = f.text_field :membership_number, class: 'wpcf7-form-control'
 
-= f.label :first_name, 'Förnamn', class: 'required'
+= f.label :first_name, t('membership_applications.show.first_name'), class: 'required'
 = f.text_field :first_name, class: 'wpcf7-form-control'
 
-= f.label :last_name, 'Efternamn', class: 'required'
+= f.label :last_name, t('membership_applications.show.last_name'), class: 'required'
 = f.text_field :last_name, class: 'wpcf7-form-control'
 
-= f.label :company_number, 'Org nr', class: 'required'
+= f.label :company_number, t('membership_applications.show.company_number'), class: 'required'
 = f.number_field :company_number, class: 'wpcf7-form-control'
-%em Endast siffror (ej bindestreck)
+%em= t('companies.org_nr_no_hyphens')
 %br
 
-= f.label :contact_email, 'E-post', class: 'required'
+= f.label :contact_email, t('membership_applications.show.contact_email'), class: 'required'
 = f.email_field :contact_email, class: 'wpcf7-form-control'
-%em Kan vara samma som du loggar in med, men behöver inte vara det.
+%em= t('membership_applications.new.can_be_same_email')
 %br
 
-= f.label :phone_number, 'Telefonnummer'
+= f.label :phone_number, t('membership_applications.show.phone_number')
 = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
 - unless assocation_empty?(@all_business_categories)
-  %h3 Ansöker som hund-*
-  %p Blå fält = valda kategorier
+  %h3= t('membership_applications.new.application_dog_category')
+  %p= t('membership_applications.new.clue_selected_categories')
   .checkbox
     = f.collection_check_boxes :business_category_ids, @all_business_categories, :id, :name do |b|
       = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
@@ -31,8 +31,6 @@
 #uploaded_files
   = render 'uploaded_files_list', membership_application: @membership_application
 
-%p Ladda upp en fil:
-%em Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
+%p= t('membership_applications.new.upload_a_file')
+%em= t('membership_applications.new.upload_more_files')
 = f.file_field 'actual_files[]', multiple: true, name: 'uploaded_file[actual_files][]'
-
-= f.submit 'Submit'

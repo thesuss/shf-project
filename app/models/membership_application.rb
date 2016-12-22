@@ -18,4 +18,8 @@ class MembershipApplication < ApplicationRecord
   def swedish_organisationsnummer
     errors.add(:company_number, "#{self.company_number} är inte ett svenskt organisationsnummer") unless Orgnummer.new(self.company_number).valid?
   end
+
+  def is_accepted?
+    status == 'Godkänd'
+  end
 end

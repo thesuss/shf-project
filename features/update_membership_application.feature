@@ -21,17 +21,18 @@ Feature: As an Admin
 
   Scenario: Flag a Membership Application as rejected
     And I am on "Hans" application page
-    When I set "membership_application_status" to "Avböjd"
-    And I click on "Update"
+    When I set "membership_application_status" to t("membership_applications.rejected")
+    And I click on t("update")
     Then I should see "Ansökan har uppdaterats."
-    And "Avböjd" should be set in "membership_application_status"
-    And I should see "Status: Avböjd - 2016-12-16"
+    And t("membership_applications.rejected") should be set in "membership_application_status"
+    And I should see status line with status t("membership_applications.rejected") and date "2016-12-16"
+
 
   Scenario: Application submitter can see but not update the Application status
     Given I am Logged out
     And I am logged in as "applicant_1@random.com"
     Given I am on "Emma" application page
-    Then I should see "Ansökan från Emma"
-    And I should see "Status"
-    And I should not see button "Update"
+    Then I should see t("membership_applications.show.title", member_full_name: 'Emma Lastname')
+    And I should see t("membership_applications.show.app_status")
+    And I should not see button t("update")
 

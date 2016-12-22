@@ -37,6 +37,11 @@ When(/^I set "([^"]*)" to "([^"]*)"$/) do |list, option|
   select option, from: list
 end
 
+When(/^I set "([^"]*)" to t\("([^"]*)"\)$/) do |list, option|
+  select i18n_content(option), from: list
+end
+
+
 Then(/^show me the page$/) do
   save_and_open_page
 end

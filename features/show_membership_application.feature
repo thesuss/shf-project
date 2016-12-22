@@ -21,8 +21,8 @@ Feature: As an Admin
     And the following applications exist:
       | first_name | user_email      | company_number | status   |
       | Emma       | emma@random.com | 5562252998     | Godkänd  |
-      | Hans       | hans@random.com | 5560360793     | pending  |
-      | Anna       | anna@random.com | 2120000142     | pending  |
+      | Hans       | hans@random.com | 5560360793     | Inlämnad  |
+      | Anna       | anna@random.com | 2120000142     | Inlämnad  |
 
     And the following business categories exist
       | name         |
@@ -44,7 +44,7 @@ Feature: As an Admin
     And I am on the "landing" page
     And I click on "Min ansökan"
     And I select "Groomer" Category
-    And I click on "Submit"
+    And I click on t("membership_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page
@@ -63,7 +63,7 @@ Feature: As an Admin
     And I click on "Min ansökan"
     And I select "Trainer" Category
     And I select "Psychologist" Category
-    And I click on "Submit"
+    And I click on t("membership_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@sgf.com"
     And I am on the list applications page

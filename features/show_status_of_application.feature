@@ -12,7 +12,7 @@ Feature: As an Admin
 
     And the following applications exist:
       | company_number | user_email  | status   |
-      | 5562252998     | din@mail.se | Pending  |
+      | 5562252998     | din@mail.se | Inlämnad  |
       | 2120000142     | min@mail.se | Godkänd |
 
     And I am logged in as "admin@sgf.com"
@@ -21,6 +21,6 @@ Feature: As an Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "2" applications
-    And I should see "Status"
-    And I should see "Pending"
-    And I should see "Godkänd"
+    And I should see t("membership_applications.index.status")
+    And I should see t("membership_applications.pending")
+    And I should see t("membership_applications.accepted")

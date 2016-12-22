@@ -30,13 +30,10 @@ class MembershipApplicationsController < ApplicationController
     @membership_application = current_user.membership_applications.new(membership_application_params)
     if @membership_application.save
       new_upload_file params['uploaded_file'] if params['uploaded_file']
-
-      helpers.flash_message(:notice,
-                            'Tack, din ansökan har skickats.')
+      helpers.flash_message(:notice, t('.success'))
       redirect_to root_path
     else
-      helpers.flash_message(:alert,
-                            'Ett eller flera problem hindrade din ansökan från att skickas.')
+      helpers.flash_message(:alert, t('.error') )
       current_user.membership_applications.reload
       render :new
     end
@@ -54,12 +51,10 @@ class MembershipApplicationsController < ApplicationController
         return
       end
 
-      helpers.flash_message(:notice,
-                            'Ansökan har uppdaterats.')
+      helpers.flash_message(:notice, t('.success'))
       render :show
     else
-      helpers.flash_message(:alert,
-                            'Ett eller flera problem hindrade din ansökan från att sparas.')
+      helpers.flash_message(:alert, t('.error'))
       redirect_to edit_membership_application_path(@membership_application)
     end
   end
@@ -107,8 +102,8 @@ class MembershipApplicationsController < ApplicationController
     @membership_application.update(company:company)
     @membership_application.save
 
-    helpers.flash_message(:notice,
-                          'Var god ange medlemsnummer och spara.')
+    helpers.flash_message(:notice, t('membership_applications.update.enter_member_number') )
+
   end
 
 
@@ -118,8 +113,8 @@ class MembershipApplicationsController < ApplicationController
 
         @uploaded_file = @membership_application.uploaded_files.create(actual_file: upload_file)
         if @uploaded_file.valid?
-          helpers.flash_message(:notice,
-                                "Filen laddades upp: #{@uploaded_file.actual_file_file_name}")
+          helpers.flash_message(:notice, t('membership_applications.uploads.file_was_uploaded',
+                                           filename: @uploaded_file.actual_file_file_name ))
         else
           helpers.flash_message :alert, @uploaded_file.errors.messages
         end

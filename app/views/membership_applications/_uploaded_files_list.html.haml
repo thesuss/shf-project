@@ -1,19 +1,19 @@
 - if membership_application.uploaded_files.count < 1
-  %p Inga filer är uppladdade för denna ansökan.
+  %p= t('membership_applications.uploads.no_files')
 - else
   %p
-    %strong Uppladdade filer för denna ansökan:
+    %strong= t('membership_applications.uploads.files_uploaded')
 
   %table
     %thead
       %tr
-        %th Filnamn
-        %th.action delete
+        %th= t('membership_applications.uploads.filename')
+        %th.action= t('delete').downcase
 
     %tbody
       - membership_application.uploaded_files.each do |uploaded_file|
         %tr.uploaded-files
-          %td.uploaded-file= link_to uploaded_file.actual_file_file_name, uploaded_file.actual_file.url
+          %td.uploaded-file
+            = link_to uploaded_file.actual_file_file_name, uploaded_file.actual_file.url
           %td{class: "delete-uploaded-file-#{uploaded_file.id}"}
-            = link_to icon('trash'),
-              membership_application_path(membership_application.id, membership_application: { uploaded_files_attributes: { id: uploaded_file.id, "_destroy" => true }}), method: :put, id: "uploaded-file-#{uploaded_file.id}", class: "action-delete", data: { confirm: "Are you sure you want to delete #{uploaded_file.actual_file_file_name}" }
+            = link_to icon('trash'), membership_application_path(membership_application.id, membership_application: { uploaded_files_attributes: { id: uploaded_file.id,  '_destroy' => true }}), method: :put, id: "uploaded-file-#{uploaded_file.id}", class: "action-delete", data: { confirm: "#{t('membership_applications.uploads.confirm_delete', filename: uploaded_file.actual_file_file_name)}" }
