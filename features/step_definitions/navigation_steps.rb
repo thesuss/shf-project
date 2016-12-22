@@ -71,7 +71,7 @@ And(/^I am on the "([^"]*)" page for "([^"]*)"$/) do |page, user_email|
       end
     when 'user instructions'
       path = information_path
-    when 'application'
+    when 'application' || 'show application'
       path = membership_application_path(user_from_email.membership_applications.last.company)
     when 'member instructions'
       path = information_path

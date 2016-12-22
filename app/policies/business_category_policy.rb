@@ -4,9 +4,11 @@ class BusinessCategoryPolicy < ApplicationPolicy
     is_admin?
   end
 
+
   def create?
     new?
   end
+
 
   def show?
     true
@@ -28,13 +30,4 @@ class BusinessCategoryPolicy < ApplicationPolicy
   end
 
 
-  def destroy?
-    is_admin?
-  end
-
-
-  private
-  def is_admin?
-    @user.admin? if @user
-  end
 end

@@ -49,6 +49,16 @@ class MembershipApplicationPolicy < ApplicationPolicy
   end
 
 
+  def new?
+    is_admin?
+  end
+
+
+  def create?
+    new?
+  end
+
+
   private
 
   def only_for_admin

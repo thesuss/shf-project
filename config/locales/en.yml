@@ -20,7 +20,7 @@ en:
   manage: Manage
   update: Update
   submit: Submit
-  delete: Delete
+  delete: &delete Delete
   send: Send
   new: New
   change: Change
@@ -115,6 +115,8 @@ en:
       status: Status
       membership_number: Membership number
       with_categories: Categories
+      delete: *delete
+      confirm_are_you_sure: *are_you_sure_confirm
     update:
       success: The application was updated.
       error: One or more problems prevented your application from being updated.
@@ -134,6 +136,7 @@ en:
       invalid_upload_type: Sorry, this is not a file type you can upload.
 
     update_the_status: Update the status
+    application_deleted: Application deleted.
 
   companies:
     new:

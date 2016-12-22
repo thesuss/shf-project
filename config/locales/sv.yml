@@ -20,7 +20,7 @@ sv:
   manage: Hantera
   update: Uppdatera
   submit: Skicka
-  delete: Radera
+  delete: &delete Radera
   send: Skicka
   new: Nytt
   change: Byt
@@ -117,11 +117,12 @@ sv:
       status: *status
       membership_number: *membership_number
       with_categories: Ansöker inom
+      delete: *delete
+      confirm_are_you_sure: *are_you_sure_confirm
     update:
       success: Ansökan har uppdaterats.
       error: Ett eller flera problem hindrade din ansökan från att sparas.
       enter_member_number: Var god ange medlemsnummer och spara.
-
 
     all_membership_applications: Alla ansökningar
     edit_membership_application: Redigera ansökan
@@ -137,6 +138,7 @@ sv:
       invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
 
     update_the_status: Uppdatera status
+    application_deleted: Ansökan raderat.
 
   companies:
     new:

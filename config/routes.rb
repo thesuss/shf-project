@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :temp_things
   filter :locale
 
   devise_for :users
@@ -11,6 +12,7 @@ Rails.application.routes.draw do
   end
 
   get '/pages/*id', to: 'pages#show', as: :page, format: false
+
 
   scope(path_names: { new: 'ny', edit: 'redigera' }) do
     resources :business_categories, path: 'kategori'

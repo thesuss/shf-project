@@ -32,4 +32,6 @@
   %p Status: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}
 
   - if current_user && current_user.admin?
-    = link_to 'Redigera ansökan', edit_membership_application_path(@membership_application)
+    = link_to 'Redigera ansökan', edit_membership_application_path(@membership_application), class:'btn btn-warning'
+    = link_to "#{t('.delete')}", @membership_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
+

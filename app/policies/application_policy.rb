@@ -15,11 +15,23 @@ class ApplicationPolicy
   end
 
   def update?
-    @user.admin? ||  @record.user == @user
+    is_admin? ||  @record.user == @user
   end
 
   def edit?
     update?
+  end
+
+
+  def destroy?
+    is_admin?
+  end
+
+
+  private
+
+  def is_admin?
+    @user.admin? if @user
   end
 
 end
