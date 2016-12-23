@@ -299,10 +299,17 @@ sv:
     all_business_categories: Alla kategorier
 
 
+
   admin:
     index:
       title: 'Admin: Alla inkomna ansökningar'
+      name: *name
+      org_nr: *org_nr
+      status: *status
+      manage: *manage
+
     all_applications_received: Alla inkomna ansökningar
+
 
   devise:
     min_length: '(minst %{minimum_length} tecken)'
