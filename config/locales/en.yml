@@ -234,6 +234,8 @@ en:
     edit_company: Edit company
     view_company: View company
     list_all_companies: List all companies
+    new_company: Create new company
+
 
   admin:
     index:
