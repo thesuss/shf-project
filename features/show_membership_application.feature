@@ -85,7 +85,7 @@ Feature: As an Admin
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "hans@random.com"
     And I am on the list applications page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: Clicking the edit button on show page
     Given I am logged in as "admin@sgf.com"

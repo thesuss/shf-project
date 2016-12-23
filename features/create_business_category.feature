@@ -52,9 +52,9 @@ Feature: As an admin
   Scenario: Listing Business Categories restricted for Non-admins
     Given I am logged in as "applicant@random.com"
     And I am on the "business categories" page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: Listing Business Categories restricted for visitors
     Given I am Logged out
     And I am on the "business categories" page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
