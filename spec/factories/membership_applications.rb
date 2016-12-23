@@ -14,7 +14,7 @@ FactoryGirl.define do
 
 
     transient do
-      num_categories 1
+      num_categories 0
       category_name "Business Category"
     end
 

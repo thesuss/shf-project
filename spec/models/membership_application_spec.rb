@@ -91,10 +91,13 @@ RSpec.describe MembershipApplication, type: :model do
 
   describe 'test factories' do
 
-    it 'default: 1 category with default category name' do
-      member_app = create(:membership_application)
+    it '1 category with default category name' do
+      member_app = create(:membership_application, num_categories: 1)
       expect(member_app.business_categories.count).to eq(1)
-      expect(member_app.business_categories.first.name).to eq("Business Category"), "The first category name should have been 'Business Category' but instead was '#{member_app.business_categories.first.name}'"
+      expect(member_app.business_categories.first.name)
+        .to eq("Business Category"),
+        "The first category name should have been 'Business Category'" \
+        "but instead was '#{member_app.business_categories.first.name}'"
     end
 
     it '2 categories with sequence names' do
@@ -105,7 +108,8 @@ RSpec.describe MembershipApplication, type: :model do
     end
 
     it '1 category with the name "Special"' do
-      member_app = create(:membership_application, category_name: "Special")
+      member_app = create(:membership_application, num_categories: 1,
+                          category_name: "Special")
       expect(member_app.business_categories.count).to eq(1)
       expect(member_app.business_categories.first.name).to eq("Special"), "The first category name should have been 'Special' but instead was '#{member_app.business_categories.first.name}'"
     end
