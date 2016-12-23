@@ -361,6 +361,78 @@ sv:
         log_in_with: Logga in med
 
 
+  #----------
+  # MENUS
+  #  This section will mostly parallel the structure of the actual menus.
+  #  For submenus:  create a key that represents the submenu, and then the
+  #   the first (sub-) entry under that key should be the text displayed for
+  #   that submenu. Use the key 'submenu_title:'  (This organization is a little different than the actual
+  #   menus; it has the extra key and the title for the submenu is under
+  #   the key for the section.)
+  menus:
+    skip_to_content: Gå direkt till innehållet
+    nav:
+      shf_main_site: &shf_main_site SHF-sajten
+      home: &home Hem
+
+      visitor:
+        home: *home
+        brochure: Broschyr
+        dog_owners:
+          submenu_title: Hundägare
+          about_us: &about_us Om oss
+          h_label: H-märket
+          knowledge_bank: &knowledge_bank Kunskapsbank
+          are_you_unsatisfied: 'Är du inte nöjd?'
+          become_supporter: Bli stödmedlem
+          being_dog_owners: Att vara hundägare
+        entrepreneurs:
+          submenu_title: Hundföretagare
+          about_us: *about_us
+          sign_up: Bli medlem
+          be_h_labeled: Bli H-märkt
+          member_criteria: Medlemskriterier
+          member_benefits: Medlemsförmåner
+          quality_standards: Kvalitetskontroll
+          knowledge_bank: *knowledge_bank
+        knowledge_bank:
+          submenu_title: *knowledge_bank
+          blogs: Bloggar
+          books: Böcker
+          research: Forskning
+          pod: Pod
+          popular_science: Populärvetenskap
+          video: Video
+        contact: Kontakt
+        find_dog_businesses: Hitta hundföretagare
+
+      users:
+        my_application: &my_application Min ansökan
+        apply_for_membership: Ansök om medlemsskap
+
+      members:
+        member_pages: Medlemssidor
+        manage_company:
+          submenu_title: Hantera företag
+          view_company: Visa företagssida
+          edit_company: Redigera företag
+        my_application: *my_application
+
+      admin:
+        shf_main_site: *shf_main_site
+        manage_applications: Hantera ansökningar
+        categories:
+          submenu_title: Kategorier
+          list_categories: Lista kategorier
+          new_category: Ny kategori
+        companies:
+          submenu_title: Företag
+          list_companies: Lista företag
+          new_company: Nytt företag
+
+
+  #----------
+  # ERRORS
   errors:
     not_permitted: Du har inte behörighet att göra detta.
     format: "%{attribute} %{message}"
