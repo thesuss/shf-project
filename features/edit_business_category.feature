@@ -20,11 +20,11 @@ Feature: As an admin
   Scenario: Admin wants to edit a business category
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
-    And I click the "Redigera" action for the row with "dog grooming"
-    Then I should see "Redigerar: dog grooming"
-    And I fill in "Category Name" with "doggy grooming"
-    And I click on "Save"
-    Then I should see "Kategori uppdaterad"
+    And I click the t("business_categories.index.edit") action for the row with "dog grooming"
+    Then I should see t("business_categories.edit.title", category_name: "dog grooming"), locale: :sv
+    And I fill in t("business_categories.form.category_name") with "doggy grooming"
+    And I click on t("business_categories.edit.submit_button_label")
+    Then I should see t("business_categories.update.success")
     And I should see "doggy grooming"
 
 
@@ -33,10 +33,10 @@ Feature: As an admin
     And I am on the "business categories" page
     Then I should see "dog crooning"
     And I should see "dog grooming"
-    And I click the "Redigera" action for the row with "dog crooning"
-    Then I should see "Redigerar: dog crooning"
-    And I fill in "Category Name" with ""
-    And I click on "Save"
+    And I click the t("business_categories.index.edit") action for the row with "dog crooning"
+    Then I should see t("business_categories.edit.title", category_name: "dog crooning"), locale: :sv
+    And I fill in t("business_categories.form.category_name") with ""
+    And I click on t("business_categories.edit.submit_button_label")
     Then I should see translated error activerecord.attributes.business_category.name errors.messages.blank
 
   Scenario: A non-admin user cannot edit business categories
