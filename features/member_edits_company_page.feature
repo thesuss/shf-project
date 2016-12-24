@@ -27,7 +27,6 @@ Feature: As a member
 
   Scenario: Member goes to company page after membership approval
     Given I am logged in as "emma@happymutts.com"
-    # we need to do user find by email and visit their particular company application
     And I am on the "edit my company" page for "emma@happymutts.com"
     And I fill in the translated form with data:
       | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.show.email | companies.website_include_http |

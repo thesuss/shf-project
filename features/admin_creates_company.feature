@@ -77,7 +77,7 @@ Feature: As an admin
 
     Scenarios:
       | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   | error                                                        |
-      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10), locale: :sv    |
+      | Happy Mutts | 00         | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10)                 |
       | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
       | Happy Mutts | 5562252998 |            | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
       | Happy Mutts | 5560360793 | 0706898525 | Ålstensgatan 4 | 123 45    | Bromma | Stockholm | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.company_number.taken") |
@@ -118,7 +118,7 @@ Feature: As an admin
       | companies.company_name | companies.show.company_number | companies.show.email | companies.telephone_number | companies.show.street | companies.show.post_code | companies.show.city | companies.operations_region | companies.website_include_http |
       | <name>                 | <org_number>                  | <email>              | <phone>                    | <street>              | <post_code>              | <city>              | <region>                    | <website>                      |
     When I click on t("submit")
-    Then I should see t("errors.messages.wrong_length.other", count: 10), locale: :sv
+    Then I should see t("errors.messages.wrong_length.other", count: 10)
 
     Scenarios:
       | name        | org_number | phone      | street         | post_code | city   | region    | email                | website                   |

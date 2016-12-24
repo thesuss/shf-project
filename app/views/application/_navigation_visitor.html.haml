@@ -1,46 +1,46 @@
 %ul.menu#menu-menu-1
   %li.menu-item
-    = link_to 'Hem', 'http://sverigeshundforetagare.se/'
+    = link_to t('menus.nav.home'), 'http://sverigeshundforetagare.se/'
 
   %li.menu-item
-    = link_to 'Broschyr', 'http://sverigeshundforetagare.se/broschyr/'
+    = link_to t('menus.nav.visitor.brochure'), 'http://sverigeshundforetagare.se/broschyr/'
 
   %li.menu-item.menu-item-has-children
-    = link_to 'Hundägare', 'http://sverigeshundforetagare.se/agare/'
+    = link_to t('menus.nav.visitor.dog_owners.submenu_title'), 'http://sverigeshundforetagare.se/agare/'
     %ul.sub-menu
       %li.menu-item
-        = link_to 'Om oss', 'http://sverigeshundforetagare.se/agare/om-sveriges-hundforetagare/'
+        = link_to t('menus.nav.visitor.dog_owners.about_us'), 'http://sverigeshundforetagare.se/agare/om-sveriges-hundforetagare/'
       %li.menu-item
-        = link_to 'H-märket', 'http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/'
+        = link_to t('menus.nav.visitor.dog_owners.h_label'), 'http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/'
       %li.menu-item
-        = link_to 'Kunskapsbank', 'http://sverigeshundforetagare.se/category/kunskapsbank-hundagare/'
+        = link_to t('menus.nav.visitor.dog_owners.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-hundagare/'
       %li.menu-item
-        = link_to 'Är du inte nöjd?', 'http://sverigeshundforetagare.se/agare/ar-du-inte-nojd/'
+        = link_to t('menus.nav.visitor.dog_owners.are_you_unsatisfied'), 'http://sverigeshundforetagare.se/agare/ar-du-inte-nojd/'
       %li.menu-item
-        = link_to 'Bli stödmedlem', 'http://sverigeshundforetagare.se/agare/bli-stodmedlem/'
+        = link_to t('menus.nav.visitor.dog_owners.become_supporter'), 'http://sverigeshundforetagare.se/agare/bli-stodmedlem/'
       %li.menu-item
-        = link_to 'Att vara hundägare', 'http://sverigeshundforetagare.se/agare/att-vara-hundagare/'
+        = link_to t('menus.nav.visitor.dog_owners.being_dog_owners'), 'http://sverigeshundforetagare.se/agare/att-vara-hundagare/'
 
   %li.menu-item.menu-item-has-children
-    = link_to 'Hundföretagare', 'http://sverigeshundforetagare.se/foretag/'
+    = link_to t('menus.nav.visitor.entrepreneurs.submenu_title'), 'http://sverigeshundforetagare.se/foretag/'
     %ul.sub-menu
       %li.menu-item
-        = link_to 'Om oss', 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/'
+        = link_to t('menus.nav.visitor.entrepreneurs.about_us'), 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/'
       %li.menu-item
-        = link_to 'Bli medlem', 'http://sverigeshundforetagare.se/foretag/bli-medlem/'
+        = link_to t('menus.nav.visitor.entrepreneurs.sign_up'), 'http://sverigeshundforetagare.se/foretag/bli-medlem/'
       %li.menu-item
-        = link_to 'Bli H-märkt', 'http://sverigeshundforetagare.se/foretag/bli-h-markt/'
+        = link_to t('menus.nav.visitor.entrepreneurs.be_h_labeled'), 'http://sverigeshundforetagare.se/foretag/bli-h-markt/'
       %li.menu-item
-        = link_to 'Medlemskriterier', 'http://sverigeshundforetagare.se/medlemskriterier/'
+        = link_to t('menus.nav.visitor.entrepreneurs.member_criteria'), 'http://sverigeshundforetagare.se/medlemskriterier/'
       %li.menu-item
-        = link_to 'Medlemsförmåner', 'http://sverigeshundforetagare.se/foretag/detta-far-du-som-medlem/'
+        = link_to t('menus.nav.visitor.entrepreneurs.member_benefits'), 'http://sverigeshundforetagare.se/foretag/detta-far-du-som-medlem/'
       %li.menu-item
-        = link_to 'Kvalitetskontroll', 'http://sverigeshundforetagare.se/foretag/kvalitetskontroll/'
+        = link_to t('menus.nav.visitor.entrepreneurs.quality_standards'), 'http://sverigeshundforetagare.se/foretag/kvalitetskontroll/'
       %li.menu-item
-        = link_to 'Kunskapsbank', 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/'
+        = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/'
 
   %li.menu-item.menu-item-has-children
-    = link_to 'Kunskapsbank', '#'
+    = link_to t('menus.nav.visitor.knowledge_bank.submenu_title'), '#'
     %ul.sub-menu
       %li.menu-item
         = link_to 'Bloggar', 'http://sverigeshundforetagare.se/category/bloggar/'
@@ -56,7 +56,7 @@
         = link_to 'Video', 'http://sverigeshundforetagare.se/category/video/'
 
   %li.menu-item
-    = link_to 'Kontakt', 'http://sverigeshundforetagare.se/kontakt/'
+    = link_to t('menus.nav.visitor.contact'), 'http://sverigeshundforetagare.se/kontakt/'
 
   %li.menu-item
-    = link_to 'Hitta hundföretagare', root_path
+    = link_to t('menus.nav.visitor.find_dog_businesses'), root_path

@@ -25,7 +25,7 @@ Feature: As a user
 
   Scenario: A user can submit a new Membership Application with 1 category
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
       | Kicki                                  | Andersson                             | 5562252998                                 | 031-1234567                              | info@craft.se                             |
@@ -37,7 +37,7 @@ Feature: As a user
 
   Scenario: A user can submit a new Membership Application with multiple categories
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
       | Kicki                                  | Andersson                             | 5562252998                                 | 031-1234567                              | info@craft.se                             |
@@ -50,7 +50,7 @@ Feature: As a user
 
   Scenario: A user can submit a new Membership Application with no categories
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
       | Kicki                                  | Andersson                             | 5562252998                                 | 031-1234567                              | info@craft.se                             |
@@ -61,13 +61,13 @@ Feature: As a user
 
   Scenario: Applicant not see membership number when submitting
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     Then I should not see t("membership_applications.show.membership_number")
 
 
   Scenario: Applicant can see which fields are required
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     Then the field t("membership_applications.new.first_name") should have a required field indicator
     And the field t("membership_applications.new.company_number") should have a required field indicator
     And the field t("membership_applications.new.last_name") should have a required field indicator
@@ -78,7 +78,7 @@ Feature: As a user
 
   Scenario Outline: Apply for membership - when things go wrong
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.contact_email | membership_applications.new.phone_number |
       | <f_name>                               | <l_name>                              | <c_number>                                 | <c_email>                                 | <phone>                                  |
@@ -98,7 +98,7 @@ Feature: As a user
 
   Scenario Outline: Apply for membership: company number wrong length
     Given I am on the "landing" page
-    And I click on "Ansök om medlemsskap"
+    And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.contact_email | membership_applications.new.phone_number |
       | <f_name>                               | <l_name>                              | <c_number>                                 | <c_email>                                 | <phone>                                  |
@@ -108,4 +108,4 @@ Feature: As a user
 
     Scenarios:
       | f_name | c_number | l_name    | c_email       | phone      | error                                                     |
-      | Kicki  | 00       | Andersson | kicki@immi.nu | 0706898525 | t("errors.messages.wrong_length", count: 10), locale: :sv |
+      | Kicki  | 00       | Andersson | kicki@immi.nu | 0706898525 | t("errors.messages.wrong_length", count: 10)|

@@ -411,7 +411,8 @@ sv:
         apply_for_membership: Ansök om medlemsskap
 
       members:
-        member_pages: Medlemssidor
+        shf_companies: SHF-företag
+        member_pages: &member_pages Medlemssidor
         manage_company:
           submenu_title: Hantera företag
           view_company: Visa företagssida
@@ -420,6 +421,7 @@ sv:
 
       admin:
         shf_main_site: *shf_main_site
+        member_pages: *member_pages
         manage_applications: Hantera ansökningar
         categories:
           submenu_title: Kategorier

@@ -26,7 +26,7 @@ Feature: Only members and admins can see members only (hidden) pages
   Scenario: Visitor cannot see members only menu
     Given I am Logged out
     And I am on the "landing" page
-    Then I should not see "Medlemssidor"
+    Then I should not see t("menus.nav.members.member_pages")
 
   Scenario: User cannot see members only pages
     Given I am logged in as "not_a_member@bowsers.com"
@@ -37,7 +37,7 @@ Feature: Only members and admins can see members only (hidden) pages
   Scenario: User cannot see members only menu
     Given I am logged in as "not_a_member@bowsers.com"
     And I am on the "landing" page
-    Then I should not see "Medlemssidor"
+    Then I should not see t("menus.nav.members.member_pages")
 
   Scenario: Member can see members only pages
     Given I am logged in as "emma@happymutts.com"
@@ -48,7 +48,7 @@ Feature: Only members and admins can see members only (hidden) pages
   Scenario: Member can see members only menu
     Given I am logged in as "emma@happymutts.com"
     And I am on the "landing" page
-    Then I should see "Medlemssidor"
+    Then I should see t("menus.nav.members.member_pages")
 
   Scenario: Admin can see members only pages
     Given I am logged in as "admin@shf.se"
@@ -59,4 +59,4 @@ Feature: Only members and admins can see members only (hidden) pages
   Scenario: Admin can see members only menu
     Given I am logged in as "admin@shf.se"
     And I am on the "landing" page
-    Then I should see "Medlemssidor"
+    Then I should see t("menus.nav.members.member_pages")

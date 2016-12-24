@@ -21,7 +21,7 @@ Feature: As an admin
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
     And I click the t("business_categories.index.edit") action for the row with "dog grooming"
-    Then I should see t("business_categories.edit.title", category_name: "dog grooming"), locale: :sv
+    Then I should see t("business_categories.edit.title", category_name: "dog grooming")
     And I fill in t("business_categories.form.category_name") with "doggy grooming"
     And I click on t("business_categories.edit.submit_button_label")
     Then I should see t("business_categories.update.success")
@@ -34,7 +34,7 @@ Feature: As an admin
     Then I should see "dog crooning"
     And I should see "dog grooming"
     And I click the t("business_categories.index.edit") action for the row with "dog crooning"
-    Then I should see t("business_categories.edit.title", category_name: "dog crooning"), locale: :sv
+    Then I should see t("business_categories.edit.title", category_name: "dog crooning")
     And I fill in t("business_categories.form.category_name") with ""
     And I click on t("business_categories.edit.submit_button_label")
     Then I should see translated error activerecord.attributes.business_category.name errors.messages.blank

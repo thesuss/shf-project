@@ -24,7 +24,7 @@ Feature: As an applicant
   Scenario: Applicant wants to edit his own application
     Given I am logged in as "applicant_1@random.com"
     And I am on the "landing" page
-    And I click on "Min ansökan"
+    And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And I fill in t("membership_applications.show.first_name") with "Anna"
     And I click on t("membership_applications.edit.submit_button_label")
@@ -35,7 +35,7 @@ Feature: As an applicant
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "applicant_1@random.com"
     And I am on the "landing" page
-    And I click on "Min ansökan"
+    And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And I fill in t("membership_applications.show.contact_email") with "sussimmi.nu"
     And I click on t("membership_applications.edit.submit_button_label")
@@ -47,10 +47,10 @@ Feature: As an applicant
     And I navigate to the edit page for "Hans"
     Then I should see t("errors.not_permitted")
 
-  Scenario: Applicant wants to view their own application
+  Scenario: Member wants to view their own application
     Given I am logged in as "applicant_3@random.com"
     And I am on the "landing" page
-    And I click on "Min ansökan"
+    And I click on t("menus.nav.members.my_application")
     Then I should be on "Show My Application" page
 
   Scenario: Admin should be able to edit membership number

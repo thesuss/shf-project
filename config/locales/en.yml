@@ -415,7 +415,8 @@ en:
         apply_for_membership: Apply for Membership
 
       members:
-        member_pages: Member pages
+        shf_companies: SHF Companies
+        member_pages: &member_pages Member pages
         manage_company:
           submenu_title: Manage my company
           view_company: View Company
@@ -424,6 +425,7 @@ en:
 
       admin:
         shf_main_site: *shf_main_site
+        member_pages: *member_pages
         manage_applications: Manage Applications
         categories:
           submenu_title: Categories

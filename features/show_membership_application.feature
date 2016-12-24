@@ -42,7 +42,7 @@ Feature: As an Admin
   Scenario: Admin can see an application with one business categories given
     Given I am logged in as "hans@random.com"
     And I am on the "landing" page
-    And I click on "Min ansökan"
+    And I click on t("menus.nav.users.my_application")
     And I select "Groomer" Category
     And I click on t("membership_applications.edit.submit_button_label")
     And I am Logged out
@@ -60,7 +60,7 @@ Feature: As an Admin
   Scenario: Admin can see an application with multiple business categories given
     Given I am logged in as "emma@random.com"
     And I am on the "landing" page
-    And I click on "Min ansökan"
+    And I click on t("menus.nav.members.my_application")
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I click on t("membership_applications.edit.submit_button_label")
@@ -79,7 +79,7 @@ Feature: As an Admin
   Scenario: Approved member should see membership number
     Given I am logged in as "emma@random.com"
     And I am on the "landing" page
-    And I click on "Min ansökan"
+    And I click on t("menus.nav.members.my_application")
     Then I should see t("membership_applications.show.membership_number")
 
   Scenario: Listing incoming Applications restricted for Non-admins

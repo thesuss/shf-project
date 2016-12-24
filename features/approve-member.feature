@@ -68,7 +68,7 @@ Feature: As an admin
     And I should see "rehab"
     And I am logged in as "anna@nosnarkybarky.se"
     And I am on the "landing" page
-    Then I should see "Hantera företag"
+    Then I should see t("menus.nav.members.manage_company.submenu_title")
     And I am on the "edit my application" page for "anna@nosnarkybarky.se"
     Then I should see t("membership_applications.show.membership_number")
     And I should see "902"
