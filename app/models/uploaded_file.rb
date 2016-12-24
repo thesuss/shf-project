@@ -13,5 +13,5 @@ class UploadedFile < ApplicationRecord
                                                                    'application/msword',
                                                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                                                                    'application/vnd.ms-word.document.macroEnabled.12'],
-                                                    message: 'Sorry, this is not a file type you can upload.'}
+                                                    message: I18n.t('membership_applications.uploads.invalid_upload_type')}
 end

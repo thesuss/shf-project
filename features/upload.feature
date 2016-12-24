@@ -75,7 +75,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose a file named "tred.exe" to upload
     And I click on t("membership_applications.edit.submit_button_label")
-    Then I should see "Sorry, this is not a file type you can upload."
+    Then I should see t("membership_applications.uploads.invalid_upload_type")
     And I should not see "not-accepted.exe" uploaded for this membership application
 
 
