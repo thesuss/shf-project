@@ -15,7 +15,7 @@ Feature: As an admin
 
   Scenario Outline: Admin creates a new Business Category
     Given I am on the "business categories" page
-    And I click on "Skapa ny företagstyp (kategori)"
+    And I click on t("business_categories.new_business_category")
     When I fill in the translated form with data:
       | business_categories.form.category_name | business_categories.form.category_description |
       | <category_name>                        | <category_description>                        |
@@ -32,7 +32,7 @@ Feature: As an admin
 
   Scenario Outline: Create a new category - when things go wrong
     Given I am on the "business categories" page
-    And I click on "Skapa ny företagstyp (kategori)"
+    And I click on t("business_categories.new_business_category")
     When I fill in the translated form with data:
       | business_categories.form.category_name | business_categories.form.category_description |
       | <category_name>                        | <category_description>                        |
@@ -46,7 +46,7 @@ Feature: As an admin
 
   Scenario: Indicate required field
     Given I am on the "business categories" page
-    And I click on "Skapa ny företagstyp (kategori)"
+    And I click on t("business_categories.new_business_category")
     Then the field t("business_categories.form.category_name") should have a required field indicator
 
   Scenario: Listing Business Categories restricted for Non-admins

@@ -13,10 +13,20 @@ end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+
+Before do
+ # I18n.locale = 'en'
+end
+
+
 Warden.test_mode!
 World Warden::Test::Helpers
 After { Warden.test_reset! }
 
-def i18n_content(content, locale='sv')
-  I18n.t(content, locale: locale.to_sym)
+def path_with_locale(visit_path)
+  "/#{I18n.locale}#{visit_path}"
+end
+
+def i18n_content(content, locale=I18n.locale)
+  I18n.t(content, locale)
 end

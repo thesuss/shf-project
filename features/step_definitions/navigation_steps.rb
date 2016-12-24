@@ -23,8 +23,6 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
           path = edit_company_path(user.membership_applications.last.company)
         end
       end
-    when 'static workgroups'
-      path = page_path('arbetsgrupper')
     when 'user instructions'
       path = information_path
     when 'member instructions'
@@ -38,7 +36,7 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
     else
       path = 'no path set'
   end
-  visit path
+  visit path_with_locale(path)
 end
 
 
@@ -78,7 +76,7 @@ And(/^I am on the "([^"]*)" page for "([^"]*)"$/) do |page, user_email|
     else
       path = 'no path set'
   end
-  visit path
+  visit path_with_locale(path)
 
 end
 
@@ -89,12 +87,17 @@ When(/^I fail to visit the "([^"]*)" page$/) do |page|
     else
       path = 'path not set'
   end
-  visit path
+  visit path_with_locale(path)
   expect(current_path).not_to be path
 end
 
 
 When(/^I am on the application page for "([^"]*)"$/) do |first_name|
     membership_application = MembershipApplication.find_by(first_name: first_name)
-    visit membership_application_path(membership_application)
+    visit path_with_locale(membership_application_path(membership_application))
+end
+
+
+And(/^I am on the static workgroups page$/) do
+  visit page_path('arbetsgrupper')
 end

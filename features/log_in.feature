@@ -31,33 +31,33 @@ Feature: As a registered user
     When I fill in t("activerecord.attributes.user.email") with "emma@random"
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.failure.invalid")
+    Then I should see t("devise.failure.invalid", authentication_keys: 'Email')
 
   Scenario: No input of email
     Given I am on the "login" page
     When I leave the t("activerecord.attributes.user.password") field empty
     And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.failure.invalid")
+    Then I should see t("devise.failure.invalid", authentication_keys: 'Email')
 
   Scenario: No input of password
     Given I am on the "login" page
     When I leave the t("activerecord.attributes.user.password") field empty
     And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.failure.invalid")
+    Then I should see t("devise.failure.invalid", authentication_keys: 'Email')
 
   Scenario: Not registered user
     Given I am on the "login" page
     When I fill in t("activerecord.attributes.user.email") with "anna@random.com"
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.failure.invalid")
+    Then I should see t("devise.failure.invalid", authentication_keys: 'Email')
 
   Scenario: Not accessing protected page
     Given I am on the "login" page
     When I fill in t("activerecord.attributes.user.email") with "anna@random.com"
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.failure.invalid")
+    Then I should see t("devise.failure.invalid", authentication_keys: 'Email')
     When I fail to visit the "applications index" page
     Then I should see t("errors.not_permitted")
     And I should be on "landing" page

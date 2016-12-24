@@ -25,7 +25,7 @@ Feature: As an Admin
     And I click on t("update")
     Then I should see t("membership_applications.update.success")
     And t("membership_applications.rejected") should be set in "membership_application_status"
-    And I should see status line with status t("membership_applications.rejected") and date "2016-12-16"
+    And I should see status line with status "Avböjd" and date "2016-12-16"
 
 
   Scenario: Application submitter can see but not update the Application status

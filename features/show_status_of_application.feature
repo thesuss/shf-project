@@ -5,15 +5,15 @@ Feature: As an Admin
 
   Background:
     Given the following users exists
-      | email                  | admin |
-      | din@mail.se            |       |
-      | min@mail.se            |       |
-      | admin@sgf.com          | true  |
+      | email         | admin |
+      | din@mail.se   |       |
+      | min@mail.se   |       |
+      | admin@sgf.com | true  |
 
     And the following applications exist:
       | company_number | user_email  | status   |
-      | 5562252998     | din@mail.se | Inlämnad  |
-      | 2120000142     | min@mail.se | Godkänd |
+      | 5562252998     | din@mail.se | Inlämnad |
+      | 2120000142     | min@mail.se | Godkänd  |
 
     And I am logged in as "admin@sgf.com"
 
@@ -22,5 +22,5 @@ Feature: As an Admin
     And I am on the list applications page
     Then I should see "2" applications
     And I should see t("membership_applications.index.status")
-    And I should see t("membership_applications.pending")
-    And I should see t("membership_applications.accepted")
+    And I should see "Inlämnad"
+    And I should see "Godkänd"

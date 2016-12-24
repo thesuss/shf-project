@@ -1,5 +1,12 @@
+
+# remove any leading locale path info
+def current_path_without_locale(path)
+  locale_pattern =  /^(\/)(en|sv)?(\/)?(.*)$/
+  path.gsub(locale_pattern, '\1\4')
+end
+
 Then(/^I should be on the landing page$/) do
-  expect(current_path).to eq root_path
+  expect(current_path_without_locale(current_path)).to eq root_path
 end
 
 And(/^I should see "([^"]*)"$/) do |content|
@@ -35,11 +42,11 @@ And(/^I should not see t\("([^"]*)", locale: :(.*)\)$/) do |content, l|
 end
 
 And(/^I should see t\("([^"]*)"\), locale: :sv$/) do |content|
-  expect(page).to have_content i18n_content(content)
+  expect(page).to have_content i18n_content(content, :sv)
 end
 
 And(/^I should not see t\("([^"]*)"\), locale: :sv$/) do |content|
-  expect(page).not_to have_content i18n_content(content)
+  expect(page).not_to have_content i18n_content(content, :sv)
 end
 
 And(/^I should see t\("([^"]*)", ([^:]*): ([^)]*)\), locale: :(.*)\)$/) do |content, key, value, l|
@@ -111,7 +118,7 @@ Then(/^I should be on "([^"]*)" page$/) do |page|
     when 'member instructions'
       path = information_path
   end
-  expect(current_path).to eq path
+  expect(current_path_without_locale(current_path)).to eq path
 end
 
 
@@ -136,12 +143,12 @@ end
 
 Then(/^I should be on the application page for "([^"]*)"$/) do |first_name|
   membership_application = MembershipApplication.find_by(first_name: first_name)
-  expect(current_path).to eq membership_application_path(membership_application)
+  expect(current_path_without_locale(current_path)).to eq membership_application_path(membership_application)
 end
 
 Then(/^I should be on the edit application page for "([^"]*)"$/) do |first_name|
   membership_application = MembershipApplication.find_by(first_name: first_name)
-  expect(current_path).to eq edit_membership_application_path(membership_application)
+  expect(current_path_without_locale(current_path)).to eq edit_membership_application_path(membership_application)
 end
 
 
@@ -173,7 +180,7 @@ end
 
 
 And(/^I should be on the applications page$/) do
-  expect(current_path).to eq membership_applications_path
+  expect(current_path_without_locale(current_path)).to eq membership_applications_path
 end
 
 Then(/^I should see translated error (.*) (.*)$/) do |model_attribute, error|
@@ -189,6 +196,24 @@ And(/^I should see t\("([^"]*)", filename: '([^']*)'\)$/) do |i18n_key, filename
 end
 
 
+And(/^I should see status line with status "([^"]*)" and date "([^"]*)"$/) do |status, date_string|
+  expect(page).to have_content("#{status} - #{date_string}")
+end
+
 And(/^I should see status line with status t\("([^"]*)"\) and date "([^"]*)"$/) do |status, date_string|
   expect(page).to have_content("#{i18n_content(status)} - #{date_string}")
+end
+
+And(/^I should see t\("([^"]*)", ([^:]*): (\d+)\)$/) do |content, key, number|
+  expect(page).to have_content I18n.t("#{content}", key.to_sym => number)
+end
+
+
+And(/^I should see t\("([^"]*)", ([^:]*): "([^"]*)"\)$/) do |content, key, value|
+  expect(page).to have_content I18n.t("#{content}", key.to_sym => value)
+end
+
+
+Then(/^I should see t\("([^"]*)", authentication_keys: '([^']*)'\)$/) do |error, auth_key|
+  expect(page).to have_content I18n.t("#{error}", authentication_keys: auth_key)
 end

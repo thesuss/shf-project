@@ -4,12 +4,16 @@ Feature: As a visitor
 
   PT: https://www.pivotaltracker.com/story/show/133316647
 
+  Note that we always explicitly start with the locale set to sv. This is
+  necessary in case the feature are being run with a different locale.
+
   Background:
     Given I am Logged out
 
 
   Scenario: Default language is Swedish
-    Given I am on the "all companies" page
+    Given I set the locale to "sv"
+    And I am on the "all companies" page
     Then I should see t("companies.index.title")
     And I should not see "Swedish flag" image
     And I should see "English flag" image
@@ -17,7 +21,8 @@ Feature: As a visitor
 
 
   Scenario: Visitor switches the site language from English to Swedish
-    Given I am on the "all companies" page
+    Given I set the locale to "sv"
+    And I am on the "all companies" page
     When I click on "change-lang-to-english"
     When I click on "change-lang-to-svenska"
     Then I should see t("companies.index.title")
@@ -27,7 +32,8 @@ Feature: As a visitor
 
 
   Scenario: Visitor switches the site language from Swedish to English
-    Given I am on the "all companies" page
+    Given I set the locale to "sv"
+    And I am on the "all companies" page
     When I click on "change-lang-to-english"
     Then I should see "Swedish flag" image
     And I should not see "English flag" image

@@ -7,7 +7,7 @@ end
 
 And(/^I navigate to the business category edit page for "([^"]*)"$/) do |name|
   business_category = BusinessCategory.find_by(name: name)
-  visit edit_business_category_path(business_category)
+  visit path_with_locale(edit_business_category_path(business_category))
 end
 
 And(/^I select "([^"]*)" Category/) do |element|
@@ -16,5 +16,5 @@ end
 
 Given(/^I am on the business category "([^"]*)"$/) do |name|
   business_category = BusinessCategory.find_by(name: name)
-  visit business_category_path(business_category)
+  visit path_with_locale(business_category_path(business_category))
 end

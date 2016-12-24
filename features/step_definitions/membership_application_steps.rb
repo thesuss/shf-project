@@ -21,14 +21,15 @@ end
 
 And(/^I navigate to the edit page for "([^"]*)"$/) do |first_name|
   membership_application = MembershipApplication.find_by(first_name: first_name)
-  visit edit_membership_application_path(membership_application)
+  visit path_with_locale(edit_membership_application_path(membership_application))
 end
 
 Given(/^I am on "([^"]*)" application page$/) do |first_name|
   membership = MembershipApplication.find_by(first_name: first_name)
-  visit membership_application_path(membership)
+  visit path_with_locale(membership_application_path(membership))
 end
 
 Given(/^I am on the list applications page$/) do
-  visit membership_applications_path
+  locale_path = path_with_locale(membership_applications_path)
+  visit locale_path
 end
