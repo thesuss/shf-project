@@ -24,6 +24,8 @@ gem 'routing-filter'   # for handling locale filters around routes
 gem 'ransack'
 gem 'city-state'
 
+gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
