@@ -28,18 +28,18 @@ Feature: As an admin
 
 
     And the following applications exist:
-      | first_name | user_email            | company_number | status  | category_name |
-      | Emma       | emma@happymutts.se    | 5562252998     | Pending | rehab         |
-      | Hans       | hans@happymutts.se    | 5562252998     | Pending | dog grooming  |
-      | Anna       | anna@nosnarkybarky.se | 5560360793     | Pending | rehab         |
+      | first_name | user_email            | company_number | category_name | state   |
+      | Emma       | emma@happymutts.se    | 5562252998     | rehab         | pending |
+      | Hans       | hans@happymutts.se    | 5562252998     | dog grooming  | pending |
+      | Anna       | anna@nosnarkybarky.se | 5560360793     | rehab         | pending |
 
     And I am logged in as "admin@shf.com"
 
   Scenario: Admin approves, no company exists so one is created
     Given I am on "Emma" application page
-    When I set "membership_application_status" to t("membership_applications.accepted")
-    And I click on t("update")
+    When I click on t("membership_applications.accept")
     And I should be on the edit application page for "Emma"
+    And I should see t("membership_applications.accept.success")
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "901"
     And I click on t("membership_applications.edit.submit_button_label")
@@ -51,8 +51,7 @@ Feature: As an admin
 
   Scenario: Admin approves, member is added to existing company
     Given I am on "Anna" application page
-    When I set "membership_application_status" to t("membership_applications.accepted")
-    And I click on t("update")
+    When I click on t("membership_applications.accept")
     And I should be on the edit application page for "Anna"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "902"
@@ -75,10 +74,9 @@ Feature: As an admin
     And I am on the "edit my company" page for "anna@nosnarkybarky.se"
     Then I should see "No More Snarky Barky"
 
-  Scenario: Admin approves, but then changes it to Rejected
+  Scenario: Admin approves, but then rejects it
     Given I am on "Emma" application page
-    When I set "membership_application_status" to t("membership_applications.accepted")
-    And I click on t("update")
+    When I click on t("membership_applications.accept")
     And I should be on the edit application page for "Emma"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "901"
@@ -87,9 +85,8 @@ Feature: As an admin
     And I should see t("membership_applications.accepted")
     And I should see "901"
     When I am on "Emma" application page
-    When I set "membership_application_status" to t("membership_applications.rejected")
-    And I click on t("update")
-    Then I should see t("membership_applications.rejected")
+    And I click on t("membership_applications.reject")
+    Then I should see status line with status t("membership_applications.rejected")
     And I am Logged out
     And I am on the "landing" page
     Then I should not see "5562252998"
@@ -97,3 +94,10 @@ Feature: As an admin
     And I navigate to the edit page for "Emma"
     Then I should be on "Edit My Application" page
     And I should not see t("membership_applications.show.membership_number")
+
+
+  Scenario: Member owes money so Admin cannot approve
+    Given I am on "Emma" application page
+
+
+  Scenario: things go wrong

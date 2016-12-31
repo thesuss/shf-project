@@ -8,21 +8,21 @@ Feature: As an applicant
   Background:
     Given the following users exists
       | email                  | is_member | admin |
-      | applicant_1@random.com | false     |       |
-      | applicant_2@random.com | false     |       |
-      | applicant_3@random.com | true      |       |
+      | emma@random.com   | false     |       |
+      | hans@random.com   | false     |       |
+      | nils@random.com   | true      |       |
       | bob@barkybobs.com      | true      |       |
       | admin@shf.se           | true      | true  |
 
     And the following applications exist:
-      | first_name | user_email             | company_number | status  |
-      | Emma       | applicant_1@random.com | 5560360793     | Pending |
-      | Hans       | applicant_2@random.com | 2120000142     | Pending |
-      | Nils       | applicant_3@random.com | 2120000142     | Godkänd |
-      | Bob        | bob@barkybobs.com      | 5560360793     | Avböjd  |
+      | first_name | user_email        | company_number | state    |
+      | Emma       | emma@random.com   | 5560360793     | pending  |
+      | Hans       | hans@random.com   | 2120000142     | pending  |
+      | Nils       | nils@random.com   | 2120000142     | accepted |
+      | Bob        | bob@barkybobs.com | 5560360793     | rejected |
 
   Scenario: Applicant wants to edit his own application
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
@@ -33,7 +33,7 @@ Feature: As an applicant
     And I should see "Anna Lastname"
 
   Scenario: Applicant makes mistake when editing his own application
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
@@ -43,12 +43,12 @@ Feature: As an applicant
     And I should be on "Edit My Application" page
 
   Scenario: Applicant can not edit applications not created by him
-    Given I am logged in as "applicant_1@random.com"
+    Given I am logged in as "emma@random.com"
     And I navigate to the edit page for "Hans"
     Then I should see t("errors.not_permitted")
 
   Scenario: Member wants to view their own application
-    Given I am logged in as "applicant_3@random.com"
+    Given I am logged in as "nils@random.com"
     And I am on the "landing" page
     And I click on t("menus.nav.members.my_application")
     Then I should be on "Show My Application" page
@@ -57,12 +57,6 @@ Feature: As an applicant
     Given I am logged in as "admin@shf.se"
     And I navigate to the edit page for "Nils"
     Then I should see t("membership_applications.show.membership_number")
-
-  Scenario: Admin should be able to edit membership number when viewing site in English
-    Given I am logged in as "admin@shf.se"
-    And I navigate to the edit page for "Nils"
-    Then I should see t("membership_applications.show.membership_number")
-
 
   Scenario: Admin can't edit membership number for a rejected application
     Given I am logged in as "admin@shf.se"
