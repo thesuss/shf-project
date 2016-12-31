@@ -2,7 +2,7 @@ And(/^the following applications exist:$/) do |table|
  table.hashes.each do |hash|
    attributes = hash.except('user_email')
    user = User.find_by(email: hash[:user_email])
-   if hash['status'] == 'Godkänd'
+    if hash['state'] == 'accepted'
      company = Company.find_by(company_number: hash['company_number'])
      unless company
        company = FactoryGirl.create(:company, company_number: hash['company_number'])
@@ -12,6 +12,7 @@ And(/^the following applications exist:$/) do |table|
                             attributes.merge(user: user,
                             company: company,
                             contact_email: hash['user_email']))
+    ma.state = hash['state'].to_sym if hash.has_key?('state')
    if hash['category_name']
      category = BusinessCategory.find_by_name(hash['category_name'])
      ma.business_categories = [category]
