@@ -204,6 +204,14 @@ And(/^I should see status line with status t\("([^"]*)"\) and date "([^"]*)"$/) 
   expect(page).to have_content("#{i18n_content(status)} - #{date_string}")
 end
 
+And(/^I should see status line with status t\("([^"]*)"\)$/) do |status|
+  expect(page).to have_content("#{i18n_content(status)} - ")
+end
+
+And(/^I should not see status line with status t\("([^"]*)"\)$/) do |status|
+  expect(page).not_to have_content("#{i18n_content(status)} - ")
+end
+
 And(/^I should see t\("([^"]*)", ([^:]*): (\d+)\)$/) do |content, key, number|
   expect(page).to have_content I18n.t("#{content}", key.to_sym => number)
 end
@@ -216,4 +224,10 @@ end
 
 Then(/^I should see t\("([^"]*)", authentication_keys: '([^']*)'\)$/) do |error, auth_key|
   expect(page).to have_content I18n.t("#{error}", authentication_keys: auth_key)
+end
+
+And(/^I should see (\d+) t\("([^"]*)"\)$/) do |n, content |
+  n = n.to_i
+  expect(page).to have_text("#{i18n_content(content)}", count: n)
+  expect(page).not_to have_text("#{i18n_content(content)}", count: n+1)
 end
