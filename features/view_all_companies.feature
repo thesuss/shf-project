@@ -20,9 +20,9 @@ Feature: As a visitor,
       | Psychologist |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | status  | category_name |
-      | Emma       | emma@happymutts.com | 5560360793     | Godkänd | Groomer       |
-      | Anna       | a@happymutts.com    | 2120000142     | Godkänd | Groomer       |
+      | first_name | user_email          | company_number | category_name | state    |
+      | Emma       | emma@happymutts.com | 5560360793     | Groomer       | accepted |
+      | Anna       | a@happymutts.com    | 2120000142     | Groomer       | accepted |
 
   Scenario: Visitor sees all companies
     Given I am Logged out

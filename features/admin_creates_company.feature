@@ -30,9 +30,9 @@ Feature: As an admin
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    |
 
     And the following applications exist:
-      | first_name | user_email                 | company_number | status   |
-      | Emma       | applicant_1@happymutts.com | 5560360793     | Accepted |
-      | Anna       | applicant_3@happymutts.com | 2120000142     | Accepted |
+      | first_name | user_email                 | company_number | state    |
+      | Emma       | applicant_1@happymutts.com | 5560360793     | accepted |
+      | Anna       | applicant_3@happymutts.com | 2120000142     | accepted |
 
 
     And the following business categories exist
