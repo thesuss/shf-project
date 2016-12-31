@@ -52,18 +52,18 @@ RSpec.describe Company, type: :model do
     let(:cat3) { create(:business_category, name: 'cat3') }
 
     let(:m1) do
-      create(:membership_application, user: employee1,
-             num_categories: 0, status: 'Godkänd',
+      create(:membership_application, :accepted, user: employee1,
+             num_categories: 0,
              company_number: company.company_number)
     end
     let(:m2) do
-      create(:membership_application, user: employee2,
-             num_categories: 0, status: 'Godkänd',
+      create(:membership_application, :accepted, user: employee2,
+             num_categories: 0,
              company_number: company.company_number)
     end
     let(:m3) do
-      create(:membership_application, user: employee3,
-             num_categories: 0, status: 'Godkänd',
+      create(:membership_application, :accepted, user: employee3,
+             num_categories: 0,
              company_number: company.company_number)
     end
 

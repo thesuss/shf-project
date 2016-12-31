@@ -53,20 +53,23 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:employee3) { create(:user) }
 
     let!(:ma1) do
-      ma = create(:membership_application, user: employee1,
-                  status: 'Godkänd', company_number: company.company_number)
+      ma = create(:membership_application, :accepted,
+                  user: employee1,
+                  company_number: company.company_number)
       ma.business_categories << create(:business_category, name: 'cat1')
       ma
     end
     let!(:ma2) do
-      ma = create(:membership_application, user: employee2,
-                  status: 'Godkänd', company_number: company.company_number)
+      ma = create(:membership_application, :accepted,
+                  user: employee2,
+                  company_number: company.company_number)
       ma.business_categories << create(:business_category, name: 'cat2')
       ma
     end
     let!(:ma3) do
-      ma = create(:membership_application, user: employee3,
-                  status: 'Godkänd', company_number: company.company_number)
+      ma = create(:membership_application, :accepted,
+                  user: employee3,
+                  company_number: company.company_number)
       ma.business_categories << create(:business_category, name: 'cat3')
       ma
     end

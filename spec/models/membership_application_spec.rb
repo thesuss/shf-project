@@ -1,4 +1,16 @@
 require 'rails_helper'
+require 'aasm/rspec'
+
+RSpec.shared_examples 'not accepted states' do |states, expected_result|
+
+  it "states should not be #is_accepted" do
+    states.each do |state|
+      subject.state = state
+      expect(subject.is_accepted?).to eq expected_result
+    end
+  end
+end
+
 
 RSpec.describe MembershipApplication, type: :model do
   describe 'Factory' do
@@ -14,8 +26,8 @@ RSpec.describe MembershipApplication, type: :model do
     it { is_expected.to have_db_column :company_number }
     it { is_expected.to have_db_column :phone_number }
     it { is_expected.to have_db_column :contact_email }
-    it { is_expected.to have_db_column :status }
     it { is_expected.to have_db_column :membership_number }
+    it { is_expected.to have_db_column :state }
   end
 
   describe 'Validations' do
@@ -23,7 +35,7 @@ RSpec.describe MembershipApplication, type: :model do
     it { is_expected.to validate_presence_of :contact_email }
     it { is_expected.to validate_presence_of :company_number }
     it { is_expected.to validate_presence_of :last_name }
-    it { is_expected.to validate_presence_of :status }
+    it { is_expected.to validate_presence_of :state }
 
     it { is_expected.to allow_value('user@example.com').for(:contact_email) }
     it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
@@ -62,32 +74,21 @@ RSpec.describe MembershipApplication, type: :model do
 
   end
 
+
   describe '#is_accepted?' do
-    it "true: status = 'Godkänd'" do
-      subject.status = 'Godkänd'
+    let!(:states) { MembershipApplication.aasm.states.map(&:name) }
+    let(:states_not_accepted) { states.reject { |s| s == :accepted } }
+
+
+    it_should_behave_like 'not accepted states', MembershipApplication.aasm.states.map(&:name).reject { |s| s == :accepted }, false
+
+    it "state :accepted == is_accepted" do
+      subject.state = :accepted
       expect(subject.is_accepted?).to be_truthy
     end
-    it "true: status = 'Avböjd'" do
-      subject.status = 'Avböjd'
-      expect(subject.is_accepted?).to be_falsey
-    end
-    it "true: status = 'Pending'" do
-      subject.status = 'Pending'
-      expect(subject.is_accepted?).to be_falsey
-    end
-    it "true: status = 'Behandlas'" do
-      subject.status = 'Behandlas'
-      expect(subject.is_accepted?).to be_falsey
-    end
-    it "true: status = 'Inväntar betalning'" do
-      subject.status = 'Inväntar betalning'
-      expect(subject.is_accepted?).to be_falsey
-    end
-    it "true: status = 'Inväntar komplettering'" do
-      subject.status = 'Inväntar komplettering'
-      expect(subject.is_accepted?).to be_falsey
-    end
+
   end
+
 
   describe 'test factories' do
 
@@ -121,6 +122,127 @@ RSpec.describe MembershipApplication, type: :model do
       expect(member_app.business_categories.last.name).to eq("Special 3"), "The first category name should have been 'Special 3' but instead was '#{member_app.business_categories.last.name}'"
     end
 
+
+  end
+
+
+  describe 'states, events, and transitions' do
+
+    # expect(job).to have_state(:running)
+    # expect(job).to allow_event :run
+    # expect(job).to allow_transition_to(:running)
+    # expect(job).to transition_from(:sleeping).to(:running).on_event(:run)
+
+    let!(:user) {create(:user_with_membership_app)}
+
+    it 'initial state = pending' do
+
+      expect(user.membership_application).to have_state(:pending)
+      expect(user.membership_application).not_to have_state(:accepted)
+      expect(user.membership_application).not_to have_state(:rejected)
+      expect(user.membership_application).not_to have_state(:waiting_for_applicant)
+    end
+
+
+    describe 'state pending' do
+
+      it 'pending to rejected on event reject' do
+        expect(user.membership_application).to allow_transition_to(:rejected)
+        expect(user.membership_application).to transition_from(:pending).to(:rejected).on_event(:reject)
+      end
+
+      it 'pending to accepted on event accept' do
+        expect(user.membership_application).to allow_transition_to(:accepted)
+        expect(user.membership_application).to transition_from(:pending).to(:accepted).on_event(:accept)
+      end
+
+      it 'pending to waiting_for_applicant on event ask_applicant_for_info' do
+        expect(user.membership_application).to allow_transition_to(:waiting_for_applicant)
+        expect(user.membership_application).to transition_from(:pending).to(:waiting_for_applicant).on_event(:ask_applicant_for_info)
+      end
+
+      it 'pending to pending on event applicant_updated_info' do
+        expect(user.membership_application).to allow_transition_to(:pending)
+        expect(user.membership_application).to transition_from(:pending).to(:pending).on_event(:applicant_updated_info)
+      end
+
+    end
+
+
+    describe 'state waiting_for_applicant' do
+
+      let(:waiting_app) { m = user.membership_application
+                          m.ask_applicant_for_info
+                          m }
+
+      it 'waiting_for_applicant to rejected on event reject' do
+        expect(waiting_app).to allow_transition_to(:rejected)
+        expect(waiting_app).to transition_from(:waiting_for_applicant).to(:rejected).on_event(:reject)
+      end
+
+      it 'waiting_for_applicant cannot go to accepted' do
+        expect(waiting_app).not_to allow_transition_to(:accepted)
+      end
+
+      it 'waiting_for_applicant cannot go to waiting_for_applicant' do
+        expect(waiting_app).not_to allow_transition_to(:waiting_for_applicant)
+      end
+
+      it 'waiting_for_applicant to pending on event applicant_updated_info' do
+        expect(waiting_app).to allow_transition_to(:pending)
+        expect(waiting_app).to transition_from(:waiting_for_applicant).to(:pending).on_event(:applicant_updated_info)
+      end
+    end
+
+
+    describe 'state accepted' do
+
+      let(:accepted) { m = user.membership_application
+                       m.accept
+                       m}
+
+      it 'accepted can go to rejected' do
+        expect(accepted).to allow_transition_to(:rejected)
+      end
+
+      it 'accepted cannot go to accepted' do
+        expect(accepted).not_to allow_transition_to(:accepted)
+      end
+
+      it 'accepted cannot go to waiting_for_applicant ' do
+        expect(accepted).not_to allow_transition_to(:waiting_for_applicant)
+      end
+
+      it 'accepted cannot go to pending' do
+        expect(accepted).not_to allow_transition_to(:pending)
+      end
+    end
+
+    describe 'state rejected' do
+
+      let(:rejected) { m = user.membership_application
+                       m.reject
+                       m}
+
+      it 'rejected cannot go to rejected' do
+        expect(rejected).not_to allow_transition_to(:rejected)
+      end
+
+      it 'rejected can go to accepted on event accept' do
+        expect(rejected).to allow_transition_to(:accepted)
+        expect(rejected).to transition_from(:rejected).to(:accepted).on_event(:accept)
+      end
+
+      it 'rejected to waiting_for_applicant on event ask_applicant_for_info' do
+        expect(rejected).to allow_transition_to(:waiting_for_applicant)
+        expect(rejected).to transition_from(:rejected).to(:waiting_for_applicant).on_event(:ask_applicant_for_info)
+      end
+
+      it 'rejected to pending on applicant_updated_info on event applicant_updated_info' do
+        expect(rejected).to allow_transition_to(:pending)
+        expect(rejected).to transition_from(:rejected).to(:pending).on_event(:applicant_updated_info)
+      end
+    end
 
   end
 
