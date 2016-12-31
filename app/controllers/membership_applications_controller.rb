@@ -1,5 +1,5 @@
 class MembershipApplicationsController < ApplicationController
-  before_action :get_membership_application, only: [:show, :edit, :update, :destroy]
+  before_action :get_membership_application, except: [:information, :index, :new, :create]
   before_action :authorize_membership_application, only: [:update, :show, :edit, :destroy]
 
 
@@ -45,11 +45,7 @@ class MembershipApplicationsController < ApplicationController
 
       new_upload_file params['uploaded_file'] if params['uploaded_file']
 
-      if changed_to_accepted?(params['membership_application'])
-        accept_application
-        redirect_to edit_membership_application_url(@membership_application)
-        return
-      end
+      @membership_application.applicant_updated_info! if (current_user.id == @membership_application.user.id)
 
       helpers.flash_message(:notice, t('.success'))
       render :show
@@ -68,6 +64,37 @@ class MembershipApplicationsController < ApplicationController
     redirect_to membership_applications_url, notice: t('membership_applications.application_deleted')
   end
 
+
+  def accept
+
+    begin
+      @membership_application.accept!
+      helpers.flash_message(:notice, t('membership_applications.accept.success'))
+      helpers.flash_message(:notice, t('membership_applications.update.enter_member_number'))
+      redirect_to edit_membership_application_url(@membership_application)
+      return
+    rescue => e
+      helpers.flash_message(:alert, t('.error') + e.message)
+      redirect_to edit_membership_application_path(@membership_application)
+    end
+  end
+
+
+  def reject
+    simple_state_change(:reject!, t('membership_applications.reject.success'), t('.error'))
+  end
+
+
+  def need_info
+    simple_state_change(:ask_applicant_for_info!, t('.success'), t('.error'))
+  end
+
+
+  def cancel_need_info
+    simple_state_change(:cancel_waiting_for_applicant!, t('.success'), t('.error'))
+  end
+
+
   private
   def membership_application_params
     params.require(:membership_application).permit(*policy(@membership_application || MembershipApplication).permitted_attributes)
@@ -81,29 +108,6 @@ class MembershipApplicationsController < ApplicationController
 
   def authorize_membership_application
     authorize @membership_application
-  end
-
-
-  def changed_to_accepted?(params)
-    params.include?('status') && params['status'] =='Godkänd'
-  end
-
-
-  def accept_application
-
-    @membership_application.user.is_member = true
-    @membership_application.user.save
-
-    unless (company = Company.find_by_company_number(@membership_application.company_number))
-      company = Company.create!(company_number: @membership_application.company_number,
-                                email: @membership_application.contact_email)
-    end
-
-    @membership_application.update(company:company)
-    @membership_application.save
-
-    helpers.flash_message(:notice, t('membership_applications.update.enter_member_number') )
-
   end
 
 
@@ -122,4 +126,18 @@ class MembershipApplicationsController < ApplicationController
 
     end
   end
+
+
+  def simple_state_change(state_method, success_msg, error_msg)
+    begin
+      @membership_application.send state_method
+      helpers.flash_message(:notice, success_msg)
+      render :show
+    rescue => e
+      helpers.flash_message(:error, error_msg + e.message)
+      render :show
+    end
+  end
+
+
 end
