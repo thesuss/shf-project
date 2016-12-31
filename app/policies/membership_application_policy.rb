@@ -20,7 +20,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def admin_attributes
-    user_owner_attributes + [:status, :membership_number]
+    user_owner_attributes + [:state, :membership_number]
   end
 
 
@@ -56,6 +56,31 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
   def create?
     new?
+  end
+
+
+  def information?
+    user
+  end
+
+
+  def accept?
+    is_admin?
+  end
+
+
+  def reject?
+    is_admin?
+  end
+
+
+  def need_info?
+    is_admin?
+  end
+
+
+  def cancel_need_info?
+    is_admin?
   end
 
 
