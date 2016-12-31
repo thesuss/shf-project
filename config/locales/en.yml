@@ -67,6 +67,7 @@ en:
         last_name: &last_name Last name
         contact_email: &contact_email Email
         status: &status Status
+        state: &state Status
         phone_number: Phone number
         membership_number: Membership number
 
@@ -143,16 +144,19 @@ en:
       company_number: *company_number
       contact_email: *contact_email
       app_status: Application status
+      change_status: Change the status
       membership_number: Membership number
       with_categories: Categories
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
+      waiting_for_payment: 'Waiting for payment (Cannot approve the application until the payment has been received.)'
 
     index:
       title: All incoming applications
       name: Name
       org_nr: *org_nr
       status: *status
+      state: *state
       manage: *manage
 
     information:
@@ -182,13 +186,33 @@ en:
                         If your application is approved, we'll give you a link
                         so you can describe and list your business here."
 
+    accept:
+      success: The membership has been approved.
+      error: There was an error when trying to approve the membership.
 
+    reject:
+      success: The application has been rejected.
+      error: There was an error when trying to reject the application.
 
+    need_info:
+      success: 'The application has been marked as needing info. (Send email to the applicant.)'
+      error: "There was an error when trying to set the application to 'needing information.'"
 
+    cancel_need_info:
+      success: The application has been changed to no longer needing information from the applicant.
+      error: "There was an error when trying to set the application to 'no longer needing information from the applicant.'"
+
+    accept: &event_accept Accept
     accepted: &status_accepted Accepted
+    reject: &event_reject Reject
     rejected: &status_rejected Rejected
     pending: &status_pending Pending
     pending_completion: &pending_completion Pending completion
+    ask_applicant_for_info: &event_ask_applicant_for_info Ask Applicant for Info
+    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Cancel Waiting for Applicant Info
+    waiting_for_applicant: &status_waiting_for_applicant  Waiting for applicant
+    applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
+
     treated: Reviewed
     awaiting_payment: Awaiting payment
 
@@ -314,6 +338,7 @@ en:
       org_nr: *org_nr
       status: *status
       manage: *manage
+      state: *state
 
     all_applications_received: All applications received
 

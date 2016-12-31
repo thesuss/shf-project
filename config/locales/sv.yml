@@ -66,6 +66,7 @@ sv:
         last_name: &last_name Efternamn
         contact_email: &contact_email Kontakt e-post
         status: &status Status
+        state: &state Status
         phone_number: Telefonnummer
         membership_number: &membership_number Medlemsnummer
 
@@ -142,10 +143,12 @@ sv:
       company_number: *company_number
       contact_email: *contact_email
       app_status: Ansökans status
+      change_status: Ändra status
       membership_number: *membership_number
       with_categories: Ansöker inom
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
+      waiting_for_payment: 'Väntar på betalning (Det går inte att godkänna ansökan till dess att betalning har mottagits.)'
 
     index:
       title: Alla inkomna ansökningar
@@ -153,6 +156,7 @@ sv:
       org_nr: *org_nr
       status: *status
       manage: *manage
+      state: *state
 
     information:
       title: Om medlemsskap
@@ -179,11 +183,35 @@ sv:
         when_we_decide: "När din ansökan sedan är godkänd får du ett mail, med en länk till
                          att skapa din företagssida här."
 
+   # accept.success
+    accept:
+      success: Medlemsansökan har godkänts.
+      error: Det uppstod ett fel när man försöker att godkänna medlemskap.
 
+    reject:
+      success: Den ansökan har avslagits.
+      error: Det uppstod ett fel när man försöker att avslå ansökan.
+
+    need_info:
+      success: 'Ansökan har markerats som behöver information. (Skicka e-post till den sökande.)'
+      error: "Det uppstod ett fel när man försöker ställa in ansökan 'behöver information.'"
+
+    cancel_need_info:
+      success: Ansökan har skett förändringar inte längre behöver information från sökanden.
+      error: "Det uppstod ett fel när man försöker ställa in ansökan till 'inte längre behöver information från den sökande.'"
+
+
+    accept: &event_accept Godkänna
     accepted: &status_accepted Godkänd
+    reject: &event_reject Avböja
     rejected: &status_rejected Avböjd
-    pending: &status_pending Inlämnad
+    pending: &status_pending Behandlas
     pending_completion: &status_pending_completion Väntar på sökande
+    ask_applicant_for_info: &event_ask_applicant_for_info Be Sökande Info
+    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Avbryt Väntar på Sökande Info
+    waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
+    applicant_updated_info: &event_applicant_updated_info Sökanden uppdaterad information
+
     treated: Behandlas
     awaiting_payment: Inväntar betalning
 
@@ -309,6 +337,7 @@ sv:
       org_nr: *org_nr
       status: *status
       manage: *manage
+      state: *state
 
     all_applications_received: Alla inkomna ansökningar
 
