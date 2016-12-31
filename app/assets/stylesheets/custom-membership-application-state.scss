@@ -1,10 +1,10 @@
-@import 'bootstrap/variables';
-@import 'bootstrap/mixins';
-@import 'bootstrap/buttons';
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap/buttons";
 
 $blue-button-color: #888;
+$disabled-button-background: #f8f8ff; // ghostwhite
 
-/* AE */
 button[disabled], html input[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
@@ -20,16 +20,20 @@ button[disabled], html input[disabled] {
   form {
     display: inline;
   }
+
   input {
     @extend .btn;
     margin-left: 1em;
     text-transform: none;
   }
+
   input:hover, .btn:hover {
     border: 1px solid $blue-button-color;
   }
+
   input[disabled] {
-    background: ghostwhite;
+    background: $disabled-button-background;
     color: $blue-button-color;
   }
+
 }
