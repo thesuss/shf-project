@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :temp_things
   filter :locale
 
   devise_for :users
@@ -16,7 +15,21 @@ Rails.application.routes.draw do
 
   scope(path_names: { new: 'ny', edit: 'redigera' }) do
     resources :business_categories, path: 'kategori'
-    resources :membership_applications, path: 'ansokan'
+
+    resources :membership_applications, path: 'ansokan' do
+      member do
+        get 'accept', to: 'membership_applications#show'
+        post 'accept', to: 'membership_applications#accept'
+        get 'reject', to: 'membership_applications#show'
+        post 'reject', to: 'membership_applications#reject'
+        get 'need-info', to: 'membership_applications#show'
+        post 'need-info', to: 'membership_applications#need_info'
+        get 'cancel-need-info', to: 'membership_applications#show'
+        post 'cancel-need-info', to: 'membership_applications#cancel_need_info'
+      end
+
+    end
+
     resources :companies, path: 'hundforetag'
   end
 
