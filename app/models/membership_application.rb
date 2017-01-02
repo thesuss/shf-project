@@ -87,7 +87,7 @@ class MembershipApplication < ApplicationRecord
 
   def accept_membership
     begin
-      user.update({is_member: true})
+      user.update(is_member: true)
 
       unless (company = Company.find_by_company_number(company_number))
         company = Company.create!(company_number: company_number,
