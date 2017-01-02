@@ -5,11 +5,11 @@ Feature: As an Admin
 
   Background:
     Given the following users exists
-      | email                  | admin |
-      | applicant_1@random.com |       |
-      | applicant_2@random.com |       |
-      | emma_pending@happymutts.se             |       |
-      | hans_pending@happymutts.se             |       |
+      | email                                  | admin |
+      | applicant_1@random.com                 |       |
+      | applicant_2@random.com                 |       |
+      | emma_under_review@happymutts.se        |       |
+      | hans_under_review@happymutts.se        |       |
       | anna_waiting_for_info@nosnarkybarky.se |       |
       | nils_member@bowwowwow.se               |       |
       | lars_rejected@snarkybark.se            |       |
@@ -25,46 +25,44 @@ Feature: As an Admin
     Given the following companies exist:
       | name                 | company_number | email                 |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.se |
-     # | Bow Wow Wow          | 0000000000     | hello@bowwowwow.se    |
 
 
     And the following applications exist:
-      | first_name   | user_email                             | company_number | category_name | state                 |
-      | EmmaPending  | emma_pending@happymutts.se             | 5562252998     | rehab         | pending               |
-      | HansPending  | hans_pending@happymutts.se             | 5562252998     | dog grooming  | pending               |
-      | AnnaWaiting  | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
-      | LarsRejected | lars_rejected@snarkybark.se            | 0000000000     | rehab         | rejected              |
-      | NilsAccepted | nils_member@bowwowwow.se               | 0000000000     | dog crooning  | accepted              |
+      | first_name      | user_email                             | company_number | category_name | state                 |
+      | EmmaUnderReview | emma_under_review@happymutts.se        | 5562252998     | rehab         | under_review          |
+      | HansUnderReview | hans_under_review@happymutts.se        | 5562252998     | dog grooming  | under_review          |
+      | AnnaWaiting     | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
+      | LarsRejected    | lars_rejected@snarkybark.se            | 0000000000     | rehab         | rejected              |
+      | NilsAccepted    | nils_member@bowwowwow.se               | 0000000000     | dog crooning  | accepted              |
 
     And I am logged in as "admin@shf.se"
     And time is frozen at 2016-12-16
 
 
-
   Scenario: Application submitter can see but not update the Application status
     Given I am Logged out
-    And I am logged in as "emma_pending@happymutts.se"
-    Given I am on "EmmaPending" application page
-    And I should see status line with status t("membership_applications.pending")
+    And I am logged in as "emma_under_review@happymutts.se"
+    Given I am on "EmmaUnderReview" application page
+    And I should see status line with status t("membership_applications.under_review")
     And I should not see button t("membership_applications.accept")
     And I should not see button t("membership_applications.reject")
 
 
-  Scenario: Admin rejects an application (pending to rejected)
-    Given I am on "EmmaPending" application page
+  Scenario: Admin rejects an application (under_review to rejected)
+    Given I am on "EmmaUnderReview" application page
     When I click on t("membership_applications.reject")
     Then I should see t("membership_applications.reject.success")
     And I should see status line with status t("membership_applications.rejected")
     And I should not see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
     Then I should see 2 t("membership_applications.rejected")
-    And I should see 1 t("membership_applications.pending")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
 
 
-  Scenario: Admin rejects an application that had uploaded files (pending to rejected)
-    Given  I am logged in as "emma_pending@happymutts.se"
+  Scenario: Admin rejects an application that had uploaded files (under_review to rejected)
+    Given  I am logged in as "emma_under_review@happymutts.se"
     And I am on the "edit my application" page
     And I choose a file named "diploma.pdf" to upload
     And I click on t("membership_applications.edit.submit_button_label")
@@ -73,7 +71,7 @@ Feature: As an Admin
     And I click on t("membership_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@shf.se"
-    And I am on "EmmaPending" application page
+    And I am on "EmmaUnderReview" application page
     When I click on t("membership_applications.reject")
     Then I should see t("membership_applications.reject.success")
     And I should see status line with status t("membership_applications.rejected")
@@ -85,33 +83,33 @@ Feature: As an Admin
   Scenario: Things go wrong when trying to reject an application
 
 
-  Scenario: Anna edits her application to provide needed info (from waiting for into to pending)
+  Scenario: Anna edits her application to provide needed info (from waiting for applicant to under_review)
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     And I fill in t("membership_applications.show.last_name") with "ForInfo"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
-    And I should see status line with status t("membership_applications.pending")
+    And I should see status line with status t("membership_applications.under_review")
     And I am Logged out
     And I am logged in as "admin@shf.se"
     And I am on "AnnaWaiting" application page
-    Then I should see status line with status t("membership_applications.pending")
+    Then I should see status line with status t("membership_applications.under_review")
     And I am on the "landing" page
     And I should see 1 t("membership_applications.accepted")
-    And I should see 3 t("membership_applications.pending")
+    And I should see 3 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.rejected")
 
 
-  # From pending to...
-  Scenario: Admin requests more info from user (from pending to need info)
-    Given I am on "EmmaPending" application page
+  # From under_review to...
+  Scenario: Admin requests more info from user (from under_review to need info)
+    Given I am on "EmmaUnderReview" application page
     When I click on t("membership_applications.ask_applicant_for_info")
     Then I should see t("membership_applications.need_info.success")
     And I should see status line with status t("membership_applications.waiting_for_applicant")
     And I should not see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
     Then I should see 2 t("membership_applications.waiting_for_applicant")
-    And I should see 1 t("membership_applications.pending")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
 
@@ -122,52 +120,52 @@ Feature: As an Admin
     And I should not see button t("membership_applications.cancel_waiting_for_applicant")
 
 
-  Scenario: Admin changed from pending to accepted
-    Given I am on "EmmaPending" application page
+  Scenario: Admin changed from under_review to accepted
+    Given I am on "EmmaUnderReview" application page
     When I click on t("membership_applications.accept")
     Then I should see t("membership_applications.accept.success")
     And I should see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 1 t("membership_applications.pending")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
 
 
-  Scenario: Admin changed from pending to rejected
-    Given I am on "EmmaPending" application page
+  Scenario: Admin changed from under_review to rejected
+    Given I am on "EmmaUnderReview" application page
     When I click on t("membership_applications.reject")
     Then I should see t("membership_applications.reject.success")
     And I should see status line with status t("membership_applications.rejected")
     And I should not see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 1 t("membership_applications.pending")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.rejected")
     And I should see 1 t("membership_applications.accepted")
 
 
-  Scenario: Admin cannot change from pending to cancel needs info
-    Given I am on "EmmaPending" application page
+  Scenario: Admin cannot change from under_review to 'cancel waiting for applicant'
+    Given I am on "EmmaUnderReview" application page
     Then I should not see button t("membership_applications.cancel_waiting_for_applicant")
 
 
-  # From needs info to...
-  Scenario: Admin changed from needs info to 'info is no longer needed (cancelled waiting for info)'
+  # From waiting for applicant to...
+  Scenario: Admin changed from 'waiting for applicant' to 'cancelled waiting for info'
     Given I am on "AnnaWaiting" application page
     When I click on t("membership_applications.cancel_waiting_for_applicant")
     Then I should see t("membership_applications.cancel_need_info.success")
-    And I should see status line with status t("membership_applications.pending")
+    And I should see status line with status t("membership_applications.under_review")
     And I should not see t("membership_applications.waiting_for_applicant")
     And I should not see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
-    And I should see 3 t("membership_applications.pending")
+    And I should see 3 t("membership_applications.under_review")
     And I should not see t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
 
 
-  Scenario: Admin changed from needs info to rejected
+  Scenario: Admin cannot change from 'waiting for applicant' to rejected
     Given I am on "AnnaWaiting" application page
     When I click on t("membership_applications.reject")
     Then I should see t("membership_applications.reject.success")
@@ -175,7 +173,7 @@ Feature: As an Admin
     And I should not see t("membership_applications.waiting_for_applicant")
     And I should not see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
-    And I should see 2 t("membership_applications.pending")
+    And I should see 2 t("membership_applications.under_review")
     And I should not see t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
     And I should see 2 t("membership_applications.rejected")
@@ -198,7 +196,7 @@ Feature: As an Admin
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
     And I should see status line with status t("membership_applications.waiting_for_applicant")
-    And I should not see status line with status t("membership_applications.pending")
+    And I should not see status line with status t("membership_applications.under_review")
 
 
   # From accepted to...
@@ -208,7 +206,7 @@ Feature: As an Admin
     Then I should see t("membership_applications.reject.success")
     And I should see status line with status t("membership_applications.rejected")
     When I am on the "landing" page
-    And I should see 2 t("membership_applications.pending")
+    And I should see 2 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 0 t("membership_applications.accepted")
     And I should see 2 t("membership_applications.rejected")
@@ -230,25 +228,25 @@ Feature: As an Admin
 
 
   # From rejected to...
-  Scenario: User updates info = changed from rejected to pending
+  Scenario: User updates info = changed from rejected to under_review
     Given I am logged in as "lars_rejected@snarkybark.se"
     And I am on the "edit my application" page
     And I fill in t("membership_applications.show.last_name") with "BadBadLars"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
-    And I should see status line with status t("membership_applications.pending")
+    And I should see status line with status t("membership_applications.under_review")
     And I am Logged out
     And I am logged in as "admin@shf.se"
     And I am on "LarsRejected" application page
-    Then I should see status line with status t("membership_applications.pending")
+    Then I should see status line with status t("membership_applications.under_review")
     And I am on the "landing" page
-    And I should see 3 t("membership_applications.pending")
+    And I should see 3 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
     And I should see 0 t("membership_applications.rejected")
 
 
-  Scenario: Admin updates info thus it does not change from rejected to pending
+  Scenario: Admin updates info thus it does not change from rejected to under_review
     Given I am on "LarsRejected" application page
     When I click on t("membership_applications.edit_membership_application")
     And I fill in t("membership_applications.show.last_name") with "BadBadLars"
@@ -256,7 +254,7 @@ Feature: As an Admin
     Then I should see t("membership_applications.update.success")
     And I should see status line with status t("membership_applications.rejected")
     When I am on the "landing" page
-    And I should see 2 t("membership_applications.pending")
+    And I should see 2 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
@@ -274,7 +272,7 @@ Feature: As an Admin
     And I should see t("membership_applications.update.enter_member_number")
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 2 t("membership_applications.pending")
+    And I should see 2 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.accepted")
     And I should see 0 t("membership_applications.rejected")
 

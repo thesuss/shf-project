@@ -206,7 +206,7 @@ en:
     accepted: &status_accepted Accepted
     reject: &event_reject Reject
     rejected: &status_rejected Rejected
-    pending: &status_pending Pending
+    under_review: &status_under_review Under Review
     pending_completion: &pending_completion Pending completion
     ask_applicant_for_info: &event_ask_applicant_for_info Ask Applicant for Info
     cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Cancel Waiting for Applicant Info

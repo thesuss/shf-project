@@ -22,7 +22,7 @@ class MembershipApplication < ApplicationRecord
 
   aasm :column => 'state' do
 
-    state :pending, :initial => true
+    state :under_review, :initial => true
     state :waiting_for_applicant
     state :accepted
     state :rejected
@@ -32,7 +32,7 @@ class MembershipApplication < ApplicationRecord
       after do
         reject_membership
       end
-      transitions from: [:pending, :waiting_for_applicant, :accepted], to: :rejected
+      transitions from: [:under_review, :waiting_for_applicant, :accepted], to: :rejected
     end
 
     event :accept do
@@ -40,19 +40,19 @@ class MembershipApplication < ApplicationRecord
         accept_membership
       end
       # if a mistake was made and the application should have been accepted, can change it to accept
-      transitions from: [:pending, :rejected], to: :accepted, guard: [:paid?, :not_a_member?]
+      transitions from: [:under_review, :rejected], to: :accepted, guard: [:paid?, :not_a_member?]
     end
 
     event :ask_applicant_for_info do
-      transitions from: [:pending, :rejected], to: :waiting_for_applicant, guard: :not_a_member?
+      transitions from: [:under_review, :rejected], to: :waiting_for_applicant, guard: :not_a_member?
     end
 
     event :cancel_waiting_for_applicant do
-      transitions from: [:waiting_for_applicant], to: :pending
+      transitions from: [:waiting_for_applicant], to: :under_review
     end
 
     event :applicant_updated_info do
-      transitions from: [:accepted, :rejected, :waiting_for_applicant, :pending], to: :pending, guard: :not_a_member?
+      transitions from: [:accepted, :rejected, :waiting_for_applicant, :under_review], to: :under_review, guard: :not_a_member?
     end
 
   end

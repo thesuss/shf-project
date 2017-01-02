@@ -205,7 +205,7 @@ sv:
     accepted: &status_accepted Godkänd
     reject: &event_reject Avböja
     rejected: &status_rejected Avböjd
-    pending: &status_pending Behandlas
+    under_review: &status_under_review Behandlas
     pending_completion: &status_pending_completion Väntar på sökande
     ask_applicant_for_info: &event_ask_applicant_for_info Be Sökande Info
     cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Avbryt Väntar på Sökande Info
