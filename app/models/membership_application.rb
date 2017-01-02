@@ -89,10 +89,12 @@ class MembershipApplication < ApplicationRecord
     begin
       user.update(is_member: true)
 
-      unless (company = Company.find_by_company_number(company_number))
-        company = Company.create!(company_number: company_number,
-                                  email: contact_email)
+      begin
+        company = Company.find_or_create_by!(company_number: company_number) { | co| co.email = contact_email }
+      rescue ActiveRecord::RecordNotUnique
+        retry
       end
+
       update(company: company)
       save
 
