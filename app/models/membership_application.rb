@@ -32,7 +32,7 @@ class MembershipApplication < ApplicationRecord
       after do
         reject_membership
       end
-      transitions from: [:under_review, :waiting_for_applicant, :accepted], to: :rejected
+      transitions from: [:under_review, :accepted], to: :rejected
     end
 
     event :accept do
@@ -44,7 +44,7 @@ class MembershipApplication < ApplicationRecord
     end
 
     event :ask_applicant_for_info do
-      transitions from: [:under_review, :rejected], to: :waiting_for_applicant, guard: :not_a_member?
+      transitions from: [:under_review], to: :waiting_for_applicant, guard: :not_a_member?
     end
 
     event :cancel_waiting_for_applicant do
@@ -52,7 +52,7 @@ class MembershipApplication < ApplicationRecord
     end
 
     event :applicant_updated_info do
-      transitions from: [:accepted, :rejected, :waiting_for_applicant, :under_review], to: :under_review, guard: :not_a_member?
+      transitions from: [:waiting_for_applicant], to: :under_review, guard: :not_a_member?
     end
 
   end
