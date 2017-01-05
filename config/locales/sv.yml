@@ -186,31 +186,31 @@ sv:
    # accept.success
     accept:
       success: Medlemsansökan har godkänts.
-      error: Det uppstod ett fel när man försöker att godkänna medlemskap.
+      error: Det uppstod ett fel vid godkännande av medlemskap.
 
     reject:
-      success: Den ansökan har avslagits.
-      error: Det uppstod ett fel när man försöker att avslå ansökan.
+      success: Medlemsansökan har avslagits.
+      error: Det uppstod ett fel vid avslag av medlemskap.
 
     need_info:
-      success: 'Ansökan har markerats som behöver information. (Skicka e-post till den sökande.)'
-      error: "Det uppstod ett fel när man försöker ställa in ansökan 'behöver information.'"
+      success: 'Ansökan har markerats som: "Behöver kompletteras". (Skicka e-post till den sökande.)'
+      error: 'Det uppstod ett fel när systemet försökte sätta status: "Behöver kompletteras".'
 
     cancel_need_info:
-      success: Ansökan har skett förändringar inte längre behöver information från sökanden.
-      error: "Det uppstod ett fel när man försöker ställa in ansökan till 'inte längre behöver information från den sökande.'"
+      success: Ansökan har ändrats och behöver ej längre kompletteras av sökande.
+      error: 'Det uppstod ett fel när systemet försökte ångra status: "Behöver kompletteras".'
 
 
-    accept: &event_accept Godkänna
+    accept: &event_accept Godkänn
     accepted: &status_accepted Godkänd
-    reject: &event_reject Avböja
+    reject: &event_reject Avböj
     rejected: &status_rejected Avböjd
     under_review: &status_under_review Behandlas
     pending_completion: &status_pending_completion Väntar på sökande
-    ask_applicant_for_info: &event_ask_applicant_for_info Be Sökande Info
-    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Avbryt Väntar på Sökande Info
+    ask_applicant_for_info: &event_ask_applicant_for_info Behöver kompletteras
+    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Ångra Behöver kompletteras
     waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
-    applicant_updated_info: &event_applicant_updated_info Sökanden uppdaterad information
+    applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
 
     treated: Behandlas
     awaiting_payment: Inväntar betalning
