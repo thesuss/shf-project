@@ -135,35 +135,34 @@ RSpec.describe MembershipApplication, type: :model do
 
     let!(:user) {create(:user_with_membership_app)}
 
-    it 'initial state = pending' do
+    it 'initial state = under_review' do
 
-      expect(user.membership_application).to have_state(:pending)
+      expect(user.membership_application).to have_state(:under_review)
       expect(user.membership_application).not_to have_state(:accepted)
       expect(user.membership_application).not_to have_state(:rejected)
       expect(user.membership_application).not_to have_state(:waiting_for_applicant)
     end
 
 
-    describe 'state pending' do
+    describe 'state under_review' do
 
-      it 'pending to rejected on event reject' do
+      it 'under_review to rejected on event reject' do
         expect(user.membership_application).to allow_transition_to(:rejected)
-        expect(user.membership_application).to transition_from(:pending).to(:rejected).on_event(:reject)
+        expect(user.membership_application).to transition_from(:under_review).to(:rejected).on_event(:reject)
       end
 
-      it 'pending to accepted on event accept' do
+      it 'under_review to accepted on event accept' do
         expect(user.membership_application).to allow_transition_to(:accepted)
-        expect(user.membership_application).to transition_from(:pending).to(:accepted).on_event(:accept)
+        expect(user.membership_application).to transition_from(:under_review).to(:accepted).on_event(:accept)
       end
 
-      it 'pending to waiting_for_applicant on event ask_applicant_for_info' do
+      it 'under_review to waiting_for_applicant on event ask_applicant_for_info' do
         expect(user.membership_application).to allow_transition_to(:waiting_for_applicant)
-        expect(user.membership_application).to transition_from(:pending).to(:waiting_for_applicant).on_event(:ask_applicant_for_info)
+        expect(user.membership_application).to transition_from(:under_review).to(:waiting_for_applicant).on_event(:ask_applicant_for_info)
       end
 
-      it 'pending to pending on event applicant_updated_info' do
-        expect(user.membership_application).to allow_transition_to(:pending)
-        expect(user.membership_application).to transition_from(:pending).to(:pending).on_event(:applicant_updated_info)
+      it 'under_review to under_review on event applicant_updated_info' do
+        expect(user.membership_application).not_to allow_transition_to(:under_review)
       end
 
     end
@@ -176,8 +175,7 @@ RSpec.describe MembershipApplication, type: :model do
                           m }
 
       it 'waiting_for_applicant to rejected on event reject' do
-        expect(waiting_app).to allow_transition_to(:rejected)
-        expect(waiting_app).to transition_from(:waiting_for_applicant).to(:rejected).on_event(:reject)
+        expect(waiting_app).not_to allow_transition_to(:rejected)
       end
 
       it 'waiting_for_applicant cannot go to accepted' do
@@ -188,9 +186,9 @@ RSpec.describe MembershipApplication, type: :model do
         expect(waiting_app).not_to allow_transition_to(:waiting_for_applicant)
       end
 
-      it 'waiting_for_applicant to pending on event applicant_updated_info' do
-        expect(waiting_app).to allow_transition_to(:pending)
-        expect(waiting_app).to transition_from(:waiting_for_applicant).to(:pending).on_event(:applicant_updated_info)
+      it 'waiting_for_applicant to under_review on event applicant_updated_info' do
+        expect(waiting_app).to allow_transition_to(:under_review)
+        expect(waiting_app).to transition_from(:waiting_for_applicant).to(:under_review).on_event(:applicant_updated_info)
       end
     end
 
@@ -203,6 +201,7 @@ RSpec.describe MembershipApplication, type: :model do
 
       it 'accepted can go to rejected' do
         expect(accepted).to allow_transition_to(:rejected)
+        expect(accepted).to transition_from(:accepted).to(:rejected).on_event(:reject)
       end
 
       it 'accepted cannot go to accepted' do
@@ -213,10 +212,11 @@ RSpec.describe MembershipApplication, type: :model do
         expect(accepted).not_to allow_transition_to(:waiting_for_applicant)
       end
 
-      it 'accepted cannot go to pending' do
-        expect(accepted).not_to allow_transition_to(:pending)
+      it 'accepted cannot go to under_review' do
+        expect(accepted).not_to allow_transition_to(:under_review)
       end
     end
+
 
     describe 'state rejected' do
 
@@ -234,13 +234,11 @@ RSpec.describe MembershipApplication, type: :model do
       end
 
       it 'rejected to waiting_for_applicant on event ask_applicant_for_info' do
-        expect(rejected).to allow_transition_to(:waiting_for_applicant)
-        expect(rejected).to transition_from(:rejected).to(:waiting_for_applicant).on_event(:ask_applicant_for_info)
+        expect(rejected).not_to allow_transition_to(:waiting_for_applicant)
       end
 
-      it 'rejected to pending on applicant_updated_info on event applicant_updated_info' do
-        expect(rejected).to allow_transition_to(:pending)
-        expect(rejected).to transition_from(:rejected).to(:pending).on_event(:applicant_updated_info)
+      it 'rejected to under_review on applicant_updated_info on event applicant_updated_info' do
+        expect(rejected).not_to allow_transition_to(:under_review)
       end
     end
 

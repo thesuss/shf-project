@@ -15,8 +15,8 @@ Feature: As an admin
 
     And the following applications exist:
       | first_name | user_email      | company_number | state    |
-      | Emma       | emma@random.com | 5560360793     | pending  |
-      | Hans       | hans@random.com | 2120000142     | pending  |
+      | Emma       | emma@random.com | 5560360793     | under_review  |
+      | Hans       | hans@random.com | 2120000142     | under_review  |
       | Nils       | nils@random.com | 2120000142     | accepted |
 
 

@@ -23,7 +23,7 @@ Feature: As an Admin
     And the following applications exist:
       | first_name   | user_email                  | company_number | state                 |
       | Emma         | emma@random.com             | 5562252998     | accepted              |
-      | Hans         | hans@random.com             | 5560360793     | pending               |
+      | Hans         | hans@random.com             | 5560360793     | under_review               |
       | Anna         | anna_needs_info@random.com  | 2120000142     | waiting_for_applicant |
       | LarsRejected | lars_rejected@snarkybark.se | 0000000000     | rejected              |
       | NilsApproved | nils_member@bowwowwow.se    | 0000000000     | accepted              |
@@ -38,7 +38,7 @@ Feature: As an Admin
     Given I am logged in as "admin@sgf.com"
     And I am on the list applications page
     Then I should see "5" applications
-    And I should see 1 t("membership_applications.pending")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.rejected")
@@ -63,7 +63,7 @@ Feature: As an Admin
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
     And I should see "5560360793"
-    And I should see t("membership_applications.pending")
+    And I should see t("membership_applications.under_review")
     And I should see "Groomer"
     And I should not see "Trainer"
     And I should not see "Psychologist"

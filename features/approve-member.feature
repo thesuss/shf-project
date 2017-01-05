@@ -29,9 +29,9 @@ Feature: As an admin
 
     And the following applications exist:
       | first_name | user_email            | company_number | category_name | state   |
-      | Emma       | emma@happymutts.se    | 5562252998     | rehab         | pending |
-      | Hans       | hans@happymutts.se    | 5562252998     | dog grooming  | pending |
-      | Anna       | anna@nosnarkybarky.se | 5560360793     | rehab         | pending |
+      | Emma       | emma@happymutts.se    | 5562252998     | rehab         | under_review |
+      | Hans       | hans@happymutts.se    | 5562252998     | dog grooming  | under_review |
+      | Anna       | anna@nosnarkybarky.se | 5560360793     | rehab         | under_review |
 
     And I am logged in as "admin@shf.com"
 

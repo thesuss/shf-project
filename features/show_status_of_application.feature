@@ -5,16 +5,16 @@ Feature: As an Admin
 
   Background:
     Given the following users exists
-      | email         | admin |
-      | pending@mail.se               |       |
+      | email                         | admin |
+      | under_review@mail.se          |       |
       | accepted@mail.se              |       |
       | rejected@mail.se              |       |
       | waiting_for_applicant@mail.se |       |
-      | admin@sgf.com | true  |
+      | admin@sgf.com                 | true  |
 
     And the following applications exist:
       | company_number | user_email                    | state                 |
-      | 5562252998     | pending@mail.se               | pending               |
+      | 5562252998     | under_review@mail.se          | under_review          |
       | 2120000142     | accepted@mail.se              | accepted              |
       | 0000000000     | rejected@mail.se              | rejected              |
       | 0000000000     | waiting_for_applicant@mail.se | waiting_for_applicant |
@@ -26,7 +26,7 @@ Feature: As an Admin
     And I am on the list applications page
     Then I should see "4" applications
     And I should see t("membership_applications.index.state")
-    And I should see t("membership_applications.pending")
+    And I should see t("membership_applications.under_review")
     And I should see t("membership_applications.accepted")
     And I should see t("membership_applications.rejected")
     And I should see t("membership_applications.waiting_for_applicant")

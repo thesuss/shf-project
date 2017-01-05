@@ -13,7 +13,7 @@ Feature: As a registered user
     And the following applications exist:
       | first_name | user_email           | company_number | state    |
       | Emma       | emma@random.com      | 5562252998     | accepted |
-      | Lars       | lars-user@random.com | 2120000142     | pending |
+      | Lars       | lars-user@random.com | 2120000142     | under_review |
 
 
   Scenario: Logging in
