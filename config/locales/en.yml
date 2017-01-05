@@ -204,6 +204,8 @@ en:
       file_was_uploaded: 'This file was uploaded: %{filename}'
       confirm_delete: 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: Sorry, this is not a file type you can upload.
+      file_too_large: The file must be smaller than 5 MB
+
 
     update_the_status: Update the status
     application_deleted: Application deleted.
