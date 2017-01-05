@@ -7,19 +7,19 @@ Feature: As an applicant
 
   Background:
     Given the following users exists
-      | email                  | is_member | admin |
+      | email             | is_member | admin |
       | emma@random.com   | false     |       |
       | hans@random.com   | false     |       |
       | nils@random.com   | true      |       |
-      | bob@barkybobs.com      | true      |       |
-      | admin@shf.se           | true      | true  |
+      | bob@barkybobs.com | true      |       |
+      | admin@shf.se      | true      | true  |
 
     And the following applications exist:
-      | first_name | user_email        | company_number | state    |
-      | Emma       | emma@random.com   | 5560360793     | under_review  |
-      | Hans       | hans@random.com   | 2120000142     | under_review  |
-      | Nils       | nils@random.com   | 2120000142     | accepted |
-      | Bob        | bob@barkybobs.com | 5560360793     | rejected |
+      | first_name | user_email        | company_number | state                 |
+      | Emma       | emma@random.com   | 5560360793     | waiting_for_applicant |
+      | Hans       | hans@random.com   | 2120000142     | under_review          |
+      | Nils       | nils@random.com   | 2120000142     | accepted              |
+      | Bob        | bob@barkybobs.com | 5560360793     | rejected              |
 
   Scenario: Applicant wants to edit his own application
     Given I am logged in as "emma@random.com"

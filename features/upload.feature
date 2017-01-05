@@ -12,8 +12,8 @@ Feature: As an applicant
 
 
     And the following applications exist:
-      | first_name | user_email             | company_number |
-      | Emma       | applicant_1@random.com | 5562252998     |
+      | first_name | user_email             | company_number | state                 |
+      | Emma       | applicant_1@random.com | 5562252998     | waiting_for_applicant |
 
 
   Scenario: Upload a file during a new application
@@ -21,12 +21,11 @@ Feature: As an applicant
     And I am on the "submit new membership application" page
     And I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
-      | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                          |
+      | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                    |
     And I choose a file named "diploma.pdf" to upload
     When I click on t("membership_applications.new.submit_button_label")
     Then I should see t("membership_applications.create.success")
     And I should see t("membership_applications.uploads.file_was_uploaded", filename: 'diploma.pdf')
-
     And I am on the "edit my application" page
     Then I should see t("membership_applications.uploads.files_uploaded")
     And I should see "diploma.pdf" uploaded for this membership application
@@ -49,6 +48,11 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose a file named "diploma.pdf" to upload
     And I click on t("membership_applications.edit.submit_button_label")
+    And I am Logged out
+    And I am logged in as "admin@shf.com"
+    And I am on "Emma" application page
+    Then I click on t("membership_applications.ask_applicant_for_info")
+    And  I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page
     When I choose a file named "picture.jpg" to upload
     And I click on t("membership_applications.edit.submit_button_label")
@@ -84,6 +88,11 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose a file named "diploma.pdf" to upload
     And I click on t("membership_applications.edit.submit_button_label")
+    And I am Logged out
+    And I am logged in as "admin@shf.com"
+    And I am on "Emma" application page
+    Then I click on t("membership_applications.ask_applicant_for_info")
+    And  I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page
     And I click on trash icon for "diploma.pdf"
     Then I should not see "diploma.pdf" uploaded for this membership application
