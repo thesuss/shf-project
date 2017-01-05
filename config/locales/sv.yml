@@ -65,7 +65,6 @@ sv:
         first_name: &first_name Förnamn
         last_name: &last_name Efternamn
         contact_email: &contact_email Kontakt e-post
-        status: &status Status
         state: &state Status
         phone_number: Telefonnummer
         membership_number: &membership_number Medlemsnummer
@@ -154,7 +153,6 @@ sv:
       title: Alla inkomna ansökningar
       name: Namn
       org_nr: *org_nr
-      status: *status
       manage: *manage
       state: *state
 
@@ -335,7 +333,6 @@ sv:
       title: 'Admin: Alla inkomna ansökningar'
       name: *name
       org_nr: *org_nr
-      status: *status
       manage: *manage
       state: *state
 
