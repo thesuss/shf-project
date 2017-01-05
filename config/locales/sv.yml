@@ -260,6 +260,7 @@ sv:
       file_was_uploaded: 'Filen laddades upp: %{filename}'
       confirm_delete: 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
+      file_too_large: Filen måste vara mindre än 5 MB
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.
