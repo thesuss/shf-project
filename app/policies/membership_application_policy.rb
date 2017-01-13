@@ -7,7 +7,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def permitted_attributes_for_create
-    allowed_attribs_for_current_user #all_attributes
+    allowed_attribs_for_current_user
   end
 
 
@@ -109,7 +109,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
     if user && user.admin?
       all_attributes
     elsif user && owner?
-      owner_attributes + [:state]
+      owner_attributes
     else
       user_owner_attributes
     end
@@ -117,7 +117,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def owner?
-    user && @record.user == user
+    user && @record.respond_to?(:user) && @record.user == user
   end
 
 end
