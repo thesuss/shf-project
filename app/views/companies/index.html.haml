@@ -13,26 +13,41 @@
       #{t('.h_companies_listed_below')}
       #{t('.how_to_search')}
 
-  %table
-    %thead
-      %tr
-        %th= t('.category')
-        %th= t('.name')
-        %th= t('.region_land')
-        - if current_user.try(:admin)
-          %th= t('.company_number')
-          %th
-          %th
+  .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px;' }
+    = render 'search_form'
 
-    %tbody
-      - @companies.each do |company|
-        - if company_complete? company
-          %tr.company
-            %td= last_category_name company
-            %td= link_to company.name, company
-            %td= company.region.name if company.region
-            - if current_user.try(:admin)
-              %td= company.company_number
-              %td= link_to "#{t('edit')}", edit_company_path(company)
-              %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
-  %br
+  - if @companies.empty?
+    %strong
+      #{t('.no_search_results')}
+  - else
+    %table.table.table-hover
+      %thead
+        %tr
+          %th
+            = sort_link(@search_params, :business_categories_name, t('.category'))
+          %th
+            = sort_link(@search_params, :name, t('.name'))
+          %th
+            = sort_link(@search_params, :region_name, t('.region_land'))
+          %th
+            = sort_link(@search_params, :city,
+                        t('activerecord.attributes.company.city'))
+          - if current_user.try(:admin)
+            %th
+              = sort_link(@search_params, :company_number, t('.company_number'))
+            %th
+            %th
+
+      %tbody
+        - @companies.each do |company|
+          - if company_complete? company
+            %tr.company
+              %td= last_category_name company
+              %td= link_to company.name, company
+              %td= company.region&.name
+              %td= company.city
+              - if current_user.try(:admin)
+                %td= company.company_number
+                %td= link_to "#{t('edit')}", edit_company_path(company)
+                %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
+    %br

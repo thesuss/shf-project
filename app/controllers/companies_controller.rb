@@ -5,7 +5,8 @@ class CompaniesController < ApplicationController
 
   def index
     authorize Company
-    @companies = Company.all
+    @search_params = Company.ransack(params[:q])
+    @companies = @search_params.result(district: true).to_a.uniq
   end
 
 

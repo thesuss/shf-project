@@ -1,12 +1,17 @@
 And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
-    FactoryGirl.create(:company, company)
+    region = company.delete('region')
+    cmpy = FactoryGirl.create(:company, company)
+    if cmpy.region
+      cmpy.region = Region.find_by_name(region)
+      cmpy.save
+    end
   end
 end
 
 And(/^the following regions exist:$/) do |table|
   table.hashes.each do |region|
-    FactoryGirl.create(:region, name: region)
+    FactoryGirl.create(:region, region)
   end
 end
 
