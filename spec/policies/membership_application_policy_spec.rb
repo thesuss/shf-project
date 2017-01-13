@@ -18,23 +18,23 @@ describe MembershipApplicationPolicy do
 
       subject { described_class.new(application_owner, application) }
 
-      it 'can show' do
+      it 'permits show' do
         is_expected.to permit_mass_assignment_of(:state).for_action(:show)
       end
 
-      it 'can create' do
+      it 'permits create' do
         is_expected.to permit_mass_assignment_of(:state).for_action(:create)
       end
 
-      it 'can edit' do
+      it 'permits edit' do
         is_expected.to permit_mass_assignment_of(:state).for_action(:edit)
       end
 
-      it 'can update' do
+      it 'permits update' do
         is_expected.to permit_mass_assignment_of(:state).for_action(:update)
       end
 
-      it 'cannot destroy' do
+      it 'forbids destroy' do
         is_expected.to forbid_mass_assignment_of(:state).for_action(:destroy)
       end
 
@@ -48,8 +48,8 @@ describe MembershipApplicationPolicy do
         is_expected.to permit_mass_assignment_of(:state).for_action(:show)
       end
 
-      it 'permits create' do
-        is_expected.to permit_mass_assignment_of(:state).for_action(:create)
+      it 'forbids create' do
+        is_expected.to forbid_mass_assignment_of(:state).for_action(:create)
       end
 
       it 'forbids edit' do
@@ -69,8 +69,8 @@ describe MembershipApplicationPolicy do
     describe 'for a visitor' do
       subject { described_class.new(nil, application) }
 
-      it 'permits create' do
-        is_expected.to permit_mass_assignment_of(:state).for_action(:create)
+      it 'forbits create' do
+        is_expected.to forbid_mass_assignment_of(:state).for_action(:create)
       end
 
       it 'forbids edit' do

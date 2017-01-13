@@ -1,51 +1,39 @@
 class MembershipApplicationPolicy < ApplicationPolicy
 
-  def user_owner_attributes
-    [:first_name,
-     :last_name,
-     :company_number,
-     :contact_email,
-     :phone_number,
-     {business_category_ids: []},
-     :uploaded_files,
-     uploaded_files_attributes: [:id,
-                                :actual_file,
-                                :actual_file_file_name,
-                                :actual_file_file_size,
-                                :actual_file_content_type,
-                                :actual_file_updated_at,
-                                :_destroy]
-    ]
-  end
-
-
-  def admin_attributes
-    user_owner_attributes + [:state, :membership_number]
-  end
-
 
   def permitted_attributes
-    only_for_admin
+    allowed_attribs_for_current_user
   end
+
 
   def permitted_attributes_for_create
-    admin_attributes
+    allowed_attribs_for_current_user #all_attributes
   end
+
 
   def permitted_attributes_for_show
-    user ? admin_attributes : []
+    user ? all_attributes : []
   end
+
 
   def permitted_attributes_for_edit
-    only_for_admin
+    allowed_attribs_for_current_user
   end
+
 
   def permitted_attributes_for_update
-    only_for_admin
+    allowed_attribs_for_current_user
   end
 
+
   def permitted_attributes_for_destroy
-    only_for_admin
+    if user && user.admin?
+      all_attributes
+    elsif owner?
+      user_owner_attributes
+    else
+      []
+    end
   end
 
 
@@ -84,14 +72,52 @@ class MembershipApplicationPolicy < ApplicationPolicy
   end
 
 
+  #------
   private
 
-  def only_for_admin
+
+  def user_owner_attributes
+    [:first_name,
+     :last_name,
+     :company_number,
+     :contact_email,
+     :phone_number,
+     {business_category_ids: []},
+     :uploaded_files,
+     uploaded_files_attributes: [:id,
+                                 :actual_file,
+                                 :actual_file_file_name,
+                                 :actual_file_file_size,
+                                 :actual_file_content_type,
+                                 :actual_file_updated_at,
+                                 :_destroy]
+    ]
+  end
+
+
+  def all_attributes
+    owner_attributes + [:membership_number]
+  end
+
+
+  def owner_attributes
+    user_owner_attributes + [:state]
+  end
+
+
+  def allowed_attribs_for_current_user
     if user && user.admin?
-      admin_attributes
+      all_attributes
+    elsif user && owner?
+      owner_attributes + [:state]
     else
       user_owner_attributes
     end
+  end
+
+
+  def owner?
+    user && @record.user == user
   end
 
 end
