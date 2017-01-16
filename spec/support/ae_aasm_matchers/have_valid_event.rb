@@ -12,7 +12,7 @@ end
 RSpec::Matchers.define :have_valid_event do |event|
   match do |obj|
     @state_machine_name ||= :default
-    AE_AASM_Matchers.blank?(event) ? false : obj.aasm(@state_machine_name).events.map(&:name).include?(event)
+    AE_AASM_Matchers.blank?(event) ? false : obj.class.aasm(@state_machine_name).events.map(&:name).include?(event)
   end
 
   chain :for_state_machine do |state_machine_name|
