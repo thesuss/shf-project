@@ -11,7 +11,7 @@ end
 RSpec::Matchers.define :have_valid_state do |state|
   match do |obj|
     @state_machine_name ||= :default
-    AE_AASM_Matchers.blank? blank?(state) ? false : obj.class.aasm(@state_machine_name).states.map(&:name).include?(state)
+    AE_AASM_Matchers.blank?(state) ? false : obj.class.aasm(@state_machine_name).states.map(&:name).include?(state)
   end
 
   chain :for_state_machine do |state_machine_name|
