@@ -64,6 +64,10 @@ Feature: As an Admin
     And I should see 1 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
+    And I am Logged out
+    And I am logged in as "emma_under_review@happymutts.se"
+    And I am on the "edit my application" page
+    And I should see the checkbox with id "membership_application_marked_ready_for_review" unchecked
 
 
   Scenario: Admin changed from under_review to accepted
@@ -134,21 +138,35 @@ Feature: As an Admin
 
 
   # From waiting for applicant to...
-  Scenario: Anna marks her application as ready to be reviewed again (from waiting for applicant to under_review)
+
+  Scenario: Anna updates her application but doesn't mark it as ready to be reviewed yet
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
+    Then I should see the checkbox with id "membership_application_marked_ready_for_review" unchecked
     And I fill in t("membership_applications.show.last_name") with "ForInfo"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
-    And I should see status line with status t("membership_applications.under_review")
-    And I should not see t("membership_applications.edit.ready_for_review")
+    And I should not see status line with status t("membership_applications.ready_for_review")
+
+
+
+  Scenario: Anna marks her application as ready to be reviewed again
+    Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
+    And I am on the "edit my application" page
+    Then I should see the checkbox with id "membership_application_marked_ready_for_review" unchecked
+    And I fill in t("membership_applications.show.last_name") with "ForInfo"
+    When I check the checkbox with id "membership_application_marked_ready_for_review"
+    And I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.update.success")
+    And I should see status line with status t("membership_applications.ready_for_review")
     And I am Logged out
     And I am logged in as "admin@shf.se"
     And I am on "AnnaWaiting" application page
-    Then I should see status line with status t("membership_applications.under_review")
+    Then I should see status line with status t("membership_applications.ready_for_review")
     And I am on the "landing" page
+    And I should see 1 t("membership_applications.ready_for_review")
     And I should see 1 t("membership_applications.accepted")
-    And I should see 3 t("membership_applications.under_review")
+    And I should see 2 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.rejected")
 
 

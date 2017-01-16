@@ -63,7 +63,7 @@ Feature: As an Admin
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
     And I should see "5560360793"
-    And I should see t("membership_applications.under_review")
+    And I should see t("membership_applications.new_status")
     And I should see "Groomer"
     And I should not see "Trainer"
     And I should not see "Psychologist"
