@@ -2,15 +2,16 @@
 # # show all states
 # Job.aasm.states.map(&:name)
 
-def blank?(something)
-  something.nil? || (something.respond_to?(:empty?) ? !!something.empty? : !something)
+module AE_AASM_Matchers
+  def self.blank?(something)
+    something.nil? || (something.respond_to?(:empty?) ? !!something.empty? : !something)
+  end
 end
-
 
 RSpec::Matchers.define :have_valid_state do |state|
   match do |obj|
     @state_machine_name ||= :default
-    blank?(state) ? false : obj.class.aasm(@state_machine_name).states.map(&:name).include?(state)
+    AE_AASM_Matchers.blank? blank?(state) ? false : obj.class.aasm(@state_machine_name).states.map(&:name).include?(state)
   end
 
   chain :for_state_machine do |state_machine_name|
