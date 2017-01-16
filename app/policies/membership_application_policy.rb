@@ -83,6 +83,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
      :contact_email,
      :phone_number,
      {business_category_ids: []},
+     :marked_ready_for_review,
      :uploaded_files,
      uploaded_files_attributes: [:id,
                                  :actual_file,
