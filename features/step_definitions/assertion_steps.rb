@@ -85,6 +85,21 @@ And(/^I should not see button t\("([^"]*)"\)$/) do |button|
   expect(page).not_to have_button i18n_content(button)
 end
 
+And(/^I should see the checkbox with id "([^"]*)" unchecked$/) do |checkbox_id|
+  expect(page).to have_unchecked_field checkbox_id
+end
+
+And(/^I should not see the checkbox with id "([^"]*)" unchecked$/) do |checkbox_id|
+  expect(page).not_to have_unchecked_field checkbox_id
+end
+
+And(/^I should see the checkbox with id "([^"]*)" checked/) do |checkbox_id|
+  expect(page).to have_unchecked_field checkbox_id
+end
+
+And(/^I should not see the checkbox with id "([^"]*)" checked/) do |checkbox_id|
+  expect(page).not_to have_unchecked_field checkbox_id
+end
 
 And(/^I should see "([^"]*)" link$/) do |link_label|
   expect(page).to have_link link_label
