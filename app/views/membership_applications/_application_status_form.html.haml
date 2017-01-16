@@ -2,6 +2,9 @@
   %p.header
     = "#{t('membership_applications.show.change_status')}:"
 
+
+  = button_to t('membership_applications.start_review'), start_review_membership_application_path(@membership_application), {class: 'btn start-review', disabled: !(@membership_application.may_start_review?)}
+
   = button_to t('membership_applications.accept'), accept_membership_application_path(@membership_application), {class: 'btn accept', disabled: !(@membership_application.may_accept?)}
 
   = button_to t('membership_applications.reject'), reject_membership_application_path(@membership_application), {class: 'btn reject', disabled: !(@membership_application.may_reject?)}
