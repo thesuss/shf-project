@@ -27,7 +27,7 @@ class MembershipApplicationsController < ApplicationController
 
 
   def create
-    @membership_application = current_user.membership_applications.new(membership_application_params)
+    @membership_application = current_user.membership_applications.build(membership_application_params)
     if @membership_application.save
       new_upload_file params['uploaded_file'] if params['uploaded_file']
       helpers.flash_message(:notice, t('.success'))
@@ -45,7 +45,9 @@ class MembershipApplicationsController < ApplicationController
 
       new_upload_file params['uploaded_file'] if params['uploaded_file']
 
-      @membership_application.applicant_updated_info! if (current_user.id == @membership_application.user.id)
+
+      check_and_mark_if_ready_for_review params['membership_application'] if params.fetch('membership_application', false)
+
 
       helpers.flash_message(:notice, t('.success'))
       render :show
@@ -55,6 +57,14 @@ class MembershipApplicationsController < ApplicationController
     end
   end
 
+
+  def check_and_mark_if_ready_for_review(app_params)
+    if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != "0"
+      @membership_application.is_ready_for_review!
+    end
+  end
+
+
   def information
 
   end
@@ -62,6 +72,11 @@ class MembershipApplicationsController < ApplicationController
   def destroy
     @membership_application.destroy
     redirect_to membership_applications_url, notice: t('membership_applications.application_deleted')
+  end
+
+
+  def start_review
+    simple_state_change(:start_review!, t('.success'), t('.error'))
   end
 
 
