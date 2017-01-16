@@ -127,6 +127,7 @@ sv:
 
     edit:
       title: Redigera ansökan om medlemskap
+      is_ready_for_review: Redo för granskning
       submit_button_label: *save
 
     update:
@@ -148,6 +149,7 @@ sv:
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
       waiting_for_payment: 'Väntar på betalning (Det går inte att godkänna ansökan till dess att betalning har mottagits.)'
+      ready_for_review_instructions: "När du är redo för SHF din ansökan igen, markera kryssrutan nedan. När du trycker på knappen Skicka och är markerad, kommer vi vet att vi måste se över det igen. \nDu kan göra ändringar utan att kontrollera redo för granskning kryssrutan . Du kan göra det om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du är redo att få det över."
 
     index:
       title: Alla inkomna ansökningar
@@ -181,7 +183,11 @@ sv:
         when_we_decide: "När din ansökan sedan är godkänd får du ett mail, med en länk till
                          att skapa din företagssida här."
 
-   # accept.success
+
+    start_review:
+      success: Granskningen har påbörjats.
+      error: Det fanns ett problem att starta översyn för denna applikation.
+
     accept:
       success: Medlemsansökan har godkänts.
       error: Det uppstod ett fel vid godkännande av medlemskap.
@@ -198,7 +204,11 @@ sv:
       success: Ansökan har ändrats och behöver ej längre kompletteras av sökande.
       error: 'Det uppstod ett fel när systemet försökte ångra status: "Behöver kompletteras".'
 
+    is_ready_for_review:
+      success: Din ansökan har lämnats in för en annan granskning.
+      error: Det uppstod ett fel när du försöker att skicka in din ansökan för en annan granskning.
 
+    new_status: &status_new Nytt
     accept: &event_accept Godkänn
     accepted: &status_accepted Godkänd
     reject: &event_reject Avböj
@@ -209,8 +219,9 @@ sv:
     cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Ångra Behöver kompletteras
     waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
     applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
+    ready_for_review: &status_ready_for_review Redo för granskning
+    start_review: &start_review Starta omdöme
 
-    treated: Behandlas
     awaiting_payment: Inväntar betalning
 
     all_membership_applications: Alla ansökningar

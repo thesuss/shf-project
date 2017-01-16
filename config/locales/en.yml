@@ -128,6 +128,7 @@ en:
 
     edit:
       title: Edit Membership Application
+      is_ready_for_review: Is Ready for Review
       submit_button_label: *save
 
     update:
@@ -149,6 +150,7 @@ en:
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
       waiting_for_payment: 'Waiting for payment (Cannot approve the application until the payment has been received.)'
+      ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
 
     index:
       title: All incoming applications
@@ -184,6 +186,11 @@ en:
                         If your application is approved, we'll give you a link
                         so you can describe and list your business here."
 
+
+    start_review:
+      success: The review has been started.
+      error: There was a problemm starting the review for this application.
+
     accept:
       success: The membership has been approved.
       error: There was an error when trying to approve the membership.
@@ -200,6 +207,11 @@ en:
       success: The application has been changed to no longer needing information from the applicant.
       error: "There was an error when trying to set the application to 'no longer needing information from the applicant.'"
 
+    is_ready_for_review:
+      success: Your application has been submitted for another review.
+      error: There was an error when trying to submit your application for another review.
+
+    new_status: &status_new New
     accept: &event_accept Accept
     accepted: &status_accepted Accepted
     reject: &event_reject Reject
@@ -210,8 +222,9 @@ en:
     cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Cancel Waiting for Applicant Info
     waiting_for_applicant: &status_waiting_for_applicant  Waiting for applicant
     applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
+    ready_for_review: &status_ready_for_review Ready For Review
+    start_review: &start_review Start Review
 
-    treated: Reviewed
     awaiting_payment: Awaiting payment
 
     all_membership_applications: All applications
