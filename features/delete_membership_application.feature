@@ -14,10 +14,10 @@ Feature: As an admin
       | admin@shf.se    | false     | true  |
 
     And the following applications exist:
-      | first_name | user_email      | company_number | status  |
-      | Emma       | emma@random.com | 5560360793     | pending |
-      | Hans       | hans@random.com | 2120000142     | pending |
-      | Nils       | nils@random.com | 2120000142     | Godkänd |
+      | first_name | user_email      | company_number | state    |
+      | Emma       | emma@random.com | 5560360793     | under_review  |
+      | Hans       | hans@random.com | 2120000142     | under_review  |
+      | Nils       | nils@random.com | 2120000142     | accepted |
 
 
   Scenario: Admin should see the 'delete' button
@@ -46,7 +46,6 @@ Feature: As an admin
     And I click on t("membership_applications.show.delete")
     Then I should see t("membership_applications.application_deleted")
     And I should not see "Emma"
-
 
 
   Scenario: Admin delete a membership application; company should still exist

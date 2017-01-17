@@ -6,11 +6,11 @@ I want to search for available companies by various criteria
 
 Background:
   Given the following users exists
-    | email                | admin | is_member |
-    | fred@barkyboys.com   |       | true      |
-    | john@happymutts.com  |       | true      |
-    | anna@dogsrus.com     |       | true      |
-    | emma@weluvdogs.com   |       | true      |
+    | email                | admin |
+    | fred@barkyboys.com   |       |
+    | john@happymutts.com  |       |
+    | anna@dogsrus.com     |       |
+    | emma@weluvdogs.com   |       |
 
   And the following business categories exist
     | name         |
@@ -34,11 +34,11 @@ Background:
     | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       |             |
 
   And the following applications exist:
-    | first_name | user_email          | company_number | status  | category_name |
-    | Fred       | fred@barkyboys.com  | 5560360793     | Godkänd | Groomer       |
-    | John       | john@happymutts.com | 2120000142     | Godkänd | Psychologist  |
-    | Anna       | anna@dogsrus.com    | 5562252998     | Godkänd | Trainer       |
-    | Emma       | emma@weluvdogs.com  | 5569467466     | Godkänd | Groomer       |
+    | first_name | user_email          | company_number | state    | category_name |
+    | Fred       | fred@barkyboys.com  | 5560360793     | accepted | Groomer       |
+    | John       | john@happymutts.com | 2120000142     | accepted | Psychologist  |
+    | Anna       | anna@dogsrus.com    | 5562252998     | accepted | Trainer       |
+    | Emma       | emma@weluvdogs.com  | 5569467466     | accepted | Groomer       |
 
 @javascript
 Scenario: Go to companies index page, see all companies, search by category
@@ -152,7 +152,7 @@ Scenario: Search by city and region
   And I should see "HappyMutts"
 
 @javascript
-Scenario: Search by category and region
+Scenario: Search by category and region 2
   Given I am Logged out
   And I am on the "landing" page
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")

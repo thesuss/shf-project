@@ -13,8 +13,8 @@ Feature: Only members and admins can see members only (hidden) pages
       | Rehab |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | status  | category_name |
-      | Emma       | emma@happymutts.com | 5562252998     | Godkänd | Rehab         |
+      | first_name | user_email          | company_number | category_name | state    |
+      | Emma       | emma@happymutts.com | 5562252998     | Rehab         | accepted |
 
 
   Scenario: Visitor cannot see members only pages

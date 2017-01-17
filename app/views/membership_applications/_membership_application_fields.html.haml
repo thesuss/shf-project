@@ -34,3 +34,7 @@
 %p= t('membership_applications.new.upload_a_file')
 %em= t('membership_applications.new.upload_more_files')
 = f.file_field 'actual_files[]', multiple: true, name: 'uploaded_file[actual_files][]'
+
+
+- if @membership_application.may_is_ready_for_review?
+  = render 'ready_for_review', f: f

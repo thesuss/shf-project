@@ -11,9 +11,9 @@ Feature: As a registered user
       | arne@random.com      | password | true  | true      |
 
     And the following applications exist:
-      | first_name | user_email           | company_number | status  |
-      | Emma       | emma@random.com      | 5562252998     | Godkänd |
-      | Lars       | lars-user@random.com | 2120000142     | pending |
+      | first_name | user_email           | company_number | state    |
+      | Emma       | emma@random.com      | 5562252998     | accepted |
+      | Lars       | lars-user@random.com | 2120000142     | under_review |
 
 
   Scenario: Logging in

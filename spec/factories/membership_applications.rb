@@ -8,10 +8,17 @@ FactoryGirl.define do
     company_number '5562252998'
     phone_number 'MyString'
     contact_email 'MyString@email.com'
-    status 'pending'
+    state :new
 
     association :user
 
+    trait :accepted do
+      state :accepted
+    end
+
+    trait :rejected do
+      state :rejected
+    end
 
     transient do
       num_categories 0
@@ -28,8 +35,8 @@ FactoryGirl.define do
         end
       end
 
-      if evaluator.status == 'Godkänd'
-        membership_app.status = 'Godkänd'
+      if (evaluator.state) && evaluator.state.to_sym == :accepted
+        membership_app.state = :accepted
         membership_app.user.is_member = true
 
         company = Company.find_by(company_number: evaluator.company_number)

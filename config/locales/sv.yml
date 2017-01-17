@@ -69,7 +69,7 @@ sv:
         first_name: &first_name Förnamn
         last_name: &last_name Efternamn
         contact_email: &contact_email Kontakt e-post
-        status: &status Status
+        state: &state Status
         phone_number: Telefonnummer
         membership_number: &membership_number Medlemsnummer
 
@@ -131,6 +131,7 @@ sv:
 
     edit:
       title: Redigera ansökan om medlemskap
+      is_ready_for_review: Redo för granskning
       submit_button_label: *save
 
     update:
@@ -146,17 +147,20 @@ sv:
       company_number: *company_number
       contact_email: *contact_email
       app_status: Ansökans status
+      change_status: Ändra status
       membership_number: *membership_number
       with_categories: Ansöker inom
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
+      waiting_for_payment: 'Väntar på betalning (Det går inte att godkänna ansökan till dess att betalning har mottagits.)'
+      ready_for_review_instructions: "När du är redo för SHF din ansökan igen, markera kryssrutan nedan. När du trycker på knappen Skicka och är markerad, kommer vi vet att vi måste se över det igen. \nDu kan göra ändringar utan att kontrollera redo för granskning kryssrutan . Du kan göra det om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du är redo att få det över."
 
     index:
       title: Alla inkomna ansökningar
       name: Namn
       org_nr: *org_nr
-      status: *status
       manage: *manage
+      state: *state
 
     information:
       title: Om medlemsskap
@@ -184,11 +188,44 @@ sv:
                          att skapa din företagssida här."
 
 
+    start_review:
+      success: Granskningen har påbörjats.
+      error: Det fanns ett problem att starta översyn för denna applikation.
+
+    accept:
+      success: Medlemsansökan har godkänts.
+      error: Det uppstod ett fel vid godkännande av medlemskap.
+
+    reject:
+      success: Medlemsansökan har avslagits.
+      error: Det uppstod ett fel vid avslag av medlemskap.
+
+    need_info:
+      success: 'Ansökan har markerats som: "Behöver kompletteras". (Skicka e-post till den sökande.)'
+      error: 'Det uppstod ett fel när systemet försökte sätta status: "Behöver kompletteras".'
+
+    cancel_need_info:
+      success: Ansökan har ändrats och behöver ej längre kompletteras av sökande.
+      error: 'Det uppstod ett fel när systemet försökte ångra status: "Behöver kompletteras".'
+
+    is_ready_for_review:
+      success: Din ansökan har lämnats in för en annan granskning.
+      error: Det uppstod ett fel när du försöker att skicka in din ansökan för en annan granskning.
+
+    new_status: &status_new Nytt
+    accept: &event_accept Godkänn
     accepted: &status_accepted Godkänd
+    reject: &event_reject Avböj
     rejected: &status_rejected Avböjd
-    pending: &status_pending Inlämnad
+    under_review: &status_under_review Behandlas
     pending_completion: &status_pending_completion Väntar på sökande
-    treated: Behandlas
+    ask_applicant_for_info: &event_ask_applicant_for_info Behöver kompletteras
+    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Ångra Behöver kompletteras
+    waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
+    applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
+    ready_for_review: &status_ready_for_review Redo för granskning
+    start_review: &start_review Starta omdöme
+
     awaiting_payment: Inväntar betalning
 
     all_membership_applications: Alla ansökningar
@@ -312,8 +349,8 @@ sv:
       title: 'Admin: Alla inkomna ansökningar'
       name: *name
       org_nr: *org_nr
-      status: *status
       manage: *manage
+      state: *state
 
     all_applications_received: Alla inkomna ansökningar
 

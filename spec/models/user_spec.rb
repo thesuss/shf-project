@@ -272,7 +272,7 @@ RSpec.describe User, type: :model do
       describe 'member with 2 apps, both with same (1) company' do
         let(:member) do
           m = create(:member_with_membership_app)
-          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          app2 = create(:membership_application, :accepted, company_number: m.membership_applications.first.company_number)
           m.membership_applications << app2
           m
         end
@@ -282,7 +282,7 @@ RSpec.describe User, type: :model do
       describe 'member with 2 apps, 2 different companies' do
         let(:member) do
           m = create(:member_with_membership_app, company_number: '5562252998')
-          app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          app2 = create(:membership_application, :accepted, company_number: '2120000142')
           m.membership_applications << app2
           m
         end
@@ -334,7 +334,7 @@ RSpec.describe User, type: :model do
       describe 'member with 2 apps, both with same (1) company' do
         let(:member) do
           m = create(:member_with_membership_app)
-          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          app2 = create(:membership_application, :accepted, company_number: m.membership_applications.first.company_number)
           m.membership_applications << app2
           m
         end
@@ -344,7 +344,7 @@ RSpec.describe User, type: :model do
       describe 'member with 2 apps, 2 different companies' do
         let(:member) do
           m = create(:member_with_membership_app, company_number: '5562252998')
-          app2 = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          app2 = create(:membership_application, :accepted, company_number: '2120000142')
           m.membership_applications << app2
           m
         end
@@ -354,9 +354,9 @@ RSpec.describe User, type: :model do
       describe 'member with 2 apps, 2 for the same company, 1 different company' do
         let(:member) do
           m = create(:member_with_membership_app)
-          app2 = create(:membership_application, company_number: m.membership_applications.first.company_number, status: 'Godkänd')
+          app2 = create(:membership_application, :accepted, company_number: m.membership_applications.first.company_number)
           m.membership_applications << app2
-          app3_different_co = create(:membership_application, company_number: '2120000142', status: 'Godkänd')
+          app3_different_co = create(:membership_application, :accepted, company_number: '2120000142')
           m.membership_applications << app3_different_co
           m
         end

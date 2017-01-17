@@ -5,6 +5,44 @@ namespace :shf do
 
   ACCEPTED_STATUS = 'Godkänd'
 
+
+
+  desc "set state based on status ('state' is the new column, 'status' is the old one)"
+  task :set_state_from_status => [:environment] do
+
+    logfile = 'log/shf-rake.log'
+    start_time = Time.now
+    log = start_logging(start_time, logfile)
+
+    num_changed = 0
+
+    status_to_state = {pending: 'under_review',
+                       behandlas: 'under_review',
+                       'inväntar betalning': 'waiting_for_applicant',
+                       'inväntar komplettering': 'waiting_for_applicant',
+                       'godkänd': 'accepted',
+                       accepted: 'accepted',
+                       'avböjd': 'rejected',
+                       rejected: 'rejected'
+    }
+
+
+    pending_apps = MembershipApplication.all
+    pending_apps.each do |mem_app|
+      old_status = mem_app.status.strip
+      mem_app.state = status_to_state.fetch(old_status.downcase.to_sym, 'under_review')
+      mem_app.save
+      puts "mem_app = #{mem_app.inspect}"
+      log_and_show log, Logger::INFO, "membership_app.id #{mem_app.id} status was #{old_status}, is now updated to #{mem_app.state}"
+      num_changed += 1
+    end
+
+    log_and_show log, Logger::INFO, "\nFinished setting the state for #{num_changed} membership applications based on their status."
+    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
+    finish_and_close_log(log, start_time, Time.now)
+  end
+
+
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
     tasks = ['db:drop', 'db:setup', 'db:migrate', 'db:seed']

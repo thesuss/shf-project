@@ -1,7 +1,7 @@
 module MembershipApplicationsHelper
 
-  def edit_status?
-    policy(@membership_application).permitted_attributes_for_edit.include? :status
+  def can_edit_state?
+    policy(@membership_application).permitted_attributes_for_edit.include? :state
   end
 
   def member_full_name

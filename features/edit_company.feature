@@ -15,9 +15,9 @@ Feature: As a member
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    |
 
     And the following applications exist:
-      | first_name | user_email                 | company_number | status   |
-      | Emma       | applicant_1@happymutts.com | 5560360793     | Godkänd |
-      | Anna       | applicant_3@happymutts.com | 2120000142     | Godkänd |
+      | first_name | user_email                 | company_number | state    |
+      | Emma       | applicant_1@happymutts.com | 5560360793     | accepted |
+      | Anna       | applicant_3@happymutts.com | 2120000142     | accepted |
 
 
   Scenario: Member can edit their company

@@ -78,6 +78,14 @@ And(/^I click on t\("([^"]*)"\) button$/) do |element|
   click_button i18n_content("#{element}")
 end
 
+And(/^I check the checkbox with id "([^"]*)"$/) do |element_id|
+  check element_id
+end
+
+And(/^I uncheck the checkbox with id"([^"]*)"$/) do |element_id|
+  uncheck element_id
+end
+
 When(/^(?:I|they) select "([^"]*)" in select list t\("([^"]*)"\)$/) do |item, lst|
   lst = i18n_content("#{lst}")
   find(:select, lst).find(:option, item).select_option

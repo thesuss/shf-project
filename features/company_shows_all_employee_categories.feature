@@ -37,11 +37,11 @@ Feature: As a visitor
       | Agility      |
 
     And the following applications exist:
-      | first_name | user_email            | company_number | status   | category_name |
-      | Emma       | emma@happymutts.com   | 5562252998     | Godkänd | Groomer       |
-      | Lars       | lars@happymutts.com   | 5562252998     | Godkänd | Trainer       |
-      | Anna       | anna@happymutts.com   | 5562252998     | Godkänd | Psychologist  |
-      | Bowser     | bowser@snarkybarky.se | 2120000142     | Godkänd | Agility       |
+      | first_name | user_email            | company_number | category_name | state    |
+      | Emma       | emma@happymutts.com   | 5562252998     | Groomer       | accepted |
+      | Lars       | lars@happymutts.com   | 5562252998     | Trainer       | accepted |
+      | Anna       | anna@happymutts.com   | 5562252998     | Psychologist  | accepted |
+      | Bowser     | bowser@snarkybarky.se | 2120000142     | Agility       | accepted |
 
 
   Scenario: Categories of 3 employees all show for a company

@@ -27,9 +27,12 @@
 
   #uploaded_files
     = render 'uploaded_files_list', membership_application: @membership_application
-  - if edit_status?
+
+  %p #{t('.app_status')}: #{t("membership_applications.#{@membership_application.state}")}  - #{@membership_application.updated_at.strftime('%F')}
+
+  - if current_user.admin?
     = render partial: 'application_status_form'
-  %p #{t('.app_status')}: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}
+
 
   - if current_user && current_user.admin?
     = link_to "#{t('membership_applications.edit_membership_application')}", edit_membership_application_path(@membership_application), class:'btn btn-warning'
