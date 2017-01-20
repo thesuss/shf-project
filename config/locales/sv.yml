@@ -83,6 +83,7 @@ sv:
         city: &city Ort
         region: &region Verksamhetslän
         region_short: &region_short Län
+        old_region: Gamla Länet
         website: Webbplats
         org_nr: *org_nr
 
