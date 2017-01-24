@@ -1,6 +1,18 @@
 class MembershipApplication < ApplicationRecord
   belongs_to :user
+
+  #  A Company for a membership application (an instantiated one)
+  #  is created (instantiated) only when a membership is *accepted* --
+  #  unless the company already exists, in which case that existing instance
+  #  is associated with a membership application.
+  #  See the 'accept_membership' method below; note the .find_or_create method
+  #
+  #  Until a membership application is accepted, we just keep the
+  #  company_number.  That's what we'll later use to create (instantiate)
+  #  a company if/when needed.
+  #
   belongs_to :company, optional: true
+
 
   has_and_belongs_to_many :business_categories
   has_many :uploaded_files
