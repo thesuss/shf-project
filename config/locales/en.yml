@@ -100,6 +100,7 @@ en:
         company:
           company_number:
             taken: This company (organization number) already exists in the system.
+          company_has_active_memberships: "The company has active (accepted) membership applications."
 
       messages:
         record_invalid: "Validation failed: %{errors}"
@@ -125,7 +126,6 @@ en:
       upload_more_files: 'You can upload more files. After you submit your application, edit it and you can upload more there.'
 
       submit_button_label: *submit
-
 
     create:
       success: Thank You. Your membership application has been submitted.
@@ -271,6 +271,8 @@ en:
       region: Region
       website: Company website
       org_nr: *org_nr
+      delete: "Delete the company"
+      confirm_are_you_sure: '*are_you_sure_confirm you want to delete the company?'
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
@@ -282,6 +284,12 @@ en:
       how_to_search: Search by specifying one or more of the search parameters below.
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: No records matched your search criteria.
+      delete: *delete
+
+    destroy:
+      success: Company deleted.
+      error: Could not delete the company.
+
     company_name: Company name
     telephone_number: Phone number
     operations_region: County of operations

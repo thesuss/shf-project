@@ -97,6 +97,7 @@ sv:
         company:
           company_number:
             taken: Detta företag (org nr) finns redan i systemet.
+          company_has_active_memberships: "NEEDS TRANSLATION The company has active (accepted) membership applications."
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
@@ -268,6 +269,8 @@ sv:
       region: *region
       website: Företagets webbplats
       org_nr: *org_nr
+      delete: "Radera företaget NEEDS TRANSLATION REVIEW"
+      confirm_are_you_sure: *are_you_sure_confirm
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
@@ -279,6 +282,12 @@ sv:
       how_to_search: Sök genom att ange en eller flera av sökparametrarna nedan.
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
+      delete: *delete
+
+    destroy:
+      success: Företag raderad.
+      error: TRANSLATION NEEDED Ett problem hindrade företaget från att raderas.
+
     company_name: Företagsnamn
     telephone_number: Telefonnummer
     operations_region: *region

@@ -1,8 +1,8 @@
-Before('@javascript') do
+Before('@javascript, @poltergeist') do
   Capybara.current_driver = :poltergeist
 end
 
-After('@javascript') do
+After('@javascript, @poltergeist') do
   Capybara.reset_sessions!
   Capybara.current_driver = :rack_test
 end

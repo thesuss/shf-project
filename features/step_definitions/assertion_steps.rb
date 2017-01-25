@@ -171,6 +171,14 @@ Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('.applicant', count: number)
 end
 
+Then(/^I should see "([^"]*)" companies/) do |number|
+  expect(page).to have_selector('.company', count: number)
+end
+
+Then(/^I should see "([^"]*)" business categories/) do |number|
+  expect(page).to have_selector('.business_category', count: number)
+end
+
 Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
   expect(page.find('label', text: label_text)[:class].include?('required')).to be true
 end

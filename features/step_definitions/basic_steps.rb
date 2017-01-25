@@ -6,6 +6,15 @@ And(/^I click on t\("([^"]*)"\)$/) do |element|
   click_link_or_button i18n_content("#{element}")
 end
 
+When /^I confirm popup$/ do
+  # requires poltergeist:
+  page.driver.accept_modal(:confirm)
+end
+
+When /^I dismiss popup$/ do
+  page.driver.dismiss_modal(:confirm)
+end
+
 And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
