@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 20170104233630) do
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "user_id"
     t.string   "status",            default: "Pending"
     t.string   "first_name"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20170104233630) do
     t.string   "contact_email"
     t.integer  "company_id"
     t.string   "membership_number"
-    t.string   "state",             default: "under_review"
+    t.string   "state",             default: "new"
     t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
