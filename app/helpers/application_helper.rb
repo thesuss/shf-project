@@ -22,6 +22,10 @@ module ApplicationHelper
     end
   end
 
+  def translate_and_join(error_list)
+    error_list.map{|e| I18n.t(e)}.join(', ')
+  end
+
   # ActiveRecord::Assocations::CollectionAssociation is a proxy and won't
   # always load info. see the class documentation for more info
   def assocation_empty?(assoc)

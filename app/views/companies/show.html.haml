@@ -37,6 +37,9 @@
     %b #{t('.region')}:
     = @company.region.name if @company.region
 
+  - if current_user.try(:admin)
+    = link_to "#{t('.delete')}", @company, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
+
   - if policy(@company).update?
     .center
       = link_to "#{t('companies.edit_company')}", edit_company_path(@company)

@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :edit, :update]
-  before_action :authorize_company, only: [:update, :show, :edit]
+  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
 
   def index
@@ -51,6 +51,18 @@ class CompaniesController < ApplicationController
   end
 
 
+  def destroy
+
+    if @company.destroy
+      redirect_to companies_url, notice: t('companies.destroy.success')
+    else
+      translated_errors = helpers.translate_and_join(@company.errors.full_messages)
+      helpers.flash_message(:alert, "#{t('companies.destroy.error')}: #{translated_errors}")
+      redirect_to @company
+    end
+
+  end
+
 
   private
   # Use callbacks to share common setup or constraints between actions.
@@ -66,6 +78,7 @@ class CompaniesController < ApplicationController
                                     :region_id, :website,
                                     {business_category_ids: []})
   end
+
 
   def authorize_company
     authorize @company
