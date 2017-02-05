@@ -71,7 +71,7 @@ business_categories.each { |b_category| BusinessCategory.find_or_create_by(name:
 BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 'Terapi-, vård- & skolhund dvs hundar som jobbar tillsammans med sin förare/ägare inom vård, skola och omsorg.')
 BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: 'Assistanshundar dvs hundar som jobbar åt sin ägare som service-, signal, diabetes, PH-hund mm')
 
-if Rails.env.development? || Rails.env.staging?
+if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
   regions = Region.all.to_a
   
