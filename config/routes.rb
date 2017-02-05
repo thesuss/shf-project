@@ -6,6 +6,10 @@ Rails.application.routes.draw do
 
   as :user do
     authenticated :user, lambda {|u| u.admin? }  do
+      post 'admin/export-ansokan-csv'
+
+      get 'admin', to: 'admin#index'
+
       root to: 'admin#index', as: :admin_root
     end
   end

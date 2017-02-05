@@ -376,8 +376,13 @@ en:
       org_nr: *org_nr
       manage: *manage
       state: *state
+      export: Export all applications to a CSV file
 
     all_applications_received: All applications received
+
+    export_ansokan_csv:
+      success: Export successful. Check your browser downloads for the file.
+      error: There was a problem with the export.
 
 
   devise:
