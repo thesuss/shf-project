@@ -28,7 +28,7 @@
   #uploaded_files
     = render 'uploaded_files_list', membership_application: @membership_application
 
-  %p #{t('.app_status')}: #{t("membership_applications.#{@membership_application.state}")}  - #{@membership_application.updated_at.strftime('%F')}
+  %p #{t('.app_status')}: #{t("membership_applications.state.#{@membership_application.state}")}  - #{@membership_application.updated_at.strftime('%F')}
 
   - if current_user.admin?
     = render partial: 'application_status_form'
