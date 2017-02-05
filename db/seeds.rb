@@ -15,7 +15,7 @@ SEED_ERROR_MSG = 'Seed ERROR: Could not load either admin email or password. NO 
 
 DEFAULT_PASSWORD = 'whatever'
 
-MA_ACCEPTED_STATUS = 'Godkänd'
+MA_ACCEPTED_STATE = :accepted
 
 private def env_invalid_blank(env_key)
   raise SeedAdminENVError, SEED_ERROR_MSG if (env_val = ENV.fetch(env_key)).blank?
@@ -110,7 +110,6 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
                                        last_name: FFaker::NameSE.last_name,
                                        contact_email: FFaker::InternetSE.free_email,
                                        company_number: company_number,
-                                       status: 'Pending',
                                        user: users[r.rand(0..NUM_USERS-1)])
         idx1 = r.rand(0..num_cats-1)
         ma.business_categories << business_categories[idx1]
@@ -132,7 +131,7 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
       next if ma.is_accepted?
 
-      ma.status = MA_ACCEPTED_STATUS
+      ma.state = MA_ACCEPTED_STATE
       ma.user.is_member = true
       ma.user.save
 
@@ -151,6 +150,6 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
     end
 
     puts "Applications accepted: #{MembershipApplication
-      .where(status: MA_ACCEPTED_STATUS).count}"
+      .where(state: MA_ACCEPTED_STATE).count}"
   end
 end
