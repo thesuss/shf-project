@@ -135,7 +135,7 @@ class MembershipApplicationsController < ApplicationController
           helpers.flash_message(:notice, t('membership_applications.uploads.file_was_uploaded',
                                            filename: @uploaded_file.actual_file_file_name ))
         else
-          helpers.flash_message :alert, @uploaded_file.errors.messages
+          helpers.flash_message :alert, @uploaded_file.errors.messages.values.uniq.flatten.join(', ')
         end
       end
 
