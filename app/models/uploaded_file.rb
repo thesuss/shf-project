@@ -14,6 +14,7 @@ class UploadedFile < ApplicationRecord
                                                                    'application/vnd.ms-word.document.macroEnabled.12'],
                                                     message: I18n.t('membership_applications.uploads.invalid_upload_type')},
                                                     size: { in: 0..5.megabytes,
-                                                            message: I18n.t('membership_applications.uploads.file_too_large', max_size: '5 MB')}
+                                                            message: :file_too_large
+                                                           }
 
 end
