@@ -54,3 +54,37 @@ Feature: As an applicant
     When I click on t("membership_applications.edit.submit_button_label")
     Then I should not see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
     And I should see t("membership_applications.update.success")
+
+
+  Scenario: Size error message in English when locale = en
+    Given I am logged in as "emma@happymutts.se"
+    And I set the locale to "en"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :en
+
+
+  Scenario: Size error message in sveriges when locale = sv
+    Given I am logged in as "emma@happymutts.se"
+    And I set the locale to "sv"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :sv
+
+
+  Scenario: Switching locales - Size error message in the right language
+    Given I am logged in as "emma@happymutts.se"
+    And I set the locale to "sv"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :sv
+    And I set the locale to "en"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :en
+
+
