@@ -22,7 +22,7 @@ Feature: As an applicant
       | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                    |
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.new.submit_button_label")
-    Then I should see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("membership_applications.create.success")
 
 
@@ -34,7 +34,7 @@ Feature: As an applicant
       | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                    |
     And I choose a file named "upload-just-under-limit.pdf" to upload
     When I click on t("membership_applications.new.submit_button_label")
-    Then I should not see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
+    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should see t("membership_applications.create.success")
 
 
@@ -43,7 +43,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("membership_applications.update.success")
 
 
@@ -52,7 +52,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "upload-just-under-limit.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should not see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
+    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should see t("membership_applications.update.success")
 
 
@@ -62,7 +62,9 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :en
+    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
+    And I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :en
+    And I set the locale to "sv"
 
 
   Scenario: Size error message in sveriges when locale = sv
@@ -71,7 +73,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :sv
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
 
 
   Scenario: Switching locales - Size error message in the right language
@@ -80,11 +82,12 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :sv
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
     And I set the locale to "en"
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("membership_applications.uploads.file_too_large", max_size: "5 MB"), locale: :en
+    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
+    And I set the locale to "sv"
 
 
