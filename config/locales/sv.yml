@@ -103,7 +103,6 @@ sv:
 
     errors:
 
-# activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large
       models:
 
         uploaded_file:
