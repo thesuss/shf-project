@@ -153,9 +153,7 @@ class MembershipApplicationsController < ApplicationController
                                            filename: @uploaded_file.actual_file_file_name))
           successful = successful & true
         else
-          logger.error "ERROR: Uploaded File Validation: #{ @uploaded_file.errors.messages.values.uniq.flatten.join(', ')}"
-          logger.info "  Current locale = #{@locale}"
-          helpers.flash_message :alert, @uploaded_file.errors.messages.values.uniq.flatten.join(', ')
+          helpers.flash_message :alert, @uploaded_file.errors.messages.values.uniq.flatten.join(' ')
           successful = successful & false
         end
 
