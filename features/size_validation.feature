@@ -5,30 +5,52 @@ Feature: As an applicant
 
   Background:
     Given the following users exists
-      | email                  | admin |
-      | applicant_1@random.com |       |
+      | email                 | admin |
+      | hans@new_applicant.se |       |
+      | emma@happymutts.se    |       |
+
+    And the following applications exist:
+      | first_name | user_email         | company_number | state        |
+      | Emma       | emma@happymutts.se | 5560360793     | under_review |
 
 
-  Scenario: Uploads too large file
-    Given I am logged in as "applicant_1@random.com"
+  Scenario: New application - Uploads a file that is too large
+    Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
-      | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                          |
+      | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                    |
     And I choose a file named "diploma_huge.pdf" to upload
-    And I click on t("membership_applications.new.submit_button_label")
+    When I click on t("membership_applications.new.submit_button_label")
     Then I should see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
     And I should not see t("membership_applications.create.success")
 
 
-  Scenario: Uploads a file just under the limit
-    Given I am logged in as "applicant_1@random.com"
+  Scenario: New application - Uploads a file just under the size limit
+    Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the translated form with data:
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
-      | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                          |
+      | Hans                                   | Newfoundland                          | 5560360793                                 | 031-1234567                              | applicant_2@random.com                    |
     And I choose a file named "upload-just-under-limit.pdf" to upload
-    And I click on t("membership_applications.new.submit_button_label")
+    When I click on t("membership_applications.new.submit_button_label")
     Then I should not see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
     And I should see t("membership_applications.create.success")
 
+
+  Scenario: Existing application - Uploads a file that is too large
+    Given I am logged in as "emma@happymutts.se"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
+    And I should not see t("membership_applications.update.success")
+
+
+  Scenario: Existing application - Uploads a file just under the size limit
+    Given I am logged in as "emma@happymutts.se"
+    And I am on the "edit my application" page
+    And I choose a file named "upload-just-under-limit.pdf" to upload
+    When I click on t("membership_applications.edit.submit_button_label")
+    Then I should not see t("membership_applications.uploads.file_too_large", max_size: '5 MB')
+    And I should see t("membership_applications.update.success")
