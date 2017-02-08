@@ -40,7 +40,9 @@ Feature: As any type of visitor
     Given I am Logged out
     And I am on the business category "Awesome"
     Then I should see "No More Snarky Barky"
+    And I should see "Stockholm"
     And I should see "WOOF"
+    And I should see "Västerbotten"
     And I should not see "Sad Sad Snarky Barky"
 
   Scenario: Categories list businesses
@@ -48,10 +50,12 @@ Feature: As any type of visitor
     And I am on the business category "Sadness"
     Then I should not see "No More Snarky Barky"
     And I should see "Sad Sad Snarky Barky"
+    And I should see "Norrbotten"
     When I am logged in as "anna@sadmutts.com "
     And I am on the business category "Sadness"
     Then I should not see "No More Snarky Barky"
     And I should see "Sad Sad Snarky Barky"
+    And I should see "Norrbotten"
 
   Scenario: Categories list no businesses
     Given I am Logged out
@@ -67,3 +71,4 @@ Feature: As any type of visitor
     And I click on t("membership_applications.edit.submit_button_label")
     When I am on the business category "Extra"
     Then I should see "WOOF"
+    And I should see "Västerbotten"
