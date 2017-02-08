@@ -111,16 +111,12 @@ class MembershipApplication < ApplicationRecord
 
   def accept_membership
     begin
-      user.update(is_member: true)
 
-      begin
-        company = Company.find_or_create_by!(company_number: company_number) { | co| co.email = contact_email }
-      rescue ActiveRecord::RecordNotUnique
-        retry
+      company = Company.find_or_create_by!(company_number: company_number) do |co|
+        co.email = contact_email
       end
-
+      
       update(company: company)
-      save
 
     rescue => e
       puts "ERROR: could not accept_membership.  error: #{e.inspect}"
