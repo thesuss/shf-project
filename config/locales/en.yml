@@ -245,7 +245,7 @@ en:
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
     ready_for_review: *status_ready_for_review
-    start_review: &start_review Start Review
+    start_review: &start_review Start Reviewing
 
     awaiting_payment: Awaiting payment
 

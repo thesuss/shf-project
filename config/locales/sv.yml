@@ -202,7 +202,8 @@ sv:
 
     start_review:
       success: Granskningen har påbörjats.
-      error: Det fanns ett problem att starta översyn för denna applikation.
+      error: Det fanns ett problem med att påbörja granskning för denna applikation.
+
 
     accept:
       success: Medlemsansökan har godkänts.
@@ -244,7 +245,7 @@ sv:
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
     ready_for_review: *status_ready_for_review
-    start_review: &start_review Starta omdöme
+    start_review: &start_review Påbörja granskning
 
     awaiting_payment: Inväntar betalning
 
