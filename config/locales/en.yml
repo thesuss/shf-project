@@ -49,8 +49,8 @@ en:
       show: Show Form
 
   will_paginate:
-      previous_label: "<< Previous"
-      next_label: "Next >>"
+      previous_label: "&laquo; Previous"
+      next_label: "Next &raquo;"
       page_gap: "&hellip;"
 
  # Automatic and manual lookup for ActiveRecords:

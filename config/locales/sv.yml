@@ -49,8 +49,8 @@ sv:
       show: Visa Sökfunktionen
 
   will_paginate:
-    previous_label: "<< Tidigare"
-    next_label: "Nästa >>"
+    previous_label: "&laquo; Föregående"
+    next_label: "Nästa &raquo;"
     page_gap: "&hellip;"
 
   # Automatisk och manuell sökning för Active Records
