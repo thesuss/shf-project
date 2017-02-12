@@ -16,6 +16,14 @@ class Company < ApplicationRecord
 
   belongs_to :region
 
+  # must qualify name with 'company' because there are other tables that use 'name' and if
+  # this scope is combined with a clause for a different table that also uses 'name',
+  # SQL won't know which table to get 'name' from
+  #  name could be NULL or it could be an empty string
+  #  old_region could be NULL or it could be and empty string
+  scope :complete, -> { where('"companies"."name" <> :blank_name AND (region_id IS NOT NULL OR (old_region IS NOT NULL AND old_region <> :blank_old_region))',
+                              {blank_name: '', blank_old_region: ''}) }
+
 
   def destroy_checks
 
@@ -37,6 +45,12 @@ class Company < ApplicationRecord
 
     true
 
+  end
+
+
+  def complete?
+    name.blank? ||
+        (region.blank? && old_region.blank?) ? false : true
   end
 
 end

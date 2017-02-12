@@ -10,7 +10,9 @@ class BusinessCategoriesController < ApplicationController
 
 
   def show
-    @companies = Company.all
+
+    @companies = @business_category.companies.complete.order(:name)
+
   end
 
 
@@ -65,6 +67,7 @@ class BusinessCategoriesController < ApplicationController
   def business_category_params
     params.require(:business_category).permit(:name, :description)
   end
+
 
   def authorize_business_category
     authorize @business_category

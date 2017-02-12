@@ -37,3 +37,30 @@ end
 Then(/^the "([^"]*)" should not go to "([^"]*)"$/) do |link, url|
   expect(page).not_to have_link(link, href: url)
 end
+
+And(/^the name for region "([^"]*)" is changed to "([^"]*)"$/) do | old_name, new_name |
+  region = Region.find_by_name(old_name)
+  region.name = new_name
+  region.save!  # do not do validations in case we're putting this into a bad state on purpose
+end
+
+
+And(/^the old region for company named "([^"]*)" is changed to "([^"]*)"$/) do | company_name, old_region |
+  co = Company.find_by_name(company_name)
+  co.update(old_region: old_region)
+  co.save!  # do not do validations in case we're putting this into a bad state on purpose
+end
+
+
+And(/^the region for company named "([^"]*)" is set to nil$/) do | company_name |
+  co = Company.find_by_name(company_name)
+  co.update(region: nil)
+  co.save!  # do not do validations in case we're putting this into a bad state on purpose
+end
+
+
+And(/^the old region for company named "([^"]*)" is set to nil$/) do |company_name|
+  co = Company.find_by_name(company_name)
+  co.update(old_region: nil)
+  co.save!  # do not do validations in case we're putting this into a bad state on purpose
+end

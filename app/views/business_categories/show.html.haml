@@ -21,11 +21,10 @@
             %th= t('companies.index.company_number')
             %th
       %tbody
-        - @business_category.companies.distinct.sort {|cp1, cp2| cp1.name <=> cp2.name}.each do |company|
-          - if company_complete? company
-            %tr.company
-              %td= link_to company.name, company
-              %td= company.region.name
-              - if current_user.try(:admin)
-                %td= company.company_number
-                %td= link_to t('edit'), edit_company_path(company)
+        - @companies.each do | company |
+          %tr.company
+            %td= link_to company.name, company
+            %td= company.region ?  company.region.name  : ''
+            - if current_user.try(:admin)
+              %td= company.company_number
+              %td= link_to t('edit'), edit_company_path(company)

@@ -7,7 +7,10 @@ class CompaniesController < ApplicationController
     authorize Company
 
     @search_params = Company.ransack(params[:q])
+    # only select companies that are 'complete'; see the Company.complete scope
+
     @companies = @search_params.result
+      .complete
       .includes(:region, :business_categories)
       .page(params[:page]).per_page(10)
 
