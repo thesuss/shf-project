@@ -1,6 +1,14 @@
 Feature: As a visitor,
-  so that I can find companies that can offer me services,
-  I want to see all companies
+  So that I can see if a company can provide the services I need,
+  Show me the details about a company
+
+  Because some Org Nr.s are actually for individuals and we don't have a reliable
+  way to tell if they are or not, and because we do not want to
+  (and legally cannot) show the org nr. for an individual,
+  only show the Org Nr to admins.
+
+  PivotalTracker: https://www.pivotaltracker.com/story/show/135474603
+
 
   Background:
     Given the following regions exist:
@@ -60,78 +68,76 @@ Feature: As a visitor,
       | Anna       | a@happymutts.com    | 4268582063     | Groomer       | accepted |
       | Anna       | a@happymutts.com    | 8028973322     | Groomer       | accepted |
 
-  @javascript
-  Scenario: Visitor sees all companies
+
+  Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out
-    And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
-    And I should see "Bowsers"
-    And I should not see "2120000142"
+    And I am the page for company number "5560360793"
+    Then I should not see "5560360793"
     And I should see "No More Snarky Barky"
-    And I should not see "5560360793"
     And I should see "Groomer"
-    And I should not see "Walker"
-    And I should not see t("companies.new_company")
-
-
-  Scenario: User sees all the companies
-    Given I am logged in as "emma@happymutts.com"
-    And I am on the "landing" page
-    Then I should see t("companies.index.title")
-    And I should see "Bowsers"
-    And I should not see "2120000142"
-    And I should see "No More Snarky Barky"
-    And I should not see "5560360793"
-    And I should not see t("companies.new_company")
-
-
-
-  @javascript
-  Scenario: Pagination
-    Given I am Logged out
-    And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
-    And I should see "Bowsers"
-    And I should not see "2120000142"
-    And I should see "No More Snarky Barky"
-    And I should not see "5560360793"
-    And I should see "Company10"
-    And I should not see "3609340140"
-    And I should not see "Company11"
-    Then I click on t("will_paginate.next_label") link
-    And I should see "Company11"
-    And I should not see "Company10"
-
-  @javascript
-  Scenario: I18n translations
-    Given I am Logged out
-    And I set the locale to "sv"
-    And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
-    Then I click on t("toggle.company_search_form.hide") button
-    And I should see "Verksamhetslän"
-    And I should see "Kategori"
-    And I should not see "Region"
-    And I should not see "Category"
-    Then I click on "change-lang-to-english"
-    And I set the locale to "en"
-    Then I click on t("toggle.company_search_form.hide") button
-    And I wait 1 second
-    And I should see "Region"
-    And I should see "Category"
-    And I should not see "Verksamhetslän"
-    And I should not see "Kategori"
-
-  @javascript
-  Scenario: See all categories for each company
-    Given I am Logged out
-    And I am on the "landing" page
     And I should see "JustForFun"
-    Then I select "Bowsers" in select list t("activerecord.models.company.one")
-    And I click on t("search") button
+    And I should see "snarky@snarkybarky.com"
+    And I should see "Stockholm"
+    And I should see "123123123"
+    And I should see "123 1st Street"
+    And I should see "00000"
+    And I should see "Hundborg"
+    And I should see "http://www.example.com"
+    When I am the page for company number "2120000142"
+    Then I should not see "2120000142"
     And I should see "Bowsers"
     And I should see "Groomer"
     And I should see "Trainer"
     And I should see "Rehab"
     And I should see "Psychologist"
-    And I should not see "JustForFun"
+    And I should see "bowwow@bowsersy.com"
+    And I should see "Västerbotten"
+    And I should see "123123123"
+    And I should see "123 1st Street"
+    And I should see "00000"
+    And I should see "Hundborg"
+    And I should see "http://www.example.com"
+
+  Scenario: Show company details to member of the company, but don't show the org nr.
+    Given I am logged in as "emma@happymutts.com"
+    And I am the page for company number "5560360793"
+    Then I should not see "5560360793"
+    And I should see "No More Snarky Barky"
+    And I should see "Groomer"
+    And I should see "JustForFun"
+    And I should see "snarky@snarkybarky.com"
+    And I should see "Stockholm"
+    And I should see "123123123"
+    And I should see "123 1st Street"
+    And I should see "00000"
+    And I should see "Hundborg"
+    And I should see "http://www.example.com"
+
+  Scenario: Show company details to admin and do show the org nr.
+    Given I am logged in as "admin@shf.se"
+    And I am the page for company number "5560360793"
+    Then I should see "5560360793"
+    And I should see "No More Snarky Barky"
+    And I should see "Groomer"
+    And I should see "JustForFun"
+    And I should see "snarky@snarkybarky.com"
+    And I should see "Stockholm"
+    And I should see "123123123"
+    And I should see "123 1st Street"
+    And I should see "00000"
+    And I should see "Hundborg"
+    And I should see "http://www.example.com"
+    When I am the page for company number "2120000142"
+    Then I should see "2120000142"
+    And I should see "Bowsers"
+    And I should see "Groomer"
+    And I should see "Trainer"
+    And I should see "Rehab"
+    And I should see "Psychologist"
+    And I should see "bowwow@bowsersy.com"
+    And I should see "Västerbotten"
+    And I should see "123123123"
+    And I should see "123 1st Street"
+    And I should see "00000"
+    And I should see "Hundborg"
+    And I should see "http://www.example.com"

@@ -8,9 +8,10 @@
   %p
     %b #{t('.name')}:
     = @company.name
-  %p
-    %b #{t('.org_nr')}:
-    = @company.company_number
+  - if current_user && current_user.admin?
+    %p
+      %b #{t('.org_nr')}:
+      = @company.company_number
   %p
     %b #{t('.phone_number')}:
     = @company.phone_number
