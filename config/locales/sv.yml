@@ -98,8 +98,8 @@ sv:
         org_nr: *org_nr
 
       business_category:
-        name: &business_category_name Namn
-        description: &description Beskrivning
+        name: &business_category_name  Namn
+        description: &description  Beskrivning
 
     errors:
 
@@ -359,8 +359,6 @@ sv:
       success: Kategori raderad.
 
     form:
-      category_name: '*business_category *name'
-      category_description: '*business_category *description'
       save: *save
 
     form_collection_checkboxes:

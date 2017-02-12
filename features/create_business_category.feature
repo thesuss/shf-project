@@ -17,7 +17,7 @@ Feature: As an admin
     Given I am on the "business categories" page
     And I click on t("business_categories.new_business_category")
     When I fill in the translated form with data:
-      | business_categories.form.category_name | business_categories.form.category_description |
+      | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
       | <category_name>                        | <category_description>                        |
     And I click on t("business_categories.form.save")
     And I should see t("business_categories.create.success")
@@ -34,7 +34,7 @@ Feature: As an admin
     Given I am on the "business categories" page
     And I click on t("business_categories.new_business_category")
     When I fill in the translated form with data:
-      | business_categories.form.category_name | business_categories.form.category_description |
+      | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
       | <category_name>                        | <category_description>                        |
     When I click on t("business_categories.form.save")
     Then I should see <error>
@@ -47,7 +47,7 @@ Feature: As an admin
   Scenario: Indicate required field
     Given I am on the "business categories" page
     And I click on t("business_categories.new_business_category")
-    Then the field t("business_categories.form.category_name") should have a required field indicator
+    Then the field t("activerecord.attributes.business_category.name") should have a required field indicator
 
   Scenario: Listing Business Categories restricted for Non-admins
     Given I am logged in as "applicant@random.com"

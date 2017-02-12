@@ -100,8 +100,8 @@ en:
 
 
       business_category:
-        name: &business_category_name Name
-        description: &description Description
+        name: &business_category_name  Name
+        description: &description  Description
 
 
     errors:
@@ -359,8 +359,6 @@ en:
       success: Category deleted.
 
     form:
-      category_name: '*business_category *name'
-      category_description: '*business_category *description'
       save: *save
 
     form_collection_checkboxes:
