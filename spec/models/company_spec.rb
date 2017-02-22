@@ -2,61 +2,28 @@ require 'rails_helper'
 
 RSpec.describe Company, type: :model do
 
-  let(:no_name) { c = create(:company, name: '', company_number: '2120000142')
-  c.old_region = 'Sveriges'
-  c
-  }
-  let(:nil_region) { c = create(:company, name: 'Nil Region', company_number: '6112107039')
-  c.region = nil
-  c.old_region = 'Sveriges'
-  c.save
-  c
-  }
-  let(:nil_old_region) { c = create(:company, name: 'Nil Old Region', company_number: '5569467466')
-  c.old_region = nil
-  c.save
-  c
-  }
-  let(:empty_str_old_region) { c = create(:company, name: 'Empty Str Old Region', company_number: '3609340140')
-  c.old_region = ''
-  c.save
-  c
-  }
+  let(:no_name) do
+    create(:company, name: '', company_number: '2120000142')
+  end
 
-  let(:nil_regions) { c = create(:company, name: 'Nil Region and Nil Old Region', company_number: '5906055081')
-  c.region = nil
-  c.old_region = nil
-  c.save
-  c
-  }
+  let(:nil_region) do
+    create(:company, name: 'Nil Region',
+                     company_number: '6112107039', region: nil)
+  end
 
-  let(:nil_region_blank_old_region) { c = create(:company, name: 'Nil Region and Empty Str Old Region', company_number: '5560360793')
-  c.region = nil
-  c.old_region = ''
-  c.save
-  c
-  }
+  let(:complete_co) do
+    create(:company, name: 'Complete Company',
+                     company_number: '4268582063')
+  end
 
-  let(:complete_co) { create(:company, name: 'Complete Company', company_number: '4268582063') }
+  let!(:complete_companies) { [complete_co] }
 
-
-  let!(:complete_companies) {
-    complete_cos = []
-    complete_cos << complete_co
-    complete_cos << nil_region
-    complete_cos << nil_old_region
-    complete_cos << empty_str_old_region
-    complete_cos
-  }
-
-  let!(:incomplete_companies) {
+  let!(:incomplete_companies) do
     incomplete_cos = []
     incomplete_cos << no_name
-    incomplete_cos << nil_regions
-    incomplete_cos << nil_region_blank_old_region
+    incomplete_cos << nil_region
     incomplete_cos
-  }
-
+  end
 
   describe 'Factory' do
     it 'has a valid factory' do
@@ -74,7 +41,6 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :post_code }
     it { is_expected.to have_db_column :city }
     it { is_expected.to have_db_column :region_id }
-    it { is_expected.to have_db_column :old_region }
     it { is_expected.to have_db_column :website }
   end
 
@@ -166,52 +132,4 @@ RSpec.describe Company, type: :model do
           .to contain_exactly('cat1')
     end
   end
-
-
-  describe '#complete?' do
-
-    it 'no name == not complete' do
-      expect(no_name.complete?).to be_falsey
-    end
-
-    it 'nil region, but has old region == complete' do
-      expect(nil_region.complete?).to be_truthy
-    end
-
-    it 'nil old region, but has region == complete' do
-      expect(nil_old_region.complete?).to be_truthy
-    end
-
-    it 'old region=' ', but has region == complete' do
-      expect(empty_str_old_region.complete?).to be_truthy
-    end
-
-    it 'nil region and nil old_region == not complete' do
-      expect(nil_regions.complete?).to be_falsey
-    end
-
-    it 'nil region and old_region=' ' == not complete' do
-      expect(nil_region_blank_old_region.complete?).to be_falsey
-    end
-
-
-    it 'select complete? returns only the complete ones' do
-
-      complete_using_method = Company.all.select(&:complete?)
-
-      expect(complete_using_method).to match_array(complete_companies)
-
-    end
-
-    it 'reject complete? returns only the incomplete ones' do
-
-      incomplete_using_method = Company.all.reject(&:complete?)
-
-      expect(incomplete_using_method).to match_array(incomplete_companies)
-
-    end
-
-
-  end
-
 end

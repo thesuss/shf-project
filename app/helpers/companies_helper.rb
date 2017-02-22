@@ -1,11 +1,5 @@
 module CompaniesHelper
 
-  def company_complete? company
-    company&.name.blank? ||
-    (company&.region.blank? && company&.old_region.blank?) ? false : true
-  end
-
-
   def last_category_name company
     company.business_categories.any? ? company.business_categories.last.name : ''
   end
