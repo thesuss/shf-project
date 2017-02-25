@@ -16,6 +16,11 @@ class MembershipApplicationsController < ApplicationController
   end
 
 
+  def show
+    @categories = @membership_application.business_categories
+  end
+
+
   def edit
     @all_business_categories = BusinessCategory.all
   end
@@ -125,7 +130,6 @@ class MembershipApplicationsController < ApplicationController
 
   def get_membership_application
     @membership_application = MembershipApplication.find(params[:id])
-    @categories = @membership_application.business_categories
   end
 
 
