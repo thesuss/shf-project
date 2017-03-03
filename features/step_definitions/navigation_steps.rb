@@ -103,5 +103,5 @@ end
 
 
 And(/^I am on the static workgroups page$/) do
-  visit page_path('arbetsgrupper')
+  visit page_path('yrkesrad')
 end
