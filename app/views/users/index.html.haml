@@ -10,7 +10,10 @@
         %th= t('.created')
         %th= t('.last_login')
         %th= t('.logged_in_count')
-        %th= t('.applications')
+        %th
+          = t('.applications')
+          %span.glyphicon.glyphicon-info-sign{ title: "#{t('.applications_tooltip')}",
+                                               data: {toggle: 'tooltip'} }
         %th= t('.member')
     %tbody
       - @users.each do |user|
@@ -22,7 +25,7 @@
             %small= user.last_sign_in_at ?                          |
               "#{time_ago_in_words(user.last_sign_in_at)} ago" : '' |
           %td= user.sign_in_count
-          %td= user.membership_applications.count
+          %td= user.membership_applications.open.count
           - if user.is_member?
             %td
               %span{ style: 'background-color: LightGreen;' }= t('.yes')
