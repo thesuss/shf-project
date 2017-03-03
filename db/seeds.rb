@@ -143,9 +143,15 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
     puts "Applications created: #{MembershipApplication.all.count}"
 
-    # Accept some of the membership applications
+    #---
+    # Membership Application status
+
+    # Ensure we have a good variation of different statuses (some accepted, some rejected, etc.)
+
+    #  We're most interested in accepted applications, so first make <some random number> of those
 
     r.rand(1..applications.size).times do
+
       ma = applications[r.rand(0..(applications.size-1))]
 
       next if ma.is_accepted?
@@ -167,7 +173,24 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
       ma.save
     end
 
-    puts "Applications accepted: #{MembershipApplication
-      .where(state: MA_ACCEPTED_STATE).count}"
+    #  Then with the remaining applications, evenly distribute the remaining states:
+
+    remaining_apps = MembershipApplication.where.not(state: MA_ACCEPTED_STATE)
+
+    remaining_states = MembershipApplication.aasm.states.map(&:name) - [MA_ACCEPTED_STATE]
+
+    remaining_apps.each_with_index do | app, i |
+
+      # distribute the remaining possible states equally
+      app.update(state: remaining_states[ i.divmod(remaining_states.count).last  ] )
+
+    end
+
+    puts "Membership Applications by state:"
+    states = remaining_states +  [MA_ACCEPTED_STATE]
+    states.sort.each do | state |
+      puts "  #{state}: #{MembershipApplication.where(state: state).count }"
+    end
+
   end
 end
