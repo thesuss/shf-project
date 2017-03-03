@@ -399,6 +399,7 @@ DEPENDENCIES
   ransack
   routing-filter
   rspec-rails
+  rubyzip (>= 1.2.1)
   sass-rails (~> 5.0)
   shoulda-matchers
   smarter_csv
