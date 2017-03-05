@@ -10,9 +10,9 @@ class CompaniesController < ApplicationController
     # only select companies that are 'complete'; see the Company.complete scope
 
     @companies = @search_params.result
-      .complete
-      .includes(:region, :business_categories)
-      .page(params[:page]).per_page(10)
+                     .complete
+                     .includes(:addresses, :business_categories)
+                     .page(params[:page]).per_page(10)
 
     render partial: 'companies_list' if request.xhr?
   end
@@ -20,12 +20,15 @@ class CompaniesController < ApplicationController
 
   def show
     @categories = @company.business_categories
+    @company.addresses << Address.new  if @company.addresses.count == 0
   end
 
 
   def new
     authorize Company
     @company = Company.new
+    @addresses = @company.addresses.build
+
     @all_business_categories = BusinessCategory.all
   end
 
@@ -37,7 +40,10 @@ class CompaniesController < ApplicationController
 
   def create
     authorize Company
+
+
     @company = Company.new(company_params)
+    @company.addresses.first.addressable = @company  # not sure why Rails doesn't assign this automatically
 
     if @company.save
       redirect_to @company, notice: t('.success')
@@ -75,16 +81,23 @@ class CompaniesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_company
-    @company = Company.find(params[:id])
+    @company = Company.includes(:addresses).find(params[:id])
   end
 
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def company_params
     params.require(:company).permit(:name, :company_number, :phone_number,
-                                    :email, :street, :post_code, :city,
-                                    :region_id, :website,
-                                    {business_category_ids: []})
+                                    :email,
+                                    :website,
+                                    {business_category_ids: []},
+        addresses_attributes: [:id,
+                                :street_address,
+                                :post_code,
+                                :kommun,
+                                :city,
+                                :region_id,
+                                :country])
   end
 
 

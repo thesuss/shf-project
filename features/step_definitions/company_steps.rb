@@ -1,11 +1,11 @@
 And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
     region = company.delete('region')
+
     cmpy = FactoryGirl.create(:company, company)
-    if cmpy.region
-      cmpy.region = Region.find_by_name(region)
-      cmpy.save
-    end
+
+    cmpy.addresses.first.update(region: (Region.find_by_name(region)))  if  Region.find_by_name(region)
+
   end
 end
 
@@ -46,6 +46,6 @@ end
 
 And(/^the region for company named "([^"]*)" is set to nil$/) do | company_name |
   co = Company.find_by_name(company_name)
-  co.update(region: nil)
+  co.addresses.first.update(region: nil)
   co.save!  # do not do validations in case we're putting this into a bad state on purpose
 end

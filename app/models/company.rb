@@ -14,14 +14,30 @@ class Company < ApplicationRecord
 
   has_many :membership_applications, dependent: :destroy, inverse_of: :company
 
-  belongs_to :region
+  has_many :addresses, as: :addressable, dependent: :destroy
 
+  accepts_nested_attributes_for :addresses, allow_destroy: true
+
+
+  # All addresses for a company are complete AND the name is not blank
   # must qualify name with 'company' because there are other tables that use 'name' and if
   # this scope is combined with a clause for a different table that also uses 'name',
   # SQL won't know which table to get 'name' from
   #  name could be NULL or it could be an empty string
-  scope :complete, -> { where('"companies"."name" <> :blank_name AND region_id IS NOT NULL',
-                              { blank_name: '' }) }
+
+  def self.complete
+
+    have_no_regions = Address.lacking_region.where(addressable_type: 'Company').distinct.pluck(:addressable_id)
+
+    if have_no_regions.count > 0
+      where('"companies"."name" <> :blank_name AND "companies"."id" NOT IN (:address_lacking_region)',
+            { blank_name: '',
+             address_lacking_region: have_no_regions })
+    else
+      where('"companies"."name" <> ? ', '' )
+    end
+
+  end
 
 
   def destroy_checks

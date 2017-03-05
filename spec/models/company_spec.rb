@@ -7,8 +7,12 @@ RSpec.describe Company, type: :model do
   end
 
   let(:nil_region) do
-    create(:company, name: 'Nil Region',
-                     company_number: '6112107039', region: nil)
+    nil_co = create(:company, name: 'Nil Region',
+                     company_number: '6112107039')
+
+    no_region = create(:company_address, addressable: nil_co, region: nil)
+
+    nil_co
   end
 
   let(:complete_co) do
@@ -37,10 +41,6 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :company_number }
     it { is_expected.to have_db_column :phone_number }
     it { is_expected.to have_db_column :email }
-    it { is_expected.to have_db_column :street }
-    it { is_expected.to have_db_column :post_code }
-    it { is_expected.to have_db_column :city }
-    it { is_expected.to have_db_column :region_id }
     it { is_expected.to have_db_column :website }
   end
 
@@ -57,7 +57,8 @@ RSpec.describe Company, type: :model do
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:membership_applications) }
     it { is_expected.to have_many(:membership_applications) }
-    it { is_expected.to belong_to(:region) }
+
+    it { is_expected.to have_many(:addresses) }
   end
 
 

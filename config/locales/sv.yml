@@ -89,18 +89,24 @@ sv:
         phone_number: Telefonnummer
         membership_number: &membership_number Medlemsnummer
 
-      company:
-        company_number: *org_nr
-        name: *name
-        phone_number: &company_phone Telefon
-        email: *email
+      address:
         street: &street Gata
         post_code: &post_code Post nr
         city: &city Ort
         region: &region Verksamhetslän
         region_short: &region_short Län
+
+      company:
+        company_number: *org_nr
+        name: *name
+        phone_number: &company_phone Telefon
+        email: *email
         website: Webbplats
         org_nr: *org_nr
+        post_code: *post_code
+        city: *city
+        region: *region
+        region_short: *region_short
 
       business_category:
         name: &business_category_name  Namn

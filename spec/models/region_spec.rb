@@ -14,6 +14,6 @@ RSpec.describe Region, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to have_many :companies }
+    it { is_expected.to have_many :addresses }
   end
 end

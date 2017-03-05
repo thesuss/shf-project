@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220223441) do
+ActiveRecord::Schema.define(version: 20170222090742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string  "street_address"
+    t.string  "post_code"
+    t.string  "kommun"
+    t.string  "city"
+    t.string  "country",          default: "Sveriges", null: false
+    t.integer "region_id"
+    t.string  "addressable_type"
+    t.integer "addressable_id"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
+    t.index ["region_id"], name: "index_addresses_on_region_id", using: :btree
+  end
 
   create_table "business_categories", force: :cascade do |t|
     t.string   "name"
@@ -34,15 +47,10 @@ ActiveRecord::Schema.define(version: 20170220223441) do
     t.string   "company_number"
     t.string   "phone_number"
     t.string   "email"
-    t.string   "street"
-    t.string   "post_code"
-    t.string   "city"
     t.string   "website"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.integer  "region_id"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true, using: :btree
-    t.index ["region_id"], name: "index_companies_on_region_id", using: :btree
   end
 
   create_table "membership_applications", force: :cascade do |t|
@@ -97,7 +105,7 @@ ActiveRecord::Schema.define(version: 20170220223441) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  add_foreign_key "companies", "regions"
+  add_foreign_key "addresses", "regions"
   add_foreign_key "membership_applications", "users"
   add_foreign_key "uploaded_files", "membership_applications"
 end

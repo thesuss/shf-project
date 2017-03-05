@@ -103,7 +103,7 @@ namespace :shf do
     if Region.exists?
       log_and_show log, Logger::WARN, "Regions table not empty"
     else
-      CS.states(:se).each_pair { |k,v| Region.create(name: v, code: k.to_s) }
+      CS.states(:se).each_pair { |k, v| Region.create(name: v, code: k.to_s) }
       Region.create(name: 'Sverige', code: nil)
       Region.create(name: 'Online', code: nil)
 
@@ -113,6 +113,8 @@ namespace :shf do
     log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
     finish_and_close_log(log, start_time, Time.now, "Regions create")
   end
+
+
 
   def import_a_member_app_csv(row, log)
 
@@ -151,8 +153,8 @@ namespace :shf do
 
     end
 
-    membership = find_or_create_category( row[:category1], membership) unless row[:category1].nil?
-    membership = find_or_create_category( row[:category2], membership) unless row[:category2].nil?
+    membership = find_or_create_category(row[:category1], membership) unless row[:category1].nil?
+    membership = find_or_create_category(row[:category2], membership) unless row[:category2].nil?
     membership.save!
 
     if membership.accepted?

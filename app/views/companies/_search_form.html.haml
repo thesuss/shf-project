@@ -13,11 +13,11 @@
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
     .col-sm-4
-      = f.label :region_id_in,
-                "#{t('activerecord.attributes.company.region')}",
+      = f.label :addresses_region_id_in,
+                "#{t('activerecord.attributes.address.region')}",
                 class: 'control-label',
                 style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :region_id_in,
+      = f.collection_select :addresses_region_id_in,
                       Region.all,
                       :id, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
@@ -25,12 +25,12 @@
                         data: {language: "#{@locale}" } }
 
     .col-sm-3
-      = f.label :city_in,
-                "#{t('activerecord.attributes.company.city')}",
+      = f.label :addresses_city_in,
+                "#{t('activerecord.attributes.address.city')}",
                class: 'control-label',
                style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :city_in,
-                     Company.complete.distinct.order(:city).pluck(:city),
+      = f.collection_select :addresses_city_in,
+                     Address.has_region.distinct.order(:city).pluck(:city),
                      :to_s, :to_s, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
                        class: 'form-control search_field',
