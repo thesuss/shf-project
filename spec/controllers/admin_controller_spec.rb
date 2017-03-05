@@ -20,9 +20,10 @@ RSpec.describe AdminController, type: :controller do
   let(:user) { create(:user) }
 
   let(:csv_header) { out_str = ''
+  out_str << "'#{I18n.t('activerecord.attributes.membership_application.contact_email').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.first_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.last_name').strip}',"
-  out_str << "'#{I18n.t('activerecord.attributes.membership_application.contact_email').strip}',"
+  out_str << "'#{I18n.t('activerecord.attributes.membership_application.membership_number').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.state').strip}'\n"
   out_str }
 
@@ -69,7 +70,7 @@ RSpec.describe AdminController, type: :controller do
                                    contact_email: "#{app_state.name.to_s}@example.com",
                                    state: app_state.name,
                                    user: u
-            result_str << "#{m.first_name},#{m.last_name},#{m.contact_email},"+ I18n.t("membership_applications.state.#{app_state.name}") +"\n"
+            result_str << "#{m.contact_email},#{m.first_name},#{m.last_name},#{m.membership_number},"+ I18n.t("membership_applications.state.#{app_state.name}") +"\n"
           end
 
           post :export_ansokan_csv
