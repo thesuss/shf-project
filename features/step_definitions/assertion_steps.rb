@@ -268,3 +268,12 @@ end
 And(/^I should not see t\("([^"]*)"\), locale: :(\w\w)$/) do |i18n_key, locale|
   expect(page).not_to have_content I18n.t(i18n_key, locale: locale)
 end
+
+And(/^I should see the selector "([^"]*)"$/) do | s |
+  expect(page).to have_selector(s)
+end
+
+And(/^I should see flash text t\("([^"]*)"\)$/) do | i18n_key |
+  expect(page).to have_selector('#flashes', text: I18n.t(i18n_key) )
+end
+

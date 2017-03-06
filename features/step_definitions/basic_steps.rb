@@ -8,7 +8,16 @@ end
 
 When /^I confirm popup$/ do
   # requires poltergeist:
-  page.driver.accept_modal(:confirm)
+  using_wait_time 3 do
+    page.driver.accept_modal(:confirm)
+  end
+end
+
+When /^I confirm popup with message t\("([^"]*)"\)$/ do | modal_text |
+  # requires poltergeist:
+  using_wait_time 3 do
+    page.driver.accept_modal(:confirm, {text: i18n_content("#{modal_text}")}) # will wait until it finds the text (or reaches Capybara max wait time)
+  end
 end
 
 When /^I dismiss popup$/ do
