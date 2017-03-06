@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170222090742) do
+ActiveRecord::Schema.define(version: 20170305130437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,13 +18,14 @@ ActiveRecord::Schema.define(version: 20170222090742) do
   create_table "addresses", force: :cascade do |t|
     t.string  "street_address"
     t.string  "post_code"
-    t.string  "kommun"
     t.string  "city"
     t.string  "country",          default: "Sveriges", null: false
     t.integer "region_id"
     t.string  "addressable_type"
     t.integer "addressable_id"
+    t.integer "kommun_id"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
+    t.index ["kommun_id"], name: "index_addresses_on_kommun_id", using: :btree
     t.index ["region_id"], name: "index_addresses_on_region_id", using: :btree
   end
 
@@ -53,20 +54,25 @@ ActiveRecord::Schema.define(version: 20170222090742) do
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true, using: :btree
   end
 
+  create_table "kommuns", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "user_id"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
     t.integer  "company_id"
     t.string   "membership_number"
-    t.string   "state",             default: "under_review"
+    t.string   "state",             default: "new"
     t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
-    t.index ["state"], name: "index_membership_applications_on_state", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 
@@ -106,6 +112,7 @@ ActiveRecord::Schema.define(version: 20170222090742) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "membership_applications", "users"
   add_foreign_key "uploaded_files", "membership_applications"
