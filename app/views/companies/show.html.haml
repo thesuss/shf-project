@@ -27,19 +27,19 @@
   %h2 #{t('.address')}:
   %p
     %b #{t('.street')}:
-    = @company.addresses.first.street_address
+    = @company.main_address.street_address
   %p
     %b #{t('.post_code')}:
-    = @company.addresses.first.post_code
+    = @company.main_address.post_code
   %p
     %b #{t('.city')}:
-    = @company.addresses.first.city
+    = @company.main_address.city
   %p
     %b #{t('.kommun')}:
-    = @company.addresses.first.kommun.name
+    = @company.main_address.kommun.name
   %p
     %b #{t('.region')}:
-    = @company.addresses.first.region.name if @company.addresses.first.region
+    = @company.main_address.region.name if @company.main_address.region
 
   - if current_user.try(:admin)
     = link_to "#{t('.delete')}", @company, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }

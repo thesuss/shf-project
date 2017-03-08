@@ -43,7 +43,7 @@ class CompaniesController < ApplicationController
 
 
     @company = Company.new(company_params)
-    @company.addresses.first.addressable = @company  # not sure why Rails doesn't assign this automatically
+    @company.main_address.addressable = @company  # not sure why Rails doesn't assign this automatically
 
     if @company.save
       redirect_to @company, notice: t('.success')
