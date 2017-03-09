@@ -5,6 +5,15 @@ $admin-color: #ff0000;
   font-weight: bold;
 }
 
+td.is-member {
+  .yes {
+    background-color: LightGreen;
+  }
+  .no {
+    background-color: LemonChiffon;
+  }
+}
+
 .panel.admin-set-new-password-form {
   margin-left: 2em;
   margin-right: 2em;

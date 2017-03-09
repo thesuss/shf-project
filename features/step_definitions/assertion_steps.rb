@@ -277,3 +277,57 @@ And(/^I should see flash text t\("([^"]*)"\)$/) do | i18n_key |
   expect(page).to have_selector('#flashes', text: I18n.t(i18n_key) )
 end
 
+And(/^I should see "([^"]*)" in the row for user "([^"]*)"$/) do | expected_text, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+  expect(tr.text).to match(Regexp.new(expected_text))
+end
+
+And(/^I should see t\("([^"]*)"\) in the row for user "([^"]*)"$/) do | expected_text, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+  expect(tr.text).to match(Regexp.new(I18n.t(expected_text)))
+end
+
+
+And(/^I should not see "([^"]*)" in the row for user "([^"]*)"$/)do | expected_text, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+  expect(tr.text).not_to match(Regexp.new(expected_text))
+end
+
+
+And(/^I should not see t\("([^"]*)"\) in the row for user "([^"]*)"$/) do | expected_text, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+  expect(tr.text).not_to match(Regexp.new(I18n.t(expected_text)))
+end
+
+And(/^I should see "([^"]*)" for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+
+  expect(tr).to have_css(".#{css_class}", text: expected_text)
+end
+
+And(/^I should not see "([^"]*)" for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+
+  expect(tr).not_to have_css(".#{css_class}", text: expected_text)
+end
+
+
+And(/^I should see t\("([^"]*)"\) for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+
+  expect(tr).to have_css(".#{css_class}", text: I18n.t(expected_text))
+end
+
+And(/^I should not see t\("([^"]*)"\) for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
+  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+
+  expect(tr).not_to have_css(".#{css_class}", text: I18n.t(expected_text))
+end

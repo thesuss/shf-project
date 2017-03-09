@@ -18,17 +18,17 @@
     %tbody
       - @users.each do |user|
         %tr
-          %td= link_to user.email, user
-          %td
-            %small= "#{time_ago_in_words(user.created_at)} ago"
-          %td
+          %td.email{id: "user-#{user.id}"}= link_to user.email, user
+          %td.created-at
+            %small= "#{i18n_time_ago_in_words(user.created_at)}"
+          %td.last-sign-in-at
             %small= user.last_sign_in_at ?                          |
-              "#{time_ago_in_words(user.last_sign_in_at)} ago" : '' |
-          %td= user.sign_in_count
-          %td= user.membership_applications.open.count
-          - if user.is_member?
-            %td
-              %span{ style: 'background-color: LightGreen;' }= t('.yes')
-          - else
-            %td
-              %span{ style: 'background-color: LemonChiffon;' }= t('.no')
+              "#{i18n_time_ago_in_words(most_recent_login_time user)}" : '' |
+          %td.sign-in-count= user.sign_in_count
+          %td.applications-open= user.membership_applications.open.count
+
+          %td.is-member
+            - if user.is_member?
+              %span.yes= t('.yes')
+            - else
+              %span.no= t('.no')
