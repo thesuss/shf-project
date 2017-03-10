@@ -37,6 +37,8 @@ gem 'backup'
 gem 'dotenv'  # used in our backup definition file
 gem 'whenever'
 
+gem 'smarter_csv'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
@@ -51,7 +53,6 @@ group :development, :test do
   gem 'launchy'
   gem 'cucumber-timecop', require: false
 
-  gem 'smarter_csv'
 end
 
 group :development do
