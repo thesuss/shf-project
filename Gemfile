@@ -39,6 +39,8 @@ gem 'whenever'
 
 gem 'smarter_csv'
 
+gem 'geocoder'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
