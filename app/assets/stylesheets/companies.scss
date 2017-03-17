@@ -1,0 +1,67 @@
+.field-label {
+  font-weight: bold;
+}
+
+
+.company {
+
+  margin-bottom: 0;
+  padding-top: 1rem;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: normal;
+  }
+
+  .post-category {
+    .post-categories {
+      display: inline-block;
+      list-style: none;
+      margin: 0;
+    }
+  }
+
+  .address {
+    margin-bottom: 1em;
+    margin-top: 2em;
+
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+
+  .item-nav-buttons {
+    margin-top: 3em;
+  }
+
+
+  .map-marker {
+
+    p {
+      margin-bottom: 0.5rem;
+    }
+
+    .name {
+      font-size: larger;
+      font-weight: bold;
+    }
+
+    .categories {
+      font-style: italic;
+    }
+  }
+}
+
+
+#map {
+
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+

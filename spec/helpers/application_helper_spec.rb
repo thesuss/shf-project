@@ -134,6 +134,48 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
 
+  describe '#unique_css_id' do
+
+    # t1 = Time.now.utc
+    # t1_in_seconds = t1.to_i
+    # Time.at(t1_in_seconds).utc.inspect == t1.inspect  # not exact so must use inspect, but close enough in seconds
+
+    it 'company id=23' do
+      co = create(:company, id: 23)
+      expect(helper.unique_css_id(co)).to eq "company-23"
+    end
+
+    it 'unsaved company ' do
+      co = build(:company)
+      expect(helper.unique_css_id(co)).to match(/^company-no-id--/)
+    end
+
+    it 'business_category  4' do
+      co = create(:business_category, id: 4)
+      expect(helper.unique_css_id(co)).to eq "businesscategory-4"
+    end
+
+  end
+
+
+  describe '#item_view_class ' do
+
+    it 'show company 23' do
+      co = create(:company, id: 23)
+      expect(helper.item_view_class(co, 'show')).to eq "show company company-23"
+    end
+
+    it 'edit company 4' do
+      co = create(:company, id: 4)
+      expect(helper.item_view_class(co, 'edit')).to eq "edit company company-4"
+    end
+
+    it 'new business_category x' do
+      co = build(:business_category)
+      expect(helper.item_view_class(co, 'new')).to match(/^new businesscategory businesscategory-no-id--/)
+    end
+
+  end
 
 
 end

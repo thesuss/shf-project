@@ -16,7 +16,9 @@ require "sprockets/railtie"
 Bundler.require(*Rails.groups)
 
 module SHFProject
+
   class Application < Rails::Application
+
     # Disable generation of helpers, javascripts, css, and view, helper, routing and controller specs
     config.generators do |generate|
       generate.helper false
@@ -36,6 +38,15 @@ module SHFProject
     config.middleware.use I18n::JS::Middleware
 
     I18n.available_locales = ['en', 'sv']
+
+
+    # load settings from the shf.yml file:
+    config.shf = config_for(:shf)
+
+
+    config.after_initialize do
+      config.x.google_key = "#{Geocoder.config[:api_key]}"
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

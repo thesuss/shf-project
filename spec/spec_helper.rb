@@ -15,6 +15,6 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.after(:suite) do
-    FileUtils.rm_rf(Dir["#{Rails.root}/spec/test_paperclip_files/"])
+    FileUtils.rm_rf(Dir["#{Rails.root}/spec/test_paperclip_files/"]) if Object.const_defined?('Rails')
   end
 end

@@ -41,24 +41,24 @@ class CompaniesController < ApplicationController
   def create
     authorize Company
 
-
-    @company = Company.new(company_params)
+    @company = Company.new( sanitize_website(company_params) )
     @company.main_address.addressable = @company  # not sure why Rails doesn't assign this automatically
 
     if @company.save
       redirect_to @company, notice: t('.success')
     else
-      flash[:alert] = t('.error')
+      flash.now[:alert] = t('.error')
       render :new
     end
   end
 
 
   def update
-    if @company.update(company_params)
+
+    if @company.update( sanitize_website(company_params) )
       redirect_to @company, notice: t('.success')
     else
-      flash[:alert] = t('.error')
+      flash.now[:alert] = t('.error')
       render :edit
     end
 
@@ -82,6 +82,10 @@ class CompaniesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_company
     @company = Company.includes(:addresses).find(params[:id])
+
+    needs_geocoding = @company.addresses.reject(&:geocoded?)
+    needs_geocoding.each(&:geocode_best_possible)
+    @company.save!  if needs_geocoding.count > 0
   end
 
 
@@ -103,6 +107,12 @@ class CompaniesController < ApplicationController
 
   def authorize_company
     authorize @company
+  end
+
+
+  def sanitize_website(params)
+    params['website'] = URLSanitizer.sanitize( params.fetch('website','') )
+    params
   end
 
 end

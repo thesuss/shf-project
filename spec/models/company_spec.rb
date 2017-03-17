@@ -146,4 +146,23 @@ RSpec.describe Company, type: :model do
 
   end
 
+
+  describe '#sanitize_website' do
+
+    let(:company) { create(:company) }
+
+    it 'website = "javascript://alert(alert-text)"' do
+      company.website = "javascript://alert('alert-text')"
+      company.save
+      expect(company.website).to eq("://alert('alert-text')")
+    end
+
+    it 'website = "<script>alert("scriptalert("Boo!")")</script>"' do
+      company.website = "<script>alert('scriptalert(Boo!)')</script>"
+      company.save
+      expect(company.website).to eq("alert('scriptalert(Boo!)')")
+    end
+
+
+  end
 end

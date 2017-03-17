@@ -95,4 +95,31 @@ module ApplicationHelper
 
   end
 
+
+
+  # Construct a string that can be used by CSS to style things in a particular view.
+  def item_view_class(active_record_item, action_name)
+    "#{action_name} #{active_record_item.class.name.downcase} #{unique_css_id(active_record_item)}"
+  end
+
+
+  # Construct a CSS identifier unique to this instance of an ActiveRecord
+  # This is helpful so that this item can be uniquely identified on a page
+  #  so that it can be (perhaps uniquely) styled.
+  #
+  # If the item does not have an ID, then we will have to assign on based on the
+  # current UTC time in seconds, which will be of little use for CSS styling, but
+  # there are no pretty alternatives.
+  def unique_css_id(active_record_item)
+
+    unique_id = if active_record_item.respond_to?(:id) && active_record_item.id
+                  active_record_item.id.to_s
+                else
+                  "no-id--#{Time.now.utc.to_i}"
+                end
+
+    "#{active_record_item.class.name.downcase}-#{unique_id}"
+  end
+
+
 end

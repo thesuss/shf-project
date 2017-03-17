@@ -41,6 +41,8 @@ gem 'smarter_csv'
 
 gem 'geocoder'
 
+gem 'sanitize'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
