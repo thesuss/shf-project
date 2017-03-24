@@ -1,0 +1,19 @@
+= javascript_include_tag "#{Rails.configuration.shf['google_maps_js_api']}?key=#{Rails.configuration.x.google_key}"
+
+#map
+
+:javascript
+
+  document.addEventListener('turbolinks:load', function() {
+
+      var markers = #{markers.to_json}
+      mapCenter = {lat: 59.3293235, lng: 18.0685808}; // default center: Stockholm: [59.32932349999999, 18.0685808]
+
+      if (markers.length == 1) {
+        mapCenter = {lat: markers[0].latitude, lng: markers[0].longitude};
+        }
+
+      initCenteredMap(mapCenter, markers, null);
+
+    });
+

@@ -12,7 +12,7 @@
   .entry-content
 
     .row
-      .col-md-6
+      .col-md-5
         = field_or_none t('.name'), @company.name, tag_options: {class: 'hidden', id: 'location-text'}
 
         - if current_user && current_user.admin?
@@ -29,15 +29,18 @@
           %h2 #{t('.address')}:
           = field_or_none t('.street'), @company.main_address.street_address, tag_options: {class: 'street'}
 
+          = field_or_none t('.post_code'), @company.main_address.post_code, tag_options: {class: 'post-code'}
+
           = field_or_none t('.city'), @company.main_address.city, tag_options: {class: 'city'}
 
-          = field_or_none t('.kommun'), @company.main_address.kommun.name, tag_options: {class: 'kommun'}
+          = field_or_none t('.kommun'), @company.main_address.kommun&.name, tag_options: {class: 'kommun'}
 
-          = field_or_none t('.region'), @company.main_address.region.name, tag_options: {class: 'region'}
+          = field_or_none t('.region'), @company.main_address.region&.name, tag_options: {class: 'region'}
 
 
-      .col-md-6
-        = render partial: 'map', locals: { marker_text: html_marker_text(@company), address: @company.main_address}
+      .col-md-7
+        = render partial: 'map_companies', locals: { markers: location_and_markers_for([@company], link_name: false )}
+
 
 
     .row.center.item-nav-buttons#item-nav-buttons

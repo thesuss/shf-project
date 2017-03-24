@@ -94,6 +94,9 @@ RSpec.describe Address, type: :model do
     let(:orig_lat) { 56.7439545 }
     let(:orig_long) { 12.7276875 }
 
+    def addr_details(addr, expected_msg)
+      "#{expected_msg}; addr: #{addr.entire_address}, lat: #{addr.latitude}, long: #{addr.longitude}"
+    end
 
     it 'geocode from address' do
       addr = Address.new(street_address: expected_streetaddress,
@@ -103,8 +106,8 @@ RSpec.describe Address, type: :model do
 
       addr.validate
 
-      expect(addr.latitude.round(3)).to eq(56.7440333.round(3))
-      expect(addr.longitude.round(3)).to eq(12.727637.round(3))
+      expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
+      expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
     end
 
 
@@ -124,8 +127,8 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(3)).to eq(56.7442343.round(3))
-        expect(addr.longitude.round(3)).to eq(12.7255982.round(3))
+        expect(addr.latitude.round(2)).to eq(56.7442343.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.7255982.round(2)), addr_details(addr, "expected long to be 12.726, but wasn't")
       end
 
       it 'changed kommun' do
@@ -135,8 +138,8 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(3)).to eq(56.7440333.round(3))
-        expect(addr.longitude.round(3)).to eq(12.727637.round(3))
+        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
       end
 
       it 'changed city' do
@@ -149,8 +152,8 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(3)).to eq(56.633333.round(3))
-        expect(addr.longitude.round(3)).to eq(13.2.round(3))
+        expect(addr.latitude.round(2)).to eq(56.633333.round(2)), addr_details(addr, "expected lat to be 56.633, but wasn't")
+        expect(addr.longitude.round(2)).to eq(13.2.round(2)), addr_details(addr, "expected long to be 13.2, but wasn't")
       end
 
       it 'changed region' do
@@ -161,8 +164,8 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(3)).to eq(56.7440333.round(3))
-        expect(addr.longitude.round(3)).to eq(12.727637.round(3))
+        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
       end
 
       it 'changed country' do
@@ -172,8 +175,8 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(3)).to eq(56.7440333.round(3))
-        expect(addr.longitude.round(3)).to eq(12.727637.round(3))
+        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
       end
 
 
@@ -189,8 +192,8 @@ RSpec.describe Address, type: :model do
 
       addr.validate
 
-      expect(addr.latitude.round(3)).to eq(60.12816100000001.round(3))
-      expect(addr.longitude.round(3)).to eq(18.643501.round(3))
+      expect(addr.latitude.round(2)).to eq(60.12816100000001.round(2)), addr_details(addr, "expected lat to be 60.128, but wasn't")
+      expect(addr.longitude.round(2)).to eq(18.643501.round(2)), addr_details(addr, "expected long to be 18.644, but wasn't")
     end
 
 
@@ -201,8 +204,8 @@ RSpec.describe Address, type: :model do
                        post_code: '957 31',
                        city: 'Övertorneå')
         address.validate
-        expect(address.latitude.round(3)).to eq(66.3902539.round(3))
-        expect(address.longitude.round(3)).to eq(23.6601303.round(3))
+        expect(address.latitude.round(2)).to eq(66.3902539.round(2)), addr_details(address, "expected lat to be 66.390, but wasn't")
+        expect(address.longitude.round(2)).to eq(23.6601303.round(2)), addr_details(address, "expected long to be 23.660, but wasn't")
       end
 
 
@@ -211,8 +214,8 @@ RSpec.describe Address, type: :model do
                           post_code: '957 31',
                           city: 'Övertorneå')
         address.validate
-        expect(address.latitude.round(3)).to eq(66.3887731.round(3))
-        expect(address.longitude.round(3)).to eq(23.6734973.round(3))
+        expect(address.latitude.round(2)).to eq(66.3887731.round(2)), addr_details(address, "expected lat to be 66.389, but wasn't")
+        expect(address.longitude.round(2)).to eq(23.6734973.round(2)), addr_details(address, "expected long to be 23.673, but wasn't")
       end
 
 
@@ -221,8 +224,8 @@ RSpec.describe Address, type: :model do
                               post_code: 'x',
                               city: 'Övertorneå')
         address.validate
-        expect(address.latitude.round(3)).to eq(66.3884436.round(3))
-        expect(address.longitude.round(3)).to eq(23.639283.round(3))
+        expect(address.latitude.round(2)).to eq(66.3884436.round(2)), addr_details(address, "expected lat to be 66.388, but wasn't")
+        expect(address.longitude.round(2)).to eq(23.639283.round(2)), addr_details(address, "expected long to be 23.639, but wasn't")
       end
 
 
@@ -232,8 +235,8 @@ RSpec.describe Address, type: :model do
                               city: 'y')
         address.validate
 
-        expect(address.latitude.round(3)).to eq(60.128161.round(3))
-        expect(address.longitude.round(3)).to eq(18.643501.round(3))
+        expect(address.latitude.round(2)).to eq(60.128161.round(2)), addr_details(address, "expected lat to be 60.128, but wasn't")
+        expect(address.longitude.round(2)).to eq(18.643501.round(2)), addr_details(address, "expected long to be 18.643, but wasn't")
       end
 
 
@@ -244,8 +247,8 @@ RSpec.describe Address, type: :model do
                               country: nil)
         address.validate
 
-        expect(address.latitude.round(3)).to eq(60.128161.round(3))
-        expect(address.longitude.round(3)).to eq(18.643501.round(3))
+        expect(address.latitude.round(2)).to eq(60.128161.round(2)), addr_details(address, "expected lat to be 60.128, but wasn't")
+        expect(address.longitude.round(2)).to eq(18.643501.round(2)), addr_details(address, "expected long to be 18.643, but wasn't")
       end
 
     end

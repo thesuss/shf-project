@@ -98,7 +98,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
 
     it "can set the default string to a complicated content_tag " do
-    #  expect(helper.field_or_default('some label', [], default: (content_tag(:div, class: ["strong", "highlight"]) { 'some default' }) )).to eq('some default')
+      expect(helper.field_or_default('some label', [], default: (content_tag(:div, class: ["strong", "highlight"]) { 'some default' }) )).to eq('<div class="strong highlight">some default</div>')
     end
 
 
@@ -130,6 +130,22 @@ RSpec.describe ApplicationHelper, type: :helper do
     it "default class for the value = 'special-value-class'" do
       expect(helper.field_or_default('label', 'value', value_class: 'special-value-class')).to eq('<p><span class="field-label">label: </span><span class="special-value-class">value</span></p>')
     end
+
+  end
+
+
+  describe '#field_or_none' do
+    #  def field_or_none(label, value, tag: :p, tag_options: {}, separator: ': ', label_class: 'field-label', value_class: 'field-value')
+
+    it 'nil value returns empty string' do
+      expect(helper.field_or_none('label', nil)).to eq ''
+    end
+
+    it "default tag is <p>, default class is'field-value', default separator is :" do
+      expect(helper.field_or_none('label', 'value')).to eq('<p><span class="field-label">label: </span><span class="field-value">value</span></p>')
+    end
+
+
 
   end
 

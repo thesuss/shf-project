@@ -1,6 +1,6 @@
 Feature: As a visitor
   So that I can how near or far a company is
-  Show me the company location on a map on the company details pate
+  Show me the company location on a map on the company details page
 
   PivotalTracker https://www.pivotaltracker.com/story/show/133079479
 
@@ -36,7 +36,8 @@ Feature: As a visitor
       | Emma       | emma@happymutts.com | 5560360793     | Groomer       | accepted |
 
 
-  Scenario: Show the company location on the Company detail page
+  @javascript
+  Scenario: Show the company location on the Company detail page (popup should not link to the detail page)
     Given I am on the page for company number "5560360793"
-    Then I should see "map"
-    And I should see "<div class='map-marker'><p class='name'>No More Snarky Barky</p><p class='categories'>Groomer</p><br><p class='entire-address'>Matarengivägen 24, Övertorneå, 957 31, Sverige</p></div>"
+    Then I should see xpath "//*[@id='map']"
+

@@ -32,11 +32,14 @@ public/javascripts/translations.js
 #Ignore test-uploaded-files
 spec/test_paperclip_files/
 
-#ignore dev test files
+# do not check in files that are uploaded or assets
 public/system/
 public/storage
+/public/assets/
+
 
 /lib/seeds/imported-data
 
 # do not put config/secrets.yml into repository
 config/secrets.yml
+

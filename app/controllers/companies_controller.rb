@@ -9,10 +9,12 @@ class CompaniesController < ApplicationController
     @search_params = Company.ransack(params[:q])
     # only select companies that are 'complete'; see the Company.complete scope
 
-    @companies = @search_params.result
-                     .complete
-                     .includes(:addresses, :business_categories)
-                     .page(params[:page]).per_page(10)
+    @all_companies =  @search_params.result
+                          .complete
+                          .includes(:addresses, :business_categories)
+
+    @companies = @all_companies.page(params[:page]).per_page(10)
+
 
     render partial: 'companies_list' if request.xhr?
   end

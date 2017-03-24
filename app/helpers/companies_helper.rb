@@ -21,10 +21,33 @@ module CompaniesHelper
   end
 
 
+  # Given a collection of companies, create an array of {latitude, longitude, marker}
+  # for each company.  (Can be used by javascript to display markers for many companies)
+  # if link_name is true (the default), the name of each company should be a link to its page
+  #  else the name of each company should just be the name with no link to it
+  def location_and_markers_for(companies, link_name: true)
+
+    results = []
+
+    companies.each do |company|
+      link_name ? name_html = nil : name_html = company.name
+      results << {latitude: company.main_address.latitude,
+                  longitude: company.main_address.longitude,
+                  text: html_marker_text(company, name_html: name_html) }
+    end
+
+    results
+  end
+
+
   # html to display for a company when showing a marker on a map
-  def html_marker_text company
+  #  if no name_html is given (== nil), it will be linked to the company,
+  #  else the name_html string will be used
+  def html_marker_text company, name_html:  nil
     text = "<div class='map-marker'>"
-    text << "<p class='name'>#{company.name}</p>"
+    text <<  "<p class='name'>"
+    text << (name_html.nil? ? link_to(company.name, company, target: '_blank') : name_html)
+    text <<  "</p>"
     text << "<p class='categories'>#{list_categories company, ', '}</p>"
     text << "<br>"
     company.addresses.each do |addr|

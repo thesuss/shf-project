@@ -331,3 +331,8 @@ And(/^I should not see t\("([^"]*)"\) for class "([^"]*)" in the row for user "(
 
   expect(tr).not_to have_css(".#{css_class}", text: I18n.t(expected_text))
 end
+
+
+And(/^I should see xpath "([^"]*)"$/) do | xp |
+  expect(page).to have_xpath(xp)
+end

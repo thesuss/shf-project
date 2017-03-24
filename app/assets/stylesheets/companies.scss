@@ -1,3 +1,5 @@
+$btn-success-color: #00ff00;
+
 .field-label {
   font-weight: bold;
 }
@@ -7,6 +9,10 @@
 
   margin-bottom: 0;
   padding-top: 1rem;
+
+  .entry-title {
+    font-weight: bold;
+  }
 
   p {
     margin-bottom: 0;
@@ -38,6 +44,31 @@
     margin-top: 3em;
   }
 
+  .hide-search-form {
+    //color:black;
+    text-transform: none;
+
+    &:hover {
+      color: $btn-success-color;
+    }
+  }
+
+  .search-instructions {
+    margin-bottom: 20px;  // same as Bootstrap panel margin-bottom
+  }
+
+  .search-panel {
+
+    .form-group {
+      margin-left: 0;   // undo: bootstrap sets this at -15px
+      margin-right: 0;  // undo: bootstrap sets this at -15px
+
+    }
+
+    input[type="submit"] {
+      font-size: 1em;
+    }
+  }
 
   .map-marker {
 
