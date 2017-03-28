@@ -37,6 +37,9 @@ class CompaniesController < ApplicationController
 
   def edit
     @all_business_categories = BusinessCategory.all
+
+    Ckeditor::Picture.images_category = 'company_' + @company.id.to_s
+    Ckeditor::Picture.for_company_id  = @company.id
   end
 
 
@@ -96,6 +99,7 @@ class CompaniesController < ApplicationController
     params.require(:company).permit(:name, :company_number, :phone_number,
                                     :email,
                                     :website,
+                                    :description,
                                     {business_category_ids: []},
         addresses_attributes: [:id,
                                 :street_address,

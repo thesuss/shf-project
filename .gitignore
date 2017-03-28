@@ -35,11 +35,10 @@ spec/test_paperclip_files/
 # do not check in files that are uploaded or assets
 public/system/
 public/storage
+public/ckeditor_assets
 /public/assets/
-
 
 /lib/seeds/imported-data
 
 # do not put config/secrets.yml into repository
 config/secrets.yml
-
