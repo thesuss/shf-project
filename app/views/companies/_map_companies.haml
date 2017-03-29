@@ -7,13 +7,16 @@
   document.addEventListener('turbolinks:load', function() {
 
       var markers = #{markers.to_json}
-      mapCenter = {lat: 59.3293235, lng: 18.0685808}; // default center: Stockholm: [59.32932349999999, 18.0685808]
+
+
+
+    //  mapCenter = {lat: 59.3293235, lng: 18.0685808}; // default center: Stockholm: [59.32932349999999, 18.0685808]
 
       if (markers.length == 1) {
         mapCenter = {lat: markers[0].latitude, lng: markers[0].longitude};
         }
 
-      initCenteredMap(mapCenter, markers, null);
+      initCenteredMap(null, markers, null);
 
     });
 

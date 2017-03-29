@@ -51,30 +51,47 @@ function initMap() {
 //  else display all of the markers,and so the center is automatically
 //   determined by the center of all of them.
 //
+
+var userLocation;
+
 function initCenteredMap(centerCoordinates, markers, icon) {
 
-    var mapCenter = {lat: 59.3293235, lng: 18.0685808};
+    var mapCenter = {lat: 59.3293235, lng: 18.0685808}; // default = Sweden
 
     var marks = markers === null ? [] : markers;
 
-
-    if (centerCoordinates === null) {
-        // try to get the user's coordinates
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                mapCenter = new google.maps.LatLng(position.coords.latitude,
-                    position.coords.longitude);
-            });
-        }
-    }
-    else {
-        mapCenter = centerCoordinates;
-    }
 
     var map = new google.maps.Map(document.getElementById('map'), {
         center: mapCenter,
         zoom: 13
     });
+
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            var mapBounds = map.getBounds();
+
+            addMarker(pos, map, 'YOU ARE HERE', null);
+
+            mapBounds.extend(pos);
+
+            map.setCenter(pos);
+            map.panTo(pos);
+
+        }, function() {
+            userLocationError();
+        });
+    } else {
+        // Browser doesn't support Geolocation
+            console.info( "Geolocation is not supported by your browser.");  // FIXME must translate i18n
+    }
+
 
     var bounds = new google.maps.LatLngBounds();
 
@@ -85,6 +102,49 @@ function initCenteredMap(centerCoordinates, markers, icon) {
     if (marks.length > 1) {
         map.fitBounds(bounds);
     }
+
+}
+
+
+function getLocation() {
+
+    // navigator.geolocation is Asynchronous. It does not wait for
+    //  the callbacks to return before this function returns.
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, userLocationError);
+    } else {
+        console.info( "Geolocation is not supported by this browser.");
+    }
+}
+
+
+function showPosition(position) {
+    console.info( "Your location: Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude);
+
+    userLocation =  new google.maps.LatLng(position.coords.latitude,
+        position.coords.longitude);
+}
+
+
+function userLocationError(error) {
+    //console.info("Error with navigator.geolocation");
+
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+    }
+
 }
 
 
