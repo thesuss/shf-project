@@ -37,6 +37,10 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
       path = edit_user_registration_path
     when 'all users'
       path = users_path
+    when 'all shf documents'
+      path = shf_documents_path
+    when 'new shf document'
+      path = new_shf_document_path
     else
       path = 'no path set'
   end

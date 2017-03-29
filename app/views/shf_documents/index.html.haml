@@ -1,0 +1,36 @@
+%header.entry-header
+  %h1.entry-title= t('.page_title')
+
+.post-title-divider
+  %span
+
+.entry-content
+
+  %p= t('.instructions')
+
+  %table#shf-documents
+    %thead
+      %tr
+        %th= sort_link(@ransack_query_results, :title, t('.title'))
+
+        %th= sort_link(@ransack_query_results, :description, t('.description'))
+
+        - if current_user.try(:admin)
+          %th
+          %th
+
+    %tbody
+      - @shf_documents.each do |shf_document|
+        %tr.shf-document
+          %td.title= link_to shf_document.title, shf_document.actual_file.url, target: "_blank", id: "shf-document-link-#{shf_document.id}", class: "shf-document-file-link"
+
+          %td.description= shf_document.description
+
+          - if current_user.try(:admin)
+            %td= link_to t('.view_details'), shf_document
+            %td= link_to t('delete'), shf_document, :method => :delete, :data => { :confirm => t('.delete_confirm', document_title: shf_document.title) }
+
+  - if current_user.try(:admin)
+    %br
+    .center
+      = link_to t('shf_documents.new_shf_document'), new_shf_document_path, class: 'btn btn-default btn-shf-document-new'

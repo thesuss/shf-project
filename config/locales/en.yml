@@ -89,6 +89,10 @@ en:
         one: Company
         other: Companies
 
+      shf_document:
+        one: SHF Document
+        other: SHF Documents
+
 
     attributes:
 
@@ -141,6 +145,10 @@ en:
         name: &business_category_name  Name
         description: &description  Description
 
+      shf_document:
+        title: &title Title
+        description: *description
+        uploader: &uploader Uploader
 
 
     errors:
@@ -163,12 +171,20 @@ en:
             password_confirmation:
               confirmation: doesn't match with the password entered.
 
+        shf_document:
+          attributes:
+            actual_file_file_size:
+              file_too_large: 'The uploaded file is too big.'
+            actual_file:
+              file_too_large: 'The uploaded file size must be smaller than %{max}. (Your file is %{value} bytes.)'
+
 
       messages:
         record_invalid: "Validation failed: %{errors}"
         restrict_dependent_destroy:
           has_one: "Cannot delete record because a dependent %{record} exists"
           has_many: "Cannot delete record because dependent %{record} exist"
+
 
  # Automatic and manual lookup for views:
   membership_applications:
@@ -313,8 +329,8 @@ en:
       filename: Filename
       file_was_uploaded: 'This file was uploaded: %{filename}'
       confirm_delete: 'Are you sure you want to delete %{filename}?'
-      invalid_upload_type: Sorry, this is not a file type you can upload.
-      file_too_large: The file must be smaller than 5 MB
+      invalid_upload_type: &invalid_upload_type Sorry, this is not a file type you can upload.
+      file_too_large: &file_too_large_5MB The file must be smaller than 5 MB
 
 
     update_the_status: Update the status
@@ -482,6 +498,63 @@ en:
       error: There was a problem with the export.
 
 
+  shf_documents:
+
+    new_shf_document: &new_shf_document New SHF Document
+    edit_shf_document: Edit the SHF document details
+    view_shf_document: View the SHF document details
+    all_shf_documents: All SHF Documents
+
+    invalid_upload_type: Sorry, this is not a file type you can upload.
+    file_too_large: *file_too_large_5MB
+
+    index:
+      page_title: 'Historical Documents: Board Meeting Minutes'
+      instructions: 'These are SHF Board meeting minutes.  Click on the title of a document to view it.  Depending on your browser settings, it might open in a new window or it might download.'
+      title: *title
+      description: *description
+      delete_confirm: 'Are you sure you want to delete %{document_title}?'
+      view_details: View details
+
+    show:
+      page_title: 'SHF Document: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: &uploaded_by Uploaded by
+      uploaded_on: &uploaded_on Uploaded on
+      filename: 'File:'
+      delete_confirm: 'Are you sure you want to delete %{document_title}?'
+
+    new:
+      page_title: *new_shf_document
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+
+    create:
+      success: '%{document_title} was uploaded successfully.'
+      error: 'There was a problem uploading %{document_title}'
+
+    edit:
+      page_title: 'Edit Details for SHF Document: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+      upload_the_document: Upload the document
+
+    update:
+      success: '%{document_title} was updated successfully.'
+      error: 'There was a problem updating %{document_title}'
+
+    destroy:
+      success: '%{document_title} deleted.'
+
+    minutes_and_static_pages:
+      member_pages: &member_pages Member pages
+      shf_meeting_minutes: &member_pages_board_meetings SHF Board Meeting Minutes
+
   devise:
     min_length: '(at least %{minimum_length} characters)'
 
@@ -583,7 +656,8 @@ en:
 
       members:
         shf_companies: SHF Companies
-        member_pages: &member_pages Member pages
+        member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
         manage_company:
           submenu_title: Manage my company
           view_company: View Company
@@ -593,6 +667,7 @@ en:
       admin:
         shf_main_site: *shf_main_site
         member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Manage Applications
         categories:
           submenu_title: Categories

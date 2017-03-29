@@ -1,0 +1,14 @@
+%header.entry-header
+  %h1.entry-title= t('.member_pages')
+
+.post-title-divider
+  %span
+
+.entry-content
+
+  %ul
+    %li= link_to t('.shf_meeting_minutes'), shf_documents_path
+
+    - HighVoltage.page_ids.each do |page|
+      - unless page == 'index'
+        %li= link_to page.capitalize, page_path(page)

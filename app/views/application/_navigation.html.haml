@@ -27,13 +27,7 @@
                 = link_to t('menus.nav.members.shf_companies'), root_path
 
               - if current_user.is_member_or_admin?
-                %li.menu-item.menu-item-has-children
-                  = link_to t('menus.nav.members.member_pages'), page_path('index')
-                  %ul.sub-menu
-                    - HighVoltage.page_ids.each do |page|
-                      - unless page == 'index'
-                        %li.menu-item
-                          = link_to page.capitalize, page_path(page)
+                = render 'navigation_member_pages'
 
                 - if current_user.has_company?
                   %li.menu-item.menu-item-has-children
@@ -56,13 +50,7 @@
         - if current_user && current_user.admin?
           .menu#menu-menu-3-container
             %ul.menu#menu-menu-3
-              %li.menu-item.menu-item-has-children
-                = link_to t('menus.nav.admin.member_pages'), page_path('index')
-                %ul.sub-menu
-                  - HighVoltage.page_ids.each do |page|
-                    - unless page == 'index'
-                      %li.menu-item
-                        = link_to page.capitalize, page_path(page)
+              = render 'navigation_member_pages'
 
               = render 'navigation_admin'
 

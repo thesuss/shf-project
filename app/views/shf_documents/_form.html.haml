@@ -1,0 +1,30 @@
+= form_for @shf_document do |f|
+
+  - if @shf_document.errors.any?
+    .wpcf7-response-output
+      #error_explanation
+        - @shf_document.errors.full_messages.each do |msg|
+          = msg
+
+
+  = f.label :title
+  = f.text_field :title
+
+
+  = f.label :description
+  = f.text_area :description
+
+
+
+  = f.label :uploader_id, "#{t('shf_documents.edit.uploaded_by')}"
+  = f.collection_select(:uploader_id,[@shf_document.uploader], :id, :email)
+
+
+
+  %p= t('shf_documents.edit.upload_the_document')
+
+  = f.file_field 'actual_file', multiple: false, name: 'shf_document[actual_file]'
+
+
+  .actions
+    = f.submit t('submit')

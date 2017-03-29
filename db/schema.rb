@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316182702) do
+ActiveRecord::Schema.define(version: 20170324015417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,19 @@ ActiveRecord::Schema.define(version: 20170316182702) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shf_documents", force: :cascade do |t|
+    t.integer  "uploader_id",              null: false
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "actual_file_file_name"
+    t.string   "actual_file_content_type"
+    t.integer  "actual_file_file_size"
+    t.datetime "actual_file_updated_at"
+    t.index ["uploader_id"], name: "index_shf_documents_on_uploader_id", using: :btree
+  end
+
   create_table "uploaded_files", force: :cascade do |t|
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
@@ -135,5 +148,6 @@ ActiveRecord::Schema.define(version: 20170316182702) do
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
   add_foreign_key "membership_applications", "users"
+  add_foreign_key "shf_documents", "users", column: "uploader_id"
   add_foreign_key "uploaded_files", "membership_applications"
 end

@@ -1,6 +1,13 @@
-class UploadedFile < ApplicationRecord
+# This is a document that is uploaded by a SHF user
+# (see the Controller for the Policy [rules for access]).
+#
+# For example, an Admin might upload SHF board meeting minutes so that
+#  SHF members can view it.  The SHF board meeting minutes are a ShfDocument.
+#
 
-  belongs_to :membership_application
+class ShfDocument < ApplicationRecord
+
+  belongs_to :uploader, class_name: User
 
   has_attached_file :actual_file
   validates_attachment :actual_file, content_type: {content_type: ['image/jpeg',
@@ -12,10 +19,11 @@ class UploadedFile < ApplicationRecord
                                                                    'application/msword',
                                                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                                                                    'application/vnd.ms-word.document.macroEnabled.12'],
-                                                    message: I18n.t('membership_applications.uploads.invalid_upload_type')},
-                                                    size: { in: 0..5.megabytes,
-                                                            message: :file_too_large
-                                                           }
+                                                    message: I18n.t('shf_documents.invalid_upload_type')},
+                       size: { in: 0..5.megabytes,
+                               message: :file_too_large
+                       }
+
 =begin
 
   If the size validation fails, then the error message is looked up in the
@@ -30,7 +38,7 @@ class UploadedFile < ApplicationRecord
   en:
     errors:
       models:
-        uploaded_file:
+        shf_document:
           attributes:
             actual_file_file_size:
               file_too_large: 'The uploaded file is too big.'

@@ -1,0 +1,14 @@
+.shf-document.new#shf-document-new
+
+  %header.entry-header
+    %h1.entry-title= t('.page_title')
+
+  .post-title-divider
+    %span
+
+  .entry-content.wpcf7
+
+    = render 'form'
+
+  .center
+    = link_to "#{t('shf_documents.all_shf_documents')}", shf_documents_path, class: 'btn btn-default btn-shf-documents-all'

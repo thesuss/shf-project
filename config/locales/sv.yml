@@ -89,6 +89,11 @@ sv:
         one: Företag
         other: Företag
 
+      shf_document:
+        one: SHF Dokument
+        other: SHF Dokument
+
+
     attributes:
 
       user:
@@ -139,6 +144,11 @@ sv:
         name: &business_category_name  Namn
         description: &description  Beskrivning
 
+      shf_document:
+        title: &title Titel
+        description: *description
+        uploader: &uploader Uppladdad av
+
     errors:
 
       models:
@@ -146,7 +156,7 @@ sv:
         uploaded_file:
           attributes:
             actual_file_file_size:
-              file_too_large: 'Den uppladdade är alltför stor.'
+              file_too_large: &file_too_large 'Filen är för stor för att laddas upp.'
             actual_file:
               file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
 
@@ -160,6 +170,14 @@ sv:
           attributes:
             password_confirmation:
               confirmation: stämmer inte med det angivna lösenordet.
+
+        shf_document:
+          attributes:
+            actual_file_file_size:
+              file_too_large: *file_too_large
+            actual_file:
+              file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
+
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
@@ -312,8 +330,8 @@ sv:
       filename: Filnamn
       file_was_uploaded: 'Filen laddades upp: %{filename}'
       confirm_delete: 'Är du säker på att du vill radera %{filename}?'
-      invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
-      file_too_large: Filen måste vara mindre än 5 MB
+      invalid_upload_type: &invalid_upload_type Tyvärr kan du inte ladda upp denna filtypen.
+      file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.
@@ -480,6 +498,64 @@ sv:
       success: Exporten lyckades. Du hittar filen bland din webbläsares nedladdade filer.
       error: Ett problem uppstod med exporten.
 
+
+  shf_documents:
+
+    new_shf_document: &new_shf_document Nytt dokument
+    edit_shf_document: Redigera info om dokument
+    view_shf_document: Information om dokument
+    all_shf_documents: Alla uppladdade dokument
+
+    invalid_upload_type: *invalid_upload_type
+    file_too_large: *file_too_large_5MB
+
+    index:
+      page_title: 'Styrelseprotokoll'
+      instructions: 'Här hittar du våra senaste styrelsemötesprotokoll. Klicka på titeln på ett dokument för att visa det. Beroende på dina webbläsarinställningar kan det öppnas i ett nytt fönster eller så laddas det ner.'
+      title: *title
+      description: *description
+      delete_confirm: 'Är du säker på att du vill radera %{document_title}?'
+      view_details: Visa detaljer
+
+    show:
+      page_title: 'Information om: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: &uploaded_by Uppladdad av
+      uploaded_on: &uploaded_on Datum
+      filename: 'Filnamn:'
+      delete_confirm: 'Är du säker på att du vill radera %{document_title}?'
+
+    new:
+      page_title: *new_shf_document
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+
+    create:
+      success: 'Filen laddades upp: %{document_title}'
+      error: 'Det fanns ett problem att ladda upp %{document_title}'
+
+    edit:
+      page_title: 'Redigera uppladdat dokument: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+      upload_the_document: Ladda upp dokument
+
+    update:
+      success: '%{document_title} uppdaterades utan problem.'
+      error: 'Det fanns ett problem att uppdatera dokumentet.'
+
+    destroy:
+      success: '%{document_title} togs bort.'
+
+    minutes_and_static_pages:
+      member_pages: &member_pages Medlemssidor
+      shf_meeting_minutes: &member_pages_board_meetings Styrelseprotokoll
+
   devise:
     min_length: '(minst %{minimum_length} tecken)'
 
@@ -581,7 +657,8 @@ sv:
 
       members:
         shf_companies: SHF-företag
-        member_pages: &member_pages Medlemssidor
+        member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
         manage_company:
           submenu_title: Hantera företag
           view_company: Visa företagssida
@@ -591,6 +668,7 @@ sv:
       admin:
         shf_main_site: *shf_main_site
         member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Hantera ansökningar
         categories:
           submenu_title: Kategorier
