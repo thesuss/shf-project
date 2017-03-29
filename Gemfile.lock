@@ -160,6 +160,7 @@ GEM
     gherkin (4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    gmaps4rails (2.1.2)
     haml (4.0.7)
       tilt
     haml-rails (0.9.0)
@@ -403,6 +404,7 @@ DEPENDENCIES
   ffaker
   font-awesome-sass
   geocoder
+  gmaps4rails
   haml-rails
   high_voltage (~> 3.0.0)
   i18n-js (>= 3.0.0.rc11)

@@ -43,6 +43,7 @@ gem 'whenever'
 gem 'smarter_csv'
 
 gem 'geocoder'
+gem 'gmaps4rails'
 
 gem 'sanitize'
 
