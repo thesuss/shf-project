@@ -190,6 +190,10 @@ sv:
   membership_applications:
     new:
       title: Ansök om medlemskap
+      instructions: 'För att kunna behandla din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier.'
+
+      section_title_about_you: &about_you Om Dig
+
       submit: *submit
       company_number: *company_number
       phone_number: &phone_number Telefonnummer
@@ -200,10 +204,15 @@ sv:
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
-      application_dog_category: &application_dog_category "Ansöker som hund-*"
+      application_dog_category: &application_dog_category "Ansöker som hund-"
       clue_selected_categories: &clue_selected_categories "Blå fält = valda kategorier"
-      upload_a_file: 'Ladda upp en fil:'
+
+      upload_files_section: Underlag för att styrka min ansökan
+      upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
+      upload_files: 'Ladda upp filer från datorn'
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
+      upload_button: Välj en fil...
+      will_be_uploaded: 'TDessa filer kommer att laddas upp när du skickar in din ansökan:'
 
       submit_button_label: *submit
 
@@ -335,6 +344,19 @@ sv:
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.
+
+
+
+  file_uploads:
+    no_files: Inga filer är uppladdade.
+    files_uploaded: 'Uppladdade filer för denna ansökan:'
+    filename: Filnamn
+    file_was_uploaded: 'Filen laddades upp: %{filename}'
+    confirm_delete: 'Är du säker på att du vill radera %{filename}?'
+    invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
+    file_too_large: Filen måste vara mindre än 5 MB
+
+
 
   companies:
     new:

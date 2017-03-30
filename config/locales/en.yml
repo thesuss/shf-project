@@ -190,6 +190,10 @@ en:
   membership_applications:
     new:
       title: Apply for a Membership
+      instructions: 'To process your application, we need information about you and in which category you are applying as well as documents proving your skills in this/those categories.'
+
+      section_title_about_you: &about_you About You
+
       submit: *submit
       first_name: *first_name
       last_name: *last_name
@@ -198,10 +202,15 @@ en:
       contact_email: *contact_email
 
       can_be_same_email: Can be the same that you logged in with, but need not be.
-      application_dog_category: &application_dog_category "Dog service category -*"
+      application_dog_category: &application_dog_category "Services You Provide"
       clue_selected_categories: &clue_selected_categories "Blue box = selected categories"
-      upload_a_file: 'Upload a file:'
-      upload_more_files: 'You can upload more files. After you submit your application, edit it and you can upload more there.'
+
+      upload_files_section: Documents to support your application (certifications, etc.)
+      upload_files_instructions: 'The documents are very important for us to assess your application. We use them to authenticate your skills and education. This ensures that our membership standards remain high, which in turn means that the public know that the Swedish dog business is professional and reliable.'
+      upload_files: 'Upload files from your computer:'
+      upload_more_files: 'You can upload more files. After you submit your application, you can edit it upload more files on that page.'
+      upload_button: Choose files to upload...
+      will_be_uploaded: 'These files will be uploaded when you submit your application:'
 
       submit_button_label: *submit
 
@@ -324,7 +333,7 @@ en:
     list_all_membership_applications: List all applications
 
     uploads:
-      no_files: No files uploaded for this application.
+      no_files: You have not uploaded any files for this application.
       files_uploaded: 'Files uploaded for this application:'
       filename: Filename
       file_was_uploaded: 'This file was uploaded: %{filename}'
@@ -335,6 +344,19 @@ en:
 
     update_the_status: Update the status
     application_deleted: Application deleted.
+
+
+
+  file_uploads:
+    no_files: No files have been uploaded.
+    files_uploaded: 'Files uploaded:'
+    filename: Filename
+    file_was_uploaded: 'This file was uploaded: %{filename}'
+    confirm_delete: 'Are you sure you want to delete %{filename}?'
+    invalid_upload_type: Sorry, this is not a file type you can upload.
+    file_too_large: The file must be smaller than 5 MB
+
+
 
   companies:
     new:
