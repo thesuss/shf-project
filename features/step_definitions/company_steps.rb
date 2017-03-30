@@ -57,3 +57,17 @@ And(/^the region for company named "([^"]*)" is set to nil$/) do | company_name 
   co.addresses.first.update(region: nil)
   co.save!  # do not do validations in case we're putting this into a bad state on purpose
 end
+
+
+Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |company_name|
+  co = Company.find_by_name(company_name)
+
+  # Cannot do this through our Models, because it will be geocoded.
+  # Have to use SQL to set up this situation
+
+  addr_ids = co.addresses.map(&:id)
+
+  query = "UPDATE addresses SET latitude=NULL, longitude=NULL WHERE id in (#{addr_ids.join(', ')})"
+  Address.connection.exec_query(query)
+
+end

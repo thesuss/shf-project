@@ -13,6 +13,8 @@ class CompaniesController < ApplicationController
                           .complete
                           .includes(:addresses, :business_categories)
 
+    @all_companies.each { | co | geocode_if_needed co  }
+
     @companies = @all_companies.page(params[:page]).per_page(10)
 
 
@@ -87,10 +89,14 @@ class CompaniesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_company
     @company = Company.includes(:addresses).find(params[:id])
+    geocode_if_needed @company
+  end
 
-    needs_geocoding = @company.addresses.reject(&:geocoded?)
+
+  def geocode_if_needed(company)
+    needs_geocoding = company.addresses.reject(&:geocoded?)
     needs_geocoding.each(&:geocode_best_possible)
-    @company.save!  if needs_geocoding.count > 0
+    company.save!  if needs_geocoding.count > 0
   end
 
 
