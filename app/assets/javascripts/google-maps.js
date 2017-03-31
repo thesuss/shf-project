@@ -85,7 +85,7 @@ function initCenteredMap(centerCoordinates, markers, icon) {
             map.panTo(pos);
 
         }, function() {
-            userLocationError();
+            userLocationErrorx();
         });
     } else {
         // Browser doesn't support Geolocation
@@ -127,7 +127,7 @@ function showPosition(position) {
 }
 
 
-function userLocationError(error) {
+function userLocationErrorx(error) {
     //console.info("Error with navigator.geolocation");
 
     switch(error.code) {

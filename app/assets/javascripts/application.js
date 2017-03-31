@@ -15,6 +15,8 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require i18n/translations
+//= require js-namespace-rails
+//= require underscore-min
 //= require_tree .
 
 document.addEventListener('turbolinks:load', function() {

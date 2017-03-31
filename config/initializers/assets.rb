@@ -16,5 +16,7 @@ Rails.application.config.assets.precompile += %w( users.scss )
 Rails.application.config.assets.precompile += %w{ maps.scss }
 Rails.application.config.assets.precompile += %w{ companies.scss }
 Rails.application.config.assets.precompile += %w( ckeditor/config.js )
+Rails.application.config.assets.precompile += %w( underscore-min.js )
+
 Rails.application.config.assets.precompile += %w{ shf-documents.scss }
 Rails.application.config.assets.precompile += %w( membership-applications.scss )

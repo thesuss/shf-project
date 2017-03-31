@@ -22,6 +22,8 @@ gem 'paperclip', '~> 5.0.0'
 
 gem 'routing-filter'   # for handling locale filters around routes
 
+gem 'js-namespace-rails'
+
 gem 'ransack'
 gem 'city-state'
 gem 'rubyzip', '>= 1.2.1'  # security vulnerability with earlier versions CVE-2017-5946

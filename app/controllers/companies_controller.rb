@@ -11,12 +11,14 @@ class CompaniesController < ApplicationController
 
     @all_companies =  @search_params.result
                           .complete
-                          .includes(:addresses, :business_categories)
+                          .includes({addresses: [:region, :kommun]}, :business_categories)
 
     @all_companies.each { | co | geocode_if_needed co  }
 
     @companies = @all_companies.page(params[:page]).per_page(10)
 
+    @map_markers = make_map_markers(@all_companies)
+    @map_zoom_level = 5
 
     render partial: 'companies_list' if request.xhr?
   end
@@ -25,6 +27,8 @@ class CompaniesController < ApplicationController
   def show
     @categories = @company.business_categories
     @company.addresses << Address.new  if @company.addresses.count == 0
+    @map_markers = make_map_markers([@company], link_name: false)
+    @map_zoom_level = 12
   end
 
 
@@ -127,4 +131,18 @@ class CompaniesController < ApplicationController
     params
   end
 
+
+  # build map markers for these companies, using Gmaps4rails
+  # link_name: if true, link the company name, else don't make a link for it
+  def make_map_markers(companies, link_name:  true)
+
+    markers = Gmaps4rails.build_markers(companies) do |company, marker|
+      marker.lat company.main_address.latitude
+      marker.lng company.main_address.longitude
+      marker.title company.name
+      marker.infowindow helpers.html_marker_text(company, name_html: (link_name ? nil : company.name) )
+    end
+
+    markers
+  end
 end
