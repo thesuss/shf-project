@@ -24,7 +24,7 @@ Given(/^I am logged in as "([^"]*)"$/) do |email|
   login_as @user, scope: :user
 end
 
-Given(/^I am Logged out$/) do
+Given(/^I am [L|l]ogged out$/) do
   logout
 end
 

@@ -23,6 +23,28 @@ class Address < ApplicationRecord
                    :if => lambda { |obj| obj.changed? }
 
 
+  # geocode all of the addresses that need it
+  #
+  # sleep_between = number of seconds to sleep between each geocode call so
+  #  that we don't go over the # requests per second of the service (ex Google)
+  # num_per_batch = the number to fetch from the db per batch
+  #
+  def self.geocode_all_needed(sleep_between: 0.5, num_per_batch: 50)
+
+    need_geocoding = self.not_geocoded # this method comes from Geocoder
+
+    Geocoder.configure(timeout: 20) # geocoding service timeout (secs).
+    # need this long to ensure we don't timeout
+
+    need_geocoding.find_each(batch_size: num_per_batch) do |addr|
+      addr.geocode_best_possible
+      addr.save
+      sleep(sleep_between.to_f)
+    end
+    
+  end
+
+
   def entire_address
     [street_address, city, post_code, sverige_if_nil].compact.join(', ')
   end

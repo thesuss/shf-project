@@ -346,3 +346,17 @@ Then(/^I should( not)? see "([^"]*)" before "([^"]*)"$/) do |not_see, toSearch, 
     assert_text regex
   end
 end
+
+
+And(/^I should be on the SHF document page for "([^"]*)"$/)  do | doc_title |
+    shf_doc = ShfDocument.find_by_title(doc_title)
+  expect(current_path_without_locale(current_path)).to eq shf_document_path(shf_doc)
+end
+
+
+Then(/^all addresses for the company named "([^"]*)" should be geocoded$/) do | company_name |
+
+  co = Company.find_by_name(company_name)
+  expect( co.addresses.reject(&:geocoded? ).count).to be 0
+
+end
