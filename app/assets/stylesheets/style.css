@@ -154,7 +154,9 @@ a:active {
 }
 
 a img {
-    border:0; }
+    border:0;
+    outline:0;
+}
 
 .row {
     margin:20px 0px 20px 0px;
