@@ -192,7 +192,7 @@ sv:
       title: Ansök om medlemskap
       instructions: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier.'
 
-      section_title_about_you: &about_you Om dig:
+      section_title_about_you: &about_you Om dig
 
       submit: *submit
       company_number: *company_number
