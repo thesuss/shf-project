@@ -584,7 +584,7 @@ sv:
     registrations:
       new:
         title: Skapa användare
-        create_account: Skicka
+        create_account: Skapa konto
         forgot_password: Glömt lösenord
         confirm_password: &confirm_password Bekräfta lösenord
         submit_button_label: Skapa användare
