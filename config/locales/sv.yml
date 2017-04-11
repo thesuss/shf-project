@@ -8,7 +8,7 @@ sv:
   more: Mer
 
   show_in_english: Show the site in English
-  show_in_swedish: Visar webbplatsen på svenska
+  show_in_swedish: Visa webbplatsen på svenska
 
   password: &password Lösenord
 
@@ -23,7 +23,7 @@ sv:
   submit: &submit Skicka
   delete: &delete Radera
   remove: &remove Ta bort
-  cancel: &cancel Annullera
+  cancel: &cancel Ångra
   upload: &upload Ladda upp
   send: &send Skicka
   new: &new Nytt
@@ -47,7 +47,7 @@ sv:
   theme_copyright: "© 2017 Tema av Theme Feeder. Alla rättigheter förbehållna."
 
   name: &name Namn
-  org_nr: &org_nr Org no.
+  org_nr: &org_nr Org nr.
 
   toggle:
     company_search_form:
@@ -57,7 +57,7 @@ sv:
       hide: Dölj Sökfunktionen
       show: Visa Sökfunktionen
     set_new_password_form:
-      hide: "Dölj the 'Change Password' info"
+      hide: "Dölj 'Byt lösenord' info"
       show: "Ändra användarens lösenord"
 
   will_paginate:
@@ -66,7 +66,7 @@ sv:
     page_gap: "&hellip;"
 
   ckeditor:
-      page_title: 'CKEditor Filer Chef'
+      page_title: 'CKEditor Filer'
       confirm_delete: 'Radera fil?'
       buttons:
         cancel: *cancel
@@ -90,8 +90,8 @@ sv:
         other: Företag
 
       shf_document:
-        one: SHF Dokument
-        other: SHF Dokument
+        one: Dokument
+        other: Dokument
 
 
     attributes:
@@ -121,7 +121,7 @@ sv:
 
       address:
         street: &street Gata
-        post_code: &post_code Post nr
+        post_code: &post_code Post nr.
         city: &city Ort
         kommun: &kommun Kommun
         region: &region Verksamhetslän
@@ -130,7 +130,7 @@ sv:
       company:
         company_number: *org_nr
         name: *name
-        phone_number: &company_phone Telefon
+        phone_number: &company_phone Telefonnummer till företaget
         email: *email
         website: Webbplats
         org_nr: *org_nr
@@ -190,9 +190,9 @@ sv:
   membership_applications:
     new:
       title: Ansök om medlemskap
-      instructions: 'För att kunna behandla din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier.'
+      instructions: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier.'
 
-      section_title_about_you: &about_you Om Dig
+      section_title_about_you: &about_you Om dig
 
       submit: *submit
       company_number: *company_number
@@ -204,15 +204,15 @@ sv:
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
-      application_dog_category: &application_dog_category "Ansöker som hund-"
-      clue_selected_categories: &clue_selected_categories "Blå fält = valda kategorier"
+      application_dog_category: &application_dog_category "Ansöker som:"
+      clue_selected_categories: &clue_selected_categories "Blå fält = valda"
 
       upload_files_section: Underlag för att styrka min ansökan
       upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
       upload_files: 'Ladda upp filer från datorn'
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
       upload_button: Välj en fil...
-      will_be_uploaded: 'TDessa filer kommer att laddas upp när du skickar in din ansökan:'
+      will_be_uploaded: 'Dessa filer kommer att laddas upp när du skickar in din ansökan:'
 
       submit_button_label: *submit
 
@@ -240,11 +240,11 @@ sv:
       app_status: Ansökans status
       change_status: Ändra status
       membership_number: *membership_number
-      with_categories: Ansöker inom
+      with_categories: Ansöker som
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
       waiting_for_payment: 'Väntar på betalning (Det går inte att godkänna ansökan till dess att betalning har mottagits.)'
-      ready_for_review_instructions: "När du är redo för SHF din ansökan igen, markera kryssrutan nedan. När du trycker på knappen Skicka och är markerad, kommer vi vet att vi måste se över det igen. \nDu kan göra ändringar utan att kontrollera redo för granskning kryssrutan . Du kan göra det om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du är redo att få det över."
+      ready_for_review_instructions: "När du är redo för att vi ska hantera din ansökan igen, kryssa i rutan nedan. När du trycker på knappen Skicka och kryssrutan är markerad, vet vi att vi måste se över den igen. \nDu kan göra ändringar utan att kryssa i rutan. Du kan om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du skickar in den för granskning."
 
     index:
       title: Alla inkomna ansökningar
@@ -255,7 +255,7 @@ sv:
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
     information:
-      title: Om medlemsskap
+      title: Om medlemskap
       member:
         title: Välkommen
         using_the_logo: "Det är viktigt att vi alla följer vår grafiska profil, att loggan
@@ -301,8 +301,8 @@ sv:
       error: 'Det uppstod ett fel när systemet försökte ångra status: "Behöver kompletteras".'
 
     is_ready_for_review:
-      success: Din ansökan har lämnats in för en annan granskning.
-      error: Det uppstod ett fel när du försöker att skicka in din ansökan för en annan granskning.
+      success: Din ansökan har lämnats in för omgranskning.
+      error: Det uppstod ett fel när du försöker att skicka in din ansökan för omgranskning.
 
     state:
       new: &status_new Ny
@@ -408,7 +408,7 @@ sv:
       flera län, eller "Online" om det fungerar oftast (eller uteslutande) på nätet.
     website_include_http: Företagets webbplats
     org_nr_no_hyphens: Endast siffror (ej bindestreck)
-    description: Anpassade Beskrivning av företaget
+    description: Beskrivning av företaget
 
     all_companies: Alla företag
     edit_company: Redigera detta företag
@@ -584,7 +584,7 @@ sv:
     registrations:
       new:
         title: Skapa användare
-        create_account: Skicka
+        create_account: Skapa konto
         forgot_password: Glömt lösenord
         confirm_password: &confirm_password Bekräfta lösenord
         submit_button_label: Skapa användare
