@@ -1,6 +1,6 @@
 Geocoder.configure(
     # Geocoding options
-     timeout: 9,                  # geocoding service timeout (secs)
+    # timeout: 3,                 # geocoding service timeout (secs)
     # lookup: :google,            # name of geocoding service (symbol)
 
     language: :sv,              # ISO-639 language code
@@ -20,11 +20,8 @@ Geocoder.configure(
     # supports SocketError and Timeout::Error
     # always_raise: [],
 
-
     # Calculation options
     units: :km,                 # :km for kilometers or :mi for miles
 
     # distances: :linear          # :spherical or :linear
 )
-
-Geocoder.configure(always_raise: :all) unless Rails.env.production?
