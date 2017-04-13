@@ -98,6 +98,10 @@ RSpec.describe Address, type: :model do
       "#{expected_msg}; addr: #{addr.entire_address}, lat: #{addr.latitude}, long: #{addr.longitude}"
     end
 
+    it 'Geocoder is configured to raise all errors in test environment' do
+      expect(Geocoder.config[:always_raise]).to eq(:all)
+    end
+
     it 'geocode from address' do
       addr = Address.new(street_address: expected_streetaddress,
                          city: expected_city,
