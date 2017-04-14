@@ -30,7 +30,13 @@ gem 'i18n-js', '>= 3.0.0.rc11'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
-gem 'ckeditor'
+# Loading `ckeditor` directly from github due to problem in production
+# environment where assets cannot be found.
+# See: https://github.com/galetahub/ckeditor/issues/719
+# According to above link, this issue has been fixed but not yet released
+# (writing this on April 14, 2017).
+# Once release, remove reference to github for loading.
+gem 'ckeditor', github: 'galetahub/ckeditor'
 
 gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
 
@@ -81,4 +87,8 @@ end
 
 group :test do
   gem 'poltergeist'
+end
+
+group :production do
+  gem 'rails_12factor'
 end

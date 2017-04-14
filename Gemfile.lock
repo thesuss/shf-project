@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/galetahub/ckeditor.git
+  revision: 11d3a5b905646c6fd397f7710f95fb9eb29f0865
+  specs:
+    ckeditor (4.2.2)
+      cocaine
+      orm_adapter (~> 0.5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -92,9 +100,6 @@ GEM
     chronic (0.10.2)
     city-state (0.0.13)
       rubyzip (~> 1.1)
-    ckeditor (4.2.2)
-      cocaine
-      orm_adapter (~> 0.5.0)
     climate_control (0.1.0)
     cliver (0.3.2)
     cocaine (0.5.8)
@@ -263,6 +268,11 @@ GEM
       nokogiri (~> 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (5.0.1)
       actionpack (= 5.0.1)
       activesupport (= 5.0.1)
@@ -390,7 +400,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.0)
   capistrano-ssh-doctor (~> 1.0)
   city-state
-  ckeditor
+  ckeditor!
   coveralls
   cucumber-rails
   cucumber-timecop
@@ -420,6 +430,7 @@ DEPENDENCIES
   pundit-matchers
   railroady
   rails (~> 5.0.0, >= 5.0.0.1)
+  rails_12factor
   rake
   ransack
   routing-filter
@@ -442,4 +453,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.14.3
+   1.14.6
