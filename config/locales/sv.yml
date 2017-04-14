@@ -524,12 +524,19 @@ sv:
   shf_documents:
 
     new_shf_document: &new_shf_document Nytt dokument
+    new_shf_minutes:  &new_shf_minutes Lägg till mötesprotokoll
     edit_shf_document: Redigera info om dokument
     view_shf_document: Information om dokument
     all_shf_documents: Alla uppladdade dokument
+    all_shf_minutes: Alla mötesprotokoll
+    edit_shf_document_contents: Redigera dokumentinnehållet
 
     invalid_upload_type: *invalid_upload_type
     file_too_large: *file_too_large_5MB
+
+    contents_access_error: 'Det uppstod ett fel att komma åt filen: %{message}'
+
+    missing_special_letters: 'Vi beklagar, men för tillfället kan systemet inte visa åäö i undersidornas titlar.'
 
     index:
       page_title: 'Styrelseprotokoll'
@@ -549,7 +556,7 @@ sv:
       delete_confirm: 'Är du säker på att du vill radera %{document_title}?'
 
     new:
-      page_title: *new_shf_document
+      page_title: *new_shf_minutes
       title: *title
       description: *description
       uploaded_by: *uploaded_by
@@ -577,6 +584,15 @@ sv:
     minutes_and_static_pages:
       member_pages: &member_pages Medlemssidor
       shf_meeting_minutes: &member_pages_board_meetings Styrelseprotokoll
+
+    contents_show:
+      page_title: '%{document_title}'
+
+    contents_edit:
+      page_title: 'Redigera innehåll för SHF Document: %{document_title}'
+
+    contents_update:
+      success: '%{document_title} uppdaterades utan problem.'
 
   devise:
     min_length: '(minst %{minimum_length} tecken)'

@@ -45,6 +45,15 @@ Rails.application.routes.draw do
 
     resources :shf_documents
 
+    get 'shf_documents/contents/:page',
+      to: 'shf_documents#contents_show', as: 'contents_show'
+
+    get 'shf_documents/contents/:page/redigera',
+      to: 'shf_documents#contents_edit', as: 'contents_edit'
+
+    patch 'shf_documents/contents/:page',
+      to: 'shf_documents#contents_update', as: 'contents_update'
+
     get 'member-pages', to: 'shf_documents#minutes_and_static_pages'
 
   end

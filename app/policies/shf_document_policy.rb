@@ -14,6 +14,17 @@ class ShfDocumentPolicy < ApplicationPolicy
     is_admin?
   end
 
+  def contents_show?
+    index?
+  end
+
+  def contents_edit?
+    update?
+  end
+
+  def contents_update?
+    update?
+  end
 
   def new?
     create?

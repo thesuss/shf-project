@@ -39,7 +39,7 @@ Feature: SHF members (and admins) can views board meeting minutes (SHF documents
     And I should see t("shf_documents.index.instructions")
     And I should see t("shf_documents.index.view_details")
     And I should see t("delete")
-    And I should see t("shf_documents.new_shf_document")
+    And I should see t("shf_documents.new_shf_minutes")
     Then I should see link "shf-document-link-1" with target = "_blank"
     And I click on "Uploaded diploma"
      # clicking on a document title will show or download the actual document
@@ -108,4 +108,3 @@ Feature: SHF members (and admins) can views board meeting minutes (SHF documents
     Given I am logged in as "bob@snarkybarky.se "
     And I am on the "all SHF documents" page
     Then I should see t("errors.not_permitted")
-

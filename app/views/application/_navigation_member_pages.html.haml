@@ -1,12 +1,5 @@
 %li.menu-item.menu-item-has-children
   = link_to t('menus.nav.members.member_pages'), member_pages_path
 
-  %ul.sub-menu
-
-    %li.menu-item
-      = link_to t('menus.nav.members.shf_meeting_minutes'), shf_documents_path
-
-    - HighVoltage.page_ids.each do |page|
-      - unless page == 'index'
-        %li.menu-item
-          = link_to page.capitalize, page_path(page)
+  = render partial: 'shf_documents/documents_list',
+           locals: { ul_class: 'sub-menu', li_class: 'menu-item' }

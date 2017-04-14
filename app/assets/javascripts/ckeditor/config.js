@@ -12,7 +12,7 @@ if(typeof(CKEDITOR) != 'undefined') {
     // config.uiColor = '#AADC6E';
 
     config.language = I18n.locale;
-    config.height = 250;
+    config.height = 400;
     config.removePlugins = 'flash';
     config.removeDialogTabs = 'image:advanced';
     config.filebrowserWindowWidth = '500';

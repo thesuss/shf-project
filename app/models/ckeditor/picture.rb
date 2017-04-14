@@ -11,7 +11,8 @@ class Ckeditor::Picture < Ckeditor::Asset
   validates_attachment_content_type :data, content_type: /\Aimage/
 
   belongs_to :company
-  validates_presence_of :company
+  validates_presence_of :company,
+                        if: lambda { /company/.match(@@category) }
 
   @@category = nil
   @@company_id = nil
@@ -30,7 +31,11 @@ class Ckeditor::Picture < Ckeditor::Asset
   end
 
   def self.all
-    @@company_id ? super.where(company_id: @@company_id) : super
+    if @@category == 'member_pages'
+      super.where(company_id: nil)
+    else
+      @@company_id ? super.where(company_id: @@company_id) : super
+    end
   end
 
   private

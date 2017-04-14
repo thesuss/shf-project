@@ -1,0 +1,10 @@
+.shf-document.show#shf-document
+
+  .item-nav-buttons.pull-right#item-nav-buttons
+    - if policy(ShfDocument).contents_update?
+      = link_to "#{t('shf_documents.edit_shf_document_contents')}",
+                contents_edit_path(page: @page),
+                class: 'btn btn-default edit-shf-document'
+
+  .entry-content
+    != @contents

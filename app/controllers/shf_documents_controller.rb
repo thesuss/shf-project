@@ -2,11 +2,12 @@ class ShfDocumentsController < ApplicationController
 
   before_action :set_shf_document, only:  [ :show, :edit, :update, :destroy ]
   before_action :authorize_shf_doc, only: [ :show, :edit, :update, :destroy ]
-  before_action :authorize_shf_doc_class, only: [:index, :new, :create, :historika_meeting_minutes ]
+  before_action :authorize_shf_doc_class,
+                  only: [:index, :new, :create,
+                         :contents_show, :contents_edit, :contents_update]
 
 
   def index
-    # ShfDocument.all
     @ransack_query_results = ShfDocument.ransack(params[:q])
     @shf_documents = @ransack_query_results.result(distinct: true)
   end
@@ -61,8 +62,57 @@ class ShfDocumentsController < ApplicationController
   def minutes_and_static_pages
   end
 
+  def contents_show
+    page_and_page_contents
+  end
+
+  def contents_edit
+    Ckeditor::Picture.images_category = 'member_pages'
+    Ckeditor::Picture.for_company_id = nil
+
+    page_and_page_contents
+  end
+
+  def contents_update
+    page, file_path = page_and_file_path
+
+    contents = params[:contents]
+    File.open(file_path, 'w') do |file|
+      file.write(contents)
+    end
+
+    redirect_to contents_show_path(page),
+                notice: t('.success', document_title: page.capitalize)
+
+  rescue => e
+    helpers.flash_message(:alert,
+                          t('shf_documents.contents_access_error',
+                            message: e.message))
+    redirect_to member_pages_path
+  end
+
 
   private
+
+  def page_and_file_path
+    page = params[:page]
+
+    file_path = page_path(page) + '.html'
+
+    file_path.sub!('/en/', '') # strip locale prefix if present
+
+    [ page, File.join(Rails.root, 'app', 'views', file_path) ]
+  end
+
+  def page_and_page_contents
+    @page, file_path = page_and_file_path
+    @contents = File.new(file_path).read
+  rescue => e
+    helpers.flash_message(:alert,
+                          t('shf_documents.contents_access_error',
+                            message: e.message))
+    redirect_to member_pages_path
+  end
 
   def authorize_shf_doc_class
     authorize ShfDocument
@@ -90,7 +140,8 @@ class ShfDocumentsController < ApplicationController
                                          :actual_file_file_size,
                                          :actual_file_content_type,
                                          :actual_file_updated_at,
-                                         :_destroy
+                                         :_destroy,
+                                         :page
     )
   end
 

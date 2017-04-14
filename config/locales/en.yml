@@ -523,12 +523,19 @@ en:
   shf_documents:
 
     new_shf_document: &new_shf_document New SHF Document
+    new_shf_minutes:  &new_shf_minutes Add Meeting Minutes Document
     edit_shf_document: Edit the SHF document details
     view_shf_document: View the SHF document details
     all_shf_documents: All SHF Documents
+    all_shf_minutes: All Meeting Minutes
+    edit_shf_document_contents: Edit the document contents
 
     invalid_upload_type: Sorry, this is not a file type you can upload.
     file_too_large: *file_too_large_5MB
+
+    contents_access_error: 'There was an error accessing the file: %{message}'
+
+    missing_special_letters: 'In the document titles above, letters å, ä and ö are shown as a, a and o, respectively.'
 
     index:
       page_title: 'Historical Documents: Board Meeting Minutes'
@@ -548,7 +555,7 @@ en:
       delete_confirm: 'Are you sure you want to delete %{document_title}?'
 
     new:
-      page_title: *new_shf_document
+      page_title: *new_shf_minutes
       title: *title
       description: *description
       uploaded_by: *uploaded_by
@@ -576,6 +583,15 @@ en:
     minutes_and_static_pages:
       member_pages: &member_pages Member pages
       shf_meeting_minutes: &member_pages_board_meetings SHF Board Meeting Minutes
+
+    contents_show:
+      page_title: '%{document_title}'
+
+    contents_edit:
+      page_title: 'Edit Content for SHF Document: %{document_title}'
+
+    contents_update:
+      success: '%{document_title} was updated successfully.'
 
   devise:
     min_length: '(at least %{minimum_length} characters)'

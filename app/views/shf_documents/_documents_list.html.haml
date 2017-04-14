@@ -1,0 +1,8 @@
+%ul{ class: ul_class }
+
+  %li{ class: li_class }
+    = link_to t('menus.nav.members.shf_meeting_minutes'), shf_documents_path
+
+  - HighVoltage.page_ids.each do |page|
+    %li{ class: li_class }
+      = link_to page.capitalize, contents_show_path(page: page)

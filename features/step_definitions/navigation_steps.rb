@@ -111,3 +111,13 @@ end
 And(/^I am on the static workgroups page$/) do
   visit page_path('yrkesrad')
 end
+
+And(/^I am on the test member page$/) do
+  path = File.join(Rails.root, 'spec', 'fixtures',
+                   'member_pages', 'testfile.html')
+
+  allow_any_instance_of(ShfDocumentsController).to receive(:page_and_file_path)
+    .and_return([ 'testfile', path ])
+
+  visit contents_show_path('testfile')
+end
