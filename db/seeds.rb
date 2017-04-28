@@ -220,9 +220,10 @@ if Rails.env.production?
     email = env_invalid_blank('SHF_ADMIN_EMAIL')
     pwd = env_invalid_blank('SHF_ADMIN_PWD')
 
-    User.create(email: email, password: pwd, admin: true)
-  rescue
-    raise SeedAdminENVError, SEED_ERROR_MSG
+    User.create!(email: email, password: pwd, admin: true)
+  rescue => e
+    puts e.inspect
+    abort SEED_ERROR_MSG
   end
 else
   email = 'admin@sverigeshundforetagare.se'
