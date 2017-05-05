@@ -83,6 +83,7 @@ group :development do
   gem 'capistrano-ssh-doctor', '~> 1.0'
   gem 'capistrano-env-config'
   gem 'railroady'
+  gem 'bullet'
 end
 
 group :test do
