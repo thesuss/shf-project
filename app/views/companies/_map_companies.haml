@@ -3,7 +3,7 @@
 
 :javascript
 
-  document.addEventListener('turbolinks:load', function() {
+  $(function() {
 
       var markers = #{markers.to_json}
       mapCenter = {lat: 59.3293235, lng: 18.0685808}; // default center: Stockholm: [59.32932349999999, 18.0685808]

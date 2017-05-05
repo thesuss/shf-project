@@ -13,11 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
-//= require turbolinks
 //= require i18n/translations
 //= require_tree .
 
-document.addEventListener('turbolinks:load', function() {
+$(function() {
     'use strict';
 
     $.each($('.search_field'), function (index, ele) {
@@ -121,7 +120,6 @@ document.addEventListener('turbolinks:load', function() {
             jQuery('#site-navigation.fixed-nav ~ .search-toggle-container').removeClass('nav-shadow-sub');
         }
     });
-
 });
 //Set timeout for flashes
 setTimeout("$('.flashes').fadeOut('slow');", 5000);
