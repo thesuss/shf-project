@@ -123,7 +123,8 @@ private def make_new_company(company_number)
                         email: FFaker::InternetSE.free_email,
                         name: FFaker::CompanySE.name,
                         phone_number: FFaker::PhoneNumberSE.phone_number,
-                        website: FFaker::InternetSE.http_url)
+                        website: FFaker::InternetSE.http_url,
+                        address_visibility: 'street_address')
   if(company.save)
 
     address = Address.new(addressable: company,

@@ -10,6 +10,10 @@ class Company < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validate :swedish_organisationsnummer
 
+  ADDRESS_VISIBILITY = %w(street_address post_code city kommun none)
+
+  validates :address_visibility, inclusion: ADDRESS_VISIBILITY
+
   before_save :sanitize_website
 
   has_many :business_categories, through: :membership_applications
@@ -42,6 +46,8 @@ class Company < ApplicationRecord
     end
 
   end
+
+  scope :address_visible, -> { where('address_visibility != ?', 'none') }
 
 
   def destroy_checks

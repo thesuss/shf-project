@@ -59,5 +59,54 @@ module CompaniesHelper
     text
   end
 
+  # Creates an array which contains an array of [text, value]
+  #  for each company address_visibility level (for selection in form)
+  def address_visibility_array
+    Company::ADDRESS_VISIBILITY.map do |visibility_level|
+      [ I18n.t("address_visibility.#{visibility_level}"), visibility_level ]
+    end
+  end
+
+  # `show_address_fields` returns an array used in company show view to
+  # loop through and display all address fields for a company,
+  # consistent with:
+  #  1) type of user, and,
+  #  2) `address_visibility` set for the company
+  #
+  # If user == company member || user == admin, show all fields
+  # else show all fields consistent with address_visibility.
+  # Two return values:
+  #  Return value one:
+  #    - array of fields to be shown
+  #      - Array contains a hash - one for each field - with three keys:
+  #        - name: name of field (Address) attribute
+  #        - label: label of field (for I18n lookup)
+  #        - method: name of value method to call on attribute (non-nil for association)
+  #    - nil if no fields are to be shown
+  #  Return value two:
+  #    - true if address_visibility value is to be shown
+  #    - false otherwise
+  def show_address_fields(user, company)
+
+    all_fields = [ { name: 'street_address', label: 'street', method: nil },
+                   { name: 'post_code', label: 'post_code', method: nil },
+                   { name: 'city', label: 'city', method: nil },
+                   { name: 'kommun', label: 'kommun', method: 'name' },
+                   { name: 'region', label: 'region', method: 'name' } ]
+
+    if user&.admin? || user&.is_in_company_numbered?(company.company_number)
+      return all_fields, true
+    else
+      start_index = all_fields.find_index do |field|
+        field[:name] == company.address_visibility
+      end
+
+      if start_index
+        return all_fields[start_index..4], false
+      else
+        return nil, false
+      end
+    end
+  end
 
 end

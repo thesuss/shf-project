@@ -110,4 +110,73 @@ RSpec.describe CompaniesHelper, type: :helper do
 
   end
 
+  describe '#address_visibility_array' do
+    let(:selection_array) do
+      [ [ I18n.t('address_visibility.street_address'), 'street_address' ],
+        [ I18n.t('address_visibility.post_code'), 'post_code'],
+        [ I18n.t('address_visibility.city'), 'city' ],
+        [ I18n.t('address_visibility.kommun'), 'kommun' ],
+        [ I18n.t('address_visibility.none'), 'none' ] ]
+    end
+
+    after(:each) do
+      I18n.locale = I18n.default_locale
+    end
+    it 'returns swedish selections array' do
+      I18n.locale = 'sv'
+      expect(selection_array[0][0]).to eq 'Gata'
+      expect(address_visibility_array).to match_array selection_array
+    end
+    it 'returns english selections array' do
+      I18n.locale = 'en'
+      expect(selection_array[0][0]).to eq 'Street'
+      expect(address_visibility_array).to match_array selection_array
+    end
+  end
+
+  describe '#show_address_fields' do
+    let(:admin)   { create(:user, admin: true) }
+    let(:member)  { create(:member_with_membership_app) }
+    let(:visitor) { create(:user) }
+    let(:company) { create(:company) }
+
+    let(:all_fields) do
+      [ { name: 'street_address', label: 'street', method: nil },
+        { name: 'post_code', label: 'post_code', method: nil },
+        { name: 'city', label: 'city', method: nil },
+        { name: 'kommun', label: 'kommun', method: 'name' },
+        { name: 'region', label: 'region', method: 'name' } ]
+    end
+
+    it 'returns all fields for admin user' do
+      # The helper method returns two values, so these will be in an array
+      expect(show_address_fields(admin, nil)).to match_array [ all_fields, true ]
+    end
+
+    it 'returns all fields for member associated with company' do
+      company = member.membership_applications[0].company
+      expect(show_address_fields(member, company))
+        .to match_array [ all_fields, true ]
+    end
+
+    it 'for visitor, returns fields consistent with address visibility' do
+
+      (0..Company::ADDRESS_VISIBILITY.length-1).each do |idx|
+
+        company.address_visibility = Company::ADDRESS_VISIBILITY[idx]
+
+        fields, visibility = show_address_fields(visitor, company)
+
+        expect(visibility).to be false
+
+        case company.address_visibility
+        when 'none'
+          expect(fields).to be nil
+        else
+          expect(fields).to match_array all_fields[idx, 5]
+        end
+      end
+    end
+  end
+
 end

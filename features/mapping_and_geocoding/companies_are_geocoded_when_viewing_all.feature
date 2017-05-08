@@ -1,7 +1,8 @@
 Feature: All companies are geocoded before being shown on the view all companies page
   As a visitor,
   so all companies are mapped when I look at the list of them,
-  geocode any companies that aren't yet geocoded before everything is displayed.
+  geocode any companies that aren't yet geocoded before everything is displayed,
+  unless a company address visibility is set to 'none'
 
   Background:
     Given the following regions exist:
@@ -10,9 +11,10 @@ Feature: All companies are geocoded before being shown on the view all companies
       | Västerbotten |
 
     Given the following companies exist:
-      | name                 | company_number | email                  | region       |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    |
-      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten |
+      | name                 | company_number | email                  | region       | address_visibility |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    | street_address     |
+      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten | street_address     |
+      | CompanyNotVisible    | 5569467466     | company@notvisible.com | Stockholm    | none               |
 
 
     And the following users exists
@@ -36,8 +38,12 @@ Feature: All companies are geocoded before being shown on the view all companies
   Scenario: A company that isn't geocoded is geocoded before all are viewed
     Given all addresses for the company named "No More Snarky Barky" are not geocoded
     And all addresses for the company named "Bowsers" are not geocoded
+    And all addresses for the company named "CompanyNotVisible" are not geocoded
     And I am Logged out
     When I am on the "landing" page
     Then all addresses for the company named "No More Snarky Barky" should be geocoded
     And all addresses for the company named "Bowsers" should be geocoded
-
+    And all addresses for the company named "CompanyNotVisible" should not be geocoded
+    And I should see "No More Snarky Barky"
+    And I should see "Bowsers"
+    And I should see "CompanyNotVisible"

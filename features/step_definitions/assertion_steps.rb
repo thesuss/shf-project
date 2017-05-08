@@ -354,9 +354,13 @@ And(/^I should be on the SHF document page for "([^"]*)"$/)  do | doc_title |
 end
 
 
-Then(/^all addresses for the company named "([^"]*)" should be geocoded$/) do | company_name |
+Then(/^all addresses for the company named "([^"]*)" should( not)? be geocoded$/) do | company_name, no_geocode |
 
   co = Company.find_by_name(company_name)
-  expect( co.addresses.reject(&:geocoded? ).count).to be 0
+  if no_geocode
+    expect( co.addresses.reject(&:geocoded? ).count).not_to be 0
+  else
+    expect( co.addresses.reject(&:geocoded? ).count).to be 0
+  end
 
 end

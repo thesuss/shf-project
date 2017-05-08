@@ -185,6 +185,12 @@ en:
           has_one: "Cannot delete record because a dependent %{record} exists"
           has_many: "Cannot delete record because dependent %{record} exist"
 
+  address_visibility:
+    street_address: *street
+    post_code: *post_code
+    city: *city
+    kommun: *kommun
+    none: None
 
  # Automatic and manual lookup for views:
   membership_applications:
@@ -401,14 +407,19 @@ en:
       success: Company deleted.
       error: Could not delete the company.
 
+    form:
+      region_tooltip: Choose "Sweden" if the company operates
+        in several counties, or "Online" if it operates mostly (or solely) online.
+      visibility_tooltip: Level of detail as seen by visitor (including maps).
+        Set to 'None' for no address visibility.
+      org_nr_tooltip: Numbers only (no hyphens)
+
     company_name: Company name
     telephone_number: Phone number
     operations_region: County of operations
-    op_region_multiple_use_sweden: Choose "Sweden" if the company operates
-      in several counties, or "Online" if it operates mostly (or solely) online.
     website_include_http: Company website
-    org_nr_no_hyphens: Numbers only (no hyphens)
     description: Customized Company Description
+    address_visibility: Address Visibility
 
     all_companies: All companies
     edit_company: Edit company

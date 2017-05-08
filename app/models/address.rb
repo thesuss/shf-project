@@ -41,14 +41,40 @@ class Address < ApplicationRecord
       addr.save
       sleep(sleep_between.to_f)
     end
-    
+
   end
 
+  def address_array
+    # This should only be called for address associated with a company
+
+    # Returns an array of address field values (strings) that starts with
+    # with address_visibility level set for the associated company.
+
+    visibility_level = addressable.address_visibility
+
+    address_pattern = %w(street_address post_code city kommun)
+
+    pattern_length = address_pattern.length
+
+    start_index = address_pattern.find_index do |field|
+      field == visibility_level
+    end
+
+    return [] unless start_index
+
+    if kommun
+      ary = [ street_address, post_code, city, kommun.name,
+              sverige_if_nil][start_index..pattern_length ]
+    else
+      ary = [ street_address, post_code, city,
+              sverige_if_nil][start_index..(pattern_length-1) ]
+    end
+    ary.delete_if {|f| f.blank?}
+  end
 
   def entire_address
-    [street_address, city, post_code, sverige_if_nil].compact.join(', ')
+    address_array.compact.join(', ')
   end
-
 
   # Geocode the address, starting with all of the data.
   #  If we don't get a geocoded result, then keep trying,
@@ -58,7 +84,9 @@ class Address < ApplicationRecord
   # and so will guarantee that at least *some* map can be displayed.  (Important for a company!)
   def geocode_best_possible
 
-    specificity_order = [street_address, post_code, city, sverige_if_nil]
+    return unless addressable_type == 'Company'
+
+    specificity_order = address_array
 
     most_specific = 0
     least_specific = specificity_order.size - 1

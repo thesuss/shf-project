@@ -12,7 +12,6 @@ RSpec.describe Address, type: :model do
     it { is_expected.to have_db_column :id }
     it { is_expected.to have_db_column :street_address }
     it { is_expected.to have_db_column :post_code }
-    it { is_expected.to have_db_column :post_code }
     it { is_expected.to have_db_column :city }
     it { is_expected.to have_db_column :region_id }
     it { is_expected.to have_db_column :addressable_id }
@@ -82,11 +81,11 @@ RSpec.describe Address, type: :model do
   end
 
 
-  describe 'gecoding' do
+  describe 'geocoding' do
 
     let(:expected_streetaddress) { 'Kvarnliden 10' }
     let(:expected_postcode) { '310 40' }
-    let(:expected_kommun) { create(:kommun, name: 'Halmstad V') }
+    let(:expected_kommun) { create(:kommun, name: 'Halland') }
     let(:expected_city) { 'Harplinge' }
     let(:expected_country) { 'Sverige' }
 
@@ -102,27 +101,55 @@ RSpec.describe Address, type: :model do
       expect(Geocoder.config[:always_raise]).to eq(:all)
     end
 
-    it 'geocode from address' do
-      addr = Address.new(street_address: expected_streetaddress,
-                         city: expected_city,
-                         post_code: expected_postcode,
-                         country: 'Sweden')
+    context '#address_array' do
 
-      addr.validate
+      let!(:company)         { create(:company, num_addresses: 1) }
+      let(:address_pattern) do
+        address = company.main_address
+        [ address.street_address, address.post_code,
+          address.city, address.kommun.name, 'Sverige' ]
+      end
 
-      expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
-      expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
+      it 'returns array consistent with address visibility for associated company' do
+
+        (0..Company::ADDRESS_VISIBILITY.length-1).each do |idx|
+
+          company.address_visibility = Company::ADDRESS_VISIBILITY[idx]
+          company.save
+          company.main_address.reload
+
+          address_fields = company.main_address.address_array
+
+          case company.address_visibility
+          when 'none'
+            expect(address_fields).to be_empty
+          else
+            expect(address_fields).to match_array address_pattern[idx, 5]
+          end
+        end
+      end
     end
 
+    context 'geocode from address' do
+      let(:addr) do
+        addr = build(:address,
+                     street_address: expected_streetaddress,
+                     post_code: expected_postcode,
+                     city: expected_city,
+                     kommun: expected_kommun,
+                     country: 'Sweden')
+        addr.addressable = create(:company, num_addresses: 0)
+        addr.save
+        addr
+      end
 
-    describe 'changed address so update latitude, longitude' do
+      it 'geocodes company address' do
 
-      let(:addr) { Address.new(street_address: expected_streetaddress,
-                               city: expected_city,
-                               post_code: expected_postcode,
-                               kommun: expected_kommun,
-                               country: expected_country)
-      }
+        expect(addr.latitude.round(2)).to eq(56.7440.round(2)),
+          addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.7276.round(2)),
+          addr_details(addr, "expected long to be 12.728, but wasn't")
+      end
 
       it 'changed street address' do
         addr.street_address = 'Kvarnliden 2'
@@ -131,8 +158,10 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(2)).to eq(56.7442343.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
-        expect(addr.longitude.round(2)).to eq(12.7255982.round(2)), addr_details(addr, "expected long to be 12.726, but wasn't")
+        expect(addr.latitude.round(2)).to eq(56.7442343.round(2)),
+          addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.7255982.round(2)),
+          addr_details(addr, "expected long to be 12.726, but wasn't")
       end
 
       it 'changed kommun' do
@@ -142,22 +171,25 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
-        expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
+        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)),
+          addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.727637.round(2)),
+          addr_details(addr, "expected long to be 12.728, but wasn't")
       end
 
       it 'changed city' do
         addr.city = 'Plingshult'
         addr.street_address = ''
         addr.post_code = ''
-
         addr.validate
 
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(2)).to eq(56.633333.round(2)), addr_details(addr, "expected lat to be 56.633, but wasn't")
-        expect(addr.longitude.round(2)).to eq(13.2.round(2)), addr_details(addr, "expected long to be 13.2, but wasn't")
+        expect(addr.latitude.round(2)).to eq(56.607677.round(2)),
+          addr_details(addr, "expected lat to be 56.607, but wasn't")
+        expect(addr.longitude.round(2)).to eq(13.251166.round(2)),
+          addr_details(addr, "expected long to be 13.25, but wasn't")
       end
 
       it 'changed region' do
@@ -168,8 +200,10 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
-        expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
+        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)),
+          addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.727637.round(2)),
+          addr_details(addr, "expected long to be 12.728, but wasn't")
       end
 
       it 'changed country' do
@@ -179,84 +213,99 @@ RSpec.describe Address, type: :model do
         expect(addr.latitude).not_to eq(orig_lat)
         expect(addr.longitude).not_to eq(orig_long)
 
-        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)), addr_details(addr, "expected lat to be 56.744, but wasn't")
-        expect(addr.longitude.round(2)).to eq(12.727637.round(2)), addr_details(addr, "expected long to be 12.728, but wasn't")
+        expect(addr.latitude.round(2)).to eq(56.7440333.round(2)),
+          addr_details(addr, "expected lat to be 56.744, but wasn't")
+        expect(addr.longitude.round(2)).to eq(12.727637.round(2)),
+          addr_details(addr, "expected long to be 12.728, but wasn't")
       end
 
+      it 'if all info is nil, will at least return lat/long of Sweden' do
 
+        addr.assign_attributes(street_address: nil, city: nil,
+                               post_code: nil, kommun: nil, country: nil)
+
+        addr.validate
+
+        expect(addr.latitude.round(2)).to eq(60.12816100000001.round(2)),
+          addr_details(addr, "expected lat to be 60.128, but wasn't")
+        expect(addr.longitude.round(2)).to eq(18.643501.round(2)),
+          addr_details(addr, "expected long to be 18.644, but wasn't")
+      end
     end
-
-
-    it 'if all info is nil, will at least return lat/long of Sweden' do
-
-      addr = Address.new(street_address: nil,
-                         city: nil,
-                         post_code: nil,
-                         country: nil)
-
-      addr.validate
-
-      expect(addr.latitude.round(2)).to eq(60.12816100000001.round(2)), addr_details(addr, "expected lat to be 60.128, but wasn't")
-      expect(addr.longitude.round(2)).to eq(18.643501.round(2)), addr_details(addr, "expected long to be 18.644, but wasn't")
-    end
-
 
     describe '#geocode_best_possible' do
+      let(:address) do
+        addr = build(:address,
+                     street_address: 'Matarengivägen 24',
+                     post_code: '957 31',
+                     city: 'Övertorneå',
+                     kommun: create(:kommun, name: 'Norrbotten'))
+        addr.addressable = create(:company, num_addresses: 0)
+        addr.save
+        addr
+      end
 
       it 'all valid address components' do
-        address = Address.new(street_address: 'Matarengivägen 24',
-                       post_code: '957 31',
-                       city: 'Övertorneå')
-        address.validate
-        expect(address.latitude.round(2)).to eq(66.3902539.round(2)), addr_details(address, "expected lat to be 66.390, but wasn't")
-        expect(address.longitude.round(2)).to eq(23.6601303.round(2)), addr_details(address, "expected long to be 23.660, but wasn't")
+        expect(address.latitude.round(2)).to eq(66.3902539.round(2)),
+          addr_details(address, "expected lat to be 66.390, but wasn't")
+        expect(address.longitude.round(2)).to eq(23.6601303.round(2)),
+          addr_details(address, "expected long to be 23.660, but wasn't")
       end
-
 
       it 'invalid street_address' do
-        address = Address.new(street_address: 'blorf',
-                          post_code: '957 31',
-                          city: 'Övertorneå')
+        address.street_address = 'blorf'
         address.validate
-        expect(address.latitude.round(2)).to eq(66.3887731.round(2)), addr_details(address, "expected lat to be 66.389, but wasn't")
-        expect(address.longitude.round(2)).to eq(23.6734973.round(2)), addr_details(address, "expected long to be 23.673, but wasn't")
-      end
 
+        expect(address.latitude.round(2)).to eq(66.3887731.round(2)),
+          addr_details(address, "expected lat to be 66.389, but wasn't")
+        expect(address.longitude.round(2)).to eq(23.6734973.round(2)),
+          addr_details(address, "expected long to be 23.673, but wasn't")
+      end
 
       it 'invalid post_code, street_address' do
-        address = Address.new(street_address: 'blorf',
-                              post_code: 'x',
-                              city: 'Övertorneå')
+        address.assign_attributes(street_address: 'blorf', post_code: 'x')
         address.validate
-        expect(address.latitude.round(2)).to eq(66.3884436.round(2)), addr_details(address, "expected lat to be 66.388, but wasn't")
-        expect(address.longitude.round(2)).to eq(23.639283.round(2)), addr_details(address, "expected long to be 23.639, but wasn't")
-      end
 
+        expect(address.latitude.round(2)).to eq(66.3884436.round(2)),
+          addr_details(address, "expected lat to be 66.388, but wasn't")
+        expect(address.longitude.round(2)).to eq(23.639283.round(2)),
+          addr_details(address, "expected long to be 23.639, but wasn't")
+      end
 
       it 'invalid city, post_code, street_address' do
-        address = Address.new(street_address: 'blorf',
-                              post_code: 'x',
-                              city: 'y')
+        address.assign_attributes(street_address: 'blorf', post_code: 'x',
+                                  city: 'y')
         address.validate
 
-        expect(address.latitude.round(2)).to eq(60.128161.round(2)), addr_details(address, "expected lat to be 60.128, but wasn't")
-        expect(address.longitude.round(2)).to eq(18.643501.round(2)), addr_details(address, "expected long to be 18.643, but wasn't")
+        expect(address.latitude.round(2)).to eq(66.8309.round(2)),
+          addr_details(address, "expected lat to be 66.8309, but wasn't")
+        expect(address.longitude.round(2)).to eq(20.39919.round(2)),
+          addr_details(address, "expected long to be 20.39919, but wasn't")
       end
 
+      it 'invalid city, post_code, street_address, kommun' do
+        address.assign_attributes(street_address: 'blorf',
+                                  post_code: 'x', city: 'y',
+                                  kommun: create(:kommun, name: 'nonesuch'))
+        address.validate
+
+        expect(address.latitude.round(2)).to eq(60.12816100000001.round(2)),
+          addr_details(address, "expected lat to be 60.128, but wasn't")
+        expect(address.longitude.round(2)).to eq(18.643501.round(2)),
+          addr_details(address, "expected long to be 18.644, but wasn't")
+      end
 
       it 'no address info should = Sverige' do
-        address = Address.new(street_address: nil,
-                              post_code: nil,
-                              city: nil,
-                              country: nil)
+        address.assign_attributes(street_address: nil, city: nil,
+                                  post_code: nil, kommun: nil, country: nil)
         address.validate
 
-        expect(address.latitude.round(2)).to eq(60.128161.round(2)), addr_details(address, "expected lat to be 60.128, but wasn't")
-        expect(address.longitude.round(2)).to eq(18.643501.round(2)), addr_details(address, "expected long to be 18.643, but wasn't")
+        expect(address.latitude.round(2)).to eq(60.128161.round(2)),
+          addr_details(address, "expected lat to be 60.128, but wasn't")
+        expect(address.longitude.round(2)).to eq(18.643501.round(2)),
+          addr_details(address, "expected long to be 18.643, but wasn't")
       end
-
     end
-
 
     describe '#self.geocode_all_needed(sleep_between: 0.5, num_per_batch: 50)' do
 
@@ -324,7 +373,7 @@ RSpec.describe Address, type: :model do
         valid_address3
 
         query = <<-SQL
-          UPDATE addresses SET latitude=NULL, longitude=NULL  
+          UPDATE addresses SET latitude=NULL, longitude=NULL
            WHERE street_address = 'Matarengivägen 24'
         SQL
 
