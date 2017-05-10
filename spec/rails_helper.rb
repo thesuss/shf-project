@@ -77,3 +77,9 @@ RSpec.configure do |config|
   end
 
 end
+
+
+# put Geocoder into test mode
+# Will have to manually set the information returned by Geocoder
+
+require 'support/geocoder'

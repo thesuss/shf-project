@@ -5,6 +5,10 @@ require 'cucumber/timecop'
 require 'cucumber/rspec/doubles'
 require 'capybara/poltergeist'
 
+# Put the Geocoder into test mode so no actual API calls are made and stub with fake data
+require_relative '../../spec/support/geocoder'
+
+
 ActionController::Base.allow_rescue = false
 
 begin
