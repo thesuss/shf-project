@@ -23,7 +23,7 @@
 
     .row.center.item-nav-buttons#item-nav-buttons
       - if policy(@shf_document).update?
-        = link_to "#{t('shf_documents.edit_shf_document')}", edit_shf_document_path(@shf_document), class: 'btn btn-default edit-shf-document'
+        = link_to "#{t('shf_documents.edit_shf_document')}", edit_shf_document_path(@shf_document), class: 'btn btn-default edit-member-page'
 
       -if policy(@shf_document).index?
         = link_to "#{t('shf_documents.all_shf_documents')}", shf_documents_path, class: 'btn btn-default all-shf-documents'

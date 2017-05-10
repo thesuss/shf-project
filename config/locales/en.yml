@@ -539,7 +539,6 @@ en:
     view_shf_document: View the SHF document details
     all_shf_documents: All SHF Documents
     all_shf_minutes: All Meeting Minutes
-    edit_shf_document_contents: Edit the document contents
 
     invalid_upload_type: Sorry, this is not a file type you can upload.
     file_too_large: *file_too_large_5MB
@@ -596,10 +595,14 @@ en:
       shf_meeting_minutes: &member_pages_board_meetings SHF Board Meeting Minutes
 
     contents_show:
-      page_title: '%{document_title}'
+      edit_member_page: Edit page
 
     contents_edit:
-      page_title: 'Edit Content for SHF Document: %{document_title}'
+      page_title: 'Edit Member Page: %{document_title}'
+
+    contents_form:
+      member_page_title: Member Page Title
+      member_page_contents: Member Page Contents
 
     contents_update:
       success: '%{document_title} was updated successfully.'

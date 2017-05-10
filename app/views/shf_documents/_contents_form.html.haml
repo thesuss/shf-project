@@ -1,6 +1,10 @@
 = form_tag({ controller: 'shf_documents', action: 'contents_update' },
            { method: 'patch' }) do
 
+  = label_tag :title, t('.member_page_title')
+  = text_field_tag :title, @title
+
+  = label_tag :contents, t('.member_page_contents')
   = cktext_area_tag :contents, @contents
 
   .actions

@@ -539,7 +539,6 @@ sv:
     view_shf_document: Information om dokument
     all_shf_documents: Alla uppladdade dokument
     all_shf_minutes: Alla mötesprotokoll
-    edit_shf_document_contents: Redigera dokumentinnehållet
 
     invalid_upload_type: *invalid_upload_type
     file_too_large: *file_too_large_5MB
@@ -596,10 +595,14 @@ sv:
       shf_meeting_minutes: &member_pages_board_meetings Styrelseprotokoll
 
     contents_show:
-      page_title: '%{document_title}'
+      edit_member_page: Redigera sida
 
     contents_edit:
-      page_title: 'Redigera innehåll för SHF Document: %{document_title}'
+      page_title: 'Redigera medlemssida: %{document_title}'
+
+    contents_form:
+      member_page_title: Titel
+      member_page_contents: Innehåll
 
     contents_update:
       success: '%{document_title} uppdaterades utan problem.'

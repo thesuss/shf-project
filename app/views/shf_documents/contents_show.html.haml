@@ -1,10 +1,16 @@
 .shf-document.show#shf-document
 
-  .item-nav-buttons.pull-right#item-nav-buttons
-    - if policy(ShfDocument).contents_update?
-      = link_to "#{t('shf_documents.edit_shf_document_contents')}",
+  - if policy(ShfDocument).contents_update?
+    .item-nav-buttons.pull-right#item-nav-buttons
+      = link_to "#{t('.edit_member_page')}",
                 contents_edit_path(page: @page),
-                class: 'btn btn-default edit-shf-document'
+                class: 'btn btn-default edit-member-page'
 
   .entry-content
+    .clearfix
+    .center{ style: 'font-size: 150%;' }
+      = @title
+
+    %hr
+
     != @contents

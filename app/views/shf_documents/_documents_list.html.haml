@@ -5,4 +5,4 @@
 
   - HighVoltage.page_ids.each do |page|
     %li{ class: li_class }
-      = link_to page.capitalize, contents_show_path(page: page)
+      = link_to MemberPage.title(page), contents_show_path(page: page)
