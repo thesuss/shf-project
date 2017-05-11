@@ -7,7 +7,7 @@ module CompaniesHelper
 
   def list_categories company, separator=' '
     if company.business_categories.any?
-      company.business_categories.order(:name).map(&:name).join(separator)
+      company.business_categories.map(&:name).sort.join(separator)
     end
   end
 
