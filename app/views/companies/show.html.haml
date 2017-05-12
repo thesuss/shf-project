@@ -25,7 +25,7 @@
 
         = field_or_none t('.email'), mail_to(@company.email), tag_options: {class: 'email'}
 
-        = field_or_none t('.website'), sanitize(link_to(@company.website, full_uri(@company), attributes: %w(href) ), target: '_blank'), tag_options: {class: 'website'}
+        = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
 
 
         .address
