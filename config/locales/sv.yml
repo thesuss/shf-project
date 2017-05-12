@@ -126,6 +126,7 @@ sv:
         kommun: &kommun Kommun
         region: &region Verksamhetslän
         region_short: &region_short Län
+        country: Land
 
       company:
         company_number: *org_nr

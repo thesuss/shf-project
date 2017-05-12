@@ -1,3 +1,6 @@
+require_relative File.join('..', 'services', 'address_exporter')
+
+
 class MembershipApplication < ApplicationRecord
 
   before_destroy :before_destroy_checks
@@ -138,6 +141,11 @@ class MembershipApplication < ApplicationRecord
       company.membership_applications.reload
       company.delete if (company.membership_applications.count == 1)
     end
+  end
+
+
+  def se_mailing_csv_str
+     company.nil? ?  AddressExporter.se_mailing_csv_str(nil) : company.se_mailing_csv_str
   end
 
 

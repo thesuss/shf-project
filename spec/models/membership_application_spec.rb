@@ -40,27 +40,27 @@ RSpec.describe MembershipApplication, type: :model do
   end
 
   describe 'DB Table' do
-    it { is_expected.to have_db_column :id }
-    it { is_expected.to have_db_column :first_name }
-    it { is_expected.to have_db_column :last_name }
-    it { is_expected.to have_db_column :company_number }
-    it { is_expected.to have_db_column :phone_number }
-    it { is_expected.to have_db_column :contact_email }
-    it { is_expected.to have_db_column :membership_number }
-    it { is_expected.to have_db_column :state }
+    it {is_expected.to have_db_column :id}
+    it {is_expected.to have_db_column :first_name}
+    it {is_expected.to have_db_column :last_name}
+    it {is_expected.to have_db_column :company_number}
+    it {is_expected.to have_db_column :phone_number}
+    it {is_expected.to have_db_column :contact_email}
+    it {is_expected.to have_db_column :membership_number}
+    it {is_expected.to have_db_column :state}
   end
 
   describe 'Validations' do
-    it { is_expected.to validate_presence_of :first_name }
-    it { is_expected.to validate_presence_of :contact_email }
-    it { is_expected.to validate_presence_of :company_number }
-    it { is_expected.to validate_presence_of :last_name }
-    it { is_expected.to validate_presence_of :state }
+    it {is_expected.to validate_presence_of :first_name}
+    it {is_expected.to validate_presence_of :contact_email}
+    it {is_expected.to validate_presence_of :company_number}
+    it {is_expected.to validate_presence_of :last_name}
+    it {is_expected.to validate_presence_of :state}
 
-    it { is_expected.to allow_value('user@example.com').for(:contact_email) }
-    it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
+    it {is_expected.to allow_value('user@example.com').for(:contact_email)}
+    it {is_expected.not_to allow_value('userexample.com').for(:contact_email)}
 
-    it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
+    it {is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
 
   describe 'Validate Swedish Orgnr' do
@@ -68,36 +68,36 @@ RSpec.describe MembershipApplication, type: :model do
       create(:membership_application)
     end
 
-    subject { company }
+    subject {company}
 
     before do
       company.company_number = 1234567890
     end
 
-    it { should_not be_valid }
+    it {should_not be_valid}
   end
 
   describe 'Associations' do
-    it { is_expected.to belong_to :user }
-    it { is_expected.to have_and_belong_to_many :business_categories }
-    it { is_expected.to belong_to :company }
+    it {is_expected.to belong_to :user}
+    it {is_expected.to have_and_belong_to_many :business_categories}
+    it {is_expected.to belong_to :company}
   end
 
   describe "Uploaded Files" do
 
-    let(:application_owner) { create(:user, email: 'user_1@random.com') }
-    let(:application_owner2) { create(:user, email: 'user_2@random.com') }
+    let(:application_owner) {create(:user, email: 'user_1@random.com')}
+    let(:application_owner2) {create(:user, email: 'user_2@random.com')}
 
     it 'uploading a file increases the number of uploaded files by 1' do
-      expect { create(:membership_application, user: application_owner, uploaded_files: [create(:uploaded_file, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg'))))]) }.to change(UploadedFile, :count).by(1)
+      expect {create(:membership_application, user: application_owner, uploaded_files: [create(:uploaded_file, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg'))))])}.to change(UploadedFile, :count).by(1)
     end
 
   end
 
 
   describe '#is_accepted?' do
-    let!(:states) { MembershipApplication.aasm.states.map(&:name) }
-    let(:states_not_accepted) { states.reject { |s| s == :accepted } }
+    let!(:states) {MembershipApplication.aasm.states.map(&:name)}
+    let(:states_not_accepted) {states.reject {|s| s == :accepted}}
 
     it "state :accepted == is_accepted" do
       subject.state = :accepted
@@ -105,7 +105,7 @@ RSpec.describe MembershipApplication, type: :model do
     end
 
     it "these states should not be #is_accepted" do
-      not_accepted_states = MembershipApplication.aasm.states.map(&:name).reject { |s| s == :accepted }
+      not_accepted_states = MembershipApplication.aasm.states.map(&:name).reject {|s| s == :accepted}
 
       not_accepted_states.each do |state|
         subject.state = state
@@ -136,7 +136,7 @@ RSpec.describe MembershipApplication, type: :model do
 
     it '1 category with the name "Special"' do
       member_app = create(:membership_application, num_categories: 1,
-                          category_name: "Special")
+                          category_name:                           "Special")
       expect(member_app.business_categories.count).to eq(1)
       expect(member_app.business_categories.first.name).to eq("Special"), "The first category name should have been 'Special' but instead was '#{member_app.business_categories.first.name}'"
     end
@@ -154,8 +154,8 @@ RSpec.describe MembershipApplication, type: :model do
 
   describe 'states, events, and transitions' do
 
-    let!(:user) { create(:user_with_membership_app) }
-    let!(:application) { user.membership_application }
+    let!(:user) {create(:user_with_membership_app)}
+    let!(:application) {user.membership_application}
 
     describe 'valid states' do
       it {expect(application).to have_valid_state(:new)}
@@ -191,7 +191,7 @@ RSpec.describe MembershipApplication, type: :model do
 
       it_will 'not allow transition to', :new, :new
 
-      it_will 'allow transition to',     :new, :under_review, :start_review
+      it_will 'allow transition to', :new, :under_review, :start_review
 
       it_will 'not allow transition to', :new, :waiting_for_applicant
       it_will 'not allow transition to', :new, :ready_for_review
@@ -208,13 +208,13 @@ RSpec.describe MembershipApplication, type: :model do
 
       it_will 'not allow transition to', :under_review, :under_review
 
-      it_will 'allow transition to',     :under_review, :waiting_for_applicant, :ask_applicant_for_info
+      it_will 'allow transition to', :under_review, :waiting_for_applicant, :ask_applicant_for_info
 
       it_will 'not allow transition to', :under_review, :ready_for_review
 
-      it_will 'allow transition to',     :under_review, :accepted, :accept
+      it_will 'allow transition to', :under_review, :accepted, :accept
 
-      it_will 'allow transition to',     :under_review, :rejected, :reject
+      it_will 'allow transition to', :under_review, :rejected, :reject
 
     end
 
@@ -223,10 +223,10 @@ RSpec.describe MembershipApplication, type: :model do
 
       it_will 'not allow transition to', :waiting_for_applicant, :new
 
-      it_will 'allow transition to',     :waiting_for_applicant, :under_review, :cancel_waiting_for_applicant
+      it_will 'allow transition to', :waiting_for_applicant, :under_review, :cancel_waiting_for_applicant
 
       it_will 'not allow transition to', :waiting_for_applicant, :waiting_for_applicant
-      it_will 'allow transition to',     :waiting_for_applicant, :ready_for_review, :is_ready_for_review
+      it_will 'allow transition to', :waiting_for_applicant, :ready_for_review, :is_ready_for_review
 
       it_will 'not allow transition to', :waiting_for_applicant, :accepted, :accept
       it_will 'not allow transition to', :waiting_for_applicant, :rejected, :reject
@@ -244,7 +244,7 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :accepted, :ready_for_review
 
       it_will 'not allow transition to', :accepted, :accepted
-      it_will 'allow transition to',     :accepted, :rejected, :reject
+      it_will 'allow transition to', :accepted, :rejected, :reject
 
     end
 
@@ -258,11 +258,35 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :rejected, :waiting_for_applicant
       it_will 'not allow transition to', :rejected, :ready_for_review
 
-      it_will 'allow transition to',     :rejected, :accepted, :accept
+      it_will 'allow transition to', :rejected, :accepted, :accept
       it_will 'not allow transition to', :rejected, :rejected
 
     end
 
   end
+
+
+  describe '#se_mailing_csv_str (comma sep string) of the address for the swedish postal service' do
+
+    let(:accepted_app) { create(:membership_application, :accepted) }
+    let(:rejected_app) { create(:membership_application, :rejected)}  # no company for this
+
+    it 'uses the company main address' do
+
+      expect(accepted_app.se_mailing_csv_str).to eq AddressExporter.se_mailing_csv_str(accepted_app.company.main_address)
+
+    end
+
+
+    it 'blanks (just commas with no data between them) if there is no company' do
+
+      expect(rejected_app.se_mailing_csv_str).to eq AddressExporter.se_mailing_csv_str(nil)
+
+    end
+
+
+
+  end
+
 
 end

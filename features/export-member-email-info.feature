@@ -1,6 +1,7 @@
-Feature: As an Admin
-  So that I can use the exisiting Mailchimp system to share information with members
-  I need to be able to export member names and emails to a csv file
+Feature: export member information to a CSV file so I can use it in other systems
+  As an Admin
+  So that I can use the member information in other systems (Mailchimp, postal mail),
+  I need to be able to export member information (names, email, addresses) to a CSV file
 
 
   Background:
@@ -27,6 +28,7 @@ Feature: As an Admin
       | first_name | last_name   | user_email          | company_number | state    |
       | Emma       | Emmasdottir | emma@happymutts.com | 2120000142     | accepted |
       | Wils       | Wilson      | wils@woof.com       | 5569467466     | new      |
+
 
 
   Scenario: Visitor can't export

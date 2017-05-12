@@ -36,23 +36,54 @@ class AdminController < ApplicationController
   end
 
 
-  # "Email Address","First Name","Last Name", "Membership number"
   def export_str(membership_apps)
-    out_str = ''
-    out_str << "'#{t('activerecord.attributes.membership_application.contact_email').strip}',"
-    out_str << "'#{t('activerecord.attributes.membership_application.first_name').strip}',"
-    out_str << "'#{t('activerecord.attributes.membership_application.last_name').strip}',"
-    out_str << "'#{t('activerecord.attributes.membership_application.membership_number').strip}',"
 
-    out_str << "'#{t('activerecord.attributes.membership_application.state').strip}'\n"
+    out_str = export_header_str
 
     membership_apps.each do |m_app|
       out_str << "#{m_app.contact_email},#{m_app.first_name},#{m_app.last_name},#{m_app.membership_number},"
       out_str << t("membership_applications.state.#{m_app.state}")
+      out_str << ','
+
+      # a company name may have commas, so surround with quotes so spreadsheets recognize it as one string and not multiple comma-separated value
+      out_str << (m_app.company.nil? ?  '' : "\"#{m_app.company.name}\"")
+      out_str << ','
+
+      # add the SE postal service mailing address info as a CSV string
+      out_str << m_app.se_mailing_csv_str
+
       out_str << "\n"
     end
 
     out_str.encode('UTF-8')
   end
+
+
+  def export_header_str
+
+    # build the header string from strings in the locale file
+
+    header_member_strs = ['activerecord.attributes.membership_application.contact_email',
+                          'activerecord.attributes.membership_application.first_name',
+                          'activerecord.attributes.membership_application.last_name',
+                          'activerecord.attributes.membership_application.membership_number',
+                          'activerecord.attributes.membership_application.state',
+                          'activerecord.models.company.one',
+                          'activerecord.attributes.address.street',
+                          'activerecord.attributes.address.post_code',
+                          'activerecord.attributes.address.city',
+                          'activerecord.attributes.address.kommun',
+                          'activerecord.attributes.address.region',
+                          'activerecord.attributes.address.country',
+    ]
+
+    out_str = ''
+
+    out_str << header_member_strs.map{| header_str | "'#{t(header_str).strip}'" }.join(',')
+
+    out_str << "\n"
+
+  end
+
 
 end

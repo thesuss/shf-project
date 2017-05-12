@@ -126,6 +126,7 @@ en:
         kommun: &kommun Municipality
         region: &region Region
         region_short: &region_short Län
+        country: country
 
       company:
         company_number: *org_nr

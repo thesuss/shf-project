@@ -1,3 +1,6 @@
+require_relative File.join('..', 'services', 'address_exporter')
+
+
 class Company < ApplicationRecord
 
   include HasSwedishOrganization
@@ -74,6 +77,11 @@ class Company < ApplicationRecord
 
   def main_address
     addresses.first
+  end
+
+
+  def se_mailing_csv_str
+      AddressExporter.se_mailing_csv_str( main_address )
   end
 
 
