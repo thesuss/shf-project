@@ -84,6 +84,7 @@ group :development do
   gem 'capistrano-env-config'
   gem 'railroady'
   gem 'bullet'
+  gem 'rb-readline'
 end
 
 group :test do
