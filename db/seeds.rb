@@ -4,16 +4,19 @@
 # (or created alongside the database with db:setup).
 
 require 'ffaker'
+require 'rake'
 require_relative 'seed_helpers'
 include SeedHelper
-
-Rails.application.load_tasks
 
 # The test of defined? is due to the rspec file that executes the seed file
 # repeatedly.  Without this, rspec complains about "already initialized constant"
 SEED_STOP_MSG = '<<< SEEDING STOPPED' unless defined?(SEED_STOP_MSG)
 
 SEED_COMPLETE_MSG = '<<< SEEDING COMPLETED' unless defined?(SEED_COMPLETE_MSG)
+
+NUM_USERS = 100 unless defined?(NUM_USERS)
+
+DEFAULT_PASSWORD = 'whatever' unless defined?(DEFAULT_PASSWORD)
 
 unless Rails.env.development? || Rails.env.production? ||
        Rails.env.test?        || ENV['HEROKU_STAGING']
