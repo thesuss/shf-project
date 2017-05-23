@@ -72,7 +72,7 @@ class AdminController < ApplicationController
                           'activerecord.attributes.membership_application.last_name',
                           'activerecord.attributes.membership_application.membership_number',
                           'activerecord.attributes.membership_application.state',
-                          "Business Category",
+                          'activerecord.models.attributes.business_category.name',
                           'activerecord.models.company.one',
                           'activerecord.attributes.address.street',
                           'activerecord.attributes.address.post_code',
