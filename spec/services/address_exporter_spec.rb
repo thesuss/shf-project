@@ -40,11 +40,20 @@ RSpec.describe AddressExporter do
 
     it 'is a comma separated string' do
 
-      expected_str = "#{valid_address1.street_address},#{post_code_str valid_address1.post_code},#{valid_address1.city},#{valid_address1.kommun.name },#{valid_address1.region.name},SE-Sweden"
+      expected_str = '"' + valid_address1.street_address + '",'
+      expected_str << "#{post_code_str valid_address1.post_code},#{valid_address1.city},#{valid_address1.kommun.name },#{valid_address1.region.name},SE-Sweden"
 
       expect(AddressExporter.se_mailing_csv_str(valid_address1)).to eq expected_str
     end
 
+
+    it 'puts double quotes around the street address' do
+
+      export_str = AddressExporter.se_mailing_csv_str(valid_address1)
+
+      expect(export_str).to match(/"Matarengivägen 24",/)
+
+    end
 
     it "post_code starts with a single quote (') so spreadsheets will see it as text, not a number (so any spaces are not lost)" do
 
@@ -60,7 +69,8 @@ RSpec.describe AddressExporter do
 
       valid_address1.kommun = nil
 
-      expected_str = "#{valid_address1.street_address},#{post_code_str valid_address1.post_code},#{valid_address1.city},,#{valid_address1.region.name},SE-Sweden"
+      expected_str = '"' + valid_address1.street_address + '",'
+      expected_str << "#{post_code_str valid_address1.post_code},#{valid_address1.city},,#{valid_address1.region.name},SE-Sweden"
 
       expect(AddressExporter.se_mailing_csv_str(valid_address1)).to eq expected_str
 
@@ -70,7 +80,8 @@ RSpec.describe AddressExporter do
 
       valid_address1.region = nil
 
-      expected_str = "#{valid_address1.street_address},#{post_code_str valid_address1.post_code},#{valid_address1.city},#{valid_address1.kommun.name },,SE-Sweden"
+      expected_str = '"' + valid_address1.street_address + '",'
+      expected_str << "#{post_code_str valid_address1.post_code},#{valid_address1.city},#{valid_address1.kommun.name },,SE-Sweden"
 
       expect(AddressExporter.se_mailing_csv_str(valid_address1)).to eq expected_str
 
