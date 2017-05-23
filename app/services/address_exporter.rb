@@ -23,7 +23,8 @@ class AddressExporter
       kommun_str = address.kommun.nil? ? '' : address.kommun.name
       region_str = address.region.nil? ? '' : address.region.name
 
-      str = '"' + address.street_address + '",'
+      str = '"' + (address.street_address.nil? ? '' : address.street_address )+ '",'
+
       str << "'#{address.post_code},#{address.city},#{kommun_str},#{region_str},#{self.country_postal(address)}"
       str
     else

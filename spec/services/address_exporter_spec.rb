@@ -47,13 +47,26 @@ RSpec.describe AddressExporter do
     end
 
 
-    it 'puts double quotes around the street address' do
+    describe 'puts double quotes around the street address' do
 
-      export_str = AddressExporter.se_mailing_csv_str(valid_address1)
+      it 'nil street address' do
 
-      expect(export_str).to match(/"Matarengivägen 24",/)
+        nil_street = valid_address1.update(street_address: nil)
+
+        export_str = AddressExporter.se_mailing_csv_str(valid_address1)
+
+        expect(export_str).to match(/"",'957 31,Övertorneå,/)
+      end
+
+      it 'valid street address' do
+
+        export_str = AddressExporter.se_mailing_csv_str(valid_address1)
+
+        expect(export_str).to match(/"Matarengivägen 24",/)
+      end
 
     end
+
 
     it "post_code starts with a single quote (') so spreadsheets will see it as text, not a number (so any spaces are not lost)" do
 
