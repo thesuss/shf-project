@@ -135,7 +135,8 @@ RSpec.describe AdminController, type: :controller do
 
 
         let(:csv_response) { post :export_ansokan_csv
-                             response.body }
+                             response.body
+                           }
 
 
         it 'uses the company name and  address for each member' do
@@ -175,9 +176,10 @@ RSpec.describe AdminController, type: :controller do
                       }
 
         let(:csv_response) { post :export_ansokan_csv
-                             response.body }
+                             response.body
+                           }
 
-        let(:member1_info)  {  "#{member1.contact_email},#{member1.first_name},#{member1.last_name},#{member1.membership_number},"+ I18n.t("membership_applications.state.#{member1.state}") }
+        let(:member1_info) {  "#{member1.contact_email},#{member1.first_name},#{member1.last_name},#{member1.membership_number},"+ I18n.t("membership_applications.state.#{member1.state}") }
 
 
         it 'zero/nil business categories' do
@@ -216,7 +218,7 @@ RSpec.describe AdminController, type: :controller do
         end
 
 
-        it 'three business categories' do
+        it 'three business categories, each separated by a comma then space' do
 
           member1.business_categories << create(:business_category, name: 'Category1')
           member1.business_categories << create(:business_category, name: 'Category 2')
@@ -228,7 +230,7 @@ RSpec.describe AdminController, type: :controller do
 
           result_str << member1_info + ','
 
-          result_str << '"Category1 Category 2 Category the third",'
+          result_str << '"Category1, Category 2, Category the third",'
 
           result_str << '"' + c1.name + '"' +','
 
