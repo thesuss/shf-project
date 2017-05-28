@@ -226,19 +226,28 @@ RSpec.describe AdminController, type: :controller do
 
           member1.save
 
-          result_str = csv_header
+          result_str_start = csv_header
+          result_str_start << member1_info
 
-          result_str << member1_info + ','
+          result_str_end = '"' + c1.name + '"' +','
+          result_str_end << c1.se_mailing_csv_str + "\n"
 
-          result_str << '"Category1, Category 2, Category the third",'
+          result_regexp = Regexp.new(/^#{result_str_start},(.*),#{result_str_end}$/)
 
-          result_str << '"' + c1.name + '"' +','
+          # results without the categories:
+          expect(csv_response).to match result_regexp
 
-          result_str << c1.se_mailing_csv_str + "\n"
 
-          expect(csv_response).to match result_str
+          # Check that the categories are as expected:
+          match = csv_response.match result_regexp
+
+          # get the categories from the (.*) group -- if there are any
+          #   get rid of extra quotes and whitespace
+          match.to_a.size > 1 ? categories = match[1].delete('"').split(',').map(&:strip) : categories = []
+
+          # expect all categories to be there, but could be in any order
+          expect(categories).to match_array(['Category1', 'Category 2', 'Category the third'])
         end
-
 
       end
 
