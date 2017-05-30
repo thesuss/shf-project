@@ -23,6 +23,8 @@ Lint/AmbiguousRegexpLiteral:
                  Checks for ambiguous regexp literals in the first argument of
                  a method invocation without parenthesis.
   Enabled: true
+  Exclude:
+      - features/step_definitions/*.rb
 
 Lint/AssignmentInCondition:
   Description: "Don't use assignment in conditions."
