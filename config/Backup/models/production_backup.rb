@@ -75,6 +75,24 @@ Backup::Model.new(:production_backup, 'Description for production_backup') do
     local.keep       = 45
   end
 
+  ##
+  #  store the backup on AWS S3
+  #
+  store_with S3 do |s3|
+    # AWS Credentials
+    s3.access_key_id     = ENV['SHF_AWS_S3_BACKUP_KEY_ID']
+    s3.secret_access_key = ENV['SHF_AWS_S3_BACKUP_SECRET_ACCESS_KEY']
+    # Or, to use a IAM Profile:
+    # s3.use_iam_profile = true
+
+    s3.region             = ENV['SHF_AWS_S3_BACKUP_REGION']
+    s3.bucket             = ENV['SHF_AWS_S3_BACKUP_BUCKET']
+    s3.path               = ENV['SHF_AWS_S3_BACKUP_PATH']
+
+    s3.encryption = :aes256
+
+  end
+
 
  ##
  # TODO:  add a Notifier
