@@ -92,7 +92,7 @@ And(/^I click on "([^"]*)" button$/) do |element|
   click_button element
 end
 
-And(/^I click on t\("([^"]*)"\) button$/) do |element|
+And(/^I click on(?: the)* t\("([^"]*)"\) button$/) do |element|
   click_button i18n_content("#{element}")
 end
 
@@ -100,7 +100,7 @@ And(/^I check the checkbox with id "([^"]*)"$/) do |element_id|
   check element_id
 end
 
-And(/^I uncheck the checkbox with id"([^"]*)"$/) do |element_id|
+And(/^I uncheck the checkbox with id "([^"]*)"$/) do |element_id|
   uncheck element_id
 end
 
@@ -111,4 +111,10 @@ end
 
 Then(/^I wait(?: for)? (\d+) second(?:s)?$/) do |seconds|
   sleep seconds.to_i.seconds
+end
+
+
+When(/^(?:I|they) select t\("([^"]*)"\) in select list "([^"]*)"$/) do |item, lst|
+  selected = i18n_content("#{item}")
+  find(:select, lst).find(:option, selected).select_option
 end

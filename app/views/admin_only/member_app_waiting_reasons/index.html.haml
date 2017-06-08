@@ -1,0 +1,36 @@
+%header.entry-header
+  %h1.entry-title= t('.title')
+.post-title-divider
+  %span
+
+.entry-content
+
+  %table#reasons_waiting
+    %thead
+      %tr
+        %th.name_sv= t('activerecord.attributes.member_app_waiting_reason.name_sv')
+        %th.name_en= t('activerecord.attributes.member_app_waiting_reason.name_en')
+        %th.description_sv= t('activerecord.attributes.member_app_waiting_reason.description_sv')
+        %th.description_en= t('activerecord.attributes.member_app_waiting_reason.description_en')
+        %th.is_custom= t('activerecord.attributes.member_app_waiting_reason.is_custom') + '?'
+        %th
+        %th
+
+    %tbody
+      - @member_app_waiting_reasons.each do |member_app_waiting_reason|
+        %tr.member_app_waiting_reason
+          %td.name_sv= link_to member_app_waiting_reason.name_sv, member_app_waiting_reason
+          %td.name_en= link_to member_app_waiting_reason.name_en, member_app_waiting_reason
+          %td.description_sv= link_to member_app_waiting_reason.description_sv, member_app_waiting_reason
+          %td.description_en= link_to member_app_waiting_reason.description_en, member_app_waiting_reason
+          %td.is_custom
+            - if member_app_waiting_reason.is_custom
+              %span.yes= t('yes')
+            - else
+              %span.no= t('no')
+
+          %td= link_to t('edit'), edit_admin_only_member_app_waiting_reason_path(member_app_waiting_reason)
+          %td= link_to t('delete'), member_app_waiting_reason, :method => :delete, :data => { confirm: t('admin_only.member_app_waiting_reasons.delete_confirm', name_sv: member_app_waiting_reason.name_sv, name_en: member_app_waiting_reason.name_en) }
+
+  %br
+    .center= link_to t('admin_only.member_app_waiting_reasons.new_member_app_waiting_reason'), new_admin_only_member_app_waiting_reason_path, class: 'button btn btn-default new-member-app-waiting-reason', id: 'new-member-app-waiting-reason'

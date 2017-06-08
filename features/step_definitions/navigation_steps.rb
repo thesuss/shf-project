@@ -41,6 +41,11 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
       path = shf_documents_path
     when 'new shf document'
       path = new_shf_document_path
+    when 'all waiting for info reasons'
+      path = admin_only_member_app_waiting_reasons_path
+    when 'new waiting for info reason'
+      path = new_admin_only_member_app_waiting_reason_path
+
     else
       path = 'no path set'
   end

@@ -15,6 +15,17 @@ Rails.application.routes.draw do
     end
   end
 
+  # We're already using 'admin' as the name of a user role, so we
+  # use "admin_only" here to avoid colliding with that term with the
+  # namespace directories and class names.  We keep 'admin' as the path
+  # for simplicity and some consistency.
+  namespace :admin_only, path: 'admin' do
+
+    resources :member_app_waiting_reasons
+
+  end
+
+
   get '/pages/*id', to: 'pages#show', as: :page, format: false
 
 

@@ -1,0 +1,29 @@
+= form_for @member_app_waiting_reason do |f|
+
+  - if @member_app_waiting_reason.errors.any?
+    .wpcf7-response-output
+      - @member_app_waiting_reason.errors.full_messages.each do |msg|
+        = msg
+
+
+  = f.label :name_sv, t('activerecord.attributes.member_app_waiting_reason.name_sv'), class: 'required'
+  - name_sv_required = t('activerecord.attributes.member_app_waiting_reason.name_sv') + ' ' + t('errors.messages.blank')
+  = f.text_field :name_sv, class: 'wpcf7-form-control',
+         required: true,
+         oninvalid: "this.setCustomValidity('#{name_sv_required}')",
+         onchange: "this.setCustomValidity('')"
+
+  = f.label :name_en, t('activerecord.attributes.member_app_waiting_reason.name_en')
+  = f.text_field :name_en, class: 'wpcf7-form-control'
+
+  = f.label :description_sv, t('activerecord.attributes.member_app_waiting_reason.description_sv')
+  = f.text_field :description_sv, class: 'wpcf7-form-control'
+
+  = f.label :description_en, t('activerecord.attributes.member_app_waiting_reason.description_en')
+  = f.text_field :description_en, class: 'wpcf7-form-control'
+
+  = f.label :is_custom, t('activerecord.attributes.member_app_waiting_reason.is_custom') + '?', class: 'is-custom'
+  = f.check_box :is_custom, class: 'wpcf7-form-control is-custom'
+
+
+  = f.submit t('save')

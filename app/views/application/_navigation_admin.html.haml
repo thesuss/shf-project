@@ -22,3 +22,12 @@
 
 %li.menu-item
   = link_to t('menus.nav.admin.users.list_users'), users_path
+
+%li.menu-item.menu-item-has-children
+  = link_to t('menus.nav.admin.member_app_waiting_reasons.submenu_title'), admin_only_member_app_waiting_reasons_path
+  %ul.sub-menu
+    %li.menu-item
+      = link_to t('menus.nav.admin.member_app_waiting_reasons.list_member_app_waiting_reasons'), admin_only_member_app_waiting_reasons_path
+    %li.menu-item
+      = link_to t('menus.nav.admin.member_app_waiting_reasons.new_member_app_waiting_reasons'), new_admin_only_member_app_waiting_reason_path
+

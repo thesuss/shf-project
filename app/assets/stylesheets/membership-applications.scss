@@ -9,6 +9,9 @@ $border-med-blue-a-light: rgba(86, 146, 206, 0.2);
 
 $files-table-background: #ffffff;
 
+$app-state-border-blue: rgb(142, 173, 206);
+
+
 .membershipapplication {
 
   .entry-content.wpcf7 {
@@ -126,6 +129,25 @@ $files-table-background: #ffffff;
 
   }
 
+
+  #application-status {
+
+    border: 1pt solid $app-state-border-blue;
+    margin-left: 1rem;
+    padding-left: 1rem;
+
+
+    .row {
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+
+
+
+  }
+
+
+
   .btn-file {
 
     border: 0;
@@ -163,4 +185,8 @@ $files-table-background: #ffffff;
   #uploaded-files h4.files-uploaded-list-title {
     font-weight: bold;
   }
+}
+
+.action-buttons {
+  margin-top: 2rem;
 }

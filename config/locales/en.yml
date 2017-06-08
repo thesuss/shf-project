@@ -152,6 +152,14 @@ en:
         uploader: &uploader Uploader
 
 
+      member_app_waiting_reason:
+        name_sv: "Name (Swedish)"
+        name_en: "Name (English)"
+        description_sv: "Description (Swedish)"
+        description_en: "Description (English)"
+        is_custom: "Custom reason"
+
+
     errors:
       models:
 
@@ -302,6 +310,12 @@ en:
       error: There was an error when trying to reject the application.
 
     need_info:
+      reason_title: Reason
+
+      other_reason_label: "other reason:"
+      submit_button_label: "Save the reason"
+
+
       success: 'The application has been marked as needing info. (Send email to the applicant.)'
       error: "There was an error when trying to set the application to 'needing information.'"
 
@@ -626,6 +640,45 @@ en:
     contents_update:
       success: '%{document_title} was updated successfully.'
 
+
+  admin_only:
+    member_app_waiting_reasons:
+      index:
+        title: "Reasons Why We're Waiting for Information"
+
+      new:
+        title: "New Waiting for Information Reason"
+
+      create:
+        success: "The new reason was created successfully."
+        error: "There was a problem creating the new reason."
+
+      show:
+        title: "Waiting for Information Reason:  %{name_sv} (%{name_en})"
+
+      edit:
+        title:  'Edit: %{name_sv} (%{name_en})'
+        submit_button_label: *save
+
+      update:
+        success: "The reason was updated successfully."
+        error: "There was a problem updating the reason."
+
+      destroy:
+        success: "The reason was deleted successfully."
+        error: "There was a problem deleting the reason."
+
+      new_member_app_waiting_reason: &new_app_waiting_reason "New Waiting for Information Reason"
+      all_member_app_waiting_reasons: &all_app_waiting_reasons "All Waiting for Information Reasons"
+      view_member_app_waiting_reason:  "View the Waiting for Information Reason"
+      edit_member_app_waiting_reason: "Edit the Waiting for Information Reason"
+      list_all_member_app_waiting_reasons: "List all Waiting for Information Reasons"
+
+      other_custom_reason: "Other (enter the reason)"
+
+      delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
+
+
   devise:
     min_length: '(at least %{minimum_length} characters)'
 
@@ -751,6 +804,12 @@ en:
         users:
           list_users: Users
 
+        member_app_waiting_reasons:
+          submenu_title: "Waiting for Information reasons"
+          list_member_app_waiting_reasons: "All reasons"
+          new_member_app_waiting_reasons: "New reason"
+
+
 
   #----------
   # ERRORS
@@ -759,10 +818,10 @@ en:
     format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
-      blank: can't be blank
+      blank: cannot be blank
       present: must be blank
-      confirmation: doesn't match %{attribute}
-      empty: can't be empty
+      confirmation: does not match %{attribute}
+      empty: cannot be empty
       equal_to: must be equal to %{count}
       even: must be even
       exclusion: is reserved
