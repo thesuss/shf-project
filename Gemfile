@@ -42,9 +42,8 @@ gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
 
 gem 'ffaker'  # Fake data for DB seeding
 
-gem 'backup'
-gem 'dotenv'  # used in our backup definition file
-gem 'whenever'
+gem 'dotenv'
+
 
 gem 'smarter_csv'
 
