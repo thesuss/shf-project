@@ -6,6 +6,16 @@ GIT
       cocaine
       orm_adapter (~> 0.5.0)
 
+GIT
+  remote: git://github.com/weedySeaDragon/aasm_statecharts.git
+  revision: e36d1a4442cf95ccfed42a3d246b929e51b37f69
+  specs:
+    aasm_statecharts (1.1.5)
+      aasm (>= 4.0)
+      psych
+      rails (>= 4.0)
+      ruby-graphviz (>= 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -270,6 +280,7 @@ GEM
     pry-byebug (3.4.2)
       byebug (~> 9.0)
       pry (~> 0.10)
+    psych (2.2.4)
     public_suffix (2.0.5)
     puma (3.7.0)
     pundit (1.1.0)
@@ -341,6 +352,7 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    ruby-graphviz (1.2.3)
     ruby_dep (1.5.0)
     ruby_parser (3.8.4)
       sexp_processor (~> 4.1)
@@ -426,6 +438,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm (~> 4.11.1)
+  aasm_statecharts!
   backup
   bcrypt (~> 3.1.7)
   better_errors
