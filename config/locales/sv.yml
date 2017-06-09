@@ -218,7 +218,7 @@ sv:
       last_name: *last_name
       phone_number: &phone_number Telefonnummer
       company_number: *company_number
-      org_nr_no_hyphens: &orgnr_no_hyphen "Endast siffror (ej bindestreck)"
+      org_nr_no_hyphens: &orgnr_no_hyphens "Endast siffror (ej bindestreck)"
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
@@ -242,7 +242,7 @@ sv:
       title: Redigera ansökan om medlemskap
       is_ready_for_review: Redo för granskning
       submit_button_label: *save
-      org_nr_no_hyphens: *orgnr_no_hyphen
+      org_nr_no_hyphens: *orgnr_no_hyphens
 
     update:
       success: Ansökan har uppdaterats.
@@ -255,7 +255,7 @@ sv:
       last_name: *last_name
       phone_number: *phone_number
       company_number: *company_number
-      org_nr_no_hyphens: *orgnr_no_hyphen
+      org_nr_no_hyphens: *orgnr_no_hyphens
       contact_email: *contact_email
       app_status: Ansökans status
       change_status: Ändra status
@@ -645,17 +645,17 @@ sv:
   admin_only:
     member_app_waiting_reasons:
       index:
-        title: "Skäl till varför vi väntar på information"
+        title: "Orsaker till varför vi väntar på information"
 
       new:
-        title: "Nytt väntar på information skäl"
+        title: "Ny orsak"
 
       create:
-        success: "Den nya anledningen skapades framgångsrikt"
-        error: "Det var ett problem att skapa den nya anledningen."
+        success: "Orsaken skapades"
+        error: "Det var ett problem att skapa orsaken."
 
       show:
-        title: "Väntar på information skäl: %{name_sv} (%{name_en})"
+        title: "Väntar på information på grund av: %{name_sv} (%{name_en})"
 
       edit:
         title: "Redigerar: %{name_sv} (%{name_en})"
@@ -663,19 +663,19 @@ sv:
 
 
       update:
-        success: "Den anledningen uppdaterades framgångsrikt."
+        success: "Orsak uppdaterad."
         error: "Det gick inte att uppdatera orsaken."
 
       destroy:
-        success: "Den anledningen har tagits bort framgångsrikt."
+        success: "Orsak borttagen."
         error: "Det gick inte att ta bort orsaken."
 
 
-      new_member_app_waiting_reason: &new_app_waiting_reason "Nytt väntar på information skäl"
-      all_member_app_waiting_reasons:  &all_app_waiting_reasons "Alla väntar på informationskäl"
-      view_member_app_waiting_reason: "Visa väntan på information skäl"
-      edit_member_app_waiting_reason: "Redigera väntan på information skäl"
-      list_all_member_app_waiting_reasons: "Lista alla Väntar på informationskäl"
+      new_member_app_waiting_reason: &new_app_waiting_reason "Ny orsak"
+      all_member_app_waiting_reasons:  &all_app_waiting_reasons "Alla orsaker"
+      view_member_app_waiting_reason: "Visa orsak"
+      edit_member_app_waiting_reason: "Redigera orsak"
+      list_all_member_app_waiting_reasons: "Lista alla orsaker"
 
       other_custom_reason: "Annat (skriv in orsaken)"
 
