@@ -3,8 +3,8 @@ require 'active_support/logger'
 
 namespace :shf do
 
-  ACCEPTED_STATE = 'accepted'
-  LOG_FILE = 'log/shf_tasks'
+  ACCEPTED_STATE = 'accepted' unless defined?(ACCEPTED_STATE)
+  LOG_FILE = 'log/shf_tasks' unless defined?(LOG_FILE)
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
@@ -195,6 +195,42 @@ namespace :shf do
             "#{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i})"+
             ", #{Address.not_geocoded.count} Addresses are not geocoded."
       log.record('info', msg)
+    end
+  end
+
+  desc 'add member page arg=[filename]'
+  task :add_member_page, [:filename] => :environment do |task_name, args|
+
+    ActivityLogger.open(LOG_FILE, 'SHF_TASK', task_name) do |log|
+
+      filename = args.fetch(:filename) do |_key|
+        log.record('error', 'You must specify a file name')
+        raise 'ERROR: You must specify a file name'
+      end
+
+      if filename =~ /[^\w\-\.]/
+        log.record('error', "Unacceptable characters in filename: #{filename}")
+        log.record('error', "Acceptable characters are a-z, A-Z, 0-9, '_', '-' and '.'")
+        raise 'ERROR: Unacceptable filename'
+      end
+
+      # Add html file type if not present
+      filename = filename + '.html' unless filename =~ /.*\.html$/
+
+      filepath = File.join(Rails.root, 'app', 'views', 'pages', filename)
+
+      unless File.file?(filepath)
+        begin
+          File.new(filepath, 'w+')
+          log.record('info', "Created member page file: #{filename}")
+        rescue
+          log.record('error', "Cannot create file: #{filename}")
+          raise
+        end
+      else
+        log.record('error', 'File already exists in pages directory')
+        raise 'ERROR: File already exists in pages directory'
+      end
     end
   end
 
