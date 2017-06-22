@@ -6,18 +6,22 @@
           = t('activerecord.models.business_category.one')
         %th
           = sort_link(@search_params, :name,
-                      t('activerecord.attributes.company.name'))
+                      t('activerecord.attributes.company.name'), {},
+                      { class: 'companies_pagination', remote: true })
         %th
           = sort_link(@search_params, :addresses_region_name,
-                      t('activerecord.attributes.address.region'))
+                      t('activerecord.attributes.address.region'), {},
+                      { class: 'companies_pagination', remote: true })
         %th
           = sort_link(@search_params, :addresses_kommun_id,
-                      t('activerecord.attributes.address.kommun'))
+                      t('activerecord.attributes.address.kommun'), {},
+                      { class: 'companies_pagination', remote: true })
 
         - if current_user.admin?
           %th
             = sort_link(@search_params, :company_number,
-                      t('activerecord.attributes.company.company_number'))
+                      t('activerecord.attributes.company.company_number'), {},
+                      { class: 'companies_pagination', remote: true })
           %th
           %th
 

@@ -4,13 +4,16 @@
       %tr
         %th
           = sort_link(@search_params, :last_name,
-                      t('membership_applications.index.name'))
+                      t('membership_applications.index.name'), {},
+                      { class: 'applications_pagination', remote: true })
         %th
           = sort_link(@search_params, :company_number,
-                      t('membership_applications.index.org_nr'))
+                      t('membership_applications.index.org_nr'), {},
+                      { class: 'applications_pagination', remote: true })
         %th
           = sort_link(@search_params, :state,
-                      t('membership_applications.index.state'))
+                      t('membership_applications.index.state'), {},
+                      { class: 'applications_pagination', remote: true })
         %th
     %tbody
       - @membership_applications.each do |membership_application|
