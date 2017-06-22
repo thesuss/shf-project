@@ -12,6 +12,8 @@ Geocoder.configure(
     # API key for geocoding service
     api_key: ENV['GOOGLE_MAP_API'],
 
+    google_maps_js_api: "https://maps.googleapis.com/maps/api/js",
+
     # cache: nil,                 # cache object (must respond to #[], #[]=, and #keys)
     # cache_prefix: 'geocoder:',  # prefix (string) to use for all cache keys
 

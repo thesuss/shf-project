@@ -39,14 +39,6 @@ module SHFProject
 
     I18n.available_locales = ['en', 'sv']
 
-
-    # load settings from the shf.yml file:
-    config.x.shf = config_for(:shf)
-
-    config.after_initialize do
-      config.x.google_key = "#{Geocoder.config[:api_key]}"
-    end
-
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

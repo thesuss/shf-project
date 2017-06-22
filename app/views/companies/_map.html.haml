@@ -1,6 +1,6 @@
 -# content_for :javascript_for_view do
 
-= javascript_include_tag "#{Rails.configuration.shf['google_maps_js_api']}?key=#{Rails.configuration.x.google_key}&callback=initMap", async: true
+= javascript_include_tag "#{Geocoder.config[:google_maps_js_api]}?key=#{Geocoder.config[:api_key]}&callback=initMap", async: true
 
 
 -# The following selector IDs are important.
