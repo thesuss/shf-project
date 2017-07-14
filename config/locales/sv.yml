@@ -102,6 +102,8 @@ sv:
     attributes:
 
       user:
+        first_name: &first_name Förnamn
+        last_name: &last_name Efternamn
         email: &email Profil E-post
         password: *password
         password_confirmation: Lösenordsbekräftelse
@@ -117,8 +119,8 @@ sv:
 
       membership_application:
         company_number: &company_number Organisationsnummer
-        first_name: &first_name Förnamn
-        last_name: &last_name Efternamn
+        first_name: *first_name
+        last_name: *last_name
         contact_email: &contact_email Kontakt e-post
         state: &state Status
         phone_number: Telefonnummer
@@ -517,6 +519,8 @@ sv:
   users:
     index:
       title: Alla Användare
+      first_name: *first_name
+      last_name: *last_name
       email: *email
       created: *created
       last_login: *user_last_login
