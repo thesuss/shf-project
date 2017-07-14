@@ -64,7 +64,7 @@ else
   User.create(email: email, password: pwd, admin: true)
 end
 
-unless Rails.env.production? || Rails.env.test?
+if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
   puts 'Creating additional users ...'
 
