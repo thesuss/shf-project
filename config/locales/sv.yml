@@ -79,6 +79,10 @@ sv:
         delete: *delete
         next: 'Nästa'
 
+  model_errors:
+    one: Vänligen åtgärda det här felet
+    other: Snälla fixa dessa %{count} fel
+
   # Automatisk och manuell sökning för Active Records
   activerecord:
     models:

@@ -79,6 +79,10 @@ en:
       delete: *delete
       next: 'Next'
 
+  model_errors:
+    one: Please fix this error
+    other: Please fix these %{count} errors
+
  # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
