@@ -71,7 +71,7 @@ sv:
   items_per_page_tooltip: 'Välj antal objekt per sida'
 
   ckeditor:
-      page_title: 'CKEditor Filer'
+      page_title: 'Filer'
       confirm_delete: 'Radera fil?'
       buttons:
         cancel: *cancel
@@ -81,7 +81,7 @@ sv:
 
   model_errors:
     one: Vänligen åtgärda det här felet
-    other: Snälla fixa dessa %{count} fel
+    other: Vänligen åtgärda dessa %{count} fel
 
   # Automatisk och manuell sökning för Active Records
   activerecord:
@@ -166,7 +166,7 @@ sv:
         name_en: "Namn (engelska)"
         description_sv: "Beskrivning (svenska)"
         description_en: "Beskrivning (engelska)"
-        is_custom: "Anpassad anledning"
+        is_custom: "Annan anledning"
 
 
 
@@ -231,7 +231,6 @@ sv:
       phone_number: &phone_number Telefonnummer
       first_name: *first_name
       last_name: *last_name
-      phone_number: &phone_number Telefonnummer
       company_number: *company_number
       org_nr_no_hyphens: &orgnr_no_hyphens "Endast siffror (ej bindestreck)"
       contact_email: *contact_email
@@ -317,7 +316,7 @@ sv:
 
     start_review:
       success: Granskningen har påbörjats.
-      error: Det fanns ett problem med att påbörja granskning för denna applikation.
+      error: Det fanns ett problem med att påbörja granskning för denna ansökan.
 
     accept:
       success: Medlemsansökan har godkänts.
@@ -329,7 +328,7 @@ sv:
 
     need_info:
       reason_title: Anledning
-      other_reason_label: "Annan orsak"
+      other_reason_label: "Annan anledning"
       select_a_reason: "Välj en anledning..."
 
       success: 'Ansökan har markerats som: "Behöver kompletteras". (Skicka e-post till den sökande.)'
@@ -481,7 +480,7 @@ sv:
   business_categories:
 
     index:
-      title: '*business_category / Företagstyp'
+      title: *business_category Företagstyp
       name: *business_category_name
       description: *description
       view: *view
@@ -828,9 +827,9 @@ sv:
           list_users: Användare
 
         member_app_waiting_reasons:
-          submenu_title: "Väntar på information skäl"
-          list_member_app_waiting_reasons: "Alla skäl"
-          new_member_app_waiting_reasons: "Ny skäl"
+          submenu_title: "Orsaker"
+          list_member_app_waiting_reasons: "Alla orsaker"
+          new_member_app_waiting_reasons: "Ny orsak"
 
 
   #----------
