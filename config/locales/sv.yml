@@ -480,7 +480,7 @@ sv:
   business_categories:
 
     index:
-      title: *business_category Företagstyp
+      title: &business_category Företagstyp
       name: *business_category_name
       description: *description
       view: *view
