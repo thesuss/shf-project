@@ -25,6 +25,14 @@ And(/^I should see "([^"]*)" image$/) do |alt_text|
   expect(page).to have_xpath("//img[contains(@alt,'#{alt_text}')]")
 end
 
+And(/^I should( not)? see t\("([^"]*)"\) image$/) do |not_see, alt_text|
+  if not_see
+    expect(page).not_to have_xpath("//img[contains(@alt,'#{i18n_content(alt_text)}')]")
+  else
+    expect(page).to have_xpath("//img[contains(@alt,'#{i18n_content(alt_text)}')]")
+  end
+end
+
 And(/^I should see t\("([^"]*)"\)$/) do |content|
   expect(page).to have_content i18n_content(content)
 end
