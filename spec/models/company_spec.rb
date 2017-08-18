@@ -171,9 +171,19 @@ RSpec.describe Company, type: :model do
 
   describe '#main_address' do
 
-    let(:company) { create(:company, num_addresses: 3) }
+    it 'creates a blank address if none exists' do
+      company = create(:company, num_addresses: 0)
+
+      expect(company.addresses.count).to eq 0
+
+      # calling .main_address should instantiate an Address
+      expect(company.main_address).to be_an_instance_of Address
+      expect(company.addresses.count).to eq 1
+
+    end
 
     it 'returns the first address for the company' do
+      company = create(:company, num_addresses: 3)
       expect(company.addresses.count).to eq 3
       expect(company.main_address).to eq(company.addresses.first)
     end
@@ -188,7 +198,7 @@ RSpec.describe Company, type: :model do
 
       company.addresses.delete_all
 
-      expected_str = AddressExporter.se_mailing_csv_str(nil)
+      expected_str = AddressExporter.se_mailing_csv_str(Address.new)
 
       expect(company.se_mailing_csv_str).to eq expected_str
 
