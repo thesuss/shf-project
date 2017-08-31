@@ -25,3 +25,16 @@ When(/^I am on the test member page$/) do
 
   visit contents_show_path('testfile')
 end
+
+Then(/^(?:I|they) click the browser back button and "([^"]*)" the prompt$/) do |modal_action|
+  case modal_action
+  when 'accept'  # accept == leave page
+    page.accept_confirm { page.evaluate_script('window.history.back()') }
+
+  when 'dismiss' # dismiss == stay on page
+    page.dismiss_confirm { page.evaluate_script('window.history.back()') }
+
+  else
+    raise 'invalid modal_action specified'
+  end
+end
