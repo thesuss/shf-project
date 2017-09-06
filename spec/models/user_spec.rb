@@ -367,4 +367,16 @@ RSpec.describe User, type: :model do
       it { expect(subject.admin?).to be_truthy }
     end
   end
+
+  describe '#full_name' do
+    let(:user) { build(:user, first_name: 'first', last_name: 'last') }
+    context '@first_name=first @last_name=last' do
+      it { expect(user.full_name).to eq('first last') }
+    end
+  end
+
+  describe 'Validations' do
+    it { is_expected.to(validate_presence_of :first_name) }
+    it { is_expected.to(validate_presence_of :last_name) }
+  end
 end
