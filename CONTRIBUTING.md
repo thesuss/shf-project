@@ -226,6 +226,7 @@ To maximize flexibility, any contributor should be able to push changes to your 
 Once your WIP PR is working and you believe it's ready to be merged into the project, edit the PR title and remove "[WIP]".  Removing "[WIP]" is a signal that your PR is ready for a final review.  (Others will know that you have finished working on it; that it's no longer in flux.)  Make any changes as needed from the review(s).  Once the reviewers are happy and your code is passing all integration checks, your PR will be merged into the `develop` branch and be closed!   
 
 
- [[https://github.comAgileVentures/shf-project/docs/dev/custom-waiting-reason.png]]
+
+<a href="url"><img src="https://github.comAgileVentures/shf-project/blob/master/docs/dev-workflow/github-flow.png|alt=This flow chart shows how our PR process works with our main branches. (github-flow.png)" align="left"  width="600" ></a>
 
 
