@@ -9,9 +9,7 @@ Rails.application.routes.draw do
     authenticated :user, lambda {|u| u.admin? }  do
       post 'admin/export-ansokan-csv'
 
-      get 'admin', to: 'admin#index'
-
-      root to: 'admin#index', as: :admin_root
+      root to: 'membership_applications#index', as: :admin_root
     end
   end
 
