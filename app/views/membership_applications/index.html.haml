@@ -3,6 +3,9 @@
 .post-title-divider
   %span
 .entry-content
+
+  = render partial: 'administration_panel' if @current_user.admin?
+
   %p{ style: 'margin-bottom: 30px;' }
     %button.btn.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
                                       href: '#application_search_form',
@@ -11,8 +14,7 @@
 
   .clearfix
 
-  .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px;',
-                    id: 'application_search_form' }
+  .panel.panel-default.search-form#application_search_form
     = render 'search_form'
 
   - if @membership_applications.empty?
