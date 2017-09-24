@@ -136,11 +136,13 @@ class MembershipApplication < ApplicationRecord
   def accept_membership
     begin
 
+      membership_number = self.membership_number.blank? ? self.class.get_next_membership_number : self.membership_number
+
       company = Company.find_or_create_by!(company_number: company_number) do |co|
         co.email = contact_email
       end
 
-      update(company: company)
+      update(company: company, membership_number: membership_number)
 
     rescue => e
       puts "ERROR: could not accept_membership.  error: #{e.inspect}"
@@ -150,6 +152,7 @@ class MembershipApplication < ApplicationRecord
 
 
   def reject_membership
+    update(membership_number: nil)
     delete_uploaded_files
   end
 
@@ -168,6 +171,11 @@ class MembershipApplication < ApplicationRecord
 
   def se_mailing_csv_str
      company.nil? ?  AddressExporter.se_mailing_csv_str(nil) : company.se_mailing_csv_str
+  end
+
+
+  def self.get_next_membership_number
+    connection.execute("SELECT nextval('membership_number_seq')").getvalue(0,0).to_s
   end
 
 
