@@ -5,12 +5,12 @@
 = t('application_mailer.admin.new_application_received.message_text.new_app_arrived')
 \
 = t('application_mailer.admin.new_application_received.message_text.from')
-= "     #{@member_app.user.full_name}"
-= "     #{@member_app.contact_email}"
+= '     ' + @member_app.user.full_name
+= '     ' + @member_app.contact_email
 
 \
 = t('application_mailer.admin.new_application_received.message_text.view_app_here')
-= "     #{url_for(@member_app)}"
+= '     ' + url_for(@member_app)
 \
 = t('application_mailer.admin.new_application_received.message_text.must_be_logged_in')
 \
