@@ -81,7 +81,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
   describe 'content is correct' do
 
-    before(:all) do
+    before(:each) do
       @test_user = create(:user)
       @email = ApplicationMailer.test_email(@test_user)
     end
@@ -103,9 +103,9 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
   describe 'content is correct for the locale' do
 
-    before(:all) { @orig_local = I18n.locale }
+    before(:each) { @orig_local = I18n.locale }
 
-    after(:all) { I18n.locale = @orig_local }
+    after(:each) { I18n.locale = @orig_local }
 
     let(:test_user) { create(:user) }
 
@@ -126,11 +126,11 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
   describe 'use :mailgun delivery method (test mode)' do
 
-    before(:all) { Rails.configuration.action_mailer.delivery_method = :mailgun
+    before(:each) { Rails.configuration.action_mailer.delivery_method = :mailgun
     ApplicationMailer.mailgun_client.enable_test_mode!
     }
 
-    after(:all) { ApplicationMailer.mailgun_client.disable_test_mode! }
+    after(:each) { ApplicationMailer.mailgun_client.disable_test_mode! }
 
 
     describe 'simple test email (no attachments)' do
