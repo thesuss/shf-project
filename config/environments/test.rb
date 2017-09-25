@@ -29,6 +29,12 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   config.action_mailer.perform_caching = false
 
+
+  ###
+  #
+  # Mail
+  #
+
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
@@ -39,6 +45,14 @@ Rails.application.configure do
   # (as a controller does) and thus the full URL will be required to create
   # links in the email.  This setting defines the host (domain) for the URL.
   config.action_mailer.default_url_options = { :host => 'localhost' }
+
+  # DO raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  config.action_mailer.raise_delivery_errors = true
+
+  #
+  ###
+
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
