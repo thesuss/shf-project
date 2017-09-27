@@ -18,10 +18,10 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
-        subject: "Swedish Dog Insdustry Association Confirmation Instructions"
+        subject: "Swedish Dog Industry Association Confirmation Instructions"
 
       reset_password_instructions:
-        subject: "Swedish Dog Insdustry Association Password Reset Instructions"
+        subject: "Swedish Dog Industry Association Password Reset Instructions"
         hello: "Hello %{email}"
         reset_requested: "Someone has requested a link to change your password.
                           You can do this through the link below."
@@ -32,9 +32,9 @@ en:
 
 
       unlock_instructions:
-        subject: "Swedish Dog Insdustry Association Unlock Instructions"
+        subject: "Swedish Dog Industry Association Unlock Instructions"
       password_change:
-        subject: "Swedish Dog Insdustry Association Password Changed"
+        subject: "Swedish Dog Industry Association Password Changed"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
