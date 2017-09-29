@@ -52,9 +52,10 @@ module PathHelpers
         path = new_shf_document_path
       when 'user details'
         path = user_path(user)
-      else
-        fail("no path defined for \"#{pagename}\"")
     end
+
+    expect(path).not_to be_empty, "A step was called with path= '#{pagename}', but that path is not defined in #{__method__} \n    (which is in #{__FILE__}"
+
     path
   end
 end
