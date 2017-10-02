@@ -29,15 +29,31 @@ Rails.application.configure do
   # Use sql schema to allow the use of functions, triggers and sequences
   config.active_record.schema_format = :sql
 
+  ###
+  #
+  # Mail
+  #
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { :host => 'localhost',
-                                               :port => '3000' }
 
-  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.show_previews = true
+
+  # used by Premailer to create the absolute URL for assets in emails (like images)
+  config.action_mailer.asset_host     = 'http://localhost:3000'
+
+  # Mail templates will need to use "_url" helpers rather than "_path" helpers
+  # since the template will not have the context of a request
+  # (as a controller does) and thus the full URL will be required to create
+  # links in the email.  This setting defines the host (domain) for the URL.
+  config.action_mailer.default_url_options = { host: 'http://localhost:3000' }
+
+
+  #
+  ###
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
