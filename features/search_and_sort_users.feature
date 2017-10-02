@@ -20,26 +20,26 @@ Feature:
     And I am logged in as "admin@sverigeshundforetagare.se"
 
   Scenario: Admin searches for luke
-    Given I am on the "users" page
+    Given I am on the "all users" page
     When I fill in t("users.search_form.profile_email") with "luke"
     And I click on t("search")
     Then I should see "luke@force.net"
     And I should not see "sconnor@example.com"
 
   Scenario: Admin searches for @sverigeshundföretagare.se
-    Given I am on the "users" page
+    Given I am on the "all users" page
     When I fill in t("users.search_form.profile_email") with "@sverigeshundföretagare.se"
     And I click on t("search")
     Then I should not see "admin@sverigeshundforetagare.se"
     And I should see t("users.index.no_search_results")
 
   Scenario: Admin sorts users by email
-    Given I am on the "users" page
+    Given I am on the "all users" page
     When I click on t("users.users_list.email")
     Then I should see "luke@force.net" before "sconnor@example.com"
 
   Scenario: Admin filters users by membership status
-    Given I am on the "users" page
+    Given I am on the "all users" page
 
     When I select radio button t("users.search_form.all_users")
     And I click on t("search")
