@@ -732,7 +732,7 @@ sv:
         submit_button_label: *update
         delete_my_account: Ta bort mitt konto
         unregister: Avregistrera dig
-        confirm_are_you_sure: *are_you_sure_confirm
+        confirm_are_you_sure: Är du säker på att du vill radera ditt konto?
         back: *back
         success: Ditt konto har uppdaterats
     sessions:

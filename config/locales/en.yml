@@ -730,7 +730,7 @@ en:
         submit_button_label: *update
         delete_my_account: Delete my account
         unregister: Unregister
-        confirm_are_you_sure: *are_you_sure_confirm
+        confirm_are_you_sure: Are you sure your want to DELETE your account?
         back: *back
         success: Your account has been updated successfully
     sessions:

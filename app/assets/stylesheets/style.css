@@ -527,7 +527,14 @@ textarea {
     margin-top:45px !important;
     text-align:center;
 }
-
+.btn-danger {
+    color: #fff;
+    background-color: #d9534f!important;
+    border-color: #d43f3a!important;
+}
+.btn-danger:hover {
+    color: #d43f3a!important;
+}
 .wpcf7 input:not(.wpcf7-submit),
 .wpcf7 textarea {
     width:100%;
