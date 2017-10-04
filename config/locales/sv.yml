@@ -754,7 +754,7 @@ sv:
         shf_name: *SHF_name
         shf_motto: KOMPETENS – GLÄDJE – OMTANKE
         email_sent_to: Det här mailet skickades till %{email_sent_to}
-        why_you_are_receiving: Du får detta e-postmeddelande eftersom du är intresserad av medlemsskap i SVERIGES HUNDFÖRETAGARE eller du är av medlem.
+        why_you_are_receiving: Du får detta e-postmeddelande eftersom du är intresserad av medlemsskap i SVERIGES HUNDFÖRETAGARE eller du är medlem.
 
     admin:
       signoff: Tack
