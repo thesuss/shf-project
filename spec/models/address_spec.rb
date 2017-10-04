@@ -2,6 +2,25 @@ require 'rails_helper'
 
 RSpec.describe Address, type: :model do
 
+  let(:co_has_regions) { create(:company, name: 'Has Region', company_number: '4268582063', city: 'HasRegionBorg') }
+  let(:co_missing_region) { create(:company, name: 'Missing Region', company_number: '6112107039', city: 'NoRegionBorg') }
+
+  let(:addr_has_region) { co_has_regions.main_address }
+
+  let(:no_region) do
+    addr_no_region = co_missing_region.main_address
+    addr_no_region.update_columns(region_id: nil)
+    addr_no_region
+  end
+
+  let(:not_visible_addr) do
+    create(:address, visibility: 'none', addressable: co_has_regions)
+  end
+
+  let(:visible_addr) do
+    create(:address, visibility: 'city', addressable: co_has_regions)
+  end
+
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:company_address)).to be_valid
@@ -26,6 +45,17 @@ RSpec.describe Address, type: :model do
     it { is_expected.to validate_presence_of :addressable }
     it { is_expected.to validate_inclusion_of(:visibility)
                             .in_array(Address::ADDRESS_VISIBILITY) }
+
+    it 'validates only one mailing address' do
+      visible_addr.mail = true
+      expect(visible_addr).to be_valid
+
+      visible_addr.save!
+      not_visible_addr.mail = true
+      not_visible_addr.valid?
+      expect(not_visible_addr).to_not be_valid
+      expect(not_visible_addr.errors.full_messages).to include('Post används redan')
+    end
   end
 
   describe 'Associations' do
@@ -36,28 +66,8 @@ RSpec.describe Address, type: :model do
 
 
   describe 'scopes' do
-
-    let(:co_has_regions) { create(:company, name: 'Has Region', company_number: '4268582063', city: 'HasRegionBorg') }
-    let(:co_missing_region) { create(:company, name: 'Missing Region', company_number: '6112107039', city: 'NoRegionBorg') }
-
-    let(:addr_has_region) { co_has_regions.main_address }
-
-    let(:no_region) do
-      addr_no_region = co_missing_region.main_address
-      addr_no_region.update_columns(region_id: nil)
-      addr_no_region
-    end
-
     let!(:has_regions) { [addr_has_region] }
     let!(:lacking_regions) { [no_region] }
-
-    let(:not_visible_addr) do
-      create(:address, visibility: 'none', addressable: co_has_regions)
-    end
-
-    let(:visible_addr) do
-      create(:address, visibility: 'city', addressable: co_has_regions)
-    end
 
     describe 'visible' do
       it 'only returns addresses that are visible' do
@@ -98,6 +108,22 @@ RSpec.describe Address, type: :model do
 
   end
 
+  describe '#entire_address' do
+    it 'returns all data if visibility == street_address' do
+      visible_addr.visibility = 'street_address'
+      addr_str = visible_addr.entire_address
+      confirm_full_address_str(addr_str, visible_addr)
+    end
+    it 'returns empty string if visibility == none' do
+      visible_addr.visibility = 'none'
+      expect(visible_addr.entire_address).to be_empty
+    end
+    it 'returns all data if visibility == none but full_visibility specified' do
+      visible_addr.visibility = 'none'
+      addr_str = visible_addr.entire_address(full_visibility: true)
+      confirm_full_address_str(addr_str, visible_addr)
+    end
+  end
 
   describe 'geocoding' do
 
@@ -432,5 +458,14 @@ RSpec.describe Address, type: :model do
 
     end
 
+  end
+
+  def confirm_full_address_str(addr_str, addr)
+    kommun = Kommun.find(addr.kommun_id)
+    expect(addr_str.include?(addr.street_address)).to be true
+    expect(addr_str.include?(addr.post_code)).to be true
+    expect(addr_str.include?(addr.city)).to be true
+    expect(addr_str.include?(kommun.name)).to be true
+    expect(addr_str.include?(addr.country)).to be true
   end
 end

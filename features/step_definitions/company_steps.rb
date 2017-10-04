@@ -1,7 +1,7 @@
 And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
-    region = company.delete('region')
-    kommun = company.delete('kommun')
+    region = company.delete('region') || 'Stockholm'
+    kommun = company.delete('kommun') || 'Stockholm'
     visibility = company.delete('visibility') || 'street_address'
 
     cmpy = FactoryGirl.create(:company, company)
@@ -68,4 +68,13 @@ Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |co
   query = "UPDATE addresses SET latitude=NULL, longitude=NULL WHERE id in (#{addr_ids.join(', ')})"
   Address.connection.exec_query(query)
 
+end
+
+When(/^I click(?: the)?( \w*) address for company #{CAPTURE_STRING}$/) do |ordinal, company|
+  cmpy = Company.find_by name: company
+
+  addr = cmpy.addresses.send(ordinal.lstrip)
+  addr_link = addr.entire_address(full_visibility: true)
+
+  click_link(addr_link)
 end

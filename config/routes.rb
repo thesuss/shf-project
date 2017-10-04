@@ -73,6 +73,28 @@ Rails.application.routes.draw do
 
   end
 
+  # We are not using nested resource statements for the following routes
+  # because that did not seem to work when used in combination with "path:" option 
+  post 'hundforetag/:company_id/adresser/:id/set_type', to: 'addresses#set_address_type',
+       as: :company_address_type
+  # ^^ Used only for XHR action, not visible to user
+
+  get 'hundforetag/:company_id/ny', to: 'addresses#new', as: :new_company_address
+
+  post 'hundforetag/:company_id/adresser', to: 'addresses#create',
+       as: :company_addresses
+
+  get 'hundforetag/:company_id/adresser/:id/redigera', to: 'addresses#edit',
+       as: :edit_company_address
+
+  put 'hundforetag/:company_id/adresser/:id', to: 'addresses#update',
+       as: :company_address
+
+  delete 'hundforetag/:company_id/adresser/:id', to: 'addresses#destroy',
+         as: :company_address_delete
+
+
+
   get 'information', to: 'membership_applications#information'
 
   root to: 'companies#index'

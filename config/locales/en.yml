@@ -151,6 +151,7 @@ en:
         region: &region Region
         region_short: &region_short Län
         country: country
+        mail: Mail
 
       company:
         company_number: *org_nr
@@ -446,6 +447,7 @@ en:
       main_address: Main Address
       other_addresses: Other Addresses
       address: Address
+      mailing_address: Mail
       street: *street
       post_code: *post_code
       city: *city
@@ -453,8 +455,10 @@ en:
       region: *region
       website: Company website
       org_nr: *org_nr
-      delete: "Delete the company"
+      delete: "Delete company"
       confirm_are_you_sure: '*are_you_sure_confirm you want to delete the company?'
+      add_address: 'Add address'
+      click_to_edit: 'click to edit'
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
@@ -484,7 +488,7 @@ en:
     operations_region: County of operations
     website_include_http: Company website
     description: Customized Company Description
-    address_visibility: Address Visibility
+    address_visibility: Visibility
 
     all_companies: All companies
     edit_company: Edit company
@@ -492,6 +496,24 @@ en:
     list_all_companies: List all companies
     new_company: Create new company
 
+  addresses:
+    edit:
+      title: 'Editing Address for: %{company_name}'
+      delete: 'Delete this address'
+      delete_confirm: Are you sure you want to delete this address?
+    update:
+      error: There was a problem updating the address.
+      success: The address was updated.
+    new:
+      title: 'New Address for: %{company_name}'
+    create:
+      error: One or more problems prevented the address from being created.
+      success: The address was created successfully.
+      success_sole_address: "The address was created successfully
+                            (and is the default mailing address for the company)."
+    destroy:
+      success: Address deleted.
+      error: Could not delete the address.
 
 
   business_categories:

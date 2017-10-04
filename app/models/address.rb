@@ -1,4 +1,9 @@
 class Address < ApplicationRecord
+  # An address only exists within an owning object, called "addressable".
+  # (right now this only exists as a Company address - user (member address
+  #  possibly to be added later).
+  # Thus the model behavior is consistent with the business rules of the
+  # Company model.  This is manifest in some of the Address controller actions.
 
   belongs_to :addressable, polymorphic: true
 
@@ -9,8 +14,15 @@ class Address < ApplicationRecord
   belongs_to :kommun, optional: true
 
   validates_presence_of :addressable
-
   validates_presence_of :country
+  validates_presence_of :street_address
+  validates_presence_of :post_code
+  validates_presence_of :city
+
+  # Business rule: addressable (business, member) can have only one mailing address
+  validates_uniqueness_of :mail, scope: :addressable_id,
+                          conditions: -> { where(mail: true) },
+                          if: proc { :mail }
 
   ADDRESS_VISIBILITY = %w(street_address post_code city kommun none)
 
@@ -76,8 +88,17 @@ class Address < ApplicationRecord
   end
 
 
-  def entire_address
-    address_array.compact.join(', ')
+  def entire_address(full_visibility: false)
+    return address_array.compact.join(', ') if (!full_visibility ||
+                                                visibility == 'street_address')
+
+    saved_visibility = visibility
+    self.visibility = 'street_address'
+
+    addr_str = address_array.compact.join(', ')
+    self.visibility = saved_visibility
+
+    addr_str
   end
 
 

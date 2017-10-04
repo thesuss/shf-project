@@ -1,9 +1,16 @@
-When(/^I click on(?: the)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |element, type|
+When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ordinal, element, type|
+# use 'ordinal' when selecting among links or buttons all of which
+# have the same selector (e.g., same label)
+
+  raise 'must specify link or button to use ordinal' if ordinal and !type
+
+  index = ordinal ? [0, 1, 2, 3, 4].send(ordinal.lstrip) : 0
+
   case type
     when 'link'
-      click_link element
+      all(:link, element)[index].click
     when 'button'
-      click_button element
+      all(:button, element)[index].click
     else
       click_link_or_button element
   end
@@ -62,6 +69,10 @@ When(/^I (check|uncheck) the checkbox with id #{CAPTURE_STRING}$/) do |action, e
   send action, element_id
 end
 
+When(/^I click the radio button with id #{CAPTURE_STRING}$/) do |element_id|
+  find("##{element_id}").click
+end
+
 When(/^I wait(?: for)? (\d+) second(?:s)?$/) do |seconds|
   sleep seconds.to_i.seconds
 end
@@ -70,4 +81,8 @@ When /^I wait for all ajax requests to complete$/ do
   Timeout.timeout(Capybara.default_max_wait_time) do
     loop until page.evaluate_script('window.jQuery ? jQuery.active : 0').zero?
   end
+end
+
+And(/^show me the page$/) do
+  save_and_open_page
 end

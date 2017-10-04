@@ -151,6 +151,7 @@ sv:
         region: &region Verksamhetslän
         region_short: &region_short Län
         country: Land
+        mail: Post
 
       company:
         company_number: *org_nr
@@ -447,6 +448,7 @@ sv:
       address: &address Adress
       main_address: Huvudadress
       other_addresses: Andra adresser
+      mailing_address: Post
       street: *street
       post_code: *post_code
       city: *city
@@ -456,6 +458,8 @@ sv:
       org_nr: *org_nr
       delete: Radera företaget
       confirm_are_you_sure: *are_you_sure_confirm
+      add_address: 'Lägg till adress'
+      click_to_edit: 'klicka för att redigera'
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
@@ -484,7 +488,7 @@ sv:
     operations_region: *region
     website_include_http: Företagets webbplats
     description: Beskrivning av företaget
-    address_visibility: Adressens synlighet
+    address_visibility: Synlighet
 
     all_companies: Alla företag
     edit_company: Redigera detta företag
@@ -492,6 +496,24 @@ sv:
     list_all_companies: Lista alla företag
     new_company: Skapa nytt företag
 
+  addresses:
+    edit:
+      title: 'Redigera adress för: %{company_name}'
+      delete: 'Ta bort den här adressen'
+      delete_confirm: Är du säker på att du vill radera den här adressen?
+    update:
+      error: Det gick inte att uppdatera adressen.
+      success: Adressen uppdaterades.
+    new:
+      title: 'Ny adress för: %{company_name}'
+    create:
+      error: Ett eller flera problem hindrade adressen från att skapas.
+      success: Adressen skapades framgångsrikt.
+      success_sole_address: "Adressen skapades med framgång
+                            (och är standardadressen för företaget)."
+    destroy:
+      success: Adressen raderad.
+      error: Det gick inte att ta bort adressen.
 
   business_categories:
 

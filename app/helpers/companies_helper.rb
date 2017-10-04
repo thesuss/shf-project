@@ -26,9 +26,12 @@ module CompaniesHelper
 
     companies.each do |company|
       link_name ? name_html = nil : name_html = company.name
-      results << {latitude: company.main_address.latitude,
-                  longitude: company.main_address.longitude,
-                  text: html_marker_text(company, name_html: name_html) }
+
+      company.addresses.visible.includes(:kommun).each do |address|
+        results << {latitude: address.latitude,
+                    longitude: address.longitude,
+                    text: html_marker_text(company, address, name_html: name_html) }
+      end
     end
 
     results
@@ -38,17 +41,14 @@ module CompaniesHelper
   # html to display for a company when showing a marker on a map
   #  if no name_html is given (== nil), it will be linked to the company,
   #  else the name_html string will be used
-  def html_marker_text company, name_html:  nil
+  def html_marker_text company, address, name_html:  nil
     text = "<div class='map-marker'>"
     text <<  "<p class='name'>"
     text << (name_html.nil? ? link_to(company.name, company, target: '_blank') : name_html)
     text <<  "</p>"
     text << "<p class='categories'>#{list_categories company, ', '}</p>"
     text << "<br>"
-    company.addresses.each do |addr|
-      text << "<p class='entire-address'>#{addr.entire_address}</p>"
-    end
-
+    text << "<p class='entire-address'>#{address.entire_address}</p>"
     text << "</div>"
 
     text
@@ -61,47 +61,4 @@ module CompaniesHelper
       [ I18n.t("address_visibility.#{visibility_level}"), visibility_level ]
     end
   end
-
-  # `show_address_fields` returns an array used in company show view to
-  # loop through and display all address fields for a company address,
-  # consistent with:
-  #  1) type of user, and,
-  #  2) `visibility` set for the address
-  #
-  # If user == company member || user == admin, show all fields
-  # else show all fields consistent with address visibility.
-  # Two return values:
-  #  Return value one:
-  #    - array of fields to be shown
-  #      - Array contains a hash - one for each field - with three keys:
-  #        - name: name of field (Address) attribute
-  #        - label: label of field (for I18n lookup)
-  #        - method: name of value method to call on attribute (non-nil for association)
-  #    - nil if no fields are to be shown
-  #  Return value two:
-  #    - true if address visibility value is to be shown
-  #    - false otherwise
-  def show_address_fields(user, address)
-
-    all_fields = [ { name: 'street_address', label: 'street', method: nil },
-                   { name: 'post_code', label: 'post_code', method: nil },
-                   { name: 'city', label: 'city', method: nil },
-                   { name: 'kommun', label: 'kommun', method: 'name' },
-                   { name: 'region', label: 'region', method: 'name' } ]
-
-    if user.admin? || user.is_in_company_numbered?(address.addressable.company_number)
-      return all_fields, true
-    else
-      start_index = all_fields.find_index do |field|
-        field[:name] == address.visibility
-      end
-
-      if start_index
-        return all_fields[start_index..4], false
-      else
-        return nil, false
-      end
-    end
-  end
-
 end

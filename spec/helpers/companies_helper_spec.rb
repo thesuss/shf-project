@@ -71,19 +71,41 @@ RSpec.describe CompaniesHelper, type: :helper do
     end
 
     it 'one company (name is linked to the company)' do
-      co = build(:company)
-      markers = helper.location_and_markers_for([co])
+      markers = helper.location_and_markers_for([company])
       expect(markers.count).to eq 1
-      expect(markers.first[:latitude]).to eq co.main_address.latitude
-      expect(markers.first[:longitude]).to eq co.main_address.longitude
-      expect(markers.first[:text]).to eq(helper.html_marker_text(co))
-      expect(markers.first[:text]).to include("#{link_to(co.name, co,target: '_blank')}")
+      expect(markers.first[:latitude]).to eq company.addresses[0].latitude
+      expect(markers.first[:longitude]).to eq company.addresses[0].longitude
+      expect(markers.first[:text]).
+        to eq(helper.html_marker_text(company, company.addresses[0]))
+      expect(markers.first[:text]).
+        to include("#{link_to(company.name, company, target: '_blank')}")
+    end
+
+    it 'one company, two addresses' do
+      create(:address, addressable: company)
+      company.reload
+      markers = helper.location_and_markers_for([company])
+      expect(markers.count).to eq 2
+
+      expect(markers.first[:latitude]).to eq company.addresses[0].latitude
+      expect(markers.first[:longitude]).to eq company.addresses[0].longitude
+      expect(markers.first[:text]).
+        to eq(helper.html_marker_text(company, company.addresses[0]))
+      expect(markers.first[:text]).
+        to include("#{link_to(company.name, company, target: '_blank')}")
+
+      expect(markers.second[:latitude]).to eq company.addresses[1].latitude
+      expect(markers.second[:longitude]).to eq company.addresses[1].longitude
+      expect(markers.second[:text]).
+        to eq(helper.html_marker_text(company, company.addresses[1]))
+      expect(markers.second[:text]).
+        to include("#{link_to(company.name, company, target: '_blank')}")
     end
 
     it 'just show company name with no link for it' do
-      co = build(:company)
-      markers = helper.location_and_markers_for([co], link_name: false)
-      expect(markers.first[:text]).not_to include("#{link_to(co.name, co,target: '_blank')}")
+      markers = helper.location_and_markers_for([company], link_name: false)
+      expect(markers.first[:text]).
+        not_to include("#{link_to(company.name, company, target: '_blank')}")
     end
 
   end
@@ -94,13 +116,13 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:co) { create(:company, company_number: '8776682406')}
 
     it 'default links name to the company' do
-      marker_text = helper.html_marker_text(co)
+      marker_text = helper.html_marker_text(co, co.addresses[0])
       expect(marker_text).to include( "#{link_to(co.name, co, target: '_blank')}" )
     end
 
 
     it 'name text = just the name (no link)' do
-      marker_text = helper.html_marker_text(co, name_html: co.name)
+      marker_text = helper.html_marker_text(co, co.addresses[0], name_html: co.name)
       expect(marker_text).not_to include( "#{link_to(co.name, co, target: '_blank')}" )
     end
 
@@ -129,52 +151,4 @@ RSpec.describe CompaniesHelper, type: :helper do
       expect(address_visibility_array).to match_array selection_array
     end
   end
-
-  describe '#show_address_fields' do
-    let(:admin)   { create(:user, admin: true) }
-    let(:member)  { create(:member_with_membership_app) }
-    let(:visitor) { build(:visitor) }
-    let(:company) { create(:company, num_addresses: 0) }
-    let(:address) { create(:address, addressable: company) }
-
-    let(:all_fields) do
-      [ { name: 'street_address', label: 'street', method: nil },
-        { name: 'post_code', label: 'post_code', method: nil },
-        { name: 'city', label: 'city', method: nil },
-        { name: 'kommun', label: 'kommun', method: 'name' },
-        { name: 'region', label: 'region', method: 'name' } ]
-    end
-
-    it 'returns all fields for admin user' do
-      # The helper method returns two values, so these will be in an array
-      expect(show_address_fields(admin, nil)).to match_array [ all_fields, true ]
-    end
-
-    it 'returns all fields for member associated with company' do
-      company = member.membership_applications[0].company
-      expect(show_address_fields(member, company.addresses.first))
-        .to match_array [ all_fields, true ]
-    end
-
-    it 'for visitor, returns fields consistent with address visibility' do
-
-      (0..Address::ADDRESS_VISIBILITY.length-1).each do |idx|
-
-        address.visibility = Address::ADDRESS_VISIBILITY[idx]
-        address.save!
-
-        fields, visibility = show_address_fields(visitor, address)
-
-        expect(visibility).to be false
-
-        case address.visibility
-        when 'none'
-          expect(fields).to be nil
-        else
-          expect(fields).to match_array all_fields[idx, 5]
-        end
-      end
-    end
-  end
-
 end

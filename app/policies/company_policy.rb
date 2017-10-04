@@ -1,5 +1,5 @@
 class CompanyPolicy < ApplicationPolicy
-
+  include PoliciesHelper
 
   def show?
     true
@@ -18,14 +18,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || is_in_company?
+    user.admin? || is_in_company?(record)
   end
 
-
-
-  private
-
-  def is_in_company?
-    user.is_in_company_numbered?(record.company_number)
-  end
 end
