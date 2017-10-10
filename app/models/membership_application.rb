@@ -34,7 +34,6 @@ class MembershipApplication < ApplicationRecord
   validates_length_of :company_number, is: 10
   validates_format_of :contact_email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validates_uniqueness_of :user_id, scope: :company_number
-  validates_uniqueness_of :membership_number, allow_blank: true
   validate :swedish_organisationsnummer
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
@@ -43,6 +42,7 @@ class MembershipApplication < ApplicationRecord
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
   delegate :full_name, to: :user, prefix: true
+  delegate :membership_number, :membership_number=, to: :user, prefix: false
 
   include AASM
 
@@ -136,13 +136,14 @@ class MembershipApplication < ApplicationRecord
   def accept_membership
     begin
 
-      membership_number = self.membership_number.blank? ? self.class.get_next_membership_number : self.membership_number
+      user.issue_membership_number
+      user.save
 
       company = Company.find_or_create_by!(company_number: company_number) do |co|
         co.email = contact_email
       end
 
-      update(company: company, membership_number: membership_number)
+      update(company: company)
 
     rescue => e
       puts "ERROR: could not accept_membership.  error: #{e.inspect}"
@@ -152,7 +153,7 @@ class MembershipApplication < ApplicationRecord
 
 
   def reject_membership
-    update(membership_number: nil)
+    user.update(membership_number: nil)
     delete_uploaded_files
   end
 
@@ -171,11 +172,6 @@ class MembershipApplication < ApplicationRecord
 
   def se_mailing_csv_str
      company.nil? ?  AddressExporter.se_mailing_csv_str(nil) : company.se_mailing_csv_str
-  end
-
-
-  def self.get_next_membership_number
-    connection.execute("SELECT nextval('membership_number_seq')").getvalue(0,0).to_s
   end
 
 

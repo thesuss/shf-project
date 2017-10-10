@@ -6,7 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
-
+  validates_uniqueness_of :membership_number, allow_blank: true
 
   scope :are_members, lambda {
     User.all.select { | user | user.is_member? }
@@ -71,5 +71,17 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+
+  def issue_membership_number
+    self.membership_number = self.membership_number.blank? ? get_next_membership_number : self.membership_number
+  end
+
+  private
+
+  def get_next_membership_number
+    self.class.connection.execute("SELECT nextval('membership_number_seq')").getvalue(0,0).to_s
+  end
+
 
 end
