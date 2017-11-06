@@ -329,7 +329,6 @@ RSpec.describe MembershipApplication, type: :model do
 
   end
 
-
   describe 'membership number generator' do
 
     let(:user) { create(:user) }
