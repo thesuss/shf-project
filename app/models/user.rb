@@ -5,6 +5,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :payments
+  accepts_nested_attributes_for :payments
+
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true
 
@@ -15,6 +18,46 @@ class User < ApplicationRecord
   scope :are_not_members, lambda {
     User.all.reject { | user | user.is_member? }
   }
+
+  def most_recent_payment
+    payments.completed.order(:created_at).last
+  end
+
+  def membership_expire_date
+    most_recent_payment&.expire_date
+  end
+
+  def payment_notes
+    most_recent_payment&.notes
+  end
+
+  def self.next_payment_dates(user_id)
+    # Business rules:
+    # start_date = prior payment expire date + 1 day
+    # expire_date = start_date + 1 year - 1 day
+    # (special rules apply for remainder of 2017)
+    user = find(user_id)
+
+    if user.membership_expire_date
+      start_date = user.most_recent_payment.expire_date + 1.day
+    else
+      start_date = Date.current
+    end
+    if Date.today.year == 2017
+      expire_date = Date.new(2018, 12, 31)
+    else
+      expire_date = start_date + 1.year - 1.day
+    end
+    [start_date, expire_date]
+  end
+
+  def allow_pay_member_fee?
+    # Business rule: user can pay membership fee if:
+    # 1. user == member, or
+    # 2. user has at least one application with status == :accepted
+
+    member? || membership_applications.where(state: :accepted).any?
+  end
 
   def has_membership_application?
     membership_applications.any?
@@ -42,7 +85,7 @@ class User < ApplicationRecord
 
 
   def is_member?
-    has_membership_application? && (membership_applications.select{|m| m.is_member? }.count > 0 )
+    member?
   end
 
 

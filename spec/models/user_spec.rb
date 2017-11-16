@@ -17,33 +17,37 @@ RSpec.describe User, type: :model do
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :id }
-    it {is_expected.to have_db_column :first_name}
-    it {is_expected.to have_db_column :last_name}
-    it {is_expected.to have_db_column :membership_number}
+    it { is_expected.to have_db_column :first_name }
+    it { is_expected.to have_db_column :last_name }
+    it { is_expected.to have_db_column :membership_number }
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :admin }
+    it { is_expected.to have_db_column :member }
   end
 
   describe 'Validations' do
     it { is_expected.to(validate_presence_of :first_name) }
     it { is_expected.to(validate_presence_of :last_name) }
-    it {is_expected.to validate_uniqueness_of :membership_number}
+    it { is_expected.to validate_uniqueness_of :membership_number }
   end
 
   describe 'Associations' do
     it { is_expected.to have_many :membership_applications }
+    it { is_expected.to have_many :payments }
   end
 
   describe 'Admin' do
     subject { create(:user, admin: true) }
 
     it { is_expected.to be_admin }
+    it { is_expected.not_to be_member }
   end
 
   describe 'User' do
     subject { create(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
+    it { is_expected.not_to be_member }
   end
 
 
@@ -405,4 +409,102 @@ RSpec.describe User, type: :model do
 
   end
 
+  context 'payment and membership period' do
+    let(:user) { create(:user) }
+    let(:success) { Payment.order_to_payment_status('successful') }
+    let(:application) do
+      create(:membership_application, user: user, state: :accepted)
+    end
+
+    let(:payment1) do
+      create(:payment, user: user, status: success,
+             notes: 'these are notes for payment1',
+             expire_date: Date.new(2018, 1, 1))
+    end
+    let(:payment2) do
+      create(:payment, user: user, status: success,
+             notes: 'these are notes for payment2',
+             expire_date: Date.new(2018, 7, 1))
+    end
+
+    describe '#membership_expire_date' do
+      it 'returns date for latest completed payment' do
+        payment1
+        expect(user.membership_expire_date).to eq payment1.expire_date
+        payment2
+        expect(user.membership_expire_date).to eq payment2.expire_date
+      end
+    end
+
+    describe '#payment_notes' do
+      it 'returns notes for latest completed payment' do
+        payment1
+        expect(user.payment_notes).to eq payment1.notes
+        payment2
+        expect(user.payment_notes).to eq payment2.notes
+      end
+    end
+
+    describe '#most_recent_payment' do
+      it 'returns latest completed payment' do
+        payment1
+        expect(user.most_recent_payment).to eq payment1
+        payment2
+        expect(user.most_recent_payment).to eq payment2
+      end
+    end
+
+    describe '.self.next_payment_dates' do
+
+      context 'start_date' do
+
+        it 'returns today if no prior payment' do
+          expect(User.next_payment_dates(user.id)[0]).to eq Date.today
+        end
+
+        it 'returns prior-payment-expire_date plus one day if prior payment' do
+          payment1
+          expect(User.next_payment_dates(user.id)[0])
+            .to eq payment1.expire_date + 1.day
+        end
+      end
+
+      context 'expire_date' do
+        after(:each) do
+          Timecop.return
+        end
+
+        describe 'during the year 2017' do
+
+          it 'returns January 1, 2018' do
+            Timecop.freeze(Date.new(2017, 10, 1))
+            expect(User.next_payment_dates(user.id)[1])
+              .to eq Date.new(2018, 12, 31)
+          end
+        end
+
+        describe 'after year 2017' do
+          it 'returns prior expire_date plus one year' do
+            Timecop.freeze(Date.new(2018, 7, 1))
+            payment1
+            expect(User.next_payment_dates(user.id)[1])
+              .to eq payment1.expire_date + 1.year
+          end
+        end
+      end
+    end
+
+    describe '#allow_pay_member_fee?' do
+      it 'returns true if user is a member' do
+        user.member = true
+        user.save
+        expect(user.allow_pay_member_fee?).to eq true
+      end
+
+      it 'returns true if user has app in "accepted" state' do
+        application
+        expect(user.allow_pay_member_fee?).to eq true
+      end
+    end
+  end
 end

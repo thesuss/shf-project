@@ -1,6 +1,9 @@
 class PaymentsController < ApplicationController
   require 'hips'
 
+  class NotAuthorizedError < Pundit::NotAuthorizedError
+  end
+
   SUCCESSFUL_HIPS_ORDER_EVENT = 'order.successful'
 
   protect_from_forgery except: :webhook
@@ -10,11 +13,18 @@ class PaymentsController < ApplicationController
     payment_type = params[:type]
     user_id = params[:user_id]
 
+    authorize Payment.new(user_id: user_id)
+
+    # Set membership duration dates based on business rules
+    start_date, expire_date = User.next_payment_dates(user_id)
+
     # HIPS will associate the payment with a "merchant reference" - which
     # will be our Payment ID.  We can use this later to fetch the HIPS order.
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
-                              status: Payment.order_to_payment_status(nil))
+                              status: Payment.order_to_payment_status(nil),
+                              start_date: start_date,
+                              expire_date: expire_date)
 
     # Build data structures for HIPS order
     urls = hips_order_urls(user_id, @payment.id)
@@ -39,7 +49,8 @@ class PaymentsController < ApplicationController
 
     log_hips_activity('create order', 'error', nil, @hips_id, exc.cause)
 
-    helpers.flash_message(:alert, t('.something_wrong'))
+    helpers.flash_message(:alert, t('.something_wrong',
+                                    admin_email: ENV['SHF_MEMBERSHIP_EMAIL']))
 
     redirect_back fallback_location: root_path
   end
@@ -52,7 +63,7 @@ class PaymentsController < ApplicationController
     # be triggered *only* by the "order.successful" event.
     # (That webhook is not available at this time (October 18, 2017)).
 
-    payload = JSON.parse request.body.read
+    payload = JSON.parse(request.body.read)
 
     return head(:ok) unless payload['event'] == SUCCESSFUL_HIPS_ORDER_EVENT
 
@@ -62,12 +73,15 @@ class PaymentsController < ApplicationController
     hips_id    = resource['id']
 
     payment = Payment.find(payment_id)
-    payment.status = Payment.order_to_payment_status(resource['status'])
-    payment.save
+    payment.update(status: Payment.order_to_payment_status(resource['status']))
+
+    # When fee is paid, user is made a member, and a membership_number is issued
+    user = payment.user
+    user.update(member: true, membership_number: user.issue_membership_number)
 
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
 
-  rescue RuntimeError => exc
+  rescue RuntimeError, JWT::IncorrectAlgorithm => exc
     log_hips_activity('Webhook', 'error', payment_id, hips_id, exc)
 
   ensure
@@ -76,12 +90,12 @@ class PaymentsController < ApplicationController
 
   def success
     helpers.flash_message(:notice, t('.success'))
-    redirect_to root_path   # Redirect to user account page (when it exists)
+    redirect_to user_path(params[:user_id])
   end
 
   def error
     helpers.flash_message(:alert, t('.error'))
-    redirect_to root_path   # Redirect to user account page (when it exists)
+    redirect_to user_path(params[:user_id])
   end
 
   private

@@ -37,6 +37,8 @@ en:
   search: &search Search
   'yes': &yes 'Yes'
   'no': &no 'No'
+  'Yes': *yes
+  'No': *no
   applications: &applications Applications
   user_activity: User Activity
   none: &none None
@@ -137,9 +139,13 @@ en:
         sign_in_count: &sign_in_count Logins
         created: *created
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
+        member: &member Member
 
       payment:
         payment_type: Payment Type
+        start_date: Start Date
+        expire_date: &expire_date Expire Date
+        notes: Notes
 
       membership_application:
         company_number: &company_number Company number
@@ -602,6 +608,9 @@ en:
       re_enter_new_password: Re-Enter the Password
       please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
       submit_new_password: Save the New Password
+      member: *member
+      pay_membership_tooltip: Paying membership fee will extend your membership
+                              for one year
 
     update:
       passwords_dont_match: "The two passwords entered don't match."
@@ -620,6 +629,8 @@ en:
       user_has_never_signed_in: has never logged in.
       'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
+      edit_member_status: Edit Member Status
+      submit_button_label: Update Status
 
     users_list:
       membership_number: *membership_number_short
@@ -632,12 +643,13 @@ en:
       member: Member
       applications: *applications
       applications_tooltip: Number of open applications
+      expire_date: *expire_date
 
   payments:
     create:
       page_title: &page_title '%{payment_type} Payment by: %{user_name}'
       title: *page_title
-      something_wrong: Something went wrong - contact the system administrator at member@sverigeshundforetagare.se
+      something_wrong: 'Something went wrong - contact the system administrator at %{admin_email}'
 
     success:
       success: Payment successfully processed - thank you!
@@ -914,6 +926,7 @@ en:
       users:
         my_application: &my_application My Application
         apply_for_membership: Apply for Membership
+        your_account: View Your Account
 
       members:
         shf_companies: SHF Companies

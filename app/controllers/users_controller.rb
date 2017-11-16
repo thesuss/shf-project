@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :authorize_user
   before_action :set_user, except: :index
-
+  before_action :authorize_user, only: [:show]
 
   def index
+    authorize User
     @q = User.ransack(params[:q])
     @users = @q.result.includes(:membership_applications)
 
@@ -23,7 +23,6 @@ class UsersController < ApplicationController
 
 
   def update
-
     if @user.update(user_params)
       redirect_to @user, notice: t('.success')
     else
@@ -33,14 +32,28 @@ class UsersController < ApplicationController
 
       render :show
     end
-
   end
 
+  def edit_status
+    raise 'Unsupported request' unless request.xhr?
+    authorize User
+
+    payment = @user.most_recent_payment
+
+    if @user.update(user_params) &&
+      (payment ? payment.update(payment_params) : true)
+
+      render partial: 'member_payment_status', locals: { user: @user }
+    else
+      helpers.flash_message(:alert, t('users.update.error'))
+      render :show
+    end
+  end
 
   private
 
   def authorize_user
-    authorize User
+    authorize @user
   end
 
 
@@ -51,7 +64,12 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :member, :password,
+                                 :password_confirmation)
+  end
+
+  def payment_params
+    params.require(:payment).permit(:expire_date, :notes)
   end
 
 
