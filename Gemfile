@@ -65,6 +65,8 @@ gem 'nokogiri'         # must explicity require this gem for premailer-rails
 gem 'httparty'
 gem 'jwt'
 
+gem 'exception_notification' # send notifications if there are errors
+gem 'slack-notifier'  # send notifications to Slack
 
 group :development, :test do
   gem 'rspec-rails'
