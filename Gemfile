@@ -102,12 +102,6 @@ group :development do
   gem 'bullet'
   gem 'rb-readline'
 
-  # to generate state machine diagrams
-  # ex: for membership_application state machine:
-  #   bundle exec aasm_statecharts -i ./app/models membership_application -t -d ./doc
-  gem 'aasm_statecharts',  '~> 1.1.7', github: 'weedySeaDragon/aasm_statecharts'
-
-
 end
 
 group :test do
