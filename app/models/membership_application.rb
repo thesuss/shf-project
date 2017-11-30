@@ -99,11 +99,6 @@ class MembershipApplication < ApplicationRecord
   end
 
 
-  def is_accepted?
-    accepted?
-  end
-
-
   def not_a_member?
     !user.member?
   end
