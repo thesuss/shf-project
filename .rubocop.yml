@@ -324,7 +324,7 @@ Rails/Date:
   Description: >-
                   Checks the correct usage of date aware methods,
                   such as Date.today, Date.current etc.
-  Enabled: false
+  Enabled: true
 
 Rails/Delegate:
   Description: 'Prefer delegate method for delegations.'

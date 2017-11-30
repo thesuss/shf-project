@@ -14,8 +14,8 @@ class AddDatesToPayments < ActiveRecord::Migration[5.1]
                          payment_type: Payment::PAYMENT_TYPE_MEMBER,
                          status: Payment.order_to_payment_status('successful'),
                          hips_id: 'none',
-                         start_date: Date.new(2017, 1, 1),
-                         expire_date: Date.new(2017, 12, 31))
+                         start_date: Date.new(2017, 1, 1).in_time_zone,
+                         expire_date: Date.new(2017, 12, 31).in_time_zone)
         end
       end
 
