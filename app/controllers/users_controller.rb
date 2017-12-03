@@ -40,16 +40,16 @@ class UsersController < ApplicationController
     raise 'Unsupported request' unless request.xhr?
     authorize User
 
-    payment = @user.most_recent_payment
+    payment = @user.most_recent_membership_payment
 
-    if @user.update(user_params) &&
-      (payment ? payment.update(payment_params) : true)
+    @user.update!(user_params) && (payment ?
+                                   payment.update!(payment_params) : true)
 
-      render partial: 'member_payment_status', locals: { user: @user }
-    else
-      helpers.flash_message(:alert, t('users.update.error'))
-      render :show
-    end
+    render partial: 'member_payment_status', locals: { user: @user }
+
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+    render partial: 'member_payment_status',
+           locals: { user: @user, error:  t('users.update.error') }
   end
 
   private

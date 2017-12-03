@@ -473,6 +473,9 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
+      edit_branding_status: Redigera Status
+      branding_license: Accepterar policy
+      pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
@@ -495,6 +498,9 @@ sv:
        flera län, eller "Online" om det (i huvudsak) finns på nätet
       visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
       org_nr_tooltip: Endast siffror (ej bindestreck)
+
+    company:
+      submit_button_label: Uppdatera status
 
     company_name: Företagsnamn
     telephone_number: Telefonnummer
@@ -935,6 +941,9 @@ sv:
           edit_company: Redigera företag
         my_application: *my_application
         pay_membership: Betala medlemsavgift
+
+      company:
+        pay_branding_fee: Betala H-märkesavgift
 
       admin:
         shf_main_site: *shf_main_site

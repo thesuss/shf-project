@@ -37,8 +37,7 @@ Feature: As an admin
 
   @time_adjust
   Scenario: The right info is displayed for a user
-    Given the date is set to "2017-10-30"
-
+    Given the date is set to "2017-11-01"
     Given The user "emma@happymutts.com" was created 3 days ago
     And I am logged in as "admin@shf.se"
     When I am on the "all users" page

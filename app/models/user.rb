@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include PaymentUtility
+
   has_many :membership_applications
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -11,50 +13,28 @@ class User < ApplicationRecord
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true
 
-  def most_recent_payment
-    payments.completed.order(:created_at).last
+  scope :are_members, lambda {
+    User.all.select { | user | user.member? }
+  }
+
+  scope :are_not_members, lambda {
+    User.all.reject { | user | user.member? }
+  }
+
+  def most_recent_membership_payment
+    most_recent_payment(Payment::PAYMENT_TYPE_MEMBER)
   end
 
   def membership_expire_date
-    most_recent_payment&.expire_date
+    payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
   end
 
-  def payment_notes
-    most_recent_payment&.notes
+  def membership_payment_notes
+    payment_notes(Payment::PAYMENT_TYPE_MEMBER)
   end
 
-  # If the user paid today, return the starting date and expiration date of
-  # the membership term they would be paying for, based on the when their
-  # membership would currently expire.
-  #
-  # Note: Use Date.current because it returns the date/time according to this Rails application.
-  #   Date.today (and Time.now) return the date/time of the _system_ time
-  #  (the time according to the operating system on the machine running Rails), which may or may not be
-  #   the same as the Rails application time.
-  #   Likewise, use Date.new().in_time_zone instead of just Date.new
-  #   @see The Exhaustive Guide to Rails Time Zones http://danilenko.org/2012/7/6/rails_timezones/
-  #   @see It's About Time (Zones) https://robots.thoughtbot.com/its-about-time-zones
-  #
-  def self.next_payment_dates(user_id)
-    # Business rules:
-    # start_date = prior payment expire date + 1 day
-    # expire_date = start_date + 1 year - 1 day
-    # (special rules apply for remainder of 2017)
-    #
-    # all date calculations should be done with Date.current
-    user = find(user_id)
-
-    if user.membership_expire_date
-      start_date = user.most_recent_payment.expire_date + 1.day
-    else
-      start_date = Date.current
-    end
-    if Date.current.year == 2017
-      expire_date = Date.new(2018, 12, 31).in_time_zone
-    else
-      expire_date = start_date + 1.year - 1.day
-    end
-    [start_date, expire_date]
+  def self.next_membership_payment_dates(user_id)
+    next_payment_dates(user_id, Payment::PAYMENT_TYPE_MEMBER)
   end
 
   def allow_pay_member_fee?

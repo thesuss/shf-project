@@ -38,9 +38,9 @@ RSpec.describe Company, type: :model do
     co
   end
 
-  let!(:complete_companies) { [complete_co] }
+  let(:complete_companies) { [complete_co] }
 
-  let!(:incomplete_companies) do
+  let(:incomplete_companies) do
     incomplete_cos = []
     incomplete_cos << no_name
     incomplete_cos << nil_region
@@ -74,20 +74,27 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_many(:business_categories).through(:membership_applications) }
     it { is_expected.to have_many(:membership_applications).dependent(:destroy) }
     it { is_expected.to have_many(:addresses).dependent(:destroy) }
+    it { is_expected.to accept_nested_attributes_for(:addresses)}
     it { is_expected.to have_many(:pictures) }
+    it { is_expected.to have_many(:users).through(:membership_applications) }
+    it { is_expected.to have_many(:payments) }
+    it { is_expected.to accept_nested_attributes_for(:payments)}
   end
 
 
   describe 'complete scope' do
+    let(:complete_scope) { Company.complete }
+
+    before(:each) do
+      complete_companies
+      incomplete_companies
+    end
 
     it 'only returns companies that are complete' do
-
-      complete_scope = Company.complete
       expect(complete_scope).to match_array(complete_companies)
     end
 
     it 'does not return any incomplete companies' do
-      complete_scope = Company.complete
       expect(complete_scope & incomplete_companies).to match_array([])
     end
 
@@ -240,5 +247,138 @@ RSpec.describe Company, type: :model do
     end
 
 
+  end
+
+  context 'payment and branding license period' do
+    let(:user) { create(:user) }
+    let(:company) { create(:company) }
+
+    let(:success) { Payment.order_to_payment_status('successful') }
+
+    let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
+
+    let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
+
+    let(:payment1) do
+      start_date, expire_date = Company.next_branding_payment_dates(company.id)
+      create(:payment, user: user, status: success, company: company,
+             payment_type: Payment::PAYMENT_TYPE_BRANDING,
+             notes: 'these are notes for branding payment1',
+             start_date: start_date,
+             expire_date: expire_date)
+    end
+    let(:payment2) do
+      start_date, expire_date = Company.next_branding_payment_dates(company.id)
+      create(:payment, user: user, status: success, company: company,
+             payment_type: Payment::PAYMENT_TYPE_BRANDING,
+             notes: 'these are notes for branding payment2',
+             start_date: start_date,
+             expire_date: expire_date)
+    end
+
+    describe '#branding_expire_date' do
+      it 'returns date for latest completed payment' do
+        payment1
+        expect(company.branding_expire_date).to eq payment1.expire_date
+        payment2
+        expect(company.branding_expire_date).to eq payment2.expire_date
+      end
+    end
+
+    describe '#branding_payment_notes' do
+      it 'returns notes for latest completed payment' do
+        payment1
+        expect(company.branding_payment_notes).to eq payment1.notes
+        payment2
+        expect(company.branding_payment_notes).to eq payment2.notes
+      end
+    end
+
+    describe '#most_recent_branding_payment' do
+      it 'returns latest completed payment' do
+        payment1
+        expect(company.most_recent_branding_payment).to eq payment1
+        payment2
+        expect(company.most_recent_branding_payment).to eq payment2
+      end
+    end
+
+    describe '.self.next_branding_payment_dates' do
+
+      context 'during the year 2017' do
+
+        around(:each) do |example|
+          Timecop.freeze(payment_date_2017)
+          example.run
+          Timecop.return
+        end
+
+        it "returns today's date for first payment start date" do
+          expect(Company.next_branding_payment_dates(company.id)[0])
+            .to eq Time.zone.today
+        end
+
+        it 'returns Dec 31, 2018 for first payment expire date' do
+          expect(Company.next_branding_payment_dates(company.id)[1])
+            .to eq Time.zone.local(2018, 12, 31)
+        end
+
+        it 'returns Jan 1, 2019 for second payment start date' do
+          payment1
+          expect(Company.next_branding_payment_dates(company.id)[0])
+            .to eq Time.zone.local(2019, 1, 1)
+        end
+
+        it 'returns Dec 31, 2019 for second payment expire date' do
+          payment1
+          expect(Company.next_branding_payment_dates(company.id)[1])
+            .to eq Time.zone.local(2019, 12, 31)
+        end
+      end
+
+      context 'after the year 2017' do
+
+        around(:each) do |example|
+          Timecop.freeze(payment_date_2018)
+          example.run
+          Timecop.return
+        end
+
+        it "returns today's date for first payment start date" do
+          expect(Company.next_branding_payment_dates(company.id)[0]).to eq Time.zone.today
+        end
+
+        it 'returns one year later for first payment expire date' do
+          expect(Company.next_branding_payment_dates(company.id)[1])
+            .to eq Time.zone.today + 1.year - 1.day
+        end
+
+        it 'returns date-after-expiration for second payment start date' do
+          payment1
+          expect(Company.next_branding_payment_dates(company.id)[0])
+            .to eq Time.zone.today + 1.year
+        end
+
+        it 'returns one year later for second payment expire date' do
+          payment1
+          expect(Company.next_branding_payment_dates(company.id)[1])
+            .to eq Time.zone.today + 1.year + 1.year - 1.day
+        end
+      end
+    end
+
+    describe 'scope: branding_licensed' do
+      it 'returns all currently-licensed companies' do
+        payment1.update(expire_date: Time.zone.today - 1.day)
+        payment2.update(expire_date: Time.zone.today - 1.day)
+        expect(Company.branding_licensed).to be_empty
+
+        payment1.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(company)
+
+        payment2.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(company)
+      end
+    end
   end
 end

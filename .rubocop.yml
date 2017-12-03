@@ -323,8 +323,8 @@ Rails/ActionFilter:
 Rails/Date:
   Description: >-
                   Checks the correct usage of date aware methods,
-                  such as Date.today, Date.current etc.
-  Enabled: true
+                  such as Date.today, Time.zone.today etc.
+  Enabled: false
 
 Rails/Delegate:
   Description: 'Prefer delegate method for delegations.'

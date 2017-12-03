@@ -98,7 +98,7 @@ module SeedHelper
 
       user.grant_membership
 
-      start_date, expire_date = User.next_payment_dates(user.id)
+      start_date, expire_date = User.next_membership_payment_dates(user.id)
 
       user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
                                       user_id: user.id,
@@ -106,7 +106,6 @@ module SeedHelper
                                       status: Payment.order_to_payment_status('successful'),
                                       start_date: start_date,
                                       expire_date: expire_date)
-      user.member = true
     end
 
 
