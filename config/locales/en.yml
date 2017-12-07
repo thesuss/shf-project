@@ -154,6 +154,10 @@ en:
         contact_email: &contact_email Contact Email
         state: &state Status
         phone_number: Phone number
+        uploaded_files:
+          one: Uploaded file
+          many: Uploaded files
+
 
       address:
         street: &street Street

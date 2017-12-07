@@ -154,6 +154,10 @@ sv:
         contact_email: &contact_email Kontakt e-post
         state: &state Status
         phone_number: Telefonnummer
+        uploaded_files:
+          one: Uppladdad fil
+          many: Uppladdade filer
+
 
       address:
         street: &street Gata
