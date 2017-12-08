@@ -121,6 +121,10 @@ sv:
         one: Betalning
         other: Betalningar
 
+      user:
+        one: Användaren
+        other: Användare
+
 
     attributes:
 
