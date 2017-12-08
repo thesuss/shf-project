@@ -114,12 +114,16 @@ en:
         other: Companies
 
       shf_document:
-        one: SHF Document
-        other: SHF Documents
+        one: Document
+        other: Documents
 
       payment:
         one: Payment
         other: Payments
+
+      user:
+        one: User
+        other: Users
 
 
     attributes:
