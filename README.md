@@ -15,6 +15,17 @@ Sempahore status: [![Semaphore Status](https://semaphoreci.com/api/v1/shf-projec
 
 Codeclimate: [![Code Climate](https://codeclimate.com/github/AgileVentures/shf-project/badges/gpa.svg)](https://codeclimate.com/github/AgileVentures/shf-project)
 
+## Want to Help?  Here's How to Get Started and Some Info:
+
+- Read the Requirements and Dependencies, and Installation sections below. Be sure to **read the [CONTRIBUTING](https://github.com/AgileVentures/shf-project/blob/develop/CONTRIBUTING.md) document.**  That describes how we work:  where and how we track user stories, issues, bugs, etc.  It describes how we work with GitHub, our style standards, general workflow, etc.  We do try to document things here in the GitHub wiki.  (And we always appreciate feedback on what we can improve.)
+
+- We're often asked: _"The system is for people in Sweden.  Do I have to speak Swedish?"_
+
+   Nope. The development takes place in English.  (So you do need to speak English.)
+   The system uses Rails' I18n and so can be displayed in either Swedish or English.
+   You don't have to be dog owner, either.
+
+
 ## Requirements and Dependencies
 
 This project runs on a Ruby on Rails stack with postgreSQL as the repository.
