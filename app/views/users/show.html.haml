@@ -1,22 +1,36 @@
 %header.entry-header
+  - user_name = @user.full_name
   - if @user.admin?
     %h1.entry-title.is-admin
-      = @user.email
+      = user_name.empty? ? @user.email : user_name
       %span.small
         (#{t('.is_an_admin')})
-
   - else
-    %h1.entry-title=  @user.email
-
+    %h1.entry-title
+      = user_name.empty? ? @user.email : user_name
 
 .entry-content
-  = field_or_none("#{t('.email')}", mail_to(@user.email), label_class: 'standard-label')
+  .col-sm-6
+    = field_or_none("#{t('.email')}", mail_to(@user.email),
+                    label_class: 'standard-label')
+  .col-sm-4.col-sm-offset-2
+    = field_or_none("#{t('.membership_number')}", @user.membership_number,
+                    label_class: 'standard-label')
+  .clearfix
 
-  - unless @user.membership_applications.exists?
-    = field_or_none("#{t('applications')}", t('none'), label_class: 'standard-label')
-  - else
-    -# .col-sm-3{ style: 'margin-left: -15px;' }
-    %span.standard-label #{t('applications')}:
+  - if current_user.admin? || beta_user?(@user)
+
+    = render partial: 'member_payment_status', locals: { user: @user }
+
+  .clearfix
+
+  .col-sm-12
+
+    - unless @user.membership_applications.exists?
+      = field_or_none("#{t('applications')}", t('none'), label_class: 'standard-label')
+    - else
+      -# .col-sm-3{ style: 'margin-left: -15px;' }
+      %span.standard-label #{t('applications')}:
 
     .row
       %table.table.table-hover
@@ -38,44 +52,48 @@
                 - if app.accepted?
                   %span.yes= app.state
                 - else
-                  %span.no= app.state
+                  %span.maybe= app.state
               %td= link_to(app.company_number, membership_application_path(app))
               %td= app.company&.name
 
-  %span.standard-label #{t('user_activity')}:
+  .col-sm-12
+    %span.standard-label #{t('user_activity')}:
 
-  .row
-    Account #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}
+    .row
+      Account #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}
 
-    %p
-    - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
-      #{@user.email} #{t('.user_has_never_signed_in')}
+      %p
+      - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
+        #{@user.email} #{t('.user_has_never_signed_in')}
 
-    - else
-      = "#{t('.last_login')}:"
-      #{ most_recent_login_time @user}
-      (#{i18n_time_ago_in_words(most_recent_login_time @user)})
-      %br
-      #{t('.logged_in_count')}:
-      = @user.sign_in_count
+      - else
+        = "#{t('.last_login')}:"
+        #{ most_recent_login_time @user}
+        (#{i18n_time_ago_in_words(most_recent_login_time @user)})
+        %br
+        #{t('.logged_in_count')}:
+        = @user.sign_in_count
 
-    %p
-    - if @user.reset_password_sent_at.blank?
-      = t('.password_never_reset')
-    - else
-      %b #{t('.reset_password_sent_at')}:
-      #{@user.reset_password_sent_at}
-      #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
+      %p
+      - if @user.reset_password_sent_at.blank?
+        = t('.password_never_reset')
+      - else
+        %b #{t('.reset_password_sent_at')}:
+        #{@user.reset_password_sent_at}
+        #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
 
   %hr
 
-  %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
-               href: '#set_new_password_form',
-               style: 'text-transform:none;' }
+  .col-sm-12
+    %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
+                 href: '#set_new_password_form',
+                 style: 'text-transform:none;' }
 
-    #{ t('toggle.set_new_password_form.show') }
+      #{ t('toggle.set_new_password_form.show') }
 
-  .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form' ,
-                        style: 'display: none;'}
+    .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form' ,
+                          style: 'display: none;'}
 
-    = render 'password_form'
+      = render 'password_form'
+
+= render partial: 'edit_status_modal', locals: { user: @user }

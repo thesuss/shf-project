@@ -16,16 +16,22 @@ RSpec.describe 'companies/index' do
 
   let(:shf_site) { Regexp.escape('http://sverigeshundforetagare.se/') }
 
+  # https://stackoverflow.com/questions/41762057/
+  # rails-view-specs-referenced-partials-of-inherited-controllers-arent-found/
+  # 41762292#41762292
   before(:each) { view.lookup_context.prefixes << 'application' }
-    # https://stackoverflow.com/questions/41762057/
-    # rails-view-specs-referenced-partials-of-inherited-controllers-arent-found/
-    # 41762292#41762292
 
   describe 'member' do
 
     before(:each) do
       allow(view).to receive(:current_user) { member }
       allow(view).to receive(:user_signed_in?) { true }
+
+      #https://github.com/elabs/pundit/issues/339
+      #undefined method `policy' while testing with RSpec views specs
+      without_partial_double_verification do
+        allow(view).to receive(:policy).and_return(double('MembershipApplicationPolicy.new', update?: false))
+      end
 
       assign(:all_visible_companies, [])
       assign(:search_params, Company.ransack(nil))
@@ -53,12 +59,12 @@ RSpec.describe 'companies/index' do
 
       it 'renders menu link == member pages index' do
         text = t('menus.nav.members.member_pages')
-        expect(rendered).to match %r{<a href=\"\/member-pages\">#{text}}
+        expect(rendered).to match %r{<a href=\"\/medlemssidor\">#{text}}
       end
 
       it 'renders link to view SHF Board meeting minutes' do
         text = t('menus.nav.members.shf_meeting_minutes')
-        expect(rendered).to match %r{<a href=\"\/shf_documents">#{text}}
+        expect(rendered).to match %r{<a href=\"\/dokument">#{text}}
       end
     end
 
@@ -102,6 +108,12 @@ RSpec.describe 'companies/index' do
     before(:each) do
       allow(view).to receive(:current_user) { user }
       allow(view).to receive(:user_signed_in?) { true }
+
+      #https://github.com/elabs/pundit/issues/339
+      #undefined method `policy' while testing with RSpec views specs
+      without_partial_double_verification do
+        allow(view).to receive(:policy).and_return(double('MembershipApplicationPolicy.new', update?: true))
+      end
 
       assign(:all_visible_companies, [])
       assign(:search_params, Company.ransack(nil))
@@ -156,12 +168,12 @@ RSpec.describe 'companies/index' do
 
       it 'renders menu link == member pages index' do
         text = t('menus.nav.members.member_pages')
-        expect(rendered).to match %r{<a href=\"\/member-pages\">#{text}}
+        expect(rendered).to match %r{<a href=\"\/medlemssidor\">#{text}}
       end
 
       it 'renders link to view SHF Board meeting minutes' do
         text = t('menus.nav.members.shf_meeting_minutes')
-        expect(rendered).to match %r{<a href=\"\/shf_documents">#{text}}
+        expect(rendered).to match %r{<a href=\"\/dokument">#{text}}
       end
     end
 

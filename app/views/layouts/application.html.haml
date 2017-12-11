@@ -2,8 +2,12 @@
 %html
   %head
     = favicon_link_tag 'favicon.ico'
+
     %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes', name: 'viewport' }/
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
+    %meta{ content: 'IE=edge', 'http-equiv' => 'X-UA-Compatible' }/
+
+
     %title Medlemmar i Sveriges Hundföretagare
     = csrf_meta_tags
 
@@ -18,6 +22,7 @@
     = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=" + |
                              "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
                              "&region=SE" |
+    = javascript_include_tag HIPS_JS_CDN
 
 
     - if Rails.env.test?

@@ -7,7 +7,7 @@ class ApplicationPolicy
   end
 
   def show?
-    edit?
+    admin_or_owner?
   end
 
   def index?
@@ -15,16 +15,26 @@ class ApplicationPolicy
   end
 
   def update?
-    user.admin? || record.user == user
+    admin_or_owner?
   end
 
   def edit?
     update?
   end
 
+  def create?
+    admin_or_owner?
+  end
+
 
   def destroy?
     user.admin?
+  end
+
+  private
+
+  def admin_or_owner?
+    user.admin? || record.user == user
   end
 
 end

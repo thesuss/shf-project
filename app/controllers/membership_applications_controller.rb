@@ -21,7 +21,7 @@ class MembershipApplicationsController < ApplicationController
     action_params, @items_count, items_per_page =
       process_pagination_params('membership_application')
 
-    @search_params = MembershipApplication.includes(:user).ransack(action_params )
+    @search_params = MembershipApplication.includes(:user).ransack(action_params)
 
     @membership_applications = @search_params
                                    .result
@@ -46,10 +46,15 @@ class MembershipApplicationsController < ApplicationController
   def create
     @membership_application = MembershipApplication.new(user: current_user)
     @membership_application.update(membership_application_params)
+
     if @membership_application.save
 
-      if new_file_uploaded(params)
-        helpers.flash_message(:notice, t('.success'))
+      file_uploads_successful =   new_file_uploaded(params)
+
+      send_new_app_emails(@membership_application)
+
+      if file_uploads_successful
+        helpers.flash_message(:notice, t('.success', email_address: @membership_application.contact_email))
         redirect_to root_path
       else
         create_error(t('.error'))
@@ -66,8 +71,8 @@ class MembershipApplicationsController < ApplicationController
 
       if params[:member_app_waiting_reasons] && params[:member_app_waiting_reasons] != "#{@other_waiting_reason_value}"
         @membership_application
-          .update(member_app_waiting_reasons_id: params[:member_app_waiting_reasons],
-                  custom_reason_text: nil)
+            .update(member_app_waiting_reasons_id: params[:member_app_waiting_reasons],
+                    custom_reason_text: nil)
         head :ok
       else
         render plain: "#{@other_waiting_reason_value}"
@@ -87,7 +92,7 @@ class MembershipApplicationsController < ApplicationController
 
         respond_to do |format|
           format.js do
-            head :ok   # just let the receiver know everything is OK. no need to render anything
+            head :ok # just let the receiver know everything is OK. no need to render anything
           end
 
           format.html do
@@ -137,7 +142,6 @@ class MembershipApplicationsController < ApplicationController
     begin
       @membership_application.accept!
       helpers.flash_message(:notice, t('membership_applications.accept.success'))
-      helpers.flash_message(:notice, t('membership_applications.update.enter_member_number'))
       redirect_to edit_membership_application_url(@membership_application)
       return
     rescue => e
@@ -164,21 +168,6 @@ class MembershipApplicationsController < ApplicationController
     @membership_application.custom_reason_text = nil
 
     simple_state_change(:cancel_waiting_for_applicant!, t('.success'), t('.error'))
-  end
-
-
-  def need_payment
-    simple_state_change(:ask_for_payment!, t('.success'), t('.error'))
-  end
-
-
-  def cancel_need_payment
-    simple_state_change(:cancel_waiting_for_payment!, t('.success'), t('.error'))
-  end
-
-
-  def received_payment
-    simple_state_change(:received_payment!, t('.success'), t('.error'))
   end
 
 
@@ -262,6 +251,20 @@ class MembershipApplicationsController < ApplicationController
       render :edit
     end
 
+  end
+
+  def send_new_app_emails(new_membership_app)
+
+    MembershipApplicationMailer.acknowledge_received(new_membership_app).deliver_now
+    send_new_membership_application_notice_to_admins(new_membership_app)
+
+  end
+
+
+  def send_new_membership_application_notice_to_admins(new_membership_app)
+    User.admins.each do |admin|
+      AdminMailer.new_member_application_received(new_membership_app, admin).deliver_now
+    end
   end
 
 

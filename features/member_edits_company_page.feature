@@ -6,9 +6,9 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email               | admin | is_member |
-      | emma@happymutts.com |       | true      |
-      | admin@shf.se        | true  | true      |
+      | email               | admin | member |
+      | emma@happymutts.com |       | true   |
+      | admin@shf.se        | true  | false  |
 
     Given the following regions exist:
       | name         |
@@ -22,6 +22,7 @@ Feature: As a member
     And the following companies exist:
       | name                 | company_number | email                  |
       | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
+      | Woof Woof            | 5560360793     | emma@happymutts.com    |
 
     And the following business categories exist
       | name         |
@@ -32,10 +33,16 @@ Feature: As a member
 
     And the following applications exist:
       | user_email          | company_number | categories | state    |
+      | emma@happymutts.com | 5560360793     |            | accepted |
       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
 
-  @javascript
-  Scenario: Member goes to company page after membership approval, specifes mail address
+    And the following payments exist
+      | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
+
+  @selenium @time_adjust
+  Scenario: Member goes to company page after membership approval, specifies mail address
+    Given the date is set to "2017-10-01"
     Given I am logged in as "emma@happymutts.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     And I fill in the translated form with data:
@@ -88,8 +95,7 @@ Feature: As a member
 
     And I click the second address for company "Happy Mutts"
     And I should not see t("addresses.edit.cannot_delete_address")
-    And I click on the t("addresses.edit.delete") link
-    And I confirm popup
+    And I click on and accept the t("addresses.edit.delete") link
     Then I should see t("addresses.destroy.success")
     And I should see "2" addresses
 
@@ -113,7 +119,7 @@ Feature: As a member
     And I should see t("errors.not_permitted")
 
 
-  Scenario: User tries to go do company page (gets rerouted)
+  Scenario: User tries to go to company page (gets rerouted)
     Given I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the "landing" page

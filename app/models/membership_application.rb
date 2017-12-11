@@ -52,7 +52,6 @@ class MembershipApplication < ApplicationRecord
     state :under_review
     state :waiting_for_applicant
     state :ready_for_review
-    state :waiting_for_payment
     state :accepted
     state :rejected
 
@@ -74,20 +73,8 @@ class MembershipApplication < ApplicationRecord
       transitions from: :waiting_for_applicant, to: :ready_for_review
     end
 
-    event :ask_for_payment do
-      transitions from: :under_review, to: :waiting_for_payment
-    end
-
-    event :cancel_waiting_for_payment do
-      transitions from: :waiting_for_payment, to: :under_review
-    end
-
-    event :received_payment do
-      transitions from: :waiting_for_payment, to: :accepted, after: :accept_membership
-    end
-
     event :accept do
-      transitions from: [:under_review, :rejected], to: :accepted, guard: [:paid?, :not_a_member?], after: :accept_membership
+      transitions from: [:under_review, :rejected], to: :accepted, after: :accept_membership
     end
 
     event :reject do
@@ -112,32 +99,13 @@ class MembershipApplication < ApplicationRecord
   end
 
 
-  def is_accepted?
-    accepted?
-  end
-
-
-  def paid?
-    true
-    #(total_outstanding_charges <= 0)
-  end
-
-
   def not_a_member?
-    !is_member?
-  end
-
-
-  def is_member?
-    is_accepted?
+    !user.member?
   end
 
 
   def accept_membership
     begin
-
-      user.issue_membership_number
-      user.save
 
       company = Company.find_or_create_by!(company_number: company_number) do |co|
         co.email = contact_email

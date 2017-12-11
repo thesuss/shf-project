@@ -37,6 +37,8 @@ en:
   search: &search Search
   'yes': &yes 'Yes'
   'no': &no 'No'
+  'Yes': *yes
+  'No': *no
   applications: &applications Applications
   user_activity: User Activity
   none: &none None
@@ -112,8 +114,16 @@ en:
         other: Companies
 
       shf_document:
-        one: SHF Document
-        other: SHF Documents
+        one: Document
+        other: Documents
+
+      payment:
+        one: Payment
+        other: Payments
+
+      user:
+        one: User
+        other: Users
 
 
     attributes:
@@ -133,6 +143,13 @@ en:
         sign_in_count: &sign_in_count Logins
         created: *created
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
+        member: &member Member
+
+      payment:
+        payment_type: Payment Type
+        start_date: Start Date
+        expire_date: &expire_date Expire Date
+        notes: Notes
 
       membership_application:
         company_number: &company_number Company number
@@ -141,6 +158,10 @@ en:
         contact_email: &contact_email Contact Email
         state: &state Status
         phone_number: Phone number
+        uploaded_files:
+          one: Uploaded file
+          many: Uploaded files
+
 
       address:
         street: &street Street
@@ -230,6 +251,11 @@ en:
     kommun: *kommun
     none: *none
 
+  payment:
+    payment_type:
+      member_fee: Member Fee
+      branding_fee: Branding Fee
+
  # Automatic and manual lookup for views:
   membership_applications:
     new:
@@ -260,7 +286,7 @@ en:
       submit_button_label: *submit
 
     create:
-      success: Thank You. Your membership application has been submitted.
+      success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
       error: The was a problem creating and submitting your application.
 
     edit:
@@ -288,7 +314,6 @@ en:
       with_categories: Categories
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-      waiting_for_payment: 'Waiting for payment (Cannot approve the application until the payment has been received.)'
       ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
 
     index:
@@ -372,7 +397,6 @@ en:
       new: &status_new New
       under_review: &status_under_review Under Review
       waiting_for_applicant: &status_waiting_for_applicant Waiting for applicant
-      waiting_for_payment: &status_waiting_for_payment Waiting for payment
       ready_for_review: &status_ready_for_review Ready For Review
       accepted: &status_accepted Accepted
       rejected: &status_rejected Rejected
@@ -389,9 +413,6 @@ en:
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
     ask_applicant_for_payment_btn: Ask Applicant for Payment
-    cancel_waiting_for_payment_btn: Cancel Waiting for Payment
-    received_payment_btn: Received Payment
-    waiting_for_payment: *status_waiting_for_payment
     ready_for_review: *status_ready_for_review
     start_review_btn: Start Reviewing
 
@@ -459,6 +480,11 @@ en:
       confirm_are_you_sure: '*are_you_sure_confirm you want to delete the company?'
       add_address: 'Add address'
       click_to_edit: 'click to edit'
+      edit_branding_status: Edit Branding Status
+      branding_license: H-Branding License
+      pay_branding_fee_tooltip: Paying H-Branding fee will extend your branding
+                                license for one year
+      members: Company Members
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
@@ -482,6 +508,9 @@ en:
       visibility_tooltip: Level of detail as seen by visitor (including maps).
         Set to 'None' for no address visibility.
       org_nr_tooltip: Numbers only (no hyphens)
+
+    company:
+      submit_button_label: Update Status
 
     company_name: Company name
     telephone_number: Phone number
@@ -570,6 +599,7 @@ en:
       no_search_results: No records matched your search criteria.
 
     show:
+      membership_number: *membership_number
       email: *email
       current_sign_in_at: *user_current_signed_in_time
       current_sign_in_ip: *user_current_ip
@@ -589,6 +619,9 @@ en:
       re_enter_new_password: Re-Enter the Password
       please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
       submit_new_password: Save the New Password
+      member: *member
+      pay_membership_tooltip: Paying membership fee will extend your membership
+                              for one year
 
     update:
       passwords_dont_match: "The two passwords entered don't match."
@@ -596,6 +629,7 @@ en:
       error: A problem kept the user from being updated.
 
     search_form:
+      membership_number: &membership_number_short No.
       profile_email: 'Profile Email'
       search: 'Search'
       are_members: 'Are members'
@@ -606,8 +640,11 @@ en:
       user_has_never_signed_in: has never logged in.
       'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
+      edit_member_status: Edit Member Status
+      submit_button_label: Update Status
 
     users_list:
+      membership_number: *membership_number_short
       first_name: *first_name
       last_name: *last_name
       email: *email
@@ -617,6 +654,19 @@ en:
       member: Member
       applications: *applications
       applications_tooltip: Number of open applications
+      expire_date: *expire_date
+
+  payments:
+    create:
+      page_title: &page_title '%{payment_type} Payment by: %{user_name}'
+      title: *page_title
+      something_wrong: 'Something went wrong - contact the system administrator at %{admin_email}'
+
+    success:
+      success: Payment successfully processed - thank you!
+
+    error:
+      error: There was an error in processing your payment
 
   admin:
     index:
@@ -887,6 +937,7 @@ en:
       users:
         my_application: &my_application My Application
         apply_for_membership: Apply for Membership
+        your_account: View Your Account
 
       members:
         shf_companies: SHF Companies
@@ -897,6 +948,10 @@ en:
           view_company: View Company
           edit_company: Edit My Company
         my_application: *my_application
+        pay_membership: Pay Membership Fee
+
+      company:
+        pay_branding_fee: Pay H-Branding Fee
 
       admin:
         shf_main_site: *shf_main_site

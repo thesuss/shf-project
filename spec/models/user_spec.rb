@@ -2,13 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  before(:all) do
-    expect(BusinessCategory.count).to eq(0)
-    expect(Company.count).to eq(0)
-    expect(MembershipApplication.count).to eq(0)
-    expect(User.count).to eq(0)
-  end
-
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:user)).to be_valid
@@ -17,35 +10,59 @@ RSpec.describe User, type: :model do
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :id }
-    it {is_expected.to have_db_column :first_name}
-    it {is_expected.to have_db_column :last_name}
-    it {is_expected.to have_db_column :membership_number}
+    it { is_expected.to have_db_column :first_name }
+    it { is_expected.to have_db_column :last_name }
+    it { is_expected.to have_db_column :membership_number }
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :admin }
+    it { is_expected.to have_db_column :member }
   end
 
   describe 'Validations' do
     it { is_expected.to(validate_presence_of :first_name) }
     it { is_expected.to(validate_presence_of :last_name) }
-    it {is_expected.to validate_uniqueness_of :membership_number}
+    it { is_expected.to validate_uniqueness_of :membership_number }
   end
 
   describe 'Associations' do
     it { is_expected.to have_many :membership_applications }
+    it { is_expected.to have_many :payments }
+    it { is_expected.to accept_nested_attributes_for(:payments)}
   end
 
   describe 'Admin' do
     subject { create(:user, admin: true) }
 
     it { is_expected.to be_admin }
+    it { is_expected.not_to be_member }
   end
 
   describe 'User' do
     subject { create(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
+    it { is_expected.not_to be_member }
   end
 
+  describe 'Scopes' do
+
+    describe 'admins' do
+
+      it 'returns 2 users that are admins and 0 that are not' do
+        admin1 = create(:user, admin: true, first_name: 'admin1')
+        admin2 = create(:user, admin: true, first_name: 'admin2')
+        user1 = create(:user, first_name: 'user1')
+
+        all_admins = described_class.admins
+
+        expect(all_admins.count ).to eq 2
+        expect(all_admins).to include admin1
+        expect(all_admins).to include admin2
+        expect(all_admins).not_to include user1
+      end
+    end
+
+  end
 
   describe '#has_membership_application?' do
 
@@ -383,21 +400,26 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#issue_membership_number' do
+  describe '#grant_membership' do
+
+    it 'sets the member field for the user' do
+      subject.grant_membership
+      expect(subject.member).to be_truthy
+    end
 
     it 'does not overwrite an existing membership_number' do
       existing_number = 'SHF00042'
       subject.membership_number = existing_number
-      subject.issue_membership_number
+      subject.grant_membership
       expect(subject.membership_number).to eq(existing_number)
     end
 
     it 'generates sequential membership_numbers' do
-      subject.issue_membership_number
+      subject.grant_membership
       first_number = subject.membership_number.to_i
 
       subject.membership_number = nil
-      subject.issue_membership_number
+      subject.grant_membership
       second_number = subject.membership_number.to_i
 
       expect(second_number).to eq(first_number+1)
@@ -405,4 +427,136 @@ RSpec.describe User, type: :model do
 
   end
 
+  context 'payment and membership period' do
+    let(:user) { create(:user) }
+    let(:success) { Payment.order_to_payment_status('successful') }
+    let(:application) do
+      create(:membership_application, user: user, state: :accepted)
+    end
+
+    let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
+
+    let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
+
+    let(:payment1) do
+      start_date, expire_date = User.next_membership_payment_dates(user.id)
+      create(:payment, user: user, status: success,
+             payment_type: Payment::PAYMENT_TYPE_MEMBER,
+             notes: 'these are notes for member payment1',
+             start_date: start_date,
+             expire_date: expire_date)
+    end
+    let(:payment2) do
+      start_date, expire_date = User.next_membership_payment_dates(user.id)
+      create(:payment, user: user, status: success,
+             payment_type: Payment::PAYMENT_TYPE_MEMBER,
+             notes: 'these are notes for member payment2',
+             start_date: start_date,
+             expire_date: expire_date)
+    end
+
+    describe '#membership_expire_date' do
+      it 'returns date for latest completed payment' do
+        payment1
+        expect(user.membership_expire_date).to eq payment1.expire_date
+        payment2
+        expect(user.membership_expire_date).to eq payment2.expire_date
+      end
+    end
+
+    describe '#membership_payment_notes' do
+      it 'returns notes for latest completed payment' do
+        payment1
+        expect(user.membership_payment_notes).to eq payment1.notes
+        payment2
+        expect(user.membership_payment_notes).to eq payment2.notes
+      end
+    end
+
+    describe '#most_recent_membership_payment' do
+      it 'returns latest completed payment' do
+        payment1
+        expect(user.most_recent_membership_payment).to eq payment1
+        payment2
+        expect(user.most_recent_membership_payment).to eq payment2
+      end
+    end
+
+    describe '.self.next_membership_payment_dates' do
+
+      context 'during the year 2017' do
+
+        around(:each) do |example|
+          Timecop.freeze(payment_date_2017)
+          example.run
+          Timecop.return
+        end
+
+        it "returns today's date for first payment start date" do
+          expect(User.next_membership_payment_dates(user.id)[0])
+            .to eq Time.zone.today
+        end
+
+        it 'returns Dec 31, 2018 for first payment expire date' do
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Time.zone.local(2018, 12, 31)
+        end
+
+        it 'returns Jan 1, 2019 for second payment start date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[0])
+            .to eq Time.zone.local(2019, 1, 1)
+        end
+
+        it 'returns Dec 31, 2019 for second payment expire date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Time.zone.local(2019, 12, 31)
+        end
+      end
+
+      context 'after the year 2017' do
+
+        around(:each) do |example|
+          Timecop.freeze(payment_date_2018)
+          example.run
+          Timecop.return
+        end
+
+        it "returns today's date for first payment start date" do
+          expect(User.next_membership_payment_dates(user.id)[0]).to eq Time.zone.today
+        end
+
+        it 'returns one year later for first payment expire date' do
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Time.zone.today + 1.year - 1.day
+        end
+
+        it 'returns date-after-expiration for second payment start date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[0])
+            .to eq Time.zone.today + 1.year
+        end
+
+        it 'returns one year later for second payment expire date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Time.zone.today + 1.year + 1.year - 1.day
+        end
+      end
+    end
+
+    describe '#allow_pay_member_fee?' do
+      it 'returns true if user is a member' do
+        user.member = true
+        user.save
+        expect(user.allow_pay_member_fee?).to eq true
+      end
+
+      it 'returns true if user has app in "accepted" state' do
+        application
+        expect(user.allow_pay_member_fee?).to eq true
+      end
+    end
+  end
 end

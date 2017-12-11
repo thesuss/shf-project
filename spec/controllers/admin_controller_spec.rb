@@ -13,7 +13,7 @@ RSpec.describe AdminController, type: :controller do
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.contact_email').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.first_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.last_name').strip}',"
-  out_str << "'#{I18n.t('activerecord.attributes.membership_application.membership_number').strip}',"
+  out_str << "'#{I18n.t('activerecord.attributes.user.membership_number').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.membership_application.state').strip}',"
   out_str << "'#{I18n.t('activerecord.models.business_category.other').strip}',"
   out_str << "'#{I18n.t('activerecord.models.company.one').strip}',"
@@ -38,6 +38,13 @@ RSpec.describe AdminController, type: :controller do
 
         expect(response.content_type).to eq 'text/plain'
 
+      end
+
+      it 'filename is Ansokningar-<datetime>.csv' do
+
+        post :export_ansokan_csv
+
+        expect(response.header['Content-Disposition']).to match(/filename=\"Ansokningar-\d\d\d\d-\d\d-\d\d--\d\d-\d\d-\d\d\.csv\"/)
       end
 
 

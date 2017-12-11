@@ -25,12 +25,16 @@ coverage/
 # Ignore translations file for use in client
 public/javascripts/translations.js
 
+# Ignore beta config
+config/initializers/beta_test.rb
+
 
 .idea/
 /design-thoughts
 /log
 .DS_Store
 .env
+.env.development
 
 # swaks is used to test sending SMTP email via CLI
 swaks

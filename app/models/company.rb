@@ -2,6 +2,7 @@ require_relative File.join('..', 'services', 'address_exporter')
 
 
 class Company < ApplicationRecord
+  include PaymentUtility
 
   include HasSwedishOrganization
 
@@ -17,6 +18,11 @@ class Company < ApplicationRecord
 
   has_many :membership_applications, dependent: :destroy, inverse_of: :company
 
+  has_many :users, through: :membership_applications
+
+  has_many :payments
+  accepts_nested_attributes_for :payments
+
   has_many :business_categories, through: :membership_applications
 
   has_many :addresses, as: :addressable, dependent: :destroy,
@@ -31,6 +37,32 @@ class Company < ApplicationRecord
 
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
+  def approved_applications_from_members
+    # Returns ActiveRecord Relation
+    membership_applications.accepted.includes(:user)
+      .order('users.last_name').where('users.member = ?', true)
+  end
+
+  def most_recent_branding_payment
+    most_recent_payment(Payment::PAYMENT_TYPE_BRANDING)
+  end
+
+  def branding_expire_date
+    payment_expire_date(Payment::PAYMENT_TYPE_BRANDING)
+  end
+
+  def branding_payment_notes
+    payment_notes(Payment::PAYMENT_TYPE_BRANDING)
+  end
+
+  def branding_license?
+    branding_expire_date&.future?
+  end
+
+  def self.next_branding_payment_dates(company_id)
+    next_payment_dates(company_id, Payment::PAYMENT_TYPE_BRANDING)
+  end
+
 
   # All addresses for a company are complete AND the name is not blank
   # must qualify name with 'company' because there are other tables that use 'name' and if
@@ -39,21 +71,20 @@ class Company < ApplicationRecord
   #  name could be NULL or it could be an empty string
 
   def self.complete
+    where.not('companies.name' => '',
+              id: Address.lacking_region.pluck(:addressable_id))
+  end
 
-    have_no_regions = Address.lacking_region.where(addressable_type: 'Company').distinct.pluck(:addressable_id)
-
-    if have_no_regions.count > 0
-      where('"companies"."name" <> :blank_name AND "companies"."id" NOT IN (:address_lacking_region)',
-            { blank_name: '',
-             address_lacking_region: have_no_regions })
-    else
-      where('"companies"."name" <> ? ', '' )
-    end
-
+  def self.branding_licensed
+    # All companies (distinct) with at least one unexpired branding payment
+    joins(:payments)
+      .where('payments.id IN (?)',
+             Payment.branding_fee.completed.unexpired.pluck(:id))
+      .distinct
   end
 
   def self.address_visible
-    # Return ActiveRecord::Relation object for all companies with at
+    # Return ActiveRecord::Relation object for all companies (distinct) with at
     # least one visible address
     joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
   end
@@ -70,7 +101,7 @@ class Company < ApplicationRecord
 
     membership_applications.reload
 
-    if membership_applications.select(&:is_accepted?).count != 0
+    if membership_applications.where(state: 'accepted').any?
       errors.add(:base, 'activerecord.errors.models.company.company_has_active_memberships')
       # Rails 5: must throw
       throw(:abort)
@@ -82,11 +113,14 @@ class Company < ApplicationRecord
 
 
   def main_address
-    if addresses.empty?
-      addresses << Address.new(addressable: self)
-    end
 
-    addresses.first
+    return addresses.mail_address.includes(:region)[0] if addresses.mail_address.exists?
+
+    return addresses.includes(:region).first if addresses.exists?
+
+    new_address = Address.new(addressable: self)
+    addresses << new_address
+    new_address
   end
 
 

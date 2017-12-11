@@ -59,6 +59,26 @@ RSpec.describe MembershipApplication, type: :model do
     it {is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
 
+  context 'scopes' do
+    let!(:accepted_app1) { create(:membership_application, :accepted) }
+    let!(:accepted_app2) { create(:membership_application, :accepted) }
+    let!(:rejected_app1) { create(:membership_application, :rejected) }
+    let!(:new_app1)      { create(:membership_application) }
+
+    describe 'open' do
+      it 'returns all apps not accepted or rejected' do
+        expect(described_class.open.all).to contain_exactly(new_app1)
+      end
+    end
+
+    describe 'accepted' do
+      it 'returns all accepted apps' do
+        expect(described_class.accepted.all)
+          .to contain_exactly(accepted_app1, accepted_app2)
+      end
+    end
+  end
+
   describe 'Validate Swedish Orgnr' do
     let (:company) do
       create(:membership_application)
@@ -137,27 +157,6 @@ RSpec.describe MembershipApplication, type: :model do
     end
 
   end
-
-  describe '#is_accepted?' do
-    let!(:states) {MembershipApplication.aasm.states.map(&:name)}
-    let(:states_not_accepted) {states.reject {|s| s == :accepted}}
-
-    it "state :accepted == is_accepted" do
-      subject.state = :accepted
-      expect(subject.is_accepted?).to be_truthy
-    end
-
-    it "these states should not be #is_accepted" do
-      not_accepted_states = MembershipApplication.aasm.states.map(&:name).reject {|s| s == :accepted}
-
-      not_accepted_states.each do |state|
-        subject.state = state
-        expect(subject.is_accepted?).to be_falsey
-      end
-    end
-
-  end
-
 
   describe 'test factories' do
 
@@ -306,6 +305,23 @@ RSpec.describe MembershipApplication, type: :model do
 
     end
 
+    context 'actions taken on state transition' do
+      describe 'application accepted' do
+        before(:each) do
+          application.start_review!
+          application.accept!
+        end
+        it 'assigns company email to application contact_email' do
+          expect(application.company.email).to eq application.contact_email
+        end
+      end
+
+      describe 'application rejected' do
+        xit 'need tests here' do
+        end
+      end
+    end
+
   end
 
 
@@ -329,7 +345,6 @@ RSpec.describe MembershipApplication, type: :model do
 
   end
 
-
   describe 'membership number generator' do
 
     let(:user) { create(:user) }
@@ -341,11 +356,6 @@ RSpec.describe MembershipApplication, type: :model do
 
     it 'does not generate a membership_number for a new application' do
       expect(user.membership_number).to be_nil
-    end
-
-    it 'generates a membership_number when an application is accepted' do
-      new_app.accept
-      expect(user.membership_number).not_to be_blank
     end
 
     it 'removes the membership_number when an application is rejected' do

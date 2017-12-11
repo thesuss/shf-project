@@ -37,6 +37,8 @@ sv:
   search: &search Sök
   'yes': &yes Ja
   'no': &no Nej
+  'Yes': *yes
+  'No': *no
   applications: &applications Ansökningar
   user_activity: Användaraktivitet
   none: &none Ingen
@@ -115,6 +117,14 @@ sv:
         one: Dokument
         other: Dokument
 
+      payment:
+        one: Betalning
+        other: Betalningar
+
+      user:
+        one: Användaren
+        other: Användare
+
 
     attributes:
 
@@ -133,7 +143,13 @@ sv:
         sign_in_count: &sign_in_count Inloggningar
         created: *created
         reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
+        member: &member Medlem
 
+      payment:
+        payment_type: Betalningstyp
+        start_date: Startdatum
+        expire_date: &expire_date Utgångsdatum
+        notes: Anteckningar
 
       membership_application:
         company_number: &company_number Organisationsnummer
@@ -142,6 +158,10 @@ sv:
         contact_email: &contact_email Kontakt e-post
         state: &state Status
         phone_number: Telefonnummer
+        uploaded_files:
+          one: Uppladdad fil
+          many: Uppladdade filer
+
 
       address:
         street: &street Gata
@@ -232,6 +252,11 @@ sv:
     kommun: *kommun
     none: *none
 
+  payment:
+    payment_type:
+      member_fee: Medlemsavgift
+      branding_fee: H-märkesavgift
+
   # Automatisk och manuell sökning för views:
   membership_applications:
     new:
@@ -263,7 +288,7 @@ sv:
       submit_button_label: *submit
 
     create:
-      success: Tack, din ansökan har skickats.
+      success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
 
     edit:
@@ -291,7 +316,6 @@ sv:
       with_categories: Ansöker som
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-      waiting_for_payment: 'Väntar på betalning (Det går inte att godkänna ansökan till dess att betalning har mottagits.)'
       ready_for_review_instructions: "När du är redo för att vi ska hantera din ansökan igen, kryssa i rutan nedan. När du trycker på knappen Skicka och kryssrutan är markerad, vet vi att vi måste se över den igen. \nDu kan göra ändringar utan att kryssa i rutan. Du kan om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du skickar in den för granskning."
 
     index:
@@ -375,7 +399,6 @@ sv:
       new: &status_new Ny
       under_review: &status_under_review Behandlas
       waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
-      waiting_for_payment: &status_waiting_for_payment Väntar på betalning
       ready_for_review: &status_ready_for_review Redo för granskning
       accepted: &status_accepted Godkänd
       rejected: &status_rejected Avböjd
@@ -392,9 +415,6 @@ sv:
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
     ask_applicant_for_payment_btn: Behöver betalning
-    cancel_waiting_for_payment_btn: Ångra Behöver betalning
-    received_payment_btn: Betalning inkommen
-    waiting_for_payment: *status_waiting_for_payment
     ready_for_review: *status_ready_for_review
     start_review_btn: Påbörja granskning
 
@@ -461,6 +481,11 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
+      edit_branding_status: Redigera Status
+      branding_license: Accepterar policy
+      pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
+      members: Företagsmedlemmar
+
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
@@ -483,6 +508,9 @@ sv:
        flera län, eller "Online" om det (i huvudsak) finns på nätet
       visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
       org_nr_tooltip: Endast siffror (ej bindestreck)
+
+    company:
+      submit_button_label: Uppdatera status
 
     company_name: Företagsnamn
     telephone_number: Telefonnummer
@@ -571,6 +599,7 @@ sv:
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
     show:
+      membership_number: *membership_number
       email: *email
       current_sign_in_at: *user_current_signed_in_time
       current_sign_in_ip: *user_current_ip
@@ -590,6 +619,8 @@ sv:
       re_enter_new_password: Skriv in lösenordet igen
       please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
       submit_new_password: Spara det nya lösenordet
+      member: *member
+      pay_membership_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.
@@ -597,6 +628,7 @@ sv:
       error: Ett problem hindrade användarinformationen från att uppdateras.
 
     search_form:
+      membership_number: &membership_number_short Nr.
       profile_email: Profil e-post
       search: Sök
       are_members: Är medlemmar
@@ -607,8 +639,11 @@ sv:
       user_has_never_signed_in: har aldrig loggat in.
       'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
+      edit_member_status: Redigera medlemsstatus
+      submit_button_label: Uppdatera status
 
     users_list:
+      membership_number: *membership_number_short
       first_name: *first_name
       last_name: *last_name
       email: *email
@@ -618,6 +653,19 @@ sv:
       member: Medlem
       applications: *applications
       applications_tooltip: Antal öppna ansökningar
+      expire_date: *expire_date
+
+  payments:
+    create:
+      page_title: &page_title '%{payment_type} betalning av: %{user_name}'
+      title: *page_title
+      something_wrong: 'Något gick fel - kontakta systemadministratören på %{admin_email}'
+
+    success:
+      success: Betalning framgångsrikt genomförd - tack!
+
+    error:
+      error: Det uppstod ett fel vid behandlingen av din betalning
 
   admin:
     index:
@@ -891,6 +939,7 @@ sv:
       users:
         my_application: &my_application Min ansökan
         apply_for_membership: Ansök om medlemsskap
+        your_account: Mitt konto
 
       members:
         shf_companies: SHF-företag
@@ -901,6 +950,10 @@ sv:
           view_company: Visa företagssida
           edit_company: Redigera företag
         my_application: *my_application
+        pay_membership: Betala medlemsavgift
+
+      company:
+        pay_branding_fee: Betala H-märkesavgift
 
       admin:
         shf_main_site: *shf_main_site
