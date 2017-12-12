@@ -70,15 +70,14 @@
 :javascript
 
   $("#upload-button").on('change',function () {
-    console.log('upload-button change');
-
     // update the list of files to be uploaded
 
     var to_upload_title = document.getElementById("files-to-upload-title");
     var upload_table = document.getElementById("files-to-upload");
 
     var filesUploadButton = document.getElementById("upload-button");
-    var txt = "";
+
+    $(upload_table).find("tr>td").remove();
 
     if ('files' in filesUploadButton) {
 
