@@ -4,6 +4,7 @@ require_relative File.join('..', 'services', 'address_exporter')
 class ShfApplication < ApplicationRecord
 
   before_destroy :before_destroy_checks
+  after_destroy  :after_destroy_checks
 
   belongs_to :user
 
@@ -125,21 +126,23 @@ class ShfApplication < ApplicationRecord
 
   def reject_membership
     user.update(membership_number: nil)
-    delete_uploaded_files
+    destroy_uploaded_files
   end
 
 
   def before_destroy_checks
 
-    delete_uploaded_files
+    destroy_uploaded_files
 
-    # if this is the only application associated with a company, delete the company
-    unless company.nil?
-      company.shf_applications.reload
-      company.delete if (company.shf_applications.count == 1)
-    end
   end
 
+  def after_destroy_checks
+    # if this was the only application associated with a company, destroy the company
+    unless company.nil?
+      company.shf_applications.reload
+      company.destroy if (company.shf_applications.count == 0)
+    end
+  end
 
   def se_mailing_csv_str
      company.nil? ?  AddressExporter.se_mailing_csv_str(nil) : company.se_mailing_csv_str
@@ -148,7 +151,8 @@ class ShfApplication < ApplicationRecord
 
   private
 
-  def delete_uploaded_files
+  def destroy_uploaded_files
+
     uploaded_files.each do |uploaded_file|
       uploaded_file.actual_file = nil
       uploaded_file.destroy

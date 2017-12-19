@@ -40,23 +40,53 @@ RSpec.describe ShfApplication, type: :model do
   end
 
   describe 'DB Table' do
-    it {is_expected.to have_db_column :id}
-    it {is_expected.to have_db_column :company_number}
-    it {is_expected.to have_db_column :phone_number}
-    it {is_expected.to have_db_column :contact_email}
-    it {is_expected.to have_db_column :state}
-    it {is_expected.to have_db_column :custom_reason_text}
+    it { is_expected.to have_db_column :id }
+    it { is_expected.to have_db_column :company_number }
+    it { is_expected.to have_db_column :phone_number }
+    it { is_expected.to have_db_column :contact_email }
+    it { is_expected.to have_db_column :state }
+    it { is_expected.to have_db_column :custom_reason_text }
+    it { is_expected.to have_db_column :user_id }
+    it { is_expected.to have_db_column :company_id }
+    it { is_expected.to have_db_column :member_app_waiting_reasons_id }
+  end
+
+  describe 'Associations' do
+    it { is_expected.to belong_to :user }
+    it { is_expected.to belong_to :company }
+    it { is_expected.to have_and_belong_to_many :business_categories }
+    it { is_expected.to have_many :uploaded_files }
+    it { is_expected.to belong_to(:waiting_reason)
+                          .class_name(AdminOnly::MemberAppWaitingReason)
+                          .with_foreign_key('member_app_waiting_reasons_id') }
+    it { is_expected.to accept_nested_attributes_for(:uploaded_files)
+                          .allow_destroy(true) }
+    it { is_expected.to accept_nested_attributes_for(:user)
+                          .update_only(true).allow_destroy(false) }
   end
 
   describe 'Validations' do
-    it {is_expected.to validate_presence_of :contact_email}
-    it {is_expected.to validate_presence_of :company_number}
-    it {is_expected.to validate_presence_of :state}
+    it { is_expected.to validate_presence_of :contact_email }
+    it { is_expected.to validate_presence_of :company_number }
+    it { is_expected.to validate_presence_of :state }
 
-    it {is_expected.to allow_value('user@example.com').for(:contact_email)}
-    it {is_expected.not_to allow_value('userexample.com').for(:contact_email)}
+    it { is_expected.to allow_value('user@example.com').for(:contact_email) }
+    it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
 
-    it {is_expected.to validate_length_of(:company_number).is_equal_to(10)}
+    it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
+
+    describe 'uniqueness of user scoped within company_number' do
+      subject { FactoryGirl.build(:shf_application) }
+      it { is_expected.to validate_uniqueness_of(:user_id)
+                                .scoped_to(:company_number) }
+    end
+
+    describe 'swedish org number' do
+      it { is_expected.to allow_values('5560360793', '2120000142')
+                            .for(:company_number) }
+      it { is_expected.not_to allow_values('0123456789', '212000')
+                            .for(:company_number) }
+    end
   end
 
   context 'scopes' do
@@ -77,27 +107,6 @@ RSpec.describe ShfApplication, type: :model do
           .to contain_exactly(accepted_app1, accepted_app2)
       end
     end
-  end
-
-  describe 'Validate Swedish Orgnr' do
-    let (:company) do
-      create(:shf_application)
-    end
-
-    subject {company}
-
-    before do
-      company.company_number = 1234567890
-    end
-
-    it {should_not be_valid}
-  end
-
-  describe 'Associations' do
-    it {is_expected.to belong_to :user}
-    it {is_expected.to have_and_belong_to_many :business_categories}
-    it {is_expected.to belong_to :company}
-    it {is_expected.to belong_to :waiting_reason}
   end
 
   describe "Uploaded Files" do
@@ -140,22 +149,39 @@ RSpec.describe ShfApplication, type: :model do
 
   end
 
-  describe "#destroy" do
+  describe 'destroy callbacks' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
 
-    let(:application_owner) {create(:user, email: 'user_1@random.com')}
-    let(:uploaded_file) {create(:uploaded_file, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg'))))}
-    let(:shf_application) {create(:shf_application, user: application_owner, uploaded_files: [uploaded_file])}
+    app_file = (File.new(File.join(FIXTURE_DIR, 'image.jpg')))
+    let(:uploaded_file) { create(:uploaded_file, actual_file: app_file) }
 
-    it 'destroys an shfapplication' do
-      shf_application.destroy
-      expect(shf_application.destroyed?).to be_truthy
+    let(:application) do
+      create(:shf_application, user: user1,
+             uploaded_files: [uploaded_file], state: :accepted)
+    end
+    let(:application2) do
+      create(:shf_application, user: user2,
+             uploaded_files: [uploaded_file], state: :new,
+             company_id: application.company.id,
+             company_number: application.company_number)
     end
 
-    it 'destroys the uploaded file' do
-      shf_application.destroy
+    it 'invokes method to destroy uploaded files' do
+      application.destroy
       expect(uploaded_file.destroyed?).to be_truthy
     end
 
+    it "destroys associated company if it has no remaining applications" do
+      expect(application.company).to receive(:destroy)
+      application.destroy
+    end
+
+    it "does not destroy associated company if other applications remain" do
+      application2
+      expect(application.company).not_to receive(:destroy)
+      application.destroy
+    end
   end
 
   describe 'test factories' do
@@ -365,6 +391,5 @@ RSpec.describe ShfApplication, type: :model do
     end
 
   end
-
 
 end

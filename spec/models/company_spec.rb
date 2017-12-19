@@ -68,19 +68,88 @@ RSpec.describe Company, type: :model do
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
     it { is_expected.to allow_value('user@example.com').for(:email) }
     it { is_expected.not_to allow_value('userexample.com').for(:email) }
+
+    describe 'uniqueness of company_number' do
+      let(:msg) { I18n.t('activerecord.errors.models.company.company_number.taken') }
+      subject { FactoryGirl.build(:company) }
+
+      it 'uniqueness of company_number' do
+        expect(subject).to validate_uniqueness_of(:company_number)
+                             .with_message(msg).case_insensitive
+      end
+    end
+
+    describe 'swedish org number' do
+      it { is_expected.to allow_values('5560360793', '2120000142')
+                            .for(:company_number) }
+      it { is_expected.not_to allow_values('0123456789', '212000')
+                            .for(:company_number) }
+    end
   end
 
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:shf_applications) }
     it { is_expected.to have_many(:shf_applications).dependent(:destroy) }
     it { is_expected.to have_many(:addresses).dependent(:destroy) }
-    it { is_expected.to accept_nested_attributes_for(:addresses)}
-    it { is_expected.to have_many(:pictures) }
+    it { is_expected.to accept_nested_attributes_for(:addresses).allow_destroy(true) }
+    it do
+      is_expected.to have_many(:pictures).dependent(:destroy)
+                       .class_name(Ckeditor::Picture)
+    end
     it { is_expected.to have_many(:users).through(:shf_applications) }
     it { is_expected.to have_many(:payments) }
-    it { is_expected.to accept_nested_attributes_for(:payments)}
+    it { is_expected.to accept_nested_attributes_for(:payments).allow_destroy(false) }
   end
 
+  describe 'destroy associated records when company is destroyed' do
+    let(:company) { create(:company, num_addresses: 3) }
+    let(:user1)   { create(:user) }
+    let(:user2)   { create(:user) }
+    let(:application1) do
+      create(:shf_application, company: company,
+             company_number: company.company_number, user: user1)
+    end
+    let(:application2) do
+      create(:shf_application, company: company,
+             company_number: company.company_number, user: user2)
+    end
+
+    let(:picture1) do
+      pic = Ckeditor::Picture.new
+      pic.company_id = company.id
+      pic.data_file_name = 'test'
+      pic.save!(validate: false)
+      pic
+    end
+
+    let(:picture2) do
+      pic = Ckeditor::Picture.new
+      pic.company_id = company.id
+      pic.data_file_name = 'test'
+      pic.save!(validate: false)
+      pic
+    end
+
+    it 'addresses' do
+      expect { company }.to change(Address, :count).by(3)
+      expect { company.destroy }.to change(Address, :count).by(-3)
+    end
+
+    it 'applications' do
+      application1
+      application2
+      expect(company.shf_applications.count).to eq 2
+      expect { company.destroy }.to change(ShfApplication, :count).by(-2)
+    end
+
+    it 'pictures' do
+      Ckeditor::Picture.for_company_id = company.id
+      picture1
+      picture2
+      expect(company.pictures.count).to eq 2
+      expect { company.destroy }.to change(Ckeditor::Picture, :count).by(-2)
+    end
+  end
 
   describe 'complete scope' do
     let(:complete_scope) { Company.complete }
