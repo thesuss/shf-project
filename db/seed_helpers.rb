@@ -106,6 +106,16 @@ module SeedHelper
                                       status: Payment.order_to_payment_status('successful'),
                                       start_date: start_date,
                                       expire_date: expire_date)
+
+      start_date, expire_date = Company.next_branding_payment_dates(ma.company.id)
+
+      ma.company.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
+                                      user_id: user.id,
+                                      company_id: ma.company.id,
+                                      hips_id: 'none',
+                                      status: Payment.order_to_payment_status('successful'),
+                                      start_date: start_date,
+                                      expire_date: expire_date)
     end
 
 

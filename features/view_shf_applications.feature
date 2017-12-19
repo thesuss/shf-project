@@ -11,36 +11,36 @@ Feature: As an admin,
       | bob@barkybobs.com |       | true      |
       | admin@shf.se      | true  | false     |
 
-    And the following simple applications exist:
+    And the following applications exist:
       | user_email        | company_number | state                 |
-      | emma@random.com   | 0000000001     | waiting_for_applicant |
-      | hans@random.com   | 0000000002     | under_review          |
-      | nils@random.com   | 0000000003     | under_review          |
-      | bob@barkybobs.com | 0000000004     | under_review          |
-      | emma@random.com   | 0000000005     | waiting_for_applicant |
-      | hans@random.com   | 0000000006     | under_review          |
-      | nils@random.com   | 0000000007     | under_review          |
-      | bob@barkybobs.com | 0000000008     | under_review          |
-      | emma@random.com   | 0000000009     | waiting_for_applicant |
-      | hans@random.com   | 0000000010     | under_review          |
-      | nils@random.com   | 0000000011     | under_review          |
-      | bob@barkybobs.com | 0000000012     | under_review          |
-      | emma@random.com   | 0000000013     | waiting_for_applicant |
-      | hans@random.com   | 0000000014     | under_review          |
-      | nils@random.com   | 0000000015     | under_review          |
-      | bob@barkybobs.com | 0000000016     | under_review          |
-      | emma@random.com   | 0000000017     | waiting_for_applicant |
-      | hans@random.com   | 0000000018     | under_review          |
-      | nils@random.com   | 0000000019     | under_review          |
-      | bob@barkybobs.com | 0000000020     | under_review          |
-      | emma@random.com   | 0000000021     | waiting_for_applicant |
-      | hans@random.com   | 0000000022     | under_review          |
-      | nils@random.com   | 0000000023     | under_review          |
-      | bob@barkybobs.com | 0000000024     | under_review          |
-      | emma@random.com   | 0000000025     | waiting_for_applicant |
-      | hans@random.com   | 0000000026     | under_review          |
-      | nils@random.com   | 0000000027     | under_review          |
-      | bob@barkybobs.com | 0000000028     | under_review          |
+      | emma@random.com   | 5560360793     | waiting_for_applicant |
+      | hans@random.com   | 2120000142     | under_review          |
+      | nils@random.com   | 6613265393     | under_review          |
+      | bob@barkybobs.com | 6222279082     | under_review          |
+      | emma@random.com   | 8025085252     | waiting_for_applicant |
+      | hans@random.com   | 6914762726     | under_review          |
+      | nils@random.com   | 7661057765     | under_review          |
+      | bob@barkybobs.com | 7736362901     | under_review          |
+      | emma@random.com   | 6112107039     | waiting_for_applicant |
+      | hans@random.com   | 3609340140     | under_review          |
+      | nils@random.com   | 2965790286     | under_review          |
+      | bob@barkybobs.com | 4268582063     | under_review          |
+      | emma@random.com   | 8028973322     | waiting_for_applicant |
+      | hans@random.com   | 8356502446     | under_review          |
+      | nils@random.com   | 8394317054     | under_review          |
+      | bob@barkybobs.com | 8423893877     | under_review          |
+      | emma@random.com   | 8589182768     | waiting_for_applicant |
+      | hans@random.com   | 8616006592     | under_review          |
+      | nils@random.com   | 8764985894     | under_review          |
+      | bob@barkybobs.com | 8822107739     | under_review          |
+      | emma@random.com   | 2965790286     | waiting_for_applicant |
+      | hans@random.com   | 8909248752     | under_review          |
+      | nils@random.com   | 9074668568     | under_review          |
+      | bob@barkybobs.com | 9243957975     | under_review          |
+      | emma@random.com   | 9267816362     | waiting_for_applicant |
+      | hans@random.com   | 9360289459     | under_review          |
+      | nils@random.com   | 9475077674     | under_review          |
+      | bob@barkybobs.com | 8728875504     | under_review          |
 
     And I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
@@ -49,29 +49,29 @@ Feature: As an admin,
   @selenium
   Scenario: Pagination
     And I select "10" in select list "items_count"
-    And I should see "0000000010"
-    And I should not see "0000000011"
+    And I should see "3609340140"
+    And I should not see "2965790286"
     Then I click on t("will_paginate.next_label") link
-    And I should see "0000000011"
-    And I should not see "0000000010"
+    And I should see "2965790286"
+    And I should not see "3609340140"
     And I should not see "0000000021"
     Then I click on t("will_paginate.next_label") link
-    And I should see "0000000021"
-    And I should not see "0000000020"
+    And I should see "2965790286"
+    And I should not see "8822107739"
 
   @selenium
   Scenario: Pagination: Set number of items per page
     Then "items_count" should have "All" selected
     And I should see "28" applications
-    And I should see "0000000026"
-    And I should see "0000000028"
+    And I should see "9360289459"
+    And I should see "8728875504"
     Then I select "25" in select list "items_count"
     And I should see "25" applications
     And "items_count" should have "25" selected
-    And I should see "0000000010"
-    And I should see "0000000025"
-    And I should not see "0000000026"
+    And I should see "3609340140"
+    And I should see "9267816362"
+    And I should not see "9360289459"
     Then I select "10" in select list "items_count"
     And I should see "10" applications
-    And I should see "0000000010"
-    And I should not see "0000000025"
+    And I should see "3609340140"
+    And I should not see "9267816362"

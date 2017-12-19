@@ -89,6 +89,12 @@ class Company < ApplicationRecord
     joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
   end
 
+  def self.with_members
+    joins(:shf_applications)
+      .where('shf_applications.state = ?', :accepted)
+      .joins(:users).where('users.member = ?', true).distinct
+  end
+
   def destroy_checks
 
     error_if_has_accepted_applications?

@@ -429,4 +429,54 @@ RSpec.describe Company, type: :model do
         .to contain_exactly(cmpy2_app1, cmpy2_app2)
     end
   end
+
+  describe 'scope: with_members' do
+    let(:cmpy1) { create(:company, company_number: '5560360793') }
+    let(:cmpy2) { create(:company, company_number: '5562252998') }
+
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    let(:app_co1_user1) do
+      create(:shf_application, user: user1, company_number: cmpy1.company_number)
+    end
+    let(:app_co1_user2) do
+      create(:shf_application, user: user2, company_number: cmpy1.company_number)
+    end
+    let(:app_co2_user2) do
+      create(:shf_application, user: user2, company_number: cmpy2.company_number)
+    end
+
+    before(:each) { app_co1_user1; app_co1_user2; app_co2_user2 }
+
+    it 'returns no companies if no members' do
+      expect(Company.with_members).to be_empty
+    end
+
+    it 'returns all companies with members' do
+      app_co1_user1.start_review
+      app_co1_user1.accept!
+      user1.update(member: true)
+
+      expect(Company.with_members).to contain_exactly(cmpy1)
+
+      app_co2_user2.start_review
+      app_co2_user2.accept!
+      user2.update(member: true)
+
+      expect(Company.with_members).to contain_exactly(cmpy1, cmpy2)
+    end
+
+    it 'returns company only once even if multiple members' do
+      app_co1_user1.start_review
+      app_co1_user1.accept!
+      user1.update(member: true)
+
+      app_co1_user2.start_review; app_co1_user2.accept!
+      user2.update(member: true)
+
+      expect(Company.with_members).to contain_exactly(cmpy1)
+    end
+
+  end
 end
