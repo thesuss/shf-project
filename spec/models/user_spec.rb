@@ -558,5 +558,34 @@ RSpec.describe User, type: :model do
         expect(user.allow_pay_member_fee?).to eq true
       end
     end
+
+    describe '#check_member_status' do
+      it 'does nothing if not a member' do
+        user.check_member_status
+        expect(user.member).to be false
+      end
+
+      it 'does nothing if a member and payment not expired' do
+        payment1
+        user.update(member: true)
+
+        user.check_member_status
+        expect(user.member).to be true
+      end
+
+      it 'revokes membership if a member and payment has expired' do
+        Timecop.freeze(payment_date_2018)
+
+        payment1
+        user.update(member: true)
+        
+        Timecop.freeze(Time.zone.today + 1.year)
+
+        user.check_member_status
+        expect(user.member).to be false
+
+        Timecop.return
+      end
+    end
   end
 end

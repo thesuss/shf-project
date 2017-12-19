@@ -57,7 +57,7 @@ Feature: As any type of visitor
     Then I should not see "No More Snarky Barky"
     And I should see "Sad Sad Snarky Barky"
     And I should see "Norrbotten"
-    When I am logged in as "anna@sadmutts.com "
+    When I am logged in as "anna@sadmutts.com"
     And I am on the business category "Sadness"
     Then I should not see "No More Snarky Barky"
     And I should see "Sad Sad Snarky Barky"

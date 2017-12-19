@@ -41,6 +41,11 @@ Feature: As a visitor,
       | member@cmpy6.com    |       | true   |
       | admin@shf.se        | true  | false  |
 
+    Given the following payments exist
+      | user_email       | start_date | expire_date | payment_type | status | hips_id |
+      | member@cmpy6.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+
+
     And the following business categories exist
       | name         |
       | Groomer      |
@@ -152,7 +157,9 @@ Feature: As a visitor,
     And I should see "Harplinge"
     And I should see "Alingsås"
 
+  @time_adjust
   Scenario: Show company address to member regardless of visibility setting
+    Given the date is set to "2017-10-01"
     Given I am logged in as "member@cmpy6.com"
     And I am the page for company number "6914762726"
     And I should see "Hundforetagarevägen 1"

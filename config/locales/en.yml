@@ -484,6 +484,7 @@ en:
       branding_license: H-Branding License
       pay_branding_fee_tooltip: Paying H-Branding fee will extend your branding
                                 license for one year
+      branding_fee_expire_date_tooltip: Branding license expires after this date
       members: Company Members
     index:
       title: Find H-labeled companies
@@ -622,6 +623,7 @@ en:
       member: *member
       pay_membership_tooltip: Paying membership fee will extend your membership
                               for one year
+      membership_expire_date_tooltip: Membership expires after this date
 
     update:
       passwords_dont_match: "The two passwords entered don't match."

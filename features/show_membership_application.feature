@@ -21,7 +21,7 @@ Feature: As an Admin
       | ApprovedNils       | nils_member@bowwowwow.se            |       |
       | UnderReviewEmma    | emma_under_review@happymutts.se     |       |
       | ReadyForReviewHans | hans_ready_for_review@happymutts.se |       |
-      | admin              | admin@shf.com                       | true  |
+      | admin              | admin@shf.se                        | true  |
 
 
     And the following business categories exist
@@ -50,7 +50,7 @@ Feature: As an Admin
 
   @admin
   Scenario: Listing shows the necessary columns for Admin
-    Given I am logged in as "admin@shf.com"
+    Given I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
     Then I should see t("shf_applications.index.membership_number")
     And I should see t("shf_applications.index.name")
@@ -60,7 +60,7 @@ Feature: As an Admin
 
   @admin
   Scenario: Listing incoming Applications open for Admin
-    Given I am logged in as "admin@shf.com"
+    Given I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
     Then I should see "7" applications
     And I should see 1 t("shf_applications.under_review")
@@ -75,7 +75,7 @@ Feature: As an Admin
 
   @admin
   Scenario: Admin can see an application with one business categories given
-    Given I am logged in as "admin@shf.com"
+    Given I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
     Then I should see "7" applications
     And I click the t("shf_applications.index.manage") action for the row with "Lastname, Hans"
@@ -96,7 +96,7 @@ Feature: As an Admin
     And I select "Psychologist" Category
     And I click on t("shf_applications.edit.submit_button_label")
     And I am Logged out
-    And I am logged in as "admin@shf.com"
+    And I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
     Then I should see "7" applications
     And I click the t("shf_applications.index.manage") action for the row with "Lastname, Emma"
@@ -125,7 +125,7 @@ Feature: As an Admin
 
   @admin
   Scenario: Clicking the edit button on show page
-    Given I am logged in as "admin@shf.com"
+    Given I am logged in as "admin@shf.se"
     When I am on the "application" page for "nils_member@bowwowwow.se"
     Then I should see t("shf_applications.accepted")
     And I click on t("shf_applications.edit_shf_application")
