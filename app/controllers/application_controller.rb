@@ -70,7 +70,9 @@ class ApplicationController < ActionController::Base
   def prepare_exception_notifier
     request.env["exception_notifier.exception_data"] = {
         current_user: current_user.inspect,
-        remote_addr: request.env['REMOTE_ADDR']
+        remote_addr: request.env['REMOTE_ADDR'],
+        browser: request.env['HTTP_USER_AGENT']
+
     }
   end
 
