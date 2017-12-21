@@ -2,7 +2,7 @@ class ShfApplicationsController < ApplicationController
   include PaginationUtility
 
   before_action :get_shf_application, except: [:information, :index, :new, :create]
-  before_action :authorize_shf_application, only: [:update, :show, :edit]
+  before_action :authorize_shf_application
   before_action :set_other_waiting_reason, only: [:show, :edit, :update, :need_info]
 
 
@@ -113,13 +113,6 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  def check_and_mark_if_ready_for_review(app_params)
-    if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != "0"
-      @shf_application.is_ready_for_review!
-    end
-  end
-
-
   def information
 
   end
@@ -184,7 +177,14 @@ class ShfApplicationsController < ApplicationController
 
 
   def authorize_shf_application
-    authorize @shf_application
+    @shf_application.nil? ? ( authorize ShfApplication) : (authorize @shf_application)
+  end
+
+
+  def check_and_mark_if_ready_for_review(app_params)
+    if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != "0"
+      @shf_application.is_ready_for_review!
+    end
   end
 
 
