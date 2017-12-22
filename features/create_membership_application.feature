@@ -48,11 +48,11 @@ Feature: Create a new membership application
     And the t("shf_applications.new.last_name") field should be set to "Andersson"
     Then "applicant_1@random.com" should receive an email
     And I open the email
-    And I should see t("application_mailer.shf_application.acknowledge_received.subject") in the email subject
+    And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
     And I am logged in as "admin@shf.se"
     Then "admin@shf.se" should receive an email
     And I open the email
-    And I should see t("application_mailer.admin.new_application_received.subject") in the email subject
+    And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
 
 
   Scenario: A user can submit a new Membership Application with multiple categories
@@ -185,11 +185,11 @@ Feature: Create a new membership application
     And the t("shf_applications.new.last_name") field should be set to "IsaMember"
     Then "member@random.com" should receive an email
     And I open the email
-    And I should see t("application_mailer.shf_application.acknowledge_received.subject") in the email subject
+    And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
     And I am logged in as "admin@shf.se"
     Then "admin@shf.se" should receive an email
     And I open the email
-    And I should see t("application_mailer.admin.new_application_received.subject") in the email subject
+    And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
 
 
   Scenario: An admin cannot submit a new application because we don't know which User it is for

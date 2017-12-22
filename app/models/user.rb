@@ -101,8 +101,10 @@ class User < ApplicationRecord
   end
 
 
-  def grant_membership
+  # Need to be able to turn off 'sending email' during seeding
+  def grant_membership(send_email: true)
     update(member: true, membership_number: issue_membership_number)
+    MemberMailer.membership_granted(self).deliver if send_email
   end
 
 

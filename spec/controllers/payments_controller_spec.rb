@@ -65,12 +65,18 @@ RSpec.describe PaymentsController, type: :controller do
     end
 
     it 'sets payment status to paid' do
+      # mock the MemberMailer so we don't try to send emails
+      expect(MemberMailer).to receive(:membership_granted).with(payment.user).and_return( double('MemberMailer', deliver: true))
+
       expect(payment.status).to eq 'skapad'
       post :webhook
       expect(payment.reload.status).to eq 'betald'
     end
 
     it 'sets user to be a member and assigns membership number' do
+      # mock the MemberMailer so we don't try to send emails
+      expect(MemberMailer).to receive(:membership_granted).with(payment.user).and_return( double('MemberMailer', deliver: true))
+
       expect(payment.user.member).to be false
       expect(payment.user.membership_number).to be_nil
       post :webhook
