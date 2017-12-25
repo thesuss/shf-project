@@ -42,9 +42,16 @@ class User < ApplicationRecord
     # Business rule: user can pay membership fee if:
     # 1. user == member, or
     # 2. user has at least one application with status == :accepted
+    # TODO what if a payment has already been made?  any check for that?
 
     member? || shf_applications.where(state: :accepted).any?
   end
+
+
+  def member_fee_payment_due?
+    member? && ! membership_current?
+  end
+
 
   def has_shf_application?
     shf_applications.any?
@@ -53,7 +60,7 @@ class User < ApplicationRecord
   def check_member_status
     # Called from Warden after user authentication - see after_sign_in.rb
     # If member payment has expired, revoke membership status.
-    if member? && ! membership_current?
+    if member_fee_payment_due?
       update(member: false)
     end
   end
