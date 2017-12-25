@@ -84,6 +84,19 @@ class ShfApplication < ApplicationRecord
 
   end
 
+  # encapsulate how to get a list of all states as symbols
+  def self.all_states
+    aasm.states.map(&:name)
+  end
+
+  def self.in_state(app_state)
+    where(state: app_state)
+  end
+
+  def self.total_in_state(app_state)
+    where(state: app_state).count
+  end
+
   # these are only used by the submisssion form and are not saved to the db
   def marked_ready_for_review
     @marked_ready_for_review ||= (ready_for_review? ? 1 : 0)
