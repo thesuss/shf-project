@@ -1,0 +1,65 @@
+
+.dashboard.index {
+
+  header#masthead.site-header  {
+    padding-bottom: 60px;
+  }
+
+  #admin-dashboard {
+
+    header {
+      margin: 1em 0 0 0;
+      padding: 0;
+    }
+
+
+    .post-title-divider {
+      margin-top: 0;
+    }
+
+    .entry-content,
+    .page-template-page-sidebar-none .entry-content {
+      margin: 0;
+      padding: 0;
+
+      .row {
+        margin: 1rem 0 0 0;
+      }
+
+      #summary {
+        h2, h3, h4, h5, h6,
+        p {
+          margin-bottom: 0;
+        }
+
+        h2, h3 {
+          margin-top: 0.5rem;
+        }
+
+        h3 {
+          font-weight: bold;
+        }
+
+        .total, .subtotal {
+          font-weight: bold;
+        }
+
+        .total {
+          color: blue;
+        }
+
+        .sub-info-line {
+          font-size: 85%
+        }
+
+      }
+
+      #details {
+        margin-top: 1rem;
+        border-top: 1pt solid blue;
+      }
+    }
+
+  }
+
+}

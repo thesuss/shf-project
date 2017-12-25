@@ -1,0 +1,49 @@
+#admin-dashboard
+  %header.entry-header
+    %h1.entry-title Admin Dashboard
+  .post-title-divider
+    %span
+
+  .entry-content
+
+    #summary
+      .row
+        .col-md-11
+          .membership-totals-current
+            %h3.total-members
+              %span.total= @total_members
+              members
+          .membership-time-graph
+            %h5 (simple line graph of membership over time)
+            %h5 (simple bar graph showing memberships by state)
+
+        .col-md-11
+          .payment-totals-weekly
+            %h3.total-payments-weekly
+              %span.total= @member_fee_payments.count + @branding_fee_payments.count
+              successful payments in the past 7 days
+            %h5= "#{@member_fee_payments.count} member fee payments"
+            %h5= "#{@branding_fee_payments.count} branding fee payments"
+
+
+      .row
+        .col-md-9
+          .shf-applications
+            %h4
+              %span.total= @apps_approved_member_fee_not_paid.count
+              Applications approved but no membership payment yet (link to detailed list)
+
+      .row
+        .col-md-9
+          .companies
+            %h4
+              %span.total= @companies_branding_not_paid.count
+              companies Branding license fee not yet paid (link to details)
+              %p
+                %span.total= @companies_info_not_completed.count
+                companies with nformation not yet complete (link to details)
+
+
+    #details
+      .row
+        %p Show details down here
