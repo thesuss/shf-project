@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
     resources :member_app_waiting_reasons
 
+    get 'dashboard', to: 'dashboard#index'
+
   end
 
 
