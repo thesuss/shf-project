@@ -14,6 +14,8 @@
               %span.total= @total_members
               members
           .membership-time-graph
+            %h5
+              = @app_state_counts.map{|k, v| "#{k}: #{v}"}.join(', ')
             %h5 (simple line graph of membership over time)
             %h5 (simple bar graph showing memberships by state)
 
@@ -41,9 +43,10 @@
               companies Branding license fee not yet paid (link to details)
               %p
                 %span.total= @companies_info_not_completed.count
-                companies with nformation not yet complete (link to details)
+                companies with information not yet complete (link to details)
 
 
     #details
       .row
-        %p Show details down here
+        %p Tabs: Membership Applications, Companies, etc.
+        %p (details shown down here)
