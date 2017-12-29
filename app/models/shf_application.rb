@@ -42,6 +42,9 @@ class ShfApplication < ApplicationRecord
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
+  scope :no_uploaded_files, -> { open.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id)) }
+
+
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
 
