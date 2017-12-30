@@ -87,42 +87,53 @@ Feature: Admin sees the dashboard with summary of important information
       | member_7@bowwowwow.se  | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
       | member_8@bowwowwow.se  | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
       | member_9@bowwowwow.se  | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
-      | member_10@bowwowwow.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
-      | member_11@bowwowwow.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
 
 
     Given I am logged in as "admin@shf.se"
 
 
-  Scenario: Admin can set date range for the recent summary numbers
+  #Scenario: Admin can set date range for the recent summary numbers
+  #Scenario: default date range for summary is the past 30 days
 
 
-  Scenario: default date range for summary is the past 30 days
-
-
-  @selenium_browser
-  Scenario: Admin sees total membership counts and counts for last 30 days
+  @selenium
+  Scenario: Admin sees the dashboard with summary info
     Given I am on the "admin dashboard" page
-    Then I should see "ADMIN DASHBOARD"
-    And I should see "11 members"
-    And I should see "12 successful payments in the past 7 days"
-    And I should see "11 member fee payments"
-    And I should see "1 branding fee payments"
-    And I should see "0 Applications approved but no membership payment yet"
-    And I should see "1 companies Branding license fee not yet paid"
-    And I should see "0 companies with nformation not yet complete"
+    Then I should see t("admin_only.dashboard.title")
+    And I should see t("admin_only.dashboard.total_members", total_num_members: 11)
+    And I should see t("admin_only.dashboard.recent_activity_section_title", recent_num_days: 7)
+    And I should see t("activerecord.models.shf_application.other")
+    And I should see "9 "
+    And I should see t("admin_only.dashboard.successful_payments")
+    And I should see t("admin_only.dashboard.member_fee_payments", number_payments: 9)
+    And I should see t("admin_only.dashboard.branding_fee_payments", number_payments: 1)
+    And I should see t("admin_only.dashboard.current_items_section_title")
+    And I should see "0 "
+    And I should see t("admin_only.dashboard.open_apps_no_files")
+    And I should see "2 "
+    And I should see t("admin_only.dashboard.app_approved_no_payment")
+    And I should see "1 "
+    And I should see t("admin_only.dashboard.companies_no_branding_payment")
+    And I should see "0 "
+    And I should see t("admin_only.dashboard.companies_incomplete")
 
-   # And I should see "3 new applications"
-   # And I should see "2 rejected"
-   # And I should see "1 waiting for information from the applicant"
-   # And I should see "4 under review"
-   # And I should see "2 ready for review again"
-   # And I should see "Applications in the last 30 days"
-   # And I should see "3 new applications"
-   # And I should see "1 waiting for information from the applicant"
-   # And I should see "4 under review"
-   # And I should see "2 ready for review again"
-   # And I should see "1 rejection"
+    # TODO how to test for the lines that have a formatted number, then a t('') phrase?
+
+  # Summary:
+  #   11 members
+  #     new: 3, under_review: 4, waiting_for_applicant: 1, ready_for_review: 2, accepted: 11, rejected: 2
+  #   In the past 7 days:
+  #     Membership Applications:
+  #       new: 3, under_review: 4, waiting_for_applicant: 1, ready_for_review: 2, accepted: 11, rejected: 2
+  #     12 Successful payments:
+  #       9 member fee payments
+  #       1 branding fee payments
+  # Current items of note:
+  #   10 Open Applications with no files uploaded
+  #   2 Applications approved but no membership payment yet
+  #   1 companies Branding license fee not yet paid
+  #   0 companies with information not yet complete
+  #
 
 
 #  Scenario: If there are no applications for a state, then a zero (0) is displayed instead of skipping it
