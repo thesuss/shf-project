@@ -995,6 +995,7 @@ sv:
   errors:
     not_permitted: Du har inte behörighet att göra detta.
     format: "%{attribute} %{message}"
+    bad_search_params: "Förlåt. Vi kunde inte söka efter %{search_item} med dessa kriterier. Var god försök igen."
     messages:
       accepted: måste accepteras
       blank: måste anges

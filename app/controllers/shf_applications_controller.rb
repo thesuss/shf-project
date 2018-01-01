@@ -16,20 +16,24 @@ class ShfApplicationsController < ApplicationController
   def index
     authorize ShfApplication
 
+    self.params = fix_FB_changed_q_params(self.params)
+
     session[:shf_application_items_selection] ||= 'All' if current_user.admin?
 
     action_params, @items_count, items_per_page =
-      process_pagination_params('shf_application')
+        process_pagination_params('shf_application')
+
 
     @search_params = ShfApplication.includes(:user).ransack(action_params)
 
     @shf_applications = @search_params
-                                 .result
-                                 .includes(:business_categories)
-                                 .includes(:user)
-                                 .page(params[:page]).per_page(items_per_page)
+                            .result
+                            .includes(:business_categories)
+                            .includes(:user)
+                            .page(params[:page]).per_page(items_per_page)
 
     render partial: 'shf_applications_list' if request.xhr?
+
   end
 
 
@@ -49,7 +53,7 @@ class ShfApplicationsController < ApplicationController
 
     if @shf_application.save
 
-      file_uploads_successful =   new_file_uploaded(params)
+      file_uploads_successful = new_file_uploaded(params)
 
       send_new_app_emails(@shf_application)
 
@@ -177,7 +181,7 @@ class ShfApplicationsController < ApplicationController
 
 
   def authorize_shf_application
-    @shf_application.nil? ? ( authorize ShfApplication) : (authorize @shf_application)
+    @shf_application.nil? ? (authorize ShfApplication) : (authorize @shf_application)
   end
 
 
@@ -252,6 +256,7 @@ class ShfApplicationsController < ApplicationController
     end
 
   end
+
 
   def send_new_app_emails(new_shf_app)
 

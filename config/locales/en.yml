@@ -996,6 +996,7 @@ en:
   # ERRORS
   errors:
     not_permitted: You do not have permission to do this.
+    bad_search_params: "Sorry.  We could not search for %{search_item} with those critera.  Please try again."
     format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
