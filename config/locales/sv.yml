@@ -797,7 +797,8 @@ sv:
 
     dashboard:
       title: ADMIN DASHBOARD
-      total_members: " members total"
+      total_members: "members"
+
       successful_payments: Successful Payments
 
       member_fee_payments: "%{number_payments} member fee payments"
@@ -810,6 +811,7 @@ sv:
       app_approved_no_payment: "Applications approved but no membership payment yet"
       companies_no_branding_payment: "companies Branding license fee not yet paid"
       companies_incomplete: "companies with information not yet complete"
+
 
 
   mailers:

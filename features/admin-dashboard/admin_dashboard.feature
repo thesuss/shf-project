@@ -117,6 +117,8 @@ Feature: Admin sees the dashboard with summary of important information
     And I should see "0 "
     And I should see t("admin_only.dashboard.companies_incomplete")
 
+    And I should see "Change timeframe:"
+
     # TODO how to test for the lines that have a formatted number, then a t('') phrase?
 
   # Summary:
@@ -134,6 +136,12 @@ Feature: Admin sees the dashboard with summary of important information
   #   1 companies Branding license fee not yet paid
   #   0 companies with information not yet complete
   #
+
+
+  Scenario: Default timeframe displayed is 7 days
+
+  Scenario: Change the timeframe displayed
+
 
 
 #  Scenario: If there are no applications for a state, then a zero (0) is displayed instead of skipping it

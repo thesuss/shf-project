@@ -60,7 +60,7 @@ class User < ApplicationRecord
   def check_member_status
     # Called from Warden after user authentication - see after_sign_in.rb
     # If member payment has expired, revoke membership status.
-    if member_fee_payment_due?
+    if member? && ! membership_current?
       update(member: false)
     end
   end

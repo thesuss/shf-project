@@ -796,7 +796,8 @@ en:
 
     dashboard:
       title: ADMIN DASHBOARD
-      total_members: "%{total_num_members} members total"
+      total_members: "members"
+
       successful_payments: Successful Payments
 
       member_fee_payments: "%{number_payments} member fee payments"
