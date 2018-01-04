@@ -19,39 +19,39 @@ RSpec.shared_examples 'it_has_updated_in_date_range_scope' do | factory_method |
   let!(:before_end_date)   { Time.zone.local(2018, 01, 31, 23, 59, 59) }
   let!(:after_end_date)    { Time.zone.local(2018, 02, 01, 00, 00, 01) }
 
-  let(:paid_before_start_date) { create(factory_method, updated_at: before_start_date) }
-  let(:paid_on_start_date)     { create(factory_method, updated_at: start_date) }
-  let(:paid_after_start_date)  { create(factory_method, updated_at: after_start_date) }
+  let(:updated_before_start_date) { create(factory_method, updated_at: before_start_date) }
+  let(:updated_on_start_date)     { create(factory_method, updated_at: start_date) }
+  let(:updated_after_start_date)  { create(factory_method, updated_at: after_start_date) }
 
-  let(:paid_before_end_date)   { create(factory_method, updated_at: before_end_date) }
-  let(:paid_on_end_date)       { create(factory_method, updated_at: end_date) }
-  let(:paid_after_end_date)    { create(factory_method, updated_at: after_end_date) }
+  let(:updated_before_end_date)   { create(factory_method, updated_at: before_end_date) }
+  let(:updated_on_end_date)       { create(factory_method, updated_at: end_date) }
+  let(:updated_after_end_date)    { create(factory_method, updated_at: after_end_date) }
 
 
   it 'returns all payments updated on the start_date' do
-    paid_on_start_date
-    expect(described_class.updated_in_date_range(start_date, end_date)).to include(paid_on_start_date)
+    updated_on_start_date
+    expect(described_class.updated_in_date_range(start_date, end_date)).to include(updated_on_start_date)
   end
 
   it 'returns all payments updated on the end_date' do
-    paid_on_end_date
-    expect(described_class.updated_in_date_range(start_date, end_date)).to include(paid_on_end_date)
+    updated_on_end_date
+    expect(described_class.updated_in_date_range(start_date, end_date)).to include(updated_on_end_date)
   end
 
   it 'returns all payments updated between start_date and end_date' do
-    paid_after_start_date
-    paid_before_end_date
-    expect(described_class.updated_in_date_range(start_date, end_date)).to include(paid_after_start_date, paid_before_end_date)
+    updated_after_start_date
+    updated_before_end_date
+    expect(described_class.updated_in_date_range(start_date, end_date)).to include(updated_after_start_date, updated_before_end_date)
   end
 
   it 'does not return payments updated before the start_date' do
-    paid_before_start_date
-    expect(described_class.updated_in_date_range(start_date, end_date)).not_to include(paid_before_start_date)
+    updated_before_start_date
+    expect(described_class.updated_in_date_range(start_date, end_date)).not_to include(updated_before_start_date)
   end
 
   it 'does not return payments updated after the end_date' do
-    paid_after_end_date
-    expect(described_class.updated_in_date_range(start_date, end_date)).not_to include(paid_after_end_date)
+    updated_after_end_date
+    expect(described_class.updated_in_date_range(start_date, end_date)).not_to include(updated_after_end_date)
   end
 
   context 'invalid arguments' do
