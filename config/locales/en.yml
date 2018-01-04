@@ -119,7 +119,7 @@ en:
 
       payment:
         one: Payment
-        other: Payments
+        other: &payments Payments
 
       user:
         one: User
@@ -798,7 +798,7 @@ en:
       title: ADMIN DASHBOARD
       total_members: "members"
 
-      successful_payments: Successful Payments
+      payments: *payments
 
       member_fee_payments: "%{number_payments} member fee payments"
       branding_fee_payments: "%{number_payments} branding fee payments"
