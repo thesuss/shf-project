@@ -19,6 +19,7 @@
               %h5 (simple line graph of membership over time)
               %h5 (simple bar graph showing memberships by state)
 
+      -# smell:  passing so many vars to a view -> should encapsulate in a class
       .section
         = render 'recent_activity', recent_num_days: @data_gatherer.timeframe,
                                     recent_apps: @data_gatherer.recent_shf_apps,
@@ -27,6 +28,7 @@
                                     recent_member_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym],
                                     recent_branding_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym]
 
+      -# smell:  passing so many vars to a view -> should encapsulate in a class
       .section
         = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
         apps_approved_member_fee_not_paid: @data_gatherer.apps_approved_member_fee_not_paid,
@@ -38,4 +40,5 @@
       #details
         .row
           -# %p Tabs: Membership Applications, Companies, etc.
-          %p (TBD: details shown down here)
+          %p (TBD: link to the specifics - how to do that with ransack?)
+          %p (TBD: details shown down here, perhaps?  with tabs?)
