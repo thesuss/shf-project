@@ -13,12 +13,15 @@ module AdminOnly
     def show
     end
 
+
     def show_recent_activity
       respond_to do |format|
         format.js
       end
     end
 
+
+    # WIP to change the timeframe for "recent" data.  See commented out .row in the _recent_activity partial
     def update_timeframe
       # params['data_gatherer']['timeframe']
       if request.xhr?
@@ -29,7 +32,6 @@ module AdminOnly
         rescue ArgumentError
           head :error # return an error to the xhr call
         end
-
 
       end
 
