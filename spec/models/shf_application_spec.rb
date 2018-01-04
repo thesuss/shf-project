@@ -3,6 +3,9 @@ require 'aasm/rspec'
 
 require 'support/ae_aasm_matchers/ae_aasm_matchers'
 
+require_relative './shared_ex_scope_updated_in_date_range_spec'
+
+
 # alias shared example call for readability
 RSpec.configure do |c|
   c.alias_it_should_behave_like_to :it_will, 'it will'
@@ -172,6 +175,10 @@ RSpec.describe ShfApplication, type: :model do
 
       end
 
+    end
+
+    describe 'updated_in_date_range(start_date, end_date)' do
+      it_behaves_like 'it_has_updated_in_date_range_scope', :shf_application
     end
   end
 
