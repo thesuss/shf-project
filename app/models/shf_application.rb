@@ -100,6 +100,14 @@ class ShfApplication < ApplicationRecord
     where(state: app_state).count
   end
 
+
+  # return all SHF applications where updated_at: >= start date AND updated_at: <= end_date
+  def self.updated_in_date_range(start_date, end_date)
+    where( updated_at: start_date..end_date )
+  end
+
+
+
   # these are only used by the submisssion form and are not saved to the db
   def marked_ready_for_review
     @marked_ready_for_review ||= (ready_for_review? ? 1 : 0)
