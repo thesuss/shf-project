@@ -841,11 +841,11 @@ en:
 
     member_mailer:
       membership_granted:
-        subject: &subject_welcome "Welcome to SHF! You're now a member"
+        subject: &subject_welcome "Welcome to SHF! You are now a member"
         greeting: *email_greeting
         message_text:
           welcome:  *subject_welcome
-          youre_active: "Your company is now H-tagged and you have been activated as a member of the system. You can login and manage your profile and build your business page. When you're signed in, you can edit your business page and pay your branding license fee here: "
+          youre_active: "Your company is now H-tagged and you have been activated as a member of the system. You can login and manage your profile and build your business page. When you are signed in, you can edit your business page and pay your branding license fee here: "
           access_fb_group: "As a member, you will also have access to our closed Facebook group: "
           and_member_pages: "as well as hidden pages in our member system: "
 
