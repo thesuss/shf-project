@@ -96,6 +96,22 @@ $recent-activity-border-color: #8eadce;
         margin-left: $indent-amount;
       }
 
+      .timeframe-options {
+        font-size: smaller;
+      }
+
+      .not-working {
+        font-style: italic;
+        color: red;
+
+      }
+
+      .tbd-note {
+        font-size: smaller;
+        //font-style: italic;
+        color: #e300e3;
+      }
+
     }
 
   }
