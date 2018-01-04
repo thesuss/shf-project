@@ -42,8 +42,6 @@ class ShfApplication < ApplicationRecord
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
-  scope :no_uploaded_files, -> { open.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id)) }
-
 
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
@@ -100,6 +98,13 @@ class ShfApplication < ApplicationRecord
     where(state: app_state).count
   end
 
+  # Have to guard agains the condition where there are no uploaded files in the system
+  def self.no_uploaded_files
+    return open if UploadedFile.count == 0
+
+    open.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id))
+
+  end
 
   # return all SHF applications where updated_at: >= start date AND updated_at: <= end_date
   def self.updated_in_date_range(start_date, end_date)
