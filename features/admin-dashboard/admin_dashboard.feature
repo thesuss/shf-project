@@ -104,7 +104,7 @@ Feature: Admin sees the dashboard with summary of important information
     And I should see t("admin_only.dashboard.recent_activity_section_title", recent_num_days: 7)
     And I should see t("activerecord.models.shf_application.other")
     And I should see "9 "
-    And I should see t("admin_only.dashboard.successful_payments")
+    And I should see t("admin_only.dashboard.payments")
     And I should see t("admin_only.dashboard.member_fee_payments", number_payments: 9)
     And I should see t("admin_only.dashboard.branding_fee_payments", number_payments: 1)
     And I should see t("admin_only.dashboard.current_items_section_title")
@@ -117,7 +117,7 @@ Feature: Admin sees the dashboard with summary of important information
     And I should see "0 "
     And I should see t("admin_only.dashboard.companies_incomplete")
 
-    And I should see "Change timeframe:"
+    #And I should see "Change timeframe:"
 
     # TODO how to test for the lines that have a formatted number, then a t('') phrase?
 
@@ -141,6 +141,9 @@ Feature: Admin sees the dashboard with summary of important information
   Scenario: Default timeframe displayed is 7 days
 
   Scenario: Change the timeframe displayed
+  # when the timeframe option is changed:
+  #  the number in the subtitle changes
+  # the data is changed
 
 
 
