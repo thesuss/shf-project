@@ -5,8 +5,13 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
   describe '#states_selection_list gets the localized version of each state name each time it is requested' do
 
-    let(:application) { create(:shf_application) }
+    around(:each) do |example|
+      orig_locale = I18n.locale
+      example.run
+      I18n.locale = orig_locale
+    end
 
+    let(:application) { create(:shf_application) }
 
     it 'returns the list in the default I18n locale' do
       select_list = helper.states_selection_list
@@ -16,6 +21,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     end
 
     it 'correct locale if changed to :en from locale = :sv' do
+      orig_locale = I18n.locale
       I18n.locale = :sv
       helper.states_selection_list
 
@@ -24,7 +30,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
       select_list.each do |each_option|
         expect(each_option[0]).to eq I18n.t("activerecord.attributes.shf_application.state/#{each_option[1]}", locale: :en)
       end
-
+      I18n.locale = orig_locale
     end
   end
 
