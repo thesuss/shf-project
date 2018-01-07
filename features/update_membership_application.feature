@@ -1,19 +1,32 @@
-Feature: As an Admin
+Feature: SHF Application status is changed
+
+  As an Admin
   In order to get members into SHF and get their money
-  I need to be able to accept/reject their application
+  I need to be able to review their applications and ultimately accept or reject them
+
   PT: https://www.pivotaltracker.com/story/show/133950603
+
+
+  Note that when counting the total number of status phrases (or words) on the
+  landing page, there will be 1 time where the status will match the
+  *search* list. So if there are 3 applications in a particular state/status,
+  you should expect to see the status *4* times total (3 times for the applications
+  + 1 time in the list of all statuses/states in the search selection list.
+
+
 
   Background:
     Given the following users exists
-      | first_name            | email                                  | admin |
-      | EmmaUnderReview       | emma_under_review@happymutts.se        |       |
-      | HansUnderReview       | hans_under_review@happymutts.se        |       |
-      | AnnaWaiting           | anna_waiting_for_info@nosnarkybarky.se |       |
-      | LarsRejected          | lars_rejected@snarkybark.se            |       |
-      | NilsAccepted          | nils_member@bowwowwow.se               |       |
-      | Applicant1            | applicant_1@random.com                 |       |
-      | Applicant2            | applicant_2@random.com                 |       |
-      | admin                 | admin@shf.se                           | true  |
+      | first_name      | email                                  | admin |
+      | EmmaUnderReview | emma_under_review@happymutts.se        |       |
+      | HansUnderReview | hans_under_review@happymutts.se        |       |
+      | AnnaWaiting     | anna_waiting_for_info@nosnarkybarky.se |       |
+      | LarsRejected    | lars_rejected@snarkybark.se            |       |
+      | NilsAccepted    | nils_member@bowwowwow.se               |       |
+      | Applicant1      | applicant_1@random.com                 |       |
+      | Applicant2      | applicant_2@random.com                 |       |
+      | NewNurdle       | new_nurdle@happymutts.se               |       |
+      | admin           | admin@shf.se                           | true  |
 
     Given the following business categories exist
       | name         | description                     |
@@ -34,6 +47,7 @@ Feature: As an Admin
       | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab        | waiting_for_applicant |
       | lars_rejected@snarkybark.se            | 0000000000     | rehab        | rejected              |
       | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |
+      | new_nurdle@happymutts.se               | 5562252998     | dog grooming | new                   |
 
     And I am logged in as "admin@shf.se"
     And time is frozen at 2016-12-16
@@ -49,6 +63,26 @@ Feature: As an Admin
     And I should not see button t("shf_applications.reject_btn")
 
 
+  # From new to...
+
+  @admin
+  Scenario: Admin starts reviewing a new application (from new to under_review)
+    Given I am on the "application" page for "new_nurdle@happymutts.se"
+    Then I should see "dog grooming"
+    When I click on t("shf_applications.start_review_btn")
+    Then I should see t("shf_applications.start_review.success")
+    And I should see status line with status t("shf_applications.under_review")
+    And I should not see t("shf_applications.update.enter_member_number")
+    And I should see "dog grooming"
+    When I am on the "landing" page
+    Then I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 4 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.rejected")
+
+
+
+
   # From under_review to...
 
   @admin @user
@@ -61,10 +95,10 @@ Feature: As an Admin
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.under_review")
-    And I should see 1 t("shf_applications.accepted")
-    And I should see 1 t("shf_applications.rejected")
+    Then I should see 3 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.rejected")
     And I am Logged out
     And I am logged in as "emma_under_review@happymutts.se"
     And I am on the "edit my application" page
@@ -78,10 +112,10 @@ Feature: As an Admin
     Then I should see t("shf_applications.accept.success")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 1 t("shf_applications.rejected")
+    Then I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 3 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin changed from under_review to rejected
@@ -93,10 +127,10 @@ Feature: As an Admin
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.rejected")
-    And I should see 1 t("shf_applications.accepted")
+    Then I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 3 t("shf_applications.rejected")
+    And I should see 2 t("shf_applications.accepted")
 
   @admin
   Scenario: Admin cannot change from under_review to 'cancel waiting for applicant'
@@ -113,10 +147,10 @@ Feature: As an Admin
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 2 t("shf_applications.rejected")
-    And I should see 1 t("shf_applications.under_review")
-    And I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.accepted")
+    Then I should see 3 t("shf_applications.rejected")
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.accepted")
 
   @admin @user
   Scenario: Admin rejects an application that had uploaded files (under_review to rejected)
@@ -172,10 +206,10 @@ Feature: As an Admin
     Then I should see status line with status t("shf_applications.ready_for_review")
     And I should see "rehab"
     And I am on the "landing" page
-    And I should see 1 t("shf_applications.ready_for_review")
-    And I should see 1 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 1 t("shf_applications.rejected")
+    And I should see 2 t("shf_applications.ready_for_review")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 3 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin changed from 'waiting for applicant' to 'under review'
@@ -188,10 +222,10 @@ Feature: As an Admin
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    And I should see 3 t("shf_applications.under_review")
-    And I should not see t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.accepted")
-    And I should see 1 t("shf_applications.rejected")
+    And I should see 4 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from 'waiting for applicant' to rejected
@@ -230,10 +264,10 @@ Feature: As an Admin
     And I should see status line with status t("shf_applications.rejected")
     And I should see "dog crooning"
     When I am on the "landing" page
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 0 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.rejected")
+    And I should see 3 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.accepted")
+    And I should see 3 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from accepted to accepted
@@ -275,10 +309,10 @@ Feature: As an Admin
     And I should see status line with status t("shf_applications.rejected")
     And I should see "rehab"
     When I am on the "landing" page
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.accepted")
-    And I should see 1 t("shf_applications.rejected")
+    And I should see 3 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from rejected to 'waiting for applicant'
@@ -293,10 +327,10 @@ Feature: As an Admin
     Then I should see t("shf_applications.accept.success")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 0 t("shf_applications.rejected")
+    Then I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 3 t("shf_applications.under_review")
+    And I should see 3 t("shf_applications.accepted")
+    And I should see 1 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from rejected to rejected
