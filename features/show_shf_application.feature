@@ -1,4 +1,4 @@
-Feature: Show a SHF Application
+Feature: View a SHF Application
 
   As an Admin
   So that we can accept or reject new Memberships,
@@ -20,7 +20,7 @@ Feature: Show a SHF Application
       | Hans               | hans_waits@waiting.se               |       |
       | Anna               | anna_needs_info@waiting.se          |       |
       | RejectedLars       | lars_rejected@snarkybark.se         |       |
-      | ApprovedNils       | nils_member@bowwowwow.se            |       |
+      | MemberMarkus       | markus_member@bowwowwow.se          |       |
       | UnderReviewEmma    | emma_under_review@happymutts.se     |       |
       | ReadyForReviewHans | hans_ready_for_review@happymutts.se |       |
       | NewNurdle          | new_nurdle@happymutts.se            |       |
@@ -46,7 +46,7 @@ Feature: Show a SHF Application
       | hans_waits@waiting.se               |               | 5560360793     | waiting_for_applicant | Psychologist |
       | anna_needs_info@waiting.se          |               | 2120000142     | waiting_for_applicant | Psychologist |
       | lars_rejected@snarkybark.se         |               | 0000000000     | rejected              | dog crooning |
-      | nils_member@bowwowwow.se            |               | 0000000000     | accepted              | Groomer      |
+      | markus_member@bowwowwow.se          |               | 0000000000     | accepted              | Groomer      |
       | emma_under_review@happymutts.se     |               | 5562252998     | under_review          | rehab        |
       | hans_ready_for_review@happymutts.se |               | 5562252998     | ready_for_review      | dog grooming |
       | new_nurdle@happymutts.se            |               | 5562252998     | new                   | dog grooming |
@@ -54,7 +54,7 @@ Feature: Show a SHF Application
 
   @member
   Scenario: Approved member should see membership number
-    Given I am logged in as "nils_member@bowwowwow.se"
+    Given I am logged in as "markus_member@bowwowwow.se"
     And I am on the "landing" page
     And I click on t("menus.nav.members.my_application")
     Then I should see t("shf_applications.show.membership_number")
@@ -69,10 +69,10 @@ Feature: Show a SHF Application
   @admin
   Scenario: Clicking the edit button on show page
     Given I am logged in as "admin@shf.se"
-    When I am on the "application" page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "markus_member@bowwowwow.se"
     Then I should see t("activerecord.attributes.shf_application.state/accepted")
     And I click on t("shf_applications.edit_shf_application")
-    Then I should be on the "edit application" page for "nils_member@bowwowwow.se"
+    Then I should be on the "edit application" page for "markus_member@bowwowwow.se"
 
   @user
   Scenario: User does not see edit-link
@@ -104,7 +104,7 @@ Feature: Show a SHF Application
   @admin
   Scenario: Admin sees business categories for user that is accepted
     Given I am logged in as "admin@shf.se"
-    When I am on the "application" page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "markus_member@bowwowwow.se"
     Then I should see "Groomer"
 
 
@@ -126,6 +126,18 @@ Feature: Show a SHF Application
 
   @selenium, @member
   Scenario: Member sees the status translated correctly (default locale, then :en, then :sv)
+    Given I am logged in as "markus_member@bowwowwow.se"
+    And I set the locale to "sv"
+    When I am on the "application" page for "markus_member@bowwowwow.se"
+    Then I should see t("activerecord.attributes.shf_application.state/accepted")
+    When I click on "change-lang-to-english"
+    And I wait for 1 seconds
+    Then I should see t("activerecord.attributes.shf_application.state/accepted", locale: :en)
+    And I should not see t("activerecord.attributes.shf_application.state/accepted", locale: :sv)
+    When I click on "change-lang-to-svenska"
+    And I wait for 1 seconds
+    Then I should see t("activerecord.attributes.shf_application.state/accepted", locale: :sv)
+    And I should not see t("activerecord.attributes.shf_application.state/accepted", locale: :en)
 
 
   @selenium, @admin
@@ -135,7 +147,7 @@ Feature: Show a SHF Application
     Then I should see t("activerecord.attributes.shf_application.state/new", locale: sv)
     When I am on the "application" page for "emma_under_review@happymutts.se"
     And I should see t("activerecord.attributes.shf_application.state/under_review")
-    When I am on the "application" page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "markus_member@bowwowwow.se"
     And I should see t("activerecord.attributes.shf_application.state/accepted")
     When I am on the "application" page for "lars_rejected@snarkybark.se"
     And I should see t("activerecord.attributes.shf_application.state/rejected")
@@ -154,7 +166,7 @@ Feature: Show a SHF Application
     Then I should see t("activerecord.attributes.shf_application.state/new", locale: en)
     When I am on the "application" page for "emma_under_review@happymutts.se"
     And I should see t("activerecord.attributes.shf_application.state/under_review", locale: :en)
-    When I am on the "application" page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "markus_member@bowwowwow.se"
     And I should see t("activerecord.attributes.shf_application.state/accepted", locale: :en)
     When I am on the "application" page for "lars_rejected@snarkybark.se"
     And I should see t("activerecord.attributes.shf_application.state/rejected", locale: :en)
@@ -167,7 +179,7 @@ Feature: Show a SHF Application
     Then I should see t("activerecord.attributes.shf_application.state/new", locale: sv)
     When I am on the "application" page for "emma_under_review@happymutts.se"
     And I should see t("activerecord.attributes.shf_application.state/under_review", locale: :sv)
-    When I am on the "application" page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "markus_member@bowwowwow.se"
     And I should see t("activerecord.attributes.shf_application.state/accepted", locale: :sv)
     When I am on the "application" page for "lars_rejected@snarkybark.se"
     And I should see t("activerecord.attributes.shf_application.state/rejected", locale: :sv)
