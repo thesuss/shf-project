@@ -1,4 +1,6 @@
-Feature: As an admin,
+Feature: Admin can show as many or few SHF Applications as they want (pagination)
+
+  As an admin,
   so that I can manage membership applications,
   I want to see all membership applications
 
