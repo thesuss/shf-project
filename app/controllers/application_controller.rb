@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_after_action_path, if: :devise_controller?
+  before_action :store_current_location, :unless => :devise_controller?
   before_action :prepare_exception_notifier
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -21,15 +23,25 @@ class ApplicationController < ActionController::Base
     raise 'This is a just a test of the exception notifications to ensure they are working.'
   end
 
-
   protected
 
   def configure_permitted_parameters
-    additional_permissions = [:first_name, :last_name]
+    additional_permissions = [:first_name, :last_name, :member_photo]
     devise_parameter_sanitizer.permit(:sign_up, keys: additional_permissions)
     devise_parameter_sanitizer.permit(:account_update, keys: additional_permissions)
   end
 
+  def store_current_location
+    store_location_for(:user, request.url)
+  end
+
+  def set_after_action_path
+    return unless self.is_a? Devise::RegistrationsController
+
+    def self.after_update_path_for(resource)
+      stored_location_for(resource) || request.referer || root_path
+    end
+  end
 
   private
 
