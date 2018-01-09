@@ -21,7 +21,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     end
 
     it 'correct locale if changed to :en from locale = :sv' do
-      orig_locale = I18n.locale
+
       I18n.locale = :sv
       helper.states_selection_list
 
@@ -30,7 +30,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
       select_list.each do |each_option|
         expect(each_option[0]).to eq I18n.t("activerecord.attributes.shf_application.state/#{each_option[1]}", locale: :en)
       end
-      I18n.locale = orig_locale
+
     end
   end
 
