@@ -56,25 +56,18 @@ Feature: Admin can see all SHF applications so they can be managed
     And I should see t("shf_applications.index.state")
     And I should see t("manage")
 
-  @admin
+  @selenium @admin
   Scenario: Listing all SHF Applications for  Admin
     Given I am logged in as "admin@shf.se"
     And I set the locale to "sv"
     And I am on the "membership applications" page
+    And I hide the search form
+
     Then I should see "8" applications
-
-    # 1 time in the search menu + 1 application in this state:
-    #And I should see 2 t("activerecord.attributes.shf_application.state/new")
-    #   Hard to search for "Ny" because it will pick up those letters in any word, which gives us failures
-
-    # 1 time in the search menu + 1 application in this state:
-    And I should see 2 t("activerecord.attributes.shf_application.state/under_review")
-    # 1 time in the search menu + 1 application in this state:
-    And I should see 2 t("activerecord.attributes.shf_application.state/accepted")
-    # 1 time in the search menu + 3 applications in this state:
-    And I should see 4 t("activerecord.attributes.shf_application.state/waiting_for_applicant")
-    # 1 time in the search menu + 1 application in this state:
-    And I should see 2 t("activerecord.attributes.shf_application.state/rejected")
+    And I should see 1 t("activerecord.attributes.shf_application.state/under_review")
+    And I should see 1 t("activerecord.attributes.shf_application.state/accepted")
+    And I should see 3 t("activerecord.attributes.shf_application.state/waiting_for_applicant")
+    And I should see 1 t("activerecord.attributes.shf_application.state/rejected")
     And I click the t("shf_applications.index.manage") action for the row with "Lastname, Emma"
     Then I should be on the "application" page for "emma_waits@waiting.se"
     And I should see "Emma Lastname"

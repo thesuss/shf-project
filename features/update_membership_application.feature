@@ -7,11 +7,7 @@ Feature: SHF Application status is changed
   PT: https://www.pivotaltracker.com/story/show/133950603
 
 
-  Note that when counting the total number of status phrases (or words) on the
-  landing page, there will be 1 time where the status will match the
-  *search* list. So if there are 3 applications in a particular state/status,
-  you should expect to see the status *4* times total (3 times for the applications
-  + 1 time in the list of all statuses/states in the search selection list.
+  Hide the search form so that we don't also get the list of applications found in the total counts
 
 
 
@@ -65,7 +61,7 @@ Feature: SHF Application status is changed
 
   # From new to...
 
-  @admin
+  @selenium @admin
   Scenario: Admin starts reviewing a new application (from new to under_review)
     Given I am on the "application" page for "new_nurdle@happymutts.se"
     Then I should see "dog grooming"
@@ -75,17 +71,19 @@ Feature: SHF Application status is changed
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "dog grooming"
     When I am on the "landing" page
-    Then I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 4 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.rejected")
+    And I hide the search form
+
+    Then I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 3 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.accepted")
+    And I should see 1 t("shf_applications.rejected")
 
 
 
 
   # From under_review to...
 
-  @admin @user
+  @selenium @admin @user
   Scenario: Admin requests more info from user (from under_review to 'waiting for applicant')
     Given I am on the "application" page for "emma_under_review@happymutts.se"
     Then I should see "rehab"
@@ -95,16 +93,18 @@ Feature: SHF Application status is changed
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 3 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.rejected")
+    And I hide the search form
+
+    Then I should see 2 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.accepted")
+    And I should see 1 t("shf_applications.rejected")
     And I am Logged out
     And I am logged in as "emma_under_review@happymutts.se"
     And I am on the "edit my application" page
     And I should see the checkbox with id "shf_application_marked_ready_for_review" unchecked
 
-  @admin
+  @selenium @admin
   Scenario: Admin changed from under_review to accepted
     Given I am on the "application" page for "emma_under_review@happymutts.se"
     Then I should see "rehab"
@@ -112,12 +112,14 @@ Feature: SHF Application status is changed
     Then I should see t("shf_applications.accept.success")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 3 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.rejected")
+    And I hide the search form
 
-  @admin
+    Then I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 1 t("shf_applications.rejected")
+
+  @selenium @admin
   Scenario: Admin changed from under_review to rejected
     Given I am on the "application" page for "emma_under_review@happymutts.se"
     Then I should see "rehab"
@@ -127,17 +129,19 @@ Feature: SHF Application status is changed
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 3 t("shf_applications.rejected")
-    And I should see 2 t("shf_applications.accepted")
+    And I hide the search form
+
+    Then I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.rejected")
+    And I should see 1 t("shf_applications.accepted")
 
   @admin
   Scenario: Admin cannot change from under_review to 'cancel waiting for applicant'
     Given I am on the "application" page for "emma_under_review@happymutts.se"
     Then I should not see button t("shf_applications.cancel_waiting_for_applicant_btn")
 
-  @admin
+  @selenium @admin
   Scenario: Admin rejects an application (under_review to rejected)
     Given I am on the "application" page for "emma_under_review@happymutts.se"
     Then I should see "rehab"
@@ -147,10 +151,12 @@ Feature: SHF Application status is changed
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 3 t("shf_applications.rejected")
-    And I should see 2 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.accepted")
+    And I hide the search form
+
+    Then I should see 2 t("shf_applications.rejected")
+    And I should see 1 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.accepted")
 
   @admin @user
   Scenario: Admin rejects an application that had uploaded files (under_review to rejected)
@@ -190,7 +196,7 @@ Feature: SHF Application status is changed
     And I should not see status line with status t("shf_applications.ready_for_review")
 
 
-  @user @admin
+  @selenium @user @admin
   Scenario: Anna marks her application as ready to be reviewed again
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
@@ -206,12 +212,14 @@ Feature: SHF Application status is changed
     Then I should see status line with status t("shf_applications.ready_for_review")
     And I should see "rehab"
     And I am on the "landing" page
-    And I should see 2 t("shf_applications.ready_for_review")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 3 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.rejected")
+    And I hide the search form
 
-  @admin
+    And I should see 1 t("shf_applications.ready_for_review")
+    And I should see 1 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.rejected")
+
+  @selenium @admin
   Scenario: Admin changed from 'waiting for applicant' to 'under review'
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     And I should see "rehab"
@@ -222,10 +230,12 @@ Feature: SHF Application status is changed
     And I should not see t("shf_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    And I should see 4 t("shf_applications.under_review")
-    And I should see 1 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.rejected")
+    And I hide the search form
+
+    And I should see 3 t("shf_applications.under_review")
+    And I should see 0 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.accepted")
+    And I should see 1 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from 'waiting for applicant' to rejected
@@ -255,7 +265,7 @@ Feature: SHF Application status is changed
 
 
   # From accepted to...
-  @admin
+  @selenium @admin
   Scenario: Admin changed from accepted to rejected
     Given I am on the "application" page for "nils_member@bowwowwow.se"
     And I should see "dog crooning"
@@ -264,10 +274,12 @@ Feature: SHF Application status is changed
     And I should see status line with status t("shf_applications.rejected")
     And I should see "dog crooning"
     When I am on the "landing" page
-    And I should see 3 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 1 t("shf_applications.accepted")
-    And I should see 3 t("shf_applications.rejected")
+    And I hide the search form
+
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 0 t("shf_applications.accepted")
+    And I should see 2 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from accepted to accepted
@@ -298,7 +310,7 @@ Feature: SHF Application status is changed
     And I should not see t("shf_applications.edit.title")
     And I should see "rehab"
 
-  @admin
+  @selenium @admin
   Scenario: Admin cannot edit an application if it is rejected
     Given I am on the "application" page for "lars_rejected@snarkybark.se"
     And I should see "rehab"
@@ -309,17 +321,19 @@ Feature: SHF Application status is changed
     And I should see status line with status t("shf_applications.rejected")
     And I should see "rehab"
     When I am on the "landing" page
-    And I should see 3 t("shf_applications.under_review")
-    And I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 2 t("shf_applications.accepted")
-    And I should see 2 t("shf_applications.rejected")
+    And I hide the search form
+
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 1 t("shf_applications.accepted")
+    And I should see 1 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from rejected to 'waiting for applicant'
     Given I am on the "application" page for "lars_rejected@snarkybark.se"
     Then I should not see button t("shf_applications.ask_applicant_for_info_btn")
 
-  @admin
+  @selenium @admin
   Scenario: Admin changed from rejected to accepted
     Given I am on the "application" page for "lars_rejected@snarkybark.se"
     And I should see "rehab"
@@ -327,10 +341,12 @@ Feature: SHF Application status is changed
     Then I should see t("shf_applications.accept.success")
     And I should see "rehab"
     When I am on the "landing" page
-    Then I should see 2 t("shf_applications.waiting_for_applicant")
-    And I should see 3 t("shf_applications.under_review")
-    And I should see 3 t("shf_applications.accepted")
-    And I should see 1 t("shf_applications.rejected")
+    And I hide the search form
+
+    Then I should see 1 t("shf_applications.waiting_for_applicant")
+    And I should see 2 t("shf_applications.under_review")
+    And I should see 2 t("shf_applications.accepted")
+    And I should see 0 t("shf_applications.rejected")
 
   @admin
   Scenario: Admin cannot change from rejected to rejected
