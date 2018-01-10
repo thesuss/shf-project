@@ -44,6 +44,7 @@ Feature: Admin can search Shf Applications
     And I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
 
+
   @selenium
   Scenario: Search by user's last name
     And I should see "Fred"
@@ -141,7 +142,8 @@ Feature: Admin can search Shf Applications
 
 
   @selenium
-  Scenario: Can sort by status (TBD - how to ensure we are checking info in the body and not search lists?)
+  Scenario: Can sort by status: TBD - Ransacker will only search on db table columns.  So how to do this on I18n.translated entries?  OR - change data in db to svenska
+
 
   @selenium
   Scenario: list of Statuses are translated correctly (default locale)
