@@ -111,7 +111,7 @@ Given(/^the date is set to "([^"]*)"$/) do |date|
   Timecop.freeze(Time.zone.parse(date))
 end
 
-# Hide (or show) the search form and wait 1 second
+# Hide (or show) the search form by clicking on the button
 #  This is frequently used to hide the search form on a page so that
 #  items in the select lists are not included in counts.
 #
@@ -119,5 +119,4 @@ end
 #
 And(/^I (hide|show) the search form$/) do | _hide_or_show |
   click_link_or_button "toggle_search_form"  # click on "toggle_search_form"
-  sleep 1.seconds                            # wait for 1 second
 end
