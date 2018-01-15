@@ -65,7 +65,7 @@ class CompaniesController < ApplicationController
   def create
     authorize Company
 
-    @company = Company.new(sanitize_website(company_params))
+    @company = Company.new(sanitize_params(company_params))
 
     if @company.save
       redirect_to @company, notice: t('.success')
@@ -77,7 +77,7 @@ class CompaniesController < ApplicationController
 
 
   def update
-    if @company.update(sanitize_website(company_params))
+    if @company.update(sanitize_params(company_params))
       redirect_to @company, notice: t('.success')
     else
       flash.now[:alert] = t('.error')
@@ -155,8 +155,9 @@ class CompaniesController < ApplicationController
   end
 
 
-  def sanitize_website(params)
-    params['website'] = URLSanitizer.sanitize(params.fetch('website', ''))
+  def sanitize_params(params)
+    params['website'] = InputSanitizer.sanitize_url(params.fetch('website', ''))
+    params['description'] = InputSanitizer.sanitize_html(params.fetch('description', ''))
     params
   end
 
