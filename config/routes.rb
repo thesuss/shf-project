@@ -12,8 +12,17 @@ Rails.application.routes.draw do
       # Route for testing Exception Notification configuration
       get "test_exception_notifications" => "application#test_exception_notifications"
 
-
       root to: 'shf_applications#index', as: :admin_root
+
+      # Admin page actions
+      scope '/admin' do
+        get 'admin_sida', to: 'admin#admin_page', as: 'admin_page'
+
+        get 'admin_sida/redigera', to: 'admin#admin_page_edit', as: 'edit_admin_page'
+
+        put 'admin_sida', to: 'admin#admin_page_update', as: 'update_admin_page'
+      end
+
     end
   end
 

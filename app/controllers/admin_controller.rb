@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   before_action :authorize_admin
 
-  # export shf_appplications
+  # export shf_applications
   def export_ansokan_csv
 
     begin
@@ -20,6 +20,9 @@ class AdminController < ApplicationController
 
     end
 
+  end
+
+  def admin_page
   end
 
 
