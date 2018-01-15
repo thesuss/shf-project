@@ -14,14 +14,14 @@ Rails.application.routes.draw do
 
       root to: 'shf_applications#index', as: :admin_root
 
-      # Admin page actions
-      scope '/admin' do
-        get 'admin_sida', to: 'admin#admin_page', as: 'admin_page'
-
-        get 'admin_sida/redigera', to: 'admin#admin_page_edit', as: 'edit_admin_page'
-
-        put 'admin_sida', to: 'admin#admin_page_update', as: 'update_admin_page'
-      end
+      # # Admin page actions
+      # scope '/admin' do
+      #   get 'admin_sida', to: 'admin#admin_page', as: 'admin_page'
+      #
+      #   get 'admin_sida/redigera', to: 'admin#admin_page_edit', as: 'edit_admin_page'
+      #
+      #   put 'admin_sida', to: 'admin#admin_page_update', as: 'update_admin_page'
+      # end
 
     end
   end
@@ -30,10 +30,23 @@ Rails.application.routes.draw do
   # use "admin_only" here to avoid colliding with that term with the
   # namespace directories and class names.  We keep 'admin' as the path
   # for simplicity and some consistency.
+  # namespace :admin_only, path: 'admin' do
   namespace :admin_only, path: 'admin' do
 
     resources :member_app_waiting_reasons
 
+  end
+
+  scope module: :admin_only, path: 'admin' do
+
+    # Admin page actions
+    # get 'admin_sida', to: 'admin_page#show', as: 'admin_page'
+    #
+    # get 'admin_sida/redigera', to: 'admin_page#edit', as: 'edit_admin_page'
+    #
+    # put 'admin_sida', to: 'admin_page#update', as: 'update_admin_page'
+
+    resources :admin_page, only: [:show, :edit, :update]
   end
 
 
