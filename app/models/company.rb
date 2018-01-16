@@ -15,7 +15,7 @@ class Company < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validate :swedish_organisationsnummer
 
-  before_save :sanitize_website
+  before_save :sanitize_website, :sanitize_description
 
   has_many :shf_applications, dependent: :destroy, inverse_of: :company
 
@@ -143,9 +143,11 @@ class Company < ApplicationRecord
   #  strip out anything that might start with 'script' (like 'javascript')
   #  to help prevent XSS attacks
   def sanitize_website
-    self.website = URLSanitizer.sanitize(website)
+    self.website = InputSanitizer.sanitize_url(website)
   end
 
-
+  def sanitize_description
+    self.description = InputSanitizer.sanitize_html(description)
+  end
 
 end

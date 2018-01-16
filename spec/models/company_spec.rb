@@ -333,6 +333,23 @@ RSpec.describe Company, type: :model do
 
   end
 
+  describe '#sanitize_description' do
+
+    let(:company) { create(:company) }
+
+    it 'removes unwanted/malicious text' do
+      company.description = "<img src=javascript:alert('Hello')>"
+      company.save
+      expect(company.description).to eq("<img>")
+    end
+
+    it 'website = "<script>alert("scriptalert("Boo!")")</script>"' do
+      company.description = "<script>alert('scriptalert(Boo!)')</script>"
+      company.save
+      expect(company.description).to eq("alert('scriptalert(Boo!)')")
+    end
+  end
+
   context 'payment and branding license period' do
     let(:user) { create(:user) }
     let(:company) { create(:company) }
