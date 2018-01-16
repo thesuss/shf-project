@@ -39,13 +39,6 @@ Rails.application.routes.draw do
 
   scope module: :admin_only, path: 'admin' do
 
-    # Admin page actions
-    # get 'admin_sida', to: 'admin_page#show', as: 'admin_page'
-    #
-    # get 'admin_sida/redigera', to: 'admin_page#edit', as: 'edit_admin_page'
-    #
-    # put 'admin_sida', to: 'admin_page#update', as: 'update_admin_page'
-
     resources :admin_page, only: [:show, :edit, :update]
   end
 
