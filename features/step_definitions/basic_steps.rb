@@ -120,3 +120,8 @@ end
 And(/^I (hide|show) the search form$/) do | _hide_or_show |
   click_link_or_button "toggle_search_form"  # click on "toggle_search_form"
 end
+
+
+And(/^I scroll to the top$/) do
+  page.evaluate_script("scroll(0, 0)")
+end
