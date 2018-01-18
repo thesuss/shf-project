@@ -20,7 +20,7 @@ module AdminOnly
     private
 
     def authorize_admin
-      AdminPolicy.new(current_user).authorized?
+      AdminOnly::AdminPagePolicy.new(current_user).authorized?
     end
 
     def get_admin_page

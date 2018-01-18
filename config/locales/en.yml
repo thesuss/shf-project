@@ -821,6 +821,7 @@ en:
           shf_logo: Organization Logo
       update:
         success: Application data updated successfully
+        error: There was a problem with updating configuration data
 
   mailers:
     application_mailer:

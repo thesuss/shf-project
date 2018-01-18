@@ -819,6 +819,7 @@ sv:
           shf_logo: Organisationslogotyp
       update:
         success: Programdata uppdaterades framgångsrikt
+        error: Det gick inte att uppdatera konfigurationsdata
 
   mailers:
     application_mailer:
