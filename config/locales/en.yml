@@ -97,6 +97,8 @@ en:
   model_errors:
     one: Please fix this error
     other: Please fix these %{count} errors
+    spoofed_media_type: &spoofed_media file name (type) does not match the file
+                        content.  Please use another photo file.
 
  # Automatic and manual lookup for ActiveRecords:
   activerecord:
@@ -225,8 +227,14 @@ en:
             password_confirmation:
               confirmation: doesn't match with the password entered.
             member_photo:
-              spoofed_media_type: file name (type) does not match the file
-                                  content.  Please use another photo file.
+              spoofed_media_type: *spoofed_media
+
+        admin_page:
+          attributes:
+            chair_signature:
+              spoofed_media_type: *spoofed_media
+            shf_logo:
+              spoofed_media_type: *spoofed_media
 
         shf_document:
           attributes:
@@ -259,7 +267,7 @@ en:
       member_fee: Member Fee
       branding_fee: Branding Fee
 
- # Automatic and manual lookup for views:
+  # Automatic and manual lookup for views:
   shf_applications:
     new:
       title: Apply for a Membership
@@ -806,6 +814,13 @@ en:
 
       delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
 
+    admin_page:
+      edit:
+          title: Application Configuration
+          chair_signature: Chairperson Signature
+          shf_logo: Organization Logo
+      update:
+        success: Application data updated successfully
 
   mailers:
     application_mailer:
@@ -984,6 +999,7 @@ en:
         member_pages: *member_pages
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Manage Applications
+        application_config: App Configuration
         categories:
           submenu_title: Categories
           manage_categories: Manage Categories

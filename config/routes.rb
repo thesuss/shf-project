@@ -39,8 +39,14 @@ Rails.application.routes.draw do
 
   scope module: :admin_only, path: 'admin' do
 
-    resources :admin_page, only: [:show, :edit, :update]
+    get 'admin_page', to: 'admin_page#show'
+
+    put 'admin_page', to: 'admin_page#update'
+
+    get 'admin_page/redigera', to: 'admin_page#edit', as: :edit_admin_page
+
   end
+
 
 
   get '/pages/*id', to: 'pages#show', as: :page, format: false

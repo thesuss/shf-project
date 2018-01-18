@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180103171241) do
+ActiveRecord::Schema.define(version: 20180116141245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,19 @@ ActiveRecord::Schema.define(version: 20180103171241) do
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id"
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
     t.index ["region_id"], name: "index_addresses_on_region_id"
+  end
+
+  create_table "admin_pages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "chair_signature_file_name"
+    t.string "chair_signature_content_type"
+    t.integer "chair_signature_file_size"
+    t.datetime "chair_signature_updated_at"
+    t.string "shf_logo_file_name"
+    t.string "shf_logo_content_type"
+    t.integer "shf_logo_file_size"
+    t.datetime "shf_logo_updated_at"
   end
 
   create_table "business_categories", force: :cascade do |t|
@@ -73,6 +86,13 @@ ActiveRecord::Schema.define(version: 20180103171241) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
+  end
+
+  create_table "companies_shf_applications", id: false, force: :cascade do |t|
+    t.bigint "shf_application_id", null: false
+    t.bigint "company_id", null: false
+    t.index ["company_id", "shf_application_id"], name: "index_company_application"
+    t.index ["shf_application_id", "company_id"], name: "index_application_company"
   end
 
   create_table "kommuns", force: :cascade do |t|
