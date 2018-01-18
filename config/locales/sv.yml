@@ -814,9 +814,9 @@ sv:
 
     admin_page:
       edit:
-          title: Programkonfiguration
-          chair_signature: Ordförandens underskrift
-          shf_logo: Organisationslogotyp
+        title: Programkonfiguration
+        chair_signature: Ordförandens underskrift
+        shf_logo: Organisationslogotyp
       update:
         success: Programdata uppdaterades framgångsrikt
         error: Det gick inte att uppdatera konfigurationsdata

@@ -816,9 +816,9 @@ en:
 
     admin_page:
       edit:
-          title: Application Configuration
-          chair_signature: Chairperson Signature
-          shf_logo: Organization Logo
+        title: Application Configuration
+        chair_signature: Chairperson Signature
+        shf_logo: Organization Logo
       update:
         success: Application data updated successfully
         error: There was a problem with updating configuration data

@@ -36,7 +36,7 @@ module AdminOnly
       # specifying one or more files to upload, then those fields will
       # not be added to the params, and there will be no "admin_page"
       # key (for those fields) in the params).
-      params.fetch(:admin_page, {}).permit(:chair_signature, :shf_logo)
+      params.fetch(:admin_only_admin_page, {}).permit(:chair_signature, :shf_logo)
     end
   end
 
