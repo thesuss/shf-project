@@ -30,7 +30,7 @@ module AdminOnly
     end
 
     def admin_page_params
-      # Need to use "fetch" here (instead of "require") as thie form
+      # Need to use "fetch" here (instead of "require") as the edit form
       # currently contains only file_field(s), and if the user clicks
       # "Submit" without changing any of those fields (that is, without
       # specifying one or more files to upload, then those fields will
