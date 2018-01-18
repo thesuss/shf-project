@@ -46,7 +46,6 @@ Feature: As an admin
     And I should see "1" for class "sign-in-count" in the row for user "emma@happymutts.com"
     And I should see t("no") for class "is-member" in the row for user "emma@happymutts.com"
     And I should see t("no") for class "is-member" in the row for user "david@dogs.com"
-    And I should not see "3 månader sedan" in the row for user "ernt@mutts.com"
     And I should see "1" for class "applications-open" in the row for user "ernt@mutts.com"
     And I should see t("yes") for class "is-member" in the row for user "ernt@mutts.com"
     And I should see "2017-12-31" for class "Yes" in the row for user "ernt@mutts.com"
