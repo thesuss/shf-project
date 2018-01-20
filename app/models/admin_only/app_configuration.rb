@@ -1,6 +1,8 @@
 module AdminOnly
 
-  class AdminPage < ApplicationRecord
+  class AppConfiguration < ApplicationRecord
+    # Aggregates discrete data items that are used to configure
+    # various aspects of the system (app).
 
     has_attached_file :chair_signature,
                       url: :url_for_images,
@@ -23,7 +25,7 @@ module AdminOnly
     private
 
     def url_for_images
-      '/storage/admin_page/images/:attachment/:hashed_path/:style_:basename.:extension'
+      '/storage/app_configuration/images/:attachment/:hashed_path/:style_:basename.:extension'
     end
   end
 end

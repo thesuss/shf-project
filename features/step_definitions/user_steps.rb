@@ -57,6 +57,6 @@ end
 When(/^I choose an SHF "([^"]*)" file named "([^"]*)" to upload$/) do | fieldname, filename |
   page.attach_file(fieldname,
                    File.join(Rails.root, 'spec', 'fixtures',
-                             'admin_data', filename), visible: false)
+                             'app_configuration', filename), visible: false)
   # ^^ selenium won't find the upload button without visible: false
 end

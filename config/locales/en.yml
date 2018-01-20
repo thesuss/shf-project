@@ -229,7 +229,7 @@ en:
             member_photo:
               spoofed_media_type: *spoofed_media
 
-        admin_page:
+        app_configuration:
           attributes:
             chair_signature:
               spoofed_media_type: *spoofed_media
@@ -814,7 +814,7 @@ en:
 
       delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
 
-    admin_page:
+    app_configuration:
       edit:
         title: Application Configuration
         chair_signature: Chairperson Signature
@@ -1000,7 +1000,7 @@ en:
         member_pages: *member_pages
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Manage Applications
-        application_config: App Configuration
+        app_configuration: App Configuration
         categories:
           submenu_title: Categories
           manage_categories: Manage Categories

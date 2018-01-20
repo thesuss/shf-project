@@ -229,7 +229,7 @@ sv:
             member_photo:
               spoofed_media_type: *spoofed_media
 
-        admin_page:
+        app_configuration:
           attributes:
             chair_signature:
               spoofed_media_type: *spoofed_media
@@ -812,7 +812,7 @@ sv:
 
       delete_confirm: "Är du säker på att du vill radera anledningen: %{name_sv} (%{name_en})?"
 
-    admin_page:
+    app_configuration:
       edit:
         title: Programkonfiguration
         chair_signature: Ordförandens underskrift
@@ -997,7 +997,7 @@ sv:
         member_pages: *member_pages
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Hantera ansökningar
-        application_config: Appkonfiguration
+        app_configuration: Appkonfiguration
         categories:
           submenu_title: Kategorier
           manage_categories: Hantera kategorier

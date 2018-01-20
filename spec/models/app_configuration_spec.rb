@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe AdminOnly::AdminPage, type: :model do
-  let(:admin_page) { create(:admin_page) }
+RSpec.describe AdminOnly::AppConfiguration, type: :model do
+  let(:app_configuration) { create(:app_configuration) }
 
   describe 'Factory' do
     it 'has a valid factory' do
-      expect(create(:admin_page)).to be_valid
+      expect(create(:app_configuration)).to be_valid
     end
   end
 
@@ -41,18 +41,18 @@ RSpec.describe AdminOnly::AdminPage, type: :model do
       let(:xyz_file)  { File.new(file_root + 'member_with_dog.xyz') }
 
       it 'rejects if content not jpeg or png' do
-        admin_page.chair_signature = txt_file
-        expect(admin_page).not_to be_valid
+        app_configuration.chair_signature = txt_file
+        expect(app_configuration).not_to be_valid
 
-        admin_page.chair_signature = gif_file
-        expect(admin_page).not_to be_valid
+        app_configuration.chair_signature = gif_file
+        expect(app_configuration).not_to be_valid
 
-        admin_page.chair_signature = ico_file
-        expect(admin_page).not_to be_valid
+        app_configuration.chair_signature = ico_file
+        expect(app_configuration).not_to be_valid
       end
       it 'rejects if content OK but file type wrong' do
-        admin_page.chair_signature = xyz_file
-        expect(admin_page).not_to be_valid
+        app_configuration.chair_signature = xyz_file
+        expect(app_configuration).not_to be_valid
       end
     end
 
@@ -64,18 +64,18 @@ RSpec.describe AdminOnly::AdminPage, type: :model do
       let(:xyz_file)  { File.new(file_root + 'member_with_dog.xyz') }
 
       it 'rejects if content not jpeg or png' do
-        admin_page.shf_logo = txt_file
-        expect(admin_page).not_to be_valid
+        app_configuration.shf_logo = txt_file
+        expect(app_configuration).not_to be_valid
 
-        admin_page.shf_logo = gif_file
-        expect(admin_page).not_to be_valid
+        app_configuration.shf_logo = gif_file
+        expect(app_configuration).not_to be_valid
 
-        admin_page.shf_logo = ico_file
-        expect(admin_page).not_to be_valid
+        app_configuration.shf_logo = ico_file
+        expect(app_configuration).not_to be_valid
       end
       it 'rejects if content OK but file type wrong' do
-        admin_page.shf_logo = xyz_file
-        expect(admin_page).not_to be_valid
+        app_configuration.shf_logo = xyz_file
+        expect(app_configuration).not_to be_valid
       end
     end
   end

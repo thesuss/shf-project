@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20180116141245) do
     t.index ["region_id"], name: "index_addresses_on_region_id"
   end
 
-  create_table "admin_pages", force: :cascade do |t|
+  create_table "app_configurations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "chair_signature_file_name"
@@ -86,13 +86,6 @@ ActiveRecord::Schema.define(version: 20180116141245) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
-  end
-
-  create_table "companies_shf_applications", id: false, force: :cascade do |t|
-    t.bigint "shf_application_id", null: false
-    t.bigint "company_id", null: false
-    t.index ["company_id", "shf_application_id"], name: "index_company_application"
-    t.index ["shf_application_id", "company_id"], name: "index_application_company"
   end
 
   create_table "kommuns", force: :cascade do |t|
