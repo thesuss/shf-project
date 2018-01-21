@@ -1,0 +1,37 @@
+%header.entry-header
+  %h1.entry-title= t('.title')
+  .post-title-divider
+  %span
+
+.entry-content
+
+  = form_for(@app_configuration, url: app_configuration_path,
+                                 html: { method: :put }) do |f|
+
+    .col-sm-6
+      %h3
+        %strong= t('.chair_signature')
+      = image_tag(@app_configuration.chair_signature.url(:standard))
+      - if @app_configuration.chair_signature
+        .clearfix
+        = @app_configuration.chair_signature_file_name
+      .clearfix
+      .field
+        = f.file_field :chair_signature, accept: 'image/png, image/jpeg'
+
+    .col-sm-6
+      %h3
+        %strong= t('.shf_logo')
+      = image_tag(@app_configuration.shf_logo.url(:standard))
+      - if @app_configuration.shf_logo
+        .clearfix
+        = @app_configuration.shf_logo_file_name
+      .clearfix
+      .field
+        = f.file_field :shf_logo, accept: 'image/png, image/jpeg'
+
+
+    .col-sm-12.wpcf7
+      = f.submit "#{t('submit')}"
+      %br
+      = link_to "#{t('back')}", :back

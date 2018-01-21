@@ -12,8 +12,8 @@ Rails.application.routes.draw do
       # Route for testing Exception Notification configuration
       get "test_exception_notifications" => "application#test_exception_notifications"
 
-
       root to: 'shf_applications#index', as: :admin_root
+
     end
   end
 
@@ -21,11 +21,24 @@ Rails.application.routes.draw do
   # use "admin_only" here to avoid colliding with that term with the
   # namespace directories and class names.  We keep 'admin' as the path
   # for simplicity and some consistency.
+  # namespace :admin_only, path: 'admin' do
   namespace :admin_only, path: 'admin' do
 
     resources :member_app_waiting_reasons
 
   end
+
+  scope module: :admin_only, path: 'admin' do
+
+    get 'app_configuration', to: 'app_configuration#show'
+
+    put 'app_configuration', to: 'app_configuration#update'
+
+    get 'app_configuration/redigera', to: 'app_configuration#edit',
+                                      as: :edit_app_configuration
+
+  end
+
 
 
   get '/pages/*id', to: 'pages#show', as: :page, format: false

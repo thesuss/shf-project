@@ -68,6 +68,44 @@ ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
 
 
 --
+-- Name: app_configurations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE app_configurations (
+    id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    chair_signature_file_name character varying,
+    chair_signature_content_type character varying,
+    chair_signature_file_size integer,
+    chair_signature_updated_at timestamp without time zone,
+    shf_logo_file_name character varying,
+    shf_logo_content_type character varying,
+    shf_logo_file_size integer,
+    shf_logo_updated_at timestamp without time zone
+);
+
+
+--
+-- Name: app_configurations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE app_configurations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: app_configurations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE app_configurations_id_seq OWNED BY app_configurations.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -613,6 +651,13 @@ ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq
 
 
 --
+-- Name: app_configurations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY app_configurations ALTER COLUMN id SET DEFAULT nextval('app_configurations_id_seq'::regclass);
+
+
+--
 -- Name: business_categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -709,6 +754,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY addresses
     ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: app_configurations app_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY app_configurations
+    ADD CONSTRAINT app_configurations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1096,6 +1149,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171109142139'),
 ('20171120170441'),
 ('20171213174816'),
-('20180103171241');
+('20180103171241'),
+('20180116141245');
 
 
