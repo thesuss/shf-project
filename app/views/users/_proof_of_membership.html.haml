@@ -1,0 +1,43 @@
+#proofOfMembership
+  - style1 = 'display: block; height: 428px; width: 260px;' + |
+            ' border: 1px solid black;'  |
+
+  %div{ style: style1 }
+    - if @app_configuration&.shf_logo
+      = image_tag(@app_configuration.shf_logo.url(:standard))
+
+    - style2 = 'display: block; text-align: center; background-color: #7a7866;' + |
+               ' color: white; font-size: 18px; padding-top: 5px;' + |
+               ' padding-bottom: 5px; margin-bottom: 0em;' |
+    %p{ style: style2 }
+      BEHÖRIGHETSBEVIS
+
+    - style3 = 'padding-top: 10px; padding-bottom: 5px;'
+    %div{ style: style3 }
+      -# - if user&.member_photo
+      = image_tag(user.member_photo.url(:standard),
+                  style: 'display: block; margin-left: auto; margin-right: auto;',
+                  class: 'img-rounded')
+
+    - style4 = 'display: block; text-align: center; font-weight: bold; margin-bottom: 0em;'
+    %p{ style: style4 }
+      = user.full_name
+      %br
+      = "Medlemsnr.: #{user.membership_number}"
+      %br
+
+      -# - style5 = 'display: block; text-align: center;'
+      -# %p{ style: style5 }
+      Utfärdat av:
+      = image_tag(@app_configuration.chair_signature.url(:standard))
+      -# %br
+      - if user.membership_current?
+        = "Giltigt till #{user.membership_expire_date}"
+      - else
+        Medlemskapet löpte ut
+
+    - style6 = 'display: block; text-align: center; background-color: #1b3e70;' + |
+               ' color: white; font-size: 12px;' + |
+               ' margin-bottom: 0em; height: 100%' |
+    %p{ style: style6 }
+      sverigeshundforetagare.se

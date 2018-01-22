@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   before_action :set_user, except: :index
   before_action :authorize_user, only: [:show]
 
+  def show
+    # Need app config items for proof-of-membership
+    @app_configuration = AdminOnly::AppConfiguration.last
+  end
 
   def index
     authorize User

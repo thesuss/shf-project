@@ -95,4 +95,7 @@
 
       = render 'password_form'
 
+    = render partial: 'proof_of_membership',
+                      locals: { app_config: @app_configuration, user: @user }
+
 = render partial: 'edit_status_modal', locals: { user: @user }
