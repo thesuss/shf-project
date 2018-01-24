@@ -39,6 +39,10 @@ class AdminController < ApplicationController
       out_str << t("shf_applications.state.#{m_app.state}")
       out_str << ','
 
+      # state date
+      out_str << (m_app.updated_at.strftime('%F'))
+      out_str << ','
+
       # add the business categories, all surrounded by double-quotes
       out_str << '"' + m_app.business_categories.map(&:name).join(', ') + '"'
       out_str << ','
@@ -47,8 +51,22 @@ class AdminController < ApplicationController
       out_str << (m_app.company.nil? ?  '' : "\"#{m_app.company.name}\"")
       out_str << ','
 
+      # say betals if member fee is paid, otherwise make link to where it is paid
+      out_str << (m_app.user.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(m_app.user))
+      out_str << ','
+
+      if m_app.company.nil?
+        out_str << '-'
+        out_str << ','
+      else
+        # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+        out_str << (m_app.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(m_app.company))
+        out_str << ','
+      end
+
       # add the SE postal service mailing address info as a CSV string
       out_str << m_app.se_mailing_csv_str
+
 
       out_str << "\n"
     end
@@ -66,8 +84,11 @@ class AdminController < ApplicationController
                           t('activerecord.attributes.shf_application.last_name'),
                           t('activerecord.attributes.user.membership_number'),
                           t('activerecord.attributes.shf_application.state'),
+                          'date of state',
                           t('activerecord.models.business_category.other'),
                           t('activerecord.models.company.one'),
+                          'Member fee',
+                          'H-branding',
                           t('activerecord.attributes.address.street'),
                           t('activerecord.attributes.address.post_code'),
                           t('activerecord.attributes.address.city'),
