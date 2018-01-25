@@ -15,8 +15,11 @@ RSpec.describe AdminController, type: :controller do
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.last_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.user.membership_number').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.state').strip}',"
+  out_str << "'date of state',"
   out_str << "'#{I18n.t('activerecord.models.business_category.other').strip}',"
   out_str << "'#{I18n.t('activerecord.models.company.one').strip}',"
+  out_str << "'Member fee',"
+  out_str << "'H-branding',"
   out_str << "'#{I18n.t('activerecord.attributes.address.street').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.post_code').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.city').strip}',"
@@ -91,11 +94,31 @@ RSpec.describe AdminController, type: :controller do
 
             member1_info = "#{m.contact_email},#{u.first_name},#{u.last_name},#{u.membership_number},"+ I18n.t("shf_applications.state.#{app_state.name}")
 
+
             result_str << member1_info + ','
+
+            # state date
+            result_str << (m.updated_at.strftime('%F'))
+            result_str << ','
+
             result_str << '"",'  # no business categories
 
             result_str << (m.company.nil? ? '' : '"' + m.company.name + '"')
             result_str << ','
+
+            # say betals if member fee is paid, otherwise make link to where it is paid
+            result_str << (u.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u))
+            result_str << ','
+
+            if m.company.nil?
+              result_str << '-'
+              result_str << ','
+            else
+              # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+              result_str << (m.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(m.company))
+              result_str << ','
+            end
+
 
             result_str << m.se_mailing_csv_str + "\n"
 
@@ -145,9 +168,24 @@ RSpec.describe AdminController, type: :controller do
           member1_info = "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number},"+ I18n.t("shf_applications.state.#{member1.state}")
 
           result_str << member1_info + ','
+          # state date
+          result_str << (member1.updated_at.strftime('%F'))
+          result_str << ','
+
           result_str << '"",'  # no business categories
           result_str << '"' + c1.name + '"' +','
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << ','
 
+          if member1.company.nil?
+            result_str << '-'
+            result_str << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str << (member1.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(c1))
+            result_str << ','
+          end
           result_str << c1.se_mailing_csv_str + "\n"
 
           expect(csv_response).to match result_str
@@ -187,11 +225,24 @@ RSpec.describe AdminController, type: :controller do
           result_str = csv_header
 
           result_str << member1_info + ','
-
+          # state date
+          result_str << (member1.updated_at.strftime('%F'))
+          result_str << ','
           result_str << '"",'  # no business categories
 
           result_str << '"' + c1.name + '"' +','
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << ','
 
+          if member1.company.nil?
+            result_str << '-'
+            result_str << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str << (member1.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(member1.company))
+            result_str << ','
+          end
           result_str << c1.se_mailing_csv_str + "\n"
 
           expect(csv_response).to match result_str
@@ -206,11 +257,24 @@ RSpec.describe AdminController, type: :controller do
           result_str = csv_header
 
           result_str << member1_info + ','
-
+          # state date
+          result_str << (member1.updated_at.strftime('%F'))
+          result_str << ','
           result_str << '"Business Category",'
 
           result_str << '"' + c1.name + '"' +','
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << ','
 
+          if member1.company.nil?
+            result_str << '-'
+            result_str << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str << (member1.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(member1.company))
+            result_str << ','
+          end
           result_str << c1.se_mailing_csv_str + "\n"
 
           expect(csv_response).to match result_str
