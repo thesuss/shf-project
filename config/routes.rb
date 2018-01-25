@@ -83,6 +83,9 @@ Rails.application.routes.draw do
       end
     end
 
+    get 'anvandare/:id/proof_of_membership', to: 'users#proof_of_membership',
+        as: 'proof_of_membership'
+
     resources :shf_documents, path: 'dokument'
 
     get 'dokument/innehall/:page',

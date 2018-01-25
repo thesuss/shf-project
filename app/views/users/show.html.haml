@@ -98,4 +98,6 @@
     = render partial: 'proof_of_membership',
                       locals: { app_config: @app_configuration, user: @user }
 
+    = link_to('get image', proof_of_membership_path(@user))
+
 = render partial: 'edit_status_modal', locals: { user: @user }

@@ -26,6 +26,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_controller.asset_host = 'http://localhost:3000'
+
   # Use sql schema to allow the use of functions, triggers and sequences
   config.active_record.schema_format = :sql
 

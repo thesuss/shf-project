@@ -47,6 +47,14 @@ module ShfApplicationsHelper
   end
 
 
+  def list_categories application, separator=','
+    if application&.business_categories.any?
+      application.business_categories.includes(:shf_applications)
+        .map(&:name).sort.join(separator)
+    end
+  end
+
+
   private
 
   def reason_method(method_prefix, locale)

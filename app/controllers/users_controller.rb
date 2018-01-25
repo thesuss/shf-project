@@ -9,6 +9,26 @@ class UsersController < ApplicationController
     @app_configuration = AdminOnly::AppConfiguration.last
   end
 
+  def proof_of_membership
+    debugger
+    @app_configuration = AdminOnly::AppConfiguration.last
+
+    html = render_to_string(partial: 'proof_of_membership',
+                            locals: { app_config: @app_configuration,
+                                      user: @user })
+    kit = IMGKit.new(html)
+    kit.stylesheets << ActionController::Base.helpers
+                        .stylesheet_url('proof-of-membership.css')
+
+    img = kit.to_img      # default = jpg
+
+    format.jpg do
+      send_data(img, :type => "image/jpeg", :disposition => 'inline')
+    end
+
+    a=1
+  end
+
   def index
     authorize User
     self.params = fix_FB_changed_q_params(self.params)

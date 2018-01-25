@@ -252,6 +252,7 @@ GEM
       rainbow (~> 2.2)
       terminal-table (>= 1.5.1)
     ice_nine (0.11.2)
+    imgkit (1.6.1)
     io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -508,6 +509,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     will_paginate (3.1.6)
+    wkhtmltoimage-binary (0.12.4)
     xpath (2.1.0)
       nokogiri (~> 1.3)
 
@@ -551,6 +553,7 @@ DEPENDENCIES
   httparty
   i18n-js (>= 3.0.0.rc11)
   i18n-tasks
+  imgkit
   jbuilder (~> 2.5)
   jquery-rails
   jwt
@@ -592,6 +595,7 @@ DEPENDENCIES
   web-console
   webmock
   will_paginate
+  wkhtmltoimage-binary
 
 RUBY VERSION
    ruby 2.4.2p198
