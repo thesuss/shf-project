@@ -321,7 +321,7 @@ RSpec.describe AdminController, type: :controller do
 
           # get the categories from the (.*) group -- if there are any
           #   get rid of extra quotes and whitespace
-          match.to_a.size > 1 ? categories = match[1].delete('"').split(',').map(&:strip) : categories = ['']
+          match.to_a.size > 1 ? categories = match[1].delete('"').split(',').map(&:strip) : categories = []
 
           # expect all categories to be there, but could be in any order
           expect(categories).to match_array(['Category1', 'Category 2', 'Category the third'])
