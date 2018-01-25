@@ -292,12 +292,26 @@ RSpec.describe AdminController, type: :controller do
 
           result_str_start = csv_header
           result_str_start << member1_info
+          result_str_start << (member1.updated_at.strftime('%F'))
+          result_str_start << ','
 
           result_str_end = '"' + c1.name + '"' +','
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str_end << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str_end << ','
+
+          if member1.company.nil?
+            result_str_end << '-'
+            result_str_end << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str_end << (member1.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(member1.company))
+            result_str_end << ','
+          end
+
           result_str_end << c1.se_mailing_csv_str + "\n"
 
           result_regexp = Regexp.new(/^#{result_str_start},(.*),#{result_str_end}$/)
-
           # results without the categories:
           expect(csv_response).to match result_regexp
 
@@ -307,7 +321,7 @@ RSpec.describe AdminController, type: :controller do
 
           # get the categories from the (.*) group -- if there are any
           #   get rid of extra quotes and whitespace
-          match.to_a.size > 1 ? categories = match[1].delete('"').split(',').map(&:strip) : categories = []
+          match.to_a.size > 1 ? categories = match[1].delete('"').split(',').map(&:strip) : categories = ['']
 
           # expect all categories to be there, but could be in any order
           expect(categories).to match_array(['Category1', 'Category 2', 'Category the third'])
