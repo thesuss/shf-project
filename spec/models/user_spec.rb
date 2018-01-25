@@ -249,56 +249,56 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#is_member_or_admin?' do
+  describe '#member_or_admin?' do
 
     describe 'user: no application' do
       subject { create(:user) }
-      it { expect(subject.is_member_or_admin?).to be_falsey }
+      it { expect(subject.member_or_admin?).to be_falsey }
     end
 
     describe 'user: 1 saved application' do
       subject { create(:user_with_membership_app) }
-      it { expect(subject.is_member_or_admin?).to be_falsey }
+      it { expect(subject.member_or_admin?).to be_falsey }
     end
     describe 'user: 2 application' do
       subject { create(:user_with_2_membership_apps) }
-      it { expect(subject.is_member_or_admin?).to be_falsey }
+      it { expect(subject.member_or_admin?).to be_falsey }
     end
 
     describe 'member with 1 app' do
       let(:member) { create(:member_with_membership_app) }
-      it { expect(member.is_member_or_admin?).to be_truthy }
+      it { expect(member.member_or_admin?).to be_truthy }
     end
 
     describe 'member with 0 apps (should not happen)' do
       let(:member) { create(:user) }
-      it { expect(member.is_member_or_admin?).to be_falsey }
+      it { expect(member.member_or_admin?).to be_falsey }
     end
 
     describe 'admin' do
       subject { create(:user, admin: true) }
-      it { expect(subject.is_member_or_admin?).to be_truthy }
+      it { expect(subject.member_or_admin?).to be_truthy }
     end
   end
 
-  describe '#is_in_company_numbered?(company_num)' do
+  describe '#in_company_numbered?(company_num)' do
 
     default_co_number = '5562728336'
     describe 'not yet a member, so not in any full companies' do
 
       describe 'user: no applications, so not in any companies' do
         subject { create(:user) }
-        it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+        it { expect(subject.in_company_numbered?(default_co_number)).to be_falsey }
       end
 
       describe 'user: 1 saved application' do
         subject { create(:user_with_membership_app) }
-        it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+        it { expect(subject.in_company_numbered?(default_co_number)).to be_falsey }
       end
 
       describe 'user: 2 application' do
         subject { create(:user_with_2_membership_apps) }
-        it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
+        it { expect(subject.in_company_numbered?(default_co_number)).to be_falsey }
       end
     end
 
@@ -306,7 +306,7 @@ RSpec.describe User, type: :model do
 
       describe 'member with 1 app' do
         let(:member) { create(:member_with_membership_app) }
-        it { expect(member.is_in_company_numbered?(default_co_number)).to be_truthy }
+        it { expect(member.in_company_numbered?(default_co_number)).to be_truthy }
       end
 
       describe 'member with 2 apps, both with same (1) company' do
@@ -316,7 +316,7 @@ RSpec.describe User, type: :model do
           m.shf_applications << app2
           m
         end
-        it { expect(member.is_in_company_numbered?(default_co_number)).to be_truthy }
+        it { expect(member.in_company_numbered?(default_co_number)).to be_truthy }
       end
 
       describe 'member with 2 apps, 2 different companies' do
@@ -326,22 +326,22 @@ RSpec.describe User, type: :model do
           m.shf_applications << app2
           m
         end
-        it { expect(member.is_in_company_numbered?('5562252998')).to be_truthy }
-        it { expect(member.is_in_company_numbered?('2120000142')).to be_truthy }
+        it { expect(member.in_company_numbered?('5562252998')).to be_truthy }
+        it { expect(member.in_company_numbered?('2120000142')).to be_truthy }
       end
 
 
       describe 'member with 0 apps (should not happen)' do
         let(:member) { create(:user) }
-        it { expect(member.is_in_company_numbered?(default_co_number)).to be_falsey }
+        it { expect(member.in_company_numbered?(default_co_number)).to be_falsey }
       end
 
     end
 
     describe 'admin is not in any companies' do
       subject { create(:user, admin: true) }
-      it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
-      it { expect(subject.is_in_company_numbered?('5712213304')).to be_falsey }
+      it { expect(subject.in_company_numbered?(default_co_number)).to be_falsey }
+      it { expect(subject.in_company_numbered?('5712213304')).to be_falsey }
     end
   end
 

@@ -185,7 +185,8 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "9" applications
+    # We do NOT destroy applications when a company is destroyed
+    Then I should see "11" applications
 
 
   @selenium
@@ -204,7 +205,8 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "9" applications
+    # We do NOT destroy applications when a company is destroyed
+    Then I should see "11" applications
 
 
   @selenium @focus
@@ -223,4 +225,5 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "10" applications
+    # We do NOT destroy applications when a company is destroyed
+    Then I should see "11" applications

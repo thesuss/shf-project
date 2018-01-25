@@ -5,7 +5,7 @@ class PagePolicy < Struct.new(:user, :record)
   end
 
   def show?
-    user.is_member_or_admin?
+    user.member_or_admin?
   end
 
 

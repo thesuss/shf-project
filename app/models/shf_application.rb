@@ -4,7 +4,6 @@ require_relative File.join('..', 'services', 'address_exporter')
 class ShfApplication < ApplicationRecord
 
   before_destroy :before_destroy_checks
-  after_destroy  :after_destroy_checks
 
   belongs_to :user
 
@@ -18,7 +17,7 @@ class ShfApplication < ApplicationRecord
   #  company_number.  That's what we'll later use to create (instantiate)
   #  a company if/when needed.
   #
-  belongs_to :company, optional: true, inverse_of: :shf_applications
+  has_and_belongs_to_many :companies
 
   has_and_belongs_to_many :business_categories
   has_many :uploaded_files
@@ -44,6 +43,12 @@ class ShfApplication < ApplicationRecord
 
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
+
+  def company
+    # Method used during restructuring to allow an application to have_many
+    # companies.  Remove when restructuring complete.
+    companies.last
+  end
 
   include AASM
 
@@ -112,7 +117,8 @@ class ShfApplication < ApplicationRecord
         co.email = contact_email
       end
 
-      update(company: company)
+      self.companies << company
+      self.save
 
       # email the applicant to let them know the application was approved:
       ShfApplicationMailer.app_approved(self).deliver_now
@@ -136,16 +142,9 @@ class ShfApplication < ApplicationRecord
 
   end
 
-  def after_destroy_checks
-    # if this was the only application associated with a company, destroy the company
-    unless company.nil?
-      company.shf_applications.reload
-      company.destroy if (company.shf_applications.count == 0)
-    end
-  end
 
   def se_mailing_csv_str
-     company.nil? ?  AddressExporter.se_mailing_csv_str(nil) : company.se_mailing_csv_str
+     companies.empty? ?  AddressExporter.se_mailing_csv_str(nil) : companies.last.se_mailing_csv_str
   end
 
 
