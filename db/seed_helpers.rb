@@ -94,7 +94,7 @@ module SeedHelper
 
     if state == MA_ACCEPTED_STATE then
       # make a full company object (instance) for the accepted membership application
-      ma.company = make_new_company(ma.company_number)
+      ma.companies << make_new_company(ma.company_number)
 
       # do not send emails
       user.grant_membership(send_email: false)
@@ -108,11 +108,11 @@ module SeedHelper
                                       start_date: start_date,
                                       expire_date: expire_date)
 
-      start_date, expire_date = Company.next_branding_payment_dates(ma.company.id)
+      start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
 
-      ma.company.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
+      ma.companies[0].payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
                                       user_id: user.id,
-                                      company_id: ma.company.id,
+                                      company_id: ma.companies[0].id,
                                       hips_id: 'none',
                                       status: Payment.order_to_payment_status('successful'),
                                       start_date: start_date,

@@ -9,7 +9,7 @@ class ShfApplicationMailer < AbstractMembershipInfoMailer
 
 
   def app_approved(shf_application)
-    @branding_fee_paid = shf_application.company&.branding_license?
+    @branding_fee_paid = shf_application.companies.last&.branding_license?
 
     send_mail_for __method__, shf_application, t('mailers.shf_application_mailer.app_approved.subject')
 

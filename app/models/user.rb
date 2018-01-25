@@ -10,6 +10,8 @@ class User < ApplicationRecord
 
   has_many :shf_applications
 
+  has_many :companies, through: :shf_applications
+
   has_many :payments
   accepts_nested_attributes_for :payments
 
@@ -69,39 +71,33 @@ class User < ApplicationRecord
 
 
   def has_company?
-    shf_applications.where.not(company_id: nil).count > 0
+    companies.any?
   end
 
 
   def shf_application
-    has_shf_application? ? shf_applications.last : nil
+    shf_applications.last
   end
 
 
   def company
-    has_company? ? shf_application.company : nil
+    companies.last
+  end
+
+  def companies
+    return Company.all if admin?
+
+    super
   end
 
 
-  def is_member_or_admin?
+  def member_or_admin?
     admin? || member?
   end
 
 
-  def is_in_company_numbered?(company_num)
-    member? && !(companies.detect { |c| c.company_number == company_num }).nil?
-  end
-
-
-  def companies
-    if admin?
-      Company.all
-    elsif member? && has_shf_application?
-      cos = shf_applications.reload.map(&:company).compact
-      cos.uniq(&:company_number)
-    else
-      [] # no_companies
-    end
+  def in_company_numbered?(company_num)
+    member? && companies.where(company_number: company_num).any?
   end
 
 

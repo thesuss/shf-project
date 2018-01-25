@@ -40,7 +40,7 @@ FactoryGirl.define do
         unless company
           company = FactoryGirl.create(:company, company_number: evaluator.company_number)
         end
-        shf_app.company = company
+        shf_app.companies << company
       end
     end
 
