@@ -48,7 +48,7 @@ class AdminController < ApplicationController
       out_str << ','
 
       # a company name may have commas, so surround with quotes so spreadsheets recognize it as one string and not multiple comma-separated value
-      out_str << (m_app.company_id.nil? ?  '' : "\"#{Company.find_by_id(m_app.company_id).name}\"")
+      out_str << (m_app.companies.empty? ?  '' : "\"#{m_app.companies.last.name}\"")
       out_str << ','
 
       out_str << paid_M_or_link(m_app)
@@ -98,12 +98,12 @@ class AdminController < ApplicationController
   def paid_H_or_link (arg)
     out_str = ''
 
-    if arg.company_id.nil?
+    if arg.companies.empty?
       out_str << '-'
       out_str << ','
     else
       # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
-      out_str << (Company.find_by_id(arg.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(arg.company_id)))
+      out_str << (arg.companies.last&.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(arg.companies.last.id))
       out_str << ','
     end
   end
