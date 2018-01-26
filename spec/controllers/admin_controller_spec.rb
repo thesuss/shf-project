@@ -158,8 +158,7 @@ RSpec.describe AdminController, type: :controller do
 
         let(:csv_response) { post :export_ansokan_csv
                              response.body
-                           }
-
+                            }
 
         it 'uses the company name and  address for each member' do
 
@@ -217,6 +216,9 @@ RSpec.describe AdminController, type: :controller do
                              response.body
                            }
 
+        let(:csv_response_reg) {  post :export_ansokan_csv
+                                  response.body
+                                }
         let(:member1_info) {  "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number},"+ I18n.t("shf_applications.state.#{member1.state}") }
 
 
@@ -292,8 +294,8 @@ RSpec.describe AdminController, type: :controller do
 
           result_str_start = csv_header
           result_str_start << member1_info + ','
+          # state date
           result_str_start << (member1.updated_at.strftime('%F'))
-          result_str_start << ','
 
           result_str_end = '"' + c1.name + '"' +','
           # say betals if member fee is paid, otherwise make link to where it is paid
@@ -308,29 +310,24 @@ RSpec.describe AdminController, type: :controller do
             result_str_end << (member1.company.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(member1.company))
             result_str_end << ','
           end
-
           result_str_end << c1.se_mailing_csv_str + "\n"
 
           result_regexp = Regexp.new(/^#{result_str_start},(.*),#{result_str_end}$/)
-          # results without the categories:
-          csv_reg = Regexp.new(/^#{csv_response}$/)
-          #expect(csv_reg).to match result_regexp
 
+          # results without the categories:
+          expect(csv_response_reg.to_s).to match result_regexp.to_s
 
           # Check that the categories are as expected:
-          match = csv_response.match result_regexp
+          match = csv_response_reg.to_s.match result_regexp.to_s
 
           # get the categories from the (.*) group -- if there are any
           #   get rid of extra quotes and whitespace
           match.to_a.size > 1 ? categories = match[1].delete('"').split(',').map(&:strip) : categories = []
 
           # expect all categories to be there, but could be in any order
-          #expect(categories).to match_array(['Category1', 'Category 2', 'Category the third'])
+          expect(categories).to match_array(['Category1', 'Category 2', 'Category the third'])
         end
-
       end
-
-
       describe 'error from send_data is rescued' do
 
         # status, location, response_body
