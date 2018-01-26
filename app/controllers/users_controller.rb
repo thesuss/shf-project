@@ -17,14 +17,14 @@ class UsersController < ApplicationController
                             locals: { app_config: @app_configuration,
                                       user: @user })
     kit = IMGKit.new(html)
-    kit.stylesheets << ActionController::Base.helpers
-                        .stylesheet_url('proof-of-membership.css')
+    # kit.stylesheets << ActionController::Base.helpers
+    #                     .stylesheet_url('proof-of-membership.css')
+    kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
+                                       'proof-of-membership.css')
 
     img = kit.to_img      # default = jpg
 
-    format.jpg do
-      send_data(img, :type => "image/jpeg", :disposition => 'inline')
-    end
+    send_data(img, type: "image/jpeg")
 
     a=1
   end
