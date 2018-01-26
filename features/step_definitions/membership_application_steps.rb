@@ -17,11 +17,14 @@ And(/^the following applications exist:$/) do |table|
    contact_email = hash['contact_email'] && ! hash['contact_email'].empty? ?
                    hash['contact_email'] : hash[:user_email]
 
-   company_number = company.nil? ? hash['company_number'] : company.company_number
+   if company.nil?
+     company_number = hash['company_number']
+   else
+     company_number = company.company_number
+   end
 
    ma = FactoryGirl.create(:shf_application,
                             attributes.merge(user: user,
-                            company: company,
                             company_number: company_number,
                             contact_email: contact_email))
 

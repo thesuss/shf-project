@@ -5,7 +5,7 @@ RSpec.describe PaymentsController, type: :controller do
   let(:user2) { create(:user) }
   let(:company) { create(:company) }
   let(:payment) { create(:payment, user: user1, company: company) }
-  let(:application) { create(:shf_application, user: user1, company: company) }
+  let(:application) { create(:shf_application, user: user1, companies: [company]) }
 
   let(:webhook_payload) do
     resource = { 'id' => 'hips_id', 'status' => 'successful',

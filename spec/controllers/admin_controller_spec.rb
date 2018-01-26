@@ -103,7 +103,7 @@ RSpec.describe AdminController, type: :controller do
 
             result_str << '"",'  # no business categories
 
-            result_str << (m.company.nil? ? '' : '"' + m.company.name + '"')
+            result_str << (m.companies.any? ? '"' + m.companies.last.name + '"' : '')
             result_str << ','
 
             # say betals if member fee is paid, otherwise make link to where it is paid
