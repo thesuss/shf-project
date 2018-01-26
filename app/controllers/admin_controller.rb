@@ -51,7 +51,8 @@ class AdminController < ApplicationController
       out_str << (m_app.company_id.nil? ?  '' : "\"#{Company.find_by_id(m_app.company_id).name}\"")
       out_str << ','
 
-      out_str << paid_or_link(m_app)
+      out_str << paid_M_or_link(m_app)
+      out_str << paid_H_or_link(m_app)
 
       # add the SE postal service mailing address info as a CSV string
       out_str << m_app.se_mailing_csv_str
@@ -94,11 +95,8 @@ class AdminController < ApplicationController
 
   end
 
-  def paid_or_link (arg)
+  def paid_H_or_link (arg)
     out_str = ''
-    # say betals if member fee is paid, otherwise make link to where it is paid
-    out_str << (arg.user.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(arg.user))
-    out_str << ','
 
     if arg.company_id.nil?
       out_str << '-'
@@ -108,5 +106,12 @@ class AdminController < ApplicationController
       out_str << (Company.find_by_id(arg.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(arg.company_id)))
       out_str << ','
     end
+  end
+
+  def paid_M_or_link (arg)
+    out_str = ''
+    # say betals if member fee is paid, otherwise make link to where it is paid
+    out_str << (arg.user.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(arg.user))
+    out_str << ','
   end
 end
