@@ -20,10 +20,10 @@ RSpec.describe Visitor, type: :model do
   shared_examples_for 'a user' do
     it { should respond_to(:admin?) }
     it { should respond_to(:member?) }
-    it { should respond_to(:is_member_or_admin?) }
+    it { should respond_to(:member_or_admin?) }
     it { should respond_to(:has_shf_application?) }
     it { should respond_to(:has_company?) }
-    it { should respond_to(:is_in_company_numbered?) }
+    it { should respond_to(:in_company_numbered?) }
   end
 
   describe Visitor do

@@ -89,7 +89,7 @@ RSpec.describe Company, type: :model do
 
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:shf_applications) }
-    it { is_expected.to have_many(:shf_applications).dependent(:destroy) }
+    it { is_expected.to have_and_belong_to_many(:shf_applications) }
     it { is_expected.to have_many(:addresses).dependent(:destroy) }
     it { is_expected.to accept_nested_attributes_for(:addresses).allow_destroy(true) }
     it do
@@ -141,13 +141,6 @@ RSpec.describe Company, type: :model do
     it 'addresses' do
       expect { company }.to change(Address, :count).by(3)
       expect { company.destroy }.to change(Address, :count).by(-3)
-    end
-
-    it 'applications' do
-      application1
-      application2
-      expect(company.shf_applications.count).to eq 2
-      expect { company.destroy }.to change(ShfApplication, :count).by(-2)
     end
 
     it 'pictures' do

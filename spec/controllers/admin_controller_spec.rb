@@ -94,7 +94,7 @@ RSpec.describe AdminController, type: :controller do
             result_str << member1_info + ','
             result_str << '"",'  # no business categories
 
-            result_str << (m.company.nil? ? '' : '"' + m.company.name + '"')
+            result_str << (m.companies.any? ? '"' + m.companies.last.name + '"' : '')
             result_str << ','
 
             result_str << m.se_mailing_csv_str + "\n"

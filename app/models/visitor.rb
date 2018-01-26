@@ -8,7 +8,7 @@ class Visitor
     false
   end
 
-  def is_member_or_admin?
+  def member_or_admin?
     false
   end
 
@@ -20,7 +20,7 @@ class Visitor
     false
   end
 
-  def is_in_company_numbered?(_company_number_)
+  def in_company_numbered?(_company_number_)
     false
   end
 
