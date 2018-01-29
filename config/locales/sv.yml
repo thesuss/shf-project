@@ -97,6 +97,8 @@ sv:
   model_errors:
     one: Vänligen åtgärda det här felet
     other: Vänligen åtgärda dessa %{count} fel
+    spoofed_media_type: &spoofed_media filnamn (typ) matchar inte filinnehållet.
+                        Vänligen använd en annan bildfil.
 
   # Automatisk och manuell sökning för Active Records
   activerecord:
@@ -206,7 +208,6 @@ sv:
 
 
     errors:
-
       models:
 
         uploaded_file:
@@ -215,7 +216,6 @@ sv:
               file_too_large: &file_too_large 'Filen är för stor för att laddas upp.'
             actual_file:
               file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
-
 
         company:
           company_number:
@@ -227,8 +227,14 @@ sv:
             password_confirmation:
               confirmation: stämmer inte med det angivna lösenordet.
             member_photo:
-              spoofed_media_type: filnamn (typ) matchar inte filinnehållet.
-                                  Vänligen använd en annan bildfil.
+              spoofed_media_type: *spoofed_media
+
+        app_configuration:
+          attributes:
+            chair_signature:
+              spoofed_media_type: *spoofed_media
+            shf_logo:
+              spoofed_media_type: *spoofed_media
 
         shf_document:
           attributes:
@@ -806,6 +812,15 @@ sv:
 
       delete_confirm: "Är du säker på att du vill radera anledningen: %{name_sv} (%{name_en})?"
 
+    app_configuration:
+      edit:
+        title: Programkonfiguration
+        chair_signature: Ordförandens underskrift
+        shf_logo: Organisationslogotyp
+      update:
+        success: Programdata uppdaterades framgångsrikt
+        error: Det gick inte att uppdatera konfigurationsdata
+
   mailers:
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
@@ -982,6 +997,7 @@ sv:
         member_pages: *member_pages
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Hantera ansökningar
+        app_configuration: Appkonfiguration
         categories:
           submenu_title: Kategorier
           manage_categories: Hantera kategorier

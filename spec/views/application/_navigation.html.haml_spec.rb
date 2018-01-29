@@ -254,6 +254,14 @@ RSpec.describe 'companies/index' do
       it 'renders edit-profile link' do
         expect(rendered).to match %r{#{t('devise.registrations.edit.title')}}
       end
+
+      it 'renders view-your-account link' do
+        expect(rendered).to match %r{#{t('menus.nav.users.your_account')}}
+      end
+
+      it 'renders app-configuration link' do
+        expect(rendered).to match %r{#{t('menus.nav.admin.app_configuration')}}
+      end
     end
 
   end
