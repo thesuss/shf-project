@@ -1,32 +1,36 @@
-#proofOfMembership
+%html
+  %head
+    = stylesheet_link_tag 'proof-of-membership', media: 'all'
+  %body
+    #proofOfMembership
 
-  .parent-div
-    - if @app_configuration&.shf_logo
-      = image_tag(app_config.shf_logo.url(:standard),
-                  class: 'shf-logo')
+      .parent-div
+        - if app_config&.shf_logo
+          = image_tag(app_config.shf_logo.url(:standard),
+                      class: 'shf-logo')
 
-    %p.proof-banner
-      BEHÖRIGHETSBEVIS
+        %p.proof-banner
+          BEHÖRIGHETSBEVIS
 
-    .member-photo-div
-      = image_tag(user.member_photo.url(:standard),
-                  class: 'member-photo img-rounded')
+        .member-photo-div
+          = image_tag(user.member_photo.url(:standard),
+                      class: 'member-photo img-rounded')
 
-    %p.member-info
-      = user.full_name
-      %br
-      - if user.membership_current?
-        = "Medlemsnr.: #{user.membership_number}"
-        %br
-        Utfärdat av:
-        %br
-        = image_tag(app_config.chair_signature.url(:standard))
-        %br
-        = "Giltigt till #{user.membership_expire_date}"
-        %br
-        = "Kategorier: #{list_categories(user.shf_application)}"
-      - else
-        Medlemskapet löpte ut
+        %p.member-info
+          = user.full_name
+          %br
+          - if user.membership_current?
+            = "Medlemsnr.: #{user.membership_number}"
+            %br
+            Utfärdat av:
+            %br
+            = image_tag(app_config.chair_signature.url(:standard))
+            %br
+            = "Giltigt till #{user.membership_expire_date}"
+            %br
+            = "Kategorier: #{list_categories(user.shf_application)}"
+          - else
+            Medlemskapet löpte ut
 
-    %p.proof-footer
-      sverigeshundforetagare.se
+        %p.proof-footer
+          sverigeshundforetagare.se

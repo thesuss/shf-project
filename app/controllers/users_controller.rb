@@ -10,23 +10,21 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    debugger
     @app_configuration = AdminOnly::AppConfiguration.last
 
-    html = render_to_string(partial: 'proof_of_membership',
-                            locals: { app_config: @app_configuration,
-                                      user: @user })
-    kit = IMGKit.new(html)
-    # kit.stylesheets << ActionController::Base.helpers
-    #                     .stylesheet_url('proof-of-membership.css')
-    kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
-                                       'proof-of-membership.css')
+    # html = render_to_string(partial: 'proof_of_membership',
+    #                         locals: { app_config: @app_configuration,
+    #                                   user: @user })
+    # kit = IMGKit.new(html)
+    # kit = IMGKit.new(render_to_string)
+    # kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
+    #                                    'proof-of-membership.css')
+    # #
+    # send_data(kit.to_jpg, type: 'image/jpeg', disposition: 'inline')
 
-    img = kit.to_img      # default = jpg
+    render partial: 'proof_of_membership',
+           locals: { app_config: @app_configuration, user: @user }
 
-    send_data(img, type: "image/jpeg")
-
-    a=1
   end
 
   def index
