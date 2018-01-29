@@ -7,7 +7,8 @@
 
     != model_errors_helper(resource)
 
-    = render partial: 'member_photo', locals: { user: resource, f: f }
+    - if ENV['SHF_SHOW_FEATURE']
+      = render partial: 'member_photo', locals: { user: resource, f: f }
 
     .col-sm-12.wpcf7
       .field
