@@ -48,7 +48,7 @@ Feature: As a registered user
     And I should see t("hello", name: 'mary')
     Then I click on the t("devise.registrations.edit.title") link
     And I fill in t("activerecord.attributes.user.first_name") with "NewMary"
-    And I choose a photo file named "member_with_dog.png" to upload
+    And I choose a "user_member_photo" file named "member_with_dog.png" to upload
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("hello", name: 'NewMary')
@@ -63,7 +63,7 @@ Feature: As a registered user
     And I am on the "landing" page
     And I should see t("hello", name: 'mary')
     Then I click on the t("devise.registrations.edit.title") link
-    And I choose a photo file named "text_file.jpg" to upload
+    And I choose a "user_member_photo" file named "text_file.jpg" to upload
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("activerecord.errors.models.user.attributes.member_photo.spoofed_media_type")

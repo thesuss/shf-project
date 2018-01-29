@@ -47,9 +47,16 @@ Given(/^The user "([^"]*)" has had her password reset now$/) do |email|
   @user.update(reset_password_sent_at: Time.zone.now)
 end
 
-When(/^I choose a photo file named "([^"]*)" to upload$/) do | filename |
-  page.attach_file('user_member_photo',
+When(/^I choose a "([^"]*)" file named "([^"]*)" to upload$/) do | fieldname, filename |
+  page.attach_file(fieldname,
                    File.join(Rails.root, 'spec', 'fixtures',
                              'member_photos', filename), visible: false)
+  # ^^ selenium won't find the upload button without visible: false
+end
+
+When(/^I choose an SHF "([^"]*)" file named "([^"]*)" to upload$/) do | fieldname, filename |
+  page.attach_file(fieldname,
+                   File.join(Rails.root, 'spec', 'fixtures',
+                             'app_configuration', filename), visible: false)
   # ^^ selenium won't find the upload button without visible: false
 end
