@@ -111,7 +111,7 @@ class AdminController < ApplicationController
   def paid_M_or_link (arg)
     out_str = ''
     # say betals if member fee is paid, otherwise make link to where it is paid
-    out_str << (arg.user.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(arg.user))
+    out_str << (arg.user.member? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(arg.user))
     out_str << ','
   end
 end
