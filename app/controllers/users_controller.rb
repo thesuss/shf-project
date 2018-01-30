@@ -18,6 +18,8 @@ class UsersController < ApplicationController
       return
     end
 
+    debugger
+
     html = render_to_string(partial: 'proof_of_membership',
                             locals: { app_config: @app_configuration,
                                       user: @user })

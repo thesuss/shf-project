@@ -14,7 +14,7 @@
 
         .member-photo-div
           = image_tag(user.member_photo.url(:standard),
-                      class: 'member-photo img-rounded')
+                      class: 'member-photo')
 
         %p.member-info
           = user.full_name
