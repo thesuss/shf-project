@@ -12,21 +12,22 @@ class UsersController < ApplicationController
   def proof_of_membership
     @app_configuration = AdminOnly::AppConfiguration.last
 
-    if params[:render]
-      render partial: 'proof_of_membership',
-             locals: { app_config: @app_configuration, user: @user }
-      return
-    end
+    respond_to :pdf, :html
 
-    html = render_to_string(partial: 'proof_of_membership',
-                            locals: { app_config: @app_configuration,
-                                      user: @user })
+    render partial: 'proof_of_membership',
+           locals: { app_config: @app_configuration, user: @user }
 
-    kit = IMGKit.new(html, encoding: 'UTF-8')
-    kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
-                                       'proof-of-membership.css')
-
-    send_data(kit.to_jpg, type: 'image/jpeg', disposition: 'inline')
+    # html = render_to_string(partial: 'proof_of_membership',
+    #                         locals: { app_config: @app_configuration,
+    #                                   user: @user })
+    #
+    # kit = PDFKit.new(html, root_url: Rails.root)
+    # kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
+    #                                    'proof-of-membership.css')
+    #
+    # pdf = kit.to_file
+    #
+    # send_data(pdf, type: 'application/pdf', disposition: 'inline')
   end
 
   def index

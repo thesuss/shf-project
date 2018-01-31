@@ -306,6 +306,7 @@ GEM
     parser (2.4.0.0)
       ast (~> 2.2)
     path_expander (1.0.2)
+    pdfkit (0.8.2)
     pg (0.21.0)
     poltergeist (1.16.0)
       capybara (~> 2.1)
@@ -562,6 +563,7 @@ DEPENDENCIES
   nokogiri
   orgnummer
   paperclip (~> 5.0.0)
+  pdfkit
   pg (~> 0.18)
   poltergeist
   premailer-rails

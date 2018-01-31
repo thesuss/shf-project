@@ -67,6 +67,8 @@ module SHFProject
     # Only change in development or test environments where really needed
     config.action_mailer.show_previews = false
 
+    config.middleware.use PDFKit::Middleware
+
     #
     ###
 
@@ -74,5 +76,20 @@ module SHFProject
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+  end
+
+  PDFKit.configure do |config|
+    config.default_options = {
+      quiet: false,
+      print_media_type: true,
+      encoding: 'UTF-8',
+      margin_top: 0,
+      margin_bottom: 0,
+      margin_left: 0,
+      margin_right: 0,
+      page_width: 19,
+      page_height: 35
+      # dpi: 375
+    }
   end
 end

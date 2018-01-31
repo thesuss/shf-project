@@ -1,6 +1,12 @@
+#proofOfMembership {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
 .parent-div {
   display: block;
-  height: 505px;
+  height: 504px;
   width: 260px;
   border: 1px solid black;
 }
