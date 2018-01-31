@@ -87,9 +87,9 @@ module SHFProject
       margin_bottom: 0,
       margin_left: 0,
       margin_right: 0,
-      page_width: 19,
-      page_height: 35
-      # dpi: 375
+      page_width: 15,
+      page_height: 30,
+      disable_smart_shrinking: true
     }
   end
 end
