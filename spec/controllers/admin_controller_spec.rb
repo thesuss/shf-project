@@ -108,7 +108,7 @@ RSpec.describe AdminController, type: :controller do
             result_str << ','
 
             # say betals if member fee is paid, otherwise make link to where it is paid
-            result_str << (u.member? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u))
+            result_str << (u.membership_current? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u))
             result_str << ','
 
             if m.companies.empty?
@@ -179,7 +179,7 @@ RSpec.describe AdminController, type: :controller do
 
 
           # say betals if member fee is paid, otherwise make link to where it is paid
-          result_str << (u1.member? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << (u1.membership_current? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
           result_str << ','
 
           if member1.companies.empty?
@@ -239,7 +239,7 @@ RSpec.describe AdminController, type: :controller do
 
           result_str << (member1.companies.empty? ?  '' : "\"#{member1.companies.last.name}\"") +','
           # say betals if member fee is paid, otherwise make link to where it is paid
-          result_str << (u1.member? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << (u1.membership_current? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
           result_str << ','
 
           if member1.companies.empty?
@@ -271,7 +271,7 @@ RSpec.describe AdminController, type: :controller do
 
           result_str << (member1.companies.empty? ?  '' : "\"#{member1.companies.last.name}\"") +','
           # say betals if member fee is paid, otherwise make link to where it is paid
-          result_str << (u1.member? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << (u1.membership_current? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
           result_str << ','
 
           if member1.companies.empty?
@@ -305,7 +305,7 @@ RSpec.describe AdminController, type: :controller do
           result_str_end = (member1.companies.empty? ?  '' : "\"#{member1.companies.last.name}\"") +','
 
           # say betals if member fee is paid, otherwise make link to where it is paid
-          result_str_end << (u1.member? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str_end << (u1.membership_current? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
           result_str_end << ','
 
           if member1.companies.empty?
