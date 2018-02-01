@@ -78,18 +78,4 @@ module SHFProject
     # -- all .rb files in that directory are automatically loaded.
   end
 
-  PDFKit.configure do |config|
-    config.default_options = {
-      quiet: false,
-      print_media_type: true,
-      encoding: 'UTF-8',
-      margin_top: 0,
-      margin_bottom: 0,
-      margin_left: 0,
-      margin_right: 0,
-      page_width: 15,
-      page_height: 30,
-      disable_smart_shrinking: true
-    }
-  end
 end

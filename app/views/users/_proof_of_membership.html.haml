@@ -4,17 +4,20 @@
   %body
     #proofOfMembership
 
+      - render_to = :html unless local_assigns[:render_to]
+
       .parent-div
-        - if app_config&.shf_logo
-          = image_tag(app_config.shf_logo.url(:standard),
+        - if app_config.shf_logo
+          = image_tag(paperclip_path(app_config.shf_logo, :standard, render_to),
                       class: 'shf-logo')
 
         %p.proof-banner
           BEHÖRIGHETSBEVIS
 
         .member-photo-div
-          = image_tag(user.member_photo.url(:standard),
-                      class: 'member-photo')
+          - if user.member_photo
+            = image_tag(paperclip_path(user.member_photo, :standard, render_to),
+                        class: 'member-photo')
 
         %p.member-info
           = user.full_name
@@ -24,7 +27,9 @@
             %br
             Utfärdat av:
             %br
-            = image_tag(app_config.chair_signature.url(:standard))
+            - if app_config.chair_signature
+              = image_tag(paperclip_path(app_config.chair_signature,
+                                         :standard, render_to))
             %br
             = "Giltigt till #{user.membership_expire_date}"
             %br

@@ -99,6 +99,6 @@
                       locals: { app_config: @app_configuration, user: @user }
 
     = link_to('render html', proof_of_membership_path(@user))
-    = link_to('render jpg', proof_of_membership_path(@user, render: :jpg))
+    = link_to('render jpg', proof_of_membership_path(@user, render_to: :jpg))
 
 = render partial: 'edit_status_modal', locals: { user: @user }

@@ -12,7 +12,6 @@ class UsersController < ApplicationController
   def proof_of_membership
     @app_configuration = AdminOnly::AppConfiguration.last
 
-    respond_to :jpg, :html
     #
     # render partial: 'proof_of_membership',
     #        locals: { app_config: @app_configuration, user: @user }
@@ -23,19 +22,19 @@ class UsersController < ApplicationController
 
     html = render_to_string(partial: 'proof_of_membership',
                             locals: { app_config: @app_configuration,
-                                      user: @user })
+                                      user: @user,
+                                      render_to: params[:render_to]&.to_sym })
 
-    unless params[:render] == 'jpg'
+    unless params[:render_to] == 'jpg'
       render html: html.html_safe
       return
     end
 
-    kit = IMGKit.new(html, encoding: 'UTF-8')
+    kit = IMGKit.new(html, encoding: 'UTF-8', width: 260)
     kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
                                        'proof-of-membership.css')
-    image = kit.to_img(:jpg)
 
-    send_data(image, type: 'image/jpg', disposition: 'inline')
+    send_data(kit.to_jpg, type: 'image/jpg')
   end
 
   def index
