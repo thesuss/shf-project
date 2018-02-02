@@ -3,6 +3,13 @@ require 'rails_helper'
 RSpec.describe AdminOnly::AppConfiguration, type: :model do
   let(:app_configuration) { create(:app_configuration) }
 
+  PHOTOS_PATH = File.join(Rails.root, 'spec', 'fixtures', 'member_photos')
+
+  let(:txt_file)  { File.new(File.join(PHOTOS_PATH, 'text_file.jpg')) }
+  let(:gif_file)  { File.new(File.join(PHOTOS_PATH, 'gif_file.jpg')) }
+  let(:ico_file)  { File.new(File.join(PHOTOS_PATH, 'ico_file.png')) }
+  let(:xyz_file)  { File.new(File.join(PHOTOS_PATH, 'member_with_dog.xyz')) }
+
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:app_configuration)).to be_valid
@@ -22,23 +29,18 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
   end
 
   describe 'Validations' do
-    it do
+    it 'validates content type of chairperson signature file' do
       is_expected.to validate_attachment_content_type(:chair_signature)
         .allowing('image/png', 'image/jpeg')
         .rejecting('image/gif', 'image/bmp')
     end
-    it do
+    it 'validates content type of SHF logo file' do
       is_expected.to validate_attachment_content_type(:shf_logo)
         .allowing('image/png', 'image/jpeg')
         .rejecting('image/gif', 'image/bmp')
     end
 
-    describe 'validates file contents and file type - chairperson signature' do
-      let(:file_root) { "#{Rails.root}/spec/fixtures/member_photos/" }
-      let(:txt_file)  { File.new(file_root + 'text_file.jpg') }
-      let(:gif_file)  { File.new(file_root + 'gif_file.jpg') }
-      let(:ico_file)  { File.new(file_root + 'ico_file.png') }
-      let(:xyz_file)  { File.new(file_root + 'member_with_dog.xyz') }
+    describe 'rejects invalid file contents and file type - chairperson signature' do
 
       it 'rejects if content not jpeg or png' do
         app_configuration.chair_signature = txt_file
@@ -56,12 +58,7 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
       end
     end
 
-    describe 'validates file contents and file type - SHF logo' do
-      let(:file_root) { "#{Rails.root}/spec/fixtures/member_photos/" }
-      let(:txt_file)  { File.new(file_root + 'text_file.jpg') }
-      let(:gif_file)  { File.new(file_root + 'gif_file.jpg') }
-      let(:ico_file)  { File.new(file_root + 'ico_file.png') }
-      let(:xyz_file)  { File.new(file_root + 'member_with_dog.xyz') }
+    describe 'rejects invalid file contents and file type - SHF logo' do
 
       it 'rejects if content not jpeg or png' do
         app_configuration.shf_logo = txt_file

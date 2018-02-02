@@ -88,6 +88,13 @@ ActiveRecord::Schema.define(version: 20180116141245) do
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 
+  create_table "companies_shf_applications", id: false, force: :cascade do |t|
+    t.bigint "shf_application_id", null: false
+    t.bigint "company_id", null: false
+    t.index ["company_id", "shf_application_id"], name: "index_company_application"
+    t.index ["shf_application_id", "company_id"], name: "index_application_company"
+  end
+
   create_table "kommuns", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false

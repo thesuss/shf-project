@@ -1,4 +1,5 @@
-Feature: As an admin
+Feature: Admin edits application configuration
+  As an admin
   I want to be able to edit application configuration
   Including chair signature and SHG logo images
 
@@ -7,7 +8,7 @@ Feature: As an admin
       | email             | password | admin | member    | first_name | last_name |
       | admin@random.com  | password | true  | false     | emma       | admin     |
 
-  Scenario: Admin edits application configuration
+  Scenario: Admin uploads SHF logo and chairperson signature
     Given I am logged in as "admin@random.com"
     And I am on the "landing" page
     Then I click on the t("menus.nav.admin.app_configuration") link
