@@ -12,14 +12,6 @@ class UsersController < ApplicationController
   def proof_of_membership
     @app_configuration = AdminOnly::AppConfiguration.last
 
-    #
-    # render partial: 'proof_of_membership',
-    #        locals: { app_config: @app_configuration, user: @user }
-
-    # html = render_to_string(partial: 'proof_of_membership',
-    #                         locals: { app_config: @app_configuration,
-    #                                   user: @user })
-
     html = render_to_string(partial: 'proof_of_membership',
                             locals: { app_config: @app_configuration,
                                       user: @user,
