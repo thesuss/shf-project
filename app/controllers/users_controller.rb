@@ -30,7 +30,7 @@ class UsersController < ApplicationController
       return
     end
 
-    kit = IMGKit.new(html, encoding: 'UTF-8', width: 260)
+    kit = IMGKit.new(html, encoding: 'UTF-8', width: 260, quality: 100)
     kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
                                        'proof-of-membership.css')
 

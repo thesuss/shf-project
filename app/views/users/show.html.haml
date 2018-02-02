@@ -56,49 +56,70 @@
               %td= app.company&.name
 
   .col-sm-12
-    %span.standard-label #{t('user_activity')}:
+    -# %span.standard-label #{t('user_activity')}:
 
-    .row
-      Account #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}
+    -# .row
 
-      %p
+    Account #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}.
+
+    -# %hr
+
+    - if current_user.admin?
+      .col-sm-12
       - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
         #{@user.email} #{t('.user_has_never_signed_in')}
 
       - else
         = "#{t('.last_login')}:"
-        #{ most_recent_login_time @user}
+        #{most_recent_login_time @user}
         (#{i18n_time_ago_in_words(most_recent_login_time @user)})
         %br
         #{t('.logged_in_count')}:
         = @user.sign_in_count
 
-      %p
-      - if @user.reset_password_sent_at.blank?
-        = t('.password_never_reset')
-      - else
-        %b #{t('.reset_password_sent_at')}:
-        #{@user.reset_password_sent_at}
-        #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
+        %p
+        - if @user.reset_password_sent_at.blank?
+          = t('.password_never_reset')
+        - else
+          %b #{t('.reset_password_sent_at')}:
+          #{@user.reset_password_sent_at}
+          #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
 
-  %hr
+        %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
+                     href: '#set_new_password_form',
+                     style: 'text-transform:none;' }
+
+          #{ t('toggle.set_new_password_form.show') }
+
+        .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form' ,
+                              style: 'display: none;'}
+
+          = render 'password_form'
+
+    %hr
 
   .col-sm-12
-    %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
-                 href: '#set_new_password_form',
-                 style: 'text-transform:none;' }
+    .col-md-5
+      = render partial: 'proof_of_membership',
+                        locals: { app_config: @app_configuration, user: @user }
 
-      #{ t('toggle.set_new_password_form.show') }
+    .col-md-7
+      %span.standard-label= t('.proof_of_membership')
+      %br
+      %br
+      = t('.proof_of_membership_describe')
+      %br
+      %br
+      = t('.proof_of_membership_image')
+      &nbsp;
+      = link_to(t('.download_image'), proof_of_membership_path(@user, render_to: :jpg),
+                class: 'btn btn-warning btn-xs')
+      %br
+      %br
+      = t('.proof_of_membership_show')
+      &nbsp;
+      = link_to(t('.show_image'), proof_of_membership_path(@user),
+                 class: 'btn btn-warning btn-xs')
 
-    .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form' ,
-                          style: 'display: none;'}
-
-      = render 'password_form'
-
-    = render partial: 'proof_of_membership',
-                      locals: { app_config: @app_configuration, user: @user }
-
-    = link_to('render html', proof_of_membership_path(@user))
-    = link_to('render jpg', proof_of_membership_path(@user, render_to: :jpg))
 
 = render partial: 'edit_status_modal', locals: { user: @user }
