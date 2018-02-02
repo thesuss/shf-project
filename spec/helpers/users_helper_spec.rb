@@ -57,4 +57,26 @@ RSpec.describe UsersHelper, type: :helper do
       expect(pay_member_fee_link(user)).to match expected_path
     end
   end
+
+  describe 'paperclip_path' do
+
+    it 'returns relative path if to be rendered via HTML' do
+      expect(paperclip_path(user.member_photo, :standard, :html))
+        .to eq user.member_photo.url
+    end
+
+    it 'returns absolute path if to be rendered within image' do
+      expect(paperclip_path(user.member_photo, :standard, :jpg))
+        .to eq user.member_photo.path
+    end
+
+    it 'returns absolute path to default image if no attached file' do
+      user.update(member_photo: nil)
+      default_path = Rails.root.join('app', 'assets', 'images',
+                                     user.member_photo.url(:standard))
+                                     
+      expect(paperclip_path(user.member_photo, :standard, :jpg))
+        .to eq default_path
+    end
+  end
 end

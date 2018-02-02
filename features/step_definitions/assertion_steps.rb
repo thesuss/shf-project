@@ -283,3 +283,10 @@ end
 And(/^the page should( not)? be blank$/) do | negate |
   expect(page.body).send( (negate ? :not_to : :to), be_empty )
 end
+
+Then(/^I should get a downloaded image with the filename "([^\"]*)"$/) do |filename|
+  expect(page.driver.response_headers['Content-Disposition'])
+    .to include("attachment; filename=\"#{filename}\"")
+  expect(page.driver.response_headers['Content-Type'])
+    .to eq 'image/jpg'
+end

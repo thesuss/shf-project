@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
                                        'proof-of-membership.css')
 
-    send_data(kit.to_jpg, type: 'image/jpg')
+    send_data(kit.to_jpg, type: 'image/jpg', filename: 'proof_of_membership.jpeg')
   end
 
   def index
