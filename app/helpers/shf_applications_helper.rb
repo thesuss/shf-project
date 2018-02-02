@@ -47,7 +47,7 @@ module ShfApplicationsHelper
   end
 
 
-  def list_categories application, separator=','
+  def list_app_categories application, separator=','
     if application&.business_categories.any?
       application.business_categories.includes(:shf_applications)
         .map(&:name).sort.join(separator)

@@ -33,7 +33,7 @@
             %br
             = "Giltigt till #{user.membership_expire_date}"
             %br
-            = "Kategorier: #{list_categories(user.shf_application)}"
+            = "Kategorier: #{list_app_categories(user.shf_application)}"
           - else
             Medlemskapet löpte ut
 
