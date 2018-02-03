@@ -2,15 +2,13 @@ class UsersController < ApplicationController
   include PaginationUtility
 
   before_action :set_user, except: :index
+  before_action :set_app_config, only: [:show, :proof_of_membership, :update]
   before_action :authorize_user, only: [:show]
 
   def show
-    # Need app config items for proof-of-membership
-    @app_configuration = AdminOnly::AppConfiguration.last
   end
 
   def proof_of_membership
-    @app_configuration = AdminOnly::AppConfiguration.last
 
     html = render_to_string(partial: 'proof_of_membership',
                             locals: { app_config: @app_configuration,
@@ -92,6 +90,11 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_app_config
+    # Need app config items for proof-of-membership
+    @app_configuration = AdminOnly::AppConfiguration.last
   end
 
 
