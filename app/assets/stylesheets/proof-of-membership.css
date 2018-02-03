@@ -1,28 +1,28 @@
 .parent-div {
-  display: block;
-  height: 504px;
-  width: 260px;
   border: 1px solid black;
+  display: block;
   font-family: ‘Open Sans’, serif;
-  font-style: normal;
   font-size: 14px;
-  line-height: 24px;
+  font-style: normal;
+  height: 504px;
   letter-spacing: 0.05em;
+  line-height: 24px;
+  width: 260px;
 }
 
 .proof-banner {
-  display: block;
-  text-align: center;
   background-color: #7a7866;
   color: white;
+  display: block;
   font-size: 18px;
-  margin: 0em;
   line-height: 35px;
+  margin: 0em;
+  text-align: center;
 }
 
 .member-photo-div {
-  padding-top: 10px;
   padding-bottom: 5px;
+  padding-top: 10px;
 }
 
 .shf-logo {
@@ -30,29 +30,29 @@
 }
 
 .member-photo {
+  border-radius: 5px;
   display: block;
+  height: 130px;
   margin-left: auto;
   margin-right: auto;
   width: 130px;
-  height: 130px;
-  border-radius: 5px;
 }
 
 .member-info {
   display: block;
-  text-align: center;
   font-weight: bold;
-  margin: 0em;
   height: 180px;
+  margin: 0;
+  text-align: center;
 }
 
 .proof-footer {
-  display: block;
-  text-align: center;
   background-color: #1b3e70;
   color: white;
+  display: block;
   font-size: 12px;
-  margin: 0em;
   height: 25px;
   line-height: 25px;
+  margin: 0;
+  text-align: center;
 }
