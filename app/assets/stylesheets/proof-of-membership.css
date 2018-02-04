@@ -4,7 +4,7 @@
   font-family: ‘Open Sans’, serif;
   font-size: 14px;
   font-style: normal;
-  height: 504px;
+  height: 505px;
   letter-spacing: 0.05em;
   line-height: 24px;
   width: 260px;
@@ -16,6 +16,7 @@
   display: block;
   font-size: 18px;
   line-height: 35px;
+  height: 35px;
   margin: 0;
   text-align: center;
 }
@@ -50,7 +51,7 @@
   background-color: #1b3e70;
   color: white;
   display: block;
-  font-size: 12px;
+  /* font-size: 12px; */
   height: 25px;
   line-height: 25px;
   margin: 0;
