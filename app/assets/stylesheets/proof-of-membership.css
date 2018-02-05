@@ -4,7 +4,7 @@
   font-family: ‘Open Sans’, serif;
   font-size: 14px;
   font-style: normal;
-  height: 505px;
+  height: auto;
   letter-spacing: 0.05em;
   line-height: 24px;
   width: 260px;
@@ -28,6 +28,7 @@
 
 .shf-logo {
   height: 120px;
+  width: 100%;
 }
 
 .member-photo {
@@ -42,7 +43,7 @@
 .member-info {
   display: block;
   font-weight: bold;
-  height: 180px;
+  height: auto;
   margin: 0;
   text-align: center;
 }

@@ -203,7 +203,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
     it 'returns list of categories for an application' do
       expect(list_app_categories(application))
-        .to eq('category1,category2,category3')
+        .to eq('category1, category2, category3')
     end
   end
 end

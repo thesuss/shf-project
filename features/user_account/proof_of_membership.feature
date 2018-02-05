@@ -29,6 +29,6 @@ Feature: As an user I want to be able to view and download my proof-of-membershi
     And I should see t("hello", name: 'Emma')
     Then I click on the t("menus.nav.users.your_account") link
     And I should see t("users.show.proof_of_membership")
-    And I should see "groom,rehab"
+    And I should see "groom, rehab"
     And I click on the t("users.show.download_image") link
     Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
