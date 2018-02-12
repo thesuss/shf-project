@@ -1,16 +1,20 @@
 
 CAPTURE_STRING = '((?:t\(".*\)|"[^"]*"))'
 
-Transform (/^#{CAPTURE_STRING}$/) do | content |
-  needs_translation = content[0] == 't'
-  unless needs_translation
-    content[1..-2]
-  else
-    cleaned_content = content.delete("\"'")[2..-2]
-    key, parameters = parse_i18n_string(cleaned_content)
-    i18n_content(key, parameters)
+ParameterType(
+  name: 'content',
+  regexp: Regexp.new(CAPTURE_STRING),
+  transformer: lambda do |content|
+    needs_translation = content[0] == 't'
+    unless needs_translation
+      content[1..-2]
+    else
+      cleaned_content = content.delete("\"'")[2..-2]
+      key, parameters = parse_i18n_string(cleaned_content)
+      i18n_content(key, parameters)
+    end
   end
-end
+)
 
 def parse_i18n_string(i18n_string)
   i18n_key = i18n_string
@@ -31,4 +35,3 @@ def parse_i18n_string(i18n_string)
 
   return i18n_key, parameters
 end
-

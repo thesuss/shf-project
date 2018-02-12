@@ -236,7 +236,7 @@ blockquote {
 blockquote p:before {
     content:'\f10d';
     display:block;
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     font-size:26px;
     line-height:1;
     font-style:normal;
@@ -676,7 +676,7 @@ body.admin-bar #site-navigation.fixed-nav {
 
 #site-navigation .menu > .menu-item-has-children > a:after {
     content:'\f107';
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     display:inline-block;
     font-size:12px;
     line-height:12px;
@@ -685,7 +685,7 @@ body.admin-bar #site-navigation.fixed-nav {
 
 #site-navigation .menu > .menu-item-has-children .menu-item-has-children > a:after {
     content:'\f105';
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     display:inline-block;
     position:absolute;
     right:15px;
@@ -819,14 +819,14 @@ mobile navigation
 
 #site-navigation .toggle-sub-menu:after {
     content:'\f107';
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     font-size:14px;
     line-height:40px;
 }
 
 #site-navigation .toggle-sub-menu-active:after {
     content:'\f106';
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     font-size:14px;
     line-height:40px;
 }
@@ -1034,12 +1034,12 @@ search toggle
 
 .search-toggle:after {
     content:'\f002';
-    font-family:'FontAwesome';
+    font-family: 'Font Awesome 5 Free';
 }
 
 .search-toggle-active:after {
     content:'\f00d' !important;
-    font-family:'FontAwesome';
+    font-family: 'Font Awesome 5 Free';
     font-size:18px !important;
 }
 
@@ -1749,7 +1749,7 @@ Arrows
 }
 
 .widget-entry-meta .fa {
-    font-family:FontAwesome !important;
+    font-family: 'Font Awesome 5 Free' !important;
     margin-right:4px;
 }
 
@@ -1838,14 +1838,14 @@ Menu Widget
 
 .widget_nav_menu .toggle-sub-menu:after {
     content:'\f107';
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     font-size:14px;
     line-height:40px;
 }
 
 .widget_nav_menu .toggle-sub-menu-active:after {
     content:'\f106';
-    font-family:FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     font-size:14px;
     line-height:40px;
 }
@@ -2035,7 +2035,7 @@ Children
 
 .widget_categories .children a:before {
     content:'\f105';
-    font-family:'FontAwesome';
+    font-family: 'Font Awesome 5 Free';
     color:#bbb;
     padding-right:10px;
 }
@@ -4304,7 +4304,7 @@ img.mfp-img {
 
 .mfp-arrow-left::after, .mfp-arrow-left .mfp-a {
     content:'\f104' !important;
-    font-family:"FontAwesome" !important;
+    font-family: 'Font Awesome 5 Free' !important;
     font-size:45px;
     line-height:110px;
     display:block;
@@ -4314,7 +4314,7 @@ img.mfp-img {
 
 .mfp-arrow-right::after, .mfp-arrow-right .mfp-a {
     content:'\f105' !important;
-    font-family:"FontAwesome" !important;
+    font-family: 'Font Awesome 5 Free' !important;
     font-size:45px;
     line-height:110px;
     display:block;
