@@ -1,4 +1,4 @@
-When "I click on the{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
+When "I click on{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
 # use 'ordinal' when selecting among links or buttons all of which
 # have the same selector (e.g., same label)
 
@@ -16,7 +16,7 @@ When "I click on the{optional_string} {capture_string}{optional_string}" do |ord
   end
 end
 
-When "I click on and accept the{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
+When "I click on and accept{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
   page.driver.accept_modal(:confirm, wait: 4) do
     confirm_step = "I click on the" + (ordinal ? "#{ordinal}" : '') +
                    " \"#{element}\"" + (type ? " #{type}" : '')
@@ -85,7 +85,7 @@ When "I click and accept the {capture_string} action for the row with {capture_s
   end
 end
 
-When "I {capture_string} the checkbox with id {capture_string}" do |action, element_id|
+When "I {action} the checkbox with id {capture_string}" do |action, element_id|
   send action, element_id
 end
 

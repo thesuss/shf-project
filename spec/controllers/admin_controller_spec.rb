@@ -347,7 +347,6 @@ RSpec.describe AdminController, type: :controller do
 
 
         it 'redirects to back or the root path' do
-          debugger
 
           expect(subject).to redirect_to root_path
 

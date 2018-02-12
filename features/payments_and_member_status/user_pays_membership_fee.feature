@@ -31,6 +31,7 @@ Feature: As a user
     And I click on t("shf_applications.accept_btn")
 
     Then I am in "emma@mutts.com" browser
+    And I am logged in as "emma@mutts.com"
     And I reload the page
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
@@ -53,6 +54,7 @@ Feature: As a user
     And I click on t("shf_applications.accept_btn")
 
     Then I am in "emma@mutts.com" browser
+    And I am logged in as "emma@mutts.com"
     And I reload the page
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")

@@ -141,7 +141,7 @@ Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
 end
 
 
-Then "I should see(?: translated)? error {capture_string} {capture_string}" do |model_attribute, error|
+Then "I should see error {capture_string} {capture_string}" do |model_attribute, error|
   expect(page).to have_content("#{model_attribute} #{error}")
 end
 
@@ -156,7 +156,7 @@ Then "I should{negate} see status line with status {capture_string}" do |negate,
 end
 
 
-Then "I should see (\d+) {capture_string}" do |n, content |
+Then "I should see {digits} {capture_string}" do |n, content |
   n = n.to_i
   expect(page).to have_text("#{content}", count: n)
   expect(page).not_to have_text("#{content}", count: n+1)

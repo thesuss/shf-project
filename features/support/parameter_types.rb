@@ -1,3 +1,4 @@
+# https://cucumber.io/blog/2017/07/26/announcing-cucumber-expressions
 
 CAPTURE_STRING = '((?:t\(".*\)|"[^"]*"))'
 
@@ -24,8 +25,29 @@ ParameterType(
 
 ParameterType(
   name: 'optional_string',
-  regexp: /( \w*|)/,
-  transformer: -> (str) { str.empty? ? nil : str.lstrip }
+  regexp: /( the \w*| \w*|)/,
+  transformer: lambda do |str|
+    str = str.sub(' the', '')
+    str.empty? ? nil : str.lstrip
+  end
+)
+
+ParameterType(
+  name: 'ordinal',
+  regexp: /(first|second|third|fourth)/,
+  transformer: -> (str) { str }
+)
+
+ParameterType(
+  name: 'action',
+  regexp: /(check|uncheck)/,
+  transformer: -> (str) { str }
+)
+
+ParameterType(
+  name: 'digits',
+  regexp: /(\d+)/,
+  transformer: -> (str) { str.to_i }
 )
 
 def parse_i18n_string(i18n_string)

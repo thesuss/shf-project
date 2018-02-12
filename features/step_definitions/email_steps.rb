@@ -121,7 +121,7 @@ Then "I should not see {capture_string} in the email body" do |text|
   expect(current_email.default_part_body.to_s).not_to include(text), "Should not see #{text}\n but did.  \n\nfull text:\n#{current_email.default_part_body}"
 end
 
-Then "I should see {capture_string} in the email body" do |text|
+Then /^(?:I|they) should see \/([^"]*?)\/ in the email body$/ do |text|
   expect(current_email.default_part_body.to_s).to match Regexp.new(text)
 end
 
@@ -195,7 +195,11 @@ end
 # Interact with Email Contents
 #
 
-When "I follows {capture_string} in the email" do |address, link|
+When "I follow {capture_string} in the email" do |link|
+  visit_in_email(link)
+end
+
+When "{capture_string} follows? {capture_string} in the email" do |address, link|
   visit_in_email(link, address)
 end
 
