@@ -2,7 +2,7 @@
 CAPTURE_STRING = '((?:t\(".*\)|"[^"]*"))'
 
 ParameterType(
-  name: 'content',
+  name: 'capture_string',
   regexp: Regexp.new(CAPTURE_STRING),
   transformer: lambda do |content|
     needs_translation = content[0] == 't'
@@ -14,6 +14,18 @@ ParameterType(
       i18n_content(key, parameters)
     end
   end
+)
+
+ParameterType(
+  name: 'negate',
+  regexp: /( not|)/,
+  transformer: -> (str) { str.empty? ? nil : str }
+)
+
+ParameterType(
+  name: 'optional_string',
+  regexp: /( \w*|)/,
+  transformer: -> (str) { str.empty? ? nil : str.lstrip }
 )
 
 def parse_i18n_string(i18n_string)
