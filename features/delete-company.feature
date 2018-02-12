@@ -123,7 +123,6 @@ Feature: As an admin
   Scenario: Admin deletes a company with no membership applications and no categories
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
-    And show me the page
     Then I should see "7" companies
     When I click and accept the t("delete") action for the row with "Unassociated Company"
     Then I should see t("companies.destroy.success")
