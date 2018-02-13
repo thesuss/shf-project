@@ -7,12 +7,9 @@ body {
 .parent-div {
   border: 1px solid black;
   display: block;
-  font-family: ‘Open Sans’, serif;
   font-size: 14px;
-  font-style: normal;
   height: auto;
   letter-spacing: 0.05em;
-  line-height: 24px;
   width: 260px;
 }
 
@@ -33,8 +30,8 @@ body {
 }
 
 .shf-logo {
-  height: 120px;
   width: 100%;
+  height:auto;
 }
 
 .member-photo {
@@ -48,12 +45,14 @@ body {
 
 .member-info {
   display: block;
-  font-weight: bold;
   height: auto;
   margin: 0;
   text-align: center;
+  line-height: 16px;
 }
-
+.cats {
+    padding-bottom:10px;
+}
 .proof-footer {
   background-color: #1b3e70;
   color: white;
@@ -63,4 +62,9 @@ body {
   line-height: 25px;
   margin: 0;
   text-align: center;
+}
+.name {
+    font-size:16px;
+    line-height: 25px;
+
 }

@@ -1,5 +1,6 @@
 %html
   %head
+    %link{href: 'https://fonts.googleapis.com/css?family=Open+Sans:400,700', rel: 'stylesheet'}/
     = stylesheet_link_tag 'proof-of-membership', media: 'all'
   %body
     #proof-of-membership
@@ -20,12 +21,19 @@
                         class: 'member-photo')
 
         %p.member-info
-          = user.full_name
+          %strong.name
+            = user.full_name
           %br
           - if user.membership_current?
-            Medlemsnr.: #{user.membership_number}
+            Medlemsnr.:
+            %strong
+              #{user.membership_number}
             %br
-            Utfärdat av:
+            #{list_app_categories(user.shf_application)}
+            %br
+            %br
+            %strong
+              Utfärdat av:
             %br
             - if app_config.chair_signature
               = image_tag(paperclip_path(app_config.chair_signature,
@@ -33,9 +41,10 @@
             %br
             Giltigt till #{user.membership_expire_date}
             %br
-            Kategorier: #{list_app_categories(user.shf_application)}
+            %br
+
           - else
-            Medlemskapet löpte ut
+            Medlemskapet inaktivt.
 
         %p.proof-footer
           sverigeshundforetagare.se
