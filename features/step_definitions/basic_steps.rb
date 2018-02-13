@@ -1,4 +1,4 @@
-When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ordinal, element, type|
+When "I click on{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
 # use 'ordinal' when selecting among links or buttons all of which
 # have the same selector (e.g., same label)
 
@@ -16,9 +16,9 @@ When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ord
   end
 end
 
-When(/^I click on and accept(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ordinal, element, type|
+When "I click on and accept{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
   page.driver.accept_modal(:confirm, wait: 4) do
-    confirm_step = "I click on" + (ordinal ? "#{ordinal}" : '') +
+    confirm_step = "I click on the" + (ordinal ? "#{ordinal}" : '') +
                    " \"#{element}\"" + (type ? " #{type}" : '')
     step confirm_step
   end
@@ -48,11 +48,11 @@ When /^I dismiss popup$/ do
   page.driver.dismiss_modal(:confirm)
 end
 
-When(/^I fill in #{CAPTURE_STRING} with #{CAPTURE_STRING}$/) do |field, value|
+When "I fill in {capture_string} with {capture_string}" do |field, value|
   fill_in field, with: value
 end
 
-When(/^I press enter in #{CAPTURE_STRING}$/) do |field|
+When "I press enter in {capture_string}" do |field|
   find_field(field).send_keys :enter
 end
 
@@ -67,29 +67,29 @@ When(/^I fill in the( translated)? form with data:$/) do |translated, table|
   end
 end
 
-When(/^(?:I|they) select #{CAPTURE_STRING} in select list #{CAPTURE_STRING}$/) do |option, list|
+When "I select {capture_string} in select list {capture_string}" do |option, list|
   select option, from: list
 end
 
-When(/^(?:I|they) select radio button #{CAPTURE_STRING}/) do |label_text|
+When "I select radio button {capture_string}" do |label_text|
   find(:xpath, "//label[contains(.,'#{label_text}')]/input[@type='radio']").click
 end
 
-When(/^I click the #{CAPTURE_STRING} action for the row with #{CAPTURE_STRING}$/) do |action, row_content|
+When "I click the {capture_string} action for the row with {capture_string}" do |action, row_content|
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end
 
-When(/^I click and accept the #{CAPTURE_STRING} action for the row with #{CAPTURE_STRING}$/) do |action, row_content|
+When "I click and accept the {capture_string} action for the row with {capture_string}" do |action, row_content|
   page.driver.accept_modal(:confirm, wait: 4) do
     step %{I click the "#{action}" action for the row with "#{row_content}"}
   end
 end
 
-When(/^I (check|uncheck) the checkbox with id #{CAPTURE_STRING}$/) do |action, element_id|
+When "I {action} the checkbox with id {capture_string}" do |action, element_id|
   send action, element_id
 end
 
-When(/^I click the radio button with id #{CAPTURE_STRING}$/) do |element_id|
+When "I click the radio button with id {capture_string}" do |element_id|
   find("##{element_id}").click
 end
 

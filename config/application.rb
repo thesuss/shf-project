@@ -67,12 +67,9 @@ module SHFProject
     # Only change in development or test environments where really needed
     config.action_mailer.show_previews = false
 
-    #
-    ###
-
-
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
   end
+
 end

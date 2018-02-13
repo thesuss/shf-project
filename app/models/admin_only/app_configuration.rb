@@ -6,14 +6,14 @@ module AdminOnly
 
     has_attached_file :chair_signature,
                       url: :url_for_images,
-                      default_url: 'photo_unavailable.png',
-                      styles: { standard: ['250'] },
+                      default_url: 'chair_signature.png',
+                      styles: { standard: ['180x40#'] },
                       default_style: :standard
 
     has_attached_file :shf_logo,
                       url: :url_for_images,
-                      default_url: 'photo_unavailable.png',
-                      styles: { standard: ['250'] },
+                      default_url: 'shf_logo.png',
+                      styles: { standard: ['257x120#'] },
                       default_style: :standard
 
     validates_attachment_content_type :chair_signature, :shf_logo,

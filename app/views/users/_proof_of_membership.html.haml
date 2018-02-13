@@ -1,0 +1,51 @@
+%html
+  %head
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans:400,700'
+    = stylesheet_link_tag 'proof-of-membership', media: 'all'
+  %body
+    #proof-of-membership
+
+      - render_to = :html unless local_assigns[:render_to]
+
+      .parent-div
+        - if app_config.shf_logo
+          = image_tag(paperclip_path(app_config.shf_logo, :standard, render_to),
+                      class: 'shf-logo')
+
+        %p.proof-banner
+          BEHÖRIGHETSBEVIS
+
+        .member-photo-div
+          - if user.member_photo
+            = image_tag(paperclip_path(user.member_photo, :standard, render_to),
+                        class: 'member-photo')
+
+        %p.member-info
+          %span.member-name
+            = user.full_name
+          %br
+          - if user.membership_current?
+
+            Medlemsnr.:
+            %span.membership-number
+              #{user.membership_number}
+            %br
+
+            #{list_app_categories(user.shf_application)}
+
+            %br
+            %span.issued-by
+              Utfärdat av:
+            %br
+            - if app_config.chair_signature
+              = image_tag(paperclip_path(app_config.chair_signature,
+                                         :standard, render_to))
+            %br
+            Giltigt till #{user.membership_expire_date}
+            %br
+            -# Kategorier: #{list_app_categories(user.shf_application)}
+          - else
+            Medlemskapet löpte ut
+
+        %p.proof-footer
+          sverigeshundforetagare.se

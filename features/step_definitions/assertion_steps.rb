@@ -66,23 +66,22 @@ end
 
 World(PathHelpers)
 
-
-Then(/^I should( not)? see #{CAPTURE_STRING}$/) do |negate, content|
+Then "I should{negate} see {capture_string}" do |negate, content|
   expect(page).send (negate ? :not_to : :to), have_content(content)
 end
 
 
-Then(/^I should( not)? see #{CAPTURE_STRING} image$/) do |negate, alt_text|
+Then "I should{negate} see {capture_string} image" do |negate, alt_text|
   expect(page).send (negate ? :not_to : :to),  have_xpath("//img[contains(@alt,'#{alt_text}')]")
 end
 
 
-Then(/^I should( not)? see button #{CAPTURE_STRING}$/) do |negate, button|
+Then "I should{negate} see button {capture_string}" do |negate, button|
   expect(page).send (negate ? :not_to : :to),  have_button(button)
 end
 
 
-Then(/^I should( not)? see #{CAPTURE_STRING} link$/) do |negate, link_label|
+Then "I should{negate} see {capture_string} link" do |negate, link_label|
   expect(page).send (negate ? :not_to : :to),  have_link(link_label)
 end
 
@@ -105,7 +104,7 @@ Then(/^I should see:$/) do |table|
 end
 
 
-Then(/^I should( not)? see #{CAPTURE_STRING} in the row for #{CAPTURE_STRING}$/) do |negate, text, row_identifier|
+Then "I should{negate} see {capture_string} in the row for {capture_string}" do |negate, text, row_identifier|
   row = find(:xpath, "//tr[td//text()[contains(.,'#{row_identifier}')]]")
   expect(row).send (negate ? :not_to : :to), have_content(text)
 end
@@ -130,7 +129,7 @@ Then(/^I should see "([^"]*)" address(?:es)?/) do |number|
 end
 
 
-Then(/^the field #{CAPTURE_STRING} should( not)? have a required field indicator$/) do |label_text, negate|
+Then "the field {capture_string} should{negate} have a required field indicator" do |label_text, negate|
   expect(page).send ( negate ? :not_to : :to), have_xpath("//label[@class='required'][text()='#{label_text}']")
 end
 
@@ -142,34 +141,34 @@ Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
 end
 
 
-Then(/^I should see(?: translated)? error #{CAPTURE_STRING} #{CAPTURE_STRING}$/) do |model_attribute, error|
+Then "I should see error {capture_string} {capture_string}" do |model_attribute, error|
   expect(page).to have_content("#{model_attribute} #{error}")
 end
 
 
-Then(/^I should see status line with status #{CAPTURE_STRING} and date "([^"]*)"$/) do |status, date_string|
+Then "I should see status line with status {capture_string} and date {capture_string}" do |status, date_string|
   expect(page).to have_content("#{status} - #{date_string}")
 end
 
 
-Then(/^I should( not)? see status line with status #{CAPTURE_STRING}$/) do |negate, status|
+Then "I should{negate} see status line with status {capture_string}" do |negate, status|
   expect(page).send (negate ? :not_to : :to), have_content("#{status} - ")
 end
 
 
-Then(/^I should see (\d+) #{CAPTURE_STRING}$/) do |n, content |
+Then "I should see {digits} {capture_string}" do |n, content |
   n = n.to_i
   expect(page).to have_text("#{content}", count: n)
   expect(page).not_to have_text("#{content}", count: n+1)
 end
 
-Then(/^#{CAPTURE_STRING} should( not)? be visible$/) do |string, negate|
+Then "{capture_string} should{negate} be visible" do |string, negate|
   expect(has_text?(:visible, "#{string}")).to be negate == nil
 end
 
 
 # Tests that an input has a given value
-Then /^the #{CAPTURE_STRING} field should be set to #{CAPTURE_STRING}$/ do |field, text_value|
+Then "the {capture_string} field should be set to {capture_string}" do |field, text_value|
   expect(find_field(field).value).to eq(text_value)
 end
 
@@ -179,18 +178,18 @@ Then(/^I should see link "([^"]*)" with target = "([^"]*)"$/) do |link_identifie
 end
 
 
-Then(/^I should see flash text #{CAPTURE_STRING}$/) do | text |
+Then "I should see flash text {capture_string}" do | text |
   expect(page).to have_selector('#flashes', text: text )
 end
 
-Then(/^I should( not)? see #{CAPTURE_STRING} in the row for user "([^"]*)"$/) do | negate, expected_text, user_email |
+Then "I should{negate} see {capture_string} in the row for user {capture_string}" do | negate, expected_text, user_email |
   td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
   tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
   expect(tr.text).send (negate ? :not_to : :to), match(Regexp.new(expected_text))
 end
 
 
-Then(/^I should( not)? see #{CAPTURE_STRING} for class "([^"]*)" in the row for user "([^"]*)"$/) do |negate, expected_text, css_class, user_email |
+Then "I should{negate} see {capture_string} for class {capture_string} in the row for user {capture_string}" do |negate, expected_text, css_class, user_email |
   td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
   tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
   expect(tr).send (negate ? :not_to : :to), have_css(".#{css_class}", text: expected_text)
@@ -232,7 +231,7 @@ end
 
 
 # Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
-Then /^"([^"]*)" should( not)? have #{CAPTURE_STRING} selected$/ do | select_list, negate, expected_string |
+Then "{capture_string} should{negate} have {capture_string} selected" do | select_list, negate, expected_string |
 
   field = find_field(select_list)
 
@@ -256,7 +255,7 @@ end
 
 
 # Checks that a certain option does or does not exist in a select list
-Then /^"([^"]*)" should( not)? have #{CAPTURE_STRING} as an option/ do | select_list, negate, expected_string |
+Then "{capture_string} should{negate} have {capture_string} as an option" do | select_list, negate, expected_string |
 
   field = find_field(select_list)
 
@@ -282,4 +281,11 @@ end
 
 And(/^the page should( not)? be blank$/) do | negate |
   expect(page.body).send( (negate ? :not_to : :to), be_empty )
+end
+
+Then(/^I should get a downloaded image with the filename "([^\"]*)"$/) do |filename|
+  expect(page.driver.response_headers['Content-Disposition'])
+    .to include("attachment; filename=\"#{filename}\"")
+  expect(page.driver.response_headers['Content-Type'])
+    .to eq 'image/jpg'
 end

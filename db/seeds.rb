@@ -93,6 +93,11 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
   states.sort.each do | state |
     puts "  #{state}: #{ShfApplication.where(state: state).count }"
   end
+
+  if AdminOnly::AppConfiguration.count == 0
+    puts "\nCreating App Config Objects"
+    load_app_config
+  end
 end
 
 puts SEED_COMPLETE_MSG

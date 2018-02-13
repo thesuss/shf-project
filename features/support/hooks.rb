@@ -1,3 +1,6 @@
+Before do
+  load_default_data
+end
 
 Before('@selenium') do
   # Use this hook for running headless tests using Chrome
@@ -18,4 +21,8 @@ end
 
 After('@time_adjust') do
   Timecop.return
+end
+
+def load_default_data
+  FactoryGirl.create(:app_configuration)
 end

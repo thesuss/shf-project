@@ -1,0 +1,72 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.parent-div {
+  border: 1px solid black;
+  display: block;
+  font-size: 14px;
+  font-style: normal;
+  height: auto;
+  letter-spacing: 0.05em;
+  line-height: 20px;
+  width: 260px;
+}
+
+.proof-banner {
+  background-color: #7a7866;
+  color: white;
+  display: block;
+  font-size: 18px;
+  height: 35px;
+  line-height: 35px;
+  margin: 0;
+  text-align: center;
+}
+
+.member-photo-div {
+  padding-bottom: 5px;
+  padding-top: 10px;
+}
+
+.shf-logo {
+  height: 120px;
+  width: 100%;
+}
+
+.member-photo {
+  border-radius: 5px;
+  display: block;
+  height: 130px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 130px;
+}
+
+.member-info {
+  display: block;
+  font-weight: normal;
+  height: auto;
+  margin: 0;
+  text-align: center;
+}
+
+.member-name, .membership-number {
+  font-weight: bold;
+}
+
+.issued-by {
+  font-weight: bold;
+  line-height: 30px;
+}
+
+.proof-footer {
+  background-color: #1b3e70;
+  color: white;
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  margin: 0;
+  margin-top: 10px;
+  text-align: center;
+}

@@ -2,8 +2,30 @@ class UsersController < ApplicationController
   include PaginationUtility
 
   before_action :set_user, except: :index
+  before_action :set_app_config, only: [:show, :proof_of_membership, :update]
   before_action :authorize_user, only: [:show]
 
+  def show
+  end
+
+  def proof_of_membership
+
+    html = render_to_string(partial: 'proof_of_membership',
+                            locals: { app_config: @app_configuration,
+                                      user: @user,
+                                      render_to: params[:render_to]&.to_sym })
+
+    unless params[:render_to] == 'jpg'
+      render html: html.html_safe
+      return
+    end
+
+    kit = IMGKit.new(html, encoding: 'UTF-8', width: 260, quality: 100)
+    kit.stylesheets << Rails.root.join('app', 'assets', 'stylesheets',
+                                       'proof-of-membership.css')
+
+    send_data(kit.to_jpg, type: 'image/jpg', filename: 'proof_of_membership.jpeg')
+  end
 
   def index
     authorize User
@@ -68,6 +90,11 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_app_config
+    # Need app config items for proof-of-membership
+    @app_configuration = AdminOnly::AppConfiguration.last
   end
 
 

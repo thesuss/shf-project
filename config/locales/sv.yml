@@ -636,6 +636,16 @@ sv:
       member: *member
       pay_membership_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
       membership_expire_date_tooltip: Efter detta datum går perioden för ditt medlemskap ut.
+      proof_of_membership: Behörighetsbevis
+      proof_of_membership_describe: Detta är ditt behörighetsbevis.
+      proof_of_membership_image: Du kan ladda ner den här bilden och använda den
+                                 som du vill, inklusive på din webbplats, eller
+                                 skriva ut den och visa upp fysiskt i möten med kunder.
+      proof_of_membership_show: Du kan även ta en skärmdump av bilden och använda
+                                den istället. Använd knappen "Visa bild" för att
+                                gå till en sida som bara innehåller bilden.
+      download_image: Ladda ner bild
+      show_image: Visa bild
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.

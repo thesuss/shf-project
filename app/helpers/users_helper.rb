@@ -14,4 +14,25 @@ module UsersHelper
             { method: :post, class: 'btn btn-primary btn-xs' })
   end
 
+  def paperclip_path(attached_file, image_type, render_to)
+    # Produces path for attached_file, for use in image_tag method.
+    #  attached_file: Model attribute managed via paperclip
+    #  image_type: defined style name (symbol) used in `has_attached_file`.
+    #  render_to: if == :html, the template from which this is called will be
+    #             rendered as HTML.  If == :jpg, will be rendered as image
+    # Rendering as image is peformed via IMGKit gem, which requires that
+    #  image tag src be a full path to the asset.
+    return attached_file.url(image_type) if render_to == :html
+
+    return attached_file.path(image_type) if attached_file.path
+
+    # If we get here it means that we need a full path, but that the
+    # attached file has not been created, and we only have the default
+    # imaged specified in `has_attached_file` (via `default_url` option).
+    # This will provide a relative path only (via `url` message), and so we
+    # must prepend the rest of the path.
+    return Rails.root.join('app', 'assets', 'images',
+                           attached_file.url(image_type))
+  end
+
 end

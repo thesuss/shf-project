@@ -8,13 +8,23 @@ Feature: As an admin
       | emma@mutts.com |       | true   | 1001              |
       | admin@shf.se   | true  | false  |                   |
 
+    Given the following business categories exist
+      | name  | description                     |
+      | groom | grooming dogs from head to tail |
+      | rehab | physical rehabilitation         |
+
+    Given the following applications exist:
+      | user_email     | company_number | categories   | state    |
+      | emma@mutts.com | 5562252998     | rehab, groom | accepted |
+
+    Given the date is set to "2017-11-01"
+
     Given the following payments exist
       | user_email     | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
   @selenium @time_adjust
   Scenario: Admin edits membership status
-    Given the date is set to "2017-11-01"
     Given I am logged in as "admin@shf.se"
     Then I am on the "user details" page for "emma@mutts.com"
     And I should see t("Yes")

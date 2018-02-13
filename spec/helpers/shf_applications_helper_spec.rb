@@ -193,4 +193,17 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     end
 
   end
+
+  describe '#list_app_categories' do
+    let(:category1) { create(:business_category, name: 'category1') }
+    let(:category2) { create(:business_category, name: 'category2') }
+    let(:category3) { create(:business_category, name: 'category3') }
+    let(:application) { create(:shf_application, business_categories:
+                               [category1, category2, category3]) }
+
+    it 'returns list of categories for an application' do
+      expect(list_app_categories(application))
+        .to eq('category1, category2, category3')
+    end
+  end
 end

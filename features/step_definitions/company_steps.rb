@@ -81,7 +81,7 @@ Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |co
 
 end
 
-When(/^I click(?: the)?( \w*) address for company #{CAPTURE_STRING}$/) do |ordinal, company|
+When "I click the {ordinal} address for company {capture_string}" do |ordinal, company|
   cmpy = Company.find_by name: company
 
   addr = cmpy.addresses.send(ordinal.lstrip)

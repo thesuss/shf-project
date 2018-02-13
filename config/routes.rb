@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   # use "admin_only" here to avoid colliding with that term with the
   # namespace directories and class names.  We keep 'admin' as the path
   # for simplicity and some consistency.
+  # namespace :admin_only, path: 'admin' do
   namespace :admin_only, path: 'admin' do
 
     resources :member_app_waiting_reasons
@@ -81,6 +82,9 @@ Rails.application.routes.draw do
         put 'edit_status', to: 'users#edit_status', as: 'edit_status'
       end
     end
+
+    get 'anvandare/:id/proof_of_membership', to: 'users#proof_of_membership',
+        as: 'proof_of_membership'
 
     resources :shf_documents, path: 'dokument'
 

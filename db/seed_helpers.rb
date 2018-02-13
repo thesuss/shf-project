@@ -179,4 +179,8 @@ module SeedHelper
 
     ma
   end
+
+  def load_app_config
+    AdminOnly::AppConfiguration.create
+  end
 end

@@ -50,7 +50,7 @@ RSpec.describe PaymentsController, type: :controller do
       request
 
       expect(response).to have_http_status(302)
-      expect(response).to redirect_to(root_path)
+      expect(response.redirect_url).to eq root_url
       expect(flash[:alert]).to eq "#{I18n.t('errors.not_permitted')}"
     end
   end

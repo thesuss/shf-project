@@ -119,6 +119,7 @@ Feature: As an admin
     Then I should not see "5562252998"
 
     Then I am in "emma@happymutts.se" browser
+    And I am logged in as "emma@happymutts.se"
     And I am on the "show my application" page for "emma@happymutts.se"
     Then I should be on "show my application" page
     And I should not see t("shf_applications.show.membership_number")

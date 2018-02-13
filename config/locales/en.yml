@@ -639,6 +639,16 @@ en:
       pay_membership_tooltip: Paying membership fee will extend your membership
                               for one year
       membership_expire_date_tooltip: Membership expires after this date
+      proof_of_membership: Proof of Membership
+      proof_of_membership_describe: This image is your proof of membership in SHF.
+      proof_of_membership_image: You can download this image and use it as you want,
+                                 including on your website, or printed out
+                                 and displayed at your place of business.
+      proof_of_membership_show: Or, you can take a screenshot of the image and
+                                use that instead. Use the "Show Image" button
+                                to go to a page with just the image present.
+      download_image: Download Image
+      show_image: Show Image
 
     update:
       passwords_dont_match: "The two passwords entered don't match."

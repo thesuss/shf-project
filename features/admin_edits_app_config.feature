@@ -13,7 +13,7 @@ Feature: Admin edits application configuration
     And I am on the "landing" page
     Then I click on the t("menus.nav.admin.app_configuration") link
     And I should see t("admin_only.app_configuration.edit.title")
-    And I choose an SHF "admin_only_app_configuration[chair_signature]" file named "signature.png" to upload
+    And I choose an SHF "admin_only_app_configuration[chair_signature]" file named "chair_signature.png" to upload
     And I choose an SHF "admin_only_app_configuration[shf_logo]" file named "medlem.png" to upload
     And I click on t("submit") button
     Then I should see t("admin_only.app_configuration.update.success")
