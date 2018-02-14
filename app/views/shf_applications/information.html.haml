@@ -15,9 +15,9 @@
       %p
       %p "#{t('.member.using_the_h_mark')} http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"
       = image_tag('h-marke.png')
-  - elsif current_user.shf_application.nil? == false && current_user.shf_application.state == 'Accepted' && current_user.member? == false
+  - elsif current_user.shf_application.nil? == false && current_user.shf_application.state == 'accepted' && current_user.member? == false
     = render partial: 'unpaid_new_member'
-  - elsif current_user.shf_application.nil? == false && current_user.shf_application.state != 'Accepted' && current_user.member? == false
+  - elsif current_user.shf_application.nil? == false && current_user.shf_application.state != 'accepted' && current_user.member? == false
     = render partial: 'waiting_for_approval'
   - if current_user.shf_application.nil?
     %h2= t('.user.title')
