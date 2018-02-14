@@ -1,0 +1,11 @@
+- if current_user.membership_expire_date.past?
+  %p Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
+  %h4 Ditt medlemskap har slutdatum #{current_user.membership_expire_date}
+  = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+  %br
+  %br
+  - if current_user.has_company? && current_user.company.branding_expire_date.past?
+    %h4 Din H-märkningspremie har slutdatum #{current_user.company.branding_expire_date}
+    = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+    %br
+    %br

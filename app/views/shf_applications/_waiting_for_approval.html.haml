@@ -1,0 +1,13 @@
+%h2 Hej, kul att du vill bli medlem
+%p Vi håller på att hantera din ansökan.
+%p Se gärna över den och säkerställ att laddat upp filer och fyllt i kategorier.
+- if policy(current_user.shf_applications.last).update?
+  = link_to t('menus.nav.users.my_application'), edit_shf_application_path(current_user.shf_applications.last), class: 'btn btn-info'
+- else
+  = link_to t('menus.nav.users.my_application'), shf_application_path(current_user.shf_applications.last), class: 'btn btn-info'
+
+
+%br
+%br
+%p Tycker du det tar alldeles för lång tid, och din ansökan är komplett, skriv en rad till #{link_to 'medlem@sverigeshundforetagare.se', 'mailto:medlem@sverigeshundforetagare.se'}
+

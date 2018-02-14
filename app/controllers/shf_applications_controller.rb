@@ -115,7 +115,7 @@ class ShfApplicationsController < ApplicationController
 
 
   def information
-
+    @datetime = DateTime.now
   end
 
 

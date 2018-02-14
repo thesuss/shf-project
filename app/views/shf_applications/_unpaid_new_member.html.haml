@@ -1,0 +1,11 @@
+- if current_user.membership_expire_date.nil?
+  %p Du är godkänd och nu är det dags att betala dina avgifter.
+  %h4 Ditt medlemskap betalas på denna sida:
+  = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+  %br
+  %br
+  - if current_user.has_company? && current_user.company.branding_expire_date.nil?
+    %h4 Din H-märkningspremie har slutdatum #{current_user.company.branding_expire_date}
+    = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+    %br
+    %br
