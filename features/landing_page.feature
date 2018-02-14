@@ -10,6 +10,7 @@ Feature: As a Member
       | anna@muffs.com  |       | false  |                   |
       | fanny@mutts.com |       | true   | 1002              |
       | emma@mutts.com  |       | true   | 1001              |
+      | new@mutts.com   |       | false  |                   |
       | admin@shf.se    | true  | false  |                   |
 
     Given the following payments exist
@@ -48,7 +49,7 @@ Feature: As a Member
     And I should not see "kul att du är intresserad"
 
   Scenario: After login, User sees how to apply etc
-    Given I am logged in as "fanny@mutts.com"
+    Given I am logged in as "new@mutts.com"
     When I am on the "user instructions" page
     Then I should not see t("info.logged_in_as_admin")
     And I should not see "alla följer vår grafiska profil"
