@@ -12,6 +12,6 @@
   %br
 - if current_user.has_company? && current_user.company.branding_expire_date.nil?
   %h4 Din H-märkningspremie behöver betalas:
-  = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+  = link_to('Betala medlemsavgift', company_path(current_user.company), class: 'btn btn-info')
   %br
   %br

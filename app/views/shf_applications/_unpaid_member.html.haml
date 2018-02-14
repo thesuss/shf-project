@@ -6,6 +6,6 @@
   %br
 - if current_user.has_company? && current_user.company.branding_expire_date.past?
   %h4 Din H-märkningspremie har slutdatum #{current_user.company.branding_expire_date}
-  = link_to('Betala H-märkespremie', user_path(current_user), class: 'btn btn-info')
+  = link_to('Betala H-märkespremie', company_path(current_user.company), class: 'btn btn-info')
   %br
   %br
