@@ -1,0 +1,50 @@
+- need_to_pay = false
+
+- if ! current_user.most_recent_membership_payment
+  -# User has never paid
+
+  - need_to_pay = true
+
+  %p Du är godkänd och nu är det dags att betala dina avgifter.
+  %h4 Ditt medlemskap betalas på denna sida:
+
+- elsif ! current_user.membership_current?
+  -# User has paid but payment has expired
+
+  - need_to_pay = true
+
+  %p Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
+  %h4 Ditt medlemskap har slutdatum #{current_user.membership_expire_date}
+
+- if need_to_pay
+
+  = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+  %br
+  %br
+
+  - need_to_pay = false
+
+
+- if current_user.has_company?
+
+  - if ! current_user.company.most_recent_branding_payment
+    -# User has never paid
+
+    - need_to_pay = true
+
+    %h4 Din H-märkningspremie behöver betalas:
+
+
+  - elsif ! current_user.company.branding_license?
+    -# User has paid but payment has expired
+
+    - need_to_pay = true
+
+    %h4 Din H-märkningspremie har slutdatum #{current_user.company.branding_expire_date}
+
+
+- if need_to_pay
+
+  = link_to('Betala H-märkningspremie', company_path(current_user.company), class: 'btn btn-info')
+  %br
+  %br
