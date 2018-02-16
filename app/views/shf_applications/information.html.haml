@@ -6,18 +6,19 @@
   - if current_user.member?
 
     %h2
-    = t('.member.title')
-    = current_user.first_name
+      = t('.member.title')
+      = current_user.first_name
 
     = render partial: 'check_payment_status'
 
     - unless current_user.membership_expire_date.past?
 
       %p= t('.member.using_the_logo')
-      %p "#{t('.member.upload_this_image')} http://www.sverigeshundforetagare.se"
+      %p= t('.member.upload_this_image')
+
       = image_tag('medlem.png')
       %p
-      %p "#{t('.member.using_the_h_mark')} http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"
+      %p= t('.member.using_the_h_mark')
       = image_tag('h-marke.png')
 
   - elsif current_user.has_shf_application?

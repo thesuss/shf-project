@@ -344,27 +344,45 @@ sv:
       title: Om medlemskap
       member:
         title: Välkommen
-        using_the_logo: "Det är viktigt att vi alla följer vår grafiska profil, att loggan
-                         nyttjas på ett enhetligt sätt och inga egna versioner skapas av er
-                         medlemmar. Detta för att skapa igenkänning, tydlighet gentemot kund.
-                         Och skydda oss mot förfalskningar av H-märket."
-        upload_this_image: "Vi önskar att ni lägger upp nedanstående bild på era hemsidor.
-                                  Samt länkar denna bild till:"
-        using_the_h_mark: "Vi önskar även att ni pryder er hemsida med H-märket. För att visa
-                                 att ni just H-märkta med allt vad det innebär. Bilden nedan nyttjas i
-                                 detta syfte och länkas till:"
+        using_the_logo: Det är viktigt att vi alla följer vår grafiska profil,
+                        att loggan nyttjas på ett enhetligt sätt och inga egna
+                        versioner skapas av dig som är medlem. Detta för att
+                        skapa igenkänning, tydlighet gentemot kund. Och skydda
+                        oss mot förfalskningar av H-märket.
+        upload_this_image: 'Vi önskar att du lägger upp nedanstående bild på din
+                          hemsida. Samt länkar denna bild till: "http://www.sverigeshundforetagare.se"'
+        using_the_h_mark: 'Vi önskar även att du pryder din hemsida med H-märket.
+                          För att visa att ni är just H-märkta med allt vad det innebär.
+                          Bilden nedan nyttjas i detta syfte och länkas till: "http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
+      waiting_for_approval:
+        title: Hej, kul att du vill bli medlem
+        in_process: Vi håller på att hantera din ansökan.
+        look_over: Se gärna över den och säkerställ att laddat upp filer och fyllt i kategorier.
+        too_slow: Tycker du det tar alldeles för lång tid, och din ansökan är komplett, skriv en rad till
+
+      check_payment_status:
+        approved: Du är godkänd och nu är det dags att betala dina avgifter.
+        pay_m_here: 'Ditt medlemskap betalas på denna sida:'
+        approved_since_before: Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
+        m_expires: 'Ditt medlemskap är betalt till:'
+        h_expires: 'Din H-märkningspremie är betald till:'
+        pay_h_here: 'Din H-märkningspremie behöver betalas:'
 
       user:
         title: Hej, kul att du är intresserad
-        how_to_apply: "För att skicka in din medlemsansökan klickar du på länken nedan
-                        och fyller i alla nödvändiga uppgifter.
-                        Glöm inte markera vilken eller vilka
-                        kategorier du vill ansöka om medlemskap i."
-        once_it_is_submitted: "När din ansökan är inskickad hamnar den hos oss för behandling, detta
-                               tar en stund, så var inte orolig om du inte hör något från oss."
-        when_we_decide: "När din ansökan sedan är godkänd får du ett mail, med betalningsinformation. När
-                         du betalt får du ett nytt mail med information om hur
-                         du skapar din sökbara företagssida."
+        how_to_apply: "För att skicka in din medlemsansökan klickar du på länken
+                      nedan och fyller i alla nödvändiga uppgifter. Glöm inte
+                      markera vilken eller vilka kategorier du vill ansöka
+                      om medlemskap i."
+        once_it_is_submitted: "När din ansökan är inskickad hamnar den hos oss
+                      för behandling, detta tar en stund, så var inte orolig
+                      om du inte hör något från oss genast."
+        when_we_decide: "När din ansökan sedan är godkänd får du ett mail med
+                        betalningsinformation från systemet. När du betalt får
+                        du ett nytt mail med information om hur du skapar din
+                        sökbara företagssida."
+
+
 
 
     start_review:
@@ -1004,7 +1022,7 @@ sv:
         pay_membership: Betala medlemsavgift
 
       company:
-        pay_branding_fee: Betala H-märkesavgift
+        pay_branding_fee: Betala H-märkespremie
 
       admin:
         shf_main_site: *shf_main_site

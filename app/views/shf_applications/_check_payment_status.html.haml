@@ -5,20 +5,22 @@
 
   - need_to_pay = true
 
-  %p Du är godkänd och nu är det dags att betala dina avgifter.
-  %h4 Ditt medlemskap betalas på denna sida:
+  %p= t('shf_applications.information.check_payment_status.approved')
+  %h4= t('shf_applications.information.check_payment_status.pay_m_here')
 
 - elsif ! current_user.membership_current?
   -# User has paid but payment has expired
 
   - need_to_pay = true
 
-  %p Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
-  %h4 Ditt medlemskap har slutdatum #{current_user.membership_expire_date}
+  %p= t('shf_applications.information.check_payment_status.approved_since_before')
+  %h4
+    = t('shf_applications.information.check_payment_status.m_expires')
+    = current_user.membership_expire_date
 
 - if need_to_pay
 
-  = link_to('Betala medlemsavgift', user_path(current_user), class: 'btn btn-info')
+  = link_to(t('menus.nav.company.pay_branding_fee'), user_path(current_user), class: 'btn btn-info')
   %br
   %br
 
@@ -32,7 +34,7 @@
 
     - need_to_pay = true
 
-    %h4 Din H-märkningspremie behöver betalas:
+    %h4= t('shf_applications.information.check_payment_status.pay_m_here')
 
 
   - elsif ! current_user.company.branding_license?
@@ -40,11 +42,15 @@
 
     - need_to_pay = true
 
-    %h4 Din H-märkningspremie har slutdatum #{current_user.company.branding_expire_date}
+    %h4
+      = t('shf_applications.information.check_payment_status.h_expires')
+      = current_user.company.branding_expire_date
 
 
 - if need_to_pay
 
-  = link_to('Betala H-märkningspremie', company_path(current_user.company), class: 'btn btn-info')
+
+
+  = link_to(t('menus.nav.members.pay_membership'), company_path(current_user.company), class: 'btn btn-info')
   %br
   %br
