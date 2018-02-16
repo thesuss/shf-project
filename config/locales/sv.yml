@@ -513,7 +513,7 @@ sv:
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
       edit_branding_status: Redigera Status
-      branding_license: Accepterar policy
+      branding_license: Betald H-märkespremie
       pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
       branding_fee_expire_date_tooltip: Efter detta datum går perioden för din H-märkning ut.
       members: Företagsmedlemmar
