@@ -20,7 +20,7 @@
 
 - if need_to_pay
 
-  = link_to(t('menus.nav.company.pay_branding_fee'), user_path(current_user), class: 'btn btn-info')
+  = link_to(t('menus.nav.members.pay_membership'), user_path(current_user), class: 'btn btn-info')
   %br
   %br
 
@@ -34,7 +34,7 @@
 
     - need_to_pay = true
 
-    %h4= t('shf_applications.information.check_payment_status.pay_m_here')
+    %h4= t('shf_applications.information.check_payment_status.pay_h_here')
 
 
   - elsif ! current_user.company.branding_license?
@@ -51,6 +51,6 @@
 
 
 
-  = link_to(t('menus.nav.members.pay_membership'), company_path(current_user.company), class: 'btn btn-info')
+  = link_to(t('menus.nav.company.pay_branding_fee'), company_path(current_user.company), class: 'btn btn-info')
   %br
   %br
