@@ -16,7 +16,7 @@
   %p= t('shf_applications.information.check_payment_status.approved_since_before')
   %h4
     = t('shf_applications.information.check_payment_status.m_expires')
-    = current_user.membership_expire_date
+    %strong= current_user.membership_expire_date
 
 - if need_to_pay
 
@@ -44,7 +44,7 @@
 
     %h4
       = t('shf_applications.information.check_payment_status.h_expires')
-      = current_user.company.branding_expire_date
+      %strong= current_user.company.branding_expire_date
 
 
 - if need_to_pay
