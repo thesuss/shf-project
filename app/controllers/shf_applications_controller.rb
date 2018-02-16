@@ -59,7 +59,7 @@ class ShfApplicationsController < ApplicationController
 
       if file_uploads_successful
         helpers.flash_message(:notice, t('.success', email_address: @shf_application.contact_email))
-        redirect_to root_path
+        redirect_to information_path
       else
         create_error(t('.error'))
       end
