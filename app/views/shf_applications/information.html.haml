@@ -4,22 +4,36 @@
     %span
 .entry-content
   - if current_user.member?
+
     %h2
     = t('.member.title')
     = current_user.first_name
-    = render partial: 'unpaid_member'
+
+    = render partial: 'check_payment_status'
+
     - unless current_user.membership_expire_date.past?
+
       %p= t('.member.using_the_logo')
       %p "#{t('.member.upload_this_image')} http://www.sverigeshundforetagare.se"
       = image_tag('medlem.png')
       %p
       %p "#{t('.member.using_the_h_mark')} http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"
       = image_tag('h-marke.png')
-  - elsif current_user.shf_application.nil? == false && current_user.shf_application.state == 'accepted' && current_user.member? == false
-    = render partial: 'unpaid_new_member'
-  - elsif current_user.shf_application.nil? == false && current_user.shf_application.state != 'accepted' && current_user.member? == false
-    = render partial: 'waiting_for_approval'
-  - if current_user.shf_application.nil?
+
+  - elsif current_user.has_shf_application?
+
+    - if current_user.shf_application.accepted?
+
+      = render partial: 'check_payment_status'
+
+    - elsif ! current_user.shf_application.rejected?
+
+      = render partial: 'waiting_for_approval'
+
+    -# Here, do we want to tell the user that their app is rejected?  Perhaps reapply?
+
+  - else
+
     %h2= t('.user.title')
     %p= t('.user.how_to_apply')
     %p= link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path, class: 'btn btn-info'
