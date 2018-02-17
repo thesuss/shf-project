@@ -11,11 +11,6 @@ Feature: As a Member
       | new@mutts.com   |       | false  |                   |
       | admin@shf.se    | true  | false  |                   |
 
-    Given the following payments exist
-      | user_email     | start_date | expire_date | payment_type | status | hips_id | company_number |
-      | emma@mutts.com | 2017-10-1  | 2018-01-31  | branding_fee | betald | none    | 2120000142     |
-      | emma@mutts.com | 2017-10-1  | 2018-02-27  | member_fee   | betald | none    |                |
-
     Given the following companies exist:
       | name       | company_number | email                 | region    |
       | HappyMutts | 2120000142     | woof@happymutts.com   | Stockholm |
@@ -26,6 +21,11 @@ Feature: As a Member
       | emma@mutts.com  | 2120000142     | rehab         | accepted      |
       | anna@muffs.com  | 6222279082     | other         | under_review  |
       | fanny@mutts.com | 6222279082     | other         | accepted  |
+
+    Given the following payments exist
+      | user_email     | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@mutts.com | 2017-10-1  | 2018-01-31  | branding_fee | betald | none    | 2120000142     |
+      | emma@mutts.com | 2017-10-1  | 2018-02-27  | member_fee   | betald | none    |                |
 
   Scenario: After login, Admin still sees new memberships on their landing page
     Given I am logged in as "admin@shf.se"
