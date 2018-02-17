@@ -64,6 +64,8 @@ Feature: As a Member
     And I am logged in as "emma@mutts.com"
     When I am on the "user instructions" page
     Then I should see t("shf_applications.information.check_payment_status.m_expires")
+    When I click on t("menus.nav.members.pay_membership")
+    Then I should be on the "user details" page for "emma@mutts.com"
 
   @selenium @time_adjust
   Scenario: After login, Member sees correct instructions about H branding
@@ -73,6 +75,8 @@ Feature: As a Member
     Then I should see t("shf_applications.information.check_payment_status.h_expires")
     And I should not see t("shf_applications.information.check_payment_status.m_expires")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
+    When I click on t("menus.nav.company.pay_branding_fee")
+    Then I should be on the "my company" page for "emma@mutts.com"
 
   Scenario: After login, Member without previously paid Membership fee sees correct instructions
     And I am logged in as "fanny@mutts.com"
@@ -80,6 +84,8 @@ Feature: As a Member
     Then I should see t("shf_applications.information.check_payment_status.pay_m_here")
     And I should not see t("shf_applications.information.check_payment_status.m_expires")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
+    When I click on t("menus.nav.members.pay_membership")
+    Then I should be on the "user details" page for "fanny@mutts.com"
 
   Scenario: After login, Member without previously paid H-branding sees correct instructions about H branding
     And I am logged in as "fanny@mutts.com"
@@ -87,6 +93,8 @@ Feature: As a Member
     Then I should see t("shf_applications.information.check_payment_status.pay_h_here")
     And I should not see t("shf_applications.information.check_payment_status.h_expires")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
+    When I click on t("menus.nav.company.pay_branding_fee")
+    Then I should be on the "my company" page for "fanny@mutts.com"
 
   Scenario: After login, Member to be sees info about their app being handled
     Given I am logged in as "anna@muffs.com"
