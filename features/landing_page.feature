@@ -74,11 +74,18 @@ Feature: As a Member
     And I should not see t("shf_applications.information.check_payment_status.m_expires")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
 
+  Scenario: After login, Member without previously paid Membership fee sees correct instructions
+    And I am logged in as "fanny@mutts.com"
+    When I am on the "user instructions" page
+    Then I should see t("shf_applications.information.check_payment_status.pay_m_here")
+    And I should not see t("shf_applications.information.check_payment_status.m_expires")
+    And I should not see t("shf_applications.information.waiting_for_approval.in_process")
+
   Scenario: After login, Member without previously paid H-branding sees correct instructions about H branding
     And I am logged in as "fanny@mutts.com"
     When I am on the "user instructions" page
     Then I should see t("shf_applications.information.check_payment_status.pay_h_here")
-    And I should not see t("shf_applications.information.check_payment_status.m_expires")
+    And I should not see t("shf_applications.information.check_payment_status.h_expires")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
 
   Scenario: After login, Member to be sees info about their app being handled
