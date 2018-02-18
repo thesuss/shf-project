@@ -78,7 +78,7 @@ Feature: As a Member
     When I click on t("menus.nav.company.pay_branding_fee")
     Then I should be on the "my company" page for "emma@mutts.com"
 
-  Scenario: After login, Member without previously paid Membership fee sees correct instructions
+  Scenario: After login, user with accepted app but with no membership payment sees instructions to pay
     And I am logged in as "fanny@mutts.com"
     When I am on the "user instructions" page
     Then I should see t("shf_applications.information.check_payment_status.pay_m_here")
@@ -96,7 +96,7 @@ Feature: As a Member
     When I click on t("menus.nav.company.pay_branding_fee")
     Then I should be on the "my company" page for "fanny@mutts.com"
 
-  Scenario: After login, Member to be sees info about their app being handled
+  Scenario: After login, user with accepted app sees info about their app being handled
     Given I am logged in as "anna@muffs.com"
     When I am on the "user instructions" page
     Then I should see t("shf_applications.information.waiting_for_approval.in_process")
