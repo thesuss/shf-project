@@ -676,7 +676,7 @@ en:
       error: A problem kept the user from being updated.
       member_photo:
         reason: Your photo will be used in your digital "proof of membership".
-        format: Your photo file should be in "PNG" or "JPEG" format, and be
+        format: Your photo file should be in "PNG", "JPG" or "JPEG" format, and be
                 approximately the size of a passport photo (or a bit larger)
                 for best results. (This is flexible, however, as we will resize
                 the photo as needed.)

@@ -98,28 +98,30 @@
 
     %hr
 
-  .col-sm-12
-    .col-md-5
-      = render partial: 'proof_of_membership',
+
+  - if @user.member?
+    .col-sm-12
+      .col-md-5
+        = render partial: 'proof_of_membership',
                         locals: { app_config: @app_configuration, user: @user }
 
-    .col-md-7
-      %span.standard-label= t('.proof_of_membership')
-      %br
-      %br
-      = t('.proof_of_membership_describe')
-      %br
-      %br
-      = t('.proof_of_membership_image')
-      &nbsp;
-      = link_to(t('.download_image'), proof_of_membership_path(@user, render_to: :jpg),
-                class: 'btn btn-warning btn-xs')
-      %br
-      %br
-      = t('.proof_of_membership_show')
-      &nbsp;
-      = link_to(t('.show_image'), proof_of_membership_path(@user),
-                 class: 'btn btn-warning btn-xs')
+      .col-md-7
+        %span.standard-label= t('.proof_of_membership')
+        %br
+        %br
+        = t('.proof_of_membership_describe')
+        %br
+        %br
+        = t('.proof_of_membership_image')
+        &nbsp;
+        = link_to(t('.download_image'), proof_of_membership_path(@user, render_to: :jpg),
+                  class: 'btn btn-warning btn-xs')
+        %br
+        %br
+        = t('.proof_of_membership_show')
+        &nbsp;
+        = link_to(t('.show_image'), proof_of_membership_path(@user),
+                   class: 'btn btn-warning btn-xs')
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }
