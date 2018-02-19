@@ -678,7 +678,7 @@ sv:
       error: Ett problem hindrade användarinformationen från att uppdateras.
       member_photo:
         reason: Detta foto används på ditt medlemsbevis.
-        format: Din fotofil ska vara i "PNG" eller "JPEG" -format,
+        format: Din fotofil ska vara i "PNG", "JPG" eller "JPEG" -format,
                 och av passfototyp (det vill säga ansiktsbild med neutral bagrund)
                 för bästa resultat.
         upload: Klicka på "Välj fil" för att ladda upp ditt foto.

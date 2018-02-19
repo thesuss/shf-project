@@ -19,7 +19,7 @@ class User < ApplicationRecord
                     styles: { standard: ['130x130#'] }, default_style: :standard
 
   validates_attachment_content_type :member_photo,
-                                    content_type:  /\Aimage\/.*(jpeg|png)\z/
+                                    content_type:  /\Aimage\/.*(jpg|jpeg|png)\z/
   validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/]
 
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
