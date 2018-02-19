@@ -341,7 +341,7 @@ en:
       no_search_results: No records matched your search criteria.
 
     information:
-      title: About Membership
+      title: About Application and Membership
       member:
         title: Welcome
         using_the_logo: "It is important that we all follow our graphic identity,
@@ -366,6 +366,20 @@ en:
         when_we_decide: "We'll send you an email with our decision.
                         If your application is approved, we'll give you a link
                         so you can describe and list your business here."
+
+      waiting_for_approval:
+        title: Hello, happy to have you join us.
+        in_process: We are processing your application.
+        look_over: Please look it over and make sure you have uploaded files and selected categories.
+        too_slow: If it takes us wayyy too long, send us an email to
+
+      check_payment_status:
+        approved: You are approved and it is time to pay your membership fees
+        pay_m_here: 'Pay your membership on this page:'
+        approved_since_before: You are approved since earlier but have one or more unpaid fees.
+        m_expires: 'Your membership-payment expired:'
+        h_expires: 'Your H-branding fee-payment expired:'
+        pay_h_here: 'Your H-branding fee needs to be paid:'
 
     start_review:
       success: The review has been started.
