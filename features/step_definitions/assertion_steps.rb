@@ -14,7 +14,7 @@ module PathHelpers
       when 'new application'
         path = new_shf_application_path
       when 'edit application', 'edit my application'
-        user.shf_applications.reload
+        user.reload
         path = edit_shf_application_path(user.shf_application)
       when 'application', 'show my application'
         path = shf_application_path(user.shf_application)

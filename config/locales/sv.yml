@@ -39,7 +39,7 @@ sv:
   'no': &no Nej
   'Yes': *yes
   'No': *no
-  applications: &applications Ansökningar
+  application: &application Ansökan
   user_activity: Användaraktivitet
   none: &none Ingen
 
@@ -702,8 +702,8 @@ sv:
       last_login: *user_last_login
       logged_in_count: *sign_in_count
       member: Medlem
-      applications: *applications
-      applications_tooltip: Antal öppna ansökningar
+      application: *application
+      applications_tooltip: Användaren har en öppen ansökan
       expire_date: *expire_date
 
   payments:
@@ -1039,7 +1039,7 @@ sv:
           manage_companies: Hantera företag
           new_company: Nytt företag
         applications:
-          submenu_title: *applications
+          submenu_title: Ansökningar
           manage_applications: Hantera ansökningar
           waiting_reasons: "Anledning för avvaktan"
         users:

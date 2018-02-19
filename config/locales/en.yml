@@ -39,7 +39,7 @@ en:
   'no': &no 'No'
   'Yes': *yes
   'No': *no
-  applications: &applications Applications
+  application: &application Application
   user_activity: User Activity
   none: &none None
 
@@ -702,8 +702,8 @@ en:
       last_login: *user_last_login
       logged_in_count: *sign_in_count
       member: Member
-      applications: *applications
-      applications_tooltip: Number of open applications
+      application: *application
+      applications_tooltip: User has an open application
       expire_date: *expire_date
 
   payments:
