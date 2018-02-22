@@ -65,7 +65,7 @@ $app-state-border-blue: rgb(142, 173, 206);
       border: 1px solid $border-med-blue;
       margin: 0 1em;
       padding: 1.3em;
-
+      .container {width:100%}
     }
 
     table {
