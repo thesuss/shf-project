@@ -41,7 +41,7 @@ sv:
   'No': *no
   application: &application Ansökan
   user_activity: Användaraktivitet
-  none: &none Ingen
+  none: &none Inget
 
   time_ago: '%{amount_of_time} sedan'
 

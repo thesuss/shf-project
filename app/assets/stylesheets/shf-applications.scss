@@ -15,7 +15,7 @@ $app-state-border-blue: rgb(142, 173, 206);
 .shfapplication {
 
   .wpcf7 {
-    margin-top: 0.3em !important;
+    margin-top: 0.3em;
     padding-top: 0;
   }
 
@@ -39,8 +39,8 @@ $app-state-border-blue: rgb(142, 173, 206);
     h2 {
       border-top: 3pt solid rgba(86, 146, 206, 0.2);
       font-weight: bold;
-      padding-top: 0.7em;
       margin-top: 0.9em;
+      padding-top: 0.7em;
     }
 
     .answers {
@@ -63,9 +63,10 @@ $app-state-border-blue: rgb(142, 173, 206);
     .files {
       background: $border-med-blue-a-light;
       border: 1px solid $border-med-blue;
-      margin: 0 1em;
       padding: 1.3em;
-      .container {width:100%}
+      .container {
+        width:100%;
+      }
     }
 
     table {
