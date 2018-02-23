@@ -36,6 +36,9 @@ font-weight: normal;
   .total {
     color: #1b3e70;
     text-align: right;
+    min-width: 35px;
+    margin-left:-35px;
+    display: inline-block;
   }
 
   .sub-info-line {

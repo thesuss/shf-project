@@ -7,18 +7,21 @@
   .row
     .col-md-11
       %ul.nav.nav-tabs
-        %li
+        %li.active
           %a(data-toggle='tab' href='#n1') Current
         %li
           %a(data-toggle='tab' href='#n2') Activity
+        %li
+          %a(data-toggle='tab' href='#n6') Applications
+        %li
+          %a(data-toggle='tab' href='#n7') Users
         %li
           %a(data-toggle='tab' href='#n3') Members
         %li
           %a(data-toggle='tab' href='#n4') Membership
         %li
           %a(data-toggle='tab' href='#n5') H-branding
-        %li
-          %a(data-toggle='tab' href='#n6') Users
+
       .tab-content
         #n1.tab-pane.fade.in.active
           -# smell:  passing so many vars to a view -> should encapsulate in a class
@@ -54,6 +57,10 @@
           = render 'admin_only/dashboard/h_branding'
         #n6.tab-pane.fade
           .section
-            %h3 Menu 6
+            %h3.section-title Applications
+            %p Some content in menu 6.
+        #n7.tab-pane.fade
+          .section
+            %h3.section-title Users
             %p Some content in menu 6.
 
