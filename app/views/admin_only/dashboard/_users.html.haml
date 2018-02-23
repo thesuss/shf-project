@@ -3,6 +3,7 @@
   %p Some content in menu 6.
   = @data_gatherer.translated_users.map{|k, v| "#{k}: #{v}"}.join(', ')
   = pie_chart @data_gatherer.translated_users
+  = line_chart User.all.group_by_day(:created_at).count
   %p
     %a.btn.btn-success(aria-controls='listUsers' aria-expanded='false' data-toggle='collapse' href= '#listUsers' role= 'button')
       View users who are not yet members

@@ -224,6 +224,8 @@ GEM
     gherkin (5.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    groupdate (4.0.0)
+      activesupport (>= 4.2)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -558,6 +560,7 @@ DEPENDENCIES
   font-awesome-rails
   font-awesome-sass
   geocoder
+  groupdate
   haml-rails
   high_voltage (~> 3.0.0)
   httparty
