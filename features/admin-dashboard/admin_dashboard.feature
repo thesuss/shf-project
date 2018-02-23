@@ -101,12 +101,6 @@ Feature: Admin sees the dashboard with summary of important information
     Given I am on the "admin dashboard" page
     Then I should see t("admin_only.dashboard.title")
     And I should see t("admin_only.dashboard.total_members", total_num_members: 11)
-    And I should see t("admin_only.dashboard.recent_activity_section_title", recent_num_days: 7)
-    And I should see t("activerecord.models.shf_application.other")
-    And I should see "9 "
-    And I should see t("admin_only.dashboard.payments")
-    And I should see t("admin_only.dashboard.member_fee_payments", number_payments: 9)
-    And I should see t("admin_only.dashboard.branding_fee_payments", number_payments: 1)
     And I should see t("admin_only.dashboard.current_items_section_title")
     And I should see "0 "
     And I should see t("admin_only.dashboard.open_apps_no_files")
@@ -116,6 +110,14 @@ Feature: Admin sees the dashboard with summary of important information
     And I should see t("admin_only.dashboard.companies_no_branding_payment")
     And I should see "0 "
     And I should see t("admin_only.dashboard.companies_incomplete")
+    When I click on "Activity"
+    Then I should see t("admin_only.dashboard.recent_activity_section_title", recent_num_days: 7)
+    And I should see t("activerecord.models.shf_application.other")
+    And I should see "9 "
+    And I should see t("admin_only.dashboard.payments")
+    And I should see t("admin_only.dashboard.member_fee_payments", number_payments: 9)
+    And I should see t("admin_only.dashboard.branding_fee_payments", number_payments: 1)
+
 
     #And I should see "Change timeframe:"
 
