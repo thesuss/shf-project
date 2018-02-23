@@ -53,7 +53,7 @@ class User < ApplicationRecord
     # Business rule: user can pay membership fee if:
     # 1. user == member, or
     # 2. user has at least one application with status == :accepted
-    # TODO what if a payment has already been made?  any check for that?
+    # What if a payment has already been made?  any check for that?
 
     member? || shf_application&.accepted?
   end
