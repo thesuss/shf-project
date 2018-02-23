@@ -32,6 +32,7 @@ module AdminOnly
 
     # Read-only (info comes from the db)
     attr :total_members,
+         :total_companies,
          :shf_apps_state_counts,
          :apps_without_uploads,
          :apps_approved_member_fee_not_paid,
@@ -94,6 +95,8 @@ module AdminOnly
     # This does *not* change the timeframe
     #
     def refresh_data
+      @total_companies = Company.all.count
+      @total_users = User.all.count
 
       @total_members = User.members.count
 
