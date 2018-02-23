@@ -170,6 +170,9 @@ sv:
         state/accepted: &status_accepted Godkänd
         state/rejected: &status_rejected Avböjd
 
+      member:
+        true: Medlem
+        false: Ej medlem
 
 
       address:

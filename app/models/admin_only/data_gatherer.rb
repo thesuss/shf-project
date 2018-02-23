@@ -41,6 +41,7 @@ module AdminOnly
          :companies_branding_not_paid,
          :companies_info_not_completed,
          :recent_shf_apps,
+         :translated_users,
          :recent_app_state_counts,
          :recent_payments
 
@@ -98,9 +99,7 @@ module AdminOnly
     #
     def refresh_data
       @total_companies = Company.all.count
-      @total_users = User.all.count
 
-      @total_members = User.members.count
 
       # membership applications by state
       ShfApplication.all_states.each do |app_state|
@@ -114,6 +113,13 @@ module AdminOnly
 
       @companies_branding_not_paid = Company.all.reject(&:branding_license?)
       @companies_info_not_completed = Company.all - Company.complete
+
+      @total_users = User.all.count
+      @total_members = User.members.count
+
+      @translated_users = User.group(:member).count.transform_keys {
+          |k| I18n.t "activerecord.attributes.member.#{k}"
+      }
 
       get_data_for_past_days(timeframe)
 

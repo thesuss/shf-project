@@ -52,15 +52,14 @@
           = render 'admin_only/dashboard/m_fee_payments'
         #n5.tab-pane.fade
           = render 'admin_only/dashboard/h_branding'
+
         #n6.tab-pane.fade
           .section
             %h3.section-title Applications
             %p= @data_gatherer.app_states_translated.map{|k, v| "#{k}: #{v}"}.join(', ')
             = pie_chart @data_gatherer.app_states_translated
-            =# pie_chart ShfApplication.group(:state).count
 
         #n7.tab-pane.fade
-          .section
-            %h3.section-title Users
-            %p Some content in menu 6.
+          = render 'admin_only/dashboard/users'
+
 
