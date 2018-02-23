@@ -678,7 +678,7 @@ RSpec.describe 'AdminOnly::DataGatherer' do
 
       it '1 app done today and no others' do
         user = create(:user_with_membership_app)
-        expect(subject.send(:get_recent_shf_apps, Time.zone.now - 1.day, Time.zone.now)).to contain_exactly(user.shf_applications.first)
+        expect(subject.send(:get_recent_shf_apps, Time.zone.now - 1.day, Time.zone.now)).to contain_exactly(user.shf_application)
       end
 
       it '1 app today, 1 at the end of the timeframe (to the second), 1 in the middle of the timeframe' do

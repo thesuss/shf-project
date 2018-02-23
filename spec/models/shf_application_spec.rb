@@ -163,21 +163,21 @@ RSpec.describe ShfApplication, type: :model do
 
         let!(:shf_approved_app_uploads_1) do
           member = create(:member_with_membership_app, email: 'user_4@random.com')
-          shf_app = member.shf_applications.first
+          shf_app = member.shf_application
           shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
           shf_app
         end
 
         let!(:shf_approved_app_uploads_2) do
           member = create(:member_with_membership_app, email: 'user_5@random.com')
-          shf_app = member.shf_applications.first
+          shf_app = member.shf_application
           shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
           shf_app
         end
 
         let!(:shf_approved_app_uploads_3) do
           member = create(:member_with_membership_app, email: 'user_6@random.com')
-          shf_app = member.shf_applications.first
+          shf_app = member.shf_application
           shf_app.uploaded_files <<  create(:uploaded_file, :png, shf_application: shf_app)
           shf_app
         end
