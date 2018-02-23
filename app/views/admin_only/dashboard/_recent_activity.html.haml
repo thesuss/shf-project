@@ -16,7 +16,7 @@
     #recent-details
       %h4
         = styled_total(recent_app_state_counts[:new], "#{t('new')} #{t('activerecord.models.shf_application.other')}")
-      %p=  (recent_app_state_counts.reject{|k,_v| k== :new}).map{|k, v| "#{t'activerecord.attributes.shf_application.state/'+(k).to_s} : #{v}"}.join(', ')
+      %p=  (recent_app_state_counts.reject{|k,_v| k== :new}).map{|k, v| "#{t'activerecord.attributes.shf_application.state/'+(k).to_s}: #{v}"}.join(', ')
 
       %h4.total-payments-weekly
         = styled_total(recent_member_fee_payments.count + recent_branding_fee_payments.count,

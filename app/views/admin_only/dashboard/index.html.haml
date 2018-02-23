@@ -55,7 +55,7 @@
         #n6.tab-pane.fade
           .section
             %h3.section-title Applications
-            %p= @data_gatherer.shf_apps_state_counts.map{|k, v| "#{t'activerecord.attributes.shf_application.state/'+(k).to_s} : #{v}"}.join(', ')
+            %p= @data_gatherer.shf_apps_state_counts.map{|k, v| "#{t'activerecord.attributes.shf_application.state/'+(k).to_s}: #{v}"}.join(', ')
         #n7.tab-pane.fade
           .section
             %h3.section-title Users
