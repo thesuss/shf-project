@@ -1,44 +1,63 @@
-#admin-dashboard
-  %header.entry-header
-    %h1.entry-title= t('admin_only.dashboard.title')
-  .post-title-divider
-    %span
+%header.entry-header
+  %h1.entry-title= t('admin_only.dashboard.title')
+.post-title-divider
+  %span
 
-  .entry-content
+.entry-content.admin
+  .row
+    .col-md-11
+      %ul.nav.nav-tabs
+        %li
+          %a(data-toggle='tab' href='#n1') Current
+        %li
+          %a(data-toggle='tab' href='#n2') Activity
+        %li
+          %a(data-toggle='tab' href='#n3') Members
+        %li
+          %a(data-toggle='tab' href='#n4') Membership
+        %li
+          %a(data-toggle='tab' href='#n5') H-branding
+        %li
+          %a(data-toggle='tab' href='#n6') Users
+      .tab-content
+        #n1.tab-pane.fade.in.active
+          -# smell:  passing so many vars to a view -> should encapsulate in a class
+          .section
+            = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
+            apps_approved_member_fee_not_paid: @data_gatherer.apps_approved_member_fee_not_paid,
+             companies_branding_not_paid: @data_gatherer.companies_branding_not_paid,
+             companies_info_not_completed: @data_gatherer.companies_info_not_completed
 
-    #summary
-      .row
-        .col-md-11
-          .membership-totals-current
+        #n2.tab-pane.fade
+          -# smell:  passing so many vars to a view -> should encapsulate in a class
+          .section
+            = render 'recent_activity', recent_num_days: @data_gatherer.timeframe,
+                                        recent_apps: @data_gatherer.recent_shf_apps,
+                                        recent_app_state_counts: @data_gatherer.recent_app_state_counts,
+                                        recent_payments: @data_gatherer.recent_payments,
+                                        recent_member_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym],
+                                        recent_branding_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym]
+
+        #n3.tab-pane.fade
+          .section.membership-totals-current
             %h3.total-members
               = styled_total(@data_gatherer.total_members, t('admin_only.dashboard.total_members'))
 
             %p.detail-line
               = @data_gatherer.shf_apps_state_counts.map{|k, v| "#{k}: #{v}"}.join(', ')
-            -# .membership-time-graph
-              %h5 (simple line graph of membership over time)
-              %h5 (simple bar graph showing memberships by state)
+        -# .membership-time-graph
+            %h5 (simple line graph of membership over time)
+            %h5 (simple bar graph showing memberships by state)
+        #n4.tab-pane.fade
+          .section
+            %h3 Menu 4
+            %p Some content in menu 4.
+        #n5.tab-pane.fade
+          .section
+            %h3 Menu 5
+            %p Some content in menu 5.
+        #n6.tab-pane.fade
+          .section
+            %h3 Menu 6
+            %p Some content in menu 6.
 
-      -# smell:  passing so many vars to a view -> should encapsulate in a class
-      .section
-        = render 'recent_activity', recent_num_days: @data_gatherer.timeframe,
-                                    recent_apps: @data_gatherer.recent_shf_apps,
-                                    recent_app_state_counts: @data_gatherer.recent_app_state_counts,
-                                    recent_payments: @data_gatherer.recent_payments,
-                                    recent_member_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym],
-                                    recent_branding_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym]
-
-      -# smell:  passing so many vars to a view -> should encapsulate in a class
-      .section
-        = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
-        apps_approved_member_fee_not_paid: @data_gatherer.apps_approved_member_fee_not_paid,
-         companies_branding_not_paid: @data_gatherer.companies_branding_not_paid,
-         companies_info_not_completed: @data_gatherer.companies_info_not_completed
-
-
-    .section
-      #details
-        .row
-          -# %p Tabs: Membership Applications, Companies, etc.
-          %p (TBD: link to the specifics - how to do that with ransack?)
-          %p (TBD: details shown down here, perhaps?  with tabs?)
