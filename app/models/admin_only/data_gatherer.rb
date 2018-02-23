@@ -33,6 +33,8 @@ module AdminOnly
     # Read-only (info comes from the db)
     attr :total_members,
          :total_companies,
+         :total_users,
+         :app_states_translated,
          :shf_apps_state_counts,
          :apps_without_uploads,
          :apps_approved_member_fee_not_paid,
@@ -104,7 +106,9 @@ module AdminOnly
       ShfApplication.all_states.each do |app_state|
         shf_apps_state_counts[app_state] = ShfApplication.total_in_state app_state
       end
-
+      @app_states_translated = ShfApplication.group(:state).count.transform_keys {
+          |k| I18n.t "activerecord.attributes.shf_application.state/#{k}"
+      }
       @apps_without_uploads = ShfApplication.no_uploaded_files
       @apps_approved_member_fee_not_paid = User.all.select(&:member_fee_payment_due?)
 
