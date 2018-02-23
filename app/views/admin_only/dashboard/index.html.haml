@@ -55,7 +55,11 @@
         #n6.tab-pane.fade
           .section
             %h3.section-title Applications
-            %p= @data_gatherer.shf_apps_state_counts.map{|k, v| "#{t'activerecord.attributes.shf_application.state/'+(k).to_s}: #{v}"}.join(', ')
+            %p= @data_gatherer.shf_apps_state_counts.map{|k, v| "#{t('activerecord.attributes.shf_application.state/'+ k.to_s)}: #{v}"}.join(', ')
+            - translated_states = @data_gatherer.shf_apps_state_counts.transform_keys {|k| I18n.t "activerecord.attributes.shf_application.state/#{k}"}
+            = pie_chart translated_states
+            =# pie_chart ShfApplication.group(:state).count
+
         #n7.tab-pane.fade
           .section
             %h3.section-title Users
