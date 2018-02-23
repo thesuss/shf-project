@@ -13,8 +13,8 @@
   %p= styled_total(c_total, 'companies in the system')
   %p= styled_total(h_unpaid.count, 'companies have not paid')
   %p
-    %a.btn.btn-primary(aria-controls='listCompanies' aria-expanded='false' data-toggle='collapse' href= '#listCompanies' role= 'button')
-      List unpaid companies
+    %a.btn.btn-success(aria-controls='listCompanies' aria-expanded='false' data-toggle='collapse' href= '#listCompanies' role= 'button')
+      View unpaid companies
   #listCompanies.collapse
     .card.card-body
       - h_unpaid.each do |c|
