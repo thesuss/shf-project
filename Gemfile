@@ -109,7 +109,7 @@ group :development do
   gem 'rb-readline'
 
   gem 'rubycritic'   # code quality analysis tools and reports
-
+  gem 'rubocop'
 end
 
 group :test do
