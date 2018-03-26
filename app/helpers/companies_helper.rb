@@ -5,9 +5,7 @@ module CompaniesHelper
   end
 
   def list_categories company, separator=' '
-    if company.business_categories.any?
-      company.business_categories.includes(:shf_applications).map(&:name).sort.join(separator)
-    end
+    company.categories_names.join(separator)
   end
 
 
@@ -28,10 +26,10 @@ module CompaniesHelper
     companies.flat_map do |company|
       name_html = link_name ?  nil : company.name
 
-      company.addresses.visible.includes(:kommun).map do |address|
-        {latitude: address.latitude,
-         longitude: address.longitude,
-         text: html_marker_text(company, address, name_html: name_html) }
+      company.addresses.map do |address|
+        { latitude: address.latitude,
+          longitude: address.longitude,
+          text: html_marker_text(company, address, name_html: name_html) }
       end
     end
   end

@@ -85,11 +85,10 @@ class Company < ApplicationRecord
 
 
   # All addresses for a company are complete AND the name is not blank
-  # must qualify name with 'company' because there are other tables that use 'name' and if
+  # must qualify name with 'companies' because there are other tables that use 'name' and if
   # this scope is combined with a clause for a different table that also uses 'name',
   # SQL won't know which table to get 'name' from
   #  name could be NULL or it could be an empty string
-
   def self.complete
     where.not('companies.name' => '',
               id: Address.lacking_region.pluck(:addressable_id))
@@ -97,10 +96,7 @@ class Company < ApplicationRecord
 
   def self.branding_licensed
     # All companies (distinct) with at least one unexpired branding payment
-    joins(:payments)
-      .where('payments.id IN (?)',
-             Payment.branding_fee.completed.unexpired.pluck(:id))
-      .distinct
+    joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
   end
 
   def self.address_visible
