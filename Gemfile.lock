@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/galetahub/ckeditor.git
-  revision: 115a50628baceeac5cc37363db082e3f5ba03c76
+  revision: dc2cef2c2c3358124ebd86ca2ef2335cc898b41f
   specs:
     ckeditor (4.2.4)
       orm_adapter (~> 0.5.0)
@@ -55,7 +55,7 @@ GEM
       io-like (~> 0.3.0)
     arel (8.0.0)
     ast (2.4.0)
-    autoprefixer-rails (8.1.0.1)
+    autoprefixer-rails (8.2.0)
       execjs
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
@@ -79,7 +79,7 @@ GEM
     bullet (5.7.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
-    byebug (10.0.0)
+    byebug (10.0.1)
     capistrano (3.6.1)
       airbrussh (>= 1.0.0)
       capistrano-harrow
@@ -108,6 +108,7 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (>= 2.0, < 4.0)
+    chartkick (2.3.3)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chromedriver-helper (1.2.0)
@@ -223,6 +224,8 @@ GEM
     gherkin (5.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    groupdate (4.0.0)
+      activesupport (>= 4.2)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -277,7 +280,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.2.1)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -313,8 +316,8 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
     parallel (1.12.1)
-    parser (2.4.0.2)
-      ast (~> 2.3)
+    parser (2.5.0.5)
+      ast (~> 2.4.0)
     path_expander (1.0.3)
     pg (0.21.0)
     poltergeist (1.17.0)
@@ -365,17 +368,16 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
     railties (5.1.0)
       actionpack (= 5.1.0)
       activesupport (= 5.1.0)
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rainbow (2.2.2)
-      rake
-    rake (12.3.0)
+    rainbow (3.0.0)
+    rake (12.3.1)
     ransack (1.8.8)
       actionpack (>= 3.0)
       activerecord (>= 3.0)
@@ -386,10 +388,10 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     rb-readline (0.5.5)
-    reek (4.7.3)
+    reek (4.8.0)
       codeclimate-engine-rb (~> 0.4.0)
-      parser (>= 2.4.0.0, < 2.5)
-      rainbow (~> 2.0)
+      parser (>= 2.5.0.0, < 2.6)
+      rainbow (~> 3.0)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
@@ -417,9 +419,9 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
-    rubocop (0.52.1)
+    rubocop (0.54.0)
       parallel (~> 1.10)
-      parser (>= 2.4.0.2, < 3.0)
+      parser (>= 2.5)
       powerpack (~> 0.1)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
@@ -428,23 +430,23 @@ GEM
     ruby_dep (1.5.0)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
-    rubycritic (3.3.0)
+    rubycritic (3.4.0)
       flay (~> 2.8)
       flog (~> 4.4)
       launchy (= 2.4.3)
-      parser (~> 2.4.0)
-      rainbow (~> 2.1)
+      parser (~> 2.5.0)
+      rainbow (~> 3.0)
       reek (~> 4.4)
       ruby_parser (~> 3.8)
       tty-which (~> 0.3.0)
       virtus (~> 1.0)
     rubyzip (1.2.1)
     safe_yaml (1.0.4)
-    sanitize (4.6.3)
+    sanitize (4.6.4)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)
-    sass (3.5.5)
+    sass (3.5.6)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -551,6 +553,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.1.1)
   capistrano-rbenv (~> 2.0)
   capistrano-ssh-doctor (~> 1.0)
+  chartkick
   chromedriver-helper
   city-state
   ckeditor!
@@ -570,6 +573,7 @@ DEPENDENCIES
   font-awesome-rails
   font-awesome-sass
   geocoder
+  groupdate
   haml-rails
   high_voltage (~> 3.0.0)
   httparty
