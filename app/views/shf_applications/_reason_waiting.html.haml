@@ -15,7 +15,7 @@
                          { include_blank: t('shf_applications.need_info.select_a_reason'),
                            class: 'reason-waiting-list',
                            data: { remote: true,
-                                   url: shf_application_path(@shf_application),
+                                   url: reason_waiting_shf_application_path(@shf_application),
                                    method: 'put' } })
 
   .row
@@ -24,7 +24,7 @@
         = label_tag :custom_reason_text, t('shf_applications.need_info.other_reason_label')
         = text_field_tag :custom_reason_text, @shf_application.custom_reason_text,
                     { data: { remote: true,
-                              url: shf_application_path(@shf_application),
+                              url: reason_waiting_shf_application_path(@shf_application),
                               method: 'put' } }
 
 
@@ -40,8 +40,8 @@
 
   $(document).ready(function () {
 
-    $('#member_app_waiting_reasons').on('ajax:success', function (e, data) {
-      if (data === "#{@other_waiting_reason_value}") {
+    $('#member_app_waiting_reasons').on('ajax:success', function (e, show_other_reason) {
+      if (show_other_reason == 'true') {
         $('#other-text-field').show();
       } else {
         $('#other-text-field').hide();
