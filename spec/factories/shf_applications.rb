@@ -23,6 +23,7 @@ FactoryBot.define do
       num_categories 0
       category_name "Business Category"
       company_number nil
+      create_company true
     end
 
     after(:build) do |shf_app, evaluator|
@@ -35,15 +36,16 @@ FactoryBot.define do
         end
       end
 
+      company = nil
       if evaluator.company_number
         company = Company.find_by(company_number: evaluator.company_number)
         unless company
           company = FactoryBot.create(:company, company_number: evaluator.company_number)
         end
-      else
+      elsif evaluator.create_company
         company = FactoryBot.create(:company)
       end
-      shf_app.companies << company
+      shf_app.companies << company if company
     end
 
   end
