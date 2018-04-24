@@ -109,6 +109,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
+    And I wait 4 seconds
     And I wait for all ajax requests to complete
 
     And I click on t("shf_applications.new.submit_button_label")
@@ -133,7 +134,7 @@ Feature: Create a new membership application
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
-  @selenium_browser
+  @selenium
   Scenario: A user can submit a new Membership Application with no categories
     Given I am on the "new application" page
     And I fill in the translated form with data:
@@ -145,7 +146,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
-    And I wait 2 seconds
+    And I wait 4 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
@@ -179,6 +180,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "5562252998"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
+    And I wait 4 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
@@ -192,10 +194,10 @@ Feature: Create a new membership application
 
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I wait 2 seconds
     And I fill in t("companies.show.company_number") with "6112107039"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
+    And I wait 4 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)

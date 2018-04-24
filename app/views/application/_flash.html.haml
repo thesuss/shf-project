@@ -1,5 +1,8 @@
 #flashes.flashes
   - flash.each do |key, value|
-    %div{class: "alert alert-#{flash_class(key)} center"}= render_flash_message(value)
+    .alert.alert-dismissable.center{ class: "alert-#{flash_class(key)}", role: 'alert' }
+      %button.close{ type: 'button', 'data-dismiss' => 'alert' }
+        %span &times;
+      = render_flash_message(value)
 
   - flash.clear

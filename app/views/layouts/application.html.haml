@@ -46,10 +46,10 @@
       I18n.locale = "#{I18n.locale}";
 
     = render 'top'
-    = render 'flash'
     #wrap
       #content.site-content.container
         .page-gutter.col-xs-12
+          = render 'flash'
           %section#primary.content-area
             %main#main.site-main{role: 'main'}
               %article
