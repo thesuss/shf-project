@@ -317,6 +317,9 @@ class ShfApplicationsController < ApplicationController
       numbers_str.split(/(?:\s*,+\s*|\s+)/).each do |number|
         number = number.delete('-')
 
+        # Remove duplicates
+        next if numbers.include?(number)
+
         company = Company.find_by(company_number: number)
 
         companies << company
