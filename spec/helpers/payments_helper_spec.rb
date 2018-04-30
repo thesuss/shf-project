@@ -20,7 +20,7 @@ RSpec.describe PaymentsHelper, type: :helper do
     context 'user' do
 
       it 'returns date with style "yes" if expire_date more than a month away' do
-        user_payment.update(expire_date: Time.zone.today + 1.month + 1.day)
+        user_payment.update(expire_date: Time.zone.today + 1.month + 2.days)
         response = /class="Yes".*#{user_payment.expire_date}/
         expect(expire_date_label_and_value(user)).to match response
       end
@@ -47,7 +47,7 @@ RSpec.describe PaymentsHelper, type: :helper do
     context 'company' do
 
       it 'returns date with style "yes" if expire_date more than a month away' do
-        brand_payment.update(expire_date: Time.zone.today + 1.month + 1.day)
+        brand_payment.update(expire_date: Time.zone.today + 1.month + 2.days)
         response = /class="Yes".*#{brand_payment.expire_date}/
         expect(expire_date_label_and_value(company)).to match response
       end

@@ -311,6 +311,8 @@ en:
       upload_more_files: 'You can upload more files. After you submit your application, you may still edit the application and upload more files.'
       upload_button: Choose files to upload...
       will_be_uploaded: 'These files will be uploaded when you submit your application:'
+      upload_multiple_files: To upload multiple files at once hold down the
+                             control key (Windows) or command key (Mac).
 
       submit_button_label: *submit
 

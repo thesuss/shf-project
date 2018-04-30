@@ -312,6 +312,7 @@ sv:
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
       upload_button: Välj dina filer...
       will_be_uploaded: 'Dessa filer kommer att laddas upp när du skickar in din ansökan:'
+      upload_multiple_files: ctrl-tangenten (Windows) eller command/cmd på (Mac) för att välja flera.
 
       submit_button_label: *submit
 

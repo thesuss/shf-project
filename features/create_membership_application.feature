@@ -134,7 +134,7 @@ Feature: Create a new membership application
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
-  @selenium
+  @selenium_browser
   Scenario: A user can submit a new Membership Application with no categories
     Given I am on the "new application" page
     And I fill in the translated form with data:

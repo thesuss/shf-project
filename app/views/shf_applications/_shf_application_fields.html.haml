@@ -28,8 +28,12 @@
                   accept: @allowed_file_types.values.join(',')
 
               - submit_label = @shf_application.new_record? ? t('submit') : t('save')
-              %p= t('shf_applications.new.upload_allowed_file_types')
-              %p= @allowed_file_types.keys.flatten.join(' ')
+              %p
+                = t('shf_applications.new.upload_multiple_files')
+                %br
+                %br
+                = t('shf_applications.new.upload_allowed_file_types')
+                = @allowed_file_types.keys.flatten.join(' ')
 
               %h4.hidden.files-to-upload-title#files-to-upload-title= t('shf_applications.new.will_be_uploaded')
 
