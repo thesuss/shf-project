@@ -75,7 +75,7 @@ class ShfApplicationsController < ApplicationController
       end
 
     else
-      create_error(t('.error'), companies_and_numbers, numbers_str)
+      create_or_update_error(t('.error'), companies_and_numbers, numbers_str, :new)
     end
   end
 
@@ -98,7 +98,7 @@ class ShfApplicationsController < ApplicationController
       redirect_to define_path(evaluate_update(params))
     else
 
-      update_error(t('.error'), companies_and_numbers, numbers_str)
+      create_or_update_error(t('.error'), companies_and_numbers, numbers_str, :edit)
     end
   end
 
@@ -258,26 +258,17 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  def create_error(error_message, companies_and_numbers, company_numbers_str)
+  def create_or_update_error(error_message, companies_and_numbers,
+                             company_numbers_str, render_me)
 
     @shf_application = add_company_errors_to_model(@shf_application,
                                                    companies_and_numbers)
 
     helpers.flash_message(:alert, error_message)
     load_update_objects(company_numbers_str)
-    render :new
+    render render_me
   end
 
-
-  def update_error(error_message, companies_and_numbers, company_numbers_str)
-
-    @shf_application = add_company_errors_to_model(@shf_application,
-                                                   companies_and_numbers)
-
-    helpers.flash_message(:alert, error_message)
-    load_update_objects(company_numbers_str)
-    render :edit
-  end
 
   def add_company_errors_to_model(application, companies_and_numbers)
     # see #validate_company_numbers for structure of companies_and_numbers
@@ -291,7 +282,7 @@ class ShfApplicationsController < ApplicationController
       end
 
       unless companies_and_numbers[:companies][idx]
-        application.errors.add(:companies, :invalid, value: numbers[idx])
+        application.errors.add(:companies, :not_found, value: numbers[idx])
       end
 
     end
@@ -306,6 +297,7 @@ class ShfApplicationsController < ApplicationController
 
   def validate_company_numbers(application, numbers_str)
     # Validates company numbers specified in shf application form
+    # (also, strips dash(es) from number since only digits allowed)
     # Returns two parameters:
     #  >> a hash with two keys:
     #     :numbers => array of company numbers
@@ -323,6 +315,7 @@ class ShfApplicationsController < ApplicationController
     else
 
       numbers_str.split(/(?:\s*,+\s*|\s+)/).each do |number|
+        number = number.delete('-')
 
         company = Company.find_by(company_number: number)
 

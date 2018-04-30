@@ -37,7 +37,7 @@ Feature: As an applicant
     And I am on the "landing" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
-    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2120000142"
+    Then I fill in t("shf_applications.show.company_number") with "5560360793, 212000-0142"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "emma@random.com"
     And I should see t("shf_applications.update.success", email_address: info@craft.se)
@@ -71,11 +71,11 @@ Feature: As an applicant
 
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 55603607, 2120000142                 | 031-1234567                       | info@craft.se                      |
+      | 556036-07, 2120000142                | 031-1234567                       | info@craft.se                      |
 
     And I click on t("shf_applications.edit.submit_button_label")
-    And I should see t("activerecord.errors.models.shf_application.attributes.companies.invalid", value: '55603607')
-    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2120000142"
+    And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
+    Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2120000142"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "hans@random.com"
     And I should see t("shf_applications.update.success", email_address: info@craft.se)

@@ -264,6 +264,7 @@ sv:
             companies:
               blank: '- Ange ett befintligt företagsnummer (eller skapa ett nytt företag)'
               invalid: "%{value} är inte ett svenskt organisationsnummer"
+              not_found: 'Företag med organisationsnummer% {value} inte hittat'
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'

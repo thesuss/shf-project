@@ -263,6 +263,7 @@ en:
             companies:
               blank: '- Specify an existing company number (or create new company)'
               invalid: "%{value} is not a valid Swedish company number"
+              not_found: 'Company with number %{value} not found'
 
 
       messages:

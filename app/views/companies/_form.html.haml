@@ -9,7 +9,7 @@
 
   %span.glyphicon.glyphicon-info-sign{ title: "#{t('.org_nr_tooltip')}",
                                        data: {toggle: 'tooltip'} }
-  = f.text_field :company_number, class: 'wpcf7-form-control'
+  = f.number_field :company_number, class: 'wpcf7-form-control'
 
   = f.label :phone_number, "#{t('companies.telephone_number')}"
   = f.text_field :phone_number, class: 'wpcf7-form-control'

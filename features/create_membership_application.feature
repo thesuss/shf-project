@@ -66,7 +66,7 @@ Feature: Create a new membership application
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 5560360793, 2120000142               | 031-1234567                       | info@craft.se                      |
+      | 5560360793, 212000-0142              | 031-1234567                       | info@craft.se                      |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
@@ -86,11 +86,11 @@ Feature: Create a new membership application
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 55603607, 2120000142                 | 031-1234567                       | info@craft.se                      |
+      | 556036-07, 2120000142                | 031-1234567                       | info@craft.se                      |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("activerecord.errors.models.shf_application.attributes.companies.invalid", value: '55603607')
-    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2120000142"
+    And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
+    Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2120000142"
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
@@ -102,7 +102,7 @@ Feature: Create a new membership application
     Given I am on the "new application" page
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 55603607                             | 031-1234567                       | info@craft.se                      |
+      | 556036-07                            | 031-1234567                       | info@craft.se                      |
 
     # Create new company in modal
     And I click on t("companies.new.title")
@@ -113,8 +113,8 @@ Feature: Create a new membership application
     And I wait for all ajax requests to complete
 
     And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("activerecord.errors.models.shf_application.attributes.companies.invalid", value: '55603607')
-    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2286411992"
+    And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
+    Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2286411992"
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
