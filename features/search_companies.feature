@@ -12,6 +12,7 @@ Background:
     | anna@dogsrus.com     |       | true   |
     | emma@weluvdogs.com   |       | true   |
     | lars@nopayment.se    |       | true   |
+    | admin@shf.se         | true  |        |
 
   And the following business categories exist
     | name         |
@@ -116,7 +117,7 @@ Scenario: Search by region
   And I should not see "We Luv Dogs"
 
 @selenium @time_adjust
-Scenario: Search by company (and confirm cannot search with non-searchable company name)
+Scenario: Search by company (and confirm non-admin cannot search with non-searchable company name)
   Given I am Logged out
   And I am on the "landing" page
   And I cannot select "NoPayment" in select list t("activerecord.models.company.one")
@@ -128,6 +129,24 @@ Scenario: Search by company (and confirm cannot search with non-searchable compa
   And I should not see "HappyMutts"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
+
+@selenium @time_adjust
+Scenario: Search by company (and confirm admin can search with all company names)
+  Given I am logged in as "admin@shf.se"
+  And I am on the "all companies" page
+  And I select "NoPayment" in select list t("activerecord.models.company.one")
+  And I click on t("search")
+  And I should see "NoPayment"
+  And I should not see "We Luv Dogs"
+  And I reload the page
+  And I select "NoMember" in select list t("activerecord.models.company.one")
+  And I click on t("search")
+  And I should see "NoMember"
+  And I should not see "We Luv Dogs"
+  And I should not see "HappyMutts"
+  And I should not see "Barky Boys"
+  And I should not see "Dogs R Us"
+  And I should not see "NoPayment"
 
 @selenium @time_adjust
 Scenario: Search by kommun and region

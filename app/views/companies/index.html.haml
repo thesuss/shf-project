@@ -25,7 +25,8 @@
 
   .panel.panel-default.search-form#company_search_form
 
-    = render 'search_form'
+    = render 'search_form', all_companies: @all_companies,
+                            search_params: @search__params
 
 
   - if @companies.empty?
