@@ -101,10 +101,10 @@
 
 
   - if @user.member?
-    .col-sm-12
+    .row
       .col-md-5
         = render partial: 'proof_of_membership',
-                        locals: { app_config: @app_configuration, user: @user }
+                 locals: { app_config: @app_configuration, user: @user }
 
       .col-md-7
         %span.standard-label= t('.proof_of_membership')
@@ -113,20 +113,47 @@
         = t('.proof_of_membership_describe')
         %br
         %br
-        = t('.proof_of_membership_image')
-        &nbsp;
-        = link_to(t('.download_image'), proof_of_membership_path(@user, render_to: :jpg),
-                  class: 'btn btn-warning btn-xs')
-        %br
-        %br
-        = t('.proof_of_membership_show')
-        &nbsp;
-        = link_to(t('.show_image'), proof_of_membership_path(@user),
-                   class: 'btn btn-warning btn-xs')
+        = t('.image_how_to_use_html',
+            download_link: link_to(t('.download_image'),
+                                   proof_of_membership_path(@user, render_to: :jpg),
+                                   class: 'btn btn-xs btn-info'),
+            show_link: link_to(t('.show_image'),
+                                 proof_of_membership_path(@user),
+                                 class: 'btn btn-xs btn-info'))
+
         %br
         %br
         = t('.proof_of_membership_photo_needed')
         = link_to(t('devise.registrations.edit.title'), edit_user_registration_path)
+
+    - @user.companies.all.each do |company|
+
+      - next unless company.branding_license?
+
+      .col-sm-12
+        %hr
+      .row
+        .col-md-5
+          = render partial: 'company_h_brand',
+                   locals: { app_config: @app_configuration, company: company }
+
+        .col-md-7
+          %span.standard-label= t('.company_h_brand', company: company.name)
+          %br
+          %br
+          = t('.company_h_brand_describe')
+          %br
+          %br
+          = t('.image_how_to_use_html',
+              download_link: link_to(t('.download_image'),
+                                     company_h_brand_path(@user,
+                                                           company_id: company.id,
+                                                           render_to: :jpg),
+                                     class: 'btn btn-xs btn-info'),
+              show_link: link_to(t('.show_image'),
+                                 company_h_brand_path(@user,
+                                                       company_id: company.id),
+                                     class: 'btn btn-xs btn-info'))
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }

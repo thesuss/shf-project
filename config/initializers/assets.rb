@@ -21,3 +21,4 @@ Rails.application.config.assets.precompile += %w{ shf-documents.scss }
 Rails.application.config.assets.precompile += %w( shf-applications.scss )
 Rails.application.config.assets.precompile += %w( application-mailer.scss )
 Rails.application.config.assets.precompile += %w( proof-of-membership.css )
+Rails.application.config.assets.precompile += %w( company-h-brand.css )

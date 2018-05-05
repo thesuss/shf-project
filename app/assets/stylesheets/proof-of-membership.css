@@ -43,21 +43,21 @@ body {
   width: 130px;
 }
 
+.issued-by {
+  font-weight: bold;
+  line-height: 30px;
+}
+
 .member-info {
   display: block;
   font-weight: normal;
   height: auto;
-  margin: 0;
+  margin: 0 10px 10px 10px;
   text-align: center;
 }
 
 .member-name, .membership-number {
   font-weight: bold;
-}
-
-.issued-by {
-  font-weight: bold;
-  line-height: 30px;
 }
 
 .proof-footer {

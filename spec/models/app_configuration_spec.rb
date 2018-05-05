@@ -26,6 +26,14 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
     it { is_expected.to have_db_column :shf_logo_content_type }
     it { is_expected.to have_db_column :shf_logo_file_size }
     it { is_expected.to have_db_column :shf_logo_updated_at }
+    it { is_expected.to have_db_column :h_brand_logo_file_name }
+    it { is_expected.to have_db_column :h_brand_logo_content_type }
+    it { is_expected.to have_db_column :h_brand_logo_file_size }
+    it { is_expected.to have_db_column :h_brand_logo_updated_at }
+    it { is_expected.to have_db_column :sweden_dog_trainers_file_name }
+    it { is_expected.to have_db_column :sweden_dog_trainers_content_type }
+    it { is_expected.to have_db_column :sweden_dog_trainers_file_size }
+    it { is_expected.to have_db_column :sweden_dog_trainers_updated_at }
   end
 
   describe 'Validations' do
@@ -36,6 +44,16 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
     end
     it 'validates content type of SHF logo file' do
       is_expected.to validate_attachment_content_type(:shf_logo)
+        .allowing('image/png', 'image/jpeg')
+        .rejecting('image/gif', 'image/bmp')
+    end
+    it 'validates content type of H-Brand logo file' do
+      is_expected.to validate_attachment_content_type(:h_brand_logo)
+        .allowing('image/png', 'image/jpeg')
+        .rejecting('image/gif', 'image/bmp')
+    end
+    it 'validates content type of dog trainers banner' do
+      is_expected.to validate_attachment_content_type(:sweden_dog_trainers)
         .allowing('image/png', 'image/jpeg')
         .rejecting('image/gif', 'image/bmp')
     end
@@ -72,6 +90,42 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
       end
       it 'rejects if content OK but file type wrong' do
         app_configuration.shf_logo = xyz_file
+        expect(app_configuration).not_to be_valid
+      end
+    end
+
+    describe 'rejects invalid file contents and file type - H-Brand logo' do
+
+      it 'rejects if content not jpeg or png' do
+        app_configuration.h_brand_logo = txt_file
+        expect(app_configuration).not_to be_valid
+
+        app_configuration.h_brand_logo = gif_file
+        expect(app_configuration).not_to be_valid
+
+        app_configuration.h_brand_logo = ico_file
+        expect(app_configuration).not_to be_valid
+      end
+      it 'rejects if content OK but file type wrong' do
+        app_configuration.h_brand_logo = xyz_file
+        expect(app_configuration).not_to be_valid
+      end
+    end
+
+    describe 'rejects invalid file contents and file type - dog trainers banner' do
+
+      it 'rejects if content not jpeg or png' do
+        app_configuration.sweden_dog_trainers = txt_file
+        expect(app_configuration).not_to be_valid
+
+        app_configuration.sweden_dog_trainers = gif_file
+        expect(app_configuration).not_to be_valid
+
+        app_configuration.sweden_dog_trainers = ico_file
+        expect(app_configuration).not_to be_valid
+      end
+      it 'rejects if content OK but file type wrong' do
+        app_configuration.sweden_dog_trainers = xyz_file
         expect(app_configuration).not_to be_valid
       end
     end

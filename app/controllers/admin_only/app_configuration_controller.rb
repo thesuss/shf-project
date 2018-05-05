@@ -37,7 +37,7 @@ module AdminOnly
       # not be added to the params, and there will be no
       # "admin_only_admin_page" key (for those fields) in the params).
       params.fetch(:admin_only_app_configuration, {})
-        .permit(:chair_signature, :shf_logo)
+        .permit(:chair_signature, :shf_logo, :h_brand_logo, :sweden_dog_trainers)
     end
   end
 

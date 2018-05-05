@@ -7,7 +7,15 @@ FactoryBot.define do
     end
 
     shf_logo do
-      File.new("#{Rails.root}/spec/fixtures/app_configuration/medlem.png")
+      File.new("#{Rails.root}/spec/fixtures/app_configuration/shf_logo.png")
+    end
+
+    h_brand_logo do
+      File.new("#{Rails.root}/spec/fixtures/app_configuration/h_brand_logo.png")
+    end
+
+    sweden_dog_trainers do
+      File.new("#{Rails.root}/spec/fixtures/app_configuration/sweden_dog_trainers.png")
     end
   end
 end

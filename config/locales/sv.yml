@@ -251,6 +251,10 @@ sv:
               spoofed_media_type: *spoofed_media
             shf_logo:
               spoofed_media_type: *spoofed_media
+            h_brand_logo:
+              spoofed_media_type: *spoofed_media
+            sweden_dog_trainers:
+              spoofed_media_type: *spoofed_media
 
         shf_document:
           attributes:
@@ -678,16 +682,18 @@ sv:
       membership_expire_date_tooltip: Efter detta datum går perioden för ditt medlemskap ut.
       proof_of_membership: Behörighetsbevis
       proof_of_membership_describe: Detta är ditt behörighetsbevis.
-      proof_of_membership_photo_needed: 'Om du ser "Photo Unavailable" ladda
-                                         sedan upp ett foto av dig själv här: '
-      proof_of_membership_image: Du kan ladda ner den här bilden och använda den
-                                 som du vill, inklusive på din webbplats, eller
-                                 skriva ut den och visa upp fysiskt i möten med kunder.
-      proof_of_membership_show: Du kan även ta en skärmdump av bilden och använda
-                                den istället. Använd knappen "Visa bild" för att
-                                gå till en sida som bara innehåller bilden.
+      proof_of_membership_photo_needed: 'Om du saknar profilbild (ser "Photo
+                                        Unavailable"), ladda upp en bild av dig
+                                        själv (utan hund) här: '
+      image_how_to_use_html: Du kan ladda ner bilden (%{download_link}) eller
+                             ta en skärmdump (%{show_link}) för att sedan
+                             använda den på din hemsida, i sociala medier eller
+                             skriva ut för att använda i fysisk kontext, exempelvis
+                             för att visa kund.
       download_image: Ladda ner bild
       show_image: Visa bild
+      company_h_brand: Företaget H-märke för %{company}
+      company_h_brand_describe: Detta är ditt företags H-märke.
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.
@@ -873,6 +879,8 @@ sv:
         title: Programkonfiguration
         chair_signature: Ordförandens underskrift
         shf_logo: Organisationslogotyp
+        h_brand_logo: H-märkt Logo
+        sweden_dog_trainers: Sveriges Hundtrainer
       update:
         success: Programdata uppdaterades framgångsrikt
         error: Det gick inte att uppdatera konfigurationsdata

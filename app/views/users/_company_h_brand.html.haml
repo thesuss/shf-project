@@ -1,0 +1,30 @@
+%html
+  %head
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans:400,700'
+    = stylesheet_link_tag 'company-h-brand', media: 'all'
+  %body
+
+    #company-h-brand
+
+      - render_to = :html unless local_assigns[:render_to]
+
+      .company-h-brand-div
+
+        - if app_config.h_brand_logo
+          = image_tag(paperclip_path(app_config.h_brand_logo, :standard, render_to),
+                      class: 'h-brand-logo')
+
+        .current-year
+          = Time.zone.now.year
+
+        - if app_config.sweden_dog_trainers
+          = image_tag(paperclip_path(app_config.sweden_dog_trainers,
+                      :standard, render_to), class: 'sweden-dog-trainers')
+
+        %hr.company-info-separator
+
+        %p.company-info
+          %span.company-name
+            = company.name
+          %br
+          = list_categories(company, ', ')

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180219132317) do
+ActiveRecord::Schema.define(version: 20180428103625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,14 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.string "shf_logo_content_type"
     t.integer "shf_logo_file_size"
     t.datetime "shf_logo_updated_at"
+    t.string "h_brand_logo_file_name"
+    t.string "h_brand_logo_content_type"
+    t.integer "h_brand_logo_file_size"
+    t.datetime "h_brand_logo_updated_at"
+    t.string "sweden_dog_trainers_file_name"
+    t.string "sweden_dog_trainers_content_type"
+    t.integer "sweden_dog_trainers_file_size"
+    t.datetime "sweden_dog_trainers_updated_at"
   end
 
   create_table "business_categories", force: :cascade do |t|
@@ -85,6 +93,7 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.string "dinkurs_company_id"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 
@@ -95,6 +104,24 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_company_applications_on_company_id"
     t.index ["shf_application_id"], name: "index_company_applications_on_shf_application_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.decimal "fee", precision: 8, scale: 2
+    t.date "start_date"
+    t.text "description"
+    t.string "dinkurs_id"
+    t.string "name"
+    t.string "sign_up_url"
+    t.string "place"
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_events_on_company_id"
+    t.index ["latitude", "longitude"], name: "index_events_on_latitude_and_longitude"
+    t.index ["start_date"], name: "index_events_on_start_date"
   end
 
   create_table "kommuns", force: :cascade do |t|
@@ -211,6 +238,7 @@ ActiveRecord::Schema.define(version: 20180219132317) do
   add_foreign_key "ckeditor_assets", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"
+  add_foreign_key "events", "companies"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "users"
   add_foreign_key "shf_applications", "member_app_waiting_reasons", column: "member_app_waiting_reasons_id"

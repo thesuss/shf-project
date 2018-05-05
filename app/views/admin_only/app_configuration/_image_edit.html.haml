@@ -1,0 +1,12 @@
+%h3
+  %strong= t("admin_only.app_configuration.edit.#{image_title}")
+= image_tag(app_config.send(image_title).url(:standard))
+%br
+%br
+- if app_config.send(image_title)
+  .clearfix
+  %strong
+    = app_config.send("#{image_title}_file_name")
+.clearfix
+.field
+  = f.file_field image_title.to_sym, accept: 'image/png, image/jpeg'
