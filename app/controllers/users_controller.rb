@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_action :set_app_config, only: [:show, :proof_of_membership, :update,
                                         :company_h_brand]
   before_action :authorize_user, only: [:show]
+  before_action :allow_iframe_request, only: [:proof_of_membership, :company_h_brand]
 
   def show
   end
@@ -123,6 +124,12 @@ class UsersController < ApplicationController
 
   def payment_params
     params.require(:payment).permit(:expire_date, :notes)
+  end
+
+  def allow_iframe_request
+    response.headers.delete('X-Frame-Options')
+    # https://stackoverflow.com/questions/17542511/
+    # cannot-display-my-rails-4-app-in-iframe-even-if-x-frame-options-is-allowall
   end
 
 

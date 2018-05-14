@@ -5,6 +5,7 @@ body {
 .company-h-brand-div {
   background-color: #e4e3df;
   border: 1px solid black;
+  box-sizing: border-box;
   display: block;
   font-size: 14px;
   font-style: normal;
