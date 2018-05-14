@@ -8,11 +8,13 @@ class User < ApplicationRecord
 
   before_destroy { self.member_photo = nil } # remove photo file from file system
 
-  has_one :shf_application
+  has_one :shf_application, dependent: :destroy
 
   has_many :companies, through: :shf_application
 
-  has_many :payments
+  has_many :payments, dependent: :nullify
+  # ^^ need to retain h-branding payment(s) for any associated company that
+  #    is not also deleted.
   accepts_nested_attributes_for :payments
 
   has_attached_file :member_photo, default_url: 'photo_unavailable.png',
