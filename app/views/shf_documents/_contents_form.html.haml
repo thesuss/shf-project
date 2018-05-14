@@ -1,4 +1,4 @@
-= form_tag({ controller: 'shf_documents', action: 'contents_update' },
+= form_tag({ controller: 'shf_documents', action: 'contents_update', page: @page },
            { method: 'patch' }) do
 
   = label_tag :title, t('.member_page_title')
