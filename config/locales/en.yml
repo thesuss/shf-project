@@ -266,8 +266,10 @@ en:
           attributes:
             companies:
               blank: '- Specify an existing company number (or create new company)'
-              invalid: "%{value} is not a valid Swedish company number"
-              not_found: 'Company with number %{value} not found'
+              invalid: "- %{value} is not a valid Swedish company number"
+              not_found: '- Company with number %{value} not found.
+                          Click the “New company” button to create the company,
+                          then try to send your application again.'
 
 
       messages:
