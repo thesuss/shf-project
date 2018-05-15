@@ -66,8 +66,14 @@ class ApplicationController < ActionController::Base
 
 
   def user_not_authorized
-    flash[:alert] = t('errors.not_permitted')
-    redirect_back(fallback_location: root_path)
+    if user_signed_in?
+      flash[:alert] = t('errors.not_permitted')
+      fallback_location = root_path
+    else
+      flash[:alert] = t('errors.not_permitted') + ' ' + t('errors.try_login')
+      fallback_location = new_user_session_path
+    end
+    redirect_back(fallback_location: fallback_location)
   end
 
 

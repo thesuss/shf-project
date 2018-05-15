@@ -1102,7 +1102,8 @@ sv:
   #----------
   # ERRORS
   errors:
-    not_permitted: Du har inte behörighet att göra detta.
+    not_permitted: Du har inte behörighet att komma åt den sidan.
+    try_login: Logga in först och försök igen med den sidan.
     format: "%{attribute} %{message}"
     bad_search_params: "Förlåt. Vi kunde inte söka efter %{search_item} med dessa kriterier. Var god försök igen."
     messages:

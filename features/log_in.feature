@@ -61,7 +61,8 @@ Feature: As a registered user
     Then I should see t("devise.failure.invalid", authentication_keys: 'Email')
     When I fail to visit the "membership applications" page
     Then I should see t("errors.not_permitted")
-    And I should be on "landing" page
+    And I should see t("errors.try_login")
+    And I should be on "login" page
 
   Scenario: Logging in as admin
     Given I am on the "landing" page

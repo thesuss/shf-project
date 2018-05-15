@@ -1101,7 +1101,8 @@ en:
   #----------
   # ERRORS
   errors:
-    not_permitted: You do not have permission to do this.
+    not_permitted: You are not authorized to access that page.
+    try_login: Login first and then retry accessing that page.
     bad_search_params: "Sorry.  We could not search for %{search_item} with those critera.  Please try again."
     format: "%{attribute} %{message}"
     messages:
