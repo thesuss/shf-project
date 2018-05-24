@@ -90,6 +90,7 @@ class UsersController < ApplicationController
     render_to_string(partial: image_type,
                      locals: { app_config: @app_configuration, user: @user,
                                render_to: params[:render_to]&.to_sym,
+                               context: params[:context]&.to_sym,
                                company: Company.find_by_id(params[:company_id]) })
   end
 

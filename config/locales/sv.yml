@@ -687,15 +687,21 @@ sv:
       proof_of_membership_photo_needed: 'Om du saknar profilbild (ser "Photo
                                         Unavailable"), ladda upp en bild av dig
                                         själv (utan hund) här: '
-      image_how_to_use_html: Du kan ladda ner bilden (%{download_link}) eller
-                             ta en skärmdump (%{show_link}) för att sedan
-                             använda den på din hemsida, i sociala medier eller
-                             skriva ut för att använda i fysisk kontext, exempelvis
-                             för att visa kund.
+      image_how_to_use_html: Du kan ladda ner bilden (%{download_link}), ta en
+                             skärmdump eller länka till den från din webbplats
+                             (%{show_link}) och använda den i sociala medier
+                             eller skriva ut för att använda i ett fysiskt
+                             sammanhang, till exempel att visa en kund.
       image_use_guidelines_html: Observera att din användning av denna bild är föremål
                                  för dessa %{use_guidelines_link}.
       use_guidelines: riktlinjer
       download_image: Ladda ner bild
+      image_dimensions_html: "Bildbredden är <span id = '%{width_id}'></span>
+                              pixlar och höjden är
+                              <span id = '%{height_id}'></span> pixlar."
+      use_this_image_link_html: "<span style='font-weight: bold'>
+                                Använd den här länken på en extern webbplats:
+                                </span>"
       show_image: Visa bild
       company_h_brand: Företaget H-märke för %{company}
       company_h_brand_describe: Detta är ditt företags H-märke.

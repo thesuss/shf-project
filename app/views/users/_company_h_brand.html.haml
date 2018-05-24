@@ -8,23 +8,41 @@
 
       - render_to = :html unless local_assigns[:render_to]
 
-      .company-h-brand-div
+      - if app_config.h_brand_logo
+        = image_tag(paperclip_path(app_config.h_brand_logo, :standard, render_to),
+                    class: 'h-brand-logo')
 
-        - if app_config.h_brand_logo
-          = image_tag(paperclip_path(app_config.h_brand_logo, :standard, render_to),
-                      class: 'h-brand-logo')
+      .current-year
+        = Time.zone.now.year
 
-        .current-year
-          = Time.zone.now.year
+      - if app_config.sweden_dog_trainers
+        = image_tag(paperclip_path(app_config.sweden_dog_trainers,
+                    :standard, render_to), class: 'sweden-dog-trainers')
 
-        - if app_config.sweden_dog_trainers
-          = image_tag(paperclip_path(app_config.sweden_dog_trainers,
-                      :standard, render_to), class: 'sweden-dog-trainers')
+      %hr.company-info-separator
 
-        %hr.company-info-separator
+      %p.company-info
+        %span.company-name
+          = company.name
+        %br
+        = list_categories(company, ', ')
 
-        %p.company-info
-          %span.company-name
-            = company.name
-          %br
-          = list_categories(company, ', ')
+    - if render_to == :html && context == :internal
+      %div
+        %br
+        = t('users.show.image_dimensions_html', width_id: 'h-brand-width',
+            height_id: 'h-brand-height')
+        %br
+        %br
+        = t('users.show.use_this_image_link_html')
+        = company_h_brand_url(user, company_id: company.id)
+
+      :javascript
+        window.onload = function(){
+          var image = document.getElementById('company-h-brand');
+
+          if (image !== undefined) {
+            document.getElementById('h-brand-width').textContent = image.offsetWidth;
+            document.getElementById('h-brand-height').textContent = image.offsetHeight;
+          }
+        };

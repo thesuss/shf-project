@@ -1,8 +1,9 @@
 body {
   font-family: 'Open Sans', sans-serif;
+  margin: 0;
 }
 
-.company-h-brand-div {
+#company-h-brand {
   background-color: #e4e3df;
   border: 1px solid black;
   box-sizing: border-box;

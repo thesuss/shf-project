@@ -104,7 +104,8 @@
     .row
       .col-md-5
         = render partial: 'proof_of_membership',
-                 locals: { app_config: @app_configuration, user: @user }
+                 locals: { app_config: @app_configuration, user: @user,
+                           context: :user_show }
 
       .col-md-7
         %span.standard-label= t('.proof_of_membership')
@@ -118,9 +119,8 @@
                                    proof_of_membership_path(@user, render_to: :jpg),
                                    class: 'btn btn-xs btn-info'),
             show_link: link_to(t('.show_image'),
-                                 proof_of_membership_path(@user),
+                                 proof_of_membership_path(@user, context: :internal),
                                  class: 'btn btn-xs btn-info'))
-
         %br
         %br
         = t('.proof_of_membership_photo_needed')
@@ -141,7 +141,8 @@
       .row
         .col-md-5
           = render partial: 'company_h_brand',
-                   locals: { app_config: @app_configuration, company: company }
+                   locals: { app_config: @app_configuration, company: company,
+                             context: :user_show, user: @user }
 
         .col-md-7
           %span.standard-label= t('.company_h_brand', company: company.name)
@@ -158,7 +159,8 @@
                                      class: 'btn btn-xs btn-info'),
               show_link: link_to(t('.show_image'),
                                  company_h_brand_path(@user,
-                                                       company_id: company.id),
+                                                      company_id: company.id,
+                                                      context: :internal),
                                      class: 'btn btn-xs btn-info'))
           %br
           %br
