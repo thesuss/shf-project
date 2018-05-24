@@ -692,6 +692,9 @@ sv:
                              använda den på din hemsida, i sociala medier eller
                              skriva ut för att använda i fysisk kontext, exempelvis
                              för att visa kund.
+      image_use_guidelines_html: Observera att din användning av denna bild är föremål
+                                 för dessa %{use_guidelines_link}.
+      use_guidelines: riktlinjer
       download_image: Ladda ner bild
       show_image: Visa bild
       company_h_brand: Företaget H-märke för %{company}

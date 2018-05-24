@@ -691,6 +691,9 @@ en:
                         take a screenshot (%{show_link}) and then use it on
                         your website, in social media or print to use in a
                         physical context, for example, to show a customer.
+      image_use_guidelines_html: Please note that your use of this image is subject to
+                                 these %{use_guidelines_link}.
+      use_guidelines: guidelines
       download_image: Download Image
       show_image: Show Image
       company_h_brand: Company H-Brand for %{company}

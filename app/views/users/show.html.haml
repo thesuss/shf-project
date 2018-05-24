@@ -124,7 +124,13 @@
         %br
         %br
         = t('.proof_of_membership_photo_needed')
-        = link_to(t('devise.registrations.edit.title'), edit_user_registration_path)
+        = link_to(t('devise.registrations.edit.title'), edit_user_registration_path,
+                  class: 'underlined_link')
+        %br
+        %br
+        = t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
+            'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
+            class: 'underlined_link'))
 
     - @user.companies.all.each do |company|
 
@@ -154,6 +160,11 @@
                                  company_h_brand_path(@user,
                                                        company_id: company.id),
                                      class: 'btn btn-xs btn-info'))
+          %br
+          %br
+          = t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
+              'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
+              class: 'underlined_link'))
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }
