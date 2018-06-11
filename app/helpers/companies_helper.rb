@@ -26,7 +26,7 @@ module CompaniesHelper
     companies.flat_map do |company|
       name_html = link_name ?  nil : company.name
 
-      company.addresses.map do |address|
+      company.addresses_visible.map do |address|
         { latitude: address.latitude,
           longitude: address.longitude,
           text: html_marker_text(company, address, name_html: name_html) }
