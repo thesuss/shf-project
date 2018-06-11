@@ -10,19 +10,16 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:employee3) { create(:user) }
 
     let!(:ma1) do
-      ma = create(:shf_application, :accepted, user: employee1)
-      ma.business_categories << create(:business_category, name: 'cat1')
+      ma = create(:shf_application, :accepted, user: employee1, category_name: 'cat1')
       ma
     end
     let!(:ma2) do
-      ma = create(:shf_application, :accepted, user: employee2)
-      ma.business_categories << create(:business_category, name: 'cat2')
+      ma = create(:shf_application, :accepted, user: employee2, category_name: 'cat2')
       ma.companies = ma1.companies
       ma
     end
     let!(:ma3) do
-      ma = create(:shf_application, :accepted, user: employee3)
-      ma.business_categories << create(:business_category, name: 'cat3')
+      ma = create(:shf_application, :accepted, user: employee3, category_name: 'cat3')
       ma.companies = ma1.companies
       ma
     end

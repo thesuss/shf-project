@@ -26,12 +26,12 @@ Feature: Whole process of a new user creating a login, applying, being approved,
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
 
-  @admin, @user, @member
+  @admin, @user, @member, @selenium
   Scenario: User creates application, admin approves, user edits company, blank main address is displayed
     Given I am in "new_user@example.com" browser
     And I am logged in as "new_user@example.com"
-    And I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | new_user@example.com               |
@@ -42,7 +42,6 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     Then I am in "admin@shf.se" browser
     And I am logged in as "admin@shf.se"
     And I am on the "landing" page
-    And I click on t("menus.nav.admin.manage_applications")
     Then I should see "NewUser1"
     And I am on the "application" page for "new_user@example.com"
     And I click on t("shf_applications.start_review_btn")
@@ -69,17 +68,22 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     Then I should see t("shf_applications.update.success")
     And I should see t("shf_applications.accepted")
     And I should see "10101"
+
     And I am logged out
     And I am logged in as "new_user@example.com"
     And I am on the "user details" page for "new_user@example.com"
-    And I click on t("menus.nav.members.manage_company.edit_company")
-    Then I should see t("companies.edit.title", company_name: "")
+
+    And I am on the "edit my company" page
+
+    Then I should see t("companies.edit.title", company_name: "No More Snarky Barky")
     And I should see t("companies.company_name")
     And I should see t("companies.show.company_number")
     And I should see t("companies.telephone_number")
     And I should see t("companies.show.email")
     And I should see t("companies.show.website")
-    Then I click on the second t("companies.view_company") link
+
+    Then I am on the "my first company" page
+
     Then I click on t("companies.show.add_address")
     And I should see t("companies.show.street")
     And I should see t("companies.show.post_code")

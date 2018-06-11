@@ -101,7 +101,7 @@ RSpec.describe AdminController, type: :controller do
             result_str << (m.updated_at.strftime('%F'))
             result_str << ','
 
-            result_str << '"",'  # no business categories
+            result_str << "\"#{m.business_categories[0].name}\","
 
             result_str << (m.companies.empty? ? '' : '"' + m.companies.last.name + '"')
 
@@ -171,7 +171,7 @@ RSpec.describe AdminController, type: :controller do
           result_str << (member1.updated_at.strftime('%F'))
           result_str << ','
 
-          result_str << '"",'  # no business categories
+          result_str << "\"#{member1.business_categories[0].name}\","
 
           #result_str << '"' + c1.name + '"' +','
           result_str << (member1.companies.empty? ?  '' : "\"#{member1.companies.last.name}\"") +','
@@ -233,7 +233,7 @@ RSpec.describe AdminController, type: :controller do
           # state date
           result_str << (member1.updated_at.strftime('%F'))
           result_str << ','
-          result_str << '"",'  # no business categories
+          result_str << "\"#{member1.business_categories[0].name}\","
 
           result_str << (member1.companies.empty? ?  '' : "\"#{member1.companies.last.name}\"") +','
           # say betals if member fee is paid, otherwise make link to where it is paid
@@ -256,7 +256,6 @@ RSpec.describe AdminController, type: :controller do
 
         it 'one business category' do
 
-          member1.business_categories << create(:business_category)
           member1.save
 
           result_str = csv_header
@@ -265,7 +264,8 @@ RSpec.describe AdminController, type: :controller do
           # state date
           result_str << (member1.updated_at.strftime('%F'))
           result_str << ','
-          result_str << '"Business Category",'
+
+          result_str << "\"#{member1.business_categories[0].name}\","
 
           result_str << (member1.companies.empty? ?  '' : "\"#{member1.companies.last.name}\"") +','
           # say betals if member fee is paid, otherwise make link to where it is paid
@@ -289,7 +289,7 @@ RSpec.describe AdminController, type: :controller do
 
         it 'three business categories, each separated by a comma then space' do
 
-          member1.business_categories << create(:business_category, name: 'Category1')
+          member1.business_categories = [create(:business_category, name: 'Category1')]
           member1.business_categories << create(:business_category, name: 'Category 2')
           member1.business_categories << create(:business_category, name: 'Category the third')
 

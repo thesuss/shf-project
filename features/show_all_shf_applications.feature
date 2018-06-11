@@ -89,11 +89,11 @@ Feature: Admin can see all SHF applications so they can be managed
     And I should not see "Trainer"
     And I should not see "Groomer"
 
-  @admin
+  @admin @selenium
   Scenario: Admin can see an application with multiple business categories given
     Given I am logged in as "emma_waits@waiting.se"
-    And I am on the "landing" page
-    And I click on t("menus.nav.members.my_application")
+    Given I am on the "user instructions" page
+    And I click on t("menus.nav.users.my_application")
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I click on t("shf_applications.edit.submit_button_label")
@@ -138,4 +138,3 @@ Feature: Admin can see all SHF applications so they can be managed
     When I am on the "shf applications" page
     Then I should see t("errors.not_permitted")
     And I should not see t("shf_applications.index.title")
-

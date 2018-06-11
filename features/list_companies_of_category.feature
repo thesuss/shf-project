@@ -81,6 +81,7 @@ Feature: As any type of visitor
     And I should not see "No More Snarky Barky"
     And I should not see "Sad Sad Snarky Barky"
 
+  @selenium
   Scenario: Another category is added
     Given I am logged in as "admin@shf.se"
     And I am on the "edit application" page for "ernt@mutts.com"

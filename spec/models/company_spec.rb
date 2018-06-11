@@ -199,25 +199,25 @@ RSpec.describe Company, type: :model do
     let(:cat3) { create(:business_category, name: 'cat3') }
 
     let(:m1) do
-      m = create(:shf_application, :accepted, user: employee1, num_categories: 0)
+      m = create(:shf_application, :accepted, user: employee1)
       m.companies = [company]
       m
     end
     let(:m2) do
-      m = create(:shf_application, :accepted, user: employee2, num_categories: 0)
+      m = create(:shf_application, :accepted, user: employee2)
       m.companies = m1.companies.to_a
       m
     end
     let(:m3) do
-      m = create(:shf_application, :accepted, user: employee3, num_categories: 0)
+      m = create(:shf_application, :accepted, user: employee3)
       m.companies = m1.companies.to_a
       m
     end
 
     it '3 employees, each with 1 unique category' do
-      m1.business_categories << cat1
-      m2.business_categories << cat2
-      m3.business_categories << cat3
+      m1.business_categories = [cat1]
+      m2.business_categories = [cat2]
+      m3.business_categories = [cat3]
 
       expect(company.business_categories.count).to eq 3
       expect(company.business_categories.map(&:name))
@@ -225,9 +225,9 @@ RSpec.describe Company, type: :model do
     end
 
     it '3 employees, each with the same category' do
-      m1.business_categories << cat1
-      m2.business_categories << cat1
-      m3.business_categories << cat1
+      m1.business_categories = [cat1]
+      m2.business_categories = [cat1]
+      m3.business_categories = [cat1]
 
       expect(company.business_categories.distinct.count).to eq 1
       expect(company.business_categories.count).to eq 3

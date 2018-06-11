@@ -10,6 +10,10 @@ Feature: Applicant uploads too large a file for their application
       | hans@new_applicant.se |       |
       | emma@happymutts.se    |       |
 
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+
     And the following applications exist:
       | user_email         | company_number | state        |
       | emma@happymutts.se | 5562252998     | under_review |
@@ -18,24 +22,28 @@ Feature: Applicant uploads too large a file for their application
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
-
+  @selenium
   Scenario: New application - Uploads a file that is too large
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the form with data:
       | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |
       | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
+    And I select "Groomer" Category
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
+    And I wait 10 seconds
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("shf_applications.create.success")
 
+  @selenium
   Scenario: New application - Uploads a file that is too large then uploads ok file
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the form with data:
       | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |
       | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
+    And I select "Groomer" Category
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
@@ -46,13 +54,14 @@ Feature: Applicant uploads too large a file for their application
 
     And I should see t("shf_applications.update.success")
 
-
+  @selenium
   Scenario: New application - Uploads a file just under the size limit
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the form with data:
       | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |
       | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
+    And I select "Groomer" Category
     And I choose a file named "upload-just-under-limit.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")

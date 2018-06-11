@@ -21,11 +21,11 @@ Feature: New Applicant gets an email acknowledging their application
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
-
+  @selenium
   Scenario: User submits a new application and email is sent
     Given I am logged in as "emma@happymutts.com"
-    And I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                           | 031-1234567                       | emma@happymutts.com                |
@@ -38,15 +38,14 @@ Feature: New Applicant gets an email acknowledging their application
     And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
     And I should see t("mailers.shf_application_mailer.acknowledge_received.message_text") in the email body
 
-
+  @selenium_browser
   Scenario: User submits a new application app with bad info so it is not created, so no email sent [SAD PATH]
     Given I am logged in as "emma@happymutts.com"
-    And I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 5560360793                           | 031-1234567                       | emmahappymutts.com                 |
-    And I select "Groomer" Category
+      | 5560360793                           | 031-1234567                       | emma@happymutts.com                 |
     And I click on t("shf_applications.new.submit_button_label")
     And I should see t("shf_applications.create.error")
     Then "emma@happymutts.com" should receive 0 email

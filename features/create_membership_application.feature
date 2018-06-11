@@ -36,19 +36,20 @@ Feature: Create a new membership application
       | Good Dog Spot        | 2120000142     | spot@gooddog.com       | Stockholm  |
 
     And the following applications exist:
-      | user_email        | company_number | state    |
-      | member@random.com | 5560360793     | accepted |
+      | user_email        | company_number | state    | categories |
+      | member@random.com | 5560360793     | accepted | Groomer    |
 
     And I am logged in as "applicant_1@random.com"
 
-
+  @selenium
   Scenario: A user can submit a new Membership Application with 1 category
-    Given I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                           | 031-1234567                       | info@craft.se                      |
     And I select "Groomer" Category
+
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
@@ -61,9 +62,10 @@ Feature: Create a new membership application
     And I open the email
     And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
 
+  @selenium
   Scenario: A user creates new Application associated with two companies
-    Given I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793, 212000-0142              | 031-1234567                       | info@craft.se                      |
@@ -81,9 +83,10 @@ Feature: Create a new membership application
     And I open the email
     And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
 
+  @selenium
   Scenario: User creates App with two companies, corrects an error in company number
-    Given I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 556036-07, 2120000142                | 031-1234567                       | info@craft.se                      |
@@ -99,10 +102,12 @@ Feature: Create a new membership application
 
   @selenium_browser
   Scenario: User creates App with two companies, creates one company, corrects error in company number
-    Given I am on the "new application" page
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 556036-07                            | 031-1234567                       | info@craft.se                      |
+    And I select "Groomer" Category
 
     # Create new company in modal
     And I click on t("companies.new.title")
@@ -121,10 +126,10 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2286411992"
 
-
+  @selenium
   Scenario: A user can submit a new Membership Application with multiple categories
-    Given I am on the "landing" page
-    And I click on t("menus.nav.users.apply_for_membership")
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                           | 031-1234567                       | info@craft.se                      |
@@ -135,8 +140,9 @@ Feature: Create a new membership application
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
   @selenium_browser
-  Scenario: A user can submit a new Membership Application with no categories
-    Given I am on the "new application" page
+  Scenario: A user cannot submit a new Membership Application with no category
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 031-1234567                       | info@craft.se                      |
@@ -150,7 +156,10 @@ Feature: Create a new membership application
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
-    Then I should be on the "user instructions" page
+    Then I should see error t("activerecord.attributes.shf_application.business_categories") t("errors.messages.blank")
+
+    Then I select "Groomer" Category
+    And I click on t("shf_applications.new.submit_button_label")
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
 
@@ -170,10 +179,12 @@ Feature: Create a new membership application
 
   @selenium_browser
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
-    And I am on the "new application" page
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 031-1234567                       | applicant_1@random.com             |
+    And I select "Groomer" Category
 
     # Create new company in modal
     And I click on t("companies.new.title")
@@ -187,10 +198,12 @@ Feature: Create a new membership application
     Then I should see t("shf_applications.create.success", email_address: applicant_1@random.com)
 
     Given I am logged in as "applicant_2@random.com"
-    And I am on the "new application" page
+    Given I am on the "user instructions" page
+    And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 2120000142                           | 031-1234567                       | applicant_2@random.com             |
+    And I select "Groomer" Category
 
     # Create new company in modal
     And I click on t("companies.new.title")
@@ -214,10 +227,11 @@ Feature: Create a new membership application
     And "admin@shf.se" should receive no emails
 
     Scenarios:
-      | c_email       | phone      | model_attribute                                             | error                            |
-      |               | 0706898525 | t("activerecord.attributes.shf_application.contact_email")  | t("errors.messages.blank")       |
-      | kicki@imminu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")  | t("errors.messages.invalid")     |
-      | kickiimmi.nu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")  | t("errors.messages.invalid")     |
+      | c_email       | phone      | model_attribute                                                   | error                            |
+      |               | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.blank")       |
+      |               | 0706898525 | t("activerecord.attributes.shf_application.business_categories")  | t("errors.messages.blank")       |
+      | kicki@imminu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
+      | kickiimmi.nu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
 
 
   @selenium

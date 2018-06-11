@@ -14,22 +14,31 @@ Feature: As an applicant
       | bob@barkybobs.com | false     |       |
       | admin@shf.se      | true      | true  |
 
-    And the following applications exist:
-      | user_email        | company_number         | state                 |
-      | emma@random.com   | 5560360793             | waiting_for_applicant |
-      | hans@random.com   | 2120000142, 5560360793 | under_review          |
-      | nils@random.com   | 2120000142             | accepted              |
-      | bob@barkybobs.com | 5560360793             | rejected              |
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+      | Psychologist |
+      | Trainer      |
 
+    And the following applications exist:
+      | user_email        | company_number         | state                 | categories |
+      | emma@random.com   | 5560360793             | waiting_for_applicant | Groomer    |
+      | hans@random.com   | 2120000142, 5560360793 | under_review          | Groomer    |
+      | nils@random.com   | 2120000142             | accepted              | Groomer    |
+      | bob@barkybobs.com | 5560360793             | rejected              | Groomer    |
+
+  @selenium
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "emma@random.com"
-    And I am on the "landing" page
+    Given I am on the "user instructions" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with ""
+    And I unselect "Groomer" Category
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.error")
     And I should see error t("shf_applications.show.contact_email") t("errors.messages.blank")
+    Then I should see error t("activerecord.attributes.shf_application.business_categories") t("errors.messages.blank")
     And I should see button t("shf_applications.edit.submit_button_label")
 
   Scenario: Applicant adds second company to application

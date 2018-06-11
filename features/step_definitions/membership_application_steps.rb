@@ -30,12 +30,14 @@ And(/^the following applications exist:$/) do |table|
       user.shf_application.companies << companies
 
     else
+      num_categories = hash[:categories] ? 0 : 1
+      
       ma = FactoryBot.build(:shf_application,
                             attributes.merge(user: user,
                             contact_email: contact_email,
-                            create_company: false))
+                            create_company: false,
+                            num_categories: num_categories))
       ma.companies = companies
-      ma.save
     end
 
     if hash['categories']
@@ -46,5 +48,6 @@ And(/^the following applications exist:$/) do |table|
       end
       ma.business_categories = categories
     end
+    ma.save
   end
 end

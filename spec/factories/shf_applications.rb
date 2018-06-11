@@ -20,7 +20,7 @@ FactoryBot.define do
     end
 
     transient do
-      num_categories 0
+      num_categories 1
       category_name "Business Category"
       company_number nil
       create_company true

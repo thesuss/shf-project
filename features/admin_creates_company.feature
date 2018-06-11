@@ -39,10 +39,14 @@ Feature: As an admin
       | applicant_1@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
       | applicant_3@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
 
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+
     And the following applications exist:
-      | user_email                 | company_number | state    |
-      | applicant_1@happymutts.com | 5560360793     | accepted |
-      | applicant_3@happymutts.com | 2120000142     | accepted |
+      | user_email                 | company_number | state    | categories |
+      | applicant_1@happymutts.com | 5560360793     | accepted | Groomer    |
+      | applicant_3@happymutts.com | 2120000142     | accepted | Groomer    |
 
 
     And the following business categories exist

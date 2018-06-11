@@ -75,7 +75,11 @@ end
 World(PathHelpers)
 
 Then "I should{negate} see {capture_string}" do |negate, content|
-  expect(page).send (negate ? :not_to : :to), have_content(content)
+  begin
+    expect(page).send (negate ? :not_to : :to), have_content(/#{content}/i)
+  rescue RSpec::Expectations::ExpectationNotMetError
+    expect(page).send (negate ? :not_to : :to), have_content(content)
+  end
 end
 
 

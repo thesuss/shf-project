@@ -11,6 +11,10 @@ Feature: Applicant uploads a file for their application
       | applicant_2@random.com |       |
       | admin@shf.com          | true  |
 
+    And the following business categories exist
+      | name         |
+      | Groomer      |
+
 
     And the following applications exist:
       | user_email             | company_number | state                 |
@@ -20,13 +24,14 @@ Feature: Applicant uploads a file for their application
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
-
+  @selenium
   Scenario: Upload a file during a new application
     Given I am logged in as "applicant_2@random.com"
     And I am on the "submit new membership application" page
     And I fill in the translated form with data:
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
+    And I select "Groomer" Category
     And I choose a file named "diploma.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)

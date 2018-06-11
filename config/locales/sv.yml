@@ -175,6 +175,8 @@ sv:
         state/accepted: &status_accepted Godkänd
         state/rejected: &status_rejected Avböjd
         state/being_destroyed: &status_being_destroyed Förstört
+        companies: Företag
+        business_categories: Företagstjänster
 
       member:
         true: Medlem
@@ -268,7 +270,7 @@ sv:
             companies:
               blank: '- Ange ett befintligt företagsnummer (eller skapa ett nytt företag)'
               invalid: "- %{value} är inte ett svenskt organisationsnummer"
-              not_found: 'Företag med organisationsnummer %{value} inte hittat.
+              not_found: 'med organisationsnummer %{value} inte hittat.
                           Klicka på knappen "Nytt företag" för att skapa företaget
                           och försök sedan skicka din ansökan igen.'
 
