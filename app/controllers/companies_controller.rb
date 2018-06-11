@@ -1,7 +1,8 @@
 class CompaniesController < ApplicationController
   include PaginationUtility
 
-  before_action :set_company, only: [:show, :edit, :update, :destroy, :edit_payment]
+  before_action :set_company, only: [:show, :edit, :update, :destroy,
+                                     :edit_payment, :fetch_from_dinkurs]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
 
@@ -38,8 +39,36 @@ class CompaniesController < ApplicationController
   end
 
   def show
+    setup_events_and_events_pagination
+
+    show_events_list if request.xhr?
   end
 
+  def fetch_from_dinkurs
+    raise 'Unsupported request' unless request.xhr?
+
+    @company.fetch_dinkurs_events
+    @company.reload
+
+    setup_events_and_events_pagination
+
+    show_events_list
+  end
+
+  def setup_events_and_events_pagination
+
+    entity = "company_#{@company.id}_events"
+    __, @items_count, items_per_page = process_pagination_params(entity)
+
+    @events = @company.events.order(:start_date)
+                .page(params[:page])
+                .per_page(items_per_page)
+  end
+
+  def show_events_list
+    render partial: 'events/teaser_list',
+           locals: { events: @events, company: @company, items_count: @items_count }
+  end
 
   def new
     authorize Company
@@ -64,7 +93,6 @@ class CompaniesController < ApplicationController
     @company = Company.new(sanitize_params(company_params))
 
     saved = @company.save
-
     unless request.xhr?
       if @company.save
         redirect_to @company, notice: t('.success')
@@ -101,7 +129,6 @@ class CompaniesController < ApplicationController
 
 
   def destroy
-
     if @company.destroy
       redirect_to companies_url, notice: t('companies.destroy.success')
     else
@@ -141,13 +168,13 @@ class CompaniesController < ApplicationController
     company.save! if needs_geocoding.count > 0
   end
 
-
   # Never trust parameters from the scary internet, only allow the white list through.
   def company_params
     params.require(:company).permit(:name, :company_number, :phone_number,
                                     :email,
                                     :website,
                                     :description,
+                                    :dinkurs_company_id,
                                     addresses_attributes: [:id,
                                                            :street_address,
                                                            :post_code,

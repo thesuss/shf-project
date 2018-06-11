@@ -204,6 +204,7 @@ en:
         region_short: *region_short
         website: Website
         org_nr: *org_nr
+        dinkurs_key: &dinkurs_company_key Dinkurs Company key
 
 
       business_category:
@@ -547,6 +548,10 @@ en:
                                 license for one year
       branding_fee_expire_date_tooltip: Branding license expires after this date
       members: Company Members
+      dinkurs_fetch_events: Get Dinkurs Events
+      dinkurs_fetching: Fetching events ... please wait
+      dinkurs_key: *dinkurs_company_key
+
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
@@ -570,7 +575,9 @@ en:
       visibility_tooltip: Level of detail as seen by visitor (including maps).
         Set to 'None' for no address visibility.
       org_nr_tooltip: Numbers only (no hyphens)
-
+      dinkurs_id_tooltip: If you have a Dinkurs.se account and want to also show
+                          the company events here, enter the Dinkurs.se company key.
+                          (You can leave it blank if you don't have a Dinkurs.se account.)
     company:
       submit_button_label: Update Status
 
@@ -609,6 +616,13 @@ en:
       success: Address deleted.
       error: Could not delete the address.
 
+  events:
+    show:
+      name: Company Events
+      start_date: Start Date
+      location: Location
+      fee: Fee
+      no_events: (No Scheduled Events)
 
   business_categories:
 

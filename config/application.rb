@@ -54,7 +54,6 @@ module SHFProject
         domain: ENV['MAILGUN_DOMAIN']
     }
 
-
     # Mail templates will need to use "_url" helpers rather than "_path" helpers
     # since the template will not have the context of a request
     # (as a controller does) and thus the full URL will be required to create

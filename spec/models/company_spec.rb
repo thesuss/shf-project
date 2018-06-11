@@ -72,6 +72,11 @@ RSpec.describe Company, type: :model do
            expire_date: expire_date)
   end
 
+  let(:company) { create(:company, num_addresses: 3) }
+
+  let(:event1) { create(:event, company: company) }
+  let(:event2) { create(:event, company: company) }
+
 
   describe 'Factory' do
     it 'has a valid factory' do
@@ -87,6 +92,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :website }
     it { is_expected.to have_db_column :description }
+    it { is_expected.to have_db_column :dinkurs_company_id }
   end
 
   describe 'Validations' do
@@ -126,10 +132,10 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_many(:users).through(:shf_applications) }
     it { is_expected.to have_many(:payments) }
     it { is_expected.to accept_nested_attributes_for(:payments).allow_destroy(false) }
+    it { is_expected.to have_many(:events).dependent(:destroy) }
   end
 
   describe 'destroy associated records when company is destroyed' do
-    let(:company) { create(:company, num_addresses: 3) }
     let(:user1)   { create(:user) }
     let(:user2)   { create(:user) }
     let(:application1) do
@@ -170,6 +176,12 @@ RSpec.describe Company, type: :model do
       expect { company.destroy }.to change(Address, :count).by(-3)
     end
 
+    it 'events' do
+      event1
+      event2
+      expect { company.destroy }.to change(Event, :count).by(-2)
+    end
+
     it 'pictures' do
       Ckeditor::Picture.for_company_id = company.id
       picture1
@@ -183,6 +195,42 @@ RSpec.describe Company, type: :model do
       brand_pymt2
       expect(company.payments.count).to eq 2
       expect { company.destroy }.to change(Payment, :count).by(-2)
+    end
+  end
+
+  describe 'events update management' do
+    it '#events_start_date returns starting date for stored events' do
+      expect(company.events_start_date).to eq 1.day.ago.to_date
+    end
+
+    context '#fetch_dinkurs_events', :vcr do
+      it 'returns nil if no dinkurs_company_id' do
+        expect(company.fetch_dinkurs_events).to be_nil
+      end
+
+      it 'removes previous events and returns nil if no dinkurs_company_id' do
+        event1
+        event2
+        expect(company.events.count).to eq 2
+        expect(company.fetch_dinkurs_events).to be_nil
+        expect(company.events.count).to eq 0
+      end
+
+      it 'removes previous events and returns nil if invalid dinkurs_company_id' do
+        company.dinkurs_company_id = 'nonesuch'
+        event1
+        event2
+        expect(company.events.count).to eq 2
+        expect(company.fetch_dinkurs_events).to be_nil
+        expect(company.events.count).to eq 0
+      end
+
+      it 'returns events for valid dinkurs_company_id' do
+        company.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
+        expect(company.events.count).to eq 0
+        expect(company.fetch_dinkurs_events).to_not be_nil
+        expect(company.events.count).to_not eq 0
+      end
     end
   end
 

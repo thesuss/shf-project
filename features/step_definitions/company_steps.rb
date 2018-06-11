@@ -81,6 +81,11 @@ Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |co
 
 end
 
+Then(/^all events for the company named "([^"]*)" are deleted from the database$/) do |company_name|
+  co = Company.find_by_name(company_name)
+  co.events.clear
+end
+
 When "I click the {ordinal} address for company {capture_string}" do |ordinal, company|
   cmpy = Company.find_by name: company
 

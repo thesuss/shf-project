@@ -1,0 +1,38 @@
+#company-events
+
+  %table.table.table-hover
+    %thead
+      %tr
+        %th
+          #{t('events.show.name')}
+        %th
+          #{t('events.show.location')}
+        %th
+          #{t('events.show.fee')}
+        %th
+          #{t('events.show.start_date')}
+      %tr
+    %tbody
+      - if events.any?
+        - events.each do |event|
+          %tr.event
+            %td.event-name
+              = link_to event.name, event.sign_up_url, target: '_blank'
+            %td.location
+              = event.location
+            %td.fee
+              = number_to_currency(event.fee, locale: 'sv', format: '%n',
+                                   precision: 0)
+            %td.event-start-date
+              = event.start_date
+      - else
+        %tr.event
+          %td.event-name{ colspan: 4 }
+            #{t('events.show.no_events')}
+
+  = render 'application/paginate_footer', entities: events,
+                                          paginate_class: 'events_pagination',
+                                          items_count: items_count,
+                                          url: company_path(company),
+                                          params: { controller: 'companies',
+                                                    action: 'show' }

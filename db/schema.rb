@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20180428103625) do
   create_table "events", force: :cascade do |t|
     t.decimal "fee", precision: 8, scale: 2
     t.date "start_date"
+    t.text "location"
     t.text "description"
     t.string "dinkurs_id"
     t.string "name"
@@ -236,6 +237,9 @@ ActiveRecord::Schema.define(version: 20180428103625) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
+  add_foreign_key "company_applications", "companies"
+  add_foreign_key "company_applications", "shf_applications"
+  add_foreign_key "events", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "events", "companies"

@@ -27,4 +27,8 @@ class CompanyPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def fetch_from_dinkurs?
+    user.admin? || is_in_company?(record.company)
+  end
+
 end

@@ -205,6 +205,7 @@ sv:
         kommun: *kommun
         region: *region
         region_short: *region_short
+        dinkurs_key: &dinkurs_company_key Dinkurs Företag key
 
       business_category:
         name: &business_category_name  Namn
@@ -221,8 +222,6 @@ sv:
         description_sv: "Beskrivning (svenska)"
         description_en: "Beskrivning (engelska)"
         is_custom: "Annan anledning"
-
-
 
 
     errors:
@@ -547,6 +546,9 @@ sv:
       pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
       branding_fee_expire_date_tooltip: Efter detta datum går perioden för din H-märkning ut.
       members: Företagsmedlemmar
+      dinkurs_fetch_events: Hämta Dinkurs Events
+      dinkurs_fetching: Hämtar händelser ... vänligen vänta
+      dinkurs_key: *dinkurs_company_key
 
     index:
       title:  Hitta H-märkt företag
@@ -570,6 +572,9 @@ sv:
        flera län, eller "Online" om det (i huvudsak) finns på nätet
       visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
       org_nr_tooltip: Endast siffror (ej bindestreck)
+      dinkurs_id_tooltip: Om du har ett Dinkurs.se konto och vill visa
+                          företagshändelser här, ange Dinkurs.se företagsnyckel.
+                          (Du kan lämna den tom om du inte har ett Dinkurs.se konto.)
 
     company:
       submit_button_label: Uppdatera status
@@ -608,6 +613,14 @@ sv:
     destroy:
       success: Adressen raderad.
       error: Det gick inte att ta bort adressen.
+
+  events:
+    show:
+      name: Företagshändelser
+      start_date: Start Datum
+      location: Plats
+      fee: Pris
+      no_events: (Inga planerade händelser)
 
   business_categories:
 

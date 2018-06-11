@@ -301,6 +301,7 @@ CREATE TABLE public.events (
     id bigint NOT NULL,
     fee numeric(8,2),
     start_date date,
+    location text,
     description text,
     dinkurs_id character varying,
     name character varying,

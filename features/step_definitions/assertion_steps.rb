@@ -140,6 +140,10 @@ Then(/^I should see "([^"]*)" address(?:es)?/) do |number|
   expect(page).to have_selector('tr.address', count: number)
 end
 
+Then(/^I should see "([^"]*)" event(?:s)?/) do |number|
+  expect(page).to have_selector('tr.event', count: number)
+end
+
 
 Then "the field {capture_string} should{negate} have a required field indicator" do |label_text, negate|
   expect(page).send ( negate ? :not_to : :to), have_xpath("//label[@class='required'][text()='#{label_text}']")

@@ -8,7 +8,11 @@ ParameterType(
   transformer: lambda do |content|
     needs_translation = content[0] == 't'
     unless needs_translation
-      content[1..-2]
+      if content[1..-2] =~ /^ENV/
+        ENV[content[6..-4]]
+      else
+        content[1..-2]
+      end
     else
       cleaned_content = content.delete("\"'")[2..-2]
       key, parameters = parse_i18n_string(cleaned_content)
