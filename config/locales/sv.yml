@@ -276,7 +276,7 @@ sv:
               not_found: 'med organisationsnummer %{value} inte hittat.
                           Klicka på knappen "Nytt företag" för att skapa företaget
                           och försök sedan skicka din ansökan igen.'
-            company_number: 
+            company_number:
               invalid: " är inte ett svenskt organisationsnummer"
 
       messages:
@@ -581,6 +581,8 @@ sv:
        flera län, eller "Online" om det (i huvudsak) finns på nätet
       visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
       org_nr_tooltip: Endast siffror (ej bindestreck)
+      dinkurs_show_tooltip: Växla den här knappen till på (till höger)
+                            för att visa kommande dinkurs händelser på din företagsida.
       dinkurs_id_tooltip: Om du har ett Dinkurs.se konto och vill visa
                           företagshändelser här, ange Dinkurs.se företagsnyckel.
                           (Du kan lämna den tom om du inte har ett Dinkurs.se konto.)
@@ -594,6 +596,7 @@ sv:
     website_include_http: Företagets webbplats
     description: Beskrivning av företaget
     address_visibility: Synlighet
+    show_dinkurs_events: Visa Dinkurs Händelser
 
     all_companies: Alla företag
     edit_company: Redigera detta företag
@@ -630,6 +633,8 @@ sv:
       location: Plats
       fee: Pris
       no_events: (Inga planerade händelser)
+    show_not: (Visning av Dinkurs-händelser på den här sidan har inaktiverats.
+              Redigera företaget för att aktivera visning av händelser.)
 
   business_categories:
 
