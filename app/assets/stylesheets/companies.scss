@@ -1,11 +1,24 @@
 $btn-hover-color: #7EDD8B;
+$slider-checked: #2196f3;
+$slider-background-color: #f4f4f8;
+$slider-before-background-color: #ffffff;
 
 .field-label {
   font-weight: bold;
 }
 
+@mixin form-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-.edit_company {
+.new-company {
+  @include form-flex;
+}
+
+.edit-company {
+  @include form-flex;
 
   .main-address {
     font-size: larger;
@@ -85,23 +98,23 @@ $btn-hover-color: #7EDD8B;
   .col-width-40pc {
     width: 40%;
   }
-  
+
   .col-width-35pc {
     width: 35%;
   }
-  
+
   .col-width-15pc {
     width: 15%;
   }
-  
+
   .col-width-10pc {
     width: 10%;
   }
-  
+
   .text-align-center {
     text-align: center;
   }
-  
+
   .text-align-right {
     text-align: right;
   }
@@ -133,4 +146,78 @@ $btn-hover-color: #7EDD8B;
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+ // The switch - the box around the slider
+.switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+
+  // Hide default HTML checkbox
+  input {
+    display: none;
+  }
+}
+
+// The slider
+.slider {
+  background-color: $slider-background-color;
+  bottom: 0;
+  cursor: pointer;
+  height: 45px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+
+  &::before {
+    background-color: $slider-before-background-color;
+    bottom: 4px;
+    content: "";
+    height: 37px;
+    left: 4px;
+    position: absolute;
+    transition: 0.4s;
+    width: 26px;
+    }
+
+  input:checked + & {
+    background-color: $slider-checked;
+  }
+
+  input:focus + & {
+    box-shadow: 0 0 1px $slider-checked;
+  }
+
+  input:checked + &::before {
+    transform: translateX(26px);
+  }
+}
+
+.dinkurs-company-id,
+.dinkurs-company-show {
+  width: 50%;
+}
+
+.dinkurs-company-show {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+label,
+.glyphicon {
+  flex: 1, 1, 100%;
+}
+
+[for="company_show_dinkurs_events"] {
+  margin-bottom: 5px;
+}
+
+.dinkurs-show-not {
+  font-weight: bold;
+  margin: 20px 0;
 }
