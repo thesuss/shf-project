@@ -18,7 +18,8 @@ class ApplicationMailer < ActionMailer::Base
   include CommonMailUtils
 
 
-  default from: ENV['SHF_NOREPLY_EMAIL']
+  default from: "\"#{ENV['SHF_EMAIL_DISPLAY_NAME']}\" <#{ENV['SHF_FROM_EMAIL']}>",
+    reply_to: "#{ENV['SHF_REPLY_TO_EMAIL']}"
 
   layout 'mailer'
 

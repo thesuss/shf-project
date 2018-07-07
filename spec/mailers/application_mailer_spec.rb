@@ -96,8 +96,12 @@ RSpec.describe ApplicationMailer, type: :mailer do
       expect(@email).to have_subject(I18n.t('mailers.application_mailer.greeting', greeting_name: @test_user.full_name))
     end
 
-    it "default from address is ENV['SHF_NOREPLY_EMAIL']" do
-      expect(@email).to be_delivered_from(ENV['SHF_NOREPLY_EMAIL'])
+    it "default from address is ENV['SHF_FROM_EMAIL'] and default display name is ENV['SHF_EMAIL_DISPLAY_NAME']" do
+      expect(@email).to be_delivered_from("#{ENV['SHF_EMAIL_DISPLAY_NAME']} <#{ENV['SHF_FROM_EMAIL']}>")
+    end
+
+    it "default reply-to addres is ENV['SHF_REPLY_TO_EMAIL']" do
+      expect(@email).to have_reply_to(ENV['SHF_REPLY_TO_EMAIL'])
     end
 
   end
