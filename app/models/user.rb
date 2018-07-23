@@ -117,6 +117,18 @@ class User < ApplicationRecord
     Arel.sql("lpad(membership_number, 20, '0')")
   end
 
+  def get_short_proof_of_membership_url(url)
+    found = self.short_proof_of_membership_url
+    return found if found
+    short_url = ShortenUrl.short(url)
+    if short_url
+      self.update_attribute(:short_proof_of_membership_url, short_url)
+      short_url
+    else
+      url
+    end
+  end
+
   private
 
   def issue_membership_number

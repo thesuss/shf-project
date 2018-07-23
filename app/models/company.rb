@@ -177,6 +177,18 @@ class Company < ApplicationRecord
       AddressExporter.se_mailing_csv_str( main_address )
   end
 
+  def get_short_h_brand_url(url)
+    found = self.short_h_brand_url
+    return found if found
+    short_url = ShortenUrl.short(url)
+    if short_url
+      self.update_attribute(:short_h_brand_url, short_url)
+      short_url
+    else
+      url
+    end
+  end
+
 
   private
 
