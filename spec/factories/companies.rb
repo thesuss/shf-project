@@ -16,6 +16,7 @@ FactoryBot.define do
     phone_number '123123123'
     email 'thiscompany@example.com'
     website 'http://www.example.com'
+    short_h_brand_url nil
 
     transient do
       num_addresses 1
