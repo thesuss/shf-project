@@ -13,7 +13,6 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = ENV['SHF_FROM_EMAIL']
-SHF_SENDER_EMAIL=noreply@sverigeshundforetagare.se
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'UserMailer'
