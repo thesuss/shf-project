@@ -105,7 +105,7 @@ class UsersController < ApplicationController
 
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id]) || Visitor.new
   end
 
   def set_app_config
@@ -130,6 +130,5 @@ class UsersController < ApplicationController
     # https://stackoverflow.com/questions/17542511/
     # cannot-display-my-rails-4-app-in-iframe-even-if-x-frame-options-is-allowall
   end
-
 
 end
