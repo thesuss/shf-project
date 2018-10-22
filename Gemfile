@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 gem 'dotenv-rails'
-gem 'rails', '5.1'
+gem 'rails', '5.2.1'
+gem 'bootsnap', require: false
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
@@ -130,6 +131,7 @@ group :test do
   gem 'vcr'      # to record and 'playback' (mock) http requests
 
   gem 'timecop'
+  gem 'rubocop-rspec'
 end
 
 group :production do

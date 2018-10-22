@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :region do
-    name "MyString"
-    code 'ZZ'
+    name { "MyString" }
+    code { 'ZZ' }
   end
 end

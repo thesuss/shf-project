@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :kommun do
-    name "Ale"
+    name { "Ale" }
   end
 end

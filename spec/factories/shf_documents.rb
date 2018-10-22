@@ -4,8 +4,8 @@ FactoryBot.define do
   # FIXTURE_DIR = File.join("#{Rails.root}",'spec','fixtures','uploaded_files')
 
   factory :shf_document, class: ShfDocument do
-    title "SHF Doc Title"
-    description "SHF Doc description"
+    title { "SHF Doc Title" }
+    description { "SHF Doc description" }
     association :uploader, factory: :user, admin: true
   end
 

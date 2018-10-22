@@ -127,13 +127,13 @@ class Address < ApplicationRecord
 
     until most_specific > least_specific || geo_result.present?
       geocode_address = specificity_order[most_specific..least_specific].compact.join(', ')
-      geo_result = Geocoder.coordinates(geocode_address)
+      geo_result = Geocoder.search(geocode_address)
       most_specific += 1
     end
 
     unless geo_result.nil?
-      self.latitude = geo_result.first
-      self.longitude = geo_result.last
+      self.latitude = geo_result[0].latitude
+      self.longitude = geo_result[0].longitude
     end
 
   end

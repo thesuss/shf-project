@@ -13,7 +13,7 @@ describe InputSanitizer do
     end
 
     it 'uses Sanitizer to remove CSS tags' do
-      expect(InputSanitizer.sanitize_url('<STYLE>@import"alert(\'XSS\')";</STYLE>')).to eq '@import"alert(\'XSS\')";'
+      expect(InputSanitizer.sanitize_url('<STYLE>@import"alert(\'XSS\')";</STYLE>')).to eq ''
     end
 
     it 'uses Santizer to remove anything inside a tag' do
@@ -21,7 +21,7 @@ describe InputSanitizer do
     end
 
     it 'uses remove tags and javascript' do
-      expect(InputSanitizer.sanitize_url('<STYLE>@import"javascript:alert(\'XSS\')";</STYLE>')).to eq '@import":alert(\'XSS\')";'
+      expect(InputSanitizer.sanitize_url('<STYLE>@import"javascript:alert(\'XSS\')";</STYLE>')).to eq ''
     end
   end
 
@@ -33,10 +33,10 @@ describe InputSanitizer do
 
     it 'removes script tags' do
       expect(InputSanitizer.sanitize_html("<script>alert('Hello');</script>"))
-        .to eq "alert('Hello');"
+        .to eq ''
 
       expect(InputSanitizer.sanitize_html("<SCRIPT>alert('Hello');</SCRIPT>"))
-        .to eq "alert('Hello');"
+        .to eq ''
 
       expect(InputSanitizer.sanitize_html("<scscriptript>alert('Hello');</scscriptript>"))
         .to eq "alert('Hello');"

@@ -5,9 +5,11 @@ require "rails"
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
+require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
+# require "action_cable/engine"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -66,9 +68,33 @@ module SHFProject
     # Only change in development or test environments where really needed
     config.action_mailer.show_previews = false
 
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.2
+
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
   end
+
+  ############### New defaults from Rails version 5.0 ###############
+
+  # Enable per-form CSRF tokens. Previous versions had false.
+  Rails.application.config.action_controller.per_form_csrf_tokens = true
+
+  # Enable origin-checking CSRF mitigation. Previous versions had false.
+  Rails.application.config.action_controller.forgery_protection_origin_check = true
+
+  # Make Ruby 2.4 preserve the timezone of the receiver when calling `to_time`.
+  # Previous versions had false.
+  ActiveSupport.to_time_preserves_timezone = true
+
+  # Require `belongs_to` associations by default. Previous versions had false.
+  Rails.application.config.active_record.belongs_to_required_by_default = true
+
+  # Configure SSL options to enable HSTS with subdomains. Previous versions had false.
+  Rails.application.config.ssl_options = { hsts: { subdomains: true } }
+
+  #^^^^^^^^^^^^^^^^ New defaults from Rails version 5.0 ^^^^^^^^^^^^^^^^
 
 end
