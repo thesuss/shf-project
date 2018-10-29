@@ -3,27 +3,27 @@ FactoryBot.define do
   sequence(:cat_name_seq, "Business Category", 1) { |name, num| "#{name} #{num}" }
 
   factory :shf_application do
-    phone_number 'MyString'
-    contact_email 'MyString@email.com'
-    state :new
+    phone_number { 'MyString' }
+    contact_email { 'MyString@email.com' }
+    state { :new }
 
-    updated_at Time.zone.now
+    updated_at { Time.zone.now }
 
     association :user
 
     trait :accepted do
-      state :accepted
+      state { :accepted }
     end
 
     trait :rejected do
-      state :rejected
+      state { :rejected }
     end
 
     transient do
-      num_categories 1
-      category_name "Business Category"
-      company_number nil
-      create_company true
+      num_categories { 1 }
+      category_name { "Business Category" }
+      company_number { nil }
+      create_company { true }
     end
 
     after(:build) do |shf_app, evaluator|

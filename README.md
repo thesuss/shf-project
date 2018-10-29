@@ -29,14 +29,13 @@ Codeclimate: [![Code Climate](https://codeclimate.com/github/AgileVentures/shf-p
 
 This project runs on a Ruby on Rails stack with postgreSQL as the repository.
 
-- ruby version - check Gemfile (2.4.2 as of 09 October, 2017)
-- rails 5.1.0 (5.1.0 as of July 04, 2017)
+- ruby - check Gemfile for current version (2.5.1 as of November, 2018)
+- rails - check Gemfile for current version (5.2.1 as of November, 2018)
 - Postgresql DB
-- imagemagik https://www.imagemagick.org
+- imagemagick https://www.imagemagick.org
 
 Required for integration tests (cucumber + capybara):
 - chromedriver 2.32.498537 or higher https://sites.google.com/a/chromium.org/chromedriver/downloads
-- phantomjs  http://phantomjs.org/
 
 
 ## Installation

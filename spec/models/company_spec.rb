@@ -389,9 +389,8 @@ RSpec.describe Company, type: :model do
     it 'website = "<script>alert("scriptalert("Boo!")")</script>"' do
       company.website = "<script>alert('scriptalert(Boo!)')</script>"
       company.save
-      expect(company.website).to eq("alert('scriptalert(Boo!)')")
+      expect(company.website).to eq ''
     end
-
 
   end
 
@@ -408,7 +407,7 @@ RSpec.describe Company, type: :model do
     it 'website = "<script>alert("scriptalert("Boo!")")</script>"' do
       company.description = "<script>alert('scriptalert(Boo!)')</script>"
       company.save
-      expect(company.description).to eq("alert('scriptalert(Boo!)')")
+      expect(company.description).to eq ''
     end
   end
 

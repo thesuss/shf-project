@@ -2,13 +2,13 @@ FactoryBot.define do
   sequence(:email) { |num| "email_#{num}@random.com" }
 
   factory :user do
-    first_name 'Firstname'
-    last_name 'Lastname'
+    first_name { 'Firstname' }
+    last_name { 'Lastname' }
     email
-    password 'my_password'
-    admin false
-    member false
-    short_proof_of_membership_url nil
+    password { 'my_password' }
+    admin { false }
+    member { false }
+    short_proof_of_membership_url { nil }
     member_photo do
       File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
     end
@@ -31,10 +31,10 @@ FactoryBot.define do
 
     factory :member_with_membership_app do
 
-      member true
+      member { true }
 
       transient do
-        company_number 5562728336
+        company_number { 5562728336 }
       end
 
       after(:create) do |user, evaluator|

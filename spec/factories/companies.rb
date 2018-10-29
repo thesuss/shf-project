@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :company do
-    name 'SomeCompany'
+    name { 'SomeCompany' }
     company_number do
       org_number = nil
 
@@ -13,18 +13,18 @@ FactoryBot.define do
 
       org_number
     end
-    phone_number '123123123'
-    email 'thiscompany@example.com'
-    website 'http://www.example.com'
-    short_h_brand_url nil
+    phone_number { '123123123' }
+    email { 'thiscompany@example.com' }
+    website { 'http://www.example.com' }
+    short_h_brand_url { nil }
 
     transient do
-      num_addresses 1
-      street_address nil
-      region nil
-      city nil
-      post_code nil
-      country 'Sverige'
+      num_addresses { 1 }
+      street_address { nil }
+      region { nil }
+      city { nil }
+      post_code { nil }
+      country { 'Sverige' }
     end
 
     after(:build) do |company, evaluator|

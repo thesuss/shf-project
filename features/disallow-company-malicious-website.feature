@@ -46,11 +46,11 @@ Feature: Don't allow malicious code in Company website value
 
     Scenarios:
       | malicious_entry                                    | malicious_part                               | ok_part       |
-      | <script>alert('XSS!')</script>                     | <script>                                     | alert('XSS!') |
+      | <script>alert('XSS!')</script>                     | <script>alert('XSS!')</script>               |               |
       | javascript://alert('XSS!')                         | javascript://                                | alert('XSS!') |
       | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'> |               |
       | >'><script>alert('XSS)</script>&                   | <script>                                     |               |
-      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | javascript                                   | alert('XSS')  |
+      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | '><STYLE>@import'javascript:alert('XSS')';</STYLE> |         |
 
 
 
@@ -67,8 +67,8 @@ Feature: Don't allow malicious code in Company website value
 
     Scenarios:
       | malicious_entry                                    | malicious_part                               | ok_part       |
-      | <script>alert('XSS!')</script>                     | <script>                                     | alert('XSS!') |
+      | <script>alert('XSS!')</script>                     | <script>alert('XSS!')</script>               |               |
       | javascript://alert('XSS!')                         | javascript://                                | alert('XSS!') |
       | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'> |               |
       | >'><script>alert('XSS)</script>&                   | <script>                                     |               |
-      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | javascript                                   | alert('XSS')  |
+      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | '><STYLE>@import'javascript:alert('XSS')';</STYLE>  |        |
