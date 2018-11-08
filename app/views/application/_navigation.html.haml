@@ -1,83 +1,97 @@
-.scroll-to-top
-  %a{ href: '#' }
-    = fa_icon 'angle-up'
-.container-fluid.hfeed.site
-  %header.site-header#masthead{ role: 'banner' }
-    %a.skip-link.screen-reader-text{ href: '#content' } Skip to content
-    / main navigation
-    %nav.main-navigation.fixed-nav#site-navigation{ role: 'navigation' }
-      %a.menu-toggle{ href: '#' }
-        %span.bars
-          %span.bar.bar-1
-          %span.bar.bar-2
-          %span.bar.bar-3
+%nav.navbar.navbar-expand-md
+  %a.navbar-brand{:href => "#"} 
+    %img{:src => "https://media.sverigeshundforetagare.se/2016/12/cropped-16465585_1046630372149121_513430848809205760_n.jpg"}/
+  %button.navbar-toggler{"aria-controls" => "navbarNavDropdown", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarNavDropdown", "data-toggle" => "collapse", :type => "button"}
+    MENY
+  #navbarNavDropdown.collapse.navbar-collapse
+    %ul.navbar-nav.ml-auto
+      %li
+        %a.nav-link{:href => "#"} Home
+      %li
+        %a.nav-link{:href => "#"} Features
+      %li
+        %a.nav-link{:href => "#"} Pricing
+      %li.dropdown
+        %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
+          Dropdown link
+        %ul.dropdown-menu
+          %li
+            %a{:href => "#"} Action
+          %li
+            %a{:href => "#"} Another action
+          %li
+            %a.dropdown-toggle{:href => "#"} Submenu
+            %ul.dropdown-menu
+              %li
+                %a{:href => "#"} Submenu action
+              %li
+                %a{:href => "#"} Another submenu action
 
-      .nav-wrapper
 
-        - if user_signed_in?
+- if user_signed_in?
 
-          - if current_user.admin?
+  - if current_user.admin?
 
-            .menu#menu-menu-3-container
+    .menu#menu-menu-3-container
 
-              %ul.menu#menu-menu-3
-                %li.menu-item
-                  = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/'
+      %ul.menu#menu-menu-3
+        %li.menu-item
+          = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/'
 
-                = render 'navigation_member_pages'
+        = render 'navigation_member_pages'
 
-                = render 'navigation_admin'
+        = render 'navigation_admin'
 
-          - else
+  - else
 
-            .menu#menu-menu-2-container
+    .menu#menu-menu-2-container
 
-              %ul.menu#menu-menu-2
-                %li.menu-item
-                  = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/'
+      %ul.menu#menu-menu-2
+        %li.menu-item
+          = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/'
 
-                %li.menu-item
-                  = link_to t('menus.nav.members.shf_companies'), root_path
+        %li.menu-item
+          = link_to t('menus.nav.members.shf_companies'), root_path
 
-                - if current_user.member?
+        - if current_user.member?
 
-                  = render 'navigation_member_pages'
+          = render 'navigation_member_pages'
 
-                  - if (company_count = current_user.companies.count) > 0
+          - if (company_count = current_user.companies.count) > 0
 
-                    %li.menu-item.menu-item-has-children
-                      %a.link-no-styling{ href: '#' }
-                        = t('my_company', count: company_count)
+            %li.menu-item.menu-item-has-children
+              %a.link-no-styling{ href: '#' }
+                = t('my_company', count: company_count)
 
-                      %ul.sub-menu
+              %ul.dropdown-menu
 
-                        - current_user.companies.each do |company|
+                - current_user.companies.each do |company|
 
-                          %li.menu-item.menu-item-has-children
-                            - company_name = company.name.present? ? company.name : t('name_missing')
-                            %a.link-no-styling{ href: '#' }= company_name
-                            %ul.sub-menu
-                              %li.menu-item
-                                = link_to t('menus.nav.members.manage_company.view_company'),
-                                          company_path(company)
-                              %li.menu-item
-                                = link_to t('menus.nav.members.manage_company.edit_company'),
-                                          edit_company_path(company)
+                  %li.menu-item.menu-item-has-children
+                    - company_name = company.name.present? ? company.name : t('name_missing')
+                    %a.link-no-styling{ href: '#' }= company_name
+                    %ul.dropdown-menu
+                      %li.menu-item
+                        = link_to t('menus.nav.members.manage_company.view_company'),
+                                  company_path(company)
+                      %li.menu-item
+                        = link_to t('menus.nav.members.manage_company.edit_company'),
+                                  edit_company_path(company)
 
-                  = render 'navigation_edit_my_application', shf_app: current_user.shf_application
-
-                - else
-                  -# User is not a member nor admin
-
-                  - if current_user.has_shf_application?
-                    = render 'navigation_edit_my_application', shf_app: current_user.shf_application
-                  - else
-                    %li.menu-item
-                      = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path
+          = render 'navigation_edit_my_application', shf_app: current_user.shf_application
 
         - else
-          -# Visitor navigation
-          .menu#menu-menu-1-container
-            = render 'navigation_visitor'
+          -# User is not a member nor admin
 
-        = render 'login_nav'
+          - if current_user.has_shf_application?
+            = render 'navigation_edit_my_application', shf_app: current_user.shf_application
+          - else
+            %li.menu-item
+              = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path
+
+- else
+  -# Visitor navigation
+  .menu#menu-menu-1-container
+    = render 'navigation_visitor'
+
+= render 'login_nav'

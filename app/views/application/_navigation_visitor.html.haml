@@ -1,61 +1,64 @@
-%ul.menu#menu-menu-1
-  %li.menu-item
-    = link_to t('menus.nav.home'), 'http://sverigeshundforetagare.se/'
+%ul.navbar-nav.ml-auto#menu-menu-1
+  %li
+    = link_to t('menus.nav.home'), 'http://sverigeshundforetagare.se/', class: 'nav-link'
 
-  %li.menu-item
-    = link_to t('menus.nav.visitor.brochure'), 'http://sverigeshundforetagare.se/broschyr/'
+  %li
+    = link_to t('menus.nav.visitor.brochure'), 'http://sverigeshundforetagare.se/broschyr/', class: 'nav-link'
 
-  %li.menu-item.menu-item-has-children
-    = link_to t('menus.nav.visitor.dog_owners.submenu_title'), 'http://sverigeshundforetagare.se/agare/'
-    %ul.sub-menu
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.about_us'), 'http://sverigeshundforetagare.se/agare/om-sveriges-hundforetagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.h_label'), 'http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-hundagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.are_you_unsatisfied'), 'http://sverigeshundforetagare.se/agare/ar-du-inte-nojd/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.become_supporter'), 'http://sverigeshundforetagare.se/agare/bli-stodmedlem/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.being_dog_owners'), 'http://sverigeshundforetagare.se/agare/att-vara-hundagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.find_dog_businesses'), root_path
+  %li-dropdown
+    %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "http://sverigeshundforetagare.se/agare/"}
+      = t('menus.nav.visitor.dog_owners.submenu_title')
+    %ul.dropdown-menu
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.about_us'), 'http://sverigeshundforetagare.se/agare/om-sveriges-hundforetagare/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.h_label'), 'http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-hundagare/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.are_you_unsatisfied'), 'http://sverigeshundforetagare.se/agare/ar-du-inte-nojd/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.become_supporter'), 'http://sverigeshundforetagare.se/agare/bli-stodmedlem/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.being_dog_owners'), 'http://sverigeshundforetagare.se/agare/att-vara-hundagare/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.find_dog_businesses'), root_path, class: 'nav-link'
 
-  %li.menu-item.menu-item-has-children
-    = link_to t('menus.nav.visitor.entrepreneurs.submenu_title'), 'http://sverigeshundforetagare.se/foretag/'
-    %ul.sub-menu
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.about_us'), 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.sign_up'), 'http://sverigeshundforetagare.se/foretag/bli-medlem/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.be_h_labeled'), 'http://sverigeshundforetagare.se/foretag/bli-h-markt/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.member_criteria'), 'http://sverigeshundforetagare.se/medlemskriterier/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.member_benefits'), 'http://sverigeshundforetagare.se/foretag/detta-far-du-som-medlem/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.quality_standards'), 'http://sverigeshundforetagare.se/foretag/kvalitetskontroll/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/'
+  %li-dropdown
+    %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "http://sverigeshundforetagare.se/foretag/"}
+      = t('menus.nav.visitor.entrepreneurs.submenu_title')
+    %ul.dropdown-menu
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.about_us'), 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.sign_up'), 'http://sverigeshundforetagare.se/foretag/bli-medlem/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.be_h_labeled'), 'http://sverigeshundforetagare.se/foretag/bli-h-markt/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.member_criteria'), 'http://sverigeshundforetagare.se/medlemskriterier/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.member_benefits'), 'http://sverigeshundforetagare.se/foretag/detta-far-du-som-medlem/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.quality_standards'), 'http://sverigeshundforetagare.se/foretag/kvalitetskontroll/', class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/', class: 'nav-link'
 
-  %li.menu-item.menu-item-has-children
-    %a.link-no-styling{ href: '#' }= t('menus.nav.visitor.knowledge_bank.submenu_title')
-    %ul.sub-menu
-      %li.menu-item
-        = link_to 'Bloggar', 'http://sverigeshundforetagare.se/category/bloggar/'
-      %li.menu-item
-        = link_to 'Böcker', 'http://sverigeshundforetagare.se/category/bocker/'
-      %li.menu-item
-        = link_to 'Forskning', 'http://sverigeshundforetagare.se/category/forskning/'
-      %li.menu-item
-        = link_to 'Pod', 'http://sverigeshundforetagare.se/category/pod/'
-      %li.menu-item
-        = link_to 'Populärvetenskap', 'http://sverigeshundforetagare.se/category/popularvetenskap/'
-      %li.menu-item
-        = link_to 'Video', 'http://sverigeshundforetagare.se/category/video/'
+  %li-dropdown
+    %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
+      = t('menus.nav.visitor.knowledge_bank.submenu_title')
+    %ul.dropdown-menu
+      %li
+        = link_to 'Bloggar', 'http://sverigeshundforetagare.se/category/bloggar/', class: 'nav-link'
+      %li
+        = link_to 'Böcker', 'http://sverigeshundforetagare.se/category/bocker/', class: 'nav-link'
+      %li
+        = link_to 'Forskning', 'http://sverigeshundforetagare.se/category/forskning/', class: 'nav-link'
+      %li
+        = link_to 'Pod', 'http://sverigeshundforetagare.se/category/pod/', class: 'nav-link'
+      %li
+        = link_to 'Populärvetenskap', 'http://sverigeshundforetagare.se/category/popularvetenskap/', class: 'nav-link'
+      %li
+        = link_to 'Video', 'http://sverigeshundforetagare.se/category/video/', class: 'nav-link'
 
-  %li.menu-item
-    = link_to t('menus.nav.visitor.contact'), 'http://sverigeshundforetagare.se/kontakt/'
+  %li
+    = link_to t('menus.nav.visitor.contact'), 'http://sverigeshundforetagare.se/kontakt/', class: 'nav-link'

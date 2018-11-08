@@ -12,11 +12,11 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
 gem 'haml-rails'
-gem 'bootstrap-sass', '~> 3.3.6'
-gem 'font-awesome-sass'
-gem 'font-awesome-rails'
 gem 'high_voltage', '~> 3.0.0'
 gem 'orgnummer'
+gem 'popper_js', '~> 1.14.3'
+gem 'bootstrap', '~> 4.1.3'
+
 
 gem 'devise'
 gem 'pundit'
@@ -75,6 +75,9 @@ gem 'imgkit'
 gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
+
+gem 'mini_racer', platforms: :ruby
+
 
 group :development, :test do
   gem 'rspec-rails'
