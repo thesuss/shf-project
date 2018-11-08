@@ -5,7 +5,7 @@
   %li
     = link_to t('menus.nav.visitor.brochure'), 'http://sverigeshundforetagare.se/broschyr/', class: 'nav-link'
 
-  %li-dropdown
+  %li.dropdown
     %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "http://sverigeshundforetagare.se/agare/"}
       = t('menus.nav.visitor.dog_owners.submenu_title')
     %ul.dropdown-menu
@@ -24,7 +24,7 @@
       %li
         = link_to t('menus.nav.visitor.find_dog_businesses'), root_path, class: 'nav-link'
 
-  %li-dropdown
+  %li.dropdown
     %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "http://sverigeshundforetagare.se/foretag/"}
       = t('menus.nav.visitor.entrepreneurs.submenu_title')
     %ul.dropdown-menu
@@ -43,7 +43,7 @@
       %li
         = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/', class: 'nav-link'
 
-  %li-dropdown
+  %li.dropdown
     %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
       = t('menus.nav.visitor.knowledge_bank.submenu_title')
     %ul.dropdown-menu
