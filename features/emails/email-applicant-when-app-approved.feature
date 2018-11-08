@@ -49,7 +49,7 @@ Feature: Applicant gets an email when the application is approved
     And I should not see "http://localhost:3000/anvandare/1/redigera" in the email body
     And I should see "http://localhost:3000/anvandare/1" in the email body
     And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
-    And I should see "medlem@sverigeshundforetagare.se" in the email "reply-to" header
+    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     When I follow "http://localhost:3000/anvandare/1" in the email
     Then I should see "Firstname Lastname"
     And I should see t("users.show.email")

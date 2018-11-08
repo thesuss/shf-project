@@ -81,7 +81,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
   end
 
 
-  describe 'content is correct' do
+  describe 'header info is correct' do
 
     before(:each) do
       @test_user = create(:user)
@@ -96,18 +96,18 @@ RSpec.describe ApplicationMailer, type: :mailer do
       expect(@email).to have_subject(I18n.t('mailers.application_mailer.greeting', greeting_name: @test_user.full_name))
     end
 
-    it "default from address is ENV['SHF_FROM_EMAIL'] and default display name is ENV['SHF_EMAIL_DISPLAY_NAME']" do
-      expect(@email).to be_delivered_from("#{ENV['SHF_EMAIL_DISPLAY_NAME']} <#{ENV['SHF_FROM_EMAIL']}>")
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { @email.header['from'] }
     end
 
-    it "default reply-to addres is ENV['SHF_REPLY_TO_EMAIL']" do
-      expect(@email).to have_reply_to(ENV['SHF_REPLY_TO_EMAIL'])
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) {  @email }
     end
 
   end
 
 
-  describe 'content is correct for the locale' do
+  describe 'greeting is correct for the locale' do
 
     before(:each) { @orig_local = I18n.locale }
 
