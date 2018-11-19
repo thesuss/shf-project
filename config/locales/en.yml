@@ -299,6 +299,10 @@ en:
     payment_type:
       member_fee: Member Fee
       branding_fee: Branding Fee
+    status:
+      paid: &paid Paid
+      never_paid: &never_paid Never Paid
+
 
   # Automatic and manual lookup for views:
   shf_applications:
@@ -470,6 +474,7 @@ en:
       ready_for_review: *status_ready_for_review
       accepted: *status_accepted
       rejected: *status_rejected
+      being_destroyed: *status_being_destroyed
 
     new_status: *status_new
     accept_btn: Accept
@@ -803,6 +808,11 @@ en:
     export_ansokan_csv:
       success: Export successful. Check your browser downloads for the file.
       error: There was a problem with the export.
+      member_fee_expires: M Expires
+      branding_fee_expires: H Expires
+      paid: *paid
+      never_paid: *never_paid
+      fee_payment_url: "Log in and pay here: http://hitta.sverigeshundforetagare.se%{payment_url}"
 
 
   shf_documents:
