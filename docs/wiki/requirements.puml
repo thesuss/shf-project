@@ -54,21 +54,21 @@ package Requirement_Checkers {
     +self.satisfied?(args= {})
   \n
 --
-    self.has_expected_keys?(args)
+    self.has_expected_arguments?(args)
     self.requirements_met?(args)
   }
 
 
   RequirementForMembership <|-- AbstractRequirements
   class RequirementForMembership {
-    self.has_expected_keys?(args)
+    self.has_expected_arguments?(args)
     self.requirements_met?(args)
   }
 
 
   RequirementForRevokingMembership <|-- AbstractRequirements
   class RequirementForRevokingMembership {
-    self.has_expected_keys?(args)
+    self.has_expected_arguments?(args)
     self.requirements_met?(args)
   }
 

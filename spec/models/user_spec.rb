@@ -355,6 +355,9 @@ RSpec.describe User, type: :model do
   end
 
 
+=begin
+  This is now the responsibility of the MembershipStatusUpdater class
+
   describe '#grant_membership' do
 
     it 'sets the member field for the user' do
@@ -405,6 +408,7 @@ RSpec.describe User, type: :model do
     end
 
   end
+=end
 
   context 'payment and membership period' do
 
@@ -504,7 +508,10 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#check_member_status' do
+=begin
+This is now the responsibility of the MembershipStatusUpdater class
+
+    describe '#check_memberstatus' do
       it 'does nothing if not a member' do
         user.check_member_status
         expect(user.member).to be false
@@ -531,7 +538,10 @@ RSpec.describe User, type: :model do
 
         Timecop.return
       end
+
     end
+=end
+
   end
 
   describe '#get_short_proof_of_membership_url' do
@@ -541,6 +551,7 @@ RSpec.describe User, type: :model do
         expect(with_short_proof_of_membership_url.get_short_proof_of_membership_url(url)).to eq('http://www.tinyurl.com/proofofmembership')
       end
     end
+
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
         url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'

@@ -1,0 +1,41 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+skinparam NoteFontSize 12
+skinparam NoteBorderColor green
+
+title MembershipStatusManager
+
+
+User --> Payments: makes
+
+User <-- MembershipStatusManager: keeps track of \nmembership status for
+
+MembershipStatusManager --> Payments: looks up dates from
+
+note "The responsibility of the MembershipStatusManager\nis to keep track of the membership status for a user.\nIt knows about expirations and how to get\npayment dates and any other info needed to calculate\nmembership status dates." as MemberNote
+
+'MembershipStatusManager .. MemberNote
+
+
+note right of Payments
+  Payments just keep track of the payment attempt stats,
+  payment amounts and dates paid.
+  Payments know nothing about membership expiration
+  (or even what a membership is).
+end note
+
+class User {
+ membership_status_manager
+}
+
+class MembershipStatusManager {
+
+}
+
+class Payments {
+
+}
+
+
+@enduml

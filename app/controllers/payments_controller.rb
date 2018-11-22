@@ -94,20 +94,14 @@ class PaymentsController < ApplicationController
   end
 
   def success
-    helpers.flash_message(:notice, t('.success'))
-
     payment = Payment.find(params[:id])
-
-    if payment.payment_type == Payment::PAYMENT_TYPE_MEMBER
-      payment.user.grant_membership
-    end
-
+    payment.successfully_completed
+    helpers.flash_message(:notice, t('.success'))
     redirect_on_payment_success_or_error(payment)
   end
 
   def error
     helpers.flash_message(:alert, t('.error'))
-
     payment = Payment.find(params[:id])
     redirect_on_payment_success_or_error(payment)
   end

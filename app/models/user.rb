@@ -18,13 +18,14 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :payments
 
   has_attached_file :member_photo, default_url: 'photo_unavailable.png',
-                    styles: { standard: ['130x130#'] }, default_style: :standard
+                    styles:                     { standard: ['130x130#'] }, default_style: :standard
 
   validates_attachment_content_type :member_photo,
-                                    content_type:  /\Aimage\/.*(jpg|jpeg|png)\z/
-  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/,/JPE?G\z/]
+                                    content_type: /\Aimage\/.*(jpg|jpeg|png)\z/
+  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/]
 
   validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
+
 
   def updating_without_name_changes
     # Not a new record and not saving changes to either first or last name
@@ -33,8 +34,9 @@ class User < ApplicationRecord
     # ^^ Useful background
 
     !new_record? && !(will_save_change_to_attribute?('first_name') ||
-                      will_save_change_to_attribute?('last_name'))
+        will_save_change_to_attribute?('last_name'))
   end
+
 
   validates :membership_number, uniqueness: true, allow_blank: true
 
@@ -42,26 +44,37 @@ class User < ApplicationRecord
 
   scope :members, -> { where(member: true) }
 
+
   def most_recent_membership_payment
     most_recent_payment(Payment::PAYMENT_TYPE_MEMBER)
   end
 
+
+  # TODO this should not be the responsibility of the User class.
   def membership_expire_date
     payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
   end
 
+
+  # TODO this should not be the responsibility of the User class.
   def membership_payment_notes
     payment_notes(Payment::PAYMENT_TYPE_MEMBER)
   end
 
+
+  # TODO this should not be the responsibility of the User class.
   def membership_current?
     membership_expire_date&.future?
   end
 
+
+  # TODO this should not be the responsibility of the User class.
   def self.next_membership_payment_dates(user_id)
     next_payment_dates(user_id, Payment::PAYMENT_TYPE_MEMBER)
   end
 
+
+  # TODO this should not be the responsibility of the User class.
   def allow_pay_member_fee?
     # Business rule: user can pay membership fee if:
     # 1. user == member, or
@@ -73,7 +86,7 @@ class User < ApplicationRecord
 
 
   def member_fee_payment_due?
-    member? && ! membership_current?
+    member? && !membership_current?
   end
 
 
@@ -81,6 +94,14 @@ class User < ApplicationRecord
     shf_application&.valid?
   end
 
+
+  def has_approved_shf_application?
+    shf_application&.accepted?
+  end
+
+
+=begin
+   User is no long responsible for determining membership status
   def check_member_status
     # Called from Warden after user authentication - see after_sign_in.rb
     # If member payment has expired, revoke membership status.
@@ -88,6 +109,7 @@ class User < ApplicationRecord
       update(member: false)
     end
   end
+=end
 
 
   def member_or_admin?
@@ -104,22 +126,27 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+
   def has_full_name?
     first_name.present? && last_name.present?
   end
 
 
+=begin
+  This is no longer the responsbility of the User class
+  # Need to be able to turn off 'sending email' during seeding
   def grant_membership(send_email: true)
     return if self.member && self.membership_number.present?
 
     update(member: true, membership_number: issue_membership_number)
     MemberMailer.membership_granted(self).deliver if send_email
   end
-
+=end
 
   ransacker :padded_membership_number do
     Arel.sql("lpad(membership_number, 20, '0')")
   end
+
 
   def get_short_proof_of_membership_url(url)
     found = self.short_proof_of_membership_url
@@ -133,15 +160,20 @@ class User < ApplicationRecord
     end
   end
 
-  private
 
+  # The fact that this can no longer be private is a smell that it should be refactored out into a separate class
   def issue_membership_number
     self.membership_number = self.membership_number.blank? ? get_next_membership_number : self.membership_number
   end
 
 
+  private
+
+
+  # TODO this should not be the responsibility of the User class.
   def get_next_membership_number
-    self.class.connection.execute("SELECT nextval('membership_number_seq')").getvalue(0,0).to_s
+    self.class.connection.execute("SELECT nextval('membership_number_seq')").getvalue(0, 0).to_s
   end
+
 
 end

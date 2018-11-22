@@ -23,15 +23,15 @@ RSpec.describe Payment, type: :model do
 
   let(:brand_pymt1) do
     create(:payment, status: success, expire_date: Time.zone.today + 1.day,
-           payment_type: Payment::PAYMENT_TYPE_BRANDING)
+           payment_type:     Payment::PAYMENT_TYPE_BRANDING)
   end
   let(:brand_pymt2) do
     create(:payment, status: created, expire_date: Time.zone.today + 1.year,
-           payment_type: Payment::PAYMENT_TYPE_BRANDING)
+           payment_type:     Payment::PAYMENT_TYPE_BRANDING)
   end
   let(:brand_pymt3) do
     create(:payment, status: success, expire_date: Time.zone.today + 1.year,
-           payment_type: Payment::PAYMENT_TYPE_BRANDING)
+           payment_type:     Payment::PAYMENT_TYPE_BRANDING)
   end
 
   describe 'Factory' do
@@ -126,4 +126,41 @@ RSpec.describe Payment, type: :model do
     end
   end
 
+  describe '#successfully_completed' do
+
+    context 'member fee' do
+
+      it 'status is SUCCESSFUL' do
+        expect(member_pymt2.status).to eq Payment::CREATED
+        member_pymt2.successfully_completed
+        expect(member_pymt2.status).to eq Payment::SUCCESSFUL
+      end
+
+      it 'notifies MembershipStatusUpdater (observer)' do
+        membership_updater_dbl = double("membership_updater")
+        expect(MembershipStatusUpdater).to receive(:instance) { membership_updater_dbl }
+        expect(membership_updater_dbl).to receive :payment_made
+        member_pymt2.successfully_completed
+      end
+
+    end
+
+    context 'branding fee' do
+
+      it 'status is SUCCESSFUL' do
+        expect(brand_pymt2.status).to eq Payment::CREATED
+        brand_pymt2.successfully_completed
+        expect(brand_pymt2.status).to eq Payment::SUCCESSFUL
+      end
+
+      it 'notifies MembershipStatusUpdater (observer)' do
+        membership_updater_dbl = double("membership_updater")
+        expect(MembershipStatusUpdater).to receive(:instance) { membership_updater_dbl }
+        expect(membership_updater_dbl).to receive :payment_made
+        brand_pymt2.successfully_completed
+      end
+
+    end
+
+  end
 end

@@ -56,6 +56,13 @@ ParameterType(
   transformer: -> (str) { str.to_i }
 )
 
+ParameterType(
+    name:             'date',
+    type:             Date,
+    regexp:           /\d\d\d\d-\d\d-\d\d/,
+    transformer:      ->(str) { Date.parse(str) }
+)
+
 def parse_i18n_string(i18n_string)
   i18n_key = i18n_string
   parameters = {}
