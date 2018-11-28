@@ -57,8 +57,8 @@ module SeedHelper
 
     return if users_with_application == 0
 
-    users[0..users_with_application-1].each.with_index do |user, i|
-      make_application(user)
+    users[0..users_with_application-1].each.with_index do | each_user |
+      make_application(each_user)
     end
 
   end
@@ -72,11 +72,11 @@ module SeedHelper
 
   def make_application(user)
 
-    if Random.new.rand(1.0) < 0.3 then
+    if Random.new.rand(1.0) < 0.3
       # set the state to accepted for about 30% of the applications
       state = MA_ACCEPTED_STATE
     else
-      # set a random state (except accepted) for the rest of the applications
+      # set a random state for the rest of the applications (except accepted and being destroyed)
       states = ShfApplication.aasm.states.map(&:name) -
                [MA_ACCEPTED_STATE, MA_BEING_DESTROYED_STATE]
 
@@ -103,8 +103,6 @@ module SeedHelper
     # Create payment records for accepted app and associated company
     if ma.state == MA_ACCEPTED_STATE_STR
 
-      user.grant_membership(send_email: false)
-
       start_date, expire_date = User.next_membership_payment_dates(user.id)
 
       user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
@@ -115,6 +113,10 @@ module SeedHelper
                                       expire_date: expire_date)
 
       start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
+
+
+      MembershipStatusUpdater.instance.check_requirements_and_act({user: user, send_email: false})
+      #user.update_action(send_email: false)
 
       ma.companies[0].payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
                                       user_id: user.id,
@@ -146,7 +148,7 @@ module SeedHelper
                           name: FFaker::CompanySE.name,
                           phone_number: FFaker::PhoneNumberSE.phone_number,
                           website: FFaker::InternetSE.http_url)
-    if(company.save)
+    if company.save
 
       address = Address.new(addressable: company,
                             city: FFaker::AddressSE.city,

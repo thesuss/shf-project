@@ -24,8 +24,9 @@ FactoryBot.define do
 
     factory :user_with_membership_app do
 
+
       after(:create) do |user, evaluator|
-        create_list(:shf_application, 1, user: user, contact_email: evaluator.email)
+        create_list(:shf_application, 1, user: user, contact_email: evaluator.email) # FIXME this should not be a list. Fix tests that use this
       end
     end
 
@@ -40,7 +41,7 @@ FactoryBot.define do
       after(:create) do |user, evaluator|
         create_list(:shf_application, 1, :accepted, user: user,
                     company_number: evaluator.company_number,
-                    contact_email: evaluator.email)
+                    contact_email: evaluator.email)  # FIXME this should not be a list. Fix tests that use this
       end
     end
   end

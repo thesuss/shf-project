@@ -11,6 +11,8 @@
 
     = render partial: 'check_payment_status'
 
+    %hr
+
     - unless current_user.membership_expire_date.past?
 
       %p= t('.member.using_the_logo')
@@ -19,7 +21,7 @@
       = image_tag('medlem.png')
       %p
       %p= t('.member.using_the_h_mark')
-      = image_tag('h-marke.png')
+      %p= t('.member.ffs')
 
   - elsif current_user.has_shf_application?
 

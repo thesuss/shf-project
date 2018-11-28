@@ -28,7 +28,7 @@ class ShfApplicationMailer < ApplicationMailer
 
     # shf_app is used in the mail view
     @shf_app = shf_application
-    mail to: recipient_email, subject: subject
+    mail to: @recipient_email, subject: subject
 
   end
 

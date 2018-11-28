@@ -20,8 +20,9 @@ RSpec.describe User, type: :model do
   end
 
   let(:success) { Payment.order_to_payment_status('successful') }
-  let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
-  let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
+  let(:payment_date_2017_10_01) { Time.zone.local(2017, 10, 1) }
+  let(:payment_date_2018_11_21) { Time.zone.local(2018, 11, 21) }
+  let(:payment_date_2020_03_15) { Time.zone.local(2020, 3, 15) }
 
   let(:member_payment1) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
@@ -354,6 +355,9 @@ RSpec.describe User, type: :model do
   end
 
 
+=begin
+  This is now the responsibility of the MembershipStatusUpdater class
+
   describe '#grant_membership' do
 
     it 'sets the member field for the user' do
@@ -404,6 +408,7 @@ RSpec.describe User, type: :model do
     end
 
   end
+=end
 
   context 'payment and membership period' do
 
@@ -436,64 +441,56 @@ RSpec.describe User, type: :model do
 
     describe '.self.next_membership_payment_dates' do
 
-      context 'during the year 2017' do
-
-        around(:each) do |example|
-          Timecop.freeze(payment_date_2017)
-          example.run
-          Timecop.return
-        end
-
-        it "returns today's date for first payment start date" do
-          expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Time.zone.today
-        end
-
-        it 'returns Dec 31, 2018 for first payment expire date' do
-          expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Time.zone.local(2018, 12, 31)
-        end
-
-        it 'returns Jan 1, 2019 for second payment start date' do
-          member_payment1
-          expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Time.zone.local(2019, 1, 1)
-        end
-
-        it 'returns Dec 31, 2019 for second payment expire date' do
-          member_payment1
-          expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Time.zone.local(2019, 12, 31)
-        end
+      around(:each) do |example|
+        Timecop.freeze(payment_date_2018_11_21)
+        example.run
+        Timecop.return
       end
 
-      context 'after the year 2017' do
+      it "returns today's date for first payment start date" do
+        expect(User.next_membership_payment_dates(user.id)[0]).to eq Time.zone.today
+      end
 
-        around(:each) do |example|
-          Timecop.freeze(payment_date_2018)
-          example.run
-          Timecop.return
-        end
+      it 'returns one year later for first payment expire date' do
+        expect(User.next_membership_payment_dates(user.id)[1])
+          .to eq Time.zone.today + 1.year - 1.day
+      end
 
-        it "returns today's date for first payment start date" do
-          expect(User.next_membership_payment_dates(user.id)[0]).to eq Time.zone.today
-        end
+      it 'returns date-after-expiration for second payment start date' do
+        member_payment1
+        expect(User.next_membership_payment_dates(user.id)[0])
+          .to eq Time.zone.today + 1.year
+      end
 
-        it 'returns one year later for first payment expire date' do
-          expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Time.zone.today + 1.year - 1.day
-        end
+      it 'returns one year later for second payment expire date' do
+        member_payment1
+        expect(User.next_membership_payment_dates(user.id)[1])
+          .to eq Time.zone.today + 1.year + 1.year - 1.day
+      end
 
-        it 'returns date-after-expiration for second payment start date' do
+      context 'if next payment occurs after prior payment expire date' do
+
+        it 'returns actual payment date for start date' do
+          # User renews membership (pays fee) *after* the prior payment has expired.
+          # In this case, the new payment period starts on the day of payment (2020/03/15).
           member_payment1
-          expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Time.zone.today + 1.year
+          Timecop.freeze(payment_date_2020_03_15)
+
+          payment_start_date = User.next_membership_payment_dates(user.id)[0]
+
+          expect(payment_start_date).to eq payment_date_2020_03_15
         end
 
-        it 'returns one year later for second payment expire date' do
+        it 'returns payment date + 1 year for expire date' do
+          # User renews membership (pays fee) *after* the prior payment has expired.
+          # In this case, the new payment period expires one year after
+          # the day of payment (expire date should be 2021/03/14).
           member_payment1
-          expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Time.zone.today + 1.year + 1.year - 1.day
+          Timecop.freeze(payment_date_2020_03_15)
+
+          payment_expire_date = User.next_membership_payment_dates(user.id)[1]
+
+          expect(payment_expire_date).to eq payment_date_2020_03_15 + 1.year - 1.day
         end
       end
     end
@@ -511,7 +508,10 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#check_member_status' do
+=begin
+This is now the responsibility of the MembershipStatusUpdater class
+
+    describe '#check_memberstatus' do
       it 'does nothing if not a member' do
         user.check_member_status
         expect(user.member).to be false
@@ -526,7 +526,7 @@ RSpec.describe User, type: :model do
       end
 
       it 'revokes membership if a member and payment has expired' do
-        Timecop.freeze(payment_date_2018)
+        Timecop.freeze(payment_date_2018_11_21)
 
         member_payment1
         user.update(member: true)
@@ -538,7 +538,10 @@ RSpec.describe User, type: :model do
 
         Timecop.return
       end
+
     end
+=end
+
   end
 
   describe '#get_short_proof_of_membership_url' do
@@ -548,6 +551,7 @@ RSpec.describe User, type: :model do
         expect(with_short_proof_of_membership_url.get_short_proof_of_membership_url(url)).to eq('http://www.tinyurl.com/proofofmembership')
       end
     end
+
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
         url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
