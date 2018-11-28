@@ -688,6 +688,8 @@ en:
       title: All Users
       no_search_results: No records matched your search criteria.
 
+    delete_user: Delete %{user}
+
     show:
       membership_number: *membership_number
       email: *email
@@ -776,6 +778,9 @@ en:
       application: *application
       applications_tooltip: User has an open application
       expire_date: *expire_date
+
+    destroy:
+      success: User deleted successfully.
 
   payments:
     create:
