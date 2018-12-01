@@ -1,3 +1,5 @@
+require 'company_locator'
+
 class CompaniesController < ApplicationController
   include PaginationUtility
   include ImagesUtility
@@ -35,16 +37,22 @@ class CompaniesController < ApplicationController
 
     @all_visible_companies.each { |co| geocode_if_needed co }
 
+    if params.include? :near
+      addresses = get_addresses_near(params[:near])
+      @all_companies = @all_companies.at_addresses( addresses)
+    end
+
     @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
     render partial: 'companies_list', locals: { companies: @companies,
                     search_params: @search_params } if request.xhr?
   end
 
+
   def show
     setup_events_and_events_pagination
 
-    show_events_list if request.xhr? 
+    show_events_list if request.xhr?
   end
 
   def company_h_brand
@@ -183,6 +191,11 @@ class CompaniesController < ApplicationController
            locals: { company: @company, error: t('companies.update.error') }
   end
 
+  def show_companies_list
+
+    render partial: 'companies_list', locals: { companies: @companies,
+                                                search_params: @search_params } if request.xhr?
+  end
 
   private
   # Use callbacks to share common setup or constraints between actions.
@@ -231,6 +244,36 @@ class CompaniesController < ApplicationController
     params['website'] = InputSanitizer.sanitize_url(params.fetch('website', ''))
     params['description'] = InputSanitizer.sanitize_html(params.fetch('description', ''))
     params
+  end
+
+
+  def get_addresses_near(near_params)
+
+    # It might be necessary to Sanitize the distance argument, depending on how the interface is handled
+    if near_params.fetch(:distance,false)
+      distance_f = near_params[:distance].to_f
+    else
+      distance_f = nil # CompanyLocator can handle this
+    end
+
+    # have to be searching either near a :name OR near coordinates (:latitude and :longitude)
+    if near_params.include? :name
+      addresses_near_name(near_params, distance_f)
+    else
+      addresses_near_coordinates(near_params, distance_f)
+    end
+
+  end
+
+  def addresses_near_name(near_params, distance)
+    santized_name =  InputSanitizer.sanitize_string(near_params.fetch(:name, ''))
+    CompanyLocator.find_near_name( santized_name, distance)
+  end
+
+  def addresses_near_coordinates(near_params, distance)
+    lat = near_params.fetch(:latitude, nil)
+    long = near_params.fetch(:longitude, nil)
+    CompanyLocator.find_near_coordinates(lat, long, distance)
   end
 
 end

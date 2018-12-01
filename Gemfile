@@ -81,6 +81,9 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
   gem 'factory_bot_rails'
+
+  # Note: pry fails when a utf-8 character is used in a string.
+  # pry calls the rb-readline gem, which is actually where the failure happens.
   gem 'pry-rails'
   gem 'pry'
   gem 'pry-byebug'
@@ -132,6 +135,7 @@ group :test do
 
   gem 'timecop'
   gem 'rubocop-rspec'
+
 end
 
 group :production do

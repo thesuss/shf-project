@@ -100,7 +100,7 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2120000142"
 
-  @selenium
+  @selenium  @skip_ci_test
   Scenario: User creates App with two companies, creates one company, corrects error in company number
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -177,7 +177,7 @@ Feature: Create a new membership application
     And the field t("shf_applications.new.phone_number") should not have a required field indicator
     And I should see t("is_required_field")
 
-  @selenium_browser
+  @selenium_browser  @skip_ci_test
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link

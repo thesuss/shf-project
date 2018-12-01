@@ -800,6 +800,14 @@ en:
     error:
       error: There was an error in processing your payment
 
+  company_locator:
+    error:
+      search_name_blank: 'Please enter a place name (it cannot be blank).'
+      search_distance_negative: 'Distance cannot be negative'
+      latitude_blank: "Latitude cannot be blank."
+      longitude_blank: "Longitude cannot be blank."
+
+
   admin:
     index:
       export: Export all applications to a CSV file
