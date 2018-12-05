@@ -13,6 +13,9 @@ env:
   node: true
 
 # http://eslint.org/docs/rules/
+# 0 = turn rule off
+# 1 = report as a warning
+# 2 = report as an error
 rules:
   # Possible Errors
   comma-dangle: [2, never]
@@ -60,7 +63,7 @@ rules:
   no-case-declarations: 2
   no-div-regex: 2
   no-else-return: 0
-  no-empty-label: 2
+  no-labels: 2
   no-empty-pattern: 2
   no-eq-null: 2
   no-eval: 2
