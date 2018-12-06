@@ -139,6 +139,12 @@ class Company < ApplicationRecord
     complete.with_members.branding_licensed
   end
 
+  # all companies at these addresses (array of Address)
+  def self.at_addresses(addresses)
+    joins(:addresses)
+      .where(id: addresses.map(&:addressable_id) )
+  end
+
   def destroy_checks
 
     error_if_has_applications?

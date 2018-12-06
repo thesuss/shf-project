@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'selective loading of external assets on specific pages' do
+RSpec.describe 'selective loading of external assets on specific pages', focus: true do
 
   before(:each) { view.lookup_context.prefixes +=
                    ['application', 'companies', 'shf_documents'] }
@@ -25,6 +25,10 @@ RSpec.describe 'selective loading of external assets on specific pages' do
     it 'is not loaded on other pages' do
       allow(view).to receive(:current_user) { Visitor.new }
 
+      stub_template 'companies/_companies_list' => ''
+      stub_template 'companies/_map_companies' => ''
+      stub_template 'companies/_search_form' => ''
+
       assign(:all_visible_companies, [])
       assign(:all_companies, Company.all)
       assign(:search_params, Company.ransack(nil))
@@ -44,6 +48,7 @@ RSpec.describe 'selective loading of external assets on specific pages' do
     it 'is loaded on companies/edit' do
       assign(:company, company)
 
+      stub_template 'business_categories/_as_list' => ''
       render template: 'companies/edit', layout: 'layouts/application'
 
       expect(rendered).to have_xpath("//head/script[contains(@src,'ckeditor.js')]",
@@ -55,6 +60,7 @@ RSpec.describe 'selective loading of external assets on specific pages' do
       assign(:title, document.title)
       assign(:contents, 'This if the document contents')
 
+      stub_template 'shf_documents/_contents_form' => ''
       render template: 'shf_documents/contents_edit', layout: 'layouts/application'
 
       expect(rendered).to have_xpath("//head/script[contains(@src,'ckeditor.js')]",
@@ -72,6 +78,13 @@ RSpec.describe 'selective loading of external assets on specific pages' do
                                                           update?: false,
                                                           index?: false,
                                                           destroy?: false))
+
+        stub_template 'business_categories/_as_list' => ''
+        stub_template 'companies/_branding_payment_status' => ''
+        stub_template 'companies/_map_companies' => ''
+        stub_template 'companies/_company_members' => ''
+        stub_template 'companies/_company_addresses' => ''
+        stub_template 'companies/_edit_branding_modal' => ''
 
         render template: 'companies/show', layout: 'layouts/application'
         expect(rendered).not_to have_xpath("//head/script[contains(@src,'ckeditor.js')]",

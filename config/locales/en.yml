@@ -138,7 +138,7 @@ en:
       user:
         first_name: &first_name First name
         last_name: &last_name Last name
-        email: &email Profile Email
+        email: &email Login Email
         password: *password
         password_confirmation: Password confirmation
         membership_number: &membership_number Membership number
@@ -299,6 +299,10 @@ en:
     payment_type:
       member_fee: Member Fee
       branding_fee: Branding Fee
+    status:
+      paid: &paid Paid
+      never_paid: &never_paid Never Paid
+
 
   # Automatic and manual lookup for views:
   shf_applications:
@@ -392,6 +396,7 @@ en:
                         This shows that you have achieved the H-mark and so
                         provide more value. The H-mark image is below.
                         It should be linked to:"
+        ffs: You find the image in your account.
 
       user:
         title: "Hey -- we're glad you're interested!"
@@ -470,6 +475,7 @@ en:
       ready_for_review: *status_ready_for_review
       accepted: *status_accepted
       rejected: *status_rejected
+      being_destroyed: *status_being_destroyed
 
     new_status: *status_new
     accept_btn: Accept
@@ -688,6 +694,8 @@ en:
       title: All Users
       no_search_results: No records matched your search criteria.
 
+    delete_user: Delete %{user}
+
     show:
       membership_number: *membership_number
       email: *email
@@ -777,6 +785,9 @@ en:
       applications_tooltip: User has an open application
       expire_date: *expire_date
 
+    destroy:
+      success: User deleted successfully.
+
   payments:
     create:
       page_title: &page_title '%{payment_type} Payment by: %{user_name}'
@@ -789,6 +800,14 @@ en:
     error:
       error: There was an error in processing your payment
 
+  company_locator:
+    error:
+      search_name_blank: 'Please enter a place name (it cannot be blank).'
+      search_distance_negative: 'Distance cannot be negative'
+      latitude_blank: "Latitude cannot be blank."
+      longitude_blank: "Longitude cannot be blank."
+
+
   admin:
     index:
       export: Export all applications to a CSV file
@@ -798,6 +817,11 @@ en:
     export_ansokan_csv:
       success: Export successful. Check your browser downloads for the file.
       error: There was a problem with the export.
+      member_fee_expires: M Expires
+      branding_fee_expires: H Expires
+      paid: *paid
+      never_paid: *never_paid
+      fee_payment_url: "Log in and pay here: http://hitta.sverigeshundforetagare.se%{payment_url}"
 
 
   shf_documents:

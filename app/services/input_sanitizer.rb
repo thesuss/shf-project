@@ -17,4 +17,11 @@ class InputSanitizer
     Sanitize.fragment(html, Sanitize::Config::RELAXED)
   end
 
+  # see Loofah::Scrubbers::Whitewash / scrub!(:whitewash)
+  def self.sanitize_string(unsafe_str = '')
+    return '' if unsafe_str.blank?
+
+    scrubbed_str = Loofah.fragment(unsafe_str).scrub!(:whitewash)
+    scrubbed_str.text  # this strips out everything except just plain text
+  end
 end

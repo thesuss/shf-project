@@ -41,7 +41,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I am on the "user details" page for "emma@happymutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2018-12-31"
     Then "emma@happymutts.se" should receive an email
@@ -50,6 +50,8 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I should see t("mailers.member_mailer.membership_granted.subject") in the email subject
     And I should see t("mailers.member_mailer.membership_granted.message_text.welcome") in the email body
     And I should see t("mailers.member_mailer.membership_granted.message_text.youre_active") in the email body
+    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     And I should not see "http://localhost:3000/hundforetag/1/redigera" in the email body
     And I should see "http://localhost:3000/hundforetag/1" in the email body
     When I follow "http://localhost:3000/hundforetag/1" in the email

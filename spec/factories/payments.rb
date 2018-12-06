@@ -1,4 +1,5 @@
 FactoryBot.define do
+
   factory :payment do
     user
     company { nil }
@@ -10,4 +11,30 @@ FactoryBot.define do
 
     updated_at { Time.zone.now }
   end
+
+
+  factory :membership_fee_payment, parent: :payment do
+    payment_type { Payment::PAYMENT_TYPE_MEMBER }
+  end
+
+  factory :h_branding_fee_payment, parent: :payment do
+    payment_type { Payment::PAYMENT_TYPE_BRANDING }
+  end
+
+  trait :successful do
+    status { Payment::ORDER_PAYMENT_STATUS['successful'] }
+  end
+
+  trait :pending do
+    status { Payment::ORDER_PAYMENT_STATUS['pending'] }
+  end
+
+  trait :expired do
+    status { Payment::ORDER_PAYMENT_STATUS['expired'] }
+  end
+
+  trait :awaiting_payment do
+    status { Payment::ORDER_PAYMENT_STATUS['awaiting_payments'] }
+  end
+
 end

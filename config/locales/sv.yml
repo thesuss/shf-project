@@ -138,7 +138,7 @@ sv:
       user:
         first_name: &first_name Förnamn
         last_name: &last_name Efternamn
-        email: &email Profil E-post
+        email: &email E-post för inloggning
         password: *password
         password_confirmation: Lösenordsbekräftelse
         membership_number: &membership_number Medlemsnummer
@@ -296,6 +296,18 @@ sv:
     payment_type:
       member_fee: Medlemsavgift
       branding_fee: H-märkesavgift
+    status:
+      paid: &paid Betald
+      never_paid: &never_paid Aldrig betald
+
+
+  company_locator:
+    error:
+      search_name_blank: 'Ange ett ställenamn (det kan inte vara tomt).'
+      search_distance_negative: 'Avståndet kan inte vara negativt'
+      latitude_blank: "Latitude cannot be blank."
+      longitude_blank: "Longitude cannot be blank."
+
 
   # Automatisk och manuell sökning för views:
   shf_applications:
@@ -337,7 +349,7 @@ sv:
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
-      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(ER) HÄR
+      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(N) HÄR
 
     edit:
       title: Redigera ansökan om medlemskap
@@ -387,6 +399,7 @@ sv:
         using_the_h_mark: 'Vi önskar även att du pryder din hemsida med H-märket.
                           För att visa att ni är just H-märkta med allt vad det innebär.
                           Bilden nedan nyttjas i detta syfte och länkas till: "http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
+        ffs: Du hittar ditt h-märke och ditt behörighetsbevis under ditt konto.
       waiting_for_approval:
         title: Hej, kul att du vill bli medlem
         in_process: Vi håller på att hantera din ansökan.
@@ -468,6 +481,7 @@ sv:
       ready_for_review: *status_ready_for_review
       accepted: *status_accepted
       rejected: *status_rejected
+      being_destroyed: *status_being_destroyed
 
     new_status: *status_new
     accept_btn: Godkänn
@@ -688,6 +702,8 @@ sv:
       title: Alla Användare
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
+    delete_user: Radera %{user}
+
     show:
       membership_number: *membership_number
       email: *email
@@ -777,6 +793,9 @@ sv:
       applications_tooltip: Användaren har en öppen ansökan
       expire_date: *expire_date
 
+    destroy:
+      success: Användaren raderades framgångsrikt.
+
   payments:
     create:
       page_title: &page_title '%{payment_type} betalning av: %{user_name}'
@@ -798,6 +817,11 @@ sv:
     export_ansokan_csv:
       success: Exporten lyckades. Du hittar filen bland din webbläsares nedladdade filer.
       error: Ett problem uppstod med exporten.
+      member_fee_expires: M Expires
+      branding_fee_expires: H Expires
+      paid: *paid
+      never_paid: *never_paid
+      fee_payment_url: "Betalas som inloggad via: http://hitta.sverigeshundforetagare.se%{payment_url}"
 
 
   shf_documents:

@@ -1,9 +1,17 @@
 require_relative File.join('..', 'services', 'address_exporter')
 
+require 'observer'
+
 
 class ShfApplication < ApplicationRecord
 
+  include Observable
+  include AASM
+
+
   before_destroy :before_destroy_checks
+
+  after_initialize :add_observers
 
   belongs_to :user
 
@@ -50,7 +58,12 @@ class ShfApplication < ApplicationRecord
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
 
-  include AASM
+
+
+  def add_observers
+    add_observer MembershipStatusUpdater.instance, :shf_application_updated
+  end
+
 
   aasm :column => 'state' do
 
@@ -61,6 +74,9 @@ class ShfApplication < ApplicationRecord
     state :accepted
     state :rejected
     state :being_destroyed
+
+    # after all of our state changes (transitions), call :tell_observers
+    after_all_transitions :state_transitioned
 
 
     event :start_review do
@@ -141,6 +157,9 @@ class ShfApplication < ApplicationRecord
     companies.order(:id).map(&:name).join(', ')
   end
 
+  def company_branding_fee_paid?
+    companies.last&.branding_license?
+  end
 
   def accept_application
     begin
@@ -202,6 +221,15 @@ class ShfApplication < ApplicationRecord
       cmpy.destroy if cmpy.shf_applications.count == 1
     end
   end
+
+
+
+  # let all of our observers know our state changed
+  def state_transitioned
+    changed(true)
+    notify_observers(self)
+  end
+
 
 
 end

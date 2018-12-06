@@ -59,7 +59,7 @@ class PaymentsController < ApplicationController
     log_hips_activity('create order', 'error', nil, @hips_id, exc.cause)
 
     helpers.flash_message(:alert, t('.something_wrong',
-                                    admin_email: ENV['SHF_MEMBERSHIP_EMAIL']))
+                                    admin_email: ENV['SHF_REPLY_TO_EMAIL']))
 
     redirect_back fallback_location: root_path
   end
@@ -94,20 +94,14 @@ class PaymentsController < ApplicationController
   end
 
   def success
-    helpers.flash_message(:notice, t('.success'))
-
     payment = Payment.find(params[:id])
-
-    if payment.payment_type == Payment::PAYMENT_TYPE_MEMBER
-      payment.user.grant_membership
-    end
-
+    payment.successfully_completed
+    helpers.flash_message(:notice, t('.success'))
     redirect_on_payment_success_or_error(payment)
   end
 
   def error
     helpers.flash_message(:alert, t('.error'))
-
     payment = Payment.find(params[:id])
     redirect_on_payment_success_or_error(payment)
   end

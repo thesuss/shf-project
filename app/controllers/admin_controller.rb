@@ -9,11 +9,11 @@ class AdminController < ApplicationController
 
       export_name = "Ansokningar-#{Time.zone.now.strftime('%Y-%m-%d--%H-%M-%S')}.csv"
 
-      send_data(export_str(@shf_applications), filename: export_name, type: "text/plain" )
+      send_data(export_str(@shf_applications), filename: export_name, type: "text/plain")
 
       helpers.flash_message(:notice, t('.success'))
 
-    rescue  => e
+    rescue => e
 
       helpers.flash_message(:alert, "#{t('.error')} [#{e.message}]")
       redirect_to(request.referer.present? ? :back : root_path)
@@ -25,6 +25,7 @@ class AdminController < ApplicationController
 
   private
 
+
   def authorize_admin
     AdminPolicy.new(current_user).authorized?
   end
@@ -35,6 +36,9 @@ class AdminController < ApplicationController
     out_str = export_header_str
 
     shf_apps.each do |m_app|
+
+      app_company = m_app.companies.last
+
       out_str << "#{m_app.contact_email},#{m_app.user.first_name},#{m_app.user.last_name},#{m_app.user.membership_number},"
       out_str << t("shf_applications.state.#{m_app.state}")
       out_str << ','
@@ -48,11 +52,21 @@ class AdminController < ApplicationController
       out_str << ','
 
       # a company name may have commas, so surround with quotes so spreadsheets recognize it as one string and not multiple comma-separated value
-      out_str << (m_app.companies.empty? ?  '' : "\"#{m_app.companies.last.name}\"")
+      out_str << (m_app.companies.empty? ? '' : "\"#{app_company.name}\"")
       out_str << ','
 
-      out_str << paid_M_or_link(m_app)
-      out_str << paid_H_or_link(m_app)
+      out_str << '"' + paid_M_or_link(m_app) + '",'
+
+      # membership expiry date
+      out_str << '"' + (never_paid_if_blank(m_app.user.membership_expire_date)) + '",'
+
+      if m_app.companies.empty?
+        out_str << "-,#{t('admin.export_ansokan_csv.never_paid')},"
+      else
+        out_str << '"' + paid_H_or_link(m_app) + '",'
+        # H brand expiry date
+        out_str << '"' + (never_paid_if_blank(app_company.branding_expire_date)) + '",'
+      end
 
       # add the SE postal service mailing address info as a CSV string
       out_str << m_app.se_mailing_csv_str
@@ -78,7 +92,9 @@ class AdminController < ApplicationController
                           t('activerecord.models.business_category.other'),
                           t('activerecord.models.company.one'),
                           'Member fee',
+                          t('admin.export_ansokan_csv.member_fee_expires'),
                           'H-branding',
+                          t('admin.export_ansokan_csv.branding_fee_expires'),
                           t('activerecord.attributes.address.street'),
                           t('activerecord.attributes.address.post_code'),
                           t('activerecord.attributes.address.city'),
@@ -89,29 +105,36 @@ class AdminController < ApplicationController
 
     out_str = ''
 
-    out_str << header_member_strs.map{| header_str | "'#{header_str.strip}'" }.join(',')
+    out_str << header_member_strs.map { |header_str| "'#{header_str.strip}'" }.join(',')
 
     out_str << "\n"
 
   end
 
-  def paid_H_or_link (arg)
-    out_str = ''
 
+  def paid_H_or_link (arg)
     if arg.companies.empty?
-      out_str << '-'
-      out_str << ','
+      '-'
     else
-      # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
-      out_str << (arg.companies.last&.branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(arg.companies.last.id))
-      out_str << ','
+      paid_or_payment_link(arg.companies.last&.branding_license?, company_path(arg.companies.last.id))
     end
   end
 
+
   def paid_M_or_link (arg)
-    out_str = ''
-    # say betals if member fee is paid, otherwise make link to where it is paid
-    out_str << (arg.user.membership_current? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + user_path(arg.user))
-    out_str << ','
+    paid_or_payment_link(arg.user.membership_current?, user_path(arg.user))
   end
+
+
+  # t('Paid') if member fee is paid, otherwise make link to where to pay it
+  def paid_or_payment_link(is_paid, payment_url)
+    is_paid ? t('admin.export_ansokan_csv.paid') : t('admin.export_ansokan_csv.fee_payment_url', payment_url: payment_url)
+  end
+
+
+  # return 'never paid' if arg isNil else the arg.to_s
+  def never_paid_if_blank(arg)
+    arg.blank? ? t('admin.export_ansokan_csv.never_paid') : arg.to_s
+  end
+
 end

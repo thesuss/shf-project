@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe PaymentsController, type: :controller do
+
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
   let(:company) { create(:company) }
@@ -40,7 +41,7 @@ RSpec.describe PaymentsController, type: :controller do
       expect{ request }.to_not change(Payment, :count)
 
       flash_msg = I18n.t('payments.create.something_wrong',
-                         admin_email: ENV['SHF_MEMBERSHIP_EMAIL'])
+                         admin_email: ENV['SHF_REPLY_TO_EMAIL'])
 
       expect(flash[:alert]).to eq [flash_msg]
     end
@@ -53,6 +54,7 @@ RSpec.describe PaymentsController, type: :controller do
       expect(response.redirect_url).to eq root_url
       expect(flash[:alert]).to eq "#{I18n.t('errors.not_permitted')}"
     end
+
   end
 
   describe 'POST #webhook' do
@@ -70,18 +72,21 @@ RSpec.describe PaymentsController, type: :controller do
     end
   end
 
-  describe 'GET #success' do
 
-    it 'calls User#grant_membership if membership payment' do
-      application
+  describe '#success' do
 
-      expect(payment.user.member).to be false
-      expect(payment.user.membership_number).to be_nil
+    let(:payment_made) { instance_double(Payment, save: true) }
 
-      get :success, params: { id: payment, user_id: payment.user.id }
+    it 'calls payment.successfully_completed on success', :vcr do
 
-      expect(payment.reload.user.member).to be true
-      expect(payment.user.membership_number).not_to be_nil
+      allow(Payment).to receive(:find).and_return(payment_made)
+      allow(payment_made).to receive(:payment_type).and_return( Payment::PAYMENT_TYPE_MEMBER )
+
+      sign_in user1
+      expect(payment_made).to receive(:successfully_completed)
+
+      get :success, params: {user_id: user1.id, id: payment.id }
+
     end
   end
 end
