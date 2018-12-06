@@ -7,33 +7,61 @@ body {
     margin: 0;
     -webkit-font-smoothing: antialiased;
 }
-h1, h2, h3, h4, h5, h6 {
+h2, h3, h4, h5, h6 {
     color: #232525;
     font-family: 'Crimson Text',serif;
     letter-spacing: -1px!important;
 }
+
+h1 {
+    color: #232525;
+    font-family: 'Crimson Text',serif;
+    letter-spacing: -1px!important;
+    margin: 0 auto 2%;
+    max-width: 660px;
+    font-size: 38px;
+    font-size: 3.8rem;
+    line-height: 45px;
+    font-weight: 700;
+    margin-top: 50px;
+}
+
+
 .main {
     padding: 0 0 6%;
     border-top: 3px solid #5692ce;
     border-bottom: 19px solid #85795b;
     background: #FFF; 
     margin-bottom: 70px;
+    margin-top: 40px;
+}
+.alert {
+    margin-top: 1rem;
 }
 
-@media (max-width: 1256px) and (min-width: 801px) {
-.main {
-    margin-top: 190px;
-    max-width: 1160px;
+/* Pretty checkboxes */
+.text-nicelabel:not(:checked)+label {
+    background-color: #DDDDDD;
+    color: #a7a7a7;
 }
+.text-nicelabel+label {
+    display: inline-block;
+    padding: 10px 20px 10px 10px;
+    background-color: #52a8ff;
+    color: #fff;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
-
-@media (max-width: 800px){
-.main {
-    margin-top: 30px;
+.text-nicelabel {
+    display: none !important;
 }
-}
-
-
 /*//Copy this css*/
 .navbar-light .navbar-nav .nav-link {
     color: rgb(64, 64, 64);
@@ -163,6 +191,11 @@ a:hover {
     padding: 0;
 }
 
+.entry-content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 660px;
+}
 
 @media (min-width: 768px) {
 .navbar-expand-md .navbar-nav .dropdown-menu {
