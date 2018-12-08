@@ -78,8 +78,9 @@
     = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
     %p.field-instruction= t('shf_applications.new.can_be_same_email')
     = f.email_field :contact_email, class: 'wpcf7-form-control'
-
+    %br
     = f.label :phone_number, t('shf_applications.show.phone_number')
+    %br
     = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
 

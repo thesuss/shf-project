@@ -2,7 +2,7 @@ body {
     background-color: #f7f7f2;
     font-family: 'Open Sans',sans-serif;
     line-height: 1.8;
-    color: #5b5e5e;
+    color: #333;
     font-weight: 400;
     margin: 0;
     -webkit-font-smoothing: antialiased;
@@ -12,57 +12,258 @@ h2, h3, h4, h5, h6 {
     font-family: 'Crimson Text',serif;
     letter-spacing: -1px!important;
 }
-
+.required:after {
+    content: '*';
+}
+a {
+  color: #003a78;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
 h1 {
     color: #232525;
     font-family: 'Crimson Text',serif;
     letter-spacing: -1px!important;
     margin: 0 auto 2%;
     max-width: 660px;
-    font-size: 38px;
-    font-size: 3.8rem;
+    font-size: 48px;
     line-height: 45px;
     font-weight: 700;
     margin-top: 50px;
 }
 
+@media only screen and (max-width: 600px){
+.entry-title {
+    font-size: 36px;
+}
+}
+label {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
 
 .main {
-    padding: 0 0 6%;
+    padding: 0 10px 6% 10px;
     border-top: 3px solid #5692ce;
     border-bottom: 19px solid #85795b;
     background: #FFF; 
-    margin-bottom: 70px;
-    margin-top: 40px;
+    margin: 40px auto;
+    
+}
+
+@media (max-width: 9900px) and (min-width: 1256px) {
+.main {
+    max-width: 1160px;
+}
 }
 .alert {
     margin-top: 1rem;
 }
 
-/* Pretty checkboxes */
-.text-nicelabel:not(:checked)+label {
-    background-color: #DDDDDD;
-    color: #a7a7a7;
+/* APPLICATION PAGE SPECIFIC*/
+.app-section h2 {
+	border-top: 3pt solid #5692ce;
+	border-top: 3pt solid rgba(86, 146, 206, 0.2);
+	font-weight: bold;
+	margin-top: 0.9em;
+	padding-top: 0.7em
 }
-.text-nicelabel+label {
+
+.app-section .answers .field-instruction {
+	font-style: italic;
+	margin-bottom: 0;
+    font-family: 'Crimson Text',serif;
+
+}
+.app-section .answers .new-company-link {
+	display: inline-block;
+	margin-left: 30px;
+	vertical-align: middle;
+	margin-top:-6px;
+}
+#company-number-entry {
+	display: inline-block;
+	width: 30%
+}
+#supporting-files {
+	margin-bottom: 1em
+}
+#supporting-files .files {
+	background: rgba(86, 146, 206, 0.2);
+	border: 1px solid #5692ce;
+	padding-bottom: 20px;
+}
+#supporting-files table {
+	min-width: 80%
+}
+#supporting-files table tr:nth-child(odd), #supporting-files table tr:nth-child(even) {
+	background-color: #fff
+}
+#supporting-files table th,  #supporting-files table td {
+	margin: 0;
+	padding-bottom: 0;
+	padding-top: 0
+}
+#supporting-files table th {
+	border-bottom: 0;
+	font-weight: bold
+}
+.files-to-upload-title {
+	font-weight: normal;
+	margin-bottom: 0
+}
+.upload-button-pre {
+	margin-bottom: 0
+}
+
+.no-files-uploaded-warn:before {
+    font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f071";
+
+}
+
+.no-files-uploaded-warn {
+    color: #c51f1b;
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: bold;
+    font-family: 'Crimson Text',serif;
+}
+
+#supporting-files .upload-more-note {
+	margin-top: 1em
+}
+#application-status {
+	border: 1pt solid #8eadce;
+	margin-left: 1rem;
+	padding-left: 1rem
+}
+#application-status .row {
+	margin-bottom: 1rem;
+	margin-top: 1rem
+}
+.btn-file {
+	border: 0;
+	color: #ffffff;
+	font-size: 1.1em;
+	line-height: 2em;
+	margin-bottom: 1em;
+	margin-left: 1em;
+	overflow: hidden;
+	position: relative
+}
+.btn-file input[type=file] {
+	background: #ffffff;
+	cursor: inherit;
+	display: block;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	outline: none;
+	position: absolute;
+	right: 0;
+	text-align: right;
+	top: 0
+}
+.show.shfapplication #uploaded-files .files-uploaded-list-title, .update.shfapplication #uploaded-files .files-uploaded-list-title {
+	font-weight: bold
+}
+
+/*End app specific*/
+
+
+
+/* Pretty checkboxes */
+/*!
+ *nicelabel JQuery Plugin
+ *
+ *@file: jquery-nicelabel.js
+ *@author: PJY
+ *@date: 2016/05/15
+ *@site: http://www.cat666.com/
+ *@license: MIT License
+ */
+
+.text-nicelabel{
+    display:none !important;
+}
+
+.text-nicelabel + label {
     display: inline-block;
     padding: 10px 20px 10px 10px;
-    background-color: #52a8ff;
+    background-color: #5692CE;
     color: #fff;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:all 0.2s;
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+    margin:0;
 }
-.text-nicelabel {
-    display: none !important;
+.text-nicelabel + label > span.nicelabel-unchecked, .text-nicelabel  + label > span.nicelabel-checked {
+    display: inline-block;
+    line-height: 16px;
+    margin-left:7px;
+    vertical-align: bottom;
 }
-/*//Copy this css*/
+.text-nicelabel + label > span.nicelabel-unchecked-image, .text-nicelabel  + label > span.nicelabel-checked-image {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    background-repeat: no-repeat;
+    background-position: left center;
+
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+.text-nicelabel:not(:checked) + label {
+    background-color: #DDDDDD;
+    color: #a7a7a7;
+}
+.text-nicelabel:not(:checked) + label > span.nicelabel-checked-image {
+    display: none;
+}
+.text-nicelabel:not(:checked) + label > span.nicelabel-checked {
+    display: none;
+}
+.text-nicelabel:checked + label > span.nicelabel-unchecked-image {
+    display: none;
+}
+.text-nicelabel:checked + label > span.nicelabel-unchecked {
+    display: none;
+}
+.text-nicelabel[disabled] + label {
+    opacity:0.5;
+}
+.text_checkbox {
+    float:left;
+    margin-left:20px;
+}
+.no-padding {
+    padding:0 !important;
+    margin:0 !important;
+}
+
+/* Stop nice label code */
+nav a img {
+    padding: 0;
+}
+
+.login {
+    vertical-align: middle;
+    margin: auto 1px;
+    height: 10px;
+}
+
 .navbar-light .navbar-nav .nav-link {
     color: rgb(64, 64, 64);
 }
@@ -145,6 +346,12 @@ a:hover {
 }
 
 @media only screen and (max-width: 800px) {
+.app-section .answers .new-company-link {
+    display: block;
+    margin-left: 0;
+vertical-align: default;
+    margin-top: 3px;
+}
 .navbar-toggler {
     line-height: 20px;
     margin-top: 0;

@@ -53,9 +53,7 @@
 
     = render 'top'
     
-    .container
-      .col-xs-12
-        = render 'flash'
-        .main{role: 'main'}
-          = yield
+    = render 'flash'
+    .main{role: 'main'}
+      = yield
 
