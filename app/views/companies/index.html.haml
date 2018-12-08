@@ -19,11 +19,11 @@
             %br
             #{t('.how_to_search')}
       .col
-        %button.btn.hide-search-form.ml-auto{ id: 'toggle-search-form',
-                                          href: '#company-search-form' }
-          #{t('toggle.company-search-form.hide')}
+        %button.btn.hide-search-form.ml-auto{ id: 'toggle_search_form',
+                                          href: '#company_search_form' }
+          #{t('toggle.company_search_form.hide')}
 
-      .panel.panel-default.search-form#company-search-form
+      .panel.panel-default.search-form#company_search_form
 
         = render 'search_form', all_companies: @all_companies,
                                 search_params: @search__params
