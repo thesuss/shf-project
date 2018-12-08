@@ -44,17 +44,17 @@ RSpec.describe 'companies/index' do
 
     it 'renders link to main site' do
       text = t('menus.nav.shf_main_site')
-      expect(rendered).to match %r{<a href=\"#{shf_site}\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}\">#{text}}
     end
 
     it 'renders link to companies index view' do
       text = t('menus.nav.members.shf_companies')
-      expect(rendered).to match %r{<a href=\"\/\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"\/\">#{text}}
     end
 
     it 'renders link to my application' do
       text = t('menus.nav.users.my_application')
-      expect(rendered).to match %r{<a href=\"\/ansokan\/#{app_id}\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"\/ansokan\/#{app_id}\">#{text}}
     end
 
     context 'member pages' do
@@ -86,13 +86,13 @@ RSpec.describe 'companies/index' do
         it 'renders view-my-company link' do
           text = t('menus.nav.members.manage_company.view_company')
           expect(rendered)
-            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
         end
 
         it 'renders edit-my-company link' do
           text = t('menus.nav.members.manage_company.edit_company')
           expect(rendered)
-            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
         end
       end
 
@@ -116,13 +116,13 @@ RSpec.describe 'companies/index' do
         it 'renders view-my-company link - first company' do
           text = t('menus.nav.members.manage_company.view_company')
           expect(rendered)
-            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
         end
 
         it 'renders edit-my-company link - first company' do
           text = t('menus.nav.members.manage_company.edit_company')
           expect(rendered)
-            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
         end
 
         it 'renders sub-menu title with second company name' do
@@ -133,13 +133,13 @@ RSpec.describe 'companies/index' do
         it 'renders view-my-company link - second company' do
           text = t('menus.nav.members.manage_company.view_company')
           expect(rendered)
-            .to match %r{<a href=\"\/hundforetag\/#{cmpy2.id}\">#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy2.id}\">#{text}}
         end
 
         it 'renders edit-my-company link - second company' do
           text = t('menus.nav.members.manage_company.edit_company')
           expect(rendered)
-            .to match %r{<a href=\"\/hundforetag\/#{cmpy2.id}\/redigera\">#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy2.id}\/redigera\">#{text}}
         end
       end
     end
@@ -180,17 +180,17 @@ RSpec.describe 'companies/index' do
 
     it 'renders link to main site' do
       text = t('menus.nav.shf_main_site')
-      expect(rendered).to match %r{<a href=\"#{shf_site}\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}\">#{text}}
     end
 
     it 'renders link to companies index view' do
       text = t('menus.nav.members.shf_companies')
-      expect(rendered).to match %r{<a href=\"\/\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"\/\">#{text}}
     end
 
     it 'renders link to edit my application' do
       text = t('menus.nav.users.my_application')
-      expect(rendered).to match %r{<a href=\"\/ansokan\/#{user_app_id}\/redigera\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"\/ansokan\/#{user_app_id}\/redigera\">#{text}}
     end
 
     context 'logged-in menu' do
@@ -235,7 +235,7 @@ RSpec.describe 'companies/index' do
 
     it 'renders link to main site' do
       text = t('menus.nav.shf_main_site')
-      expect(rendered).to match %r{<a href=\"#{shf_site}\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}\">#{text}}
     end
 
     context 'membership applications' do
@@ -247,12 +247,12 @@ RSpec.describe 'companies/index' do
 
       it 'renders manage-applications link' do
         text = t('menus.nav.admin.applications.manage_applications')
-        expect(rendered).to match %r{<a href=\"\/ansokan\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/ansokan\">#{text}}
       end
 
       it 'renders waiting-reasons link' do
         text = t('menus.nav.admin.applications.waiting_reasons')
-        expect(rendered).to match %r{<a href=\"\/admin\/member_app_waiting_reasons\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/admin\/member_app_waiting_reasons\">#{text}}
       end
 
     end
@@ -266,12 +266,12 @@ RSpec.describe 'companies/index' do
 
       it 'renders manage-categories link' do
         text = t('menus.nav.admin.categories.manage_categories')
-        expect(rendered).to match %r{<a href=\"\/kategori\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/kategori\">#{text}}
       end
 
       it 'renders new-category link' do
         text = t('menus.nav.admin.categories.new_category')
-        expect(rendered).to match %r{<a href=\"\/kategori\/ny\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/kategori\/ny\">#{text}}
       end
     end
 
@@ -284,18 +284,18 @@ RSpec.describe 'companies/index' do
 
       it 'renders manage-companies link' do
         text = t('menus.nav.admin.companies.manage_companies')
-        expect(rendered).to match %r{<a href=\"\/hundforetag\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/hundforetag\">#{text}}
       end
 
       it 'renders new-company link' do
         text = t('menus.nav.admin.companies.new_company')
-        expect(rendered).to match %r{<a href=\"\/hundforetag\/ny\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/hundforetag\/ny\">#{text}}
       end
     end
 
     it 'renders link to users index view' do
       text = t('menus.nav.admin.users.list_users')
-      expect(rendered).to match %r{<a href=\"\/anvandare\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"\/anvandare\">#{text}}
     end
 
     context 'logged-in menu' do
@@ -332,19 +332,19 @@ RSpec.describe 'companies/index' do
 
     it 'renders link to main site' do
       text = t('menus.nav.home')
-      expect(rendered).to match %r{<a href=\"#{shf_site}\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}\">#{text}}
     end
 
     it 'renders brochure link' do
       text = t('menus.nav.visitor.brochure')
-      expect(rendered).to match %r{<a href=\"#{shf_site}broschyr\/\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}broschyr\/\">#{text}}
     end
 
     context 'for-dog-owners menu' do
 
       it 'renders menu link == link to SHF site' do
         text = t('menus.nav.visitor.dog_owners.submenu_title')
-        expect(rendered).to match %r{<a href=\"#{shf_site}agare\/\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}agare\/\">#{text}}
       end
 
       it 'renders about-us link' do
@@ -374,12 +374,12 @@ RSpec.describe 'companies/index' do
       it 'renders become-a-supporter link' do
         text = t('menus.nav.visitor.dog_owners.become_supporter')
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}agare\/bli-stodmedlem\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}agare\/bli-stodmedlem\/\">#{text}}
       end
 
       it 'renders being-dog-owners link' do
         text = t('menus.nav.visitor.find_dog_businesses')
-        expect(rendered).to match %r{<a href=\"\/">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"\/">#{text}}
       end
     end
 
@@ -387,7 +387,7 @@ RSpec.describe 'companies/index' do
 
       it 'renders menu link == link to SHF site' do
         text = t('menus.nav.visitor.entrepreneurs.submenu_title')
-        expect(rendered).to match %r{<a href=\"#{shf_site}foretag\/\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}foretag\/\">#{text}}
       end
 
       it 'renders about-us link' do
@@ -399,19 +399,19 @@ RSpec.describe 'companies/index' do
       it 'renders become-a-member link' do
         text = t('menus.nav.visitor.entrepreneurs.sign_up')
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}foretag\/bli-medlem\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}foretag\/bli-medlem\/\">#{text}}
       end
 
       it 'renders become-H-labeled link' do
         text = t('menus.nav.visitor.entrepreneurs.be_h_labeled')
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}foretag\/bli-h-markt\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}foretag\/bli-h-markt\/\">#{text}}
       end
 
       it 'renders member-criteria link' do
         text = t('menus.nav.visitor.entrepreneurs.member_criteria')
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}medlemskriterier\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}medlemskriterier\/\">#{text}}
       end
 
       it 'renders member-benefits link' do
@@ -423,7 +423,7 @@ RSpec.describe 'companies/index' do
       it 'renders member-standards link' do
         text = t('menus.nav.visitor.entrepreneurs.quality_standards')
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}foretag\/kvalitetskontroll\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}foretag\/kvalitetskontroll\/\">#{text}}
       end
 
       it 'renders knowledge-bank link' do
@@ -443,42 +443,42 @@ RSpec.describe 'companies/index' do
       it 'renders Bloggar link' do
         text = 'Bloggar'
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}category\/bloggar\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}category\/bloggar\/\">#{text}}
       end
 
       it 'renders Böcker link' do
         text = 'Böcker'
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}category\/bocker\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}category\/bocker\/\">#{text}}
       end
 
       it 'renders Forskning link' do
         text = 'Forskning'
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}category\/forskning\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}category\/forskning\/\">#{text}}
       end
 
       it 'renders Pod link' do
         text = 'Pod'
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}category\/pod\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}category\/pod\/\">#{text}}
       end
 
       it 'renders Populärvetenskap link' do
         text = 'Populärvetenskap'
         expect(rendered)
-          .to match %r{<a href=\"#{shf_site}category\/popularvetenskap\/\">#{text}}
+          .to match %r{<a class="nav-link" href=\"#{shf_site}category\/popularvetenskap\/\">#{text}}
       end
 
       it 'renders Video link' do
         text = 'Video'
-        expect(rendered).to match %r{<a href=\"#{shf_site}category\/video\/\">#{text}}
+        expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}category\/video\/\">#{text}}
       end
     end
 
     it 'renders contact link' do
       text = t('menus.nav.visitor.contact')
-      expect(rendered).to match %r{<a href=\"#{shf_site}kontakt\/\">#{text}}
+      expect(rendered).to match %r{<a class="nav-link" href=\"#{shf_site}kontakt\/\">#{text}}
     end
 
     it 'renders log-in link' do
