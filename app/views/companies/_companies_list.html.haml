@@ -1,5 +1,5 @@
 #companies_list
-  .table-responsive 
+  .table-responsive
     %table.table.table-hover.table-sm.table-striped
       %thead
         %tr
@@ -29,12 +29,12 @@
       %tbody
         - companies.each do |company|
           %tr.company
-            %td{ style: 'white-space: nowrap;' }
+            %td
               = safe_join(company.categories_names, tag.br)
             %td= link_to company.name.blank? ? t('name_missing') : company.name, company
-            %td{ style: 'white-space: nowrap;' }
+            %td
               = safe_join(company.addresses_region_names, tag.br)
-            %td{ style: 'white-space: nowrap;' }
+            %td
               = safe_join(company.kommuns_names, tag.br)
               - if current_user.admin?
                 %td= company.company_number
