@@ -8,14 +8,13 @@
   For the latter, still need to show items-per-page selection.
 - if paginate_links || entities.count > PaginationUtility::DEFAULT_ITEMS_SELECTION
 
-  .row.center-aligned-container
+  .row
 
-    .col-sm-8.col-sm-offset-2.center
+    .col-10
+      %nav{"aria-label" => "pages"}
+        = paginate_links
 
-      = paginate_links
-
-    .col-sm-2.center
-
+    .col-2
       -# override min-width from 'custom.css' - too wide
       = select_tag(:items_count, paginate_count_options(items_count),
                    data: { remote: true,
