@@ -1,7 +1,6 @@
 - if user_signed_in?
   %li.login.dropdown#menu-menu-login
-    %a.nav-link.dropdown-toggle{ href: '#', "aria-expanded" => "false",
-    "aria-haspopup" => "true", "data-toggle" => "dropdown" }
+    %a.nav-link.dropdown-toggle{ href: '#', "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown" }
       = t('hello', name: current_user.first_name)
     %ul.dropdown-menu
       %li
