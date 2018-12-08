@@ -148,7 +148,6 @@ en:
         last_login: &user_last_login Last login
         last_login_ip: &user_last_login_ip Last logged in from IP address
         sign_in_count: &sign_in_count Logins
-        created: *created
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
         member: &member Member
 
