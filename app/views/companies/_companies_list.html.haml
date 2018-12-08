@@ -17,7 +17,7 @@
             = sort_link(search_params, :addresses_kommun_name,
                         t('activerecord.attributes.address.kommun'), {},
                         { class: 'companies_pagination', remote: true })
-  
+
           - if current_user.admin?
             %th
               = sort_link(search_params, :company_number,
@@ -25,7 +25,7 @@
                         { class: 'companies_pagination', remote: true })
             %th
             %th
-  
+
       %tbody
         - companies.each do |company|
           %tr.company
