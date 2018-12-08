@@ -1,9 +1,9 @@
 %nav.navbar.navbar-expand-md
-  %a.navbar-brand{:href => "#"} 
-    %img{:src => "https://media.sverigeshundforetagare.se/2016/12/cropped-16465585_1046630372149121_513430848809205760_n.jpg"}/
-  %button.navbar-toggler{"aria-controls" => "navbarNavDropdown", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarNavDropdown", "data-toggle" => "collapse", :type => "button"}
+  %a.navbar-brand{ :href => "#" } 
+    %img{ :src => "https://media.sverigeshundforetagare.se/2016/12/cropped-16465585_1046630372149121_513430848809205760_n.jpg" }/
+  %button.navbar-toggler{ "aria-controls" => "dropdown-menu", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#dropdown-menu", "data-toggle" => "collapse", :type => "button" }
     MENY
-  #navbarNavDropdown.collapse.navbar-collapse
+  .collapse.navbar-collapse#dropdown-menu
     - if user_signed_in?
       - if current_user.admin?
         .menu#menu-menu-3-container
@@ -22,12 +22,12 @@
             = render 'navigation_member_pages'
             - if (company_count = current_user.companies.count) > 0
               %li.dropdown
-                %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
+                %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }
                   = t('my_company', count: company_count)
                 %ul.dropdown-menu
                   - current_user.companies.each do |company|
                     %li.dropdown
-                      %a.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
+                      %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }
                         - company_name = company.name.present? ? company.name : t('name_missing')
                         = company_name
                       %ul.dropdown-menu  
@@ -38,7 +38,7 @@
                           = link_to t('menus.nav.members.manage_company.edit_company'),
                                     edit_company_path(company), class: 'nav-link'
               = render 'navigation_edit_my_application', shf_app: current_user.shf_application
-    
+
           - else
             -# User is not a member nor admin
             - if current_user.has_shf_application?
@@ -46,9 +46,9 @@
             - else
               %li
                 = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path, class: 'nav-link'
-    
+
     - else
       -# Visitor navigation
       = render 'navigation_visitor'
-    
+
     = render 'login_nav'

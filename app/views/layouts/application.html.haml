@@ -9,7 +9,6 @@
     %title Medlemmar i Sveriges Hundföretagare
     = csrf_meta_tags
 
-
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css'
     = stylesheet_link_tag 'application', media: 'all'
 
@@ -42,7 +41,6 @@
           }
 
 
-
   %body{class: "#{controller_name} #{action_name} page page-template page-template-page-sidebar-none"}
     // This embedded script sets the locale for I18n on the client side.
     // It needs to be in the body since only the body will be re-rendered
@@ -54,6 +52,5 @@
     = render 'top'
     
     = render 'flash'
-    .main{role: 'main'}
+    .main{role: 'main' }
       = yield
-
