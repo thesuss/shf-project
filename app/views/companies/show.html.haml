@@ -4,8 +4,6 @@
 
   %header.entry-header
     %h1.entry-title= @company.name
-    .post-title-divider
-    %span
 
     - if @company.categories
       .categories
@@ -18,7 +16,7 @@
     %hr
 
     .row
-      .col-md-5
+      .col-5
         = field_or_none t('.name'),@company.name, tag_options: {class: 'hidden', id: 'location-text'}
 
         - if current_user.admin?
@@ -34,7 +32,7 @@
 
           = render partial: 'branding_payment_status', locals: { company: @company }
 
-      .col-md-7
+      .col-7
         - if @company.any_visible_addresses?
           = render partial: 'map_companies',
                    locals: { markers: location_and_markers_for([@company],
@@ -46,7 +44,7 @@
 
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit
 
-    .col-md-12
+    .col-12
       - if ! @company.dinkurs_company_id.blank? && ! @company.show_dinkurs_events && user_can_edit
 
         .dinkurs-show-not

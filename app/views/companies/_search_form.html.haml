@@ -1,7 +1,7 @@
 = search_form_for @search_params, method: :get, url: companies_path,
                                   class: 'form-horizontal' do |f|
-  .form-group
-    .col-sm-5
+  .row
+    .col
       = f.label :business_categories_id_in,
                 "#{t('activerecord.models.business_category.one')}",
                 class: 'control-label',
@@ -12,7 +12,7 @@
                       { multiple: true, size: 5, style: 'width: 100%;',
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
-    .col-sm-4
+    .col
       = f.label :addresses_region_id_in,
                 "#{t('activerecord.attributes.address.region')}",
                 class: 'control-label',
@@ -24,7 +24,7 @@
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
 
-    .col-sm-3
+    .col
       = f.label :addresses_kommun_id_in,
                 "#{t('activerecord.attributes.address.kommun')}",
                class: 'control-label',
@@ -35,8 +35,8 @@
                      { multiple: true, size: 5, style: 'width: 100%;',
                        class: 'form-control search_field',
                        data: {language: "#{@locale}" } }
-  .form-group
-    .col-sm-8
+  .row
+    .col
       = f.label :name_in,
                 "#{t('activerecord.models.company.one')}",
                 class: 'control-label',
@@ -48,6 +48,5 @@
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
 
-    .col-sm-4
-      %br
-      = submit_tag "#{t('search')}", class: 'btn btn-primary pull-right'
+    .col
+      = submit_tag "#{t('search')}", class: 'btn btn-primary btn-block s-column'
