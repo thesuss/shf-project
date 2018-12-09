@@ -34,7 +34,7 @@
 
     .row
       .col
-        %pre.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state}  - #{@shf_application.updated_at.strftime('%F')}
+        %pre.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state} - #{@shf_application.updated_at.strftime('%F')}
 
         - if current_user.admin?
           = render partial: 'application_status_form'
