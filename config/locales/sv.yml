@@ -1082,6 +1082,7 @@ sv:
   #   the key for the section.)
   menus:
     skip_to_content: Gå direkt till innehållet
+    menu: Meny
     nav:
       shf_main_site: &shf_main_site SHF-sajten
       home: &home Hem

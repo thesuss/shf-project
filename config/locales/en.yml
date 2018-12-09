@@ -1081,6 +1081,7 @@ en:
   #   the key for the section.)
   menus:
     skip_to_content: Skip to content
+    menu: Menu
     nav:
       shf_main_site: &shf_main_site SHF main site
       home: &home Home
