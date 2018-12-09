@@ -31,7 +31,7 @@ Feature: As an applicant
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "emma@random.com"
     Given I am on the "user instructions" page
-    And I click on t("menus.nav.users.my_application")
+    And I click on t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with ""
     And I unselect "Groomer" Category
