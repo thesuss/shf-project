@@ -2,7 +2,7 @@
   %a.navbar-brand{ :href => "#" }
     %img{ :src => "https://media.sverigeshundforetagare.se/2016/12/cropped-16465585_1046630372149121_513430848809205760_n.jpg" }/
   %button.navbar-toggler{ "aria-controls" => "dropdown-menu", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#dropdown-menu", "data-toggle" => "collapse", :type => "button" }
-    MENY
+    = t('menus.menu')
   .collapse.navbar-collapse#dropdown-menu
     - if user_signed_in?
       - if current_user.admin?
@@ -16,7 +16,7 @@
         %ul.navbar-nav.ml-auto#menu-menu-2
           %li
             = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/', class: 'nav-link'
-          %li
+          %li.dropdown
             = link_to t('menus.nav.members.shf_companies'), root_path, class: 'nav-link'
           - if current_user.member?
             = render 'navigation_member_pages'
@@ -27,7 +27,7 @@
                 %ul.dropdown-menu
                   - current_user.companies.each do |company|
                     %li.dropdown
-                      %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }
+                      %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: company_path(company.id)}
                         - company_name = company.name.present? ? company.name : t('name_missing')
                         = company_name
                       %ul.dropdown-menu
