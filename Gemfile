@@ -20,7 +20,7 @@ gem 'orgnummer'
 
 gem 'devise'
 gem 'pundit'
-gem 'paperclip', '~> 5.0.0'
+gem "paperclip", "~> 6.0.0"
 
 gem 'routing-filter'   # for handling locale filters around routes
 
