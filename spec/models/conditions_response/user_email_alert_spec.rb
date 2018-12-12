@@ -146,11 +146,11 @@ RSpec.describe UserEmailAlert, type: :model do
     let(:also_oct_1) { Time.zone.local(2018, 10, 1) }
 
     it 'returns positive if date_time1 is before date_time2' do
-      expect(described_class.days_since(oct_1, nov_1)).to be 31
+      expect(described_class.days_since(oct_1, nov_1)).to be(31)
     end
 
     it 'returns negative if date_time1 is after date_time2' do
-      expect(described_class.days_since(nov_1, oct_1)).to be -31
+      expect(described_class.days_since(nov_1, oct_1)).to be(-31)
     end
 
     it 'returns 0 if the DateTimes are the same' do
