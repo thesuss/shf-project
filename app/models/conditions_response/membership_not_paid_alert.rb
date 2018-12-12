@@ -3,7 +3,7 @@
 class MembershipNotPaidAlert < UserEmailAlert
 
 
-  def self.send_alert_today?(config, user, this_date)
+  def self.send_alert_this_day?(config, user, this_date)
 
     return false unless user.has_approved_shf_application?
 

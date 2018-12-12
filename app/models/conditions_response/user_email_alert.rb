@@ -18,7 +18,7 @@ class UserEmailAlert
 
     User.all.each do |user|
 
-      if send_alert_today?(config, user, this_date)
+      if send_alert_this_day?(config, user, this_date)
         MemberMailer.send(mailer_method, user)
         log.record('info', log_message(log_msg_start, user.email))
       end
@@ -44,7 +44,7 @@ class UserEmailAlert
   # computing whatever date information is necessary to determine if
   # an alert should be sent out today.
   # Ex:
-  #   def self.send_alert_today?(config, user)
+  #   def self.send_alert_this_day?(config, user)
   #     days_until = (user.membership_expire_date - Date.current).to_i
   #     user.membership_current? &&  config[:days].include?(days_until)
   #   end
@@ -55,7 +55,7 @@ class UserEmailAlert
   # @param this_date [DateTime] - (defaults to today) the date that we are using
   #                      to check the condition.  in UTC
   #
-  def self.send_alert_today?(_config, _user, _this_date = DateTime.now.utc)
+  def self.send_alert_this_day?(_config, _user, _this_date = DateTime.now.utc)
     raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
   end
 

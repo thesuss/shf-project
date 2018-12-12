@@ -18,7 +18,7 @@ RSpec.describe MembershipNotPaidAlert, type: :model do
   end
 
 
-  describe '.send_alert_today?(config, user)' do
+  describe '.send_alert_this_day?(config, user)' do
 
     context 'user has an approved application' do
 
@@ -34,11 +34,11 @@ RSpec.describe MembershipNotPaidAlert, type: :model do
 
 
         it "true when today is in the config list of days to send the alert" do
-          expect(described_class.send_alert_today?(config, user, dec_2)).to be_truthy
+          expect(described_class.send_alert_this_day?(config, user, dec_2)).to be_truthy
         end
 
         it 'false when today is not in the config list of days to send the alert' do
-          expect(described_class.send_alert_today?(config, user, dec_3)).to be_falsey
+          expect(described_class.send_alert_this_day?(config, user, dec_3)).to be_falsey
         end
       end
 
@@ -60,11 +60,11 @@ RSpec.describe MembershipNotPaidAlert, type: :model do
         let(:user) { membership_app.user }
 
         it "false when today is in the config list of days to send the alert" do
-          expect(described_class.send_alert_today?(config, user, dec_2)).to be_falsey
+          expect(described_class.send_alert_this_day?(config, user, dec_2)).to be_falsey
         end
 
         it 'false when today is not in the config list of days to send the alert' do
-          expect(described_class.send_alert_today?(config, user, dec_3)).to be_falsey
+          expect(described_class.send_alert_this_day?(config, user, dec_3)).to be_falsey
         end
 
       end # context 'next membership payment is NOT past due'
@@ -76,11 +76,11 @@ RSpec.describe MembershipNotPaidAlert, type: :model do
       let(:user) { create( :user ) }
 
       it "false when today is in the config list of days to send the alert" do
-        expect(described_class.send_alert_today?(config, user, dec_2)).to be_falsey
+        expect(described_class.send_alert_this_day?(config, user, dec_2)).to be_falsey
       end
 
       it 'false when today is not in the config list of days to send the alert' do
-        expect(described_class.send_alert_today?(config, user, dec_3)).to be_falsey
+        expect(described_class.send_alert_this_day?(config, user, dec_3)).to be_falsey
       end
 
     end # context 'user does NOT have an approved application'

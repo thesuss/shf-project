@@ -53,7 +53,7 @@ RSpec.describe UserEmailAlert, type: :model do
     let(:dec_1) { Time.zone.local(2018, 12, 1) }
 
 
-    it 'for each User: sends alert and logs if send_alert_today? is true' do
+    it 'for each User: sends alert and logs if send_alert_this_day? is true' do
 
       expect(MemberMailer.fake_mailer_method(user)).to be_truthy
 
@@ -61,7 +61,7 @@ RSpec.describe UserEmailAlert, type: :model do
       # stubbed methods:
       allow(described_class).to receive(:mailer_method).and_return(:fake_mailer_method)
 
-      allow(described_class).to receive(:send_alert_today?)
+      allow(described_class).to receive(:send_alert_this_day?)
                                     .with(config, user, dec_1)
                                     .and_return(true)
 
@@ -72,7 +72,7 @@ RSpec.describe UserEmailAlert, type: :model do
       expect(MemberMailer).to receive(:fake_mailer_method).with(user)
                                   .exactly(1).times
 
-      expect(described_class).to receive(:send_alert_today?)
+      expect(described_class).to receive(:send_alert_this_day?)
                                      .with(config, user, dec_1)
 
       expect(log).to receive(:record)
@@ -89,10 +89,10 @@ RSpec.describe UserEmailAlert, type: :model do
 
     end
 
-    it 'does nothing when send_alert_today? is false for a user' do
+    it 'does nothing when send_alert_this_day? is false for a user' do
 
       # stubbed methods:
-      allow(described_class).to receive(:send_alert_today?)
+      allow(described_class).to receive(:send_alert_this_day?)
                                     .with(config, user, dec_1)
                                     .and_return(false)
 
@@ -102,7 +102,7 @@ RSpec.describe UserEmailAlert, type: :model do
       # expected results:
       expect(MemberMailer).not_to receive(:fake_mailer_method).with(user)
 
-      expect(described_class).to receive(:send_alert_today?)
+      expect(described_class).to receive(:send_alert_this_day?)
                                      .with(config, user, dec_1)
 
       expect(log).to receive(:record)
@@ -190,9 +190,9 @@ RSpec.describe UserEmailAlert, type: :model do
   end
 
 
-  it '.send_alert_today?(_config, _user) raises NoMethodError (should be defined by subclasses)' do
+  it '.send_alert_this_day?(_config, _user) raises NoMethodError (should be defined by subclasses)' do
     config = {}
-    expect { described_class.send_alert_today?(config, user) }.to raise_exception NoMethodError
+    expect { described_class.send_alert_this_day?(config, user) }.to raise_exception NoMethodError
   end
 
   it '.mailer_method raises NoMethodError (should be defined by subclasses)' do
