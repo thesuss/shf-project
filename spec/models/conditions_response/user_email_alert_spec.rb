@@ -1,7 +1,6 @@
 require 'rails_helper'
-require 'email_spec/rspec'
-require 'timecop'
 
+require 'timecop'
 
 LOG_DIR      = 'tmp'
 LOG_FILENAME = 'testlog.txt'
@@ -13,8 +12,9 @@ RSpec.describe UserEmailAlert, type: :model do
 
   let(:config) { { days: [2, 5, 10] } }
 
+  # create a double for a condition that responds with a config
   let(:condition) { create(:condition, config: { days: [2, 5, 10] }) }
-  let(:timing)    { :on }
+
 
   let(:filepath) { File.join(Rails.root, LOG_DIR, LOG_FILENAME) }
   let(:log) { ActivityLogger.open(filepath, 'TEST', 'open', false) }
@@ -37,11 +37,12 @@ RSpec.describe UserEmailAlert, type: :model do
       # define a method for MemberMailer just for this test
       MemberMailer.class_eval do
         def fake_mailer_method(_user)
-          nil
+          true
         end
       end
 
     end
+
 
     after(:all) do
       # remove the method we added
@@ -52,89 +53,47 @@ RSpec.describe UserEmailAlert, type: :model do
     let(:dec_1) { Time.zone.local(2018, 12, 1) }
 
 
-    context 'sends_alert_this_day? is true' do
+    it 'for each User: sends alert and logs if send_alert_today? is true' do
 
-      before(:each) do
-        Rails.configuration.action_mailer.delivery_method = :mailgun
-        ApplicationMailer.mailgun_client.enable_test_mode!
-      end
+      expect(MemberMailer.fake_mailer_method(user)).to be_truthy
 
-      after(:each) { ApplicationMailer.mailgun_client.disable_test_mode! }
-
-
-      it 'sends alert email to user and logs a message' do
-        expect(MemberMailer.fake_mailer_method(user)).to be_truthy
-
-        num_alerts = condition.config[:days].length
-
-        # stubbed methods:
-        allow(described_class).to receive(:mailer_method).and_return(:test_email)
-        allow(described_class).to receive(:send_alert_this_day?)
-                                      .with(timing, config, user,)
-                                      .and_return(true)
-        allow(described_class).to receive(:log_msg_start).and_return('UserEmailAlert')
-
-        # expected results:
-        expect(MemberMailer).to receive(:test_email).with(user)
-                                    .and_call_original
-                                    .exactly(num_alerts).times
-        expect(described_class).to receive(:send_alert_this_day?)
-                                       .with(timing, config, user)
-        expect(log).to receive(:record)
-                           .exactly(1 + 2).times
-                           .and_call_original
-
-        condition.config[:days].each do | day_on |
-          Timecop.freeze(dec_1 - day_on.days)
-          described_class.condition_response(condition, log)
-          Timecop.return
-
-          email = ActionMailer::Base.deliveries.last
-          expect(email).to deliver_to(user.email)
-
-          expect(File.read(filepath)).to include("[info] UserEmailAlert email sent to id: #{user.id} email: #{user.email}")
-        end
-      end
-
-
-      it 'logs an error if any error is raised or mail has errors' do
-        expect(MemberMailer.fake_mailer_method(user)).to be_truthy
-
-        num_alerts = condition.config[:days].length
-
-        # stubbed methods:
-        allow(described_class).to receive(:mailer_method).and_return(:test_email)
-        allow(described_class).to receive(:send_alert_this_day?)
-                                      .with(timing, config, user,)
-                                      .and_return(true)
-
-        allow_any_instance_of(Mail::Message).to receive(:deliver)
-                                                    .and_raise(  Net::ProtocolError )
-
-        # expected results:
-        expect(MemberMailer).to receive(:test_email).with(user)
-                                    .exactly(num_alerts).times
-                                    .and_call_original
-
-        condition.config[:days].each do | day_on |
-
-          Timecop.freeze(dec_1 - day_on.days)
-          described_class.condition_response(condition, log)
-          Timecop.return
-
-          expect(ActionMailer::Base.deliveries.size).to eq 0
-          expect(File.read(filepath)).to include("[error] UserEmailAlert email ATTEMPT FAILED to id: #{user.id} email: #{user.email}")
-        end
-      end
-
-    end # context 'sends_alert_this_day? is true'
-
-
-    it 'does nothing when send_alert_this_day? is false for a user' do
 
       # stubbed methods:
-      allow(described_class).to receive(:send_alert_this_day?)
-                                    .with(anything, config, user)
+      allow(described_class).to receive(:mailer_method).and_return(:fake_mailer_method)
+
+      allow(described_class).to receive(:send_alert_today?)
+                                    .with(config, user, dec_1)
+                                    .and_return(true)
+
+      allow(described_class).to receive(:log_msg_start).and_return('UserEmailAlert')
+
+
+      # expected results:
+      expect(MemberMailer).to receive(:fake_mailer_method).with(user)
+                                  .exactly(1).times
+
+      expect(described_class).to receive(:send_alert_today?)
+                                     .with(config, user, dec_1)
+
+      expect(log).to receive(:record)
+                         .exactly(1 + 2).times
+                         .and_call_original
+
+
+      Timecop.freeze(dec_1) do
+        described_class.condition_response(nil, config, log)
+        log.close
+      end # Timecop
+
+      expect(File.read(filepath)).to include "[info] UserEmailAlert alert sent to #{user.email}"
+
+    end
+
+    it 'does nothing when send_alert_today? is false for a user' do
+
+      # stubbed methods:
+      allow(described_class).to receive(:send_alert_today?)
+                                    .with(config, user, dec_1)
                                     .and_return(false)
 
       allow(described_class).to receive(:mailer_method).and_return(:fake_mailer_method)
@@ -143,8 +102,8 @@ RSpec.describe UserEmailAlert, type: :model do
       # expected results:
       expect(MemberMailer).not_to receive(:fake_mailer_method).with(user)
 
-      expect(described_class).to receive(:send_alert_this_day?)
-                                     .with(anything, config, user)
+      expect(described_class).to receive(:send_alert_today?)
+                                     .with(config, user, dec_1)
 
       expect(log).to receive(:record)
                          .exactly(2).times
@@ -153,12 +112,55 @@ RSpec.describe UserEmailAlert, type: :model do
 
       # actual test:
       Timecop.freeze(dec_1) do
-        described_class.condition_response(condition, log)
+        described_class.condition_response(nil, config, log)
         log.close
       end # Timecop
 
       expect(File.read(filepath)).not_to include "[info] UserEmailAlert alert sent to #{user.email}"
 
+    end
+
+  end
+
+
+  describe '.log_message' do
+
+    it 'creates the string to write out to the log' do
+      expect(described_class.log_message('UserEmailAlert', 'email@example.com')).to eq "UserEmailAlert alert sent to email@example.com"
+    end
+
+    it 'default message start is an empty string' do
+      expect(described_class.log_message(nil, 'email@example.com')).to eq " alert sent to email@example.com"
+    end
+
+    it 'default email is an empty string' do
+      expect(described_class.log_message('UserEmailAlert', nil)).to eq "UserEmailAlert alert sent to "
+    end
+  end
+
+
+  describe '.days_since = number of whole days since a Time, rounded UP' do
+
+    let(:nov_1) { Time.zone.local(2018, 11, 1) }
+    let(:oct_1) { Time.zone.local(2018, 10, 1) }
+    let(:also_oct_1) { Time.zone.local(2018, 10, 1) }
+
+    it 'returns positive if date_time1 is before date_time2' do
+      expect(described_class.days_since(oct_1, nov_1)).to be 31
+    end
+
+    it 'returns negative if date_time1 is after date_time2' do
+      expect(described_class.days_since(nov_1, oct_1)).to be -31
+    end
+
+    it 'returns 0 if the DateTimes are the same' do
+      expect(described_class.days_since(oct_1, also_oct_1)).to be 0
+    end
+
+    it 'returns the days since Time.zone.local if only the first arg is given' do
+      Timecop.freeze(Time.zone.local(2018, 12, 1)) do
+        expect(described_class.days_since(nov_1)).to be 30
+      end # Timecop
     end
 
   end
@@ -188,95 +190,9 @@ RSpec.describe UserEmailAlert, type: :model do
   end
 
 
-  describe '.log_mail_response' do
-
-    it 'creates the user_info string to use in the log' do
-      mail_response_dbl = double("Mail::Message")
-      allow(mail_response_dbl).to receive(:errors).and_return([])
-
-      expect(UserEmailAlert).to receive(:user_info)
-
-      described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
-    end
-
-
-    it 'passes the log_msg_start to the log success or failure methods' do
-      mail_response_dbl = double("Mail::Message")
-      allow(mail_response_dbl).to receive(:errors).and_return([])
-
-      expect(UserEmailAlert).to receive(:log_msg_start).and_call_original
-      expect(UserEmailAlert).to receive(:log_success)
-          .with(log, 'UserEmailAlert', anything)
-
-      described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
-    end
-
-    context 'no mail_response errors' do
-
-      it 'sends log_success' do
-        mail_response_dbl = double("Mail::Message")
-        allow(mail_response_dbl).to receive(:errors).and_return([])
-
-        expect(UserEmailAlert).to receive(:log_success).with(log, 'UserEmailAlert', anything)
-
-        described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
-      end
-    end
-
-    context 'with mail_response_errors' do
-
-      it 'sends log_failure' do
-
-        mail_response_dbl = double("Mail::Message")
-        allow(mail_response_dbl).to receive(:errors).and_return([3])
-
-        expect(UserEmailAlert).to receive(:log_failure).with(log, 'UserEmailAlert', anything)
-
-        described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
-      end
-    end
-  end
-
-
-  describe '.log_success(log, msg_start, user_email)' do
-
-    it 'writes info to the log with the userid and email' do
-      described_class.log_success(log, 'log-start-msg', 'user-info')
-      expect(File.read(filepath)).to include("[info] log-start-msg email sent user-info.")
-    end
-  end
-
-
-  describe ".log_failure(log, msg_start, user_info_str, error = '')" do
-
-    it 'writes an error message to the log' do
-      described_class.log_failure(log, 'log-start-msg', 'user-info')
-      expect(File.read(filepath)).to include("[error] log-start-msg email ATTEMPT FAILED user-info")
-    end
-
-    it 'includes error info if any error: is given' do
-      described_class.log_failure(log, 'log-start-msg', 'user-info',  Net::ProtocolError)
-      expect(File.read(filepath)).to include("[error] log-start-msg email ATTEMPT FAILED user-info. #{Net::ProtocolError}")
-    end
-
-    it "says 'Also see for possible info' with the Mailer log" do
-      described_class.log_failure(log, 'log-start-msg', 'user-info')
-      expect(File.read(filepath)).to include("Also see for possible info #{ApplicationMailer::LOG_FILE}")
-    end
-  end
-
-
-  describe 'user_info' do
-
-    it 'returns a string with user id and email' do
-      expect(described_class.user_info(3, 'hello@example.com')).to eq 'to id: 3 email: hello@example.com'
-    end
-  end
-
-  it '.send_alert_this_day?(timing, config, user) raises NoMethodError (should be defined by subclasses)' do
+  it '.send_alert_today?(_config, _user) raises NoMethodError (should be defined by subclasses)' do
     config = {}
-    timing = 'blorf'  # doesn't matter what this is
-    expect { described_class.send_alert_this_day?(timing, config, user) }.to raise_exception NoMethodError
+    expect { described_class.send_alert_today?(config, user) }.to raise_exception NoMethodError
   end
 
   it '.mailer_method raises NoMethodError (should be defined by subclasses)' do
