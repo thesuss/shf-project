@@ -10,7 +10,7 @@
 #      condition _and_ we must have it handled only within 1 class,
 #        then we can create the condition attribute.)
 #
-class UserEmailAlert
+class UserEmailAlert < ConditionResponder
 
 
   # TODO this class is an instantiation of the Condition; why pass it again as an arg?
