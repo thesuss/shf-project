@@ -117,6 +117,14 @@ RSpec.describe Address, type: :model do
       end
     end
 
+    describe '.company_address' do
+
+      it 'addresses that belong to a company' do
+        expect(Address.company_address.count).to eq 2
+      end
+
+    end
+
   end
 
   describe '#entire_address' do

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 gem 'dotenv-rails'
-gem 'rails', '5.2.1'
+gem 'rails', '5.2.2'
 gem 'bootsnap', require: false
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
@@ -20,7 +20,7 @@ gem 'orgnummer'
 
 gem 'devise'
 gem 'pundit'
-gem 'paperclip', '~> 5.0.0'
+gem "paperclip", "~> 6.0.0"
 
 gem 'routing-filter'   # for handling locale filters around routes
 
@@ -81,6 +81,9 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
   gem 'factory_bot_rails'
+
+  # Note: pry fails when a utf-8 character is used in a string.
+  # pry calls the rb-readline gem, which is actually where the failure happens.
   gem 'pry-rails'
   gem 'pry'
   gem 'pry-byebug'
@@ -132,6 +135,7 @@ group :test do
 
   gem 'timecop'
   gem 'rubocop-rspec'
+
 end
 
 group :production do

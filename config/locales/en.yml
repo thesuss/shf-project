@@ -138,7 +138,7 @@ en:
       user:
         first_name: &first_name First name
         last_name: &last_name Last name
-        email: &email Profile Email
+        email: &email Login Email
         password: *password
         password_confirmation: Password confirmation
         membership_number: &membership_number Membership number
@@ -167,7 +167,7 @@ en:
         phone_number: Phone number
         uploaded_files:
           one: Uploaded file
-          many: Uploaded files
+          other: Uploaded files
         state/new: &status_new New
         state/under_review: &status_under_review Under review
         state/waiting_for_applicant: &status_waiting_for_applicant  Waiting for Applicant
@@ -800,6 +800,14 @@ en:
     error:
       error: There was an error in processing your payment
 
+  company_locator:
+    error:
+      search_name_blank: 'Please enter a place name (it cannot be blank).'
+      search_distance_negative: 'Distance cannot be negative'
+      latitude_blank: "Latitude cannot be blank."
+      longitude_blank: "Longitude cannot be blank."
+
+
   admin:
     index:
       export: Export all applications to a CSV file
@@ -1006,10 +1014,19 @@ en:
         greeting: *email_greeting
         message_text:
           welcome:  *subject_welcome
-          youre_active: "Your company is now H-tagged and you have been activated as a member of the system. You can login and manage your profile and build your business page. When you are signed in, you can edit your business page and pay your branding license fee here: "
+          youre_active: "You have been activated as a member in the system. You can login and manage your profile and build your business page. When you are signed in, you can edit your business page and pay your branding license fee here: "
           access_fb_group: "As a member, you will also have access to our closed Facebook group: "
           and_member_pages: "as well as hidden pages in our member system: "
 
+      membership_will_expire:
+        subject: Your membership will expire soon
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: Please note that your current membership period will
+                        expire on <span style="background-color:yellow;">%{expire_date}</span>.
+          extend_membership: You can extend your membership for another
+                             12 months by paying the membership fee.
+          account_login_html: "%{account_link} (you may need to login first before the link works)."
 
 
   devise:

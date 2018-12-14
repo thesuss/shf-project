@@ -4,5 +4,8 @@ ruby:
 haml:
   config_file: .haml-lint.yml
 
-jshint:
-  ignore_file: .jshintignore
+eslint:
+  enabled: true
+  config_file: .eslintrc
+  ignore_file: .eslintignore
+  

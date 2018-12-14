@@ -33,6 +33,8 @@ class Address < ApplicationRecord
 
   scope :mail_address, -> { where(mail: true) }
 
+  scope :company_address, -> { where(addressable_type: 'Company')}
+
   geocoded_by :entire_address
 
   GEO_FIELDS = %w(street_address post_code city kommun_id

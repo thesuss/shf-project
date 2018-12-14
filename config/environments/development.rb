@@ -76,6 +76,15 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # To have the Rails log sent to the stdout and *not* a file,
+  # define RAILS_LOG_TO_STDOUT as anything.
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
@@ -89,22 +98,25 @@ Rails.application.configure do
                                 path: ":rails_root/public/:url"
   }
 
-end
+# end
 
-=begin
+# =begin
        # Uncomment this block to test exception notifications in a development environment.
        # WARNING:  it will *really* send notifications!
 
-# Notify of any exceptions using the exception_notification gem
-Rails.application.config.middleware.use ExceptionNotification::Rack,
-
-                                        :slack => {
-                                            webhook_url:    ENV['SHF_SLACK_WEBHOOKURL'],
-                                            channel:        ENV['SHF_SLACK_CHANNEL'],
-                                            username:       ENV['SHF_SLACK_USERNAME'],
-                                            additional_parameters: {
-                                                mrkdwn: true
-                                            },
-                                            additional_fields: [ icon_emoji: ':bangbang:' ]
-                                        }
-=end
+  # Notify of any exceptions using the exception_notification gem
+  # Rails.application.config.middleware.use ExceptionNotification::Rack,
+  #
+  #                                         :slack => {
+  #                                             webhook_url:    ENV['SHF_SLACK_WEBHOOKURL'],
+  #                                             channel:        ENV['SHF_SLACK_CHANNEL'],
+  #                                             username:       ENV['SHF_SLACK_USERNAME'],
+  #                                             additional_parameters: {
+  #                                                 mrkdwn: true
+  #                                             },
+  #                                             additional_fields: [ icon_emoji: ':bangbang:' ]
+  #                                         }
+  # # Enable exception_notification for rake tasks
+  # ExceptionNotifier::Rake.configure
+# =end
+end

@@ -64,7 +64,7 @@ Feature: As any type of visitor
     Then I should see "No More Snarky Barky"
     And I should see "Stockholm"
     And I should see "Uppsala"
-    And I should see raw HTML "Stockholm<br>Uppsala"
+    And I should see "Stockholm<br>Uppsala" or "Uppsala<br>Stockholm" in the raw HTML
     And I should see "WOOF"
     And I should see "Västerbotten"
     And I should not see "Sad Sad Snarky Barky"

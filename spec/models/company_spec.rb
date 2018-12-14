@@ -3,7 +3,7 @@ require 'rails_helper'
 require_relative File.join('..', '..', 'app', 'services', 'address_exporter')
 
 
-RSpec.describe Company, type: :model do
+RSpec.describe Company, type: :model, focus: true do
 
   let(:with_short_h_brand_url) do
     create(:company, short_h_brand_url: 'http://www.tinyurl.com/hbrand')
@@ -547,7 +547,12 @@ RSpec.describe Company, type: :model do
 
   describe 'scopes' do
 
-    let(:cmpy2) { create(:company, company_number: '5562252998') }
+    let(:cmpy2) do
+      create(:company, company_number: '5562252998',
+             street_address: 'Rehnsgatan 15',
+             post_code: '113 57',
+             city: 'Stockholm')
+    end
 
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
@@ -683,7 +688,37 @@ RSpec.describe Company, type: :model do
       end
 
     end
-  end
+
+
+    context '.at_addresses(addresses)' do
+
+      before(:all) do
+        create(:company,
+               name: 'Stockholm Co',
+               street_address:'Rehnsgatan 15',
+        post_code: '113 57',
+        city: 'Stockholm'
+        )
+
+        create(:company,
+               name: 'Kista Co',
+               street_address: 'AKALLALÄNKEN 10',
+               post_code: '164 74',
+               city: 'Kista')
+      end
+
+      it 'returns all companies at these addresses' do
+        kista_address = Address.find_by_city('Kista')
+        expect(Company.at_addresses([kista_address]).map(&:name)).to match_array(['Kista Co'])
+      end
+
+      it 'no companies if addresses is empty' do
+        expect(Company.at_addresses([]).size).to eq 0
+      end
+
+    end # end context '.at_addresses(addresses)' do
+
+  end #scopes
 
   describe '#get_short_h_brand_url' do
     context 'there is already a shortened url in the table' do
