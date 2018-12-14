@@ -14,7 +14,7 @@ RSpec.describe UserEmailAlert, type: :model do
 
 
   let(:condition) { create(:condition, config: { days: [2, 5, 10] }) }
-  let(:timing)    { 'on' }
+  let(:timing)    { :on }
 
   let(:filepath) { File.join(Rails.root, LOG_DIR, LOG_FILENAME) }
   let(:log) { ActivityLogger.open(filepath, 'TEST', 'open', false) }
