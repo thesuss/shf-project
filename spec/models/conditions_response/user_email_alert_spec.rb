@@ -12,9 +12,9 @@ RSpec.describe UserEmailAlert, type: :model do
 
   let(:config) { { days: [2, 5, 10] } }
 
-  # create a double for a condition that responds with a config
-  let(:condition) { create(:condition, config: { days: [2, 5, 10] }) }
 
+  let(:condition) { create(:condition, config: { days: [2, 5, 10] }) }
+  let(:timing)    { 'on' }
 
   let(:filepath) { File.join(Rails.root, LOG_DIR, LOG_FILENAME) }
   let(:log) { ActivityLogger.open(filepath, 'TEST', 'open', false) }
@@ -62,7 +62,7 @@ RSpec.describe UserEmailAlert, type: :model do
       allow(described_class).to receive(:mailer_method).and_return(:fake_mailer_method)
 
       allow(described_class).to receive(:send_alert_this_day?)
-                                    .with(config, user, dec_1)
+                                    .with(timing, config, user,)
                                     .and_return(true)
 
       allow(described_class).to receive(:log_msg_start).and_return('UserEmailAlert')
@@ -73,7 +73,7 @@ RSpec.describe UserEmailAlert, type: :model do
                                   .exactly(1).times
 
       expect(described_class).to receive(:send_alert_this_day?)
-                                     .with(config, user, dec_1)
+                                     .with(timing, config, user)
 
       expect(log).to receive(:record)
                          .exactly(1 + 2).times
@@ -81,11 +81,11 @@ RSpec.describe UserEmailAlert, type: :model do
 
 
       Timecop.freeze(dec_1) do
-        described_class.condition_response(nil, config, log)
+        described_class.condition_response(condition, log)
         log.close
       end # Timecop
 
-      expect(File.read(filepath)).to include "[info] UserEmailAlert alert sent to #{user.email}"
+      expect(File.read(filepath)).to include("[info] UserEmailAlert alert sent to #{user.email}")
 
     end
 
@@ -93,7 +93,7 @@ RSpec.describe UserEmailAlert, type: :model do
 
       # stubbed methods:
       allow(described_class).to receive(:send_alert_this_day?)
-                                    .with(config, user, dec_1)
+                                    .with(anything, config, user)
                                     .and_return(false)
 
       allow(described_class).to receive(:mailer_method).and_return(:fake_mailer_method)
@@ -103,7 +103,7 @@ RSpec.describe UserEmailAlert, type: :model do
       expect(MemberMailer).not_to receive(:fake_mailer_method).with(user)
 
       expect(described_class).to receive(:send_alert_this_day?)
-                                     .with(config, user, dec_1)
+                                     .with(anything, config, user)
 
       expect(log).to receive(:record)
                          .exactly(2).times
@@ -112,7 +112,7 @@ RSpec.describe UserEmailAlert, type: :model do
 
       # actual test:
       Timecop.freeze(dec_1) do
-        described_class.condition_response(nil, config, log)
+        described_class.condition_response(condition, log)
         log.close
       end # Timecop
 
@@ -136,33 +136,6 @@ RSpec.describe UserEmailAlert, type: :model do
     it 'default email is an empty string' do
       expect(described_class.log_message('UserEmailAlert', nil)).to eq "UserEmailAlert alert sent to "
     end
-  end
-
-
-  describe '.days_since = number of whole days since a Time, rounded UP' do
-
-    let(:nov_1) { Time.zone.local(2018, 11, 1) }
-    let(:oct_1) { Time.zone.local(2018, 10, 1) }
-    let(:also_oct_1) { Time.zone.local(2018, 10, 1) }
-
-    it 'returns positive if date_time1 is before date_time2' do
-      expect(described_class.days_since(oct_1, nov_1)).to be(31)
-    end
-
-    it 'returns negative if date_time1 is after date_time2' do
-      expect(described_class.days_since(nov_1, oct_1)).to be(-31)
-    end
-
-    it 'returns 0 if the DateTimes are the same' do
-      expect(described_class.days_since(oct_1, also_oct_1)).to be 0
-    end
-
-    it 'returns the days since Time.zone.local if only the first arg is given' do
-      Timecop.freeze(Time.zone.local(2018, 12, 1)) do
-        expect(described_class.days_since(nov_1)).to be 30
-      end # Timecop
-    end
-
   end
 
 
@@ -190,9 +163,10 @@ RSpec.describe UserEmailAlert, type: :model do
   end
 
 
-  it '.send_alert_this_day?(_config, _user) raises NoMethodError (should be defined by subclasses)' do
+  it '.send_alert_this_day?(timing, config, user) raises NoMethodError (should be defined by subclasses)' do
     config = {}
-    expect { described_class.send_alert_this_day?(config, user) }.to raise_exception NoMethodError
+    timing = 'blorf'  # doesn't matter what this is
+    expect { described_class.send_alert_this_day?(timing, config, user) }.to raise_exception NoMethodError
   end
 
   it '.mailer_method raises NoMethodError (should be defined by subclasses)' do

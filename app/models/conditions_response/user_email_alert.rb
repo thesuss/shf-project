@@ -4,21 +4,20 @@
 #  * knows the name of the method to send to MemberMailer to send out the
 #     alert to a user
 #
-#  TODO If each class is responsible for doing 1 thing -- i.e. sending out 1
-#   kind of alert for 1 condition, then is 'condition' really needed?
-#     (If/when we have situations when 1 class needs to handle more than 1
-#      condition _and_ we must have it handled only within 1 class,
-#        then we can create the condition attribute.)
+#  All dates used are a Date (not a Time or DateTime). This allows us to easily
+#  determine the number of days between two dates.
 #
 class UserEmailAlert < ConditionResponder
 
 
-  # TODO this class is an instantiation of the Condition; why pass it again as an arg?
-  def self.condition_response(_condition, config, log, this_date: DateTime.now.utc)
+  def self.condition_response(condition, log)
+
+    config = get_config(condition)
+    timing = get_timing(condition)
 
     User.all.each do |user|
 
-      if send_alert_this_day?(config, user, this_date)
+      if send_alert_this_day?(timing, config, user)
         MemberMailer.send(mailer_method, user)
         log.record('info', log_message(log_msg_start, user.email))
       end
@@ -35,6 +34,8 @@ class UserEmailAlert < ConditionResponder
   # If config is not a Hash, raises an Error because it really _should_ be a Hash
   #  (it's a programming error to call this otherwise!)
   #
+  # @param day_number [Integer] - the number of days away from today (before, after, or on)
+  # @param config [Hash] - other configuration info
   def self.send_on_day_number?(day_number, config)
     config.fetch(:days, false) ? config[:days].include?(day_number) : false
   end
@@ -49,13 +50,11 @@ class UserEmailAlert < ConditionResponder
   #     user.membership_current? &&  config[:days].include?(days_until)
   #   end
   #
-  #
+  # @param timing [Timing] - the relative timing of the alerts
   # @param config [Object] - configuration information used to determine if an alert should be sent
   # @param user [User] - the user we are checking and, if appropriate, will send the alert to
-  # @param this_date [DateTime] - (defaults to today) the date that we are using
-  #                      to check the condition.  in UTC
   #
-  def self.send_alert_this_day?(_config, _user, _this_date = DateTime.now.utc)
+  def self.send_alert_this_day?(_timing, _config, _user)
     raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
   end
 
@@ -85,32 +84,5 @@ class UserEmailAlert < ConditionResponder
   end
 
 
-  SECONDS_IN_A_DAY = 86400 # 60 * 60 * 24
-
-  # (Utility method for working with dateTimes (helps readability))
-  #
-  # The whole number of days since time1 up to time2 (time2 - time1),
-  # rounding UP to the next whole number of days.
-  # Ex:
-  #     days_since( Thu, 01 Nov 2018 00:00:00 UTC +00:00,
-  #                 Thu, 02 Nov 2018 00:00:01 UTC +00:00 )
-  #    will return 2 days because that's 1 day and 1 minute.
-  #
-  # This is because this method is using to determine things like "is a payment late?"
-  # and if the payment is 1 minute past due, then it is late.  So it makes sense
-  # to round up to the next whole day.
-  #
-  #
-  # @param time1 [Time] - the starting point: days since this time
-  # @param time2 [Time] (optional; defaults to Time.utc)
-  #                              - the date we want to move forward (or backwards) to
-  #
-  # @return the number of days between 2 Times (time2 - time1)
-  def self.days_since(time1, time2 = Time.zone.now)
-    daystart2 = time2.beginning_of_day
-    daystart1 = time1.beginning_of_day
-
-    (daystart2 - daystart1).to_i / SECONDS_IN_A_DAY
-  end
 
 end
