@@ -11,6 +11,9 @@ require 'email_spec/cucumber'
 require_relative '../../spec/support/geocoder'
 
 
+Chromedriver.set_version "2.24" unless ENV.has_key?('SEMAPHORECI')
+
+
 ActionController::Base.allow_rescue = false
 
 begin
