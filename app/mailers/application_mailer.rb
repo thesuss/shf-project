@@ -58,7 +58,9 @@ class ApplicationMailer < ActionMailer::Base
 
   # If there is a problem communicating with the MailGun REST server, log the problem
   # TODO notify the SHF admin(s) using the ExceptionNotfication gem (must be able to send a notification that does not use MailGun)
-  # Do not raise the error.  Do not want to show anything to the user
+  #
+  # Raise any errors caught after writing to the log so that other systems
+  #    (e.g. rake nightly tasks) know if this fails.
   def self.deliver_mail(mail)
 
     super
@@ -70,6 +72,8 @@ class ApplicationMailer < ActionMailer::Base
       log.record('error', "Could not send email via mailgun at #{Time.zone.now}  Error received from Mailgun: #{mailgun_error}")
 
     end
+
+    raise mailgun_error
 
   end
 
