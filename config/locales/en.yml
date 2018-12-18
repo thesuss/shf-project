@@ -999,6 +999,7 @@ en:
       acknowledge_received:
         subject: Your application to Sveriges Hundföretagare has been received
         message_text: "Your application has been received.  We are all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
+        error_sending: &shf_email_error "There was a problem sending email to you at {%email} about your application."
 
       app_approved:
         subject: Your application to Sveriges Hundföretagare is approved
@@ -1006,6 +1007,7 @@ en:
           app_approved_and_next: "Your application is now approved. What is left before you are registered as a member in the system is to pay your membership fee.  Log in to the website and then pay at this link: "
           h_branding_not_paid: "When this is done you will need to finish your company page and pay your H-branding fee. More information about how to do that will come after you paid your membership fee."
           thanks:  "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
+          error_sending: *shf_email_error
 
 
     member_mailer:

@@ -15,10 +15,33 @@ class MembershipExpireAlert
 
         if config[:days].include?(days_until)
 
-          MemberMailer.membership_expiration_reminder(user)
-          log.record('info', "Expire alert sent to #{user.email}")
+          begin
+            mail_response = MemberMailer.membership_expiration_reminder(user).deliver_now
+            log_mail_response(log, mail_response, user.email)
+
+          rescue => mailing_error
+            log_failure(log, user.email, mailing_error)
+          end
+
         end
       end
     end
+  end
+
+
+  private
+
+  def self.log_mail_response(log, mail_response, user_email)
+    mail_response.errors.empty? ? log_success(log, user_email) : log_failure(log, user_email)
+  end
+
+
+  def self.log_success(log, user_email)
+    log.record('info', "Expire alert sent to #{user_email}.")
+  end
+
+
+  def self.log_failure(log, user_email, error = '')
+    log.record('info', "Expire alert mail ATTEMPT FAILED: to #{user_email}. #{error} Also see for possible info #{ApplicationMailer::LOG_FILE} ")
   end
 end
