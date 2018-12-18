@@ -342,16 +342,10 @@ class ShfApplicationsController < ApplicationController
 
   def send_new_app_emails(new_shf_app)
 
-    begin
-      ShfApplicationMailer.acknowledge_received(new_shf_app).deliver_now
-    rescue => _mail_error
-      helpers.flash_message(:error, t('mailers.shf_application_mailer.acknowledge_received.error_sending', email: @shf_application.user.email))
-    end
-
-    # if there is a problem sending email to the admin, do not display an error to the user.
+    ShfApplicationMailer.acknowledge_received(new_shf_app).deliver_now
     send_new_shf_application_notice_to_admins(new_shf_app)
 
-end
+  end
 
 
   def send_new_shf_application_notice_to_admins(new_shf_app)
