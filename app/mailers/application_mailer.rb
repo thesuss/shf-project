@@ -26,7 +26,7 @@ class ApplicationMailer < ActionMailer::Base
 
 
 
-  LOG_FILE = File.join(Rails.configuration.paths['log'].absolute_current, "#{Rails.env}_#{self.name}.log")
+  LOG_FILE = File.join(Rails.configuration.paths['log'].absolute_current, "#{Rails.env}_#{self.class.name}.log")
   LOG_FACILITY = 'ApplicationMailer'
 
 
@@ -63,7 +63,7 @@ class ApplicationMailer < ActionMailer::Base
 
     super
 
-  rescue  => mailgun_error
+  rescue  Mailgun::CommunicationError => mailgun_error
 
     ActivityLogger.open(LOG_FILE, LOG_FACILITY, 'Mailgun::CommunicationError', false) do |log|
 
