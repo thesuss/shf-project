@@ -21,7 +21,7 @@ RSpec.describe ConditionResponder, type: :model do
 
 
   it 'DEFAULT_TIMING is :on' do
-    expect(ConditionResponder::DEFAULT_TIMING).to eq :on
+    expect(ConditionResponder::DEFAULT_TIMING).to eq(:on)
   end
 
   describe '.get_timing' do
@@ -61,19 +61,18 @@ RSpec.describe ConditionResponder, type: :model do
 
     context 'condition is not nil' do
       it 'returns the timing from the condition if condition is not nil' do
-        expect(ConditionResponder.get_config(create(:condition, config: {mertz: 732} ))).to eq({mertz: 732})
+        expect(ConditionResponder.get_config(create(:condition, config: { mertz: 732 }))).to eq({ mertz: 732 })
       end
     end
 
   end
 
 
-
   describe '.days_from_today(timing, some_date)' do
 
     let(:nov_30) { Date.new(2018, 11, 30) }
-    let(:dec_1)  { Date.new(2018, 12,  1) }
-    let(:dec_2)  { Date.new(2018, 12,  2) }
+    let(:dec_1) { Date.new(2018, 12, 1) }
+    let(:dec_2) { Date.new(2018, 12, 2) }
 
     around(:each) do |example|
       Timecop.freeze(dec_1)
@@ -139,17 +138,91 @@ RSpec.describe ConditionResponder, type: :model do
   end
 
 
-  describe '.timing_is_before?(timing)' do
+  describe ".timing_is_before?(timing)" do
 
+    it 'true if == TIMING_BEFORE' do
+      expect(ConditionResponder.timing_is_before?(ConditionResponder::TIMING_BEFORE)).to be_truthy
+    end
+
+    describe 'false if == anything else' do
+      it 'TIMING_AFTER' do
+        expect(ConditionResponder.timing_is_before?(ConditionResponder::TIMING_AFTER)).to be_falsey
+      end
+
+      it 'TIMING_ON' do
+        expect(ConditionResponder.timing_is_before?(ConditionResponder::TIMING_ON)).to be_falsey
+      end
+
+      it 'blorf' do
+        expect(ConditionResponder.timing_is_before?('blorf')).to be_falsey
+      end
+
+      it '7' do
+        expect(ConditionResponder.timing_is_before?(7)).to be_falsey
+      end
+
+      it 'nil' do
+        expect(ConditionResponder.timing_is_before?(nil)).to be_falsey
+      end
+    end
   end
 
 
-  describe '.timing_is_after?(timing)' do
+  describe ".timing_is_after?(timing)" do
+    it 'true if == TIMING_AFTER' do
+      expect(ConditionResponder.timing_is_after?(ConditionResponder::TIMING_AFTER)).to be_truthy
+    end
 
+    describe 'false if == anything else' do
+      it 'TIMING_AFTER' do
+        expect(ConditionResponder.timing_is_after?(ConditionResponder::TIMING_BEFORE)).to be_falsey
+      end
+
+      it 'TIMING_ON' do
+        expect(ConditionResponder.timing_is_after?(ConditionResponder::TIMING_ON)).to be_falsey
+      end
+
+      it 'blorf' do
+        expect(ConditionResponder.timing_is_after?('blorf')).to be_falsey
+      end
+
+      it '7' do
+        expect(ConditionResponder.timing_is_after?(7)).to be_falsey
+      end
+
+      it 'nil' do
+        expect(ConditionResponder.timing_is_before?(nil)).to be_falsey
+      end
+    end
   end
 
 
   describe '.timing_is_on?(timing)' do
+    it 'true if == TIMING_ON' do
+      expect(ConditionResponder.timing_is_on?(ConditionResponder::TIMING_ON)).to be_truthy
+    end
 
+    describe 'false if == anything else' do
+      it 'TIMING_AFTER' do
+        expect(ConditionResponder.timing_is_on?(ConditionResponder::TIMING_AFTER)).to be_falsey
+      end
+
+      it 'TIMING_ON' do
+        expect(ConditionResponder.timing_is_on?(ConditionResponder::TIMING_BEFORE)).to be_falsey
+      end
+
+      it 'blorf' do
+        expect(ConditionResponder.timing_is_on?('blorf')).to be_falsey
+      end
+
+      it '7' do
+        expect(ConditionResponder.timing_is_on?(7)).to be_falsey
+      end
+
+      it 'nil' do
+        expect(ConditionResponder.timing_is_on?(nil)).to be_falsey
+      end
+    end
   end
+
 end
