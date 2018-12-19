@@ -18,8 +18,15 @@ class UserEmailAlert < ConditionResponder
     User.all.each do |user|
 
       if send_alert_this_day?(timing, config, user)
-        MemberMailer.send(mailer_method, user)
-        log.record('info', log_message(log_msg_start, user.email))
+        begin
+          mail_response = MemberMailer.send(mailer_method, user).deliver_now
+          log_mail_response(log, mail_response, log_msg_start, user.id, user.email)
+
+        rescue => mailing_error
+          log_failure(log, log_msg_start,
+                      user_info(user.id, user.email),
+                      mailing_error)
+        end
       end
 
     end
@@ -79,10 +86,21 @@ class UserEmailAlert < ConditionResponder
   end
 
 
-  def self.log_message(message_start = '', user_email = '')
-    "#{message_start} alert sent to #{user_email}"
+  def self.log_mail_response(log, mail_response, msg_start, user_id, user_email)
+    user_info_str = user_info(user_id, user_email)
+    mail_response.errors.empty? ? log_success(log, msg_start, user_info_str)
+        : log_failure(log, msg_start, user_info_str)
   end
 
+  def self.log_success(log, msg_start, user_info_str)
+    log.record('info', "#{msg_start} email sent #{user_info_str}.")
+  end
 
+  def self.log_failure(log, msg_start, user_info_str, error = '')
+    log.record('error', "#{msg_start} email ATTEMPT FAILED #{user_info_str}. #{error} Also see for possible info #{ApplicationMailer::LOG_FILE} ")
+  end
 
+  def self.user_info(id, email)
+    "to id: #{id} email: #{email}"
+  end
 end
