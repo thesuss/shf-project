@@ -9,7 +9,7 @@ class MembershipFeeOverdueAlert < UserEmailAlert
     # the order of these 2 is on purpose: the first has fewer SQL queries
     return false if !user.has_approved_shf_application? || user.membership_current?
 
-    day_to_check = days_today_is_away_from(User.next_membership_payment_date(user.id), timing)
+    day_to_check = days_today_is_away_from(user.membership_expire_date, timing)
 
     send_on_day_number?(day_to_check, config)
   end
