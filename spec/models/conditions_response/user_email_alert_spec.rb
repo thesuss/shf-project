@@ -188,14 +188,7 @@ RSpec.describe UserEmailAlert, type: :model do
   end
 
 
-  describe '.log_mail_response(log, mail_response, msg_start, user_email)' do
-
-    #
-    # log_mail_response(log, mail_response, msg_start, user_id, user_email)
-    #     user_info_str = user_info(user_id, user_email)
-    #     mail_response.errors.empty? ? log_success(log, msg_start, user_info_str)
-    #         : log_failure(log, msg_start, user_info_str)
-    #   mail_response.errors.empty? ? log_success(log, msg_start, user_email) : log_failure(log, msg_start, user_email)
+  describe '.log_mail_response' do
 
     it 'creates the user_info string to use in the log' do
       mail_response_dbl = double("Mail::Message")
@@ -203,9 +196,20 @@ RSpec.describe UserEmailAlert, type: :model do
 
       expect(UserEmailAlert).to receive(:user_info)
 
-      described_class.log_mail_response(log, mail_response_dbl, 'msg-start', 5, 'hello@example.com')
+      described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
     end
 
+
+    it 'passes the log_msg_start to the log success or failure methods' do
+      mail_response_dbl = double("Mail::Message")
+      allow(mail_response_dbl).to receive(:errors).and_return([])
+
+      expect(UserEmailAlert).to receive(:log_msg_start).and_call_original
+      expect(UserEmailAlert).to receive(:log_success)
+          .with(log, 'UserEmailAlert', anything)
+
+      described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
+    end
 
     context 'no mail_response errors' do
 
@@ -213,9 +217,9 @@ RSpec.describe UserEmailAlert, type: :model do
         mail_response_dbl = double("Mail::Message")
         allow(mail_response_dbl).to receive(:errors).and_return([])
 
-        expect(UserEmailAlert).to receive(:log_success).with(log, 'msg-start', anything)
+        expect(UserEmailAlert).to receive(:log_success).with(log, 'UserEmailAlert', anything)
 
-        described_class.log_mail_response(log, mail_response_dbl, 'msg-start', 5, 'hello@example.com')
+        described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
       end
     end
 
@@ -226,9 +230,9 @@ RSpec.describe UserEmailAlert, type: :model do
         mail_response_dbl = double("Mail::Message")
         allow(mail_response_dbl).to receive(:errors).and_return([3])
 
-        expect(UserEmailAlert).to receive(:log_failure).with(log, 'msg-start', anything)
+        expect(UserEmailAlert).to receive(:log_failure).with(log, 'UserEmailAlert', anything)
 
-        described_class.log_mail_response(log, mail_response_dbl, 'msg-start', 5, 'hello@example.com')
+        described_class.log_mail_response(log, mail_response_dbl, 5, 'hello@example.com')
       end
     end
   end

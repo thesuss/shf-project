@@ -20,7 +20,7 @@ class UserEmailAlert < ConditionResponder
       if send_alert_this_day?(timing, config, user)
         begin
           mail_response = MemberMailer.send(mailer_method, user).deliver_now
-          log_mail_response(log, mail_response, log_msg_start, user.id, user.email)
+          log_mail_response(log, mail_response, user.id, user.email)
 
         rescue => mailing_error
           log_failure(log, log_msg_start,
@@ -86,10 +86,10 @@ class UserEmailAlert < ConditionResponder
   end
 
 
-  def self.log_mail_response(log, mail_response, msg_start, user_id, user_email)
+  def self.log_mail_response(log, mail_response, user_id, user_email)
     user_info_str = user_info(user_id, user_email)
-    mail_response.errors.empty? ? log_success(log, msg_start, user_info_str)
-        : log_failure(log, msg_start, user_info_str)
+    mail_response.errors.empty? ? log_success(log, log_msg_start, user_info_str)
+        : log_failure(log, log_msg_start, user_info_str)
   end
 
   def self.log_success(log, msg_start, user_info_str)
