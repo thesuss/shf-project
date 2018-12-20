@@ -429,7 +429,8 @@ vertical-align: default;
 }
 }
 
-
+.company_search label {margin:0;}
+.company_search {padding-bottom:30px;}
 
 @media only screen and (max-width: 800px) {
 .dropdown-menu {
@@ -449,7 +450,13 @@ vertical-align: default;
     width: 100%;
 }
 }
-
+@media (max-width: 576px) {
+.s-column
+{
+  position:relative;
+  margin: 10px 0;
+}
+}
 @media (min-width: 768px) {
 .navbar-expand-md .navbar-nav .dropdown-menu {
     position: absolute;

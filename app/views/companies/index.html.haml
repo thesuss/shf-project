@@ -12,16 +12,18 @@
 
 
     .col-lg-8
-      .col
-        .search-instructions
-          %p
-            #{t('.h_companies_listed_below')}
-            %br
-            #{t('.how_to_search')}
-      .col
-        %button.btn.hide-search-form.btn-success.ml-auto{ id: 'toggle_search_form',
-                                          href: '#company_search_form' }
-          #{t('toggle.company_search_form.hide')}
+      .row 
+        .col-sm-8
+          .search-instructions
+            %p
+              #{t('.h_companies_listed_below')}
+              %br
+              #{t('.how_to_search')}
+        .col-sm-4
+          %br
+          %button.btn.hide-search-form.btn-success.ml-auto{ id: 'toggle_search_form',
+                                            href: '#company_search_form' }
+            #{t('toggle.company_search_form.hide')}
 
       .panel.panel-default.search-form#company_search_form
 
