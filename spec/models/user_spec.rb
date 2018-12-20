@@ -1,6 +1,36 @@
 require 'rails_helper'
 require 'email_spec/rspec'
 
+# ================================================================================
+
+
+RSpec.shared_examples 'it finds the right number of membership expires for date' do |x_days, num_found, on_date |
+
+  it "expires in #{x_days} days (#{on_date}) finds #{num_found}" do
+    expire_today = User.membership_expires_in_x_days(x_days).pluck(:expire_date)
+    expect(expire_today.count).to eq num_found
+    expect(expire_today.uniq.count).to eq 1
+    expect(expire_today.uniq.first).to eq( on_date )
+  end
+
+end
+
+
+RSpec.shared_examples 'it finds the right number of branding fee expires for date' do |x_days, num_found, on_date |
+
+  it "expires in #{x_days} days (#{on_date}) finds #{num_found}" do
+    expire_today = User.company_hbrand_expires_in_x_days(x_days).pluck(:expire_date)
+    expect(expire_today.count).to eq num_found
+    expect(expire_today.uniq.count).to eq 1
+    expect(expire_today.uniq.first).to eq( on_date )
+  end
+
+end
+
+
+
+# ================================================================================
+
 RSpec.describe User, type: :model do
 
   let(:user) { create(:user) }
@@ -27,34 +57,34 @@ RSpec.describe User, type: :model do
   let(:member_payment1) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
     create(:payment, user: user, status: success,
-           payment_type: Payment::PAYMENT_TYPE_MEMBER,
-           notes: 'these are notes for member payment1',
-           start_date: start_date,
-           expire_date: expire_date)
+           payment_type:   Payment::PAYMENT_TYPE_MEMBER,
+           notes:          'these are notes for member payment1',
+           start_date:     start_date,
+           expire_date:    expire_date)
   end
   let(:member_payment2) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
     create(:payment, user: user, status: success,
-           payment_type: Payment::PAYMENT_TYPE_MEMBER,
-           notes: 'these are notes for member payment2',
-           start_date: start_date,
-           expire_date: expire_date)
+           payment_type:   Payment::PAYMENT_TYPE_MEMBER,
+           notes:          'these are notes for member payment2',
+           start_date:     start_date,
+           expire_date:    expire_date)
   end
   let(:branding_payment1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
     create(:payment, user: user, status: success, company: complete_co,
-           payment_type: Payment::PAYMENT_TYPE_BRANDING,
-           notes: 'these are notes for branding payment1',
-           start_date: start_date,
-           expire_date: expire_date)
+           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
+           notes:          'these are notes for branding payment1',
+           start_date:     start_date,
+           expire_date:    expire_date)
   end
   let(:branding_payment2) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
     create(:payment, user: user, status: success, company: complete_co,
-           payment_type: Payment::PAYMENT_TYPE_BRANDING,
-           notes: 'these are notes for branding payment2',
-           start_date: start_date,
-           expire_date: expire_date)
+           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
+           notes:          'these are notes for branding payment2',
+           start_date:     start_date,
+           expire_date:    expire_date)
   end
 
 
@@ -88,16 +118,16 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_uniqueness_of :membership_number }
     it do
       is_expected.to validate_attachment_content_type(:member_photo)
-        .allowing('image/png', 'image/jpeg')
-        .rejecting('image/gif', 'image/bmp')
+                         .allowing('image/png', 'image/jpeg')
+                         .rejecting('image/gif', 'image/bmp')
     end
 
     describe 'validates file contents and file type' do
       let(:file_root) { "#{Rails.root}/spec/fixtures/member_photos/" }
-      let(:txt_file)  { File.new(file_root + 'text_file.jpg') }
-      let(:gif_file)  { File.new(file_root + 'gif_file.jpg') }
-      let(:ico_file)  { File.new(file_root + 'ico_file.png') }
-      let(:xyz_file)  { File.new(file_root + 'member_with_dog.xyz') }
+      let(:txt_file) { File.new(file_root + 'text_file.jpg') }
+      let(:gif_file) { File.new(file_root + 'gif_file.jpg') }
+      let(:ico_file) { File.new(file_root + 'ico_file.png') }
+      let(:xyz_file) { File.new(file_root + 'member_with_dog.xyz') }
 
       it 'rejects if content not jpeg or png' do
         user.member_photo = txt_file
@@ -123,7 +153,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_attached_file(:member_photo) }
     it { is_expected.to have_many(:companies).through(:shf_application) }
     it { is_expected.to accept_nested_attributes_for(:shf_application)
-      .allow_destroy(false).update_only(true) }
+                            .allow_destroy(false).update_only(true) }
   end
 
   describe 'Admin' do
@@ -176,7 +206,7 @@ RSpec.describe User, type: :model do
 
       it 'h-branding payments' do
         company_id = complete_co.id
-        user_id = user.id
+        user_id    = user.id
 
         expect { branding_payment1; branding_payment2 }.to change(Payment, :count).by(2)
 
@@ -194,18 +224,243 @@ RSpec.describe User, type: :model do
       it 'returns 2 users that are admins and 0 that are not' do
         admin1 = create(:user, admin: true, first_name: 'admin1')
         admin2 = create(:user, admin: true, first_name: 'admin2')
-        user1 = create(:user, first_name: 'user1')
+        user1  = create(:user, first_name: 'user1')
 
         all_admins = described_class.admins
 
-        expect(all_admins.count ).to eq 2
+        expect(all_admins.count).to eq 2
         expect(all_admins).to include admin1
         expect(all_admins).to include admin2
         expect(all_admins).not_to include user1
       end
     end
 
-  end
+
+    describe 'members' do
+
+      it 'returns those with member = true' do
+        user_member1 = create(:member_with_membership_app, first_name: 'Member 1')
+        user_member2 = create(:member_with_membership_app, first_name: 'Member 2')
+
+        user_has_app_not_member = create(:user_with_membership_app, first_name: 'App')
+        visitor                 = create(:user, first_name: 'Visitor')
+        admin                   = create(:user, admin: true, first_name: 'Admin')
+
+        members = described_class.members
+
+        expect(members.count).to eq 2
+        expect(members).to include user_member1
+        expect(members).to include user_member2
+        expect(members).not_to include admin
+        expect(members).not_to include visitor
+        expect(members).not_to include user_has_app_not_member
+
+      end
+
+    end
+
+
+    describe 'expiration dates' do
+
+      # set today to January 1, 2019 for every example run
+      around(:each) do |example|
+        Timecop.freeze(Date.new(2019, 1, 1))
+        example.run
+        Timecop.return
+      end
+
+
+      before(:all) do
+        jan_01 = Date.new(2019, 1, 1)
+        dec_31_2018 = jan_01 - 1
+        jan_02 = jan_01 + 1
+        jan_15 = jan_01 + 14
+        jan_31 = jan_01 + 30
+
+
+         create(:user, first_name: 'Not member 1')
+        create(:user, admin: true, first_name: 'Admin')
+
+        create(:member_with_membership_app, first_name: 'No member fee pays')
+
+        member_only_branding_fees_exp_jan01 = create(:member_with_membership_app, first_name: 'Only Branding fees exp jan01')
+        member_only_branding_fees_exp_dec31 = create(:member_with_membership_app, first_name: 'Only Branding fees exp Dec 31')
+
+        member_exp_dec31_2018 = create(:member_with_membership_app, first_name: 'Exp dec 31 2018 1')
+        member_exp_jan01_1 = create(:member_with_membership_app, first_name: 'Exp jan01 1')
+        member_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Exp jan02 1')
+
+        both_exp_jan01_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan01 1')
+        both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
+        both_exp_jan02_2 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 2')
+        
+        branding_exp_jan15_1 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 1')
+        branding_exp_jan15_2 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 2')
+        branding_exp_jan15_3 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 3')
+        branding_exp_jan15_4 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 4')
+
+
+        member_exp_jan31_1 = create(:member_with_membership_app, first_name: 'Exp jan31 1')
+        member_exp_jan31_2 = create(:member_with_membership_app, first_name: 'Exp jan31 2')
+        member_exp_jan31_3 = create(:member_with_membership_app, first_name: 'Exp jan31 3')
+        member_exp_jan31_4 = create(:member_with_membership_app, first_name: 'Exp jan31 4')
+
+
+        # branding fees paid (only)
+            create(:h_branding_fee_payment, :successful,
+                   user:        member_only_branding_fees_exp_jan01,
+                   expire_date: jan_01)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        member_only_branding_fees_exp_dec31,
+                   expire_date: dec_31_2018)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        branding_exp_jan15_1,
+                   expire_date: jan_15)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        branding_exp_jan15_2,
+                   expire_date: jan_15)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        branding_exp_jan15_3,
+                   expire_date: jan_15)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        branding_exp_jan15_4,
+                   expire_date: jan_15)
+
+
+        # member fee paid only:
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_dec31_2018,
+                   expire_date: dec_31_2018)
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_jan01_1,
+                   expire_date: jan_01)
+
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_jan02_1,
+                   expire_date: jan_02)
+
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_jan31_1,
+                   expire_date: jan_31)
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_jan31_2,
+                   expire_date: jan_31)
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_jan31_3,
+                   expire_date: jan_31)
+
+            create(:membership_fee_payment, :successful,
+                   user:        member_exp_jan31_4,
+                   expire_date: jan_31)
+
+
+        # both branding fee and membership fee paid on Jan 1:
+            create(:membership_fee_payment, :successful,
+                   user:        both_exp_jan01_1,
+                   expire_date: jan_01)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        both_exp_jan01_1,
+                   expire_date: jan_01)
+
+
+        # both branding fee and membership fee paid on Jan 2:
+            create(:membership_fee_payment, :successful,
+                   user:        both_exp_jan02_1,
+                   expire_date: jan_02)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        both_exp_jan02_1,
+                   expire_date: jan_02)
+
+            create(:membership_fee_payment, :successful,
+                   user:        both_exp_jan02_2,
+                   expire_date: jan_02)
+
+            create(:h_branding_fee_payment, :successful,
+                   user:        both_exp_jan02_2,
+                   expire_date: jan_02)
+
+
+        # Data to test different payment statuses:
+
+        payment_statuses = Payment::ORDER_PAYMENT_STATUS.values
+
+        # Make 1 of each payment status
+        member_exp_jun_1_all_pay_statuses = create(:member_with_membership_app, first_name: 'Exp Jun 1 all payment statuses')
+        jun_1 = Date.new(2019, 6, 1)
+
+        payment_statuses.each do | payment_status |
+
+          create(:h_branding_fee_payment,
+                 status: payment_status,
+                 user:        member_exp_jun_1_all_pay_statuses,
+                 expire_date: jun_1)
+
+          create(:membership_fee_payment,
+                 status: payment_status,
+                 user:        member_exp_jun_1_all_pay_statuses,
+                 expire_date: jun_1)
+        end
+
+      end # before(:all)
+
+      describe 'membership_expires_in_x_days' do
+
+        it_behaves_like 'it finds the right number of membership expires for date', 0, 2, Date.new(2019,1,1)
+        it_behaves_like 'it finds the right number of membership expires for date', -1, 1, Date.new(2018, 12, 31)
+        it_behaves_like 'it finds the right number of membership expires for date', 30, 4, Date.new(2019, 1, 31)
+
+        it 'only gets users that have made membership fee payments (+1 day)' do
+          membership_expires = User.membership_expires_in_x_days(1)
+          expect(membership_expires.count).to eq 3
+          uniq_payment_types = membership_expires.pluck(:payment_type).uniq
+          expect(uniq_payment_types.size).to eq 1
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
+        end
+
+        describe 'only considers successful payments' do
+          it_behaves_like 'it finds the right number of membership expires for date', 151, 1, Date.new(2019, 6, 1)
+        end #  describe 'only considers successful payments'
+
+      end
+
+
+      describe 'company_hbrand_expires_in_x_days' do
+
+        it_behaves_like 'it finds the right number of branding fee expires for date', 0, 2, Date.new(2019, 1, 1)
+        it_behaves_like 'it finds the right number of branding fee expires for date', -1, 1, Date.new(2018, 12, 31)
+        it_behaves_like 'it finds the right number of branding fee expires for date', 14, 4, Date.new(2019, 1, 15)
+        
+        it 'only gets users that have made branding fee payments (+1 day)' do
+          branding_expires = User.company_hbrand_expires_in_x_days(1)
+          expect(branding_expires.count).to eq 2
+          uniq_payment_types = branding_expires.pluck(:payment_type).uniq
+          expect(uniq_payment_types.size).to eq 1
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_BRANDING
+        end
+
+        describe 'only considers successful payments' do
+          it_behaves_like 'it finds the right number of branding fee expires for date', 151, 1, Date.new(2019, 6, 1)
+        end #  describe 'only considers successful payments'
+
+      end
+
+    end #  describe 'expiration dates'
+
+  end # Scopes
+
 
   describe '#has_shf_application?' do
 
@@ -455,19 +710,19 @@ RSpec.describe User, type: :model do
 
       it 'returns one year later for first payment expire date' do
         expect(User.next_membership_payment_dates(user.id)[1])
-          .to eq Time.zone.today + 1.year - 1.day
+            .to eq Time.zone.today + 1.year - 1.day
       end
 
       it 'returns date-after-expiration for second payment start date' do
         member_payment1
         expect(User.next_membership_payment_dates(user.id)[0])
-          .to eq Time.zone.today + 1.year
+            .to eq Time.zone.today + 1.year
       end
 
       it 'returns one year later for second payment expire date' do
         member_payment1
         expect(User.next_membership_payment_dates(user.id)[1])
-          .to eq Time.zone.today + 1.year + 1.year - 1.day
+            .to eq Time.zone.today + 1.year + 1.year - 1.day
       end
 
       context 'if next payment occurs after prior payment expire date' do

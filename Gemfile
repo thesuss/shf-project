@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 gem 'dotenv-rails'
-gem 'rails', '5.2.1'
+gem 'rails', '5.2.2'
 gem 'bootsnap', require: false
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
@@ -21,7 +21,7 @@ gem 'font-awesome-sass', '~> 5.5.0'
 
 gem 'devise'
 gem 'pundit'
-gem 'paperclip', '~> 5.0.0'
+gem "paperclip", "~> 6.0.0"
 
 gem 'routing-filter'   # for handling locale filters around routes
 
@@ -88,9 +88,9 @@ group :development, :test do
 
   # Note: pry fails when a utf-8 character is used in a string.
   # pry calls the rb-readline gem, which is actually where the failure happens.
-  gem 'pry-rails'
-  gem 'pry'
-  gem 'pry-byebug'
+  #gem 'pry-rails'
+  #gem 'pry'
+  #gem 'pry-byebug'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rake'
@@ -132,7 +132,11 @@ group :test do
   gem 'simplecov', '>= 0.13.0'
   gem 'email_spec'
   gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
+
+  # chromedriver-helper is conflicting with the Chrome version on
+  # SemaphoreCI.  The ENV variable below excludes the gem on SemaphoreCI
+  # and fixes that problem. (2018-12-12 ashley e/weedySeaDragon)
+  gem 'chromedriver-helper' unless ENV.key?('SEMAPHORECI')
 
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
   gem 'vcr'      # to record and 'playback' (mock) http requests

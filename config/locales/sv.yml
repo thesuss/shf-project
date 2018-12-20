@@ -999,6 +999,7 @@ sv:
       acknowledge_received:
         subject: Din ansökan till Sveriges Hundföretagare är mottagen
         message_text: "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
+        error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
 
       app_approved:
         subject: Din ansökan till Sveriges Hundföretagare är godkänd.
@@ -1006,6 +1007,7 @@ sv:
           app_approved_and_next: "Din ansökan har nu blivit godkänd. Det som är kvar innan du är medlem i systemet är att betala din medlemsavgift. Det gör du via "
           h_branding_not_paid: "När detta är gjort behöver du göra färdigt din företagssida och betala din H-märkesavgift. Mer information om hur du gör det kommer i ett mail efter att du betalt din medlemsavgift."
           thanks:  "Tack för att du vill vara medlem och bidrar till ett kvalitetssäkrat hundsverige."
+          error_sending: *shf_email_error
 
 
     member_mailer:
@@ -1018,6 +1020,15 @@ sv:
           access_fb_group: "Som medlem får du även tillgång till vår slutna Facebookgrupp: "
           and_member_pages: "samt dolda sidor i vårt medlemssystem: "
 
+      membership_will_expire:
+        subject: Ditt medlemskap löper ut snart
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: Observera att din nuvarande medlemsperiod löper ut den
+                        <span style="background-color:yellow;">%{expire_date}</span>.
+          extend_membership: Du kan förlänga ditt medlemskap i ytterligare
+                                  12 månader genom att betala medlemsavgiften.
+          account_login_html: "%{account_link} (du kan behöva logga in först innan länken fungerar)."
 
 
   devise:

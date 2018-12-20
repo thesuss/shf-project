@@ -235,8 +235,9 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
       before_mailgun_errors = num_matches_in_file(log_fname, mailgun_error_regexp)
 
+
       # this is a mocked post and response that will return an error from the vcr cassette file
-      mail_to_send.deliver_now
+      expect{mail_to_send.deliver_now}.to raise_error(Mailgun::CommunicationError)
 
       after_mailgun_errors = num_matches_in_file(log_fname, mailgun_error_regexp)
       expect(after_mailgun_errors - before_mailgun_errors).to eq 1
