@@ -20,7 +20,7 @@ namespace :shf do
             class_name = condition.class_name
           end
 
-          log.record('info', "#{class_name}: #{condition.name} ...")
+          log.record('info', "#{class_name} ...")
 
           if klass
             klass.condition_response(condition, log)

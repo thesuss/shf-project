@@ -5,7 +5,6 @@ namespace :shf do
     Condition.delete_all
 
     Condition.create(class_name: 'MembershipExpireAlert',
-                     name: 'membership_will_expire',
                      timing: 'before',
                      config: { days: [60, 30, 14, 2] })
   end
