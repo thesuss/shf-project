@@ -1054,6 +1054,9 @@ en:
         confirm_are_you_sure: Are you sure your want to DELETE your account?
         back: *back
         success: Your account has been updated successfully
+        password_header: Change passord
+        new_password: New passord
+        info_header: Edit name and e-mail
     sessions:
       new:
         log_in: &log_in Log In

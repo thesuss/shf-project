@@ -1,54 +1,42 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
 .entry-content
-  = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-
-    != model_errors_helper(resource)
-
-    = render partial: 'member_photo', locals: { user: resource, f: f }
-
-    .col-sm-12.wpcf7
-      .field
-        = f.label :first_name
-        = f.text_field :first_name, autofocus: true, class: 'wpcf7-form-control'
-      .field
-        = f.label :last_name
-        = f.text_field :last_name, class: 'wpcf7-form-control'
-      .field
-        = f.label :email
-        = f.email_field :email, class: 'wpcf7-form-control'
-      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-        %div
-          "#{t('.unconfirmed_email_for', unconfirmed_email: resource.unconfirmed_email )}"
-
-      = f.fields_for :shf_application do |app_form|
-        .field
-          = app_form.label :contact_email
-          = app_form.email_field :contact_email
-
-      .field
-        = f.label :password
+  .row
+    .col-md
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+        != model_errors_helper(resource)
+        = render partial: 'member_photo', locals: { user: resource, f: f }
+        %h3= t('.info_header')
+        = f.text_field :first_name, placeholder: "#{t('activerecord.attributes.user.first_name')}"
+        = f.text_field :last_name, placeholder: "#{t('activerecord.attributes.user.last_name')}"
+        %br
+        = f.email_field :email, placeholder: "#{t('activerecord.attributes.user.email')}"
+        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+          %div
+            "#{t('.unconfirmed_email_for', unconfirmed_email: resource.unconfirmed_email )}"
+    
+        = f.fields_for :shf_application do |app_form|
+          = app_form.email_field :contact_email, placeholder: "#{t('activerecord.attributes.shf_application.contact_email')}"
+        %br
+        %br
+        %h3= t('.password_header')
         %i= t('.leave_blank_if_no_change')
-        = f.password_field :password, autocomplete: 'off', class: 'wpcf7-form-control'
+        %br
+        = f.password_field :password, autocomplete: 'off', placeholder: "#{t('.new_password')}"
+        = f.password_field :password_confirmation, autocomplete: 'off', placeholder: "#{t('.confirm_password')}"
+        %br
         = render 'devise/shared/min_password_length_info'
-      .field
-        = f.label :password_confirmation, "#{t('.confirm_password')}"
-        = f.password_field :password_confirmation, autocomplete: 'off', class: 'wpcf7-form-control'
-      .field
-        = f.label :current_password, "#{t('.current_password')}", class: 'required'
+        %br
+        %br
+        = f.label :password_confirmation, "#{t('.current_password')}", class: 'required'
+        %br
+        = f.password_field :current_password, autocomplete: 'off', placeholder: "#{t('.current_password')}"
+        %br
         %i= t('.required_to_save_changes')
-        = f.password_field :current_password, autocomplete: 'off', class: 'wpcf7-form-control'
-      .actions
-        = f.submit "#{t('.submit_button_label')}"
-
-      = render 'application/required_fields'
-
-  .col-sm-12.wpcf7
-    %h2.entry-title= t('.unregister')
-    .post-title-divider
-      %span
-    %p
-      #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
-    = link_to "#{t('.back')}", :back
+        = render 'application/required_fields'
+        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary'
+    .col-md
+      %h3.entry-title= t('.unregister')
+      %p
+        #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
+  = link_to "#{t('.back')}", :back

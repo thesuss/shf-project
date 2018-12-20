@@ -137,6 +137,7 @@ label {
     font-size: 20px;
     line-height: 22px;
     font-weight: bold;
+    padding: 20px;
     font-family: 'Crimson Text',serif;
 }
 
@@ -391,14 +392,17 @@ a:hover {
     color: #5692ce;
     text-decoration: none;
 }
+.navbar-brand {padding:0;}
 .navbar-brand img {
         max-height: 70px;
 }
 
-.nav-link {
+nav.navbar a.navbar-brand, .nav-link {
     padding: 0;
 }
-
+nav.navbar a:hover {
+    color: #5692ce;
+}
 .entry-content {
     margin-left: auto;
     margin-right: auto;

@@ -1039,7 +1039,7 @@ sv:
         title: Skapa användare
         create_account: Skapa konto
         forgot_password: Glömt lösenord
-        confirm_password: &confirm_password Bekräfta lösenord
+        confirm_password: &confirm_password Bekräfta nytt lösenord
         submit_button_label: Skapa användare
         success: Ett nytt konto har skapats
       edit:
@@ -1055,6 +1055,9 @@ sv:
         confirm_are_you_sure: Är du säker på att du vill radera ditt konto?
         back: *back
         success: Ditt konto har uppdaterats
+        password_header: Byt lösenord
+        new_password: Nytt lösenord
+        info_header: Redigera namn och e-post
     sessions:
       new:
         log_in: &log_in Logga In
