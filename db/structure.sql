@@ -4,6 +4,7 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -26,7 +27,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: addresses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: addresses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE addresses (
@@ -66,7 +67,7 @@ ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
 
 
 --
--- Name: app_configurations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: app_configurations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE app_configurations (
@@ -112,7 +113,7 @@ ALTER SEQUENCE app_configurations_id_seq OWNED BY app_configurations.id;
 
 
 --
--- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ar_internal_metadata (
@@ -124,7 +125,7 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
--- Name: business_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: business_categories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE business_categories (
@@ -156,7 +157,7 @@ ALTER SEQUENCE business_categories_id_seq OWNED BY business_categories.id;
 
 
 --
--- Name: business_categories_shf_applications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: business_categories_shf_applications; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE business_categories_shf_applications (
@@ -186,7 +187,7 @@ ALTER SEQUENCE business_categories_shf_applications_id_seq OWNED BY business_cat
 
 
 --
--- Name: ckeditor_assets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ckeditor_assets; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ckeditor_assets (
@@ -224,7 +225,7 @@ ALTER SEQUENCE ckeditor_assets_id_seq OWNED BY ckeditor_assets.id;
 
 
 --
--- Name: companies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: companies; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE companies (
@@ -263,7 +264,7 @@ ALTER SEQUENCE companies_id_seq OWNED BY companies.id;
 
 
 --
--- Name: company_applications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: company_applications; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE company_applications (
@@ -295,13 +296,12 @@ ALTER SEQUENCE company_applications_id_seq OWNED BY company_applications.id;
 
 
 --
--- Name: conditions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: conditions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE conditions (
     id bigint NOT NULL,
     class_name character varying,
-    name character varying,
     timing character varying,
     config text,
     created_at timestamp without time zone NOT NULL,
@@ -329,7 +329,7 @@ ALTER SEQUENCE conditions_id_seq OWNED BY conditions.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE events (
@@ -370,7 +370,7 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: kommuns; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: kommuns; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE kommuns (
@@ -401,7 +401,7 @@ ALTER SEQUENCE kommuns_id_seq OWNED BY kommuns.id;
 
 
 --
--- Name: member_app_waiting_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: member_app_waiting_reasons; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE member_app_waiting_reasons (
@@ -478,7 +478,7 @@ ALTER SEQUENCE member_app_waiting_reasons_id_seq OWNED BY member_app_waiting_rea
 
 
 --
--- Name: member_pages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: member_pages; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE member_pages (
@@ -522,7 +522,7 @@ CREATE SEQUENCE membership_number_seq
 
 
 --
--- Name: payments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: payments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE payments (
@@ -560,7 +560,7 @@ ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
 
 
 --
--- Name: regions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: regions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE regions (
@@ -592,7 +592,7 @@ ALTER SEQUENCE regions_id_seq OWNED BY regions.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -601,7 +601,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: shf_applications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shf_applications; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shf_applications (
@@ -637,7 +637,7 @@ ALTER SEQUENCE shf_applications_id_seq OWNED BY shf_applications.id;
 
 
 --
--- Name: shf_documents; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shf_documents; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shf_documents (
@@ -674,7 +674,7 @@ ALTER SEQUENCE shf_documents_id_seq OWNED BY shf_documents.id;
 
 
 --
--- Name: uploaded_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: uploaded_files; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE uploaded_files (
@@ -709,7 +709,7 @@ ALTER SEQUENCE uploaded_files_id_seq OWNED BY uploaded_files.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE users (
@@ -885,7 +885,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY addresses
@@ -893,7 +893,7 @@ ALTER TABLE ONLY addresses
 
 
 --
--- Name: app_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: app_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY app_configurations
@@ -901,7 +901,7 @@ ALTER TABLE ONLY app_configurations
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
@@ -909,7 +909,7 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: business_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: business_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY business_categories
@@ -917,7 +917,7 @@ ALTER TABLE ONLY business_categories
 
 
 --
--- Name: business_categories_shf_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: business_categories_shf_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY business_categories_shf_applications
@@ -925,7 +925,7 @@ ALTER TABLE ONLY business_categories_shf_applications
 
 
 --
--- Name: ckeditor_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ckeditor_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ckeditor_assets
@@ -933,7 +933,7 @@ ALTER TABLE ONLY ckeditor_assets
 
 
 --
--- Name: companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY companies
@@ -941,7 +941,7 @@ ALTER TABLE ONLY companies
 
 
 --
--- Name: company_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: company_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY company_applications
@@ -949,7 +949,7 @@ ALTER TABLE ONLY company_applications
 
 
 --
--- Name: conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY conditions
@@ -957,7 +957,7 @@ ALTER TABLE ONLY conditions
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events
@@ -965,7 +965,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: kommuns_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: kommuns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY kommuns
@@ -973,7 +973,7 @@ ALTER TABLE ONLY kommuns
 
 
 --
--- Name: member_app_waiting_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: member_app_waiting_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY member_app_waiting_reasons
@@ -981,7 +981,7 @@ ALTER TABLE ONLY member_app_waiting_reasons
 
 
 --
--- Name: member_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: member_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY member_pages
@@ -989,7 +989,7 @@ ALTER TABLE ONLY member_pages
 
 
 --
--- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY payments
@@ -997,7 +997,7 @@ ALTER TABLE ONLY payments
 
 
 --
--- Name: regions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: regions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY regions
@@ -1005,7 +1005,7 @@ ALTER TABLE ONLY regions
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -1013,7 +1013,7 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: shf_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shf_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shf_applications
@@ -1021,7 +1021,7 @@ ALTER TABLE ONLY shf_applications
 
 
 --
--- Name: shf_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shf_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shf_documents
@@ -1029,7 +1029,7 @@ ALTER TABLE ONLY shf_documents
 
 
 --
--- Name: uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY uploaded_files
@@ -1037,7 +1037,7 @@ ALTER TABLE ONLY uploaded_files
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -1045,161 +1045,161 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_addresses_on_addressable_type_and_addressable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_addresses_on_addressable_type_and_addressable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_addresses_on_addressable_type_and_addressable_id ON addresses USING btree (addressable_type, addressable_id);
 
 
 --
--- Name: index_addresses_on_kommun_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_addresses_on_kommun_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_addresses_on_kommun_id ON addresses USING btree (kommun_id);
 
 
 --
--- Name: index_addresses_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_addresses_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_addresses_on_latitude_and_longitude ON addresses USING btree (latitude, longitude);
 
 
 --
--- Name: index_addresses_on_region_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_addresses_on_region_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_addresses_on_region_id ON addresses USING btree (region_id);
 
 
 --
--- Name: index_ckeditor_assets_on_company_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ckeditor_assets_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_ckeditor_assets_on_company_id ON ckeditor_assets USING btree (company_id);
 
 
 --
--- Name: index_ckeditor_assets_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ckeditor_assets_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_ckeditor_assets_on_type ON ckeditor_assets USING btree (type);
 
 
 --
--- Name: index_companies_on_company_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_companies_on_company_number; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_companies_on_company_number ON companies USING btree (company_number);
 
 
 --
--- Name: index_company_applications_on_company_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_company_applications_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_company_applications_on_company_id ON company_applications USING btree (company_id);
 
 
 --
--- Name: index_company_applications_on_shf_application_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_company_applications_on_shf_application_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_company_applications_on_shf_application_id ON company_applications USING btree (shf_application_id);
 
 
 --
--- Name: index_events_on_company_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_company_id ON events USING btree (company_id);
 
 
 --
--- Name: index_events_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_latitude_and_longitude ON events USING btree (latitude, longitude);
 
 
 --
--- Name: index_events_on_start_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_start_date; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_start_date ON events USING btree (start_date);
 
 
 --
--- Name: index_on_applications; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_on_applications; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_on_applications ON business_categories_shf_applications USING btree (shf_application_id);
 
 
 --
--- Name: index_on_categories; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_on_categories; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_on_categories ON business_categories_shf_applications USING btree (business_category_id);
 
 
 --
--- Name: index_payments_on_company_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_payments_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_payments_on_company_id ON payments USING btree (company_id);
 
 
 --
--- Name: index_payments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_payments_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_payments_on_user_id ON payments USING btree (user_id);
 
 
 --
--- Name: index_shf_applications_on_member_app_waiting_reasons_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_shf_applications_on_member_app_waiting_reasons_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_shf_applications_on_member_app_waiting_reasons_id ON shf_applications USING btree (member_app_waiting_reasons_id);
 
 
 --
--- Name: index_shf_applications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_shf_applications_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_shf_applications_on_user_id ON shf_applications USING btree (user_id);
 
 
 --
--- Name: index_shf_documents_on_uploader_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_shf_documents_on_uploader_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_shf_documents_on_uploader_id ON shf_documents USING btree (uploader_id);
 
 
 --
--- Name: index_uploaded_files_on_shf_application_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_uploaded_files_on_shf_application_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_uploaded_files_on_shf_application_id ON uploaded_files USING btree (shf_application_id);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_membership_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_membership_number; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_membership_number ON users USING btree (membership_number);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
@@ -1305,7 +1305,7 @@ ALTER TABLE ONLY addresses
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20161110203212'),
@@ -1371,6 +1371,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180624155644'),
 ('20180717043851'),
 ('20180719021503'),
-('20181203121315');
+('20181203121315'),
+('20181214011549');
 
 
