@@ -1,0 +1,90 @@
+street_address,post_code,city,country,region_name,kommun_name,latitude,longitude,visibility,mail
+"Percy Ahnhems Väg 5b","91279","Tidaholm","Sverige","Sverige","Söderköping",58.4823802,16.3216224,street_address,false
+"Vultejusvägen 3b","90 605","Katrineholm","Sverige","Örebro","Hofors",60.4854704,16.4535389582223,street_address,false
+"Tabergsvägen 609","61481","Mönsterås","Sverige","Västmanland","Vingåker",59.0433723,15.8715565,street_address,false
+"Mårtensdalsgatan 85","65 566","Mönsterås","Sverige","Sverige","Hjo",58.26852135,14.2801762879074,street_address,false
+"Farstagårdsvägen 6b","87 871","Alingsås","Sverige","Södermanland","Åsele",64.20007895,17.6141342862373,street_address,false
+"Blackebergs Gårdsväg 3","29541","Sandviken","Sverige","Södermanland","Boxholm",58.13259575,15.1277388768987,street_address,false
+"Sveaborgsgatan 1","19 332","Visby","Sverige","Gotland","Boxholm",58.13259575,15.1277388768987,street_address,false
+"Rigagatan 09","71 808","Lund","Sverige","Örebro","Finspång",58.70773,15.7758645,street_address,false
+"Toftvägen 4","44 016","Fagersta","Sverige","Uppsala","Knivsta",59.7439231,17.8162043005189,street_address,false
+"Tältgatan 6a","19 095","Helsingborg","Sverige","Västernorrland","Kiruna",67.8550724,20.2255482,street_address,false
+"Flygfältsgatan 7a","24794","Ludvika","Sverige","Gävleborg","Hagfors",60.0879941,13.6465853375158,street_address,false
+"Tingvallavägen 5","97932","Trosa","Sverige","Gotland","Varberg",57.1057412,12.2502949,street_address,false
+"Engelbrektsgatan 6b","27771","Mölndal","Sverige","Dalarna","Svedala",55.5152421,13.2384358,street_address,false
+"Taptogatan 775","11150","Norrtälje","Sverige","Gävleborg","Sunne",59.8907658,13.0454215346412,street_address,false
+"Kocksgatan 72","40613","Kristinehamn","Sverige","Västerbotten","Mullsjö",57.9168131,13.8804724,street_address,false
+"Jenny Linds Gata 0","11 745","Lidköping","Sverige","Västerbotten","Bengtsfors",59.0116448,12.2455494253837,street_address,false
+"Carl Sebardts Väg 5b","97 905","Skara","Sverige","Jönköping","Älvsbyn",65.7372667,20.6818974185551,street_address,false
+"Gondolgatan 9a","07 350","Söderköping","Sverige","Gävleborg","Filipstad",59.7135483,14.1680314,street_address,false
+"Bågspännarvägen 164","61 127","Östersund","Sverige","Värmland","Arboga",59.394187,15.8396643,street_address,false
+"Förmansvägen 489","87 667","Karlstad","Sverige","Norrbotten","Trelleborg",55.37592,13.1461522,street_address,false
+"Per Albins Väg 4b","81403","Motala","Sverige","Östergötland","Sotenäs",58.37628605,11.1011196042114,street_address,false
+"Klara Östra Kyrkogata 623","68 349","Karlskrona","Sverige","Online","Sölvesborg",56.0506535,14.5871906,street_address,false
+"Engelbrektsgatan 80","06875","Strömstad","Sverige","Online","Nässjö",57.6530377,14.6981554,street_address,false
+"Skaraborgsgatan 9b","08247","Laholm","Sverige","Gävleborg","Ockelbo",60.9197006,16.5426709711809,street_address,false
+"Surtsögatan 9a","64 898","Solna","Sverige","Sverige","Norsjö",64.93630935,19.4762167086367,street_address,false
+"Huvudfabriksgatan 4a","56 407","Nyköping","Sverige","Värmland","Flen",59.0567823,16.5893,street_address,false
+"Lintavägen 8","04 153","Karlstad","Sverige","Örebro","Ystad",55.4329849,13.8196555,street_address,false
+"Kristinebergsvägen 9","97141","Sävsjö","Sverige","Norrbotten","Färgelanda",58.6135368,12.0058822484431,street_address,false
+"Farstanäsvägen 2a","05 543","Mölndal","Sverige","Dalarna","Herrljunga",58.00918415,13.157048113265,street_address,false
+"Erikslundsgatan 2a","84 700","Östersund","Sverige","Värmland","Borgholm",56.8799276,16.6561377,street_address,false
+"Barnhemsvägen 0a","48 257","Hudiksvall","Sverige","Jämtland","Övertorneå",66.3900454,23.6550021,street_address,false
+"Stiklastadsvägen 733","25403","Mariefred","Sverige","Gotland","Gällivare",67.135243,20.6604843,street_address,false
+"Prinsens Väg 456","59609","Kiruna","Sverige","Östergötland","Hjo",58.26852135,14.2801762879074,street_address,false
+"Morkullsvägen 78","77 963","Hässleholm","Sverige","Skåne","Ekerö",59.3555916,17.6224213225656,street_address,false
+"Helsingforsgatan 1a","43101","Lysekil","Sverige","Dalarna","Nyköping",58.7544913,17.0118143,street_address,false
+"Herkulesgatan på/avfart 6b","55171","Strängnäs","Sverige","Sverige","Kungälv",57.8707862,11.9788622,street_address,false
+"Herr Stens Väg 12","31883","Borås","Sverige","Västmanland","Pajala",67.2090363,23.3647298,street_address,false
+"Galonvägen 0a","45 384","Härnösand","Sverige","Kalmar","Svenljunga",57.4963122,13.1122599,street_address,false
+"Varmfrontsgatan 8b","03243","Mönsterås","Sverige","Norrbotten","Bergs",61.235979,15.8470766,street_address,false
+"Sedumvägen 6b","79264","Sävsjö","Sverige","Jönköping","Ale",57.4021387,14.6667098,street_address,false
+"Sulitelmavägen 640","07850","Älvsborg","Sverige","Gotland","Motala",58.5420395,15.041261,street_address,false
+"Kilabergsvägen 7","96117","Hedemora","Sverige","Västmanland","Nybro",56.7452259,15.9061542,street_address,false
+"Grindsgatan 55","78 598","Åmål","Sverige","Uppsala","Hultsfred",57.3947935,15.7751611195776,street_address,false
+"Sylvestergatan 3","12744","Haparanda","Sverige","Norrbotten","Sjöbo",55.6350867,13.7031168,street_address,false
+"Klippgatan 523","49985","Norrköping","Sverige","Södermanland","Hudiksvall",61.7282737,17.1047086,street_address,false
+"Orsavägen 4","11695","Östersund","Sverige","Norrbotten","Mellerud",58.68242915,12.5253135589299,street_address,false
+"Värmbolsvägen 33","36112","Värnamo","Sverige","Södermanland","Sandviken",60.619422,16.7724214,street_address,false
+"Svoldervägen 4b","01 654","Kiruna","Sverige","Örebro","Avesta",60.1469553,16.1826996,street_address,false
+"Mårtensdalsgatan 9b","56 715","Trollhättan","Sverige","Kronoberg","Oskarshamn",57.2632811,16.4443478,street_address,false
+"Stockholmsvägen 522","21081","Skövde","Sverige","Kronoberg","Sundsvall",62.3907552,17.3071024,street_address,false
+"Långvretsvägen 336","26949","Göteborg","Sverige","Västmanland","Eskilstuna",59.3717379,16.5051474,street_address,false
+"Martinvägen 5","27014","Luleå","Sverige","Sverige","Älvdalen",61.2298989,14.0373946,street_address,false
+"Södra Vägen 5","26640","Avaskär","Sverige","Blekinge","Vindeln",64.2024817,19.7177522,street_address,false
+"Vulcanusgatan 3a","84 495","Falun","Sverige","Östergötland","Strömsund",63.8516664,15.5582353,street_address,false
+"Limavägen 390","89830","Stockholm","Sverige","Värmland","Sollentuna",59.4605244,17.9153864,street_address,false
+"Torkel Knutssonsgatan 6","20 260","Skellefteå","Sverige","Blekinge","Trollhättan",58.2178681,12.3413859774765,street_address,false
+"Marieviksgatan 7","00338","Lysekil","Sverige","Västra Götaland","Ljusdal",61.8293755,16.0953598,street_address,false
+"Vrenavägen 8b","42 890","Göteborg","Sverige","Södermanland","Tidaholm",58.1406938,13.9241453152186,street_address,false
+"Kilsbergsvägen 826","07 479","Båstad","Sverige","Halland","Vänersborg",58.4433649,12.3609810401376,street_address,false
+"Koldinggatan 3b","40782","Luntertun","Sverige","Kronoberg","Sundsvall",62.3907552,17.3071024,street_address,false
+"Björketorpsvägen 96","55110","Solna","Sverige","Västra Götaland","Lessebo",56.7566248,15.2679505,street_address,false
+"Malmövägen 53","44 522","Laholm","Sverige","Norrbotten","Flen",59.0567823,16.5893,street_address,false
+"Grödingegatan 1b","30 623","Skellefteå","Sverige","Västerbotten","Åstorp",56.1351211,12.9462464,street_address,false
+"Månskensvägen 4a","78 735","Ängelholm","Sverige","Västerbotten","Sollefteå",63.1680239,17.2654472,street_address,false
+"Minuthandlarvägen 0a","21713","Åmål","Sverige","Stockholm","Karlshamn",56.1701723,14.8631279,street_address,false
+"Junohällsvägen 0b","59341","Åmål","Sverige","Jämtland","Malmö",55.6052931,13.0001566,street_address,false
+"Djurgårdsbrunnsvägen 7a","19 326","Ystad","Sverige","Norrbotten","Salem",59.2386278,17.7201835638553,street_address,false
+"Drottning Sofias Väg 51","89 953","Tidaholm","Sverige","Uppsala","Huddinge",59.2293827,17.9748815,street_address,false
+"Stövargatan 905","10 335","Höganäs","Sverige","Online","Mörbylånga",56.5249635,16.3799985,street_address,false
+"Vinkelvägen 562","56284","Vadstena","Sverige","Jämtland","Bjurholm",63.9320592,19.2189925,street_address,false
+"Ynglingagatan 93","68374","Hässleholm","Sverige","Online","Piteå",65.3134764,21.4899394,street_address,false
+"Ångermannagatan 04","16 076","Säter","Sverige","Sverige","Filipstad",59.7135483,14.1680314,street_address,false
+"Norra Vägen 116","94721","Sundsvall","Sverige","Östergötland","Nordanstig",62.0466182,17.4098196260527,street_address,false
+"Skåpaforsvägen 601","82888","Vaxholm","Sverige","Värmland","Perstorp",56.1376968,13.3952814,street_address,false
+"Häggvägen 951","93035","Mariestad","Sverige","Stockholm","Östra Göinge",56.2897612,14.1368147426516,street_address,false
+"Ätravägen 2b","77983","Skellefteå","Sverige","Jämtland","Vansbro",60.4610572,14.2598090430949,street_address,false
+"Skrubba Skogsväg 3","68577","Nya Lidköping","Sverige","Kronoberg","Härryda",57.6691896,12.2959112480538,street_address,false
+"Älvsjö Ängsväg 4a","80 644","Sala","Sverige","Västernorrland","Kumla",59.130171,15.1443464,street_address,false
+"Kratsbodavägen 98","82 587","Visby","Sverige","Örebro","Eda",59.8074259,12.1906919645591,street_address,false
+"Prechtvägen 864","32697","Sävsjö","Sverige","Västernorrland","Leksand",60.72476845,14.8684614273545,street_address,false
+"Muskögatan 879","03 546","Vimmerby","Sverige","Södermanland","Kävlinge",55.7912944,13.1073471,street_address,false
+"Stockbergsvägen 77","40001","Säter","Sverige","Skåne","Södertälje",59.1964289,17.6271663,street_address,false
+"Biblioteksgatan 8a","58 396","Falköping","Sverige","Online","Lomma",55.6745348,13.0708928,street_address,false
+"Vadmalsvägen 571","70684","Sollefteå","Sverige","Sverige","Tidaholm",58.1406938,13.9241453152186,street_address,false
+"Östra Järnvägsgatan 28","51571","Östersund","Sverige","Online","Tibro",58.4248905,14.1631194,street_address,false
+"Oxbrovägen 3","35177","Kalmar","Sverige","Norrbotten","Skövde",58.3898453,13.8443792,street_address,false
+"Idaborgsvägen 1","65 859","Vänersborg","Sverige","Örebro","Tibro",58.4248905,14.1631194,street_address,false
+"Malaxgatan 60","25397","Vimmerby","Sverige","Sverige","Skara",58.3846075,13.4397675,street_address,false
+"Forsbackagatan 717","33325","Karlskrona","Sverige","Uppsala","Lysekil",58.291426,11.3296082387647,street_address,false
