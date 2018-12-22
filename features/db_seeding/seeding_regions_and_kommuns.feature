@@ -1,4 +1,6 @@
-Feature: As an Admin
+Feature: Seed Regions and Kommuns
+
+  As an Admin
   So that regions and kommuns can be used in the application,
   And so that I don't have to enter them all by hand,
   I expect the regions and kommuns tables to be filled when the system is revised (when it's seeded).

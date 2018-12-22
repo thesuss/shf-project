@@ -1,4 +1,6 @@
-Feature: As an Admin
+Feature: Seed business categories
+
+  As an Admin
   So that members can choose the right categories for my business,
   And so that I don't have to enter them all by hand,
   I expect to see business categories when the system is revised (when it's seeded).
