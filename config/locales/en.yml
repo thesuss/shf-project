@@ -1102,13 +1102,18 @@ en:
 
       visitor:
         home: *home
+        association: Association
         brochure: Brochure
+        board: Board
+        our_policy: Our Policy
+        board_statues: Board Statues
+        history: History
         dog_owners:
           submenu_title: For Dog Owners
           about_us: &about_us About us
           h_label: H Label
-          knowledge_bank: &knowledge_bank Knowledge bank
-          are_you_unsatisfied: 'Are you unsatisfied?'
+          knowledge_bank: &knowledge_bank_text Knowledge bank
+          are_you_interested: 'Are you interested?'
           become_supporter: Become a Supporter
           being_dog_owners: Being Dog Owners
         entrepreneurs:
@@ -1119,15 +1124,15 @@ en:
           member_criteria: Member Criteria
           member_benefits: Member Benefits
           quality_standards: Member Standards
-          knowledge_bank: *knowledge_bank
-        knowledge_bank:
-          submenu_title: *knowledge_bank
-          blogs: Blogs
-          books: Books
-          research: Research
-          pod: Podcasts
-          popular_science: Popular Science
-          video: Video
+          gdpr: "GDPR"
+          knowledge_bank:
+            submenu_title:  *knowledge_bank_text
+            blogs: Blogs
+            books: Books
+            research: Research
+            pod: Podcasts
+            popular_science: Popular Science
+            video: Video
         contact: Contact
         find_dog_businesses: Find Dog Company
 
