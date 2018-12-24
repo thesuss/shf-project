@@ -169,7 +169,7 @@ class Company < ApplicationRecord
 
 
   # @return all members in the company whose membership are current (paid, not expired)
-  def current_members_in_company
+  def current_members
     users.select(&:membership_current?)
   end
 

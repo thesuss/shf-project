@@ -314,11 +314,11 @@ RSpec.describe Company, type: :model, focus: true do
   end
 
 
-  describe '#current_members_in_company' do
+  describe '#current_members' do
 
     it 'is empty if no members' do
       company = create(:company)
-      expect(company.current_members_in_company).to be_empty
+      expect(company.current_members).to be_empty
     end
 
     it 'is empty if all members expiration date has past' do
@@ -335,7 +335,7 @@ RSpec.describe Company, type: :model, focus: true do
 
 
       Timecop.freeze(Date.new(2019, 1, 1)) do
-        expect(mem1_co.current_members_in_company).to be_empty
+        expect(mem1_co.current_members).to be_empty
       end
     end
 
@@ -356,7 +356,7 @@ RSpec.describe Company, type: :model, focus: true do
              expire_date:    Date.new(2018, 12, 1) + 365)
 
       Timecop.freeze(Date.new(2019, 1, 1)) do
-        expect(mem1_co.current_members_in_company).to match_array([mem1_exp])
+        expect(mem1_co.current_members).to match_array([mem1_exp])
       end
     end
 
