@@ -686,8 +686,18 @@ RSpec.describe User, type: :model do
 
   context 'payment and membership period' do
 
+    describe '#membership_start_date' do
+      it 'returns the start_date for latest completed payment' do
+        member_payment1
+        expect(user.membership_start_date).to eq member_payment1.start_date
+        member_payment2
+        expect(user.membership_start_date).to eq member_payment2.start_date
+      end
+    end
+
+
     describe '#membership_expire_date' do
-      it 'returns date for latest completed payment' do
+      it 'returns the expire_date for latest completed payment' do
         member_payment1
         expect(user.membership_expire_date).to eq member_payment1.expire_date
         member_payment2
