@@ -98,8 +98,9 @@ class Company < ApplicationRecord
     payment_notes(Payment::PAYMENT_TYPE_BRANDING)
   end
 
+  # @return [Boolean] - true only if there is a branding_expire_date and it is in the future (from today)
   def branding_license?
-    branding_expire_date&.future?
+    branding_expire_date&.future? == true # == true prevents this from ever returning nil
   end
 
   def self.next_branding_payment_dates(company_id)
@@ -164,6 +165,12 @@ class Company < ApplicationRecord
 
     true
 
+  end
+
+
+  # @return all members in the company whose membership are current (paid, not expired)
+  def current_members_in_company
+    users.select(&:membership_current?)
   end
 
 
