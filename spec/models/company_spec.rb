@@ -742,27 +742,36 @@ RSpec.describe Company, type: :model, focus: true do
 
     context '.at_addresses(addresses)' do
 
-      before(:all) do
-        create(:company,
-               name:           'Stockholm Co',
-               street_address: 'Rehnsgatan 15',
-               post_code:      '113 57',
-               city:           'Stockholm'
-        )
+        let(:kista_co) do
+            create(:company,
+                 name:           'Stockholm Co',
+                 street_address: 'Rehnsgatan 15',
+                 post_code:      '113 57',
+                 city:           'Stockholm')
+        end
 
-        create(:company,
-               name:           'Kista Co',
-               street_address: 'AKALLALÄNKEN 10',
-               post_code:      '164 74',
-               city:           'Kista')
-      end
+        let(:stockholm_co) do
+          create(:company,
+                 name:           'Kista Co',
+                 street_address: 'AKALLALÄNKEN 10',
+                 post_code:      '164 74',
+                 city:           'Kista')
+        end
+
+
 
       it 'returns all companies at these addresses' do
+        kista_co
+        stockholm_co
+
         kista_address = Address.find_by_city('Kista')
         expect(Company.at_addresses([kista_address]).map(&:name)).to match_array(['Kista Co'])
       end
 
       it 'no companies if addresses is empty' do
+        kista_co
+        stockholm_co
+
         expect(Company.at_addresses([]).size).to eq 0
       end
 
