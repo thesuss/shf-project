@@ -21,6 +21,10 @@ module PaymentUtility
   end
 
 
+  # FIXME Company h-branding fee: how to determine the next payment date when no payment has been made yet?
+  #   = the payment date of the first membership fee of all current members
+  #   - FIXME how to store this date if/when the member is no longer a current member?
+  #
   class_methods do
 
     # TODO should just pass in the entity.  the "id" is an implementation detail that callers should not care about.
