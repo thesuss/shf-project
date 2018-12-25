@@ -30,6 +30,9 @@
 #
 #  @author:  Patrick Bolger
 #
+#
+# TODO should config always be initialized to a HASH?  And then things can go in there as needed?
+#
 class Condition < ApplicationRecord
   serialize :config
 
