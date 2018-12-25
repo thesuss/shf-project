@@ -3,9 +3,7 @@ require 'rails_helper'
 
 RSpec.describe AlertLogStrMaker do
 
-  describe '#success_info' do
-
-    let(:alert) { HBrandingFeePastDueAlert }
+    let(:alert) { HBrandingFeePastDueAlert.instance }
     let(:success_method) { :success_str }
     let(:failure_method) { :failure_str }
 
@@ -28,12 +26,5 @@ RSpec.describe AlertLogStrMaker do
                           .and_return('goodbye there')
       expect(alert_log_str_maker.failure_info(['goodbye', 'there'])).to eq 'goodbye there'
     end
-
-  end
-
-
-  describe '#failure_info' do
-
-  end
 
 end
