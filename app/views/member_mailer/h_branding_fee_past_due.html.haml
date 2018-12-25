@@ -6,7 +6,7 @@
 = render layout: 'layouts/mail_from_membership' do
 
   %p
-    = t('fee_is_unpaid', company_name: @company.name,  scope: message_scope)
+    = t('fee_is_unpaid', scope: message_scope, company_name: @company.name )
 
   %p
     =t('how_to_pay_fee', scope: message_scope)
