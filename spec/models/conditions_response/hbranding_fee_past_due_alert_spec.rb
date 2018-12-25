@@ -16,11 +16,11 @@ RSpec.describe HBrandingFeePastDueAlert do
 
   let(:company) { create(:company) }
 
-  let(:condition) { create(:condition, :before, config: { days: [1, 7, 14, 30] }) }
 
   let(:config) { { days: [1, 7, 14, 30] } }
+  let(:timing) { MembershipExpireAlert::TIMING_AFTER }
+  let(:condition) { create(:condition, timing, config) }
 
-  let(:timing) { MembershipExpireAlert::TIMING_BEFORE }
 
 
   # All examples assume today is 1 December, 2018
@@ -104,14 +104,15 @@ RSpec.describe HBrandingFeePastDueAlert do
           paid_member_exp_dec31
           paid_member_exp_dec2
 
-          # today is Dec 1
+          Timecop.freeze(Time.utc(2017, 12, 4)) do
+            # update membership status based on today's date
+            MembershipStatusUpdater.instance.user_updated(paid_member_exp_dec31)
+            MembershipStatusUpdater.instance.user_updated(paid_member_exp_dec2)
 
-          # update membership status based on today's date
-          MembershipStatusUpdater.instance.user_updated(paid_member_exp_dec31)
-          MembershipStatusUpdater.instance.user_updated(paid_member_exp_dec2)
+            print_membership_dates
+            expect(described_class.instance.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_truthy
+          end
 
-          print_membership_dates
-          expect(described_class.instance.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_truthy
         end
 
         it 'if the member with oldest paid membership lets her membership expire, day 0 does not change' do
@@ -150,17 +151,21 @@ RSpec.describe HBrandingFeePastDueAlert do
         let(:paid_member_co) { paid_member.companies.first }
 
         it 'true when the day is in the config list of days to send the alert' do
-          expect(described_class.instance.send_alert_this_day?(timing, config, paid_member_co)).to be_truthy
+          Timecop.freeze(Time.utc(2018, 1, 15)) do
+            expect(described_class.instance.send_alert_this_day?(timing, config, paid_member_co)).to be_truthy
+          end
         end
 
         it 'false when the day  is not in the config list of days to send the alert' do
-          expect(described_class.instance.send_alert_this_day?(timing, { days: [999] }, paid_member_co)).to be_falsey
+          Timecop.freeze(Time.utc(2018, 1, 16)) do
+            expect(described_class.instance.send_alert_this_day?(timing, config, paid_member_co)).to be_falsey
+          end
         end
 
       end # context 'membership has not expired yet'
 
 
-      context 'membership expiration is before or on the given date to check' do
+      context 'membership expiration is on or after the given date to check' do
 
         context 'membership expires 1 day after today (dec 1); expires dec 2' do
 
@@ -182,8 +187,10 @@ RSpec.describe HBrandingFeePastDueAlert do
 
 
           it 'true if the day is in the config list of days to send the alert (= 1)' do
-            expect(paid_expires_tomorrow_member.membership_expire_date).to eq dec_2
-            expect(described_class.instance.send_alert_this_day?(timing, { days: [1] }, paid_member_co)).to be_truthy
+            Timecop.freeze(Time.utc(2017, 12, 4)) do
+              expect(paid_expires_tomorrow_member.membership_expire_date).to eq dec_2
+              expect(described_class.instance.send_alert_this_day?(timing, { days: [1] }, paid_member_co)).to be_truthy
+            end
           end
 
           it 'false if the day is not in the config list of days to send the alert' do
@@ -215,7 +222,7 @@ RSpec.describe HBrandingFeePastDueAlert do
 
         end
 
-      end # context 'membership expiration is before or on the given date'
+      end # context 'membership expiration is on or after the given date'
 
 
       context 'membership has expired' do
