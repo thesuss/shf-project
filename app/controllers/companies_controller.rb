@@ -15,6 +15,7 @@ class CompaniesController < ApplicationController
     authorize Company
 
     self.params = fix_FB_changed_q_params(self.params)
+    self.params = remove_sort_by_business_categories(self.params)
 
     action_params, @items_count, items_per_page = process_pagination_params('company')
 
@@ -274,6 +275,25 @@ class CompaniesController < ApplicationController
     lat = near_params.fetch(:latitude, nil)
     long = near_params.fetch(:longitude, nil)
     CompanyLocator.find_near_coordinates(lat, long, distance)
+  end
+
+
+  BAD_BUSINESSCAT_SORT_KEY = 'business_categories_name'
+  # We no longer can sort by BusinessCategories.  But bots still have that info cached
+  # and we still get requests coming in with it.
+  #
+  # If the parameters has a sort by business categories name part,
+  # remove the sort part from the params so we (via Ransack) don't throw an error.
+  #
+  # @return [ActionController::Parameter] - the params with the offending sort info removed.
+  def remove_sort_by_business_categories(params)
+
+    if !(sort_param = params.dig('q', 's')).nil? && sort_param.split(' ').first == BAD_BUSINESSCAT_SORT_KEY
+      # remove the sort part of the params
+      params['q'] = params['q'].except('s')
+    end
+
+    params
   end
 
 end

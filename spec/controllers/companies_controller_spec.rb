@@ -66,41 +66,41 @@ RSpec.describe CompaniesController, type: :controller do
 
     let(:stockholm_hundforum) do
       co = create(:company, name: 'Stockholms Hundforum',
-             street_address: 'Celsiusgatan 6',
-             post_code:      '112 30',
-             region:         region_stockholm,
-             city:           'Stockholm')
+                  street_address: 'Celsiusgatan 6',
+                  post_code:      '112 30',
+                  region:         region_stockholm,
+                  city:           'Stockholm')
       co.save # so it is geocoded
       co
     end
 
     let(:stockholm_hundelska) do
       co = create(:company, name: 'Hundelska',
-             street_address: 'Rehnsgatan 15',
-             post_code:      '113 57',
-             region:         region_stockholm,
-             city:           'Stockholm')
+                  street_address: 'Rehnsgatan 15',
+                  post_code:      '113 57',
+                  region:         region_stockholm,
+                  city:           'Stockholm')
       co.save # so it is geocoded
       co
     end
 
     let(:arsta_hundenshus) do
       co = create(:company, name: 'Hundens Hus',
-             street_address: 'Svärdlångsvägen 11 C',
-             post_code:      '120 60',
-             region:         region_stockholm,
-             city:           'Årsta')
+                  street_address: 'Svärdlångsvägen 11 C',
+                  post_code:      '120 60',
+                  region:         region_stockholm,
+                  city:           'Årsta')
       co.save # so it is geocoded
       co
     end
 
     let(:kista_hundkurs) do
       co = create(:company, name: 'HundKurs',
-             street_address: 'AKALLALÄNKEN 10',
-             region:         region_stockholm,
-             post_code:      '164 74',
-             city:           'Kista')
-      co.save  # so it is geocoded
+                  street_address: 'AKALLALÄNKEN 10',
+                  region:         region_stockholm,
+                  post_code:      '164 74',
+                  city:           'Kista')
+      co.save # so it is geocoded
       co
     end
 
@@ -114,10 +114,11 @@ RSpec.describe CompaniesController, type: :controller do
       member                           = create(:member_with_membership_app)
       member.shf_application.companies = [company]
       create(:payment,
+             :successful,
              user:         member,
              company:      company,
-             payment_type: Payment::PAYMENT_TYPE_BRANDING,
-             status:       'betald')
+             payment_type: Payment::PAYMENT_TYPE_BRANDING
+      )
       member
     end
 
@@ -133,9 +134,9 @@ RSpec.describe CompaniesController, type: :controller do
 
       all_visible_cos = @controller.view_assigns['all_visible_companies']
       expect(all_visible_cos.map { |co| co.name }).to match_array(['Stockholms Hundforum',
-                                                                                   'HundKurs',
-                                                                                   'Hundelska',
-                                                                                   'Hundens Hus'])
+                                                                   'HundKurs',
+                                                                   'Hundelska',
+                                                                   'Hundens Hus'])
     end
 
 
@@ -147,8 +148,8 @@ RSpec.describe CompaniesController, type: :controller do
         member_hundenshus.save
         member_hundkurs.save
 
-        near_coords_params = { "utf8" => "✓", near: {latitude: '59.3251172',
-                                                     longitude: '18.0710935'} }
+        near_coords_params = { "utf8" => "✓", near: { latitude:  '59.3251172',
+                                                      longitude: '18.0710935' } }
 
         get :index, params: near_coords_params
 
@@ -164,13 +165,13 @@ RSpec.describe CompaniesController, type: :controller do
         member_hundenshus.save
         member_hundkurs.save
 
-        near_coords_params = { "utf8" => "✓", near: {latitude: '59.3251172',
-                                                     longitude: '18.0710935',
-                                                     distance: 3} }
+        near_coords_params = { "utf8" => "✓", near: { latitude:  '59.3251172',
+                                                      longitude: '18.0710935',
+                                                      distance:  3 } }
 
         get :index, params: near_coords_params
 
-          all_cos = @controller.view_assigns['all_companies']
+        all_cos = @controller.view_assigns['all_companies']
         expect((all_cos).map(&:name)).to match_array(['Stockholms Hundforum',
                                                       'Hundelska'])
       end
@@ -187,7 +188,7 @@ RSpec.describe CompaniesController, type: :controller do
         member_hundenshus.save
         member_hundkurs.save
 
-        near_stockholm_params = { "utf8" => "✓", near: {name: 'Stockholm' } }
+        near_stockholm_params = { "utf8" => "✓", near: { name: 'Stockholm' } }
 
         get :index, params: near_stockholm_params
 
@@ -203,7 +204,7 @@ RSpec.describe CompaniesController, type: :controller do
         member_hundenshus.save
         member_hundkurs.save
 
-        near_stockholm_params = { "utf8" => "✓", near: {name: 'Stockholm', distance: 3 } }
+        near_stockholm_params = { "utf8" => "✓", near: { name: 'Stockholm', distance: 3 } }
 
         get :index, params: near_stockholm_params
 
@@ -215,5 +216,63 @@ RSpec.describe CompaniesController, type: :controller do
     end
 
   end
+
+
+  describe 'ignore sort by business category' do
+
+    let(:no_q_params) { no_query_params.merge({ 'controller' => 'companies', 'action' => 'index' }) }
+
+    it "does not change the params if there is no query ('q') parameter" do
+
+      get :index, params: no_query_params
+      expect(subject.params.to_unsafe_h).to eq no_q_params
+    end
+
+
+    it "does not change the params if there is no sort ('s') parameter" do
+
+      business_cat_in = no_q_params.merge({ 'q' => { 'business_categories_id_in' => ["1"] } })
+      get :index, params: business_cat_in
+
+      expect(subject.params.to_unsafe_h).to eq business_cat_in
+    end
+
+
+    describe 'removes the sort param no matter the sort direction' do
+
+      empty_query_request = {  "utf8" => "✓" ,
+                               'controller' => 'companies', 'action' => 'index',
+                               'q' => {} }
+
+      sort_by_business_cats_no_dir = {desc: 'no direction', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name' } }) }
+      sort_by_business_cats_asc    = {desc: 'asc', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name asc' } }) }
+      sort_by_business_cats_desc   = {desc: 'desc', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name desc' } }) }
+      sort_by_business_cats_blorf  = {desc: 'nonsense direction', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name blorf' } }) }
+
+      sort_dirs = [sort_by_business_cats_no_dir, sort_by_business_cats_asc,
+                   sort_by_business_cats_desc, sort_by_business_cats_blorf
+      ]
+
+      sort_dirs.each do |sort_direction_request|
+
+        it "removes the sort param with #{sort_direction_request[:desc]}" do
+          get :index, params: sort_direction_request[:request]
+          expect(subject.params.to_unsafe_h).to eq empty_query_request
+        end
+      end
+
+    end # describe 'removes the sort param no matter the sort direction'
+
+
+    it 'will not throw an error if a sort by business categories request is made' do
+      bad_request = {  "utf8" => "✓" ,
+                               'controller' => 'companies', 'action' => 'index',
+                               'q' => { 's' => 'business_categories_name asc' }}
+
+      expect{ get :index, params: bad_request}.not_to raise_error
+    end
+
+  end # describe 'ignore sort by business category'
+
 
 end
