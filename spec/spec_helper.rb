@@ -42,4 +42,8 @@ RSpec.configure do |config|
   config.after(:suite) do
     FileUtils.rm_rf(Dir["#{Rails.root}/spec/test_paperclip_files/"]) if Object.const_defined?('Rails')
   end
+
+  # Alias shared example call for readability so that you can call it with just it_should
+  #   and it will display 'it should'
+  config.alias_it_should_behave_like_to :it_should, 'it should'
 end

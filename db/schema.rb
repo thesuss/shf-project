@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_011549) do
+ActiveRecord::Schema.define(version: 2018_12_28_073947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,6 +189,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_011549) do
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
+    t.datetime "when_approved"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end
