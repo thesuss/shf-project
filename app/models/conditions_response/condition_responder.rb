@@ -107,4 +107,13 @@ class ConditionResponder
   end
 
 
+  def self.confirm_correct_timing(timing, expected_timing, log)
+    unless timing == expected_timing
+      msg = "Received timing: #{timing} but expected: #{expected_timing}"
+      log.record('error', msg)
+      raise ArgumentError, msg
+    end
+  end
+
+
 end # ConditionResponder

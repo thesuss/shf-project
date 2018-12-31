@@ -16,5 +16,8 @@ namespace :shf do
                      config: { days_to_keep: { code_backup: 4,
                                                db_backup: 15 },
                                backup_directory: nil })
+
+    Condition.create(class_name: 'DinkursFetch',
+                     timing: :every_day)
   end
 end

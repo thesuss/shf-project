@@ -1,7 +1,10 @@
 require 'rails_helper'
 
+require 'shared_context/activity_logger'
+
 
 RSpec.describe ConditionResponder, type: :model do
+  include_context 'create logger'
 
 
   describe '.condition_response' do
@@ -11,8 +14,6 @@ RSpec.describe ConditionResponder, type: :model do
       condition    = Condition.create(class_name: 'MembershipExpireAlert',
                                       timing:     'before',
                                       config:     { days: [60, 30, 14, 2] })
-      logfile_name = 'log.log'
-      log          = ActivityLogger.open(File.join(Dir.mktmpdir, logfile_name), 'ConditionResponder', 'respond')
 
       expect { described_class.condition_response(condition, log) }.to raise_exception NoMethodError
     end
@@ -138,35 +139,81 @@ RSpec.describe ConditionResponder, type: :model do
 
   end
 
+  context 'timing predicate methods' do
 
-  describe '.timing_is_before?(timing)' do
+    let(:condition) { build(:condition) }
+    let(:timing) { ConditionResponder.get_timing(condition) }
+
+    describe '.timing_is_before?(timing)' do
+      it 'returns true if timing == :before' do
+        condition.timing = ConditionResponder::TIMING_BEFORE
+        expect(ConditionResponder.timing_is_before?(timing)).to be true
+      end
+
+      it 'returns false otherwise' do
+        condition.timing = ConditionResponder::DEFAULT_TIMING
+        expect(ConditionResponder.timing_is_before?(timing)).to be false
+      end
+    end
+
+
+    describe '.timing_is_after?(timing)' do
+      it 'returns true if timing == :after' do
+        condition.timing = ConditionResponder::TIMING_AFTER
+        expect(ConditionResponder.timing_is_after?(timing)).to be true
+      end
+
+      it 'returns false otherwise' do
+        condition.timing = ConditionResponder::DEFAULT_TIMING
+        expect(ConditionResponder.timing_is_after?(timing)).to be false
+      end
+    end
+
+
+    describe '.timing_is_on?(timing)' do
+      it 'returns true if timing == :on' do
+        condition.timing = ConditionResponder::TIMING_ON
+        expect(ConditionResponder.timing_is_on?(timing)).to be true
+      end
+
+      it 'returns false otherwise' do
+        condition.timing = :not_on
+        expect(ConditionResponder.timing_is_on?(timing)).to be false
+      end
+    end
+
+
+    describe '.timing_is_every_day?(timing)' do
+
+      it 'returns true if timing == :every_day' do
+        condition.timing = ConditionResponder::TIMING_EVERY_DAY
+        expect(ConditionResponder.timing_is_every_day?(timing)).to be true
+      end
+
+      it 'returns false otherwise' do
+        condition.timing = ConditionResponder::DEFAULT_TIMING
+        expect(ConditionResponder.timing_is_every_day?(timing)).to be false
+      end
+
+    end
 
   end
 
-
-  describe '.timing_is_after?(timing)' do
-
-  end
-
-
-  describe '.timing_is_on?(timing)' do
-
-  end
-
-
-  describe '.timing_is_every_day?(timing)' do
+  describe '.confirm_correct_timing' do
     let(:condition) { build(:condition, :every_day) }
     let(:timing) { ConditionResponder.get_timing(condition) }
 
-    it 'returns true if timing == :every_day' do
-      expect(ConditionResponder.timing_is_every_day?(timing)).to be true
+    it 'does not raise exception if received timing == expected' do
+      expect { ConditionResponder.confirm_correct_timing(:every_day, timing, log) }
+        .not_to raise_error
     end
 
-    it 'returns false otherwise' do
-      condition.timing = ConditionResponder::DEFAULT_TIMING
-      expect(ConditionResponder.timing_is_every_day?(timing)).to be false
+    it 'raises exception if received timing != expected' do
+      expect { ConditionResponder.confirm_correct_timing(:not_every_day, :every_day, log) }
+        .to raise_exception ArgumentError,
+                            'Received timing: not_every_day but expected: every_day'
     end
 
   end
-  
+
 end

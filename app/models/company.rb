@@ -145,6 +145,10 @@ class Company < ApplicationRecord
       .where(id: addresses.map(&:addressable_id) )
   end
 
+  def self.with_dinkurs_id
+    where.not(dinkurs_company_id: [nil, '']).order(:id)
+  end
+
   def destroy_checks
 
     error_if_has_applications?
