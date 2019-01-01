@@ -7,8 +7,8 @@ FactoryBot.define do
     city { 'Harplinge' }
     country { 'Sverige' }
     visibility { 'street_address' }
-    latitude  { 59.3251172 }
-    longitude { 18.0710935 }
+    #latitude  { 59.3251172 }
+    #longitude { 18.0710935 }
 
     association :region, factory: :region, strategy: :build
 

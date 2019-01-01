@@ -164,6 +164,8 @@ class ShfApplication < ApplicationRecord
   def accept_application
     begin
 
+      update(when_approved: Time.zone.now)
+
       # Default company email = user's membership contact email
       companies.first.email = contact_email
 
@@ -172,6 +174,7 @@ class ShfApplication < ApplicationRecord
 
     rescue => e
       puts "ERROR: could not accept_membership.  error: #{e.inspect}"
+      update(when_approved: nil)
       raise e
     end
   end
@@ -181,6 +184,7 @@ class ShfApplication < ApplicationRecord
 
     user.update(membership_number: nil)
 
+    update(when_approved: nil)
     destroy_uploaded_files
 
   end

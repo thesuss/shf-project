@@ -10,7 +10,6 @@ RSpec.describe Condition, type: :model do
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :id }
-    it { is_expected.to have_db_column :name }
     it { is_expected.to have_db_column :class_name }
     it { is_expected.to have_db_column :timing }
     it { is_expected.to have_db_column :config }
@@ -18,13 +17,16 @@ RSpec.describe Condition, type: :model do
 
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:class_name) }
+    context 'timing' do
+      it { is_expected.to allow_value(:test).for(:timing) }
+      it { is_expected.to_not allow_value('test').for(:timing)}
+    end
   end
 
   describe 'required attributes' do
     let(:example_condition) do
       create(:condition, class_name: 'MembershipExpireAlert',
-                         name: 'membership_will_expire',
-                         timing: 'before',
+                         timing: :before,
                          config: { days: [10, 5, 2] })
     end
     it 'class_name is required' do
@@ -33,9 +35,9 @@ RSpec.describe Condition, type: :model do
       expect(example_condition).not_to be_valid
     end
 
-    it 'other attributes optional' do
+    it 'timing and config are optional' do
       expect(example_condition).to be_valid
-      example_condition.update_attributes(name: nil, timing: nil, config: nil)
+      example_condition.update_attributes(timing: nil, config: nil)
       expect(example_condition).to be_valid
     end
   end

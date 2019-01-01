@@ -6,6 +6,7 @@ FactoryBot.define do
     phone_number { 'MyString' }
     contact_email { 'MyString@email.com' }
     state { :new }
+    when_approved { nil }
 
     updated_at { Time.zone.now }
 
@@ -13,10 +14,12 @@ FactoryBot.define do
 
     trait :accepted do
       state { :accepted }
+      when_approved { Time.zone.now }
     end
 
     trait :rejected do
       state { :rejected }
+      when_approved { nil }
     end
 
     transient do

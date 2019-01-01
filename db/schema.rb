@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_19_021503) do
+ActiveRecord::Schema.define(version: 2018_12_28_073947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,14 @@ ActiveRecord::Schema.define(version: 2018_07_19_021503) do
     t.index ["shf_application_id"], name: "index_company_applications_on_shf_application_id"
   end
 
+  create_table "conditions", force: :cascade do |t|
+    t.string "class_name"
+    t.string "timing"
+    t.text "config"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.decimal "fee", precision: 8, scale: 2
     t.date "start_date"
@@ -181,6 +189,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_021503) do
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
+    t.datetime "when_approved"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end

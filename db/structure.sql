@@ -301,7 +301,6 @@ ALTER SEQUENCE company_applications_id_seq OWNED BY company_applications.id;
 CREATE TABLE conditions (
     id bigint NOT NULL,
     class_name character varying,
-    name character varying,
     timing character varying,
     config text,
     created_at timestamp without time zone NOT NULL,
@@ -613,7 +612,8 @@ CREATE TABLE shf_applications (
     contact_email character varying,
     state character varying DEFAULT 'new'::character varying,
     member_app_waiting_reasons_id integer,
-    custom_reason_text character varying
+    custom_reason_text character varying,
+    when_approved timestamp without time zone
 );
 
 
@@ -1371,6 +1371,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180624155644'),
 ('20180717043851'),
 ('20180719021503'),
-('20181203121315');
+('20181203121315'),
+('20181214011549'),
+('20181228073947');
 
 

@@ -718,6 +718,24 @@ RSpec.describe Company, type: :model, focus: true do
 
     end # end context '.at_addresses(addresses)' do
 
+    context '.with_dinkurs_id' do
+
+      it 'returns nil if no companies with non-empty dinkurs_company_id' do
+        company
+        expect(Company.with_dinkurs_id).to be_empty
+      end
+
+      it 'returns companies with dinkurs_company_id' do
+        complete_co
+        complete_co2
+        complete_co3
+        company.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
+        expect(Company.with_dinkurs_id).not_to be_empty
+        expect(Company.with_dinkurs_id).to contain_exactly(company)
+      end
+
+    end
+
   end #scopes
 
   describe '#get_short_h_brand_url' do

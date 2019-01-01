@@ -69,9 +69,8 @@ RSpec.shared_examples 'it_has_updated_in_date_range_scope' do | factory_method |
 
 
     it 'causes a SQL error if start_date is a date exception and end_date a number:' do
-      #expect{described_class.updated_in_date_range(start_date, 99)}.to raise_error ActiveRecord::StatementInvalid
-      pending 'This causes a SQL error and raises ActiveRecord::StatementInvalid but I cannot figure out a way to get RSpec matchers to catch it '
-      expect(false).to be_truthy
+      # the SQL statement is only executed if it has a .count or other method chained after it.  That's why .count is included below
+      expect{ described_class.updated_in_date_range(start_date, 99).count }.to raise_error ActiveRecord::StatementInvalid
     end
 
     it 'raises exception if end_date is not a date or a Number: ArgumentError: bad value for range' do

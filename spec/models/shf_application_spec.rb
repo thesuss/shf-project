@@ -3,15 +3,10 @@ require 'aasm/rspec'
 
 require 'support/ae_aasm_matchers/ae_aasm_matchers'
 
-require_relative './shared_ex_scope_updated_in_date_range_spec'
+require 'shared_examples/scope_updated_in_date_range_spec'
 
 
-# alias shared example call for readability
-RSpec.configure do |c|
-  c.alias_it_should_behave_like_to :it_will, 'it will'
-end
-
-
+#================================================================================
 # Shared examples:
 
 RSpec.shared_examples 'allow transition to' do |start_state, to_state, transition_event|
@@ -31,7 +26,7 @@ RSpec.shared_examples 'not allow transition to' do |start_state, to_state|
   end
 end
 
-#--------------------------------------------------------------------------
+#================================================================================
 
 
 RSpec.describe ShfApplication, type: :model do
@@ -50,6 +45,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to have_db_column :custom_reason_text }
     it { is_expected.to have_db_column :user_id }
     it { is_expected.to have_db_column :member_app_waiting_reasons_id }
+    it { is_expected.to have_db_column :when_approved }
   end
 
   describe 'Associations' do
@@ -284,6 +280,7 @@ RSpec.describe ShfApplication, type: :model do
     end
   end
 
+
   describe 'test factories' do
 
     it '1 category with default category name' do
@@ -357,106 +354,124 @@ RSpec.describe ShfApplication, type: :model do
 
     describe 'new' do
 
-      it_will 'not allow transition to', :new, :new
+      it_should 'not allow transition to', :new, :new
 
-      it_will 'allow transition to', :new, :under_review, :start_review
+      it_should 'allow transition to', :new, :under_review, :start_review
 
-      it_will 'not allow transition to', :new, :waiting_for_applicant
-      it_will 'not allow transition to', :new, :ready_for_review
+      it_should 'not allow transition to', :new, :waiting_for_applicant
+      it_should 'not allow transition to', :new, :ready_for_review
 
-      it_will 'not allow transition to', :new, :accepted
-      it_will 'not allow transition to', :new, :rejected
+      it_should 'not allow transition to', :new, :accepted
+      it_should 'not allow transition to', :new, :rejected
 
     end
 
 
     describe 'under_review' do
 
-      it_will 'not allow transition to', :under_review, :new
+      it_should 'not allow transition to', :under_review, :new
 
-      it_will 'not allow transition to', :under_review, :under_review
+      it_should 'not allow transition to', :under_review, :under_review
 
-      it_will 'allow transition to', :under_review, :waiting_for_applicant, :ask_applicant_for_info
+      it_should 'allow transition to', :under_review, :waiting_for_applicant, :ask_applicant_for_info
 
-      it_will 'not allow transition to', :under_review, :ready_for_review
+      it_should 'not allow transition to', :under_review, :ready_for_review
 
-      it_will 'allow transition to', :under_review, :accepted, :accept
+      it_should 'allow transition to', :under_review, :accepted, :accept
 
-      it_will 'allow transition to', :under_review, :rejected, :reject
+      it_should 'allow transition to', :under_review, :rejected, :reject
 
     end
 
 
     describe 'waiting_for_applicant' do
 
-      it_will 'not allow transition to', :waiting_for_applicant, :new
+      it_should 'not allow transition to', :waiting_for_applicant, :new
 
-      it_will 'allow transition to', :waiting_for_applicant, :under_review, :cancel_waiting_for_applicant
+      it_should 'allow transition to', :waiting_for_applicant, :under_review, :cancel_waiting_for_applicant
 
-      it_will 'not allow transition to', :waiting_for_applicant, :waiting_for_applicant
-      it_will 'allow transition to', :waiting_for_applicant, :ready_for_review, :is_ready_for_review
+      it_should 'not allow transition to', :waiting_for_applicant, :waiting_for_applicant
+      it_should 'allow transition to', :waiting_for_applicant, :ready_for_review, :is_ready_for_review
 
-      it_will 'not allow transition to', :waiting_for_applicant, :accepted, :accept
-      it_will 'not allow transition to', :waiting_for_applicant, :rejected, :reject
+      it_should 'not allow transition to', :waiting_for_applicant, :accepted, :accept
+      it_should 'not allow transition to', :waiting_for_applicant, :rejected, :reject
 
     end
 
 
     describe 'state accepted' do
 
-      it_will 'not allow transition to', :accepted, :new
+      it_should 'not allow transition to', :accepted, :new
 
-      it_will 'not allow transition to', :accepted, :under_review
+      it_should 'not allow transition to', :accepted, :under_review
 
-      it_will 'not allow transition to', :accepted, :waiting_for_applicant
-      it_will 'not allow transition to', :accepted, :ready_for_review
+      it_should 'not allow transition to', :accepted, :waiting_for_applicant
+      it_should 'not allow transition to', :accepted, :ready_for_review
 
-      it_will 'not allow transition to', :accepted, :accepted
-      it_will 'allow transition to', :accepted, :rejected, :reject
+      it_should 'not allow transition to', :accepted, :accepted
+      it_should 'allow transition to', :accepted, :rejected, :reject
 
     end
 
 
     describe 'state rejected' do
 
-      it_will 'not allow transition to', :rejected, :new
+      it_should 'not allow transition to', :rejected, :new
 
-      it_will 'not allow transition to', :rejected, :under_review
+      it_should 'not allow transition to', :rejected, :under_review
 
-      it_will 'not allow transition to', :rejected, :waiting_for_applicant
-      it_will 'not allow transition to', :rejected, :ready_for_review
+      it_should 'not allow transition to', :rejected, :waiting_for_applicant
+      it_should 'not allow transition to', :rejected, :ready_for_review
 
-      it_will 'allow transition to', :rejected, :accepted, :accept
-      it_will 'not allow transition to', :rejected, :rejected
+      it_should 'allow transition to', :rejected, :accepted, :accept
+      it_should 'not allow transition to', :rejected, :rejected
 
     end
+
 
     context 'actions taken on state transition' do
       let(:uploaded_files) { create(:uploaded_file,
                                     actual_file: (File.new(File.join(FIXTURE_DIR,
                                                   'image.jpg')))) }
+
+      let(:jan_2_early_am) { Time.utc(2019, 1, 2, 3, 4, 5)}
+
       describe 'application accepted' do
+
         before(:each) do
-          application.uploaded_files = [uploaded_files]
-          application.start_review!
-          application.accept!
+          Timecop.freeze(jan_2_early_am) do
+            application.uploaded_files = [uploaded_files]
+            application.start_review!
+            application.accept!
+          end
+
         end
 
         it "assigns app's latest-added-company email to application contact_email" do
           expect(application.companies.last.email).to eq application.contact_email
         end
+
+        it 'records the time when it was accepted/approved' do
+          expect(application.when_approved).to eq jan_2_early_am
+        end
       end
+
 
       describe 'application rejected' do
         before(:each) do
           application.uploaded_files = [uploaded_files]
           application.user.membership_number = 10
+          application.when_approved = jan_2_early_am
           application.start_review!
           application.reject!
         end
 
         it 'assigns user membership_number to nil' do
           expect(application.user.membership_number).to be_nil
+        end
+
+        it 'sets when_approved to nil' do
+          expect(application.when_approved).to be_nil
         end
 
         it 'destroys uploaded files' do

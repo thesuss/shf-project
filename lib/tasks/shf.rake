@@ -6,6 +6,7 @@ namespace :shf do
   ACCEPTED_STATE = 'accepted' unless defined?(ACCEPTED_STATE)
   LOG_FILE = 'log/shf_tasks' unless defined?(LOG_FILE)
 
+  # TODO removed shf:dinkurs_load task once response condition (DinkursFetch) is deployed
   desc 'load Dinkurs events for companies'
   task :dinkurs_load => [:environment] do
 

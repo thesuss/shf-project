@@ -27,6 +27,7 @@ end
 
 puts ">>> SEEDING ENVIRONMENT: #{Rails.env}"
 
+
 if !Region.exists?
   puts 'Loading regions'
   Rake::Task['shf:load_regions'].invoke
@@ -42,6 +43,10 @@ business_categories = %w(Träning Psykologi Rehab Butik Trim Friskvård Dagis Pe
 business_categories.each { |b_category| BusinessCategory.find_or_create_by(name: b_category) }
 BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 'Terapi-, vård- & skolhund dvs hundar som jobbar tillsammans med sin förare/ägare inom vård, skola och omsorg.')
 BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: 'Assistanshundar dvs hundar som jobbar åt sin ägare som service-, signal, diabetes, PH-hund mm')
+
+
+init_generated_seeding_info
+
 
 puts 'Creating admin user'
 
@@ -64,11 +69,10 @@ end
 
 if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
-  puts 'Creating additional users ...'
+ number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
+ puts "Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])..."
 
-  number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
-
-  users = {}
+ users = {}
   while users.length < number_of_users-1 do
     email = FFaker::InternetSE.disposable_email
     first_name = FFaker::NameSE.first_name
@@ -78,11 +82,12 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
                                 last_name: last_name) unless users.key?(email)
   end
 
-  puts "Users created: #{User.count}"
+  puts "Users now in the db: #{User.count}"
 
   puts "\nCreating membership applications ..."
-  puts "  As companies are created for accepted applications, their address has to be geocoded/located."
-  puts "  This takes time to do. Be patient. (You can look at the /log/development.log to be sure that things are happening and this is not stuck.)"
+  puts "  If a company address must be created (instead of reading from a CSV file), it must be geocoded, which takes time.  Be patient."
+  puts "  You can look at the /log/development.log to be sure that things are happening and this is not stuck."
+  puts "  You can specify a CSV file of addresses to use in your .env file (.env.development etc.)."
 
   make_applications(users.values)
 
