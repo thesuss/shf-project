@@ -76,6 +76,8 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
+gem 'hashie'  # powerful methods for searching nested Hashes (ex: params) and more
+
 gem 'aws-sdk-s3'
 
 group :development, :test do
