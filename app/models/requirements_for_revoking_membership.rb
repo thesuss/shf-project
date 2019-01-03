@@ -28,7 +28,7 @@ class RequirementsForRevokingMembership < AbstractRequirements
 
 
   def self.requirements_met?(args)
-    args[:user].member?
+    args[:user].member? && !args[:user].membership_current?
   end
 
 end # RequirementsForRevokingMembership

@@ -4,7 +4,7 @@ FactoryBot.define do
     user
     company { nil }
     payment_type { Payment::PAYMENT_TYPE_MEMBER }
-    status { Payment.order_to_payment_status(nil) }
+    status { Payment::CREATED }
     start_date { Time.zone.today }
     expire_date { Time.zone.today + 1.year - 1.day }
     hips_id { 'none' }
@@ -15,26 +15,38 @@ FactoryBot.define do
 
   factory :membership_fee_payment, parent: :payment do
     payment_type { Payment::PAYMENT_TYPE_MEMBER }
+    status { Payment::SUCCESSFUL }
+  end
+
+  factory :expired_membership_fee_payment, parent: :membership_fee_payment do
+    expire_date { Time.zone.yesterday }
+    start_date { expire_date - 1.year }
   end
 
   factory :h_branding_fee_payment, parent: :payment do
     payment_type { Payment::PAYMENT_TYPE_BRANDING }
+    status { Payment::SUCCESSFUL }
+  end
+
+  factory :expired_h_branding_fee_payment, parent: :h_branding_fee_payment do
+    expire_date { Time.zone.yesterday }
+    start_date { expire_date - 1.year }
   end
 
   trait :successful do
-    status { Payment::ORDER_PAYMENT_STATUS['successful'] }
+    status { Payment::SUCCESSFUL }
   end
 
   trait :pending do
-    status { Payment::ORDER_PAYMENT_STATUS['pending'] }
+    status { Payment::PENDING }
   end
 
   trait :expired do
-    status { Payment::ORDER_PAYMENT_STATUS['expired'] }
+    status { Payment::EXPIRED }
   end
 
   trait :awaiting_payment do
-    status { Payment::ORDER_PAYMENT_STATUS['awaiting_payments'] }
+    status { Payment::AWAITING_PAYMENTS }
   end
 
 end

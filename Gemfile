@@ -76,6 +76,8 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
+gem 'aws-sdk-s3'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
@@ -140,8 +142,4 @@ group :test do
   gem 'timecop'
   gem 'rubocop-rspec'
 
-end
-
-group :production do
-  gem 'aws-sdk-s3'
 end

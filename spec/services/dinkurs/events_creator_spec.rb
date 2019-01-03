@@ -13,12 +13,14 @@ describe Dinkurs::EventsCreator,
 
   subject(:event_creator) { described_class.new(company) }
 
-  it 'creating events' do
+  around(:each) do |example|
     Timecop.freeze(Time.zone.local(2018, 6, 1))
-
-    expect { event_creator.call }.to change { Event.count }.by(3)
-
+    example.run
     Timecop.return
+  end
+
+  it 'creating events' do
+    expect { event_creator.call }.to change { Event.count }.by(3)
   end
 
   it 'properly fills data for events' do

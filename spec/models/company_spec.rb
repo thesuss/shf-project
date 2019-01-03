@@ -205,6 +205,13 @@ RSpec.describe Company, type: :model, focus: true do
   end
 
   describe 'events update management' do
+    
+    around(:each) do |example|
+      Timecop.freeze(Time.zone.local(2018, 6, 1))
+      example.run
+      Timecop.return
+    end
+
     it '#events_start_date returns starting date for stored events' do
       expect(company.events_start_date).to eq 1.day.ago.to_date
     end

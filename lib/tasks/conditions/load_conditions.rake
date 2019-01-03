@@ -19,5 +19,8 @@ namespace :shf do
 
     Condition.create(class_name: 'DinkursFetch',
                      timing: :every_day)
+
+    Condition.create(class_name: 'MembershipStatusCheck',
+                     timing: :every_day)
   end
 end
