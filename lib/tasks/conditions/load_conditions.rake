@@ -11,7 +11,7 @@ namespace :shf do
 
     Condition.create(class_name: 'HBrandingFeePastDueAlert',
                      timing: :after,
-                     config: { days: [60, 30, 14, 8, 2] })
+                     config: { days: [60, 30, 14, 9, 2] })
 
 
     # days_to_keep - specifies number of (daily) backups to retain on production server
