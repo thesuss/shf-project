@@ -1116,13 +1116,18 @@ sv:
 
       visitor:
         home: *home
+        association: Föreningen
         brochure: Broschyr
+        board: Styrelse
+        our_policy: Vår Policy
+        board_statues: Stadgar
+        history: Historik
         dog_owners:
           submenu_title: Hundägare
           about_us: &about_us Om oss
           h_label: H-märket
-          knowledge_bank: &knowledge_bank Kunskapsbank
-          are_you_unsatisfied: 'Är du inte nöjd?'
+          knowledge_bank: &knowledge_bank_text Kunskapsbank
+          are_you_interested: 'Är du inte nöjd?'
           become_supporter: Bli stödmedlem
           being_dog_owners: Att vara hundägare
         entrepreneurs:
@@ -1133,15 +1138,15 @@ sv:
           member_criteria: Medlemskriterier
           member_benefits: Medlemsförmåner
           quality_standards: Kvalitetskontroll
-          knowledge_bank: *knowledge_bank
-        knowledge_bank:
-          submenu_title: *knowledge_bank
-          blogs: Bloggar
-          books: Böcker
-          research: Forskning
-          pod: Pod
-          popular_science: Populärvetenskap
-          video: Video
+          gdpr: "GDPR"
+          knowledge_bank:
+            submenu_title:  *knowledge_bank_text
+            blogs: Bloggar
+            books: Böcker
+            research: Forskning
+            pod: Pod
+            popular_science: Populärvetenskap
+            video: Video
         contact: Kontakt
         find_dog_businesses: Hitta hundföretagare
 
