@@ -51,7 +51,7 @@ LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked'
 #      1. include Observable
 #      2. after_initialization :add_observers
 #      3. def add_observers (and add the observers in that method)
-#      4. where appropriate, let the observerse know a change has been made so they can do their thing
+#      4. where appropriate, let the observers know a change has been made so they can do their thing
 #
 #
 # Payments should split into a Factory and subclasses (MembershipFeePayment, BrandingFeePayment)
@@ -95,6 +95,12 @@ class MembershipStatusUpdater < AbstractUpdater
     check_user_and_log(user, user, LOGMSG_USER_UPDATED, LOGMSG_USER_UPDATED)
   end
 
+  # end of Notifications received from observed classes
+
+  def revoke_user_membership(user)
+    check_user_and_log(user, user, LOGMSG_USER_UPDATED, LOGMSG_MEMBERSHIP_REVOKED)
+  end
+
 
   private
 
@@ -104,6 +110,8 @@ class MembershipStatusUpdater < AbstractUpdater
 
     ActivityLogger.open(log_filename, self.class.to_s, action_message, false) do |log|
 
+      # Granting and renewing happens in real time - so this (membership revocation)
+      # is the only action that must be checked.
       check_requirements_and_act({ user: user })
 
       log.record(:info, "#{reason_check_happened}: #{notification_sender.inspect}")
@@ -145,7 +153,7 @@ class MembershipStatusUpdater < AbstractUpdater
   end
 
 
-  def renew_membership(user, send_email)
+  def renew_membership(user, _send_email)
 
     ActivityLogger.open(log_filename, self.class.to_s, LOGMSG_MEMBERSHIP_RENEWED, false) do |log|
 
@@ -157,4 +165,3 @@ class MembershipStatusUpdater < AbstractUpdater
   end
 
 end # MembershipStatusUpdater
-

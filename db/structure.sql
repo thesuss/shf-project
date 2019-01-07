@@ -300,12 +300,33 @@ ALTER SEQUENCE company_applications_id_seq OWNED BY company_applications.id;
 
 CREATE TABLE conditions (
     id bigint NOT NULL,
-    class_name character varying,
+    class_name character varying NOT NULL,
     timing character varying,
-    config text,
+    config text DEFAULT '--- {}'::text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: COLUMN conditions.class_name; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN conditions.class_name IS 'name of the Condition class of this condition (required)';
+
+
+--
+-- Name: COLUMN conditions.timing; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN conditions.timing IS '(optional) specific timing about the Condition';
+
+
+--
+-- Name: COLUMN conditions.config; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN conditions.config IS 'a serialize Hash with configuration information (required; must be a Hash)';
 
 
 --
@@ -1373,6 +1394,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180719021503'),
 ('20181203121315'),
 ('20181214011549'),
-('20181228073947');
+('20181228073947'),
+('20181229015347');
 
 

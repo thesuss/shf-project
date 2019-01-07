@@ -16,4 +16,12 @@ class MemberMailerPreview < ActionMailer::Preview
     MemberMailer.membership_expiration_reminder(member)
   end
 
+  def h_branding_fee_past_due
+
+    new_email = "user-#{Time.now.to_i}@example.com"
+    new_approved_user = FactoryBot.create(:member_with_membership_app, email: new_email)
+    new_co = new_approved_user.shf_application.companies.first
+
+    MemberMailer.h_branding_fee_past_due(new_co, new_approved_user)
+  end
 end

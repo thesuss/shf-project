@@ -63,6 +63,13 @@ RSpec.describe MembershipStatusUpdater, type: :model do
   end
 
 
+  it '#revoke_user_membership' do
+    expect(subject).to receive(:check_requirements_and_act).with({user: user})
+
+    subject.revoke_user_membership(user)
+  end
+
+
   describe '#check_requirements_and_act' do
 
     it 'does nothing if not a member' do
