@@ -173,6 +173,7 @@ RSpec.describe User, type: :model do
                             .allow_destroy(false).update_only(true) }
   end
 
+
   describe 'Admin' do
     subject { create(:user, admin: true) }
 
@@ -180,12 +181,14 @@ RSpec.describe User, type: :model do
     it { is_expected.not_to be_member }
   end
 
+
   describe 'User' do
     subject { create(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
     it { is_expected.not_to be_member }
   end
+
 
   describe 'destroy or nullify associated records when user is destroyed' do
 
@@ -233,6 +236,7 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
 
   describe 'Scopes' do
 

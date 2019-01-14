@@ -50,11 +50,11 @@ en:
 
   hello: 'Hello, %{name}'
 
-  shf_home_url: &shf_home_url http://www.sverigeshundforetagare.se
-  shf_medlemssystem_url: &shf_medlemssystem_url http://hitta.sverigeshundforetagare.se
-  shf_facebook_url: &shf_facebook_url http://www.facebook.com/sverigeshundforetagare
+  shf_home_url: &shf_home_url https://www.sverigeshundforetagare.se
+  shf_medlemssystem_url: &shf_medlemssystem_url https://hitta.sverigeshundforetagare.se
+  shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
-  shf_instagram_url: &shf_instagram_url http://instagram.com/sverigeshundforetagare
+  shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
 
   info:
@@ -148,7 +148,6 @@ en:
         last_login: &user_last_login Last login
         last_login_ip: &user_last_login_ip Last logged in from IP address
         sign_in_count: &sign_in_count Logins
-        created: *created
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
         member: &member Member
 
@@ -826,7 +825,7 @@ en:
       branding_fee_expires: H Expires
       paid: *paid
       never_paid: *never_paid
-      fee_payment_url: "Log in and pay here: http://hitta.sverigeshundforetagare.se%{payment_url}"
+      fee_payment_url: "Log in and pay here: https://hitta.sverigeshundforetagare.se%{payment_url}"
 
 
   shf_documents:
@@ -977,7 +976,7 @@ en:
 
       signoff: "Best Regards,"
       signature: &medlemsansvarig Membership Committee
-      signature_url: "http://sverigeshundforetagare.se"
+      signature_url: "https://sverigeshundforetagare.se"
 
       footer:
         text:
