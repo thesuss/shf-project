@@ -517,6 +517,7 @@ sv:
       confirm_delete: 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: &invalid_upload_type Tyvärr kan du inte ladda upp denna filtypen.
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
+      please_upload_again: Var god ladda upp dina filer igen.
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.

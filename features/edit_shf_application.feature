@@ -1,6 +1,8 @@
-Feature: As an applicant
-  In order to be able to edit my application
-  I want to be allowed to do that
+Feature: Edit SHF Application
+
+  As an applicant
+  In order to correct errors or provide more information
+  I need to be able to edit my SHF application
 
   PT: https://www.pivotaltracker.com/story/show/134078325
 
@@ -28,9 +30,9 @@ Feature: As an applicant
       | bob@barkybobs.com | 5560360793             | rejected              | Groomer    |
 
   @selenium
-  Scenario: Applicant makes mistake when editing his own application
+  Scenario: Applicant makes mistake when editing their own application (no files uploaded) [SAD PATH]
     Given I am logged in as "emma@random.com"
-    Given I am on the "user instructions" page
+    And I am on the "user instructions" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with ""
@@ -40,6 +42,21 @@ Feature: As an applicant
     And I should see error t("shf_applications.show.contact_email") t("errors.messages.blank")
     Then I should see error t("activerecord.attributes.shf_application.business_categories") t("errors.messages.blank")
     And I should see button t("shf_applications.edit.submit_button_label")
+    And I should not see t("shf_applications.uploads.please_upload_again")
+
+  @selenium
+  Scenario: Applicant makes mistake when uploading a file and editing their own application [SAD PATH]
+    Given I am logged in as "emma@random.com"
+    And I am on the "user instructions" page
+    And I click on t("menus.nav.users.my_application")
+    Then I should be on "Edit My Application" page
+    And I choose a file named "diploma.pdf" to upload
+    And I fill in t("shf_applications.show.contact_email") with ""
+    And I unselect "Groomer" Category
+    And I click on t("shf_applications.edit.submit_button_label")
+    Then I should see t("shf_applications.update.error")
+    And I should see t("shf_applications.uploads.please_upload_again")
+
 
   Scenario: Applicant adds second company to application
     Given I am logged in as "emma@random.com"
@@ -90,7 +107,7 @@ Feature: As an applicant
     And I should see t("shf_applications.update.success", email_address: info@craft.se)
     And I should see "5560360793, 2120000142"
 
-  Scenario: Applicant can not edit applications not created by him
+  Scenario: Applicant can not edit applications not created by them
     Given I am logged in as "emma@random.com"
     And I am on the "edit application" page for "hans@random.com"
     Then I should see t("errors.not_permitted")

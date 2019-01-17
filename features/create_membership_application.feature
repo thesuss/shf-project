@@ -140,7 +140,7 @@ Feature: Create a new membership application
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
   @selenium
-  Scenario: A user cannot submit a new Membership Application with no category
+  Scenario: A user cannot submit a new Membership Application with no category [SAD PATH]
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
@@ -216,7 +216,7 @@ Feature: Create a new membership application
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)
 
 
-  Scenario Outline: Apply for membership - when things go wrong with application data
+  Scenario Outline: Apply for membership - when things go wrong with application data [SAD PATH]
     Given I am on the "new application" page
     And I fill in the translated form with data:
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
@@ -225,6 +225,7 @@ Feature: Create a new membership application
     Then I should see error <model_attribute> <error>
     And I should receive no emails
     And "admin@shf.se" should receive no emails
+    And I should not see t("shf_applications.uploads.please_upload_again")
 
     Scenarios:
       | c_email       | phone      | model_attribute                                                   | error                            |
@@ -234,8 +235,25 @@ Feature: Create a new membership application
       | kickiimmi.nu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
 
 
-  @selenium
-  Scenario Outline: Apply for membership - when things go wrong with company create
+  Scenario Outline: Apply for membership with uploads, errors should show please upload again message [SAD PATH]
+    Given I am on the "new application" page
+    And I fill in the translated form with data:
+      | shf_applications.new.contact_email | shf_applications.new.phone_number |
+      | <c_email>                          | <phone>                           |
+    And I choose a file named "diploma.pdf" to upload
+    When I click on t("shf_applications.new.submit_button_label")
+    Then I should see t("shf_applications.uploads.please_upload_again")
+
+    Scenarios:
+      | c_email       | phone      |
+      |               | 0706898525 |
+      |               | 0706898525 |
+      | kicki@imminu  | 0706898525 |
+      | kickiimmi.nu  | 0706898525 |
+
+
+   @selenium
+  Scenario Outline: Apply for membership - when things go wrong with company create [SAD PATH]
     Given I am on the "new application" page
     And I fill in the translated form with data:
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
@@ -259,21 +277,16 @@ Feature: Create a new membership application
       | 5562252998 |               | 0706898525 | t("activerecord.attributes.company.email")          | t("errors.messages.invalid") |
 
 
-  Scenario Outline: Apply for membership: company number wrong length
+  Scenario: Apply for membership: company number wrong length (no uploads) [SAD PATH]
     Given I am on the "new application" page
 
     # Create new company in modal
     And I click on t("companies.new.title")
     And I fill in the translated form with data:
       | companies.show.company_number | companies.show.email |
-      | <c_number>                    | <c_email>            |
-
+      | 00                   | kicki@immi.nu           |
     And I click on t("companies.create.create_submit")
-    Then I should see <error>
-
-    Scenarios:
-      | c_number | c_email       | error                                        |
-      | 00       | kicki@immi.nu | t("errors.messages.wrong_length", count: 10) |
+    Then I should not see t("shf_applications.uploads.please_upload_again")
 
 
   Scenario Outline: Cannot change locale if there are errors in the new application

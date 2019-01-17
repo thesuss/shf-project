@@ -511,7 +511,7 @@ en:
       confirm_delete: 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: &invalid_upload_type Sorry, this is not a file type you can upload.
       file_too_large: &file_too_large_5MB The file must be smaller than 5 MB
-
+      please_upload_again: Please upload your files again.
 
     update_the_status: Update the status
     application_deleted: Application deleted.
