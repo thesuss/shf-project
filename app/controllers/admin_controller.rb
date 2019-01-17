@@ -39,7 +39,7 @@ class AdminController < ApplicationController
 
       app_company = m_app.companies.last
 
-      out_str << "#{m_app.contact_email},#{m_app.user.first_name},#{m_app.user.last_name},#{m_app.user.membership_number},"
+      out_str << "#{m_app.contact_email},#{m_app.user.email},#{m_app.user.first_name},#{m_app.user.last_name},#{m_app.user.membership_number},"
       out_str << t("shf_applications.state.#{m_app.state}")
       out_str << ','
 
@@ -84,6 +84,7 @@ class AdminController < ApplicationController
     # build the header string from strings in the locale file
 
     header_member_strs = [t('activerecord.attributes.shf_application.contact_email'),
+                          t('activerecord.attributes.user.email'),
                           t('activerecord.attributes.shf_application.first_name'),
                           t('activerecord.attributes.shf_application.last_name'),
                           t('activerecord.attributes.user.membership_number'),
