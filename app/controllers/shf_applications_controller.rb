@@ -271,6 +271,8 @@ class ShfApplicationsController < ApplicationController
     @shf_application = add_company_errors_to_model(@shf_application,
                                                    companies_and_numbers)
 
+    error_message = add_upload_file_again_error(error_message) if params['uploaded_file']
+
     helpers.flash_message(:alert, error_message)
     load_update_objects(company_numbers_str)
     render render_me
@@ -295,6 +297,12 @@ class ShfApplicationsController < ApplicationController
     end
     application
   end
+
+
+  def add_upload_file_again_error(orig_error_message)
+    orig_error_message + "\n" + t('shf_applications.uploads.please_upload_again')
+  end
+
 
   def load_update_objects(numbers_str)
     @company_numbers = numbers_str

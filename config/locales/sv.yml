@@ -50,11 +50,11 @@ sv:
 
   hello: Hallå, %{name}
 
-  shf_home_url: &shf_home_url http://www.sverigeshundforetagare.se
-  shf_medlemssystem_url: &shf_medlemssystem_url http://hitta.sverigeshundforetagare.se
-  shf_facebook_url: &shf_facebook_url http://www.facebook.com/sverigeshundforetagare
+  shf_home_url: &shf_home_url https://www.sverigeshundforetagare.se
+  shf_medlemssystem_url: &shf_medlemssystem_url https://hitta.sverigeshundforetagare.se
+  shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
-  shf_instagram_url: &shf_instagram_url http://instagram.com/sverigeshundforetagare
+  shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
 
   info:
@@ -398,10 +398,10 @@ sv:
                         skapa igenkänning, tydlighet gentemot kund. Och skydda
                         oss mot förfalskningar av H-märket.
         upload_this_image: 'Vi önskar att du lägger upp nedanstående bild på din
-                          hemsida. Samt länkar denna bild till: "http://www.sverigeshundforetagare.se"'
+                          hemsida. Samt länkar denna bild till: "https://www.sverigeshundforetagare.se"'
         using_the_h_mark: 'Vi önskar även att du pryder din hemsida med H-märket.
                           För att visa att ni är just H-märkta med allt vad det innebär.
-                          Bilden nedan nyttjas i detta syfte och länkas till: "http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
+                          Bilden nedan nyttjas i detta syfte och länkas till: "https://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
         ffs: Du hittar ditt h-märke och ditt behörighetsbevis under ditt konto.
       waiting_for_approval:
         title: Hej, kul att du vill bli medlem
@@ -516,6 +516,7 @@ sv:
       confirm_delete: 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: &invalid_upload_type Tyvärr kan du inte ladda upp denna filtypen.
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
+      please_upload_again: Var god ladda upp dina filer igen.
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.
@@ -824,7 +825,7 @@ sv:
       branding_fee_expires: H Expires
       paid: *paid
       never_paid: *never_paid
-      fee_payment_url: "Betalas som inloggad via: http://hitta.sverigeshundforetagare.se%{payment_url}"
+      fee_payment_url: "Betalas som inloggad via: https://hitta.sverigeshundforetagare.se%{payment_url}"
 
 
   shf_documents:
@@ -978,7 +979,7 @@ sv:
 
       signoff: "Med vänliga hälsningar,"
       signature: &medlemsansvarig Medlemsansvarig
-      signature_url: "http://sverigeshundforetagare.se"
+      signature_url: "https://sverigeshundforetagare.se"
 
       footer:
         text:

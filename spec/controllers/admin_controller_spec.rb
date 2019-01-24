@@ -11,6 +11,7 @@ RSpec.describe AdminController, type: :controller do
 
   let(:csv_header) { out_str = ''
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.contact_email').strip}',"
+  out_str << "'#{I18n.t('activerecord.attributes.user.email').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.first_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.last_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.user.membership_number').strip}',"
@@ -31,9 +32,35 @@ RSpec.describe AdminController, type: :controller do
   out_str << "\n"
   out_str }
 
+  let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
+
 
   describe '#export_ankosan_csv' do
 
+    # These are the positions of each item (column) ASSUMING THERE IS 1 BUSINESS CATEGORY
+    # The constants are here so that when items are changed or moved, these tests aren't quite so brittle.
+
+    # These are NOT ZERO BASED (because the Regexp matcher position [0] is the _entire string_)
+    SHF_CONTACT_EMAIL  = 1
+    LOGIN_EMAIL        = 2
+    FIRST_NAME         = 3
+    LAST_NAME          = 4
+    MEMBERSHIP_NUM     = 5
+    APPLICATION_STATUS = 6
+    APP_LAST_UPDATE    = 7
+    BUS_CATEGORY_START = 8 # if there is more than 1 business category, the positions of the following columns are different
+    # (ex: shifted by the number of additional business categories)
+    COMPANY_NAME          = 9
+    MEMBERSHIP_FEE_STATUS = 10
+    MEMBERSHIP_EXP_DATE   = 11
+    BRANDING_FEE_STATUS   = 12
+    BRANDING_LIC_EXP_DATE = 13
+    ADDR_STREET           = 14
+    ADDR_POSTCODE         = 15
+    ADDR_CITY             = 16
+    ADDR_KOMMUN           = 17
+    ADDR_COUNTY           = 18
+    ADDR_COUNTRY          = 19
 
     describe 'logged in as admin' do
 
@@ -200,81 +227,90 @@ RSpec.describe AdminController, type: :controller do
           response.body
         end
 
-        let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
+        let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
 
         let(:pattern_matches) { csv_response.match expected_pattern }
+
+
+        # Note that the first item matched is the header line.
+        #  That's why each of the positions (array indices) below have a +1
 
         it 'the result matches the header and expected number of fields' do
           expect(csv_response).to match expected_pattern
         end
 
-        it 'email' do
-          expect(pattern_matches[2]).to eq 'u1@example.com'
+        it 'contact email' do
+          expect(pattern_matches[SHF_CONTACT_EMAIL + 1]).to eq 'u1@example.com'
+        end
+
+        it 'login email for the application user' do
+          expect(pattern_matches[LOGIN_EMAIL + 1]).to eq 'user1@example.com'
         end
 
         it 'first name' do
-          expect(pattern_matches[3]).to eq 'u1'
+          expect(pattern_matches[FIRST_NAME + 1]).to eq 'u1'
         end
 
         it 'last name' do
-          expect(pattern_matches[4]).to eq 'Lastname'
+          expect(pattern_matches[LAST_NAME + 1]).to eq 'Lastname'
         end
 
         it 'membership number' do
-          expect(pattern_matches[5]).to eq '1234567890'
+          expect(pattern_matches[MEMBERSHIP_NUM + 1]).to eq '1234567890'
         end
 
         it 'application status' do
-          expect(pattern_matches[6]).to eq 'Godkänd'
+          expect(pattern_matches[APPLICATION_STATUS + 1]).to eq 'Godkänd'
         end
 
         it 'date of state (application status last update)' do
-          expect(pattern_matches[7]).to eq Time.zone.now.strftime("%Y-%m-%d")
+          expect(pattern_matches[APP_LAST_UPDATE + 1]).to eq Time.zone.now.strftime("%Y-%m-%d")
         end
 
         it 'company name' do
-          expect(pattern_matches[9]).to eq 'SomeCompany'
+          expect(pattern_matches[COMPANY_NAME + 1]).to eq 'SomeCompany'
         end
 
         it 'membership fee status' do
-          expect(pattern_matches[10]).to eq 'Betald'
+          expect(pattern_matches[MEMBERSHIP_FEE_STATUS + 1]).to eq 'Betald'
         end
 
         it 'membership expiration date' do
-          expect(pattern_matches[11]).to eq '2019-11-08'
+          expect(pattern_matches[MEMBERSHIP_EXP_DATE + 1]).to eq '2019-11-08'
         end
 
         it 'branding fee status' do
-          expect(pattern_matches[12]).to eq 'Betald'
+          expect(pattern_matches[BRANDING_FEE_STATUS + 1]).to eq 'Betald'
         end
 
         it 'branding license expiration date' do
-          expect(pattern_matches[13]).to eq '2019-11-08'
+          expect(pattern_matches[BRANDING_LIC_EXP_DATE + 1]).to eq '2019-11-08'
         end
 
         it 'street' do
-          expect(pattern_matches[14]).to eq 'Hundforetagarevägen 1'
+          expect(pattern_matches[ADDR_STREET + 1]).to eq 'Hundforetagarevägen 1'
         end
 
         it 'post code' do
-          expect(pattern_matches[15]).to eq '310 40'
+          expect(pattern_matches[ADDR_POSTCODE + 1]).to eq '310 40'
         end
 
         it 'ort/city' do
-          expect(pattern_matches[16]).to eq 'Harplinge'
+          expect(pattern_matches[ADDR_CITY + 1]).to eq 'Harplinge'
         end
 
         it 'kommun' do
-          expect(pattern_matches[17]).to eq 'Ale'
+          expect(pattern_matches[ADDR_KOMMUN + 1]).to eq 'Ale'
         end
 
         it 'Verksamhetslän/county' do
-          expect(pattern_matches[18]).to eq 'MyString'
+          expect(pattern_matches[ADDR_COUNTY + 1]).to eq 'MyString'
         end
 
         it 'country' do
-          expect(pattern_matches[19]).to eq 'Sverige'
+          expect(pattern_matches[ADDR_COUNTRY + 1]).to eq 'Sverige'
         end
+
 
       end
 
@@ -289,20 +325,25 @@ RSpec.describe AdminController, type: :controller do
 
         let(:c1) { FactoryBot.create(:company) }
 
-        let(:member1) { FactoryBot.create :shf_application,
-                                          contact_email: "u1@example.com",
-                                          state:         :accepted,
-                                          user:          u1
+        let(:shf_app1) { FactoryBot.create :shf_application,
+                                           contact_email: "u1@example.com",
+                                           state:         :accepted,
+                                           user:          u1
         }
 
-        let(:csv_response) { post :export_ansokan_csv
-        response.body
-        }
+        let(:csv_response) do
+          post :export_ansokan_csv
+          response.body
+        end
 
-        let(:csv_response_reg) { post :export_ansokan_csv
-        response.body
-        }
-        let(:member1_info) { "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number}," + I18n.t("shf_applications.state.#{member1.state}") }
+
+        let(:shf_app1_info) { "#{shf_app1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number}," + I18n.t("shf_applications.state.#{shf_app1.state}") }
+
+        let(:expected_pattern_with_email) { /(.*)\n([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^"^,]*),"",(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/ }
+
+        let(:pattern_before_categories) { /(.*),(.*),(.*),(.*),(.*),(.*),(.*),/ }
+
+        let(:pattern_after_categories_with_email) { /(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/ }
 
 
         it 'zero/nil business categories' do
@@ -313,34 +354,35 @@ RSpec.describe AdminController, type: :controller do
                                                                         user: user_no_categories)
           shf_app_no_categories.business_categories = []
 
-          expect(csv_response).to match(/(.*)\n([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^"^,]*),"",(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/)
-
+          expect(csv_response).to match(expected_pattern_with_email)
         end
+
 
         it 'one business category' do
 
-          member1.save
-
-          #expect(csv_response).to match result_str
-          expect(csv_response).to match(/(.*),(.*),(.*),(.*),(.*),(.*),\"#{member1.business_categories[0].name}\",(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/)
-
+          shf_app1.save
+          expect(csv_response).to match(Regexp.new(pattern_before_categories.to_s +
+                                                       "\"#{shf_app1.business_categories[0].name}\"" +
+                                                       pattern_after_categories_with_email.to_s))
         end
 
 
         it 'three business categories, each separated by a comma then space' do
 
-          member1.business_categories = [create(:business_category, name: 'Category1')]
-          member1.business_categories << create(:business_category, name: 'Category 2')
-          member1.business_categories << create(:business_category, name: 'Category the third')
+          shf_app1.business_categories = [create(:business_category, name: 'Category1')]
+          shf_app1.business_categories << create(:business_category, name: 'Category 2')
+          shf_app1.business_categories << create(:business_category, name: 'Category the third')
 
-          member1.save
+          shf_app1.save
 
-          # results with 3 categories in quotes
-          result_regexp = /(.*)\n([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^"^,]*),\"([^"]*)",(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/
-          expect(csv_response_reg).to match result_regexp
+          result_regexp = Regexp.new(pattern_before_categories.to_s +
+                                         "\"([^\"]*)\"," +
+                                         pattern_after_categories_with_email.to_s)
+
+          expect(csv_response).to match result_regexp
 
           # Check that the categories are as expected:
-          match = csv_response_reg.match result_regexp
+          match = csv_response.match result_regexp
 
           # get the categories from the (.*) group -- if there are any
           #   get rid of extra quotes and whitespace
@@ -398,7 +440,7 @@ RSpec.describe AdminController, type: :controller do
           never_paid    = I18n.t('admin.export_ansokan_csv.never_paid')
           pay_using_url = I18n.t('admin.export_ansokan_csv.fee_payment_url', payment_url: user_path(user_with_app))
 
-          expected_pattern = /(.*)\n(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","(#{pay_using_url})","(#{never_paid})","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)/m
+          expected_pattern = /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","(#{pay_using_url})","(#{never_paid})","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)/m
 
           expect(response.body).to match expected_pattern
 
@@ -423,7 +465,7 @@ RSpec.describe AdminController, type: :controller do
           never_paid    = I18n.t('admin.export_ansokan_csv.never_paid')
           pay_using_url = I18n.t('admin.export_ansokan_csv.fee_payment_url', payment_url: company_path(user_app.companies.last.id))
 
-          expected_pattern = /(.*)\n(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","(#{pay_using_url})","(#{never_paid})","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m
+          expected_pattern = /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","(#{pay_using_url})","(#{never_paid})","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m
 
           expect(response.body).to match expected_pattern
 

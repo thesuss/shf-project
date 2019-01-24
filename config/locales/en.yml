@@ -50,11 +50,11 @@ en:
 
   hello: 'Hello, %{name}'
 
-  shf_home_url: &shf_home_url http://www.sverigeshundforetagare.se
-  shf_medlemssystem_url: &shf_medlemssystem_url http://hitta.sverigeshundforetagare.se
-  shf_facebook_url: &shf_facebook_url http://www.facebook.com/sverigeshundforetagare
+  shf_home_url: &shf_home_url https://www.sverigeshundforetagare.se
+  shf_medlemssystem_url: &shf_medlemssystem_url https://hitta.sverigeshundforetagare.se
+  shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
-  shf_instagram_url: &shf_instagram_url http://instagram.com/sverigeshundforetagare
+  shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
 
   info:
@@ -511,7 +511,7 @@ en:
       confirm_delete: 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: &invalid_upload_type Sorry, this is not a file type you can upload.
       file_too_large: &file_too_large_5MB The file must be smaller than 5 MB
-
+      please_upload_again: Please upload your files again.
 
     update_the_status: Update the status
     application_deleted: Application deleted.
@@ -825,7 +825,7 @@ en:
       branding_fee_expires: H Expires
       paid: *paid
       never_paid: *never_paid
-      fee_payment_url: "Log in and pay here: http://hitta.sverigeshundforetagare.se%{payment_url}"
+      fee_payment_url: "Log in and pay here: https://hitta.sverigeshundforetagare.se%{payment_url}"
 
 
   shf_documents:
@@ -976,7 +976,7 @@ en:
 
       signoff: "Best Regards,"
       signature: &medlemsansvarig Membership Committee
-      signature_url: "http://sverigeshundforetagare.se"
+      signature_url: "https://sverigeshundforetagare.se"
 
       footer:
         text:
