@@ -3,23 +3,23 @@
   != model_errors_helper(@company)
 
   = f.label :name, "#{t('companies.company_name')}", class: 'required'
-  = f.text_field :name, class: 'wpcf7-form-control'
+  = f.text_field :name,  class: 'form-control'
 
   %div
     = f.label :company_number, "#{t('companies.show.company_number')}", class: 'required'
 
     %span.glyphicon.glyphicon-info-sign{ title: "#{t('.org_nr_tooltip')}",
                                          data: {toggle: 'tooltip'} }
-  = f.number_field :company_number, class: 'wpcf7-form-control'
+  = f.number_field :company_number,  class: 'form-control'
 
   = f.label :phone_number, "#{t('companies.telephone_number')}"
-  = f.text_field :phone_number, class: 'wpcf7-form-control'
+  = f.text_field :phone_number,  class: 'form-control'
 
   = f.label :email, "#{t('companies.show.email')}", class: 'required'
-  = f.text_field :email, class: 'wpcf7-form-control'
+  = f.text_field :email,  class: 'form-control'
 
   = f.label :website, "#{t('companies.website_include_http')}"
-  = f.text_field :website, class: 'wpcf7-form-control'
+  = f.text_field :website,  class: 'form-control'
 
   .dinkurs-company-id
     = f.label :dinkurs_company_id, "#{t('companies.show.dinkurs_key')}"
@@ -27,7 +27,7 @@
     %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_id_tooltip')}",
                                          data: {toggle: 'tooltip'} }
 
-    = f.text_field :dinkurs_company_id, class: 'wpcf7-form-control'
+    = f.text_field :dinkurs_company_id,  class: 'form-control'
 
   .dinkurs-company-show
     %div
@@ -41,6 +41,6 @@
       %span.slider
 
   = f.label :description, "#{t('companies.description')}"
-  = f.cktext_area :description, class: 'wpcf7-form-control'
+  = f.cktext_area :description,  class: 'form-control'
 
-  = f.submit "#{t('submit')}"
+  = f.submit "#{t('submit')}", class: 'btn btn-primary mb-2 form-control'

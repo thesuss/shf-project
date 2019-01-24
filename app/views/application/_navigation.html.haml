@@ -6,12 +6,11 @@
   .collapse.navbar-collapse#dropdown-menu
     - if user_signed_in?
       - if current_user.admin?
-        .menu#menu-menu-3-container
-          %ul.menu#menu-menu-3
-            %li
-              = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
-            = render 'navigation_member_pages'
-            = render 'navigation_admin'
+        %ul.navbar-nav.ml-auto#menu-menu-3
+          %li
+            = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
+          = render 'navigation_member_pages'
+          = render 'navigation_admin'
       - else
         %ul.navbar-nav.ml-auto#menu-menu-2
           %li

@@ -1,7 +1,7 @@
 = search_form_for @q, method: :get, url: users_path do |f|
 
   .row
-    .col-sm-3
+    .col-md-2
       .form-group.form-group-sm
         = f.label :membership_number_in, "#{t('users.search_form.membership_number')}"
         = f.collection_select :membership_number_in,
@@ -10,24 +10,26 @@
                         { multiple: true, size: 5, style: 'width: 100%;',
                           class: 'form-control search_field',
                           data: {language: "#{@locale}" } }
-    .col-sm-3
+    .col-md-2                      
       .form-group.form-group-sm
         = f.label :email_cont, "#{t('.profile_email')}"
         = f.search_field :email_cont, class: 'form-control input-sm'
-    .col-sm-6
-      .form-group.form-group-sm
-        .radio-inline
-          %label
-            = f.radio_button :membership_filter, 0, checked: @filter_ignore_membership
-            = t('.all_users')
-        .radio-inline
-          %label
-            = f.radio_button :membership_filter, 1, checked: @filter_are_members
-            = t('.are_members')
-        .radio-inline
-          %label
-            = f.radio_button :membership_filter, 2, checked: @filter_are_not_members
-            = t('.are_not_members')
-    .col-sm-12
+    .col-md-4
+      .form-check
+        .form-check-input
+          = f.radio_button :membership_filter, 0, checked: @filter_ignore_membership
+        %label.form-check-label
+          = t('.all_users')
+      .form-check
+        .form-check-input
+          = f.radio_button :membership_filter, 1, checked: @filter_are_members
+        %label.form-check-label
+          = t('.are_members')
+      .form-check
+        .form-check-input
+          = f.radio_button :membership_filter, 2, checked: @filter_are_not_members
+        %label.form-check-label
+          = t('.are_not_members')
+    .col-md-2
       .form-group.form-group-sm
         = submit_tag "#{t('search')}", class: ['btn', 'btn-primary', 'pull-right']

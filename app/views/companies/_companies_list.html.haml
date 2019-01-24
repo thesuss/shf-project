@@ -38,8 +38,8 @@
               = safe_join(company.kommuns_names, tag.br)
               - if current_user.admin?
                 %td= company.company_number
-                %td= link_to "#{t('edit')}", edit_company_path(company)
-                %td= link_to "#{t('delete')}", company, method: :delete,
+                %td= link_to icon('fas', 'edit'), edit_company_path(company)
+                %td= link_to icon('fas', 'trash'), company, method: :delete,
                                 data: { :confirm => "#{t('confirm_are_you_sure')}" }
 
   = render 'application/paginate_footer', entities: companies,

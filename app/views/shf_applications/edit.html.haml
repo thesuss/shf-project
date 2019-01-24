@@ -16,6 +16,6 @@
                          company_numbers:  @company_numbers }
 
       = render 'application/required_fields'
-      = f.submit t('.submit_button_label')
+      = f.submit t('.submit_button_label'), class: 'btn btn-primary mb-2 form-control'
 
 = render partial: 'companies/company_create_modal', locals: { company: @new_company }

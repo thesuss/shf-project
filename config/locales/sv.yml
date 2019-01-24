@@ -1074,7 +1074,7 @@ sv:
         info_header: Redigera namn och e-post
     sessions:
       new:
-        log_in: &log_in Logga In
+        log_in: &log_in Logga in
         title: *log_in
         remember_me: Kom ihåg mig
         submit_button_label: *log_in

@@ -51,7 +51,7 @@
   .answers
     - if current_user.admin? && user.membership_number
       = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
-      = f.text_field :membership_number, class: 'wpcf7-form-control'
+      = f.text_field :membership_number,  class: 'form-control'
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
 
@@ -77,11 +77,11 @@
 
     = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
     %p.field-instruction= t('shf_applications.new.can_be_same_email')
-    = f.email_field :contact_email, class: 'wpcf7-form-control'
+    = f.email_field :contact_email,  class: 'form-control'
     %br
     = f.label :phone_number, t('shf_applications.show.phone_number')
     %br
-    = f.telephone_field :phone_number, class: 'wpcf7-form-control'
+    = f.telephone_field :phone_number,  class: 'form-control'
 
 
 - if @shf_application.may_is_ready_for_review?
