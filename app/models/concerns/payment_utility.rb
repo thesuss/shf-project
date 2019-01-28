@@ -21,14 +21,14 @@ module PaymentUtility
   end
 
 
-  # FIXME Company h-branding fee: how to determine the next payment date when no payment has been made yet?
-  #   = the payment date of the first membership fee of all current members
   #   - FIXME how to store this date if/when the member is no longer a current member?
   #
   class_methods do
 
     # TODO should just pass in the entity.  the "id" is an implementation detail that callers should not care about.
     # TODO should just request the payment type as part of the method name.  Passing in the implementation of the payment type (e.g. Payment::PAYMENT_TYPE_BRANDING is an implementation detail that callers shouldn't care about)
+    # Note:  Company cannot use this method.  It has a different business rule (i.e. it does not
+    # use Today if no previous payment exists.)
     #
     # @param entity_id [Integer] - the id of the entity to get the next payment dates for
     # @param payment_type [Payment::PAYMENT_TYPE_MEMBER | Payment::PAYMENT_TYPE_BRANDING] - the specific type of the payment to look for

@@ -476,6 +476,7 @@ RSpec.describe Company, type: :model, focus: true do
     end
   end
 
+
   context 'payment and branding license period' do
 
     describe '#branding_expire_date' do
@@ -504,6 +505,7 @@ RSpec.describe Company, type: :model, focus: true do
         expect(complete_co.most_recent_branding_payment).to eq payment2
       end
     end
+
 
     describe '.self.next_branding_payment_dates' do
 

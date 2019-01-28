@@ -9,7 +9,7 @@ namespace :shf do
                      timing: :before,
                      config: { days: [60, 30, 14, 2] })
 
-    Condition.create(class_name: 'HBrandingFeePastDueAlert',
+    Condition.create(class_name: 'HBrandingFeeDueAlert',
                      timing: :after,
                      config: { days: [60, 30, 14, 9, 2] })
 

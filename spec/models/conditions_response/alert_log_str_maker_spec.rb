@@ -3,7 +3,7 @@ require 'rails_helper'
 
 RSpec.describe AlertLogStrMaker do
 
-    let(:alert) { HBrandingFeePastDueAlert.instance }
+    let(:alert) { HBrandingFeeDueAlert.instance }
     let(:success_method) { :success_str }
     let(:failure_method) { :failure_str }
 
