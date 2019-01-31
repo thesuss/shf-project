@@ -12,7 +12,7 @@
       = link_to(t('menus.nav.users.your_account'), user_path(current_user))
     - if current_user.admin?
       %li
-        = link_to(t('menus.nav.admin.app_configuration'), edit_app_configuration_path)
+        = link_to(t('menus.nav.admin.app_configuration'), admin_only_app_configuration_path)
     %li
       = link_to(t('devise.sessions.destroy.log_out'),
                 destroy_user_session_path, method: :delete)

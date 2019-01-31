@@ -29,7 +29,7 @@ module ImagesUtility
 
   def set_app_config
     # Need app config items for proof-of-membership
-    @app_configuration = AdminOnly::AppConfiguration.last
+    @app_configuration = AdminOnly::AppConfiguration.config_to_use
   end
 
   def allow_iframe_request

@@ -36,10 +36,14 @@ module AdminOnly
                                    :h_brand_logo, :sweden_dog_trainers,
                                    matches: [/png\z/, /jpe?g\z/]
 
+
+    scope :config_to_use, -> { last }
+
+
     private
 
     def url_for_images
-      '/storage/app_configuration/images/:attachment/:hashed_path/:style_:basename.:extension'
+      '/storage/app_configuration/images/:attachment/:hashed_path/:style_:basename.:extension'.freeze
     end
   end
 end

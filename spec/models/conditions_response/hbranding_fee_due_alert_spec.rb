@@ -130,7 +130,6 @@ RSpec.describe HBrandingFeeDueAlert do
               MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
 
               expect(paid_members_co.current_members).to match_array [member_paid_dec_3, member_paid_dec_5]
-              expect(paid_members_co.next_hbranding_payment_due_date).to eq dec_3
               expect(subject.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_truthy
             end
 

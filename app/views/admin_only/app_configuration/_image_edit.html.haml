@@ -1,6 +1,6 @@
-%h3
-  %strong= t("admin_only.app_configuration.edit.#{image_title}")
-= image_tag(app_config.send(image_title).url(:standard))
+= render 'image_show', app_config:app_config,
+                             image_title: image_title
+
 %br
 %br
 - if app_config.send(image_title)

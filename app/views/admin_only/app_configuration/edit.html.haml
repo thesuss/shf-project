@@ -1,12 +1,24 @@
 %header.entry-header
-  %h1.entry-title= t('.title')
+  %h1.entry-title= t('edit') + ' ' + t('.title')
   .post-title-divider
   %span
 
 .entry-content
 
-  = form_for(@app_configuration, url: app_configuration_path,
+  = form_for(@app_configuration, url: admin_only_app_configuration_path,
                                  html: { method: :put }) do |f|
+
+    .row
+      .column
+
+        %p.email_enabled_setting
+          %span.standard-label
+            = t('.admin_email_new_apps_enabled')
+            ?
+          = f.check_box :email_admin_new_app_received_enabled
+
+    %hr
+
     .row
       .col-sm-6
         = render 'image_edit', app_config: @app_configuration,
@@ -30,4 +42,5 @@
     .col-sm-12.wpcf7
       = f.submit "#{t('submit')}"
       %br
-      = link_to "#{t('back')}", :back
+      = link_to "#{t('view')} #{t('.title')}", admin_only_app_configuration_path(@app_configuration), class: 'btn btn-default'
+      = link_to "#{t('back')}", :back, class: 'btn btn-default'

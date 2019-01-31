@@ -32,19 +32,14 @@ Rails.application.routes.draw do
     put 'dashboard_show_recent_activity', to: 'dashboard#show_recent_activity'
 
 
-  end
-
-  scope module: :admin_only, path: 'admin' do
-
     get 'app_configuration', to: 'app_configuration#show'
-
     put 'app_configuration', to: 'app_configuration#update'
 
     get 'app_configuration/redigera', to: 'app_configuration#edit',
-                                      as: :edit_app_configuration
+        as: :edit_app_configuration
+
 
   end
-
 
 
   get '/pages/*id', to: 'pages#show', as: :page, format: false

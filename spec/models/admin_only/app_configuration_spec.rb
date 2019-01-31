@@ -34,6 +34,7 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
     it { is_expected.to have_db_column :sweden_dog_trainers_content_type }
     it { is_expected.to have_db_column :sweden_dog_trainers_file_size }
     it { is_expected.to have_db_column :sweden_dog_trainers_updated_at }
+    it { is_expected.to have_db_column :email_admin_new_app_received_enabled }
   end
 
   describe 'Validations' do

@@ -943,11 +943,21 @@ en:
 
     app_configuration:
       edit:
-        title: Application Configuration
-        chair_signature: Chairperson Signature
-        shf_logo: Organization Logo
-        h_brand_logo: H-Branding Logo
-        sweden_dog_trainers: Sweden Dog Trainers
+        title: &application_configuration Application Configuration
+        chair_signature: &chair_signature_title Chairperson Signature
+        shf_logo: &shf_logo_title Organization Logo
+        h_brand_logo: &h_branding_logo_title H-Branding Logo
+        sweden_dog_trainers: &sweden_dog_trainers_logo_title Sweden Dog Trainers
+        admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+
+      show:
+        title: *application_configuration
+        chair_signature: *chair_signature_title
+        shf_logo: *shf_logo_title
+        h_brand_logo: *h_branding_logo_title
+        sweden_dog_trainers: *sweden_dog_trainers_logo_title
+        admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+
       update:
         success: Application data updated successfully
         error: There was a problem with updating configuration data

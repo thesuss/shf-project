@@ -946,11 +946,21 @@ sv:
 
     app_configuration:
       edit:
-        title: Programkonfiguration
-        chair_signature: Ordförandens underskrift
-        shf_logo: Organisationslogotyp
-        h_brand_logo: H-märkt Logo
-        sweden_dog_trainers: Sveriges Hundtrainer
+        title:  &application_configuration Programkonfiguration
+        chair_signature: &chair_signature_title Ordförandens underskrift
+        shf_logo: &shf_logo_title Organisationslogotyp
+        h_brand_logo: &h_branding_logo_title H-märkt Logo
+        sweden_dog_trainers: &sweden_dog_trainers_logo_title Sveriges Hundtrainer
+        admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+
+      show:
+        title: *application_configuration
+        chair_signature: *chair_signature_title
+        shf_logo: *shf_logo_title
+        h_brand_logo: *h_branding_logo_title
+        sweden_dog_trainers: *sweden_dog_trainers_logo_title
+        admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+
       update:
         success: Programdata uppdaterades framgångsrikt
         error: Det gick inte att uppdatera konfigurationsdata

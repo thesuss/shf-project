@@ -356,8 +356,9 @@ class ShfApplicationsController < ApplicationController
       helpers.flash_message(:error, t('mailers.shf_application_mailer.acknowledge_received.error_sending', email: @shf_application.user.email))
     end
 
-    # if there is a problem sending email to the admin, do not display an error to the user.
-    send_new_shf_application_notice_to_admins(new_shf_app)
+    # No rescue for the following because if there is a problem sending email to the admin,
+    # do not display an error to the user
+    send_new_shf_application_notice_to_admins(new_shf_app) if AdminOnly::AppConfiguration.config_to_use.email_admin_new_app_received_enabled
 
 end
 
