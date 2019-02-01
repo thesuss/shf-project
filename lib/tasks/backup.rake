@@ -2,11 +2,11 @@ require 'active_support/logger'
 # require_relative './shf_notify_slack'
 
 
-LOG_FILE         = 'log/backup.log'
-BACKUP_FILES_DIR = '/home/deploy/SHF_BACKUPS/'
+LOG_FILE         = 'log/backup.log' unless defined?(LOG_FILE)
+BACKUP_FILES_DIR = '/home/deploy/SHF_BACKUPS/' unless defined?(BACKUP_FILES_DIR)
 
-CODE_BACKUPS_TO_KEEP = 4
-DB_BACKUPS_TO_KEEP   = 15
+CODE_BACKUPS_TO_KEEP = 4 unless defined?(CODE_BACKUPS_TO_KEEP)
+DB_BACKUPS_TO_KEEP   = 15 unless defined?(DB_BACKUPS_TO_KEEP)
 
 
 # "keep" key defines how many backups (code or DB) to retain on _local_ storage.
@@ -16,7 +16,7 @@ BACKUP_TARGETS = [
       type:     'file', keep: CODE_BACKUPS_TO_KEEP },
     { location: 'shf_project_production', filebase: 'db_backup.sql.',
       type:     'db', keep: DB_BACKUPS_TO_KEEP }
-]
+]  unless defined?(BACKUP_TARGETS)
 
 
 desc 'backup code and DB'
