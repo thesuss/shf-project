@@ -2,7 +2,7 @@ require 'rails_helper'
 include ApplicationHelper
 
 RSpec.describe UsersHelper, type: :helper do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_member_photo) }
   let(:right_now) { Time.zone.now }
   let(:yesterday) { Time.zone.now - 1.day - 2.minutes }
 

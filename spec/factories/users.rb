@@ -9,9 +9,7 @@ FactoryBot.define do
     admin { false }
     member { false }
     short_proof_of_membership_url { nil }
-    member_photo do
-      File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
-    end
+    member_photo {nil}
 
     factory :user_without_first_and_lastname do
 
@@ -21,6 +19,13 @@ FactoryBot.define do
         user.save(validate: false)
       end
     end
+
+    trait :with_member_photo do
+      member_photo do
+        File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
+      end
+    end
+
 
     factory :user_with_membership_app do
 
