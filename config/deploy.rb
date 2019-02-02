@@ -1,5 +1,5 @@
-# config valid only for Capistrano 3.11
-lock '3.11'
+# config valid only for Capistrano 3.6
+lock '3.6.1'
 
 set :rbenv_type, :user
 set :rbenv_ruby, '2.5.1'
@@ -46,29 +46,7 @@ set :bundle_binstubs, nil
 
 set :keep_releases, 5
 
-set :migration_role, :app
-
-
 namespace :deploy do
-
-  desc 'run load_conditions task to put conditions into the DB'
-  task run_load_conditions: [:set_rails_env] do
-
-    LOAD_TASK = 'shf:load_conditions'
-
-    on release_roles :all do
-
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, LOAD_TASK
-          info "[deploy:run_load_conditions] invoked #{LOAD_TASK} to load conditions into the DB"
-        end
-      end
-    end
-
-  end
-  before :publishing, :run_load_conditions
-
 
   desc 'Restart application'
   task :restart do
@@ -123,12 +101,13 @@ namespace :deploy do
   end
 
 
+
   # Have to wait until all files are copied and symlinked before trying to remove
   # these files.  (They won't exist until then.)
   before :restart, :remove_test_files
 
 
-  after :publishing, :restart
+  after  :publishing, :restart
 end
 
 
@@ -162,8 +141,8 @@ namespace :rails do
   # ssh to the server
   def execute_interactively(command)
     server = fetch(:bundle_servers).first
-    user   = server.user
-    port   = server.port || 22
+    user = server.user
+    port = server.port || 22
 
     exec "ssh -l #{user} #{host} -p #{port} -t 'cd #{deploy_to}/current && #{command}'"
   end
