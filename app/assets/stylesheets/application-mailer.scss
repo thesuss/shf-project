@@ -10,6 +10,13 @@ $border-lighter-gray: #eaeaea;
 $white: #ffffff;
 $black: #000000;
 $dark-gray: #222222;
+$warning-yellow: #ffff00;
+
+
+.date-warning {
+  background-color: $warning-yellow;
+}
+
 
 .email {
 

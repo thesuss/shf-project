@@ -164,6 +164,50 @@ RSpec.describe MemberMailer, type: :mailer do
   end #describe '#h_branding_fee_past_due
 
 
+  describe '#membership_lapsed' do
+
+    MEMBERSHIP_LAPSED_SCOPE = 'mailers.member_mailer.membership_lapsed'
+
+    let(:member) { create(:member_with_membership_app, user: test_user) }
+    let(:member) do
+      test_user.member = true
+      test_user.payments << create(:payment, :successful,
+                                   expire_date: Time.zone.today - 1.month)
+      test_user.save!
+      test_user
+    end
+
+    let(:email_sent) { MemberMailer.membership_lapsed(member) }
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('subject', scope: MEMBERSHIP_LAPSED_SCOPE),
+                    'user@example.com',
+                    'Firstname Lastname' do
+      let(:email_created) { email_sent }
+    end
+
+    it 'tells you when your membership expired' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.expire_alert_html',
+                                                  scope:       MEMBERSHIP_LAPSED_SCOPE,
+                                                  expire_date: member.membership_expire_date))
+    end
+
+    it 'tells how to renew membership' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.renew_membership',
+                                                  scope: MEMBERSHIP_LAPSED_SCOPE))
+    end
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
+  end
+
+
   it 'has a previewer' do
     expect(MemberMailerPreview).to be
   end

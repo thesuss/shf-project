@@ -1025,6 +1025,8 @@ en:
 
 
     member_mailer:
+      member_account_link: "%{account_link} (You may need to login first before the link works.)"
+
       membership_granted:
         subject: &subject_welcome "Welcome to SHF! You are now a member"
         greeting: *email_greeting
@@ -1039,10 +1041,9 @@ en:
         greeting: *email_greeting
         message_text:
           expire_alert_html: Please note that your current membership period will
-                        expire on <span style="background-color:yellow;">%{expire_date}</span>.
+                        expire on <span class="date-warning">%{expire_date}</span>.
           extend_membership: You can extend your membership for another
                              12 months by paying the membership fee.
-          account_login_html: "%{account_link} (you may need to login first before the link works)."
 
       h_branding_fee_past_due:
         subject: The H-Branding fee for your company is unpaid/past due
@@ -1051,6 +1052,14 @@ en:
           fee_is_unpaid: Please note that your current H-branding fee is unpaid.
           how_to_pay_fee: You can pay your H-branding for another 12 months by paying the fee. This makes you visible on the map.
           company_link_login_msg: " (You may need to login first before you can see the button to pay)."
+
+      membership_lapsed:
+        subject: "Your SHF membership has expired"
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
+          renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
+
 
   devise:
     min_length: '(at least %{minimum_length} characters)'

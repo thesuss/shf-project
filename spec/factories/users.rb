@@ -29,7 +29,6 @@ FactoryBot.define do
 
     factory :user_with_membership_app do
 
-
       after(:create) do |user, evaluator|
         create_list(:shf_application, 1, user: user, contact_email: evaluator.email) # FIXME this should not be a list. Fix tests that use this
       end
@@ -48,8 +47,30 @@ FactoryBot.define do
                     company_number: evaluator.company_number,
                     contact_email: evaluator.email)  # FIXME this should not be a list. Fix tests that use this
       end
-    end
-  end
 
+    end
+
+
+    # create a payment for the member with the given expiration date
+    # ex:  create(:member_with_expiration_date, expiration_date: Date.new(2018, 6, 24))
+    factory :member_with_expiration_date do
+
+      member { true }
+
+      transient do
+        expiration_date { Date.current }
+      end
+
+      after(:create) do | member, evaluator |
+
+        create(:shf_application, :accepted, user: member)
+
+        create(:membership_fee_payment, user: member,
+               start_date: evaluator.expiration_date - 364,
+               expire_date: evaluator.expiration_date)
+      end
+    end
+
+  end
 
 end

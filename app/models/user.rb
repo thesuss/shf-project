@@ -63,6 +63,8 @@ class User < ApplicationRecord
                                                               .references(:payments) }
 
 
+  scope :current_members, -> { User.joins(:payments).where("payments.status = '#{Payment::SUCCESSFUL}' AND payments.payment_type = ? AND  payments.expire_date > ?", Payment::PAYMENT_TYPE_MEMBER, Date.current).joins(:shf_application).where(shf_applications: {state: 'accepted'}) }
+
 
   def most_recent_membership_payment
     most_recent_payment(Payment::PAYMENT_TYPE_MEMBER)
@@ -155,18 +157,6 @@ class User < ApplicationRecord
   end
 
 
-=begin
-   User is no long responsible for determining membership status
-  def check_member_status
-    # Called from Warden after user authentication - see after_sign_in.rb
-    # If member payment has expired, revoke membership status.
-    if member? && ! membership_current?
-      update(member: false)
-    end
-  end
-=end
-
-
   def member_or_admin?
     admin? || member?
   end
@@ -186,17 +176,6 @@ class User < ApplicationRecord
     first_name.present? && last_name.present?
   end
 
-
-=begin
-  This is no longer the responsbility of the User class
-  # Need to be able to turn off 'sending email' during seeding
-  def grant_membership(send_email: true)
-    return if self.member && self.membership_number.present?
-
-    update(member: true, membership_number: issue_membership_number)
-    MemberMailer.membership_granted(self).deliver if send_email
-  end
-=end
 
   ransacker :padded_membership_number do
     Arel.sql("lpad(membership_number, 20, '0')")

@@ -31,4 +31,15 @@ class MemberMailer < ApplicationMailer
       mail to: @recipient_email,  subject: t('mailers.member_mailer.h_branding_fee_past_due.subject')
   end
 
+
+  def membership_lapsed(prev_member)
+
+    set_mail_info __method__, prev_member
+    @member      = prev_member
+    @expire_date = prev_member.membership_expire_date
+
+    mail to:      @recipient_email,
+         subject: t('mailers.member_mailer.membership_lapsed.subject')
+  end
+
 end

@@ -284,6 +284,67 @@ RSpec.describe User, type: :model do
     end
 
 
+    describe 'current_members' do
+
+      # set today to January 1, 2019 for every example run
+      around(:each) do |example|
+        Timecop.freeze(Date.new(2019, 1, 1))
+        example.run
+        Timecop.return
+      end
+
+      let(:jan1) { Date.new(2019, 1, 1) }
+      let(:jan2) { Date.new(2019, 1, 2) }
+      let(:jan3) { Date.new(2019, 1, 3) }
+
+      let(:user_no_app) { create(:user) }
+      let(:user_app_not_accepted) { create(:user_with_membership_app) }
+
+      let(:member_exp_jan1_today)   { create(:member_with_expiration_date, expiration_date: jan1) }
+      let(:member_current_exp_jan2) { create(:member_with_expiration_date, expiration_date: jan2) }
+      let(:member_current_exp_jan3) { create(:member_with_expiration_date, expiration_date: jan3) }
+
+
+      it 'all applications are accepted' do
+        user_no_app
+        user_app_not_accepted
+        member_exp_jan1_today
+        member_current_exp_jan2
+        member_current_exp_jan3
+        in_scope = User.current_members
+        app_states = in_scope.map{|member| member.shf_application.state}.uniq
+        expect(app_states).to match_array([ShfApplication::STATE_ACCEPTED.to_s])
+      end
+
+      it 'all have a successful membership payment' do
+        user_no_app
+        user_app_not_accepted
+        member_exp_jan1_today
+        member_current_exp_jan2
+        member_current_exp_jan3
+        in_scope = User.current_members
+        payment_states = in_scope.map{|member| member.most_recent_membership_payment.status}.uniq
+        expect(payment_states).to match_array([Payment::SUCCESSFUL])
+      end
+
+      it 'the membership payment expires after today (.future?)' do
+        user_no_app
+        user_app_not_accepted
+        member_exp_jan1_today
+        member_current_exp_jan2
+        member_current_exp_jan3
+        in_scope = User.current_members
+        expires_dates = in_scope.map{|member| member.most_recent_membership_payment.expire_date}.uniq
+        payments_expire_today_or_before = expires_dates.select{|date| date <= Date.current}
+        payments_expire_after_today = expires_dates.select{|date| date > Date.current}
+
+        expect(payments_expire_today_or_before).to be_empty
+        expect(payments_expire_after_today).to match_array([jan2, jan3])
+      end
+
+    end
+
+
     describe 'expiration dates' do
 
       # set today to January 1, 2019 for every example run
@@ -302,7 +363,7 @@ RSpec.describe User, type: :model do
         jan_31 = jan_01 + 30
 
 
-         create(:user, first_name: 'Not member 1')
+        create(:user, first_name: 'Not member 1')
         create(:user, admin: true, first_name: 'Admin')
 
         create(:member_with_membership_app, first_name: 'No member fee pays')
@@ -356,6 +417,7 @@ RSpec.describe User, type: :model do
                    expire_date: jan_15)
 
 
+        # TODO can use new :member_with_expiration_date factory
         # member fee paid only:
 
             create(:membership_fee_payment, :successful,
