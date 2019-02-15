@@ -12,6 +12,10 @@ RSpec.describe ApplicationHelper, type: :helper do
     it 'adds correct class on alert' do
       expect(helper.flash_class(:alert)).to eq 'danger'
     end
+
+    it 'adds correct class on warn' do
+      expect(helper.flash_class(:warn)).to eq 'warning'
+    end
   end
 
   describe '#flash_message and #render_flash_message' do
@@ -228,6 +232,10 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     let(:user)    { FactoryBot.create(:user) }
 
+    after(:each) do
+      I18n.locale = I18n.default_locale
+    end
+
     let(:errors_html_sv)  do
       I18n.locale = :sv
       ma = ShfApplication.new
@@ -248,9 +256,9 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     it 'adds a count of errors' do
       I18n.locale = :sv
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 5)}/)
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 7)}/)
       I18n.locale = :en
-      expect(errors_html_en).to match(/#{t('model_errors', count: 5)}/)
+      expect(errors_html_en).to match(/#{t('model_errors', count: 7)}/)
     end
 
     it 'returns all model errors - swedish' do
@@ -280,6 +288,10 @@ RSpec.describe ApplicationHelper, type: :helper do
     let(:collection_custom)  do
       I18n.locale = :en
       boolean_radio_buttons_collection(true: 'save', false: 'delete')
+    end
+
+    after(:each) do
+      I18n.locale = I18n.default_locale
     end
 
     it 'returns yes/no text values - swedish' do

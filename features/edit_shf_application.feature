@@ -22,6 +22,8 @@ Feature: Edit SHF Application
       | Psychologist |
       | Trainer      |
 
+    And the application file upload options exist
+
     And the following applications exist:
       | user_email        | company_number         | state                 | categories |
       | emma@random.com   | 5560360793             | waiting_for_applicant | Groomer    |
@@ -57,20 +59,42 @@ Feature: Edit SHF Application
     Then I should see t("shf_applications.update.error")
     And I should see t("shf_applications.uploads.please_upload_again")
 
-
-  Scenario: Applicant adds second company to application
+  @selenium
+  Scenario: Add 2nd company, no files uploaded, user sees success and deliver-files prompt
     Given I am logged in as "emma@random.com"
-    And I am on the "landing" page
+    And I am on the "user instructions" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     Then I fill in t("shf_applications.show.company_number") with "5560360793, 212000-0142"
+
+    And I select files delivery radio button "upload_now"
+
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "emma@random.com"
-    And I should see t("shf_applications.update.success", email_address: info@craft.se)
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+    And I should see t("shf_applications.update.upload_file_or_select_method")
+
     And I should see "5560360793, 2120000142"
 
   @selenium
-  Scenario: Applicant creates second company for application
+  Scenario: Files uploaded, user sees success and does not deliver-files prompt
+    Given I am logged in as "emma@random.com"
+    And I am on the "user instructions" page
+    And I click on t("menus.nav.users.my_application")
+    Then I should be on "Edit My Application" page
+
+    And I select files delivery radio button "upload_now"
+    And I choose a file named "diploma.pdf" to upload
+
+    And I click on t("shf_applications.edit.submit_button_label")
+    Then I should be on the "show my application" page for "emma@random.com"
+
+    And I should see t("shf_applications.update.success")
+    And I should not see t("shf_applications.update.success_with_app_files_missing")
+
+  @selenium @skip_ci_test
+  Scenario: Create 2nd company, file delivery via email, user sees success and deliver-files reminder
     Given I am logged in as "emma@random.com"
     Given I am on the "edit application" page
     Then I should be on "Edit My Application" page
@@ -83,14 +107,20 @@ Feature: Edit SHF Application
     And I wait 4 seconds
     And I wait for all ajax requests to complete
 
+    And I select files delivery radio button "email"
+
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "emma@random.com"
-    And I should see t("shf_applications.update.success", email_address: info@craft.se)
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+    And I should see t("shf_applications.update.remember_to_deliver_files")
+
     And I should see "5560360793, 2286411992"
 
+  @selenium
   Scenario: User edit app with two companies, corrects an error in company number
     Given I am logged in as "hans@random.com"
-    And I am on the "landing" page
+    And I am on the "user instructions" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And the t("shf_applications.show.company_number") field should be set to "5560360793, 2120000142"
@@ -104,7 +134,9 @@ Feature: Edit SHF Application
     Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2120000142"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "hans@random.com"
-    And I should see t("shf_applications.update.success", email_address: info@craft.se)
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+
     And I should see "5560360793, 2120000142"
 
   Scenario: Applicant can not edit applications not created by them
@@ -145,17 +177,19 @@ Feature: Edit SHF Application
     And I am on the "edit application" page for "nils@random.com"
     Then I should see t("shf_applications.show.membership_number")
 
+  @selenium
   Scenario: Admin can't edit membership number for a rejected application
     Given I am logged in as "admin@shf.se"
     And I am on the "edit application" page for "bob@barkybobs.com"
     And I should not see t("shf_applications.edit.submit_button_label")
 
+  @selenium
   Scenario: Cannot change locale if there are errors in the application
     Given I am logged in as "emma@random.com"
-    And I am on the "landing" page
+    And I am on the "user instructions" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
-    And I fill in t("shf_applications.show.contact_email") with "sussimmi.nu"
+    And I fill in t("shf_applications.show.contact_email") with ""
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.error")
     And I should not see t("show_in_swedish") image

@@ -346,6 +346,9 @@ sv:
       submit_button_label: *submit
       need_to_enter_name_html: Du måste ha angett ditt för- och efternamn
                           för att skapa en medlemsansökan. %{edit_profile}.
+      submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
+      where_to_mail_files: Vi kommer att maila dig adressen
+      email_files_subject: Mina applikationsfiler
 
     rendering:
       success: Aktion utfördes framgångsrikt
@@ -353,17 +356,24 @@ sv:
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
-      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(N) HÄR
+      success_with_file_problem: Din ansökan har skapats. Observera felmeddelanden angående filer
+      success_with_app_files_missing: "!! Din ansökan har sparats, men den saknar nödvändiga filer !!"
+      upload_file_or_select_method: &upload_files Var god ladda upp filer eller välj en annan leveransmetod
+      remember_to_deliver_files: &chosen_method Kom ihåg att leverera filer via den valda leveransmetoden
 
     edit:
       title: Redigera ansökan om medlemskap
       is_ready_for_review: Redo för granskning
       submit_button_label: *save
+      submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
 
     update:
       success: Ansökan har uppdaterats.
       error: Ett eller flera problem hindrade din ansökan från att sparas.
       enter_member_number: Var god granska medlemsnummer och spara.
+      success_with_app_files_missing: "!! Din ansökan laddades upp men den saknar filer !!"
+      upload_file_or_select_method: *upload_files
+      remember_to_deliver_files: *chosen_method
 
     show:
       title: Ansökan från %{user_full_name}

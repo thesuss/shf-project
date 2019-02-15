@@ -31,12 +31,11 @@ class ShfApplication < ApplicationRecord
              foreign_key: "member_app_waiting_reasons_id",
              class_name: 'AdminOnly::MemberAppWaitingReason'
 
+  belongs_to :file_delivery_method,
+             class_name: 'AdminOnly::FileDeliveryMethod'
 
-  validates_presence_of :contact_email, :state
-
-  validates_presence_of :companies
-
-  validates :business_categories, presence: true
+  validates :contact_email, :state, :companies, :file_delivery_method,
+            :business_categories, presence: true
 
   validates_format_of :contact_email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
 

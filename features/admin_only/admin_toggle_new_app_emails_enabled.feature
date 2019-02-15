@@ -16,12 +16,14 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
       | name    |
       | Groomer |
 
+    And the application file upload options exist
+
     And the following companies exist:
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
 
-
+  @selenium
   Scenario: Admin disables send new app received emails
     Given I am logged in as "admin@shf.se"
     And I am on the "admin edit app configuration" page
@@ -37,13 +39,18 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | new_user1@example.com               |
     And I check the checkbox with id "shf_application_business_category_ids_1"
+
+    And I select files delivery radio button "upload_now"
+
     And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("shf_applications.create.success", email_address: new_user1@example.com)
+
+    And I should see t("shf_applications.create.success_with_app_files_missing")
+
     And I am logged out
     And I am logged in as "admin@shf.se"
     Then "admin@shf.se" should receive 0 email
 
-
+  @selenium
   Scenario: Admin enables send new app received emails
     Given I am logged in as "admin@shf.se"
     And I am on the "admin edit app configuration" page
@@ -60,9 +67,13 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | new_user1@example.com               |
     And I check the checkbox with id "shf_application_business_category_ids_1"
+
+    And I select files delivery radio button "upload_now"
+
     And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("shf_applications.create.success", email_address: new_user1@example.com)
+
+    And I should see t("shf_applications.create.success_with_app_files_missing")
+
     And I am logged out
     And I am logged in as "admin@shf.se"
     Then "admin@shf.se" should receive 1 email
-

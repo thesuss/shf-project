@@ -42,7 +42,22 @@
                 %tbody.files{'data-toggle': "modal-gallery", 'data-target': "#modal-gallery"}
           .col-md-6
             = render 'uploaded_files_list', shf_application: @shf_application
+    %br
+    %p
+      %span.file-delivery-selection
+        Please select how you will deliver the files needed for your application:
+      %br
 
+      - radio_buttons_collection, footnotes = file_delivery_radio_buttons_collection
+
+      = f.collection_radio_buttons(:file_delivery_method_id,
+                                   radio_buttons_collection,
+                                   :first, :second, {}) do |rb|
+        = rb.label(class: 'radio-inline radio-inline-label') do
+          = rb.radio_button + ' ' + rb.text
+      %br
+      %span.file-delivery-footnotes
+        = footnotes
 
     %p.upload-more-note.instructions= t('shf_applications.new.upload_more_files') if controller.action_name == 'new'
 

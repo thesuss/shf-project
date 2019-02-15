@@ -316,7 +316,7 @@ RSpec.describe Address, type: :model do
             end
 
             context 'does not geocode if non-GEO location attribute is changed' do
-            
+
               it_behaves_like 'it does not geocode when validated after changing', 'mail' do
                 let(:address) do
                   addr = address_with_lat_long
@@ -324,7 +324,7 @@ RSpec.describe Address, type: :model do
                   addr
                 end
               end
-              
+
             end #context 'does not geocode if non-GEO location attribute is changed'
 
           end # context 'something has changed'

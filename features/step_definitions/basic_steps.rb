@@ -30,7 +30,7 @@ When /^I confirm popup$/ do
     using_wait_time 3 do
       page.driver.accept_modal(:confirm)
     end
-  elsif Capybara.current_driver == :selenium_browser
+  elsif Capybara.current_driver == (:selenium || :selenium_browser)
     page.driver.browser.switch_to.alert.accept
   else
     raise 'step not configured for current browser driver'

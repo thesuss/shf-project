@@ -21,6 +21,8 @@ Feature: When a new application is received, all admins get an email notificatio
       | name         |
       | Groomer      |
 
+    And the application file upload options exist
+
     And the following companies exist:
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
@@ -37,9 +39,13 @@ Feature: When a new application is received, all admins get an email notificatio
 
     And I select "Groomer" Category
 
+    And I select files delivery radio button "upload_later"
+
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
-    And I should see t("shf_applications.create.success", email_address: 'emma@happymutts.com')
+
+    And I should see t("shf_applications.create.success_with_app_files_missing")
+
     And I am logged out
     And I am logged in as "admin1@shf.se"
     Then "admin1@shf.se" should receive an email
@@ -92,7 +98,11 @@ Feature: When a new application is received, all admins get an email notificatio
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                           | 031-1234567                       | emma@happymutts.com                 |
+
+    And I select files delivery radio button "upload_later"
+
     And I click on t("shf_applications.new.submit_button_label")
+
     And I should see t("shf_applications.create.error")
     Then "admin1@shf.se" should receive 0 email
     Then "admin2@shf.se" should receive 0 email

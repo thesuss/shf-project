@@ -342,6 +342,9 @@ en:
       need_to_enter_name_html: You must have your first and last name defined
                           in order to create a membership application.
                           %{edit_profile}.
+      submit_button_explain: Select a file delivery option to enable Submit
+      where_to_mail_files: We will email you the address
+      email_files_subject: My Application Files
 
     rendering:
       success: Action performed successfully
@@ -349,17 +352,24 @@ en:
     create:
       success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
       error: The was a problem creating and submitting your application.
-      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) BELOW
+      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) WITH FILE UPLOAD
+      success_with_app_files_missing: YOUR APPLICATION WAS CREATED, BUT REQUIRED FILES ARE MISSING
+      upload_file_or_select_method: &upload_files Please upload files or select another delivery method
+      remember_to_deliver_files: &chosen_method Please remember to deliver files via the chosen delivery method
 
     edit:
       title: Edit Membership Application
       is_ready_for_review: Is Ready for Review
       submit_button_label: *save
+      submit_button_explain: Select a file delivery option to enable Save
 
     update:
       success: The application was updated.
       error: One or more problems prevented your application from being updated.
       enter_member_number: Please review the member number and save.
+      success_with_app_files_missing: YOUR APPLICATION WAS UPDATED, BUT REQUIRED FILES ARE MISSING
+      upload_file_or_select_method: *upload_files
+      remember_to_deliver_files: *chosen_method
 
     show:
       title: Application from %{user_full_name}

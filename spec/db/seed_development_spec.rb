@@ -32,6 +32,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     DatabaseCleaner.clean
     Rake::Task['shf:load_regions'].reenable
     Rake::Task['shf:load_kommuns'].reenable
+    Rake::Task['shf:load_file_delivery_methods'].reenable
   end
 
 
@@ -59,6 +60,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       DatabaseCleaner.clean
       Rake::Task['shf:load_regions'].reenable
       Rake::Task['shf:load_kommuns'].reenable
+      Rake::Task['shf:load_file_delivery_methods'].reenable
     end
 
 
@@ -117,6 +119,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       DatabaseCleaner.clean
       Rake::Task['shf:load_regions'].reenable
       Rake::Task['shf:load_kommuns'].reenable
+      Rake::Task['shf:load_file_delivery_methods'].reenable
     end
 
     after(:all) do

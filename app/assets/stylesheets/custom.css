@@ -206,6 +206,10 @@ select {
   font-weight: bold;
 }
 
+.radio-inline-label {
+  margin-left: 10px;
+}
+
 /*!
  *nicelabel JQuery Plugin
  *
