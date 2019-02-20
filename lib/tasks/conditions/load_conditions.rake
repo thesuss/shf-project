@@ -2,17 +2,26 @@ namespace :shf do
   desc 'load conditions to DB'
   task load_conditions: [:environment] do
 
+    std_reminder_after_schedule = [2, 9, 14, 30, 60]
+
+    std_reminder_before_schedule = [60, 30, 14, 2]
+
     # Add a Hash for each Condition to be created
     #
     conditions_to_create = [
 
         { class_name: 'MembershipExpireAlert',
           timing:     :before,
-          config:     { days: [60, 30, 14, 2] } },
+          config:     { days: std_reminder_before_schedule } },
 
         { class_name: 'HBrandingFeeDueAlert',
           timing:     :after,
-          config:     { days: [60, 30, 14, 9, 2] } },
+          config:     { days: std_reminder_after_schedule } },
+
+        { class_name: 'CompanyInfoIncompleteAlert',
+          timing:     :after,
+          config:     { days: std_reminder_after_schedule } },
+
 
         # days_to_keep - specifies number of (daily) backups to retain on production server
         # backup_directory - where daily backups are retained on production server;

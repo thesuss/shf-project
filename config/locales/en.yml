@@ -56,6 +56,7 @@ en:
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
+  login_page: login page
 
   info:
     logged_in_as_admin: You are logged in as an admin.
@@ -989,6 +990,8 @@ en:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
+    may_need_to_login_first: "You may need to log in first.  Here's the login page:"
+
     application_mailer:
       greeting: &email_greeting "Hello %{greeting_name}"
 
@@ -1069,6 +1072,19 @@ en:
         message_text:
           expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
+
+
+      co_info_incomplete:
+        subject: Please complete the company information
+        greeting: *email_greeting
+        message_text:
+          complete_the_info: "You need to complete the info for %{co_identifier}. If you don't it won't show up on the map or in Google searches"
+          company_needs_name: "company number %{co_number}"
+          what_is_missing: "Here is what's missing:"
+          co_name_missing: "company name"
+          co_region_missing: "company address"
+          please_complete: "Please add the above information so the company information is complete."
+          company_link_login_msg: "Here's the link to the company so you can edit it: "
 
 
   devise:

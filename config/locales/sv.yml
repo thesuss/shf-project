@@ -57,6 +57,8 @@ sv:
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
 
+  login_page: login sida
+
   info:
     logged_in_as_admin: Du är inloggad som admin
     under_construction: Sidan är under uppbyggnad, mer information och funktioner kommer att komma efterhand.
@@ -993,6 +995,7 @@ sv:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
+    may_need_to_login_first: "Du kan behöva logga in först.  Här är inloggningssidan:"
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
 
@@ -1064,7 +1067,19 @@ sv:
         message_text:
           fee_is_unpaid: Observera att ditt företags H-märkespremie inte är betald.
           how_to_pay_fee: Betala den ett år till via länken nedan. Detta gör att du fortsätter synas på kartan och fortsätter ha ett H-märkt företag.
-          company_link_login_msg: " (du kan behöva logga in först innan du ser knappen för att betala)."
+          company_link_login_msg: &co_link_login " (du kan behöva logga in först innan du ser knappen för att betala)."
+
+      co_info_incomplete:
+        subject: Var god färdigställ din företagssida
+        greeting: *email_greeting
+        message_text:
+          complete_the_info: "Du behöver färdigställa informationen om %{co_identifier}. Om du inte gör det syns du inte i sökningar. Saknar du adress syns du heller inte på kartan."
+          company_needs_name: "företag: %{co_number}"
+          what_is_missing: "Här är vad som saknas:"
+          co_name_missing: "Företagsnamn"
+          co_region_missing: "Postadress"
+          please_complete: "Vänligen lägg till ovanstående information så att företagsinformationen är klar."
+          company_link_login_msg: "Här är länken där du kan redigera ditt företag: "
 
       membership_lapsed:
         subject: "Ditt medlemskap har löpt ut"

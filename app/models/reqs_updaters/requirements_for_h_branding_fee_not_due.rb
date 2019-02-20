@@ -18,18 +18,10 @@
 #--------------------------
 
 
-class RequirementsForHBrandingFeeNotDue < AbstractRequirements
+class RequirementsForHBrandingFeeNotDue < AbstractOppositeRequirements
 
-  # This requires the same arguments as RequirementsForHBrandingFeeDue since
-  # it sends those arguments to RequirementsForHBrandingFeeDue.requirements_met?
-  def self.has_expected_arguments?(args)
-    RequirementsForHBrandingFeeDue.has_expected_arguments?(args)
-  end
-
-
-  # This is always just the opposite of if an H-Brand fee _is_ due.
-  def self.requirements_met?(args)
-    ! RequirementsForHBrandingFeeDue.requirements_met?(args)
+  def self.opposite_class
+    RequirementsForHBrandingFeeDue
   end
 
 end # RequirementsForHBrandingFeeNotDue

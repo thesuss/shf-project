@@ -61,6 +61,13 @@ And(/^the name for region "([^"]*)" is changed to "([^"]*)"$/) do | old_name, ne
   region.save!  # do not do validations in case we're putting this into a bad state on purpose
 end
 
+
+And(/^the name for company number "([^"]*)" is set to an empty string$/) do | company_number |
+  co = Company.find_by_company_number(company_number)
+  co.update(name: '')
+  co.save!  # do not do validations in case we're putting this into a bad state on purpose
+end
+
 And(/^the region for company named "([^"]*)" is set to nil$/) do | company_name |
   co = Company.find_by_name(company_name)
   co.addresses.first.update(region: nil)

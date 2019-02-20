@@ -42,4 +42,14 @@ class MemberMailer < ApplicationMailer
          subject: t('mailers.member_mailer.membership_lapsed.subject')
   end
 
+
+  def company_info_incomplete(company, recipient)
+
+    set_mail_info __method__, recipient
+    @member  = recipient
+    @company = company
+    mail to: @recipient_email,  subject: t('mailers.member_mailer.co_info_incomplete.subject')
+
+  end
+
 end

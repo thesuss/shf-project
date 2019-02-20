@@ -208,6 +208,118 @@ RSpec.describe MemberMailer, type: :mailer do
   end
 
 
+  describe '#company_info_incomplete' do
+
+    CO_INFO_INCOMPLETE_SCOPE = 'mailers.member_mailer.co_info_incomplete'
+
+    let(:jan1) { Date.new(2019, 1, 1) }
+
+    let(:co_no_name_no_region) do
+      co = create(:company)
+      co.name = ''
+      co.addresses.first.update(region: nil)
+      co
+    end
+
+    let(:member_noname_noregion) do
+      app = create(:shf_application, :accepted, company_number: co_no_name_no_region.company_number)
+      m   = app.user
+      m.email = 'only_member@example.com'
+      m.payments << create(:payment, :successful,
+                           expire_date: jan1)
+      m.save!
+      m
+    end
+
+    let(:display_for_blank_name) do
+      I18n.t('mailers.member_mailer.co_info_incomplete.message_text.company_needs_name', co_number: co_no_name_no_region.company_number)
+    end
+
+    let(:email_sent_co_noname_noregion) do
+      # create the company and members
+      member_noname_noregion
+      MemberMailer.company_info_incomplete(co_no_name_no_region, member_noname_noregion)
+    end
+
+    let(:complete_co) { create(:company) }
+
+    let(:member_complete_co) do
+      app = create(:shf_application, :accepted, company_number: complete_co.company_number)
+      m   = app.user
+      m.email = 'member_complete_co@example.com'
+      m.payments << create(:payment, :successful,
+                           expire_date: jan1)
+      m.save!
+      m
+    end
+
+    let(:email_sent_complete_co) do
+      # create the company and members
+      member_complete_co
+      MemberMailer.company_info_incomplete(complete_co, member_complete_co)
+    end
+
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('subject', scope: CO_INFO_INCOMPLETE_SCOPE),
+                    'only_member@example.com',
+                    'Firstname Lastname' do
+      let(:email_created) { email_sent_co_noname_noregion }
+    end
+
+
+    it 'tells you info needs to be completed so visitors can see the company' do
+      expect(email_sent_co_noname_noregion).to have_body_text(I18n.t('message_text.complete_the_info',
+                                                  scope: CO_INFO_INCOMPLETE_SCOPE,
+                                                  co_identifier: display_for_blank_name))
+    end
+
+
+    describe 'shows a list of information that is missing' do
+
+      it 'lists the company name if it is blank' do
+        expect(email_sent_co_noname_noregion).to have_body_text(I18n.t('message_text.co_name_missing',
+                                                    scope: CO_INFO_INCOMPLETE_SCOPE))
+      end
+
+      it 'does not list the company name if it is not blank' do
+
+        expect(email_sent_complete_co).not_to have_body_text(I18n.t('message_text.co_name_missing',
+                                                    scope: CO_INFO_INCOMPLETE_SCOPE))
+      end
+
+      it 'lists the region if it is nil' do
+        expect(email_sent_co_noname_noregion).to have_body_text(I18n.t('message_text.co_region_missing',
+                                                    scope: CO_INFO_INCOMPLETE_SCOPE))
+      end
+
+      it 'does not list the region if it is not nil' do
+        expect(email_sent_complete_co).not_to have_body_text(I18n.t('message_text.co_region_missing',
+                                                    scope: CO_INFO_INCOMPLETE_SCOPE))
+
+      end
+    end
+
+
+    it 'provides a link to the company and a reminder that you might have to log in' do
+      expect(email_sent_co_noname_noregion).to have_body_text(I18n.t('message_text.company_link_login_msg',
+                                                  scope: CO_INFO_INCOMPLETE_SCOPE,
+                                                  company_link: "<a href=\"#{company_url(co_no_name_no_region)}\">#{co_no_name_no_region.name}</a>") )
+    end
+
+    it_behaves_like 'it provides a link to the login page' do
+      let(:email_created) { email_sent_co_noname_noregion }
+    end
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent_co_noname_noregion.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent_co_noname_noregion }
+    end
+  end
+
   it 'has a previewer' do
     expect(MemberMailerPreview).to be
   end
