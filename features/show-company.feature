@@ -200,3 +200,20 @@ Feature: As a visitor,
     And I should not see "310 40"
     And I should not see "Harplinge"
     And I should not see "Alingsås"
+
+
+  Scenario: Company info as meta JSON-ld is in the page head
+    Given I am Logged out
+    And I am the page for company number "5560360793"
+    And the page head should include a ld+json script tag with key "name" and value "Company1"
+    And the page head should include a ld+json script tag with key "description" and value ""
+    And the page head should include a ld+json script tag with key "url" and value "http://www.example.com"
+    And the page head should include a ld+json script tag with key "email" and value "cmpy1@mail.com"
+    And the page head should include a ld+json script tag with key "telephone" and value "123123123"
+    And the page head should include a ld+json script tag with key "location" and subkey "address" and subkey2 "streetAddress" and value "Hundforetagarevägen 1"
+    And the page head should include a ld+json script tag with key "location" and subkey "address" and subkey2 "postalCode" and value "310 40"
+    And the page head should include a ld+json script tag with key "location" and subkey "address" and subkey2 "addressRegion" and value "Stockholm"
+    And the page head should include a ld+json script tag with key "location" and subkey "address" and subkey2 "addressLocality" and value "Harplinge"
+    And the page head should include a ld+json script tag with key "location" and subkey "address" and subkey2 "addressCountry" and value "Sverige"
+    And the page head should include a ld+json script tag with key "location" and subkey "geo" and subkey2 "latitude" and value "60.128161"
+    And the page head should include a ld+json script tag with key "location" and subkey "geo" and subkey2 "longitude" and value "18.643501"
