@@ -311,11 +311,14 @@ GEM
       rest-client (~> 2.0.2)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    meta-tags (2.11.1)
+      actionpack (>= 3.2.0, < 6.1)
     method_source (0.9.2)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mimemagic (0.3.3)
+    mini_magick (4.9.2)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -620,6 +623,8 @@ DEPENDENCIES
   jwt
   launchy
   mailgun-ruby
+  meta-tags
+  mini_magick
   nokogiri
   orgnummer
   paperclip (~> 6.0.0)

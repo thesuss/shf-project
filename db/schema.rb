@@ -137,12 +137,13 @@ ActiveRecord::Schema.define(version: 2019_01_28_210825) do
   end
 
   create_table "file_delivery_methods", comment: "User choices for how files for SHF application will be delivered", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "description_sv"
     t.string "description_en"
     t.boolean "default_option", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_file_delivery_methods_on_name", unique: true
   end
 
   create_table "kommuns", force: :cascade do |t|

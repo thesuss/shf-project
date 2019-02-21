@@ -80,6 +80,10 @@ gem 'hashie'  # powerful methods for searching nested Hashes (ex: params) and mo
 
 gem 'aws-sdk-s3'
 
+gem 'meta-tags'
+gem 'mini_magick'
+
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'

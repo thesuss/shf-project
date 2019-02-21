@@ -164,6 +164,7 @@ Feature: SHF Application status is changed
     Given  I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     And I choose a file named "diploma.pdf" to upload
+    And I select files delivery radio button "upload_now"
     And I click on t("shf_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@shf.se"
@@ -173,6 +174,7 @@ Feature: SHF Application status is changed
     And  I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     And I choose a file named "image.png" to upload
+    And I select files delivery radio button "upload_now"
     And I click on t("shf_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@shf.se"

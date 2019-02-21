@@ -33,7 +33,7 @@ data:
     # - config/locales/%{locale}.yml
 
   ## Specify the router (see Readme for details). Valid values: conservative_router, pattern_router, or a custom class.
-  # router: convervative_router
+  # router: conservative_router
 
   yaml:
     write:
@@ -74,6 +74,8 @@ search:
     - app/assets/images
     - app/assets/fonts
     - app/assets/videos
+    - app/controllers/concerns/page_meta_tags_setter.rb
+
 
   ## Alternatively, the only files or `File.fnmatch patterns` to search in `paths`:
   ## If specified, this settings takes priority over `exclude`, but `exclude` still applies.
