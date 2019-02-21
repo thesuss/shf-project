@@ -26,9 +26,10 @@
 
 module SchemaDotOrg
 
-  class Thing < AbstractJsonLd
+  class Thing #< AsJsonLd
 
     include ActiveModel::Validations
+    include ToLdJson
 
     attr_accessor :name, :description, :url
 

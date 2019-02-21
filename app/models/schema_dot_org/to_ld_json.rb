@@ -2,24 +2,27 @@
 
 #--------------------------
 #
-# @class AbstractJsonLd
+# @class ToLdJson
 #
-# @desc Responsibility: - abstract class that can return a json_ld string,
+# @desc Responsibility: - ability to return a json_ld string representation
 # and respond to :to_json(as_root: true) and :to_json_struct
 #
-#     methods to convert to json_ld are taken from the schema_dot_org gem
+# Methods to convert to json_ld are taken from the schema_dot_org gem
+#
+#  Implementor must implement
+#     _to_json_struct
 #
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2019-02-19
 #
-# @file abstract_json_ld
+# @file as_json_ld
 #
 #--------------------------
 
 module SchemaDotOrg
 
-  class AbstractJsonLd
+  module ToLdJson
 
     UNQUALIFIED_CLASS_NAME_REGEX = /([^:]+)$/
 

@@ -2,7 +2,9 @@ require 'rails_helper'
 
 
 
-class SchemaDotOrg::TestJsonLd < SchemaDotOrg::AbstractJsonLd
+class SchemaDotOrg::TestJsonLd
+
+  include SchemaDotOrg::ToLdJson
 
   def url
     'this is the url'
@@ -16,11 +18,12 @@ class SchemaDotOrg::TestJsonLd < SchemaDotOrg::AbstractJsonLd
   end
 end
 
-class TestMissingMethods < SchemaDotOrg::AbstractJsonLd
+class TestMissingMethods
+  include SchemaDotOrg::ToLdJson
 end
 
 
-RSpec.describe SchemaDotOrg::AbstractJsonLd, type: :model do
+RSpec.describe SchemaDotOrg::ToLdJson do
 
 
   let(:test_json_ld)   { SchemaDotOrg::TestJsonLd.new }
