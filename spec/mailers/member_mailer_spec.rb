@@ -320,6 +320,31 @@ RSpec.describe MemberMailer, type: :mailer do
     end
   end
 
+  describe '#app_no_uploaded_files' do
+
+    NO_UPLOADED_FILES_SCOPE = 'mailers.member_mailer.app_no_uploaded_files'
+
+    let(:applicant) { create(:user_with_membership_app, email: 'user_new@example.com') }
+
+    let(:email_sent) { MemberMailer.app_no_uploaded_files(applicant) }
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('subject', scope: NO_UPLOADED_FILES_SCOPE),
+                    'user_new@example.com',
+                    'Firstname Lastname' do
+      let(:email_created) { email_sent }
+    end
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
+  end
+
   it 'has a previewer' do
     expect(MemberMailerPreview).to be
   end

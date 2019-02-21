@@ -995,7 +995,10 @@ sv:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
+    login_here: "Klicka här för att gå till inloggningssidan."
     may_need_to_login_first: "Du kan behöva logga in först.  Här är inloggningssidan:"
+    login_here: "Klicka här för att gå till SHF inloggningssidan."
+
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
 
@@ -1042,6 +1045,13 @@ sv:
 
     member_mailer:
       member_account_link: "%{account_link} (Du kan behöva logga in först innan länken fungerar.)"
+
+      app_no_uploaded_files:
+        subject: Din ansökan till Sveriges Hundföretagare saknar underlag
+        message_text: "Detta är en automatisk påminnelse från systemet som meddelar att din ansökan saknar uppladdade filer. Filerna behövs för att vi ska kunna handlägga din ansökan."
+        will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."
+        thanks:  "Tack för att du vill vara medlem."
+        error_sending: *shf_email_error
 
       membership_granted:
         subject: &subject_welcome "Välkommen som medlem i Sveriges Hundföretagare"

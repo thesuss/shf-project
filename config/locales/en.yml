@@ -990,7 +990,10 @@ en:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
+    login_here: "Click here to go to the login page."
     may_need_to_login_first: "You may need to log in first.  Here's the login page:"
+
+    login_here: "Click here to go to the SHF login page."
 
     application_mailer:
       greeting: &email_greeting "Hello %{greeting_name}"
@@ -1039,6 +1042,13 @@ en:
 
     member_mailer:
       member_account_link: "%{account_link} (You may need to login first before the link works.)"
+
+      app_no_uploaded_files:
+        subject: Please upload qualification files to your Sveriges Hundföretagare application
+        message_text: "This is a reminder that you need upload files for your SHF application so that it can be reviewed."
+        will_see_app_button: "After you log in, you will see a button that will take you to your application where you can upload your files."
+        thanks:  "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
+        error_sending: *shf_email_error
 
       membership_granted:
         subject: &subject_welcome "Welcome to SHF! You are now a member"

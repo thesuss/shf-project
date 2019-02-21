@@ -1,0 +1,11 @@
+- provide :signoff do
+  = render 'application_mailer/signoff'
+
+- message_scope = 'mailers.member_mailer.app_no_uploaded_files'
+
+= render layout: 'layouts/mail_from_membership' do
+  %p.message-text= t('message_text', scope: message_scope)
+  %p.login-url= login_url_link
+  %p.will-see-app-button= t('will_see_app_button', scope: message_scope)
+  %p.thanks= t('thanks', scope: message_scope)
+
