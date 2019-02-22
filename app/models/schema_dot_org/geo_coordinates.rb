@@ -12,7 +12,7 @@
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2019-02-19
 #
-# @file geo_coordinates
+# @file geo_coordinates.rb
 #
 #--------------------------
 

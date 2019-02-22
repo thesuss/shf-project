@@ -8,9 +8,8 @@
 # @desc Responsibility: (an Adapter) takes a Company and creates a
 #   schema.org organization
 #     Pattern: Adapter
-#       Adaptee: Company
-#       Target: schema.org Organization  https://schema.org/Organization
-#
+#       @adaptee: Company
+#       target: SchemaDotOrg::Organization  https://schema.org/Organization
 #
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)

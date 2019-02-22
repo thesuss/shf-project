@@ -8,8 +8,8 @@
 # @desc Responsibility: (an Adapter) takes an Address and creates a
 #   schema.org PostalAddress
 #     Pattern: Adapter
-#       Adaptee: Address
-#       Target: schema.org PostalAddress  https://schema.org/PostalAddress
+#       @adaptee: Address
+#       target: SchemaDotOrg::PostalAddress  https://schema.org/PostalAddress
 #
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)

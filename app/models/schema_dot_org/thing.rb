@@ -13,14 +13,12 @@
 #       description	Text 	A description of the item.
 #       url	        URL 	URL of the item.
 #
-#
 # methods to convert to json_ld are taken from the schema_dot_org gem
-#
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2019-02-19
 #
-# @file Thing
+# @file thing.rb
 #
 #--------------------------
 

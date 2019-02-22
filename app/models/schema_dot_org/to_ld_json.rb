@@ -16,7 +16,7 @@
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2019-02-19
 #
-# @file as_json_ld
+# @file to_ld_json.rb
 #
 #--------------------------
 

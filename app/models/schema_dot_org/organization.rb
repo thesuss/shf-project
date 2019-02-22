@@ -8,13 +8,11 @@
 #
 # @desc Responsibility: "An organization such as a school, NGO, corporation, club, etc."
 #
-#     Only a small subset of schema.org properties are implemented
-#
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2019-02-19
 #
-# @file organization
+# @file organization.rb
 #
 #--------------------------
 

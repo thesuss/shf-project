@@ -8,8 +8,8 @@
 # @desc Responsibility: (an Adapter) takes an Address and creates a
 #   schema.org GeoCoordinates
 #     Pattern: Adapter
-#       Adaptee: Address
-#       Target: schema.org GeoCoordinates https://schema.org/GeoCoordinates
+#       @adaptee: Address
+#       target: SchemaDotOrg::GeoCoordinates https://schema.org/GeoCoordinates
 #
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)

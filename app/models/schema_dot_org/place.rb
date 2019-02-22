@@ -8,13 +8,11 @@
 #
 # @desc Responsibility: "Entities that have a somewhat fixed, physical extension."
 #
-#     Only a small subset of schema.org properties are implemented
-#
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2019-02-19
 #
-# @file place
+# @file place.rb
 #
 #--------------------------
 

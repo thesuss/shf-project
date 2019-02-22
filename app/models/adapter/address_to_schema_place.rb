@@ -7,9 +7,10 @@
 #
 # @desc Responsibility: (an Adapter) takes an Address and creates a
 #   schema.org Place
+#
 #     Pattern: Adapter
-#       Adaptee: Address
-#       Target: schema.org Place  https://schema.org/Place
+#       @adaptee: Address
+#       target:  SchemaDotOrg::Place   https://schema.org/Place
 #
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
