@@ -31,22 +31,22 @@ RSpec.describe SchemaDotOrg::ToLdJson do
 
   let(:missing_to_json_struct) { TestMissingMethods.new }
 
-  describe 'to_json_ld' do
+  describe 'to_ld_json' do
 
     let(:to_json_ld_start) { Regexp.new('^<script type="application\/ld\+json">') }
     let(:to_json_ld_end)   { Regexp.new('<\/script>$') }
 
 
     it "starts with '<script type=\"application/ld+json\">'" do
-      expect(test_json_ld.to_json_ld).to match(to_json_ld_start)
+      expect(test_json_ld.to_ld_json).to match(to_json_ld_start)
     end
 
     it "ends with '</script>'" do
-      expect(test_json_ld.to_json_ld).to match(to_json_ld_end)
+      expect(test_json_ld.to_ld_json).to match(to_json_ld_end)
     end
 
     it 'the middle is :to_json with root == true' do
-      expect(test_json_ld.to_json_ld).to match(to_json_result)
+      expect(test_json_ld.to_ld_json).to match(to_json_result)
     end
 
   end

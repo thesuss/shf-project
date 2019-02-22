@@ -25,9 +25,9 @@ RSpec.describe SchemaDotOrg::Thing, type: :model do
 
 
   # This test isn't necessary.  But it's good to know it all works.
-  it 'to_json_ld' do
+  it 'to_ld_json' do
 
-    expect(thing1.to_json_ld).to eq "<script type=\"application/ld+json\">\n{" +
+    expect(thing1.to_ld_json).to eq "<script type=\"application/ld+json\">\n{" +
                                         "\"@context\":\"http://schema.org\"," +
                                         "\"@type\":\"Thing\"," +
                                         "\"@id\":\"https:/thing1/\"," +

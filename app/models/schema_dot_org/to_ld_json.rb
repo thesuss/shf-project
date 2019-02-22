@@ -29,7 +29,7 @@ module SchemaDotOrg
     ROOT_ATTR = { "@context" => "http://schema.org" }.freeze
 
 
-    def to_json_ld
+    def to_ld_json
       "<script type=\"application/ld+json\">\n" + to_json(as_root: true) + "\n</script>"
     end
 

@@ -6,8 +6,8 @@ class TestAdapter < Adapter::AbstractSchemaOrgAdapter
   # create a class that is 'adapted'
   class FauxSchemaOrgClass
 
-    def to_json_ld
-      "to_json_ld #{to_json}"
+    def to_ld_json
+      "to_ld_json #{to_json}"
     end
 
 
@@ -32,7 +32,7 @@ class TestAdapter < Adapter::AbstractSchemaOrgAdapter
     # This just contrived for this test
     def ==(something)
       something.class == self.class &&
-          something.to_json_ld == self.to_json_ld
+          something.to_ld_json == self.to_ld_json
     end
 
   end # end faux class
@@ -102,8 +102,8 @@ RSpec.describe Adapter::AbstractSchemaOrgAdapter, type: :model do
 
     describe 'returns the target, which must respond to:' do
 
-      it 'to_json_ld' do
-        expect(as_target_result.to_json_ld).to eq('to_json_ld ' +
+      it 'to_ld_json' do
+        expect(as_target_result.to_ld_json).to eq('to_ld_json ' +
                                                       "#{{ root:    true,
                                                            to_json: { '@type': 'some type', key: 'value' }
                                                       }}")
