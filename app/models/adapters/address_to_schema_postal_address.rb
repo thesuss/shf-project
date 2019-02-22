@@ -3,7 +3,7 @@
 
 #--------------------------
 #
-# @class Adapter::AddressToSchemaPostalAddress
+# @class Adapters::AddressToSchemaPostalAddress
 #
 # @desc Responsibility: (an Adapter) takes an Address and creates a
 #   schema.org PostalAddress
@@ -19,7 +19,7 @@
 #
 #--------------------------
 
-module Adapter
+module Adapters
 
   class AddressToSchemaPostalAddress < AbstractSchemaOrgAdapter
 

@@ -3,7 +3,7 @@
 
 #--------------------------
 #
-# @class Adapter::CompanyToSchemaOrganization
+# @class Adapters::CompanyToSchemaOrganization
 #
 # @desc Responsibility: (an Adapter) takes a Company and creates a
 #   schema.org organization
@@ -19,7 +19,7 @@
 #
 #--------------------------
 
-module Adapter
+module Adapters
 
   class CompanyToSchemaOrganization < AbstractSchemaOrgAdapter
 

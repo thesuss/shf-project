@@ -1,6 +1,6 @@
 - content_for :head_content do
   -# FIXME set the @id to the SHF page for the company or the company's web page?
-  = Adapter::CompanyToSchemaOrganization.new(@company).as_target.to_ld_json.html_safe
+  = Adapters::CompanyToSchemaOrganization.new(@company).as_target.to_ld_json.html_safe
 
 
 %div{ id: "#{unique_css_id(@company)}",

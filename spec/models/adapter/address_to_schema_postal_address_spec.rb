@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Adapter::AddressToSchemaPostalAddress do
+RSpec.describe Adapters::AddressToSchemaPostalAddress do
 
   let(:test_adapter) {
     co = create(:company)
     addr = co.addresses.first
-    Adapter::AddressToSchemaPostalAddress.new(addr)
+    Adapters::AddressToSchemaPostalAddress.new(addr)
   }
 
 

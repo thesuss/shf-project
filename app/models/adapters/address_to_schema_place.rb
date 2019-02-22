@@ -3,7 +3,7 @@
 
 #--------------------------
 #
-# @class Adapter::AddressToSchemaPlace
+# @class Adapters::AddressToSchemaPlace
 #
 # @desc Responsibility: (an Adapter) takes an Address and creates a
 #   schema.org Place
@@ -20,7 +20,7 @@
 #
 #--------------------------
 
-module Adapter
+module Adapters
 
   class AddressToSchemaPlace < AbstractSchemaOrgAdapter
 
@@ -42,13 +42,13 @@ module Adapter
 
 
     def set_address(target)
-      target.address = Adapter::AddressToSchemaPostalAddress.new(@adaptee).as_target
+      target.address = Adapters::AddressToSchemaPostalAddress.new(@adaptee).as_target
       target
     end
 
 
     def set_geo_coordinates(target)
-      target.geo = Adapter::AddressToSchemaGeoCoordinates.new(@adaptee).as_target
+      target.geo = Adapters::AddressToSchemaGeoCoordinates.new(@adaptee).as_target
       target
     end
 

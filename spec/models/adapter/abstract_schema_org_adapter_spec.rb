@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 
-class TestAdapter < Adapter::AbstractSchemaOrgAdapter
+class TestAdapter < Adapters::AbstractSchemaOrgAdapter
 
   # create a class that is 'adapted'
   class FauxSchemaOrgClass
@@ -49,11 +49,11 @@ class TestAdapter < Adapter::AbstractSchemaOrgAdapter
 end
 
 
-class TestSublcassMissingMethodsAdapter < Adapter::AbstractSchemaOrgAdapter
+class TestSublcassMissingMethodsAdapter < Adapters::AbstractSchemaOrgAdapter
 end
 
 
-RSpec.describe Adapter::AbstractSchemaOrgAdapter, type: :model do
+RSpec.describe Adapters::AbstractSchemaOrgAdapter, type: :model do
 
   let(:test_adapter) { TestAdapter.new('some string') }
   let(:as_target_result) { test_adapter.as_target }

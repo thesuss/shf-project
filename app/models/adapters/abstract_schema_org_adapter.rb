@@ -3,7 +3,7 @@
 
 #--------------------------
 #
-# @class Adapter::AbstractSchemaOrgAdapter
+# @class Adapters::AbstractSchemaOrgAdapter
 #
 # @desc Responsibility: abstract class that implements the minimum needed
 #   to _adapt_ one object to another.
@@ -26,7 +26,7 @@
 #
 #--------------------------
 
-module Adapter
+module Adapters
 
   class AbstractSchemaOrgAdapter
 

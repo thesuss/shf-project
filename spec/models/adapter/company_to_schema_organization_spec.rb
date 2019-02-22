@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Adapter::CompanyToSchemaOrganization do
+RSpec.describe Adapters::CompanyToSchemaOrganization do
 
   let(:test_adapter) {
     co = create(:company)
     co.description = 'description'
-    Adapter::CompanyToSchemaOrganization.new(co)
+    Adapters::CompanyToSchemaOrganization.new(co)
   }
 
 

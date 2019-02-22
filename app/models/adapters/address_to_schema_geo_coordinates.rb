@@ -3,7 +3,7 @@
 
 #--------------------------
 #
-# @class Adapter::AddressToSchemaGeoCoordinates
+# @class Adapters::AddressToSchemaGeoCoordinates
 #
 # @desc Responsibility: (an Adapter) takes an Address and creates a
 #   schema.org GeoCoordinates
@@ -19,7 +19,7 @@
 #
 #--------------------------
 
-module Adapter
+module Adapters
 
   class AddressToSchemaGeoCoordinates < AbstractSchemaOrgAdapter
 
