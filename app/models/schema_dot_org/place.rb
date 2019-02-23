@@ -24,11 +24,6 @@ module SchemaDotOrg
     attr_accessor :address,
                   :geo
 
-
-    def _to_json_struct
-      as_json
-    end
-
   end
 
 end

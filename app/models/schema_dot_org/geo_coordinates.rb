@@ -22,11 +22,6 @@ module SchemaDotOrg
 
     attr_accessor :latitude, :longitude
 
-
-    def _to_json_struct
-      as_json
-    end
-
   end
 
 end
