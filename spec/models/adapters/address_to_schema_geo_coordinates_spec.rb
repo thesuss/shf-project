@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Adapters::AddressToSchemaGeoCoordinates do
 
   let(:test_adapter) {
-    co = create(:company)
+    co   = create(:company)
     addr = co.addresses.first
     Adapters::AddressToSchemaGeoCoordinates.new(addr)
   }
