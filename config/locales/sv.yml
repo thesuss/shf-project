@@ -10,6 +10,9 @@ sv:
       description: "Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera."
       keywords: 'hund, hundägare, hundinstruktör, hundentreprenör, Sveriges Hundföretagare, svenskt hundföretag, etisk, H-märkt, hundkurs'
       image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
+
+  dog: hund
+
   home: Hem
   about: Om
   more: Mer

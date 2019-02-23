@@ -11,6 +11,8 @@ en:
       keywords: 'dog, dog owner, dog instructor, dog entrepreneur, Swedish dog company, Swedish dog company, ethical, H-brand, H-mark, H-marked, dog training'
       image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
 
+  dog: dog
+
   home: Home
   about: About
   more: More
@@ -63,6 +65,7 @@ en:
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
   login_page: login page
+
 
   info:
     logged_in_as_admin: You are logged in as an admin.
