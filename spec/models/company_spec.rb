@@ -26,36 +26,9 @@ RSpec.describe Company, type: :model, focus: true do
 
   let(:complete_co1) do
     create(:company, name: 'Complete Company 1',
+           description: 'This co has a 2 branding payments',
            company_number: '4268582063')
   end
-
-  let(:complete_co2) do
-    create(:company, name: 'Complete Company 2',
-           company_number: '5560360793')
-  end
-
-  let(:co3_no_addresses) do
-    co = create(:company, name: 'Complete Company 3',
-                company_number: '5569467466', num_addresses: 0)
-    create(:address, visibility: 'none', addressable: co)
-    co.save!
-    co
-  end
-
-  let(:complete_companies) { [complete_co1] }
-
-  let(:incomplete_companies) do
-    incomplete_cos = []
-    incomplete_cos << co_no_name
-    incomplete_cos << co_nil_region
-    incomplete_cos
-  end
-
-  let(:user) { create(:user) }
-
-  let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
-  let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
-  let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
 
   let(:payment1_co1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
@@ -80,11 +53,43 @@ RSpec.describe Company, type: :model, focus: true do
            expire_date:    expire_date)
   end
 
-  let(:company_3_addrs) { create(:company, num_addresses: 3) }
+
+  let(:complete_co2) do
+    create(:company, name: 'Complete Company 2',
+           company_number: '5560360793')
+  end
+
+
+  let(:co_no_addresses) do
+    co = create(:company, name: 'Complete Company 3',
+                description: 'this company has no addresses',
+                company_number: '5569467466', num_addresses: 0)
+    create(:address, visibility: 'none', addressable: co)
+    co.save!
+    co
+  end
+
+
+  let(:company_3_addrs) { create(:company, num_addresses: 3, description: 'this co has 3 addresses') }
 
   let(:event1) { create(:event, company: company_3_addrs) }
   let(:event2) { create(:event, company: company_3_addrs) }
 
+
+  let(:complete_companies) { [complete_co1] }
+
+  let(:incomplete_companies) do
+    incomplete_cos = []
+    incomplete_cos << co_no_name
+    incomplete_cos << co_nil_region
+    incomplete_cos
+  end
+
+  let(:user) { create(:user) }
+
+  let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
+  let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
+  let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
 
   describe 'Factory' do
     it 'has a valid factory' do
@@ -664,7 +669,7 @@ RSpec.describe Company, type: :model, focus: true do
 
       it 'only returns companies that have one or more visible addresses' do
         complete_co2
-        co3_no_addresses
+        co_no_addresses
         expect(Company.address_visible).
             to contain_exactly(co_no_name, co_nil_region, complete_co1, complete_co2)
       end
@@ -804,7 +809,7 @@ RSpec.describe Company, type: :model, focus: true do
       it 'returns companies with dinkurs_company_id' do
         complete_co1
         complete_co2
-        co3_no_addresses
+        co_no_addresses
         company_3_addrs.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
         expect(Company.with_dinkurs_id).not_to be_empty
         expect(Company.with_dinkurs_id).to contain_exactly(company_3_addrs)
