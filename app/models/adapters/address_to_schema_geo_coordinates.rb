@@ -30,8 +30,8 @@ module Adapters
 
 
     def set_target_attributes(target)
-      target.latitude  = @adaptee.latitude
-      target.longitude = @adaptee.longitude
+      target.latitude  = @adaptee.latitude unless @adaptee.latitude.nil?
+      target.longitude = @adaptee.longitude unless @adaptee.longitude.nil?
       target
     end
 
