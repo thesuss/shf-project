@@ -27,11 +27,6 @@ module SchemaDotOrg
                   :addressLocality,
                   :addressCountry
 
-
-    def _to_json_struct
-      as_json
-    end
-
   end
 
 end
