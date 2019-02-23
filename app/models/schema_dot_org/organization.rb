@@ -20,19 +20,15 @@ module SchemaDotOrg
 
   class Organization < Thing
 
-
     attr_accessor :email,
                   :telephone,
                   :location,
+                  :address,
+                  :geo,
                   :image,
                   :memberOf,
+                  :knowsAbout,
                   :knowsLanguage
-
-
-    def _to_json_struct
-      as_json
-    end
-
   end
 
 end
