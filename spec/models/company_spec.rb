@@ -1,79 +1,13 @@
 require 'rails_helper'
 
+require 'shared_context/companies'
+
 require_relative File.join('..', '..', 'app', 'services', 'address_exporter')
 
 
 RSpec.describe Company, type: :model, focus: true do
 
-  let(:co_with_short_h_brand_url) do
-    create(:company, short_h_brand_url: 'http://www.tinyurl.com/hbrand')
-  end
-
-  let(:co_no_name) do
-    create(:company, name: '', company_number: '2120000142')
-  end
-
-  let(:co_nil_region) do
-    nil_co = create(:company, name: 'Nil Region',
-                    company_number: '6112107039')
-
-    no_region = build(:company_address, addressable: nil_co, region: nil)
-
-    no_region.save(validate: false)
-
-    nil_co
-  end
-
-  let(:complete_co1) do
-    create(:company, name: 'Complete Company 1',
-           description: 'This co has a 2 branding payments',
-           company_number: '4268582063')
-  end
-
-  let(:payment1_co1) do
-    start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
-    create(:payment,
-           :successful,
-           user: user,
-           company:        complete_co1,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment1_co1, complete_co1',
-           start_date:     start_date,
-           expire_date:    expire_date)
-  end
-  let(:payment2) do
-    start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
-    create(:payment,
-           :successful,
-           user: user,
-           company:        complete_co1,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment2',
-           start_date:     start_date,
-           expire_date:    expire_date)
-  end
-
-
-  let(:complete_co2) do
-    create(:company, name: 'Complete Company 2',
-           company_number: '5560360793')
-  end
-
-
-  let(:co_no_addresses) do
-    co = create(:company, name: 'Complete Company 3',
-                description: 'this company has no addresses',
-                company_number: '5569467466', num_addresses: 0)
-    create(:address, visibility: 'none', addressable: co)
-    co.save!
-    co
-  end
-
-
-  let(:company_3_addrs) { create(:company, num_addresses: 3, description: 'this co has 3 addresses') }
-
-  let(:event1) { create(:event, company: company_3_addrs) }
-  let(:event2) { create(:event, company: company_3_addrs) }
+  include_context 'create companies'
 
 
   let(:complete_companies) { [complete_co1] }
@@ -669,7 +603,7 @@ RSpec.describe Company, type: :model, focus: true do
 
       it 'only returns companies that have one or more visible addresses' do
         complete_co2
-        co_no_addresses
+        co_no_viz_addresses
         expect(Company.address_visible).
             to contain_exactly(co_no_name, co_nil_region, complete_co1, complete_co2)
       end
@@ -809,7 +743,7 @@ RSpec.describe Company, type: :model, focus: true do
       it 'returns companies with dinkurs_company_id' do
         complete_co1
         complete_co2
-        co_no_addresses
+        co_no_viz_addresses
         company_3_addrs.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
         expect(Company.with_dinkurs_id).not_to be_empty
         expect(Company.with_dinkurs_id).to contain_exactly(company_3_addrs)
