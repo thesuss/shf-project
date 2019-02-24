@@ -7,6 +7,8 @@ Feature: Whole process of a new user creating a login, applying, being approved,
       | new_user@example.com |       | NewUser1   | Lastname  |
       | admin@shf.se         | true  |            |           |
 
+    And the application file upload options exist
+
     Given the following regions exist:
       | name         |
       | Stockholm    |
@@ -36,8 +38,10 @@ Feature: Whole process of a new user creating a login, applying, being approved,
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | new_user@example.com               |
     And I select "Groomer" Category
+    And I select files delivery radio button "upload_later"
+
     And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("shf_applications.create.success", email_address: new_user@example.com)
+    And I should see t("shf_applications.create.success_with_app_files_missing")
 
     Then I am in "admin@shf.se" browser
     And I am logged in as "admin@shf.se"
@@ -49,7 +53,9 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I should be on the "edit application" page for "new_user@example.com"
     And I should not see t("shf_applications.update.enter_member_number")
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+
     And I should see t("shf_applications.accepted")
 
     Given I am in "new_user@example.com" browser
@@ -65,7 +71,9 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
     And I fill in t("shf_applications.show.membership_number") with "10101"
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+
     And I should see t("shf_applications.accepted")
     And I should see "10101"
 

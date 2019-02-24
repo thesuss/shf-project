@@ -25,7 +25,7 @@
                                                :first, :second, {},
                                                { class: 'radio-inline' }) do |rb|
 
-                    = rb.label(style: 'margin-left: 10px;') do
+                    = rb.label(class: 'radio-inline-label') do
                       = rb.radio_button + ' ' + rb.text
 
               = fields_for :payment, user.most_recent_membership_payment do |pf|

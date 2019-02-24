@@ -23,8 +23,6 @@ class ShfApplicationsController < ApplicationController
 
 
   def index
-    authorize ShfApplication
-
     self.params = fix_FB_changed_q_params(self.params)
 
     session[:shf_application_items_selection] ||= 'All' if current_user.admin?
@@ -66,15 +64,23 @@ class ShfApplicationsController < ApplicationController
 
     @shf_application.companies = companies_and_numbers[:companies] if all_valid
 
-    if all_valid && @shf_application.save
+    file_delivery_selected = user_selected_file_delivery_option?
 
-      file_uploads_successful = new_file_uploaded(params)
+    if all_valid && @shf_application.save
 
       send_new_app_emails(@shf_application)
 
-      if file_uploads_successful
-        helpers.flash_message(:notice, t('.success', email_address: @shf_application.contact_email))
+      if process_upload_files_without_error?(params)
+
+        unless set_flash_messages_for_missing_application_files?(@shf_application,
+                                                                file_delivery_selected,
+                                                                'create')
+          helpers.flash_message(:notice,
+                                t('.success', email_address: @shf_application.contact_email))
+        end
+
         redirect_to information_path
+
       else
         helpers.flash_message(:notice, t('.success_with_file_problem'))
         load_update_objects(numbers_str)
@@ -95,13 +101,18 @@ class ShfApplicationsController < ApplicationController
 
     @shf_application.companies = companies_and_numbers[:companies] if all_valid
 
-    if all_valid && @shf_application.update(shf_application_params) &&
-         new_file_uploaded(params)
+    file_delivery_selected = user_selected_file_delivery_option?
 
-      check_and_mark_if_ready_for_review(params['shf_application']) if
-        params['shf_application']
+    if all_valid && @shf_application.update(shf_application_params) && process_upload_files_without_error?(params)
 
-      helpers.flash_message(:notice, t('.success'))
+      check_and_mark_if_ready_for_review(params['shf_application'])
+
+      unless set_flash_messages_for_missing_application_files?(@shf_application,
+                                                              file_delivery_selected,
+                                                              'update')
+        helpers.flash_message(:notice, t('.success'))
+      end
+
       redirect_to define_path(evaluate_update(params))
     else
 
@@ -183,6 +194,47 @@ class ShfApplicationsController < ApplicationController
 
   private
 
+  def set_flash_messages_for_missing_application_files?(shf_application,
+                                                       file_delivery_selected,
+                                                       action)
+
+    return false if shf_application.uploaded_files.present?
+
+    helpers.flash_message(:notice,
+      t("shf_applications.#{action}.success_with_app_files_missing"))
+
+    if file_delivery_selected
+
+      if shf_application.file_delivery_method.default_option
+        helpers.flash_message(:warn,
+          t("shf_applications.#{action}.upload_file_or_select_method"))
+      else
+        helpers.flash_message(:warn,
+          t("shf_applications.#{action}.remember_to_deliver_files"))
+      end
+
+    else
+
+      helpers.flash_message(:warn,
+        t("shf_applications.#{action}.upload_file_or_select_method"))
+    end
+    true
+  end
+
+  def user_selected_file_delivery_option?
+    file_delivery_selected = false
+
+    method_id = params[:shf_application][:file_delivery_method_id]
+    current_method = @shf_application.file_delivery_method
+
+    if method_id.present? && (!current_method || current_method.id != method_id)
+      @shf_application.file_delivery_selection_date = Date.current
+      file_delivery_selected = true
+    end
+
+    file_delivery_selected
+  end
+
   def define_path(user_deleted_file)
     return edit_shf_application_path(@shf_application) if user_deleted_file
     shf_application_path(@shf_application)
@@ -209,6 +261,8 @@ class ShfApplicationsController < ApplicationController
 
 
   def check_and_mark_if_ready_for_review(app_params)
+    return unless app_params
+
     if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != "0"
       @shf_application.is_ready_for_review!
     end
@@ -226,7 +280,9 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  def new_file_uploaded(params)
+  def process_upload_files_without_error?(params)
+    # Returns true if no errors, false otherwise
+    # (*true* return value does NOT mean that one or more files were actually uploaded)
 
     successful = true
 
@@ -267,6 +323,12 @@ class ShfApplicationsController < ApplicationController
 
   def create_or_update_error(error_message, companies_and_numbers,
                              company_numbers_str, render_me)
+
+    # User.accepts_nested_attributes_for :shf_application will add a second
+    # validation - for the file delivery method - to the model errors hash.
+    # This means model errors will have 2 errors for the same problem (File
+    # delivery method not selected by the user).  This line removes one of those:
+    @shf_application.errors.delete(:"user.shf_application.file_delivery_method")
 
     @shf_application = add_company_errors_to_model(@shf_application,
                                                    companies_and_numbers)
@@ -356,8 +418,9 @@ class ShfApplicationsController < ApplicationController
       helpers.flash_message(:error, t('mailers.shf_application_mailer.acknowledge_received.error_sending', email: @shf_application.user.email))
     end
 
-    # if there is a problem sending email to the admin, do not display an error to the user.
-    send_new_shf_application_notice_to_admins(new_shf_app)
+    # No rescue for the following because if there is a problem sending email to the admin,
+    # do not display an error to the user
+    send_new_shf_application_notice_to_admins(new_shf_app) if AdminOnly::AppConfiguration.config_to_use.email_admin_new_app_received_enabled
 
 end
 

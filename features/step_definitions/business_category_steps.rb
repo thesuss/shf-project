@@ -26,6 +26,17 @@ And(/^I select "([^"]*)" Category/) do |element|
   # for the same reason (and there no way to override this).
   # Hence the need to execute some JS to check the checkbox.
 
+  # 2019-01-28 AE:  If your test doesn't really care _which_ category you need to pick
+  # then just choose the first one.  The id of each category checkbox is
+  #  shf_application_business_category_ids_<number>
+  # So you can actually check/uncheck specific categories if you know the
+  # number (e.g. the n-th one).
+  # You can then just use this step to check (select) a category:
+  #    And I check the checkbox with id "shf_application_business_category_ids_1"
+  # or this one to unselect:
+  #    And I uncheck the checkbox with id "shf_application_business_category_ids_1"
+  #
+
   ele = find :field, element, visible: :any
   page.evaluate_script("$(#{ele[:id]}).prop('checked', true)")
 end

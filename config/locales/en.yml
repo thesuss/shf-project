@@ -4,6 +4,12 @@ en:
   title: "SWEDEN'S ETHICAL DOG COMPANIES"
 
   SHF_name: &SHF_name "Swedish Dog Industry Association"
+  meta:
+    default:
+      title: "Find H-markt dog companies, dog training instructors, dog trainers, or dog entrepreneurs."
+      description: "Here you will find ethical Swedish dog companies that have earned the H-brand mark. Find dog trainers, dog training instructors, dog psychologists, dog day care, grooming and more."
+      keywords: 'dog, dog owner, dog instructor, dog entrepreneur, Swedish dog company, Swedish dog company, ethical, H-brand, H-mark, H-marked, dog training'
+      image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
 
   home: Home
   about: About
@@ -56,6 +62,7 @@ en:
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
+  login_page: login page
 
   info:
     logged_in_as_admin: You are logged in as an admin.
@@ -342,6 +349,9 @@ en:
       need_to_enter_name_html: You must have your first and last name defined
                           in order to create a membership application.
                           %{edit_profile}.
+      submit_button_explain: Select a file delivery option to enable Submit
+      where_to_mail_files: We will email you the address
+      email_files_subject: My Application Files
 
     rendering:
       success: Action performed successfully
@@ -349,17 +359,24 @@ en:
     create:
       success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
       error: The was a problem creating and submitting your application.
-      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) BELOW
+      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) WITH FILE UPLOAD
+      success_with_app_files_missing: YOUR APPLICATION WAS CREATED, BUT REQUIRED FILES ARE MISSING
+      upload_file_or_select_method: &upload_files Please upload files or select another delivery method
+      remember_to_deliver_files: &chosen_method Please remember to deliver files via the chosen delivery method
 
     edit:
       title: Edit Membership Application
       is_ready_for_review: Is Ready for Review
       submit_button_label: *save
+      submit_button_explain: Select a file delivery option to enable Save
 
     update:
       success: The application was updated.
       error: One or more problems prevented your application from being updated.
       enter_member_number: Please review the member number and save.
+      success_with_app_files_missing: YOUR APPLICATION WAS UPDATED, BUT REQUIRED FILES ARE MISSING
+      upload_file_or_select_method: *upload_files
+      remember_to_deliver_files: *chosen_method
 
     show:
       title: Application from %{user_full_name}
@@ -943,11 +960,21 @@ en:
 
     app_configuration:
       edit:
-        title: Application Configuration
-        chair_signature: Chairperson Signature
-        shf_logo: Organization Logo
-        h_brand_logo: H-Branding Logo
-        sweden_dog_trainers: Sweden Dog Trainers
+        title: &application_configuration Application Configuration
+        chair_signature: &chair_signature_title Chairperson Signature
+        shf_logo: &shf_logo_title Organization Logo
+        h_brand_logo: &h_branding_logo_title H-Branding Logo
+        sweden_dog_trainers: &sweden_dog_trainers_logo_title Sweden Dog Trainers
+        admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+
+      show:
+        title: *application_configuration
+        chair_signature: *chair_signature_title
+        shf_logo: *shf_logo_title
+        h_brand_logo: *h_branding_logo_title
+        sweden_dog_trainers: *sweden_dog_trainers_logo_title
+        admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+
       update:
         success: Application data updated successfully
         error: There was a problem with updating configuration data
@@ -969,6 +996,11 @@ en:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
+    login_here: "Click here to go to the login page."
+    may_need_to_login_first: "You may need to log in first.  Here's the login page:"
+
+    login_here: "Click here to go to the SHF login page."
+
     application_mailer:
       greeting: &email_greeting "Hello %{greeting_name}"
 
@@ -1015,6 +1047,15 @@ en:
 
 
     member_mailer:
+      member_account_link: "%{account_link} (You may need to login first before the link works.)"
+
+      app_no_uploaded_files:
+        subject: Please upload qualification files to your Sveriges Hundföretagare application
+        message_text: "This is a reminder that you need upload files for your SHF application so that it can be reviewed."
+        will_see_app_button: "After you log in, you will see a button that will take you to your application where you can upload your files."
+        thanks:  "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
+        error_sending: *shf_email_error
+
       membership_granted:
         subject: &subject_welcome "Welcome to SHF! You are now a member"
         greeting: *email_greeting
@@ -1029,10 +1070,9 @@ en:
         greeting: *email_greeting
         message_text:
           expire_alert_html: Please note that your current membership period will
-                        expire on <span style="background-color:yellow;">%{expire_date}</span>.
+                        expire on <span class="date-warning">%{expire_date}</span>.
           extend_membership: You can extend your membership for another
                              12 months by paying the membership fee.
-          account_login_html: "%{account_link} (you may need to login first before the link works)."
 
       h_branding_fee_past_due:
         subject: The H-Branding fee for your company is unpaid/past due
@@ -1041,6 +1081,27 @@ en:
           fee_is_unpaid: Please note that your current H-branding fee is unpaid.
           how_to_pay_fee: You can pay your H-branding for another 12 months by paying the fee. This makes you visible on the map.
           company_link_login_msg: " (You may need to login first before you can see the button to pay)."
+
+      membership_lapsed:
+        subject: "Your SHF membership has expired"
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
+          renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
+
+
+      co_info_incomplete:
+        subject: Please complete the company information
+        greeting: *email_greeting
+        message_text:
+          complete_the_info: "You need to complete the info for %{co_identifier}. If you don't it won't show up on the map or in Google searches"
+          company_needs_name: "company number %{co_number}"
+          what_is_missing: "Here is what's missing:"
+          co_name_missing: "company name"
+          co_region_missing: "company address"
+          please_complete: "Please add the above information so the company information is complete."
+          company_link_login_msg: "Here's the link to the company so you can edit it: "
+
 
   devise:
     min_length: '(at least %{minimum_length} characters)'

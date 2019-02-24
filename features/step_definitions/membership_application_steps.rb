@@ -31,7 +31,7 @@ And(/^the following applications exist:$/) do |table|
 
     else
       num_categories = hash[:categories] ? 0 : 1
-      
+
       ma = FactoryBot.build(:shf_application,
                             attributes.merge(user: user,
                             contact_email: contact_email,
@@ -50,4 +50,25 @@ And(/^the following applications exist:$/) do |table|
     end
     ma.save
   end
+end
+
+And(/^the application file upload options exist$/) do
+  FactoryBot.create(:file_delivery_upload_now) if AdminOnly::FileDeliveryMethod.find_by(name: 'upload_now').nil?
+  FactoryBot.create(:file_delivery_upload_later) if AdminOnly::FileDeliveryMethod.find_by(name: 'upload_later').nil?
+  FactoryBot.create(:file_delivery_email) if AdminOnly::FileDeliveryMethod.find_by(name: 'email').nil?
+  FactoryBot.create(:file_delivery_mail) if AdminOnly::FileDeliveryMethod.find_by(name: 'mail').nil?
+  FactoryBot.create(:file_delivery_files_uploaded) if AdminOnly::FileDeliveryMethod.find_by(name: 'files_uploaded').nil?
+end
+
+When "I select files delivery radio button {capture_string}" do |option|
+  # "option" must be a value from AdminOnly::FileDeliveryMethod::METHOD_NAMES
+
+  delivery = AdminOnly::FileDeliveryMethod.get_method(option.to_sym)
+  description = delivery.send("description_#{I18n.locale}".to_sym)
+
+  step %{I select radio button "#{description}"}
+
+  # manually make the save button enabled:
+  page.evaluate_script("$('.app-submit').prop('disabled', false)")
+
 end

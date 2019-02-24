@@ -66,7 +66,7 @@ class ConditionResponder
   end
 
 
-  # Determine the number of days toay is _away_from_ this date.
+  # Determine the number of days today is _away_from_ this date.
   # The :timing is whether we are calculating the number of days
   # _before_, _after_, or _on_ this day, starting from today.
   #
@@ -74,13 +74,32 @@ class ConditionResponder
   # @param timing [Timing] - which 'direction' (before, after, on) to compare to today
   # @return [Integer] - the number of days away from today, based on our :timing
   def self.days_today_is_away_from(this_date, timing)
+    days_1st_date_is_from_2nd(Date.current, this_date, timing)
+  end
 
-    day_num_to_check = 0 # equivalent to checking on today
+
+  # Determine the number of days :a_date is _away_from_ :second_date.
+  # The :timing is whether we are calculating the number of days
+  # _before_, _after_, or _on_ this day, starting from :a_date.
+  #
+  # @param a_date [Date] - the starting date
+  # @param second_date [Date] - the date to compare to :a_date
+  # @param timing [Timing] - which 'direction' (before, after, on) to compare to :a_date
+  # @return [Integer] - the number of days separating the two dates, based on the :timing
+  def self.days_1st_date_is_from_2nd(a_date, second_date, timing)
+
+    day_num_to_check = 0 # default value
+
+    # We use .to_date to ensure that we're comparing and working with Dates, not Times, etc.
+    # If calling .to_date throws an exception, that's an exception that should be raised.
 
     if timing_is_before?(timing)
-      day_num_to_check = this_date - Date.current
+      # number of days that a_date is _before_ second_date
+      day_num_to_check = second_date.to_date - a_date.to_date
+
     elsif timing_is_after?(timing)
-      day_num_to_check = Date.current - this_date
+      # number of days that a_date is _after_ second_date
+      day_num_to_check = a_date.to_date - second_date.to_date
     end
 
     day_num_to_check.to_i

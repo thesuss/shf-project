@@ -4,6 +4,7 @@
       = t('hello', name: current_user.first_name)
     %ul.dropdown-menu
       %li
+<<<<<<< HEAD
         = link_to t('devise.registrations.edit.title'), edit_user_registration_path, class: 'nav-link'
       %li
         = link_to t('menus.nav.users.your_account'), user_path(current_user), class: 'nav-link'
@@ -13,6 +14,12 @@
       %li
         = link_to t('devise.sessions.destroy.log_out'),
                   destroy_user_session_path, method: :delete, class: 'nav-link'
+=======
+        = link_to(t('menus.nav.admin.app_configuration'), admin_only_app_configuration_path)
+    %li
+      = link_to(t('devise.sessions.destroy.log_out'),
+                destroy_user_session_path, method: :delete)
+>>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
 - else
   %li.login
     = link_to t('devise.sessions.new.log_in'), new_user_session_path, class: 'nav-link'

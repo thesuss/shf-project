@@ -11,5 +11,4 @@
     = t('extend_membership', scope: message_scope)
 
   %p
-    = t('account_login_html', scope: message_scope,
-        account_link: link_to(t('menus.nav.users.your_account'), user_url(@member)))
+    = render 'user_account_link', member: @member

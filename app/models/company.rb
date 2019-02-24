@@ -44,11 +44,80 @@ class Company < ApplicationRecord
   alias_method :categories, :business_categories
   delegate :visible, to: :addresses, prefix: true
 
+
+
+  def self.next_branding_payment_dates(company_id)
+    next_payment_dates(company_id, Payment::PAYMENT_TYPE_BRANDING)
+  end
+
+
+  # Note: If the rules/definition for a 'complete' company change, this scope
+  # must be changed in addition to the code in RequirementsForCoInfoComplete
+  #
+  # All addresses for a company are complete AND the name is not blank
+  # must qualify name with 'companies' because there are other tables that use 'name' and if
+  # this scope is combined with a clause for a different table that also uses 'name',
+  # SQL won't know which table to get 'name' from
+  #  name could be NULL or it could be an empty string
+  def self.complete
+    where.not('companies.name' => '',
+              id: Address.lacking_region.pluck(:addressable_id))
+  end
+
+
+  def self.branding_licensed
+    # All companies (distinct) with at least one unexpired branding payment
+    joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
+  end
+
+
+  def self.address_visible
+    # Return ActiveRecord::Relation object for all companies (distinct) with at
+    # least one visible address
+    joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
+  end
+
+  def self.with_members
+    joins(:shf_applications)
+        .where('shf_applications.state = ?', :accepted)
+        .joins(:users).where('users.member = ?', true).distinct
+  end
+
+
+  def self.searchable
+    # Criteria limiting visibility of companies to non-admin users
+    complete.with_members.branding_licensed
+  end
+
+
+  # all companies at these addresses (array of Address)
+  def self.at_addresses(addresses)
+    joins(:addresses)
+        .where(id: addresses.map(&:addressable_id) )
+  end
+
+
+  def self.with_dinkurs_id
+    where.not(dinkurs_company_id: [nil, '']).order(:id)
+  end
+
+
+  def complete?
+    RequirementsForCoInfoComplete.requirements_met? company: self
+  end
+
+
+  def missing_region?
+    addresses.map(&:region).include?(nil)
+  end
+
+
   def approved_applications_from_members
     # Returns ActiveRecord Relation
     shf_applications.accepted.includes(:user)
       .order('users.last_name').where('users.member = ?', true)
   end
+
 
   def validate_key_and_fetch_dinkurs_events(on_update: true)
     return true if on_update and !will_save_change_to_attribute?('dinkurs_company_id')
@@ -59,44 +128,54 @@ class Company < ApplicationRecord
     return false
   end
 
+
   def fetch_dinkurs_events
     events.clear
     return if dinkurs_company_id.blank?
     Dinkurs::EventsCreator.new(self, events_start_date).call
   end
 
+
   def events_start_date
     # Fetch events that start on or after this date
     1.day.ago.to_date
   end
 
+
   def any_visible_addresses?
     addresses_visible.any?
   end
+
 
   def categories_names
     categories.select(:name).distinct.order(:name).pluck(:name)
   end
 
+
   def addresses_region_names
     addresses.joins(:region).select('regions.name').distinct.pluck('regions.name')
   end
+
 
   def kommuns_names
     addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
+
   def most_recent_branding_payment
     most_recent_payment(Payment::PAYMENT_TYPE_BRANDING)
   end
+
 
   def branding_expire_date
     payment_expire_date(Payment::PAYMENT_TYPE_BRANDING)
   end
 
+
   def branding_payment_notes
     payment_notes(Payment::PAYMENT_TYPE_BRANDING)
   end
+
 
   # @return [Boolean] - true only if there is a branding_expire_date and it is in the future (from today)
   def branding_license?
@@ -112,53 +191,6 @@ class Company < ApplicationRecord
     current_members.empty? ? nil : current_members.map(&:membership_start_date).sort.first
   end
 
-
-  def self.next_branding_payment_dates(company_id)
-    next_payment_dates(company_id, Payment::PAYMENT_TYPE_BRANDING)
-  end
-
-
-  # All addresses for a company are complete AND the name is not blank
-  # must qualify name with 'companies' because there are other tables that use 'name' and if
-  # this scope is combined with a clause for a different table that also uses 'name',
-  # SQL won't know which table to get 'name' from
-  #  name could be NULL or it could be an empty string
-  def self.complete
-    where.not('companies.name' => '',
-              id: Address.lacking_region.pluck(:addressable_id))
-  end
-
-  def self.branding_licensed
-    # All companies (distinct) with at least one unexpired branding payment
-    joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
-  end
-
-  def self.address_visible
-    # Return ActiveRecord::Relation object for all companies (distinct) with at
-    # least one visible address
-    joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
-  end
-
-  def self.with_members
-    joins(:shf_applications)
-      .where('shf_applications.state = ?', :accepted)
-      .joins(:users).where('users.member = ?', true).distinct
-  end
-
-  def self.searchable
-    # Criteria limiting visibility of companies to non-admin users
-    complete.with_members.branding_licensed
-  end
-
-  # all companies at these addresses (array of Address)
-  def self.at_addresses(addresses)
-    joins(:addresses)
-      .where(id: addresses.map(&:addressable_id) )
-  end
-
-  def self.with_dinkurs_id
-    where.not(dinkurs_company_id: [nil, '']).order(:id)
-  end
 
   def destroy_checks
 
@@ -204,6 +236,7 @@ class Company < ApplicationRecord
       AddressExporter.se_mailing_csv_str( main_address )
   end
 
+
   def get_short_h_brand_url(url)
     found = self.short_h_brand_url
     return found if found
@@ -217,6 +250,9 @@ class Company < ApplicationRecord
   end
 
 
+  # ========================================================================
+
+
   private
 
 
@@ -226,6 +262,7 @@ class Company < ApplicationRecord
   def sanitize_website
     self.website = InputSanitizer.sanitize_url(website)
   end
+
 
   def sanitize_description
     self.description = InputSanitizer.sanitize_html(description)

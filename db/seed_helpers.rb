@@ -10,7 +10,14 @@ module SeedHelper
   SEED_ERROR_MSG             = 'Seed ERROR: Could not load either admin email or password.' +
       ' NO ADMIN was created!' unless defined?(SEED_ERROR_MSG)
 
-  MA_ACCEPTED_STATE          = :accepted unless defined?(MA_ACCEPTED_STATE)
+  MA_NEW_STATE          = :new unless defined?(MA_NEW_STATE)
+  MA_UNDER_REVIEW_STATE = :under_review unless defined?(MA_UNDER_REVIEW_STATE)
+  MA_WAITING_FOR_APPLICANT_STATE =
+                          :waiting_for_applicant unless defined?(MA_WAITING_FOR_APPLICANT_STATE)
+  MA_READY_FOR_REVIEW_STATE =
+                          :ready_for_review unless defined?(MA_READY_FOR_REVIEW_STATE)
+  MA_ACCEPTED_STATE     = :accepted unless defined?(MA_ACCEPTED_STATE)
+  MA_REJECTED_STATE     = :rejected unless defined?(MA_REJECTED_STATE)
 
   MA_ACCEPTED_STATE_STR      = MA_ACCEPTED_STATE.to_s unless defined?(MA_ACCEPTED_STATE_STR)
 
@@ -111,6 +118,12 @@ module SeedHelper
 
 
   def make_n_save_app(user, state, co_number = get_company_number)
+    # Reset instance vars so AR records will be reloaded when run in TEST
+    # (rspec DB tests load tasks but there is no "reload" available)
+    @files_uploaded = nil
+    @upload_later = nil
+    @email = nil
+
 
     # create a basic app
     ma = make_app(user)
@@ -118,6 +131,8 @@ module SeedHelper
     ma.companies = [] # We validate that this association is present
 
     ma.state = state
+
+    ma.file_delivery_method = get_delivery_method_for_app(state)
 
     # make a full company object (instance) for the membership application
     ma.companies << make_new_company(co_number)
@@ -153,6 +168,22 @@ module SeedHelper
 
     user.save!
     user
+  end
+
+  def get_delivery_method_for_app(state)
+    klass = AdminOnly::FileDeliveryMethod
+
+    case state
+
+    when MA_ACCEPTED_STATE, MA_REJECTED_STATE, MA_READY_FOR_REVIEW_STATE
+      @files_uploaded ||= klass.get_method(:files_uploaded)
+
+    when MA_NEW_STATE, MA_WAITING_FOR_APPLICANT_STATE
+      @upload_later ||= klass.get_method(:upload_later)
+
+    when MA_UNDER_REVIEW_STATE
+      @email ||= klass.get_method(:email)
+    end
   end
 
 

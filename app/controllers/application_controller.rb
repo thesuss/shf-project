@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
+
   include Pundit
+  include PageMetaTagsSetter
 
   protect_from_forgery with: :exception
   before_action :set_locale

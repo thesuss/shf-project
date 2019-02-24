@@ -34,6 +34,8 @@ end
 RSpec.describe User, type: :model do
 
   let(:user) { create(:user) }
+  let(:user_with_member_photo) { create(:user, :with_member_photo) }
+
   let(:user_with_app) { create(:user_with_membership_app) }
   let(:member) { create(:member_with_membership_app) }
 
@@ -147,18 +149,19 @@ RSpec.describe User, type: :model do
       let(:xyz_file) { File.new(file_root + 'member_with_dog.xyz') }
 
       it 'rejects if content not jpeg or png' do
-        user.member_photo = txt_file
-        expect(user).not_to be_valid
 
-        user.member_photo = gif_file
-        expect(user).not_to be_valid
+        user_with_member_photo.member_photo = txt_file
+        expect(user_with_member_photo).not_to be_valid
 
-        user.member_photo = ico_file
-        expect(user).not_to be_valid
+        user_with_member_photo.member_photo = gif_file
+        expect(user_with_member_photo).not_to be_valid
+
+        user_with_member_photo.member_photo = ico_file
+        expect(user_with_member_photo).not_to be_valid
       end
       it 'rejects if content OK but file type wrong' do
-        user.member_photo = xyz_file
-        expect(user).not_to be_valid
+        user_with_member_photo.member_photo = xyz_file
+        expect(user_with_member_photo).not_to be_valid
       end
     end
   end
@@ -193,13 +196,13 @@ RSpec.describe User, type: :model do
   describe 'destroy or nullify associated records when user is destroyed' do
 
     it 'member_photo' do
-      expect(user.member_photo).not_to be_nil
-      expect(user.member_photo.exists?).to be true
+      expect(user_with_member_photo.member_photo).not_to be_nil
+      expect(user_with_member_photo.member_photo.exists?).to be true
 
-      user.destroy
+      user_with_member_photo.destroy
 
-      expect(user.destroyed?).to be true
-      expect(user.member_photo.exists?).to be false
+      expect(user_with_member_photo.destroyed?).to be true
+      expect(user_with_member_photo.member_photo.exists?).to be false
     end
 
     context 'membership application' do
@@ -281,6 +284,67 @@ RSpec.describe User, type: :model do
     end
 
 
+    describe 'current_members' do
+
+      # set today to January 1, 2019 for every example run
+      around(:each) do |example|
+        Timecop.freeze(Date.new(2019, 1, 1))
+        example.run
+        Timecop.return
+      end
+
+      let(:jan1) { Date.new(2019, 1, 1) }
+      let(:jan2) { Date.new(2019, 1, 2) }
+      let(:jan3) { Date.new(2019, 1, 3) }
+
+      let(:user_no_app) { create(:user) }
+      let(:user_app_not_accepted) { create(:user_with_membership_app) }
+
+      let(:member_exp_jan1_today)   { create(:member_with_expiration_date, expiration_date: jan1) }
+      let(:member_current_exp_jan2) { create(:member_with_expiration_date, expiration_date: jan2) }
+      let(:member_current_exp_jan3) { create(:member_with_expiration_date, expiration_date: jan3) }
+
+
+      it 'all applications are accepted' do
+        user_no_app
+        user_app_not_accepted
+        member_exp_jan1_today
+        member_current_exp_jan2
+        member_current_exp_jan3
+        in_scope = User.current_members
+        app_states = in_scope.map{|member| member.shf_application.state}.uniq
+        expect(app_states).to match_array([ShfApplication::STATE_ACCEPTED.to_s])
+      end
+
+      it 'all have a successful membership payment' do
+        user_no_app
+        user_app_not_accepted
+        member_exp_jan1_today
+        member_current_exp_jan2
+        member_current_exp_jan3
+        in_scope = User.current_members
+        payment_states = in_scope.map{|member| member.most_recent_membership_payment.status}.uniq
+        expect(payment_states).to match_array([Payment::SUCCESSFUL])
+      end
+
+      it 'the membership payment expires after today (.future?)' do
+        user_no_app
+        user_app_not_accepted
+        member_exp_jan1_today
+        member_current_exp_jan2
+        member_current_exp_jan3
+        in_scope = User.current_members
+        expires_dates = in_scope.map{|member| member.most_recent_membership_payment.expire_date}.uniq
+        payments_expire_today_or_before = expires_dates.select{|date| date <= Date.current}
+        payments_expire_after_today = expires_dates.select{|date| date > Date.current}
+
+        expect(payments_expire_today_or_before).to be_empty
+        expect(payments_expire_after_today).to match_array([jan2, jan3])
+      end
+
+    end
+
+
     describe 'expiration dates' do
 
       # set today to January 1, 2019 for every example run
@@ -299,7 +363,7 @@ RSpec.describe User, type: :model do
         jan_31 = jan_01 + 30
 
 
-         create(:user, first_name: 'Not member 1')
+        create(:user, first_name: 'Not member 1')
         create(:user, admin: true, first_name: 'Admin')
 
         create(:member_with_membership_app, first_name: 'No member fee pays')
@@ -353,6 +417,7 @@ RSpec.describe User, type: :model do
                    expire_date: jan_15)
 
 
+        # TODO can use new :member_with_expiration_date factory
         # member fee paid only:
 
             create(:membership_fee_payment, :successful,
@@ -633,61 +698,6 @@ RSpec.describe User, type: :model do
   end
 
 
-=begin
-  This is now the responsibility of the MembershipStatusUpdater class
-
-  describe '#grant_membership' do
-
-    it 'sets the member field for the user' do
-      # mock the MemberMailer so we don't try to send emails
-      expect(MemberMailer).to receive(:membership_granted).with(subject).and_return( double('MemberMailer', deliver: true))
-
-      subject.grant_membership
-      expect(subject.member).to be_truthy
-    end
-
-    it 'does not overwrite an existing membership_number' do
-      # mock the MemberMailer so we don't try to send emails
-      expect(MemberMailer).to receive(:membership_granted).with(subject).and_return( double('MemberMailer', deliver: true))
-
-      existing_number = 'SHF00042'
-      subject.membership_number = existing_number
-      subject.grant_membership
-      expect(subject.membership_number).to eq(existing_number)
-    end
-
-    it 'generates sequential membership_numbers' do
-      # mock the MemberMailer so we don't try to send emails
-      expect(MemberMailer).to receive(:membership_granted).with(subject).twice.and_return( double('MemberMailer', deliver: true))
-
-      subject.grant_membership
-      first_number = subject.membership_number.to_i
-
-      subject.membership_number = nil
-      subject.grant_membership
-      second_number = subject.membership_number.to_i
-
-      expect(second_number).to eq(first_number+1)
-    end
-
-    it 'sends emails out by default' do
-      expect_any_instance_of(MemberMailer).to receive(:membership_granted).with(subject)
-      subject.grant_membership
-    end
-
-    it 'send_email: true sends email to the member to let them know they are now a member' do
-      expect_any_instance_of(MemberMailer).to receive(:membership_granted).with(subject)
-      subject.grant_membership(send_email:true)
-    end
-
-    it 'send_email: false does not send email to the member to let them know they are now a member' do
-      expect_any_instance_of(MemberMailer).not_to receive(:membership_granted).with(subject)
-      subject.grant_membership(send_email: false)
-    end
-
-  end
-=end
-
   context 'payment and membership period' do
 
     describe '#membership_start_date' do
@@ -834,40 +844,6 @@ RSpec.describe User, type: :model do
         expect(user.allow_pay_member_fee?).to eq true
       end
     end
-
-=begin
-This is now the responsibility of the MembershipStatusUpdater class
-
-    describe '#check_memberstatus' do
-      it 'does nothing if not a member' do
-        user.check_member_status
-        expect(user.member).to be false
-      end
-
-      it 'does nothing if a member and payment not expired' do
-        member_payment1
-        user.update(member: true)
-
-        user.check_member_status
-        expect(user.member).to be true
-      end
-
-      it 'revokes membership if a member and payment has expired' do
-        Timecop.freeze(payment_date_2018_11_21)
-
-        member_payment1
-        user.update(member: true)
-
-        Timecop.freeze(Time.zone.today + 1.year)
-
-        user.check_member_status
-        expect(user.member).to be false
-
-        Timecop.return
-      end
-
-    end
-=end
 
   end
 

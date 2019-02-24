@@ -75,4 +75,33 @@ module ShfApplicationsHelper
     AdminOnly::MemberAppWaitingReason.all.map { |r| [r.id, r.send(method_name)] }
   end
 
+  def file_delivery_radio_buttons_collection(locale = I18n.locale)
+    collection = []
+    footnotes = ''
+
+    text_method = "description_#{locale}".to_sym
+
+    # Default option will be the first (left-most) button in the set
+    AdminOnly::FileDeliveryMethod.order('default_option DESC').each do |delivery_method|
+
+      option_text = delivery_method.send(text_method)
+
+      if delivery_method.email?
+
+        option_text += '*'
+        footnotes += '*' + mail_to(ENV['SHF_MEMBERSHIP_EMAIL'], nil,
+                  subject: t('shf_applications.new.email_files_subject'))
+
+      elsif delivery_method.mail?
+        
+        option_text += '**'
+        footnotes += '&nbsp; &nbsp; **' + t('shf_applications.new.where_to_mail_files')
+      end
+
+      collection << [ delivery_method.id, option_text ]
+    end
+
+    [ collection, footnotes.html_safe ]
+  end
+
 end

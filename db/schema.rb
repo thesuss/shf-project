@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_29_015347) do
+ActiveRecord::Schema.define(version: 2019_01_28_210825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2018_12_29_015347) do
     t.string "sweden_dog_trainers_content_type"
     t.integer "sweden_dog_trainers_file_size"
     t.datetime "sweden_dog_trainers_updated_at"
+    t.boolean "email_admin_new_app_received_enabled", default: true
   end
 
   create_table "business_categories", id: :serial, force: :cascade do |t|
@@ -135,6 +136,16 @@ ActiveRecord::Schema.define(version: 2018_12_29_015347) do
     t.index ["start_date"], name: "index_events_on_start_date"
   end
 
+  create_table "file_delivery_methods", comment: "User choices for how files for SHF application will be delivered", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description_sv"
+    t.string "description_en"
+    t.boolean "default_option", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_file_delivery_methods_on_name", unique: true
+  end
+
   create_table "kommuns", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -190,6 +201,9 @@ ActiveRecord::Schema.define(version: 2018_12_29_015347) do
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
     t.datetime "when_approved"
+    t.bigint "file_delivery_method_id"
+    t.date "file_delivery_selection_date"
+    t.index ["file_delivery_method_id"], name: "index_shf_applications_on_file_delivery_method_id"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end
@@ -254,6 +268,7 @@ ActiveRecord::Schema.define(version: 2018_12_29_015347) do
   add_foreign_key "events", "companies"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "users"
+  add_foreign_key "shf_applications", "file_delivery_methods"
   add_foreign_key "shf_applications", "member_app_waiting_reasons", column: "member_app_waiting_reasons_id"
   add_foreign_key "shf_applications", "users"
   add_foreign_key "shf_documents", "users", column: "uploader_id"

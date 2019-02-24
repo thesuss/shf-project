@@ -9,9 +9,7 @@ FactoryBot.define do
     admin { false }
     member { false }
     short_proof_of_membership_url { nil }
-    member_photo do
-      File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
-    end
+    member_photo {nil}
 
     factory :user_without_first_and_lastname do
 
@@ -22,8 +20,14 @@ FactoryBot.define do
       end
     end
 
-    factory :user_with_membership_app do
+    trait :with_member_photo do
+      member_photo do
+        File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
+      end
+    end
 
+
+    factory :user_with_membership_app do
 
       after(:create) do |user, evaluator|
         create_list(:shf_application, 1, user: user, contact_email: evaluator.email) # FIXME this should not be a list. Fix tests that use this
@@ -41,10 +45,32 @@ FactoryBot.define do
       after(:create) do |user, evaluator|
         create_list(:shf_application, 1, :accepted, user: user,
                     company_number: evaluator.company_number,
-                    contact_email: evaluator.email)  # FIXME this should not be a list. Fix tests that use this
+                    contact_email: evaluator.email) # FIXME this should not be a list. Fix tests that use this
+      end
+
+    end
+
+
+    # create a payment for the member with the given expiration date
+    # ex:  create(:member_with_expiration_date, expiration_date: Date.new(2018, 6, 24))
+    factory :member_with_expiration_date do
+
+      member { true }
+
+      transient do
+        expiration_date { Date.current }
+      end
+
+      after(:create) do | member, evaluator |
+
+        create(:shf_application, :accepted, user: member)
+
+        create(:membership_fee_payment, user: member,
+               start_date: evaluator.expiration_date - 364,
+               expire_date: evaluator.expiration_date)
       end
     end
-  end
 
+  end
 
 end

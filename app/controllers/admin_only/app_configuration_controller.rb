@@ -5,6 +5,11 @@ module AdminOnly
     before_action :authorize_admin
     before_action :get_app_configuration
 
+
+    def show
+    end
+
+
     def edit
     end
 
@@ -37,7 +42,8 @@ module AdminOnly
       # not be added to the params, and there will be no
       # "admin_only_admin_page" key (for those fields) in the params).
       params.fetch(:admin_only_app_configuration, {})
-        .permit(:chair_signature, :shf_logo, :h_brand_logo, :sweden_dog_trainers)
+        .permit(:chair_signature, :shf_logo, :h_brand_logo, :sweden_dog_trainers,
+                :email_admin_new_app_received_enabled)
     end
   end
 

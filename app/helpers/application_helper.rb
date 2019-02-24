@@ -6,6 +6,8 @@ module ApplicationHelper
         'success'
       when :alert then
         'danger'
+      when :warn then
+        'warning'
     end
   end
 
@@ -154,4 +156,11 @@ module ApplicationHelper
     # translated. Can pass in preferred strings for "true" and "false" text values.
     [ [true, t(text_vals[:true])], [false, t(text_vals[:false])] ]
   end
+
+
+  # return a span tag with class yes || no and text = t('yes')||t('no') depending on the boolean value
+  def yes_no_span(boolean_value)
+    boolean_value ? content_tag(:span, t('yes'), class: 'yes') : content_tag(:span, t('no'), class: 'no')
+  end
+
 end

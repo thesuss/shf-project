@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe ShfApplicationsHelper, type: :helper do
 
-
   describe '#states_selection_list gets the localized version of each state name each time it is requested' do
 
     around(:each) do |example|
@@ -236,6 +235,79 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     it 'returns list of categories for an application' do
       expect(list_app_categories(application))
         .to eq('category1, category2, category3')
+    end
+  end
+
+  describe '#file_delivery_radio_buttons_collection' do
+
+    let(:collection_sv)  do
+      I18n.locale = :sv
+      file_delivery_radio_buttons_collection.first
+    end
+
+    let(:collection_en)  do
+      I18n.locale = :en
+      file_delivery_radio_buttons_collection.first
+    end
+
+    let(:footnotes_sv)  do
+      I18n.locale = :sv
+      file_delivery_radio_buttons_collection.second
+    end
+
+    let(:footnotes_en)  do
+      I18n.locale = :en
+      file_delivery_radio_buttons_collection.second
+    end
+
+    after(:each) do
+      I18n.locale = I18n.default_locale
+    end
+
+    let!(:upload_now) { create(:file_delivery_upload_now) }
+    let!(:upload_later) { create(:file_delivery_upload_later) }
+    let!(:email) { create(:file_delivery_email) }
+    let!(:mail) { create(:file_delivery_mail) }
+    let!(:files_uploaded) { create(:file_delivery_files_uploaded) }
+
+    it 'includes all options in DB' do
+      expect(collection_sv.count).to eq 5
+    end
+
+    it 'returns option descriptions (with footnotes indicators) - swedish' do
+      expect(collection_sv).to contain_exactly(
+        [upload_now.id, upload_now.description_sv],
+        [upload_later.id, upload_later.description_sv],
+        [email.id, email.description_sv + '*'],
+        [mail.id, mail.description_sv + '**'],
+        [files_uploaded.id, files_uploaded.description_sv]
+      )
+    end
+
+    it 'returns option descriptions (with footnotes indicators) - english' do
+      expect(collection_en).to contain_exactly(
+        [upload_now.id, upload_now.description_en],
+        [upload_later.id, upload_later.description_en],
+        [email.id, email.description_en + '*'],
+        [mail.id, mail.description_en + '**'],
+        [files_uploaded.id, files_uploaded.description_en]
+      )
+    end
+
+    it 'returns option footnotes - swedish' do
+      I18n.locale = :sv
+      expect(footnotes_sv).to match(/\*.*#{ENV['SHF_MEMBERSHIP_EMAIL']}/)
+      expect(footnotes_sv).to match(/#{t('shf_applications.new.where_to_mail_files')}/)
+    end
+
+    it 'returns option footnotes - english' do
+      I18n.locale = :en
+      expect(footnotes_sv).to match(/\*.*#{ENV['SHF_MEMBERSHIP_EMAIL']}/)
+      expect(footnotes_sv).to match(/#{t('shf_applications.new.where_to_mail_files')}/)
+    end
+
+    it 'orders default option (upload) as first in list of buttons' do
+      expect(collection_en.first).to eq [upload_now.id, upload_now.description_en]
     end
   end
 end

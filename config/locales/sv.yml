@@ -4,7 +4,12 @@ sv:
   title: 'Medlemmar i Sveriges Hundföretagare'
 
   SHF_name: &SHF_name Sveriges Hundföretagare
-
+  meta:
+    default:
+      title: "Hitta H-märkt hundföretag, hundinstruktör"
+      description: "Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera."
+      keywords: 'hund, hundägare, hundinstruktör, hundentreprenör, Sveriges Hundföretagare, svenskt hundföretag, etisk, H-märkt, hundkurs'
+      image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
   home: Hem
   about: Om
   more: Mer
@@ -56,6 +61,8 @@ sv:
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
+
+  login_page: login sida
 
   info:
     logged_in_as_admin: Du är inloggad som admin
@@ -345,6 +352,9 @@ sv:
       submit_button_label: *submit
       need_to_enter_name_html: Du måste ha angett ditt för- och efternamn
                           för att skapa en medlemsansökan. %{edit_profile}.
+      submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
+      where_to_mail_files: Vi kommer att maila dig adressen
+      email_files_subject: Mina applikationsfiler
 
     rendering:
       success: Aktion utfördes framgångsrikt
@@ -352,17 +362,24 @@ sv:
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
-      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(N) HÄR
+      success_with_file_problem: Din ansökan har skapats. Observera felmeddelanden angående filer
+      success_with_app_files_missing: "!! Din ansökan har sparats, men den saknar nödvändiga filer !!"
+      upload_file_or_select_method: &upload_files Var god ladda upp filer eller välj en annan leveransmetod
+      remember_to_deliver_files: &chosen_method Kom ihåg att leverera filer via den valda leveransmetoden
 
     edit:
       title: Redigera ansökan om medlemskap
       is_ready_for_review: Redo för granskning
       submit_button_label: *save
+      submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
 
     update:
       success: Ansökan har uppdaterats.
       error: Ett eller flera problem hindrade din ansökan från att sparas.
       enter_member_number: Var god granska medlemsnummer och spara.
+      success_with_app_files_missing: "!! Din ansökan laddades upp men den saknar filer !!"
+      upload_file_or_select_method: *upload_files
+      remember_to_deliver_files: *chosen_method
 
     show:
       title: Ansökan från %{user_full_name}
@@ -945,11 +962,21 @@ sv:
 
     app_configuration:
       edit:
-        title: Programkonfiguration
-        chair_signature: Ordförandens underskrift
-        shf_logo: Organisationslogotyp
-        h_brand_logo: H-märkt Logo
-        sweden_dog_trainers: Sveriges Hundtrainer
+        title:  &application_configuration Programkonfiguration
+        chair_signature: &chair_signature_title Ordförandens underskrift
+        shf_logo: &shf_logo_title Organisationslogotyp
+        h_brand_logo: &h_branding_logo_title H-märkt Logo
+        sweden_dog_trainers: &sweden_dog_trainers_logo_title Sveriges Hundtrainer
+        admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+
+      show:
+        title: *application_configuration
+        chair_signature: *chair_signature_title
+        shf_logo: *shf_logo_title
+        h_brand_logo: *h_branding_logo_title
+        sweden_dog_trainers: *sweden_dog_trainers_logo_title
+        admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+
       update:
         success: Programdata uppdaterades framgångsrikt
         error: Det gick inte att uppdatera konfigurationsdata
@@ -972,6 +999,10 @@ sv:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
+    login_here: "Klicka här för att gå till inloggningssidan."
+    may_need_to_login_first: "Du kan behöva logga in först.  Här är inloggningssidan:"
+    login_here: "Klicka här för att gå till SHF inloggningssidan."
+
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
 
@@ -1017,6 +1048,15 @@ sv:
 
 
     member_mailer:
+      member_account_link: "%{account_link} (Du kan behöva logga in först innan länken fungerar.)"
+
+      app_no_uploaded_files:
+        subject: Din ansökan till Sveriges Hundföretagare saknar underlag
+        message_text: "Detta är en automatisk påminnelse från systemet som meddelar att din ansökan saknar uppladdade filer. Filerna behövs för att vi ska kunna handlägga din ansökan."
+        will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."
+        thanks:  "Tack för att du vill vara medlem."
+        error_sending: *shf_email_error
+
       membership_granted:
         subject: &subject_welcome "Välkommen som medlem i Sveriges Hundföretagare"
         greeting: *email_greeting
@@ -1031,10 +1071,9 @@ sv:
         greeting: *email_greeting
         message_text:
           expire_alert_html: Observera att din nuvarande medlemsperiod löper ut den
-                        <span style="background-color:yellow;">%{expire_date}</span>.
+                        <span class="date-warning">%{expire_date}</span>.
           extend_membership: Du kan förlänga ditt medlemskap i ytterligare
                                   12 månader genom att betala medlemsavgiften.
-          account_login_html: "%{account_link} (du kan behöva logga in först innan länken fungerar)."
 
       h_branding_fee_past_due:
         subject: Ditt företags H-märkespremie är obetald.
@@ -1042,7 +1081,26 @@ sv:
         message_text:
           fee_is_unpaid: Observera att ditt företags H-märkespremie inte är betald.
           how_to_pay_fee: Betala den ett år till via länken nedan. Detta gör att du fortsätter synas på kartan och fortsätter ha ett H-märkt företag.
-          company_link_login_msg: " (du kan behöva logga in först innan du ser knappen för att betala)."
+          company_link_login_msg: &co_link_login " (du kan behöva logga in först innan du ser knappen för att betala)."
+
+      co_info_incomplete:
+        subject: Var god färdigställ din företagssida
+        greeting: *email_greeting
+        message_text:
+          complete_the_info: "Du behöver färdigställa informationen om %{co_identifier}. Om du inte gör det syns du inte i sökningar. Saknar du adress syns du heller inte på kartan."
+          company_needs_name: "företag: %{co_number}"
+          what_is_missing: "Här är vad som saknas:"
+          co_name_missing: "Företagsnamn"
+          co_region_missing: "Postadress"
+          please_complete: "Vänligen lägg till ovanstående information så att företagsinformationen är klar."
+          company_link_login_msg: "Här är länken där du kan redigera ditt företag: "
+
+      membership_lapsed:
+        subject: "Ditt medlemskap har löpt ut"
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Ditt medlemsskap gick ut <span class='date-warning'> %{expire_date}.</span>"
+          renew_membership: Du kan förnya ditt medlemsskap och fortsätta dra nytta av medlemsfördelarna genom att logga in och betala.
 
 
   devise:

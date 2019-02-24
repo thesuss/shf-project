@@ -26,9 +26,13 @@ namespace :shf do
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
+
     Rake::Task['db:drop'].invoke if database_exists?
+
     tasks = ['db:create', 'db:migrate',
-             'shf:load_regions', 'shf:load_kommuns', 'db:seed']
+             'shf:load_regions', 'shf:load_kommuns',
+             'shf:load_file_delivery_methods', 'db:seed']
+
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
 
@@ -150,6 +154,50 @@ namespace :shf do
 
         log.record('info', "#{Kommun.count} Kommuns created.")
       end
+    end
+  end
+
+  desc "Initialize app file delivery methods"
+  task load_file_delivery_methods: :environment do
+
+    log_file = 'log/load_file_delivery_methods.log'
+
+    ActivityLogger.open(log_file, 'App Files', 'set delivery methods') do |log|
+
+      if AdminOnly::FileDeliveryMethod.exists?
+        log.record('warn', 'FileDeliveryMethod table not empty.')
+        next # break out of rake task
+      end
+
+      delivery_methods = [
+        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:upload_now],
+          description_sv: 'Ladda upp nu',
+          description_en: 'Upload now',
+          default_option: true },
+
+        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:upload_later],
+          description_sv: 'Ladda upp senare',
+          description_en: 'Upload later' },
+
+        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:email],
+          description_sv: 'Skicka via e-post',
+          description_en: 'Send via email' },
+
+        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:mail],
+          description_sv: 'Skicka via vanlig post',
+          description_en: 'Send via regular mail' },
+
+        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:files_uploaded],
+          description_sv: 'Alla filer är uppladdade',
+          description_en: 'All files are uploaded' }
+      ]
+
+      delivery_methods.each do |rec|
+        AdminOnly::FileDeliveryMethod.create!(rec)
+      end
+
+      log.record('info', "Created #{delivery_methods.size} records.")
+
     end
   end
 

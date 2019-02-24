@@ -64,6 +64,10 @@ module PathHelpers
         path = test_exception_notifications_path
       when 'admin dashboard'
         path = admin_only_dashboard_path
+    when 'admin edit app configuration'
+      path = admin_only_edit_app_configuration_path
+      when 'admin show app configuration'
+        path = admin_only_app_configuration_path
     end
 
     expect(path).not_to be_empty, "A step was called with path= '#{pagename}', but that path is not defined in #{__method__} \n    (which is in #{__FILE__}"
@@ -103,6 +107,12 @@ end
 
 Then "I should{negate} see {capture_string} link" do |negate, link_label|
   expect(page).send (negate ? :not_to : :to),  have_link(link_label)
+end
+
+
+Then(/^I should( not)? see the (?:checkbox|radio button) with id "([^"]*)" checked$/) do |negate, checkbox_id|
+#  expect(page).send (negate ? :not_to : :to),  have_checked_field(checkbox_id)
+ expect(page).to have_selector(:id, checkbox_id), "got: #{page.html}"
 end
 
 
@@ -305,6 +315,11 @@ Then "{capture_string} should{negate} have {capture_string} as an option" do | s
 end
 
 
+And(/^the "([^"]*)" should( not)? go to "([^"]*)"$/) do |link, negate, url|
+  expect(page).send (negate ? :not_to : :to), have_link(link, href: url)
+end
+
+
 And(/^the url "([^"]*)" should( not)? be a valid route$/) do |url, negate |
 
   if negate
@@ -330,3 +345,40 @@ end
 When "I cannot select {capture_string} in select list {capture_string}" do |option, list|
   expect(find_field(list).text.match(option)).to be_nil
 end
+
+
+Then("the page title should{negate} be {capture_string}") do | negate, page_title |
+  expect(page).send (negate ? :not_to : :to), have_title(page_title)
+end
+
+
+Then("the page head should{negate} include meta {capture_string} {capture_string} with content = {capture_string}") do | negate, meta_tag, value, meta_content|
+  meta_xpath = "/html/head/meta[@#{meta_tag}=\"#{value}\"]/@content"
+  found_meta_tag  = page.find(meta_xpath, visible: false)
+
+  if negate.nil?
+    expect(found_meta_tag.text(:all)).to eq meta_content
+  else
+    # have to pass :all to .text to get text that is not visible
+    expect(found_meta_tag && (found_meta_tag.text(:all) == meta_content)).to be_falsey
+  end
+end
+
+
+Then("the page head should{negate} include meta {capture_string} {capture_string}") do | negate, meta_tag, value |
+  meta_xpath = "/html/head/meta[@#{meta_tag}=\"#{value}\"]/@content"
+  expect(page).send (negate ? :not_to : :to), have_xpath(meta_xpath, visible: false)
+end
+
+
+Then("the page head should{negate} include a link tag with hreflang = {capture_string} and href = {capture_string}") do | negate, hreflang, href |
+  hreflang_xpath = "/html/head/link[@rel='alternate'][@hreflang='#{hreflang}'][@href='#{href}']"
+  expect(page).send (negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false)
+end
+
+
+Then("the page head should{negate} include a link tag with rel = {capture_string} and href = {capture_string}") do | negate, rel, href |
+  hreflang_xpath = "/html/head/link[@rel='#{rel}'][@href='#{href}']"
+  expect(page).send (negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false)
+end
+

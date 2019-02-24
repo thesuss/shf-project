@@ -30,6 +30,7 @@ Feature: SHF Application status is changed
       | dog crooning | crooning to dogs                |
       | rehab        | physcial rehabitation           |
 
+    And the application file upload options exist
 
     Given the following companies exist:
       | name                 | company_number | email                 |
@@ -158,11 +159,12 @@ Feature: SHF Application status is changed
     And I should see 1 t("shf_applications.waiting_for_applicant")
     And I should see 1 t("shf_applications.accepted")
 
-  @admin @user
+  @admin @user @selenium
   Scenario: Admin rejects an application that had uploaded files (under_review to rejected)
     Given  I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     And I choose a file named "diploma.pdf" to upload
+    And I select files delivery radio button "upload_now"
     And I click on t("shf_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@shf.se"
@@ -172,6 +174,7 @@ Feature: SHF Application status is changed
     And  I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     And I choose a file named "image.png" to upload
+    And I select files delivery radio button "upload_now"
     And I click on t("shf_applications.edit.submit_button_label")
     And I am Logged out
     And I am logged in as "admin@shf.se"
@@ -185,13 +188,15 @@ Feature: SHF Application status is changed
     And I should see "rehab"
 
   # From waiting for applicant to...
-  @member
+  @member @selenium
   Scenario: Anna updates her application but doesn't mark it as ready to be reviewed yet
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     Then I should see the checkbox with id "shf_application_marked_ready_for_review" unchecked
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+
     And I should not see status line with status t("shf_applications.ready_for_review")
 
 
@@ -202,7 +207,9 @@ Feature: SHF Application status is changed
     Then I should see the checkbox with id "shf_application_marked_ready_for_review" unchecked
     When I check the checkbox with id "shf_application_marked_ready_for_review"
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+
     And I should see status line with status t("shf_applications.ready_for_review")
     And I am Logged out
     And I am logged in as "admin@shf.se"
@@ -251,12 +258,11 @@ Feature: SHF Application status is changed
     Then I should not see t("shf_applications.ask_applicant_for_info_btn")
 
 
-  @admin
+  @admin @selenium
   Scenario: 'Waiting for applicant' status is not changed if admin edits the application
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     And I click on t("shf_applications.edit_shf_application")
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
     And I should see status line with status t("shf_applications.waiting_for_applicant")
     And I should not see status line with status t("shf_applications.under_review")
 
@@ -314,7 +320,9 @@ Feature: SHF Application status is changed
     When I click on t("shf_applications.edit_shf_application")
     And I fill in t("shf_applications.show.contact_email") with "newmail@mail.com"
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+        
     And I should see status line with status t("shf_applications.rejected")
     And I should see "rehab"
     When I am on the "landing" page

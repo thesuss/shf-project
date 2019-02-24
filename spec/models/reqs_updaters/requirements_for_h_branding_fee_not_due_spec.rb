@@ -4,6 +4,10 @@ RSpec.describe RequirementsForHBrandingFeeNotDue, type: :model do
 
   let(:subject) { RequirementsForHBrandingFeeNotDue }
 
+  it '.opposite_class' do
+    expect(subject.opposite_class).to eq RequirementsForHBrandingFeeDue
+  end
+
 
   describe '.has_expected_arguments?' do
 

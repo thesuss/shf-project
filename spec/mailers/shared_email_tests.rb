@@ -127,3 +127,17 @@ RSpec.shared_examples 'a successfully created email' do |subject, recipient, gre
 
   end
 end
+
+
+# Assumes that 'email_created' exists e.g. via a let(:..) (which might be within a block)
+RSpec.shared_examples 'it provides a link to the login page' do
+
+  it 'text saying you may need to log in' do
+    expect(email_created).to have_body_text(I18n.t('mailers.may_need_to_login_first'))
+  end
+
+  it 'link to the login page with _blank so it opens in a new window' do
+    expect(email_created).to have_body_text("<a target=\"_blank\" href=\"#{new_user_session_url}\">#{I18n.t('login_page')}</a>")
+  end
+
+end

@@ -8,6 +8,8 @@ require 'paperclip/matchers'
 
 require 'support/data_creation_helper'
 
+require 'create_membership_seq_if_needed'
+
 
 ActiveRecord::Migration.maintain_test_schema!
 
@@ -59,6 +61,7 @@ RSpec.configure do |config|
 
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
+
   end
 
   config.before(:each, type: :feature) do
@@ -76,6 +79,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    create_user_membership_num_seq_if_needed
   end
 
   config.append_after(:each) do

@@ -28,14 +28,19 @@ end
 puts ">>> SEEDING ENVIRONMENT: #{Rails.env}"
 
 
-if !Region.exists?
+unless Region.exists?
   puts 'Loading regions'
   Rake::Task['shf:load_regions'].invoke
 end
 
-if !Kommun.exists?
+unless Kommun.exists?
   puts 'Loading kommuns'
   Rake::Task['shf:load_kommuns'].invoke
+end
+
+unless AdminOnly::FileDeliveryMethod.exists?
+  puts 'Loading SHF app file delivery methods'
+  Rake::Task['shf:load_file_delivery_methods'].invoke
 end
 
 puts 'Creating business categories'

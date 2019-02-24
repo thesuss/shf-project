@@ -14,6 +14,13 @@
 
       = render 'application/required_fields'
 
+<<<<<<< HEAD
       = f.submit t('.submit_button_label')
+=======
+        = f.submit t('.submit_button_label'), disabled: true, class: 'app-submit'
+
+        .submit-button-explain.strong
+          = t('.submit_button_explain')
+>>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
 
 = render partial: 'companies/company_create_modal', locals: { company: @new_company }

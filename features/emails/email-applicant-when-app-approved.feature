@@ -19,6 +19,8 @@ Feature: Applicant gets an email when the application is approved
       | name    |
       | Groomer |
 
+    And the application file upload options exist
+
     Given the following regions exist:
       | name      |
       | Stockholm |
@@ -31,7 +33,7 @@ Feature: Applicant gets an email when the application is approved
       | user_email         | company_number | categories | state        |
       | emma@happymutts.se | 5562252998     | Groomer    | under_review |
 
-
+  @selenium
   Scenario: Admin approves membership and email is sent to applicant
     Given I am logged in as "admin@shf.com"
     And I am on the "application" page for "emma@happymutts.se"
@@ -39,7 +41,9 @@ Feature: Applicant gets an email when the application is approved
     And I should be on the "edit application" page for "emma@happymutts.se"
     And I should see t("shf_applications.accept.success")
     And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
+
+    And I should see t("shf_applications.update.success_with_app_files_missing")
+
     And I should see t("shf_applications.accepted")
     Then "emma@happymutts.se" should receive an email
     And I am logged in as "emma@happymutts.se"

@@ -476,6 +476,7 @@ RSpec.describe Company, type: :model, focus: true do
     end
   end
 
+
   context 'payment and branding license period' do
 
     describe '#branding_expire_date' do
@@ -504,6 +505,7 @@ RSpec.describe Company, type: :model, focus: true do
         expect(complete_co.most_recent_branding_payment).to eq payment2
       end
     end
+
 
     describe '.self.next_branding_payment_dates' do
 
@@ -1019,5 +1021,39 @@ RSpec.describe Company, type: :model, focus: true do
     end
 
   end # describe '#earliest_current_member_fee_paid'
+
+
+  describe '#missing_region?' do
+
+    describe 'false if all addresses have a region' do
+      it 'only address has a region' do
+        expect(complete_co.missing_region?).to be_falsey
+      end
+
+      it 'all addresses have a region' do
+        complete_co.addresses << build(:company_address, addressable: complete_co)
+        complete_co.addresses << build(:company_address, addressable: complete_co)
+        expect(complete_co.missing_region?).to be_falsey
+      end
+    end
+
+    describe 'true if 1 or more addresses have no region' do
+
+      it 'only address does not have a region' do
+        nil_region.addresses.first.region = nil  # just in case it's been changed by other tests
+        expect(nil_region.missing_region?).to be_truthy
+      end
+
+      it 'one of many addresses does not have a region' do
+        nil_region.addresses.first.region = nil  # just in case it's been changed by other tests
+
+      # add some valid addresses (Region is not nil)
+        nil_region.addresses << build(:company_address, addressable: nil_region)
+        nil_region.addresses << build(:company_address, addressable: nil_region)
+
+        expect(nil_region.missing_region?).to be_truthy
+      end
+    end
+  end
 
 end

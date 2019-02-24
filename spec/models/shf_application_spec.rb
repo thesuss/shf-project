@@ -46,6 +46,8 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to have_db_column :user_id }
     it { is_expected.to have_db_column :member_app_waiting_reasons_id }
     it { is_expected.to have_db_column :when_approved }
+    it { is_expected.to have_db_column :file_delivery_method_id }
+    it { is_expected.to have_db_column :file_delivery_selection_date }
   end
 
   describe 'Associations' do
@@ -61,6 +63,8 @@ RSpec.describe ShfApplication, type: :model do
                           .allow_destroy(true) }
     it { is_expected.to accept_nested_attributes_for(:user)
                           .update_only(true).allow_destroy(false) }
+    it { is_expected.to belong_to(:file_delivery_method)
+                          .class_name('AdminOnly::FileDeliveryMethod') }
   end
 
   describe 'Validations' do
@@ -68,6 +72,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to validate_presence_of :state }
     it { is_expected.to validate_presence_of :companies }
     it { is_expected.to validate_presence_of :business_categories }
+    it { is_expected.to validate_presence_of :file_delivery_method }
 
     it { is_expected.to allow_value('user@example.com').for(:contact_email) }
     it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
@@ -107,8 +112,15 @@ RSpec.describe ShfApplication, type: :model do
       let!(:application_owner2) { create(:user, email: 'user_2@random.com') }
       let!(:application_owner3) { create(:user, email: 'user_3@random.com') }
 
-      let!(:shf_open_app_no_uploads_1) { create(:shf_application, user: application_owner2, contact_email: application_owner2.email,) }
-      let!(:shf_open_app_no_uploads_2) { create(:shf_application, user: application_owner3, contact_email: application_owner3.email,) }
+      let!(:shf_open_app_no_uploads_1) do
+        create(:shf_application, user: application_owner2,
+                                 contact_email: application_owner2.email)
+      end
+
+      let!(:shf_open_app_no_uploads_2) do
+        create(:shf_application, user: application_owner3,
+                                 contact_email: application_owner3.email)
+      end
 
       let!(:shf_rejected_app_uploads_1) do
         user = create(:user, email: 'user_7@random.com')
@@ -143,7 +155,8 @@ RSpec.describe ShfApplication, type: :model do
       context 'there are uploaded files in the system' do
 
         let!(:shf_open_app_uploads_1) do
-          shf_app = create(:shf_application, user: application_owner1, contact_email: application_owner1.email)
+          shf_app = create(:shf_application, user: application_owner1,
+                           contact_email: application_owner1.email)
           shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
         end
 
@@ -199,7 +212,8 @@ RSpec.describe ShfApplication, type: :model do
     let(:application_owner2) { create(:user, email: 'user_2@random.com') }
 
     it 'uploading a file increases the number of uploaded files by 1' do
-      expect { create(:shf_application, user: application_owner, uploaded_files: [create(:uploaded_file, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg'))))]) }.to change(UploadedFile, :count).by(1)
+      app = create(:shf_application, user: application_owner)
+      expect { create(:uploaded_file, shf_application: app, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg')))) }.to change(UploadedFile, :count).by(1)
     end
 
   end
@@ -208,7 +222,9 @@ RSpec.describe ShfApplication, type: :model do
   describe 'User attributes nesting' do
 
     let(:user) { create(:user, first_name: 'Firstname', last_name: 'Lastname') }
-    let!(:member_app) { create(:shf_application, user: user, user_attributes: { first_name: 'New Firstname', last_name: 'New Lastname' }) }
+    let!(:member_app) { create(:shf_application, user: user,
+                               user_attributes: { first_name: 'New Firstname',
+                                                  last_name: 'New Lastname' }) }
 
     it 'sets first_name on user' do
       expect(user.first_name).to eq('New Firstname')
@@ -239,20 +255,26 @@ RSpec.describe ShfApplication, type: :model do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
 
-    app_file = (File.new(File.join(FIXTURE_DIR, 'image.jpg')))
-    let(:uploaded_file) { create(:uploaded_file, actual_file: app_file) }
+    # app_file = (File.new(File.join(FIXTURE_DIR, 'image.jpg')))
+    # let(:uploaded_file) { create(:uploaded_file, actual_file: app_file) }
 
     let(:application) do
-      create(:shf_application, user: user1,
-             uploaded_files: [uploaded_file], state: :accepted)
+      create(:shf_application, user: user1, state: :accepted)
     end
+
+    let(:uploaded_file) do
+      app_file = (File.new(File.join(FIXTURE_DIR, 'image.jpg')))
+      file = create(:uploaded_file, actual_file: app_file, shf_application: application)
+      application.uploaded_files << file
+      file
+    end
+
     let(:application2) do
-      create(:shf_application, user: user2,
-             uploaded_files: [uploaded_file], state: :new,
-             companies: [application.companies.last])
+      create(:shf_application, user: user2, state: :new, companies: [application.companies.last])
     end
 
     it 'invokes method to destroy uploaded files' do
+      uploaded_file
       application.destroy
       expect(uploaded_file.destroyed?).to be_truthy
     end
@@ -430,7 +452,7 @@ RSpec.describe ShfApplication, type: :model do
 
 
     context 'actions taken on state transition' do
-      let(:uploaded_files) { create(:uploaded_file,
+      let(:uploaded_files) { create(:uploaded_file, shf_application: application,
                                     actual_file: (File.new(File.join(FIXTURE_DIR,
                                                   'image.jpg')))) }
 

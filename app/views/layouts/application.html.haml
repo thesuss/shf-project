@@ -6,9 +6,24 @@
     %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes', name: 'viewport' }/
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
 
-    %title Medlemmar i Sveriges Hundföretagare
+    -#
+      Display meta tags here. "reverse: true" will put the page title before the site title
+      as recommended by https://moz.com/learn/seo/title-tag
+    = display_meta_tags site: I18n.t('SHF_name'), reverse: true
+
+    -#
+      tags that tell search engines where to find pages in other languages
+      see (https://support.google.com/webmasters/answer/189077)
+    = tag('link', rel: 'alternate', hreflang: 'x-default', href: I18n.t('shf_medlemssystem_url'))
+    = tag('link', rel: 'alternate', hreflang: 'sv', href: I18n.t('shf_medlemssystem_url'))
+    = tag('link', rel: 'alternate', hreflang: 'en', href: (I18n.t('shf_medlemssystem_url') + '/en') )
+
+<<<<<<< HEAD
+=======
+
     = csrf_meta_tags
 
+>>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css'
     = stylesheet_link_tag 'application', media: 'all'
 
