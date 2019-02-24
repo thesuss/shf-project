@@ -391,13 +391,10 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
-<<<<<<< HEAD
--- Name: kommuns; Type: TABLE; Schema: public; Owner: -; Tablespace: 
-=======
--- Name: file_delivery_methods; Type: TABLE; Schema: public; Owner: -
+-- Name: file_delivery_methods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE public.file_delivery_methods (
+CREATE TABLE file_delivery_methods (
     id bigint NOT NULL,
     name character varying NOT NULL,
     description_sv character varying,
@@ -412,14 +409,14 @@ CREATE TABLE public.file_delivery_methods (
 -- Name: TABLE file_delivery_methods; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE public.file_delivery_methods IS 'User choices for how files for SHF application will be delivered';
+COMMENT ON TABLE file_delivery_methods IS 'User choices for how files for SHF application will be delivered';
 
 
 --
 -- Name: file_delivery_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.file_delivery_methods_id_seq
+CREATE SEQUENCE file_delivery_methods_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -431,12 +428,11 @@ CREATE SEQUENCE public.file_delivery_methods_id_seq
 -- Name: file_delivery_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.file_delivery_methods_id_seq OWNED BY public.file_delivery_methods.id;
+ALTER SEQUENCE file_delivery_methods_id_seq OWNED BY file_delivery_methods.id;
 
 
 --
--- Name: kommuns; Type: TABLE; Schema: public; Owner: -
->>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
+-- Name: kommuns; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE kommuns (
@@ -891,18 +887,14 @@ ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::reg
 
 
 --
-<<<<<<< HEAD
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
-=======
--- Name: file_delivery_methods id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.file_delivery_methods ALTER COLUMN id SET DEFAULT nextval('public.file_delivery_methods_id_seq'::regclass);
+ALTER TABLE ONLY file_delivery_methods ALTER COLUMN id SET DEFAULT nextval('file_delivery_methods_id_seq'::regclass);
 
 
 --
--- Name: kommuns id; Type: DEFAULT; Schema: public; Owner: -
->>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY kommuns ALTER COLUMN id SET DEFAULT nextval('kommuns_id_seq'::regclass);
@@ -1045,19 +1037,15 @@ ALTER TABLE ONLY events
 
 
 --
-<<<<<<< HEAD
--- Name: kommuns_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
-=======
--- Name: file_delivery_methods file_delivery_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_delivery_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY public.file_delivery_methods
+ALTER TABLE ONLY file_delivery_methods
     ADD CONSTRAINT file_delivery_methods_pkey PRIMARY KEY (id);
 
 
 --
--- Name: kommuns kommuns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
->>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
+-- Name: kommuns_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY kommuns
@@ -1221,18 +1209,14 @@ CREATE INDEX index_events_on_start_date ON events USING btree (start_date);
 
 
 --
-<<<<<<< HEAD
+-- Name: index_file_delivery_methods_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_file_delivery_methods_on_name ON file_delivery_methods USING btree (name);
+
+
+--
 -- Name: index_on_applications; Type: INDEX; Schema: public; Owner: -; Tablespace: 
-=======
--- Name: index_file_delivery_methods_on_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_file_delivery_methods_on_name ON public.file_delivery_methods USING btree (name);
-
-
---
--- Name: index_on_applications; Type: INDEX; Schema: public; Owner: -
->>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
 --
 
 CREATE INDEX index_on_applications ON business_categories_shf_applications USING btree (shf_application_id);
@@ -1260,18 +1244,14 @@ CREATE INDEX index_payments_on_user_id ON payments USING btree (user_id);
 
 
 --
-<<<<<<< HEAD
+-- Name: index_shf_applications_on_file_delivery_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_shf_applications_on_file_delivery_method_id ON shf_applications USING btree (file_delivery_method_id);
+
+
+--
 -- Name: index_shf_applications_on_member_app_waiting_reasons_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
-=======
--- Name: index_shf_applications_on_file_delivery_method_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_shf_applications_on_file_delivery_method_id ON public.shf_applications USING btree (file_delivery_method_id);
-
-
---
--- Name: index_shf_applications_on_member_app_waiting_reasons_id; Type: INDEX; Schema: public; Owner: -
->>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
 --
 
 CREATE INDEX index_shf_applications_on_member_app_waiting_reasons_id ON shf_applications USING btree (member_app_waiting_reasons_id);
@@ -1392,19 +1372,15 @@ ALTER TABLE ONLY shf_applications
 
 
 --
-<<<<<<< HEAD
+-- Name: fk_rails_c591d9a2b0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY shf_applications
+    ADD CONSTRAINT fk_rails_c591d9a2b0 FOREIGN KEY (file_delivery_method_id) REFERENCES file_delivery_methods(id);
+
+
+--
 -- Name: fk_rails_cf393e2864; Type: FK CONSTRAINT; Schema: public; Owner: -
-=======
--- Name: shf_applications fk_rails_c591d9a2b0; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.shf_applications
-    ADD CONSTRAINT fk_rails_c591d9a2b0 FOREIGN KEY (file_delivery_method_id) REFERENCES public.file_delivery_methods(id);
-
-
---
--- Name: company_applications fk_rails_cf393e2864; Type: FK CONSTRAINT; Schema: public; Owner: -
->>>>>>> 9e657928beef7b874c9d90d6615bf6a5a8a51341
 --
 
 ALTER TABLE ONLY company_applications
