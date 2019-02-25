@@ -44,8 +44,6 @@ module SchemaDotOrg
     # If :url is defined, use that to set the "@id" attribute
     # @return a hash structure representing json.
     def to_json_struct
-
-
       { "@type" => un_namespaced_classname,
         "@id"   =>   id_value
       }.merge(_to_json_struct).compact
