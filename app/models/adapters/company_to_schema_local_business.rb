@@ -42,7 +42,7 @@ module Adapters
       target.url         = @adaptee.website
       target.email       = @adaptee.email
       target.telephone   = @adaptee.phone_number
-      target.image       = company_h_markt_url(@adaptee)
+      target.image       = company_h_markt_url(@adaptee) # FIXME - this needs to be a permanent image and URL
 
       # this may set many properties, so we work with the target
       target = set_address_properties(target, @adaptee)
