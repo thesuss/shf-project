@@ -1,9 +1,18 @@
 require 'rails_helper'
+require 'shared_context/companies'
+
+require File.join(Rails.root, 'app/models/concerns/company_hmarkt_url_generator')
 
 
 RSpec.describe CompaniesController, type: :controller do
 
+  include_context 'create companies'
+  include CompanyHMarktUrlGenerator
+
+
   let(:no_query_params) { { "utf8" => "✓" } }
+
+  let(:full_page_title) { 'Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare' }
 
 
   describe '#index will fix_FB_changed_params' do
@@ -216,18 +225,18 @@ RSpec.describe CompaniesController, type: :controller do
     end
 
 
-    describe 'rendered' do
+    describe 'meta info (renders view)' do
 
       render_views
 
 
       it 'page title is from the locale file' do
         get :index
-        expect(response.body).to match(/Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare/)
+        expect(response.body).to match(full_page_title)
       end
 
 
-      describe 'meta information' do
+      describe 'meta tags' do
 
         # Create the Regexp to match meta tag="<tag>" content="<content>"
         def meta_tag_with_content(tag, content)
@@ -247,6 +256,7 @@ RSpec.describe CompaniesController, type: :controller do
           expect(response.body).to match(meta_tag_with_content('description', meta_content))
         end
 
+
         describe 'keywords' do
 
           it 'always has what is in the locale file ' do
@@ -254,6 +264,7 @@ RSpec.describe CompaniesController, type: :controller do
             meta_content = I18n.t('meta.default.keywords')
             expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
           end
+
 
           describe 'appends the business categories after the locale file keywords' do
 
@@ -292,19 +303,24 @@ RSpec.describe CompaniesController, type: :controller do
           end
 
 
-          it 'default is "https://hitta.sverigeshundforetagare.se' do
+          it 'default-x is <request.url> and has no language specifier in the path' do
             get :index
-            expect(response.body).to match(link_hreflang_with_href('x-default', 'https:\/\/hitta.sverigeshundforetagare.se'))
+
+            default_hreflang_match = link_hreflang_with_href('x-default', @controller.request.url).match(response.body)
+            expect(default_hreflang_match).not_to be_nil
+            expect(default_hreflang_match.size).to eq 1
+            expect(default_hreflang_match[0].include?('/sv')).to be_falsey
+            expect(default_hreflang_match[0].include?('/en')).to be_falsey
           end
 
-          it 'alt for sv is https://hitta.sverigeshundforetagare.se' do
+          it 'alt for sv is <base url>/sv/<request.fullpath>' do
             get :index
-            expect(response.body).to match(link_hreflang_with_href('sv', 'https:\/\/hitta.sverigeshundforetagare.se'))
+            expect(response.body).to match(link_hreflang_with_href('sv', "#{@controller.request.base_url}/sv#{request.fullpath}"))
           end
 
-          it 'alt for en is https://hitta.sverigeshundforetagare.se/en' do
+          it 'alt for en is <base url>/en/<request.fullpath>' do
             get :index
-            expect(response.body).to match(link_hreflang_with_href('en', 'https:\/\/hitta.sverigeshundforetagare.se/en'))
+            expect(response.body).to match(link_hreflang_with_href('en', "#{@controller.request.base_url}/en#{request.fullpath}"))
           end
         end
 
@@ -314,13 +330,12 @@ RSpec.describe CompaniesController, type: :controller do
           it 'title is the complete page title <title | site name>' do
             # <meta property="og:title" content="Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare">
             get :index
-            expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+            expect(response.body).to match(meta_property_with_content('og:title', full_page_title))
           end
 
           it 'description is the same as the page description' do
-            # <meta property="og:description" content="Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera.">
             get :index
-            expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+            expect(response.body).to match(meta_property_with_content('og:description', 'Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera.'))
           end
 
           it 'url is the url of the page' do
@@ -382,6 +397,314 @@ RSpec.describe CompaniesController, type: :controller do
 
     end
 
+  end
+
+
+  describe '#show meta data (renders view)' do
+
+    render_views
+
+    let(:show_co1_params) { { "id" => "#{complete_co1.id}"}  }
+
+
+    it 'page title has the company name and site name' do
+      complete_co1
+      get :show, params: show_co1_params
+
+      expect(response.body).to match(/<title>#{complete_co1.name} \| Sveriges Hundföretagare<\/title>/)
+    end
+
+
+    describe 'meta information' do
+
+      # Create the Regexp to match meta tag="<tag>" content="<content>"
+      def meta_tag_with_content(tag, content)
+        Regexp.new("<meta name=\"#{tag}\" content=\"#{content}\">")
+      end
+
+      # Create the Regexp to match meta property="<property>" content="<content>"
+      def meta_property_with_content(property, content)
+        Regexp.new("<meta property=\"#{property}\" content=\"#{content}\">")
+      end
+
+
+      it 'description is the company description' do
+        complete_co1
+        get :show, params: show_co1_params
+        puts "description: #{complete_co1.description}"
+        expect(response.body).to match(meta_tag_with_content('description', complete_co1.description))
+      end
+
+
+      it 'keywords are only the business categories for the company' do
+        meta_content = complete_co1.business_categories.map(&:name).join(', ')
+        get :show, params: show_co1_params
+
+        expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
+      end
+
+
+      it 'link rel="image_src" is the H-markt image for the company' do
+        co_hmarkt_image_url = company_h_markt_url(complete_co1) # FIXME - this needs to be a permanent image and URL
+        get :show, params: show_co1_params
+
+        expect(response.body).to match(co_hmarkt_image_url)
+      end
+
+
+      describe 'link rel="alternate" hreflang' do
+
+        # Create the Regexp to match link rel='alternate' hreflant="<hreflang>" href="<href>"
+        def link_hreflang_with_href(hreflang, href)
+          Regexp.new("<link rel=\"alternate\" hreflang=\"#{hreflang}\" href=\"#{href}\" />")
+        end
+
+
+        it 'default is "(.)*/hundforetagare/[company id]' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(link_hreflang_with_href('x-default', "(.)*/hundforetag/#{complete_co1.id}"))
+        end
+
+        it 'alt for sv is (.)*/hunforetagare/[company id]' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(link_hreflang_with_href('sv', "(.)*/hundforetag/#{complete_co1.id}"))
+        end
+
+        it 'alt for en is (.)*/en/hunforetagare/[company id]' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(link_hreflang_with_href('en', "(.)*/en/hundforetag/#{complete_co1.id}"))
+        end
+      end
+
+
+      describe 'schema.org info in ld+json format for the company' do
+
+        # This is an example of the schema.org information for a Company in ld+json form:
+        #   (I've formatted it with newlines and indents for readability.)
+        #
+        # <script type="application/ld+json">
+        # {
+        #   "@context":"http://schema.org",
+        #   "@type":"LocalBusiness",
+        #   "@id":"http://www.example.com",
+        #   "name":"Complete Company 1",
+        #   "description":"This co has a 2 branding payments",
+        #   "url":"http://www.example.com",
+        #   "email":"thiscompany@example.com",
+        #   "telephone":"123123123",
+        #   "image":"https://hitta.sverigeshundforetagare.se/hundforetag/1/company_h_brand",
+        #   "address":{
+        #     "@type":"PostalAddress",
+        #     "streetAddress":"Hundforetagarevägen 1",
+        #     "postalCode":"310 40",
+        #     "addressRegion":"MyString",
+        #     "addressLocality":"Harplinge",
+        #     "addressCountry":"Sverige"
+        #   },
+        #   "geo":{
+        #     "@type":"GeoCoordinates",
+        #     "latitude":56.7422437,
+        #     "longitude":12.7206453
+        #   },
+        #   "knowsLanguage":"sv-SE"
+        #   "knowsAbout"=>
+        #     ["Hund Business Category 3",
+        #     "Hund Business Category 2",
+        #     "Hund Business Category 1"]
+        #   }
+        # }
+        # </script>
+
+        it 'has schema.org information in a <script> tag' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          script_regexp = /<script type=\"application\/ld\+json\">(\s)*(?<company_ld_json>.*)(\s)*<\/script>/
+          match = script_regexp.match(response.body)
+          expect(match.captures.size).to eq 1
+
+          # turn the matched string into a Hash so we can compare info no matter the order
+          co_ld_json = JSON.parse(match.named_captures['company_ld_json'])
+
+          expect(co_ld_json.key?('@context')).to be_truthy
+          expect(co_ld_json['@context']).to eq 'http://schema.org'
+
+          expect(co_ld_json.key?('@type')).to be_truthy
+          expect(co_ld_json['@type']).to eq 'LocalBusiness'
+
+          expect(co_ld_json.key?('@id')).to be_truthy
+          expect(co_ld_json['@id']).to eq complete_co1.website
+          #TODO: or should this be equal to the SHF page for the company? == @controller.request.url
+
+          expect(co_ld_json.key?('name')).to be_truthy
+          expect(co_ld_json['name']).to eq complete_co1.name
+
+          expect(co_ld_json.key?('description')).to be_truthy
+          expect(co_ld_json['description']).to eq complete_co1.description
+
+          expect(co_ld_json.key?('url')).to be_truthy
+          expect(co_ld_json['url']).to eq complete_co1.website
+
+          expect(co_ld_json.key?('email')).to be_truthy
+          expect(co_ld_json['email']).to eq complete_co1.email
+
+          expect(co_ld_json.key?('telephone')).to be_truthy
+          expect(co_ld_json['telephone']).to eq complete_co1.phone_number
+
+          expect(co_ld_json.key?('knowsLanguage')).to be_truthy
+          expect(co_ld_json['knowsLanguage']).to eq 'sv-SE'
+
+          # prepend each category with I18n.t('dog') so that the search engines can respond
+          # when someone searches on "dog <whatever>"
+          expect(co_ld_json.key?('knowsAbout')).to be_truthy
+          expect(co_ld_json['knowsAbout']).to match_array(complete_co1.
+              business_categories.map{|category| "#{I18n.t('dog').capitalize} #{category.name}"} )
+
+          expect(co_ld_json.key?('address')).to be_truthy
+          expect(co_ld_json['address']).to be_a Hash
+
+          address_hash = co_ld_json['address']
+          expect(address_hash.key?('@type')).to be_truthy
+          expect(address_hash['@type']).to eq 'PostalAddress'
+
+          expect(address_hash.key?('streetAddress')).to be_truthy
+          expect(address_hash['streetAddress']).to eq 'Hundforetagarevägen 1'
+
+          expect(address_hash.key?('postalCode')).to be_truthy
+          expect(address_hash['postalCode']).to eq '310 40'
+
+          expect(address_hash.key?('addressRegion')).to be_truthy
+          expect(address_hash['addressRegion']).to eq 'MyString'
+
+          expect(address_hash.key?('addressLocality')).to be_truthy
+          expect(address_hash['addressLocality']).to eq 'Harplinge'
+
+          expect(address_hash.key?('addressCountry')).to be_truthy
+          expect(address_hash['addressCountry']).to eq 'Sverige'
+
+          expect(co_ld_json.key?('geo')).to be_truthy
+          expect(co_ld_json['geo']).to be_a Hash
+
+          geo_hash = co_ld_json['geo']
+          expect(geo_hash.key?('@type')).to be_truthy
+          expect(geo_hash['@type']).to eq 'GeoCoordinates'
+
+          expect(geo_hash.key?('longitude')).to be_truthy
+          expect(geo_hash['latitude']).to eq 56.7422437
+          expect(geo_hash.key?('longitude')).to be_truthy
+          expect(geo_hash['longitude']).to eq 12.7206453
+
+
+          expect(co_ld_json.key?('image')).to be_truthy
+          expect(co_ld_json['image']).to eq 'permanent url with a permanent image so search engines can find and display it'
+
+        end
+      end
+
+
+      describe 'og (OpenGraph)' do
+
+        it 'title is same as the page title' do
+          # <meta property="og:title" content="Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare">
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(meta_property_with_content('og:title', "#{complete_co1.name} \| Sveriges Hundföretagare"))
+        end
+
+        it 'description is the same as the page description' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(meta_property_with_content('og:description', complete_co1.description))
+        end
+
+        it 'url is the url of the page' do
+          # <meta property="og:url" content="http://0.0.0.0:3000/">
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(meta_property_with_content('og:url', request.url))
+        end
+
+        it 'type is website' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+        end
+
+        it 'locale = sv_SE' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(meta_property_with_content('og:locale', 'sv_SE'))
+        end
+
+
+        describe 'image' do
+
+          it 'image is the same as the page image_src' do
+            co_hmarkt_image_url = company_h_markt_url(complete_co1)  # FIXME - this needs to be a permanent image and URL
+            get :show, params: show_co1_params
+
+            expect(response.body).to match(meta_property_with_content('og:image', co_hmarkt_image_url))
+          end
+
+          it 'type = image/png' do
+            # <meta property="og:image:type" content="image/png">
+            complete_co1
+            get :show, params: show_co1_params
+
+            expect(response.body).to match(meta_property_with_content('og:image:type', 'image/png'))
+          end
+
+          it 'width is 329 (the width of the asset banner image)' do
+            # <meta property="og:image:width" content="329">
+            complete_co1
+            get :show, params: show_co1_params
+
+            expect(response.body).to match(meta_property_with_content('og:image:width', '329'))
+          end
+
+          it 'height is 424 (the height of the asset banner image)' do
+            # <meta property="og:image:height" content="424">
+            complete_co1
+            get :show, params: show_co1_params
+
+            expect(response.body).to match(meta_property_with_content('og:image:height', '424'))
+          end
+
+        end
+
+      end
+
+
+      describe 'twitter' do
+
+        it '<meta name="twitter:card" content="summary">' do
+          complete_co1
+          get :show, params: show_co1_params
+
+          expect(response.body).to match(meta_tag_with_content('twitter:card', 'summary'))
+        end
+      end
+    end
+
+
+    describe 'schema.org info for a company with multiple addresses' do
+      pending
+    end
+
+    describe 'schema.org info for a company with multiple images' do
+      pending
+    end
 
   end
 
