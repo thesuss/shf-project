@@ -14,9 +14,12 @@
 RSpec.shared_context 'create companies' do
 
   let(:complete_co1) do
-    create(:company, name: 'Complete Company 1',
+    co1 = create(:company, name: 'Complete Company 1',
            description:    'This co has a 2 branding payments',
            company_number: '4268582063')
+    # this ensures we have an application and business categories for the company
+    create(:shf_application, :accepted, company_number: co1.company_number, num_categories: 3)
+    co1
   end
   let(:payment1_co1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
