@@ -10,7 +10,7 @@ class CompaniesController < ApplicationController
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
   before_action :set_app_config, only: [:company_h_brand]
   before_action :allow_iframe_request, only: [:company_h_brand]
-  before_action :set_page_meta_tags, only: [:index]
+  before_action :set_page_meta_tags, only: [:index, :show]
   before_action :set_page_meta_robots_none, only: [:edit]
 
   def index
@@ -54,6 +54,11 @@ class CompaniesController < ApplicationController
 
   def show
     setup_events_and_events_pagination
+
+    # set the meta information specifically for this company
+    set_meta_tags title:  @company.name,
+                  description: @company.description,
+                  keywords: @company.business_categories.map(&:name)
 
     show_events_list if request.xhr?
   end
