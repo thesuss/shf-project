@@ -255,23 +255,15 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
 
   describe 'set_page_meta_images' do
 
-    it 'uses the default meta-image if no locale entry is found' do
-
-      expect(@meta_setter).to receive(:set_page_meta_image_tags)
-                                  .with(PageMetaTagsSetter::META_IMAGE_DEFAULT_FN,
-                                        PageMetaTagsSetter::META_IMAGE_DEFAULT_TYPE,
-                                        width:  PageMetaTagsSetter::META_IMAGE_DEFAULT_WIDTH,
-                                        height: PageMetaTagsSetter::META_IMAGE_DEFAULT_HEIGHT)
-      @meta_setter.set_page_meta_images
-    end
-
-
     context 'looks up filename from the locale and gets the characteristics' do
 
       before(:all) do
         # temporarily add this file to the assets/images path
-        @test_filename         = 'image-' + Time.now.to_i.to_s + '.png'
+        @test_filename         = 'image.png'
         @asset_images_filepath = File.absolute_path(File.join(Rails.root, 'app', 'assets', 'images', @test_filename))
+        @test_filename_url = /http:\/\/test.host\/assets\/image.png/
+
+        @default_filename_url = /http:\/\/test.host\/assets\/#{I18n.t('meta.default.image_src')}/
 
         FileUtils.copy_file(file_fixture('image.png'), @asset_images_filepath)
       end
@@ -281,22 +273,66 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
       end
 
 
-      it 'looks up filename from the locale and gets the characteristics' do
-        allow(I18n.config.backend).to receive(:exists?)
-                                          .with(:sv, '.meta.image_src')
-                                          .and_return(true)
-        allow(I18n.config.backend).to receive(:translate)
-                                          .with(:sv, 'page_meta_tags_setter_test..meta.image_src', anything)
-                                          .and_return(@test_filename)
+      describe 'image filename and url is given' do
+
+        it 'uses the filename and provided url' do
+
+          expect(@meta_setter).to receive(:set_page_meta_image_tags)
+                                      .with(@test_filename_url,
+                                            'png',
+                                            width:  80,
+                                            height: 80)
+
+          @meta_setter.set_page_meta_images(@asset_images_filepath, @test_filename_url)
+        end
 
 
-        expect(@meta_setter).to receive(:set_page_meta_image_tags)
-                                    .with(@test_filename,
-                                          'png',
-                                          width:  80,
-                                          height: 80)
-        @meta_setter.set_page_meta_images
+        it 'if filename is not found, falls back to locale, then DEFAULT image' do
+
+          expect(@meta_setter).to receive(:set_page_meta_image_tags)
+                                      .with(@default_filename_url,
+                                            PageMetaTagsSetter::META_IMAGE_DEFAULT_TYPE,
+                                            width:  PageMetaTagsSetter::META_IMAGE_DEFAULT_WIDTH,
+                                            height: PageMetaTagsSetter::META_IMAGE_DEFAULT_HEIGHT)
+
+          @meta_setter.set_page_meta_images("blorfo-#{Time.now.to_i}", @test_filename_url)
+        end
+
       end
+
+
+      describe 'no image filename is given' do
+
+        it 'first tries to look up filename from the locale and gets the characteristics' do
+          allow(I18n.config.backend).to receive(:exists?)
+                                            .with(:sv, '.meta.image_src')
+                                            .and_return(true)
+          allow(I18n.config.backend).to receive(:translate)
+                                            .with(:sv, 'page_meta_tags_setter_test..meta.image_src', anything)
+                                            .and_return(@test_filename)
+
+
+          expect(@meta_setter).to receive(:set_page_meta_image_tags)
+                                      .with(@test_filename_url,
+                                            'png',
+                                            width:  80,
+                                            height: 80)
+          @meta_setter.set_page_meta_images
+        end
+
+
+        it 'uses the default meta-image if no locale entry is found' do
+
+          expect(@meta_setter).to receive(:set_page_meta_image_tags)
+                                      .with(@default_filename_url,
+                                            PageMetaTagsSetter::META_IMAGE_DEFAULT_TYPE,
+                                            width:  PageMetaTagsSetter::META_IMAGE_DEFAULT_WIDTH,
+                                            height: PageMetaTagsSetter::META_IMAGE_DEFAULT_HEIGHT)
+          @meta_setter.set_page_meta_images
+        end
+
+      end
+
 
       it 'sets the OpenGraph info' do
         allow(I18n.config.backend).to receive(:exists?)
@@ -342,7 +378,7 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
                                      }
                                    })
 
-      subject.set_page_meta_image_tags(image_fn, 'png', width: 80, height: 80)
+      subject.set_page_meta_image_tags(expected_image_url, 'png', width: 80, height: 80)
     end
 
     it 'default image width = 0 if not specified' do
@@ -358,7 +394,7 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
                                      }
                                    })
 
-      subject.set_page_meta_image_tags(image_fn, 'png', height: 80)
+      subject.set_page_meta_image_tags(expected_image_url, 'png', height: 80)
     end
 
     it 'default image height = 0 if not specified' do
@@ -374,7 +410,7 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
                                      }
                                    })
 
-      subject.set_page_meta_image_tags(image_fn, 'png', width: 80)
+      subject.set_page_meta_image_tags(expected_image_url, 'png', width: 80)
     end
 
   end

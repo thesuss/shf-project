@@ -10,7 +10,7 @@ require 'mini_magick'
 #       Falls back to site defaults if an entry is not found
 #       in the locale files.
 #
-# Ex: In the CompaniesController, use the defaults for the :index action
+# @example In the CompaniesController, use the defaults for the :index action
 #     but set the title tag specifically for a company that is being displayed
 #     with the :show action.
 #      (Note there really would be more meta-tag info set for a Company.)
@@ -21,7 +21,7 @@ require 'mini_magick'
 #
 #         include PageMetaInfoSetter
 #
-#         before_action :set_meta_tags_for_url_path, only: [:index]
+#         before_action :set_meta_tags_for_url_path, only: [:index, :show]
 #         before_action :set_page_meta_robots_none, only: [:edit]
 #
 #         # No other code is needed for :index or :edit methods.
@@ -150,32 +150,58 @@ module PageMetaTagsSetter
 
 
   # TODO: handle more than 1 image for a page. get possible comma sep. list from locale
-  # Set meta tags for the page images. Image file names will be looked up
-  # in the locale file under the .meta.image_src key.
-  # If no entry in the locale is found, use the default meta image
+  # Set meta tags for the page images.
+  # If no filename is provided or if it doesn't exit,
+  #   use the filename given in the locale file or the default.
   #
-  def set_page_meta_images
+  def set_page_meta_images(full_image_filepath = nil, full_image_url = nil)
 
+    if  full_image_filepath.nil? || !File.exist?(full_image_filepath)
+      fallback_to_locale_or_default_image
+
+    else
+        # make a temp. copy of the file just to be safe
+        image   = MiniMagick::Image.new(full_image_filepath)
+        set_page_meta_image_tags(full_image_url,
+                                 image.type.downcase,
+                                 width:  image.width,
+                                 height: image.height)
+    end
+
+  end
+
+
+  # Look up the image file name in the locale file  under the
+  # .meta.image_src key.
+  # If no entry in the locale is found, use the default meta image
+  def fallback_to_locale_or_default_image
     if I18n.exists?(LOCALE_IMAGE_KEY)
-      image_fn = t(LOCALE_IMAGE_KEY)
-      image_absolute_path = File.join(Rails.root, 'app', 'assets', image_path(image_fn))
-
-      image               = MiniMagick::Image.new(image_absolute_path) # makes a temp. copy of the file
-
-      set_page_meta_image_tags(image_fn,
-                               image.type.downcase,
-                               width:  image.width,
-                               height: image.height)
+      set_page_meta_image_from_locale
     else
       set_page_meta_default_image_tags
     end
   end
 
 
+  def set_page_meta_image_from_locale
+    image_fn = t(LOCALE_IMAGE_KEY)
+    image_absolute_path = File.join(Rails.root, 'app', 'assets', image_path(image_fn))
+
+    # makes a temp. copy of the file
+    image = MiniMagick::Image.new(image_absolute_path)
+
+    image_url = asset_url("assets/#{image_fn}")
+    set_page_meta_image_tags(image_url,
+                             image.type.downcase,
+                             width:  image.width,
+                             height: image.height)
+  end
+
+
   # Set the meta image tags for a page using the default image and tags
   def set_page_meta_default_image_tags
-
-    set_page_meta_image_tags(META_IMAGE_DEFAULT_FN,
+    image_url = asset_url("assets/#{META_IMAGE_DEFAULT_FN}")
+    set_page_meta_image_tags(image_url,
                              META_IMAGE_DEFAULT_TYPE,
                              width:  META_IMAGE_DEFAULT_WIDTH,
                              height: META_IMAGE_DEFAULT_HEIGHT)
@@ -198,14 +224,14 @@ module PageMetaTagsSetter
   # @param [Integer] width - width of the image if known; will be used if given
   # @param [Integer] height - height of the image if known; will be used if given
   #
-  def set_page_meta_image_tags(image_filename, image_type, width: 0, height: 0)
+  def set_page_meta_image_tags(image_url, image_type, width: 0, height: 0)
 
-    image_asset_url = asset_url("assets/#{image_filename}")
+    #image_asset_url = asset_url("assets/#{image_filename}")
 
-    set_meta_tags image_src: image_asset_url,
+    set_meta_tags image_src: image_url,
                   og:        {
                       image: {
-                          _:      image_asset_url,
+                          _:      image_url,
                           type:   "image/#{image_type}",
                           width:  width,
                           height: height
@@ -244,7 +270,6 @@ module PageMetaTagsSetter
     business_cats = BusinessCategory.pluck(:name).uniq
 
     cats_str = business_cats.empty? ? '' : ', ' + business_cats.join(', ')
-
     keywords + cats_str
   end
 
