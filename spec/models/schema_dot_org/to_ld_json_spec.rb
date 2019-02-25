@@ -13,7 +13,7 @@ class SchemaDotOrg::TestJsonLd
 
   def _to_json_struct
     { '_to_json_struct': '_to_json_struct value',
-      'nil value': nil,
+      'nil value': nil
     }
   end
 end
@@ -87,7 +87,7 @@ RSpec.describe SchemaDotOrg::ToLdJson do
        it 'calls :url to get the value for @id' do
           expect(test_json_ld).to receive(:url).and_call_original
           test_json_ld.to_json
-        end
+       end
       end
 
 

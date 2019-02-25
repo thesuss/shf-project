@@ -60,7 +60,7 @@ module Adapters
     # subclasses should set the values/attributes of target in this method
     # and then return it.
     # Use @adaptee to set the values in (= adapt them to) target
-    def set_target_attributes(target)
+    def set_target_attributes(_target)
       raise NoMethodError, "subclasses must implement #{__method__}"
     end
   end

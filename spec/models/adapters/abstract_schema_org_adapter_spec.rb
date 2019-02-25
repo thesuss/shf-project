@@ -104,9 +104,9 @@ RSpec.describe Adapters::AbstractSchemaOrgAdapter, type: :model do
 
       it 'to_ld_json' do
         expect(as_target_result.to_ld_json).to eq('to_ld_json ' +
-                                                      "#{{ root:    true,
+                                                      { root:    true,
                                                            to_json: { '@type': 'some type', key: 'value' }
-                                                      }}")
+                                                      }.to_s)
       end
 
       it 'to_json(as_root:)' do
