@@ -435,7 +435,7 @@ def expect_head_has_ld_json_script(negated: false)
     expect(ld_json['@context']).to eq 'http://schema.org'
 
     expect(ld_json.key?('@type')).to be_truthy
-    expect(ld_json['@type']).to eq 'Organization'
+    expect(ld_json['@type']).to eq 'LocalBusiness'
 
     expect(ld_json.key?('@id')).to be_truthy
     end
