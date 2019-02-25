@@ -215,6 +215,174 @@ RSpec.describe CompaniesController, type: :controller do
 
     end
 
+
+    describe 'rendered' do
+
+      render_views
+
+
+      it 'page title is from the locale file' do
+        get :index
+        expect(response.body).to match(/Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare/)
+      end
+
+
+      describe 'meta information' do
+
+        # Create the Regexp to match meta tag="<tag>" content="<content>"
+        def meta_tag_with_content(tag, content)
+          Regexp.new("<meta name=\"#{tag}\" content=\"#{content}\">")
+        end
+
+        # Create the Regexp to match meta property="<property>" content="<content>"
+        def meta_property_with_content(property, content)
+          Regexp.new("<meta property=\"#{property}\" content=\"#{content}\">")
+        end
+
+
+        it 'description is from the locale file' do
+          get :index
+
+          meta_content = "Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera."
+          expect(response.body).to match(meta_tag_with_content('description', meta_content))
+        end
+
+        describe 'keywords' do
+
+          it 'always has what is in the locale file ' do
+            get :index
+            meta_content = I18n.t('meta.default.keywords')
+            expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
+          end
+
+          describe 'appends the business categories after the locale file keywords' do
+
+            it 'no business categories; is just the I18n keywords' do
+              get :index
+              meta_content = I18n.t('meta.default.keywords')
+
+              expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
+            end
+
+            it 'some business categories' do
+              create(:business_category, name: 'Cat 1')
+              create(:business_category, name: 'Cat 2')
+              get :index
+              meta_content = I18n.t('meta.default.keywords') + ', Cat 1, Cat 2'
+
+              expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
+            end
+          end
+        end
+
+
+        it 'link rel="image_src" is the banner image in assets/images' do
+          get :index
+
+          image_src_match = "<link rel=\"image_src\" href=\"http(.*)/assets/Sveriges_hundforetagare_banner_sajt.jpg\">"
+          expect(response.body).to match(image_src_match)
+        end
+
+
+        describe 'link rel="alternate" hreflang' do
+
+          # Create the Regexp to match meta property="<property>" content="<content>"
+          def link_hreflang_with_href(hreflang, href)
+            Regexp.new("<link rel=\"alternate\" hreflang=\"#{hreflang}\" href=\"#{href}\" />")
+          end
+
+
+          it 'default is "https://hitta.sverigeshundforetagare.se' do
+            get :index
+            expect(response.body).to match(link_hreflang_with_href('x-default', 'https:\/\/hitta.sverigeshundforetagare.se'))
+          end
+
+          it 'alt for sv is https://hitta.sverigeshundforetagare.se' do
+            get :index
+            expect(response.body).to match(link_hreflang_with_href('sv', 'https:\/\/hitta.sverigeshundforetagare.se'))
+          end
+
+          it 'alt for en is https://hitta.sverigeshundforetagare.se/en' do
+            get :index
+            expect(response.body).to match(link_hreflang_with_href('en', 'https:\/\/hitta.sverigeshundforetagare.se/en'))
+          end
+        end
+
+
+        describe 'og (OpenGraph)' do
+
+          it 'title is the complete page title <title | site name>' do
+            # <meta property="og:title" content="Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare">
+            get :index
+            expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+          end
+
+          it 'description is the same as the page description' do
+            # <meta property="og:description" content="Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera.">
+            get :index
+            expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+          end
+
+          it 'url is the url of the page' do
+            # <meta property="og:url" content="http://0.0.0.0:3000/">
+            get :index
+            expect(response.body).to match(meta_property_with_content('og:url', request.url))
+          end
+
+          it 'type is website' do
+            get :index
+            expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+          end
+
+          it 'locale = sv_SE' do
+            get :index
+            expect(response.body).to match(meta_property_with_content('og:locale', 'sv_SE'))
+          end
+
+
+          describe 'image' do
+
+            it 'image is the same as the page image_src' do
+              # <meta property="og:image" content="http://0.0.0.0:3000/assets/Sveriges_hundforetagare_banner_sajt.jpg">
+              get :index
+              expect(response.body).to match(meta_property_with_content('og:image', 'http(.*)/assets/Sveriges_hundforetagare_banner_sajt.jpg'))
+            end
+
+            it 'type = image/jpeg' do
+              # <meta property="og:image:type" content="image/jpeg">
+              get :index
+              expect(response.body).to match(meta_property_with_content('og:image:type', 'image/jpeg'))
+            end
+
+            it 'width is 1245 (the width of the asset banner image)' do
+              # <meta property="og:image:width" content="1245">
+              get :index
+              expect(response.body).to match(meta_property_with_content('og:image:width', '1245'))
+            end
+
+            it 'height is 620 (the height of the asset banner image)' do
+              # <meta property="og:image:height" content="620">
+              get :index
+              expect(response.body).to match(meta_property_with_content('og:image:height', '620'))
+            end
+
+          end
+
+        end
+
+        describe 'twitter' do
+
+          it '<meta name="twitter:card" content="summary">' do
+            get :index
+            expect(response.body).to match(meta_tag_with_content('twitter:card', 'summary'))
+          end
+        end
+      end
+
+
+    end
+
+
   end
 
 
@@ -240,14 +408,14 @@ RSpec.describe CompaniesController, type: :controller do
 
     describe 'removes the sort param no matter the sort direction' do
 
-      empty_query_request = {  "utf8" => "✓" ,
-                               'controller' => 'companies', 'action' => 'index',
-                               'q' => {} }
+      empty_query_request = { "utf8"       => "✓",
+                              'controller' => 'companies', 'action' => 'index',
+                              'q'          => {} }
 
-      sort_by_business_cats_no_dir = {desc: 'no direction', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name' } }) }
-      sort_by_business_cats_asc    = {desc: 'asc', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name asc' } }) }
-      sort_by_business_cats_desc   = {desc: 'desc', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name desc' } }) }
-      sort_by_business_cats_blorf  = {desc: 'nonsense direction', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name blorf' } }) }
+      sort_by_business_cats_no_dir = { desc: 'no direction', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name' } }) }
+      sort_by_business_cats_asc    = { desc: 'asc', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name asc' } }) }
+      sort_by_business_cats_desc   = { desc: 'desc', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name desc' } }) }
+      sort_by_business_cats_blorf  = { desc: 'nonsense direction', request: empty_query_request.merge({ 'q' => { 's' => 'business_categories_name blorf' } }) }
 
       sort_dirs = [sort_by_business_cats_no_dir, sort_by_business_cats_asc,
                    sort_by_business_cats_desc, sort_by_business_cats_blorf
@@ -265,11 +433,11 @@ RSpec.describe CompaniesController, type: :controller do
 
 
     it 'will not throw an error if a sort by business categories request is made' do
-      bad_request = {  "utf8" => "✓" ,
-                               'controller' => 'companies', 'action' => 'index',
-                               'q' => { 's' => 'business_categories_name asc' }}
+      bad_request = { "utf8"       => "✓",
+                      'controller' => 'companies', 'action' => 'index',
+                      'q'          => { 's' => 'business_categories_name asc' } }
 
-      expect{ get :index, params: bad_request}.not_to raise_error
+      expect { get :index, params: bad_request }.not_to raise_error
     end
 
   end # describe 'ignore sort by business category'
