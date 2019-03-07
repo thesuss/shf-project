@@ -1088,6 +1088,7 @@ en:
         message_text:
           expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
+          pay_on_acct_page: "Go to your account page to pay:"
 
 
       co_info_incomplete:
@@ -1203,7 +1204,7 @@ en:
       users:
         my_application: &my_application My Application
         apply_for_membership: Apply for Membership
-        your_account: View Your Account
+        your_account: My account
 
       members:
         shf_companies: SHF Companies

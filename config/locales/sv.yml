@@ -1102,6 +1102,7 @@ sv:
         message_text:
           expire_alert_html: "Ditt medlemsskap gick ut <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: Du kan förnya ditt medlemsskap och fortsätta dra nytta av medlemsfördelarna genom att logga in och betala.
+          pay_on_acct_page: "Du betalar via "
 
 
   devise:
