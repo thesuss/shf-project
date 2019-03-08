@@ -529,12 +529,13 @@ sv:
     uploads:
       no_files: Inga filer är uppladdade för denna ansökan.
       files_uploaded: 'Uppladdade filer för denna ansökan:'
-      filename: Filnamn
-      file_was_uploaded: 'Filen laddades upp: %{filename}'
-      confirm_delete: 'Är du säker på att du vill radera %{filename}?'
+      filename: &filename Filnamn
+      file_was_uploaded: &file_was_uploaded 'Filen laddades upp: %{filename}'
+      confirm_delete: &upload_confirm_delete 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: &invalid_upload_type Tyvärr kan du inte ladda upp denna filtypen.
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
       please_upload_again: Var god ladda upp dina filer igen.
+      will_review_after_received: &review_after_recevied_files "Vi kommer att handlägga din ansökan när vi har fått alla filer."
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.
@@ -544,11 +545,11 @@ sv:
   file_uploads:
     no_files: Inga filer är uppladdade.
     files_uploaded: 'Uppladdade filer för denna ansökan:'
-    filename: Filnamn
-    file_was_uploaded: 'Filen laddades upp: %{filename}'
-    confirm_delete: 'Är du säker på att du vill radera %{filename}?'
-    invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
-    file_too_large: Filen måste vara mindre än 5 MB
+    filename: *filename
+    file_was_uploaded: *file_was_uploaded
+    confirm_delete: *upload_confirm_delete
+    invalid_upload_type: *invalid_upload_type
+    file_too_large: *file_too_large_5MB
 
 
 
@@ -1002,7 +1003,6 @@ sv:
   mailers:
     login_here: "Klicka här för att gå till inloggningssidan."
     may_need_to_login_first: "Du kan behöva logga in först.  Här är inloggningssidan:"
-    login_here: "Klicka här för att gå till SHF inloggningssidan."
 
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
@@ -1037,6 +1037,11 @@ sv:
       acknowledge_received:
         subject: Din ansökan till Sveriges Hundföretagare är mottagen
         message_text: "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
+        your_submitted_info: "Här är vad du har laddat upp:"
+        review_after_recevied_files: *review_after_recevied_files
+        upload_choice_intro: "Ditt val för att tillhandahålla underlag: "
+        need_to_upload: "Du måste ladda upp dina filer."
+        can_upload_more: "Du kan ladda upp fler filer."
         error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
 
       app_approved:
