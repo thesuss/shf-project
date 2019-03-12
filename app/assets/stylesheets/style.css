@@ -375,12 +375,18 @@ nav.navbar a {
     font-style: normal;
     padding: 10px;
     text-transform: uppercase;
+    letter-spacing: .5px;
 }
 
-.dropdown-item.active, .dropdown-item:active {
-    color: #fff;
-    text-decoration: none;
-    background-color: #5692ce;
+nav.navbar .dropdown-menu li a {
+    border: 1px solid #eee;
+    border-top: 0;
+    padding: 15px;
+    position: relative;
+}
+nav.navbar .current-menu-item>a {
+    font-weight: 600;
+    color: #232525;
 }
 
 a:hover {
@@ -478,6 +484,14 @@ vertical-align: default;
 }
 .company .field-label {
     font-weight: bold;
+}
+
+table { font-size: .9em;}
+
+table a {
+    border-bottom: none;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 .table th, .table td {

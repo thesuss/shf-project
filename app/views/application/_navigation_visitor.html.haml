@@ -36,8 +36,6 @@
         = link_to t('menus.nav.visitor.dog_owners.become_supporter'), https_shf_main_site_dog_owners_become_support_member_url, class: 'nav-link'
       %li
         = link_to t('menus.nav.visitor.dog_owners.being_dog_owners'), https_shf_main_site_dog_owner_being_dog_owner_url, class: 'nav-link'
-      %li
-        = link_to t('menus.nav.visitor.find_dog_businesses'), root_path, class: 'nav-link'
 
   %li.dropdown
     %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: https_shf_main_site_for_companies_url }
@@ -75,6 +73,7 @@
             = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.popular_science'), https_shf_main_site_companies_knowledgebank_popsci_url, class: 'nav-link'
           %li
             = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.video'), https_shf_main_site_companies_knowledgebank_videos_url, class: 'nav-link'
-
   %li
     = link_to t('menus.nav.visitor.contact'), https_shf_main_site_contact_url, class: 'nav-link'
+  %li.current-menu-item
+    = link_to t('menus.nav.visitor.find_dog_businesses'), root_path, class: 'nav-link'
