@@ -17,7 +17,7 @@
 
       = render 'application/required_fields'
 
-      %p.field-instruction= t('.submit_button_explain')
+      %p.submit-button-explain.strong.field-instruction= t('.submit_button_explain')
       = f.submit t('.submit_button_label'), disabled: true, class: 'btn btn-warning mb-2 form-control app-submit'
 
       
