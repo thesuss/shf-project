@@ -523,12 +523,13 @@ en:
     uploads:
       no_files: You have not uploaded any files for this application.
       files_uploaded: 'Files uploaded for this application:'
-      filename: Filename
-      file_was_uploaded: 'This file was uploaded: %{filename}'
-      confirm_delete: 'Are you sure you want to delete %{filename}?'
+      filename: &filename Filename
+      file_was_uploaded: &file_was_uploaded 'This file was uploaded: %{filename}'
+      confirm_delete: &upload_confirm_delete 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: &invalid_upload_type Sorry, this is not a file type you can upload.
       file_too_large: &file_too_large_5MB The file must be smaller than 5 MB
       please_upload_again: Please upload your files again.
+      will_review_after_received: &review_after_recevied_files "Once we have received your files, we will review your application."
 
     update_the_status: Update the status
     application_deleted: Application deleted.
@@ -538,11 +539,12 @@ en:
   file_uploads:
     no_files: No files have been uploaded.
     files_uploaded: 'Files uploaded:'
-    filename: Filename
-    file_was_uploaded: 'This file was uploaded: %{filename}'
-    confirm_delete: 'Are you sure you want to delete %{filename}?'
-    invalid_upload_type: Sorry, this is not a file type you can upload.
-    file_too_large: The file must be smaller than 5 MB
+    filename: *filename
+    file_was_uploaded: *file_was_uploaded
+    confirm_delete: *upload_confirm_delete
+    invalid_upload_type: *invalid_upload_type
+    file_too_large: *file_too_large_5MB
+
 
 
 
@@ -999,8 +1001,6 @@ en:
     login_here: "Click here to go to the login page."
     may_need_to_login_first: "You may need to log in first.  Here's the login page:"
 
-    login_here: "Click here to go to the SHF login page."
-
     application_mailer:
       greeting: &email_greeting "Hello %{greeting_name}"
 
@@ -1035,6 +1035,11 @@ en:
       acknowledge_received:
         subject: Your application to Sveriges Hundföretagare has been received
         message_text: "Your application has been received.  We are all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
+        your_submitted_info: "As a reminder, here is what you submitted:"
+        review_after_recevied_files: *review_after_recevied_files
+        upload_choice_intro: "Your choice for providing files: "
+        need_to_upload: "You need to upload your files."
+        can_upload_more: "You can upload more files."
         error_sending: &shf_email_error "There was a problem sending email to you at {%email} about your application."
 
       app_approved:
@@ -1042,7 +1047,7 @@ en:
         message_text:
           app_approved_and_next: "Your application is now approved. What is left before you are registered as a member in the system is to pay your membership fee.  Log in to the website and then pay at this link: "
           h_branding_not_paid: "When this is done you will need to finish your company page and pay your H-branding fee. More information about how to do that will come after you paid your membership fee."
-          thanks:  "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
+          thanks: "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
           error_sending: *shf_email_error
 
 
@@ -1052,8 +1057,8 @@ en:
       app_no_uploaded_files:
         subject: Please upload qualification files to your Sveriges Hundföretagare application
         message_text: "This is a reminder that you need upload files for your SHF application so that it can be reviewed."
-        will_see_app_button: "After you log in, you will see a button that will take you to your application where you can upload your files."
-        thanks:  "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
+        will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."
+        thanks: "Thanks for wanting to be a member."
         error_sending: *shf_email_error
 
       membership_granted:
@@ -1088,6 +1093,7 @@ en:
         message_text:
           expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
+          pay_on_acct_page: "Go to your account page to pay:"
 
 
       co_info_incomplete:
@@ -1212,7 +1218,7 @@ en:
       users:
         my_application: &my_application My Application
         apply_for_membership: Apply for Membership
-        your_account: View Your Account
+        your_account: My account
 
       members:
         shf_companies: SHF Companies
