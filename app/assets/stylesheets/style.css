@@ -521,3 +521,8 @@ a:focus, a:hover, button:hover, button:focus, .content .entry-title a:hover, .co
 }
 
 a>i:before {border:none;}
+
+.logooo {
+    width: 300px;
+    text-align: center;
+}
