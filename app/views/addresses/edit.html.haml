@@ -4,10 +4,8 @@
     = t('.cannot_delete_address')
     %span.glyphicon.glyphicon-info-sign{ title: "#{t('.delete_address_tooltip')}",
                                          data: {toggle: 'tooltip'} }
-  .post-title-divider
-    %span
 
-.entry-content.wpcf7
+.entry-content
   = render partial: 'form',
            locals: { address: @address, method: :put,
                      url: company_address_path(@company.id, @address.id) }

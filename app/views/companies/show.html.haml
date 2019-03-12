@@ -43,6 +43,14 @@
     = render 'company_members', company: @company
 
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit
+
+    - if user_can_edit
+
+      = link_to "#{t('.add_address')}",
+                new_company_address_path(@company),
+                class: 'btn btn-info add-company-address'
+
+
     .row
       .col-12
         - if ! @company.dinkurs_company_id.blank? && ! @company.show_dinkurs_events && user_can_edit
@@ -64,23 +72,17 @@
           = render 'events/teaser_list', events: @events, company: @company,
                                          items_count: @items_count
 
-    .row.center.item-nav-buttons#item-nav-buttons
 
-      - if user_can_edit
-
-        = link_to "#{t('.add_address')}",
-                  new_company_address_path(@company),
-                  class: 'btn btn-primary add-company-address'
-
-        = link_to "#{t('companies.edit_company')}",
-                  edit_company_path(@company), class: 'btn btn-default edit-company'
-
-        = link_to "#{t('companies.all_companies')}",
-                  companies_path, class: 'btn btn-default all-companies'
-
-      - if current_user.admin?
-        = link_to "#{t('.delete')}", @company, method: :delete,
-                  class:'btn btn-danger delete-company',
-                  data: { confirm: "#{t('.confirm_are_you_sure')}" }
+    .row.center
+      %hr
+      %p
+        - if user_can_edit
+          = link_to "#{t('companies.edit_company')}",
+                    edit_company_path(@company), class: 'btn btn-secondary edit-company'
+                    
+        - if current_user.admin?
+          = link_to "#{t('.delete')}", @company, method: :delete,
+                    class:'btn btn-danger delete-company',
+                    data: { confirm: "#{t('.confirm_are_you_sure')}" }
 
 = render 'edit_branding_modal', company: @company
