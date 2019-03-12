@@ -53,10 +53,9 @@
       = f.collection_radio_buttons(:file_delivery_method_id,
                                    radio_buttons_collection,
                                    :first, :second, {}) do |rb|
-        = rb.label(class: 'radio-inline radio-inline-label') do
-          = rb.radio_button + ' ' + rb.text
-      %br
-      %span.file-delivery-footnotes
+        = rb.label(class: 'form-check form-check-inline') do
+          %small= rb.radio_button + ' ' + rb.text + ' ' 
+      %small.file-delivery-footnotes
         = footnotes
 
     %p.upload-more-note.instructions= t('shf_applications.new.upload_more_files') if controller.action_name == 'new'
@@ -65,12 +64,13 @@
   %h2= t('shf_applications.new.section_title_about_you')
   .answers
     - if current_user.admin? && user.membership_number
-      = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
-      = f.text_field :membership_number,  class: 'form-control'
+      .form-group   
+        = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
+        = f.text_field :membership_number,  class: 'form-control'
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
 
-    %span.glyphicon.glyphicon-info-sign{ title: "#{t('.company_numbers_tooltip')}",
+    %i.fas.fa-info-circle{ title: "#{t('.company_numbers_tooltip')}",
                                          data: {toggle: 'tooltip'} }
 
     %p.field-instruction= t('shf_applications.new.enter_company_number')
