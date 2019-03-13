@@ -72,7 +72,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to validate_presence_of :state }
     it { is_expected.to validate_presence_of :companies }
     it { is_expected.to validate_presence_of :business_categories }
-    it { is_expected.to validate_presence_of :file_delivery_method }
+    it { is_expected.to validate_presence_of(:file_delivery_method).on(:create) }
 
     it { is_expected.to allow_value('user@example.com').for(:contact_email) }
     it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }

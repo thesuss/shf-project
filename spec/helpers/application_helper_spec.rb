@@ -256,9 +256,9 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     it 'adds a count of errors' do
       I18n.locale = :sv
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 7)}/)
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 6)}/)
       I18n.locale = :en
-      expect(errors_html_en).to match(/#{t('model_errors', count: 7)}/)
+      expect(errors_html_en).to match(/#{t('model_errors', count: 6)}/)
     end
 
     it 'returns all model errors - swedish' do

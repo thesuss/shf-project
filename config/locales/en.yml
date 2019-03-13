@@ -139,7 +139,6 @@ en:
         one: User
         other: Users
 
-
     attributes:
 
       user:
@@ -183,6 +182,7 @@ en:
         state/being_destroyed: &status_being_destroyed Being Destroyed
         companies: Company
         business_categories: Business Services
+        file_delivery_method: File Delivery Method
 
       member:
         true: Member
