@@ -8,7 +8,7 @@
     %a.btn.btn-success(aria-controls='listUsers' aria-expanded='false' data-toggle='collapse' href= '#listUsers' role= 'button')
       View users who are not yet members
   - not_members = User.all.reject(&:member?)
-  #listUsers.collapse
+  .collapse#listUsers
     .card.card-body
       - not_members.each do |c|
         = link_to c.first_name, (user_path(c))

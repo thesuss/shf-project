@@ -3,22 +3,22 @@
   != model_errors_helper(@company)
   .container
     .row
-      .col.form-group      
+      .col.form-group
         = f.label :name, "#{t('companies.company_name')}", class: 'required'
         = f.text_field :name,  class: 'form-control'
-      .col.form-group 
+      .col.form-group
         = f.label :company_number, "#{t('companies.show.company_number')}", class: 'required'
         %i.fas.fa-info-circle{ title: "#{t('.org_nr_tooltip')}", data: {toggle: 'tooltip'} }
         = f.number_field :company_number,  class: 'form-control'
     .row
-      .col.form-group      
+      .col.form-group
         = f.label :phone_number, "#{t('companies.telephone_number')}"
         = f.text_field :phone_number,  class: 'form-control'
-      .col.form-group      
+      .col.form-group
         = f.label :email, "#{t('companies.show.email')}", class: 'required'
         = f.text_field :email,  class: 'form-control'
     .row
-      .col.form-group      
+      .col.form-group
         = f.label :website, "#{t('companies.website_include_http')}"
         = f.text_field :website,  class: 'form-control'
       .col.form-group.dinkurs-company-id
@@ -28,10 +28,10 @@
       .col.dinkurs-company-show
         = f.check_box :show_dinkurs_events, {}, "true", "false"
         = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
-        %i.fas.fa-info-circle{ title: "#{t('.dinkurs_show_tooltip')}",data: {toggle: 'tooltip'} }        
-        
+        %i.fas.fa-info-circle{ title: "#{t('.dinkurs_show_tooltip')}",data: {toggle: 'tooltip'} }
+
     .row
-      .col.form-group      
+      .col.form-group
         = f.label :description, "#{t('companies.description')}"
         = f.cktext_area :description,  class: 'form-control'
 

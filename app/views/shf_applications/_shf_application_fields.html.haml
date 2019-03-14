@@ -18,7 +18,7 @@
           .col-md-6
             #upload-files
               %h3.upload-button-pre= t('shf_applications.new.upload_files')
-              %span{class: 'btn btn-warning btn-file'}
+              %span{ class: 'btn btn-warning btn-file' }
                 = t('shf_applications.new.upload_button')
                 = f.file_field 'actual_files[]',
                   multiple: true,
@@ -39,7 +39,7 @@
 
               -# The table that lists the files to be uploaded when the form is submitted:
               %table.hidden.table#files-to-upload
-                %tbody.files{'data-toggle': "modal-gallery", 'data-target': "#modal-gallery"}
+                %tbody.files{ 'data-toggle': "modal-gallery", 'data-target': "#modal-gallery" }
           .col-md-6
             = render 'uploaded_files_list', shf_application: @shf_application
     %br
@@ -54,7 +54,7 @@
                                    radio_buttons_collection,
                                    :first, :second, {}) do |rb|
         = rb.label(class: 'form-check form-check-inline') do
-          %small= rb.radio_button + ' ' + rb.text + ' ' 
+          %small= rb.radio_button + ' ' + rb.text + ' '
       %small.file-delivery-footnotes
         = footnotes
 
@@ -64,7 +64,7 @@
   %h2= t('shf_applications.new.section_title_about_you')
   .answers
     - if current_user.admin? && user.membership_number
-      .form-group   
+      .form-group
         = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
         = f.text_field :membership_number,  class: 'form-control'
 

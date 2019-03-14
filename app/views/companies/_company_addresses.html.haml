@@ -3,19 +3,19 @@
 - if addresses.any?
   .row
     .col-12
-  
+
       %table.table.table-hover
         %thead
           %tr
             %th
               = t('companies.show.address')
               = " (#{t('companies.show.click_to_edit')})" if user_can_edit
-  
+
             - if user_can_edit
-  
+
               %th= t('companies.address_visibility')
               %th= t('companies.show.mailing_address')
-  
+
         - addresses.includes(:kommun).order(:street_address).each do |address|
           %tbody
             %tr.address

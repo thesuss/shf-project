@@ -54,21 +54,21 @@
     .row
       .col-12
         - if ! @company.dinkurs_company_id.blank? && ! @company.show_dinkurs_events && user_can_edit
-  
+
           .dinkurs-show-not
             = t('events.show_not')
-  
+
         - elsif @company.show_dinkurs_events && ! @company.dinkurs_company_id.blank?
-  
+
           - if user_can_edit
-  
+
             = button_to "#{t('.dinkurs_fetch_events')}",
                         fetch_from_dinkurs_company_path(@company),
                         remote: true,
                         class: 'dinkurs-fetch-button pull-right',
                         form_class: 'dinkurs-fetch-events',
                         data: { disable_with: "#{t('.dinkurs_fetching')}" }
-  
+
           = render 'events/teaser_list', events: @events, company: @company,
                                          items_count: @items_count
 
@@ -79,7 +79,7 @@
         - if user_can_edit
           = link_to "#{t('companies.edit_company')}",
                     edit_company_path(@company), class: 'btn btn-secondary edit-company'
-                    
+
         - if current_user.admin?
           = link_to "#{t('.delete')}", @company, method: :delete,
                     class:'btn btn-danger delete-company',

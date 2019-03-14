@@ -1,5 +1,5 @@
 -# Submit the changed reason via javascript when a member_app_waiting_reasons_id is selected from the list or custom_reason_text is changed.
-  Do not make user press a "save" or "submit" button for these changes. (use AJAX)
+-# Do not make user press a "save" or "submit" button for these changes. (use AJAX)
 #reason-waiting
   .row
     .col
@@ -21,7 +21,7 @@
 
       .form-group#other-text-field{ style: "display: #{selected == @other_waiting_reason_value ? nil : 'none'}" }
         = label_tag :custom_reason_text, t('shf_applications.need_info.other_reason_label')
-        = text_field_tag :custom_reason_text, @shf_application.custom_reason_text, 
+        = text_field_tag :custom_reason_text, @shf_application.custom_reason_text,
                     { class: 'form-control', data: { remote: true,
                               url: reason_waiting_shf_application_path(@shf_application),
                               method: 'put' } }

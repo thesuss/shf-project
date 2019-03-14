@@ -7,7 +7,7 @@
       m_percent = (m_paid.fdiv(m_total)) * 100
   .progress
     .progress-bar(aria-valuemax='100' aria-valuemin='0' aria-valuenow="#{m_percent.to_i}" role='progressbar' style="width:#{m_percent.to_i}%")
-      ="#{m_percent.to_i}% of all members have paid"
+      = "#{m_percent.to_i}% of all members have paid"
 
   %p= styled_total(m_paid,'members have paid')
   %p= styled_total(m_total, 'members in the system')
