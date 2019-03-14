@@ -1,3 +1,9 @@
+# When I click on <something> that matches on of the following patterns:
+#  When I click on t("")
+#  When I click on t("")
+#  When I click on t("") [link | button]
+#  When I click on [first | second | third | fourth | fifth ] t("") [link | button]
+#
 When "I click on{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
 # use 'ordinal' when selecting among links or buttons all of which
 # have the same selector (e.g., same label)
@@ -126,4 +132,13 @@ end
 
 And(/^I scroll to the top$/) do
   page.evaluate_script("scroll(0, 0)")
+end
+
+And(/^I scroll so the(?: page) title is visible/) do
+  page.evaluate_script("document.getElementsByTagName('h1')[0].scrollIntoView()")
+end
+
+
+When(/^I scroll so(?: the) element with id "([^"].*)" is visible/) do | element_id |
+  page.evaluate_script("document.getElementById('#{element_id}').scrollIntoView()")
 end
