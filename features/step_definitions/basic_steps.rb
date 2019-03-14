@@ -78,7 +78,7 @@ When "I select {capture_string} in select list {capture_string}" do |option, lis
 end
 
 When "I select radio button {capture_string}" do |label_text|
-  find(:xpath, "//label[contains(.,'#{label_text}')]/input[@type='radio']").click
+  find(:xpath, "//label[contains(.,'#{label_text}')]//input[@type='radio']").click
 end
 
 When "I click the {capture_string} action for the row with {capture_string}" do |action, row_content|
