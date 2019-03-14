@@ -349,6 +349,7 @@ en:
       need_to_enter_name_html: You must have your first and last name defined
                           in order to create a membership application.
                           %{edit_profile}.
+      file_delivery_selection: 'Please select how you will deliver the files needed for your application:'
       submit_button_explain: Select a file delivery option to enable Submit
       where_to_mail_files: We will email you the address
       email_files_subject: My Application Files
