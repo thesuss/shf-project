@@ -139,7 +139,6 @@ sv:
         one: Användaren
         other: Användare
 
-
     attributes:
 
       user:
@@ -183,6 +182,7 @@ sv:
         state/being_destroyed: &status_being_destroyed Förstört
         companies: Företag
         business_categories: Företagstjänster
+        file_delivery_method: Filleveransmetod
 
       member:
         true: Medlem
@@ -352,6 +352,7 @@ sv:
       submit_button_label: *submit
       need_to_enter_name_html: Du måste ha angett ditt för- och efternamn
                           för att skapa en medlemsansökan. %{edit_profile}.
+      file_delivery_selection: 'Var god välj hur du ska leverera de filer som behövs för din ansökan:'
       submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
       where_to_mail_files: Vi kommer att maila dig adressen
       email_files_subject: Mina applikationsfiler
@@ -1284,7 +1285,7 @@ sv:
       not_a_number: är inte ett nummer
       not_an_integer: måste vara ett heltal
       odd: måste vara udda
-      required: must exist
+      required: måste existera
       taken: används redan
       too_long:
         one: är för lång (max är ett tecken)
