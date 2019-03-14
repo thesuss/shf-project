@@ -134,11 +134,11 @@ And(/^I scroll to the top$/) do
   page.evaluate_script("scroll(0, 0)")
 end
 
-And(/^I scroll so the(?: page) title is visible/) do
+And(/^I scroll so the( page)? title is visible/) do | _optional_page |
   page.evaluate_script("document.getElementsByTagName('h1')[0].scrollIntoView()")
 end
 
 
-When(/^I scroll so(?: the) element with id "([^"].*)" is visible/) do | element_id |
+When(/^I scroll so( the)? element with id "([^"].*)" is visible/) do |_optional_the, element_id |
   page.evaluate_script("document.getElementById('#{element_id}').scrollIntoView()")
 end
