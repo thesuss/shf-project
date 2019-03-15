@@ -29,17 +29,17 @@
       %tbody
         - companies.each do |company|
           %tr.company
-            %td
+            %td.categories
               = safe_join(company.categories_names, tag.br)
-            %td= link_to company.name.blank? ? t('name_missing') : company.name, company
-            %td
+            %td.name= link_to company.name.blank? ? t('name_missing') : company.name, company
+            %td.region
               = safe_join(company.addresses_region_names, tag.br)
-            %td
+            %td.kommun
               = safe_join(company.kommuns_names, tag.br)
               - if current_user.admin?
-                %td= company.company_number
-                %td= link_to icon('fas', 'edit'), edit_company_path(company)
-                %td= link_to icon('fas', 'trash'), company, method: :delete,
+                %td.company-number= company.company_number
+                %td.edit= link_to icon('fas', 'edit'), edit_company_path(company)
+                %td.delete= link_to icon('fas', 'trash', class: 'delete'), company, method: :delete,
                                 data: { :confirm => "#{t('confirm_are_you_sure')}" }
 
   = render 'application/paginate_footer', entities: companies,
