@@ -999,7 +999,7 @@ en:
       companies_incomplete: "companies with information not yet complete"
 
   mailers:
-    login_here: "Click here to go to the login page."
+    login_here: "Click here to go to the login page:"
     may_need_to_login_first: "You may need to log in first.  Here's the login page:"
 
     application_mailer:
@@ -1080,13 +1080,22 @@ en:
           extend_membership: You can extend your membership for another
                              12 months by paying the membership fee.
 
-      h_branding_fee_past_due:
-        subject: The H-Branding fee for your company is unpaid/past due
+      h_branding_fee_will_expire:
+        subject: The H-Branding fee for your company will be due soon
         greeting: *email_greeting
         message_text:
-          fee_is_unpaid: Please note that your current H-branding fee is unpaid.
-          how_to_pay_fee: You can pay your H-branding for another 12 months by paying the fee. This makes you visible on the map.
-          company_link_login_msg: " (You may need to login first before you can see the button to pay)."
+          expire_alert_html: "Please note that your current H-branding fee period will expire on <span class='date-warning'>%{expire_date}</span>."
+          how_to_pay_fee: &pay_hbrand_be_mapped You can extend your H-branding for another 12 months by paying the fee. This makes you visible on the map.
+          company_link_login_msg: "Once you are logged in, you will be able to see the license expiration date on the company page and see the button to pay:"
+
+      h_branding_fee_past_due:
+          subject: The H-Branding fee for your company is unpaid/past due
+          greeting: *email_greeting
+          message_text:
+            fee_is_unpaid: Please note that your current H-branding fee is unpaid.
+            how_to_pay_fee: *pay_hbrand_be_mapped
+            company_link_login_msg: " (You may need to login first before you can see the button to pay)."
+
 
       membership_lapsed:
         subject: "Your SHF membership has expired"
