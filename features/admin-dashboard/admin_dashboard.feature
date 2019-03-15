@@ -96,7 +96,7 @@ Feature: Admin sees the dashboard with summary of important information
   #Scenario: default date range for summary is the past 30 days
 
 
-  @selenium_browser
+  @selenium
   Scenario: Admin sees the dashboard with summary info
     Given I am on the "admin dashboard" page
     Then I should see t("admin_only.dashboard.title")
