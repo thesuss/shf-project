@@ -85,6 +85,19 @@ When "I click the {capture_string} action for the row with {capture_string}" do 
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end
 
+
+When "I click the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
+  find(:xpath, "//tr[contains(.,'#{row_content}')]//a/i[contains(@class, '#{icon_class}')]").click
+end
+
+
+When "I click and accept the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
+  page.driver.accept_modal(:confirm, wait: 4) do
+    step %{I click the icon with CSS class "#{icon_class}" for the row with "#{row_content}"}
+  end
+end
+
+
 When "I click and accept the {capture_string} action for the row with {capture_string}" do |action, row_content|
   page.driver.accept_modal(:confirm, wait: 4) do
     step %{I click the "#{action}" action for the row with "#{row_content}"}
