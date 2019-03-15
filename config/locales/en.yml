@@ -146,7 +146,7 @@ en:
         last_name: &last_name Last name
         email: &email Login Email
         password: *password
-        password_confirmation: Password confirmation
+        password_confirmation: &password_confirmation Password confirmation
         membership_number: &membership_number Membership number
         created: &created Created
         current_sign_in_at: &user_current_signed_in_time Currently signed in at
@@ -1137,6 +1137,8 @@ en:
         password_header: Change passord
         new_password: New passord
         info_header: Edit name and e-mail
+        password_confirmation: *password_confirmation
+
     sessions:
       new:
         log_in: &log_in Log In
