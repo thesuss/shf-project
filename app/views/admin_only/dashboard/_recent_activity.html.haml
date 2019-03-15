@@ -22,8 +22,8 @@
       %h4.total-payments-weekly
         = styled_total(recent_member_fee_payments.count + recent_branding_fee_payments.count,
                        t('payments', scope: i18n_scope))
-      %p.detail-line= t('member_fee_payments', number_payments: recent_member_fee_payments.count, scope: i18n_scope)
-      %p.detail-line= t('branding_fee_payments', number_payments: recent_branding_fee_payments.count, scope: i18n_scope)
+      %p.detail-line= t('member_fee_payments', scope: i18n_scope, number_payments: recent_member_fee_payments.count)
+      %p.detail-line= t('branding_fee_payments', scope: i18n_scope, number_payments: recent_branding_fee_payments.count)
 
 
 :javascript
