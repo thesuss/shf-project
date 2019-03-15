@@ -11,8 +11,14 @@ font-weight: normal;
 
 .admin {
   padding:5px!important;
-}
 
+  ul.nav.nav-tabs {
+    li {
+      margin-right: 1em;
+    }
+
+  }
+}
 .section {
   min-height: 300px;
   margin: 0 0 1.5em 3em;
