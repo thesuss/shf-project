@@ -1,6 +1,7 @@
 .section
   %h3.section-title
-    H-branding fee Payments
+    = t('admin_only.dashboard.tabs.payments_h_branding.title')
+
     :ruby
       h_paid = Company.branding_licensed
       c_total = @data_gatherer.total_companies
@@ -19,4 +20,3 @@
     .card.card-body
       - h_unpaid.each do |c|
         = link_to c.name, (company_path(c))
-        |

@@ -1,6 +1,6 @@
 .section
-  %h3.section-title Users
-  %p Some content in menu 6.
+  %h3.section-title= t('admin_only.dashboard.tabs.users.title')
+  %p
   = @data_gatherer.translated_users.map{|k, v| "#{k}: #{v}"}.join(', ')
   = pie_chart @data_gatherer.translated_users
   = line_chart User.all.group_by_day(:created_at).count
@@ -11,5 +11,4 @@
   .collapse#listUsers
     .card.card-body
       - not_members.each do |c|
-        = link_to c.first_name, (user_path(c))
-        |
+        = link_to c.full_name, (user_path(c))

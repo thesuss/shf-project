@@ -1,6 +1,6 @@
 .section
   %h3.section-title
-    Member fee Payments
+    = t('admin_only.dashboard.tabs.payments_memberships.title')
     :ruby
       m_paid = @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count
       m_total = @data_gatherer.total_members

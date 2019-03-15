@@ -1,29 +1,30 @@
+- i18n_scope = 'admin_only.dashboard'
 %header.entry-header
-  %h1.entry-title= t('admin_only.dashboard.title')
+  %h1.entry-title= t('title', scope: i18n_scope)
 .post-title-divider
   %span
 
 .entry-content.admin
   .row
     .col-md-11
-      %ul.nav.nav-tabs
-        %li.active
-          %a(data-toggle='tab' href='#n1') Current
-        %li
-          %a(data-toggle='tab' href='#n2') Activity
-        %li
-          %a(data-toggle='tab' href='#n6') Applications
-        %li
-          %a(data-toggle='tab' href='#n7') Users
-        %li
-          %a(data-toggle='tab' href='#n3') Members
-        %li
-          %a(data-toggle='tab' href='#n4') Membership
-        %li
-          %a(data-toggle='tab' href='#n5') H-branding
+      %ul.nav.nav-tabs(role='tablist' id = 'dashboard-tabs')
+        %li.nav-item.current.active
+          %a#tab-current.nav-link(data-toggle='tab' href='#n1' role='tab' aria-controls='Current' aria-selected='true')= t('tabs.current.tab-title', scope: i18n_scope)
+        %li.nav-item.activity
+          %a#tab-activity(data-toggle='tab' href='#n2' role='tab' aria-controls='Activity' aria-selected='false')= t('tabs.activity.tab-title', scope: i18n_scope)
+        %li.nav-item.applications
+          %a#tab-applications(data-toggle='tab' href='#n6' role='tab' aria-controls='Applications' aria-selected='false')= t('tabs.applications.tab-title', scope: i18n_scope)
+        %li.nav-item.users
+          %a#tab-users(data-toggle='tab' href='#n7' role='tab' aria-controls='Users' aria-selected='false')= t('tabs.users.tab-title', scope: i18n_scope)
+        %li.nav-item.members
+          %a#tab-members(data-toggle='tab' href='#n3' role='tab' aria-controls='Members' aria-selected='false')= t('tabs.members.tab-title', scope: i18n_scope)
+        %li.nav-item.membership
+          %a#tab-membership(data-toggle='tab' href='#n4' role='tab' aria-controls='Membership' aria-selected='false')= t('tabs.payments_memberships.tab-title', scope: i18n_scope)
+        %li.nav-item.h-branding
+          %a#tab-h-branding(data-toggle='tab' href='#n5' role='tab' aria-controls='H-Branding' aria-selected='false')= t('tabs.payments_h_branding.tab-title', scope: i18n_scope)
 
-      .tab-content
-        .tab-pane.fade.in.active#n1
+      #nav-tabContent.tab-content
+        .tab-pane.fade.show.active#n1(role="tabpanel" aria-labelledby="tab-current")
           -# smell:  passing so many vars to a view -> should encapsulate in a class
           .section
             = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
@@ -31,7 +32,7 @@
              companies_branding_not_paid: @data_gatherer.companies_branding_not_paid,
              companies_info_not_completed: @data_gatherer.companies_info_not_completed
 
-        .tab-pane.fade#n2
+        .tab-pane.fade#n2(role="tabpanel" aria-labelledby="tab-activity")
           -# smell:  passing so many vars to a view -> should encapsulate in a class
           .section
             = render 'recent_activity', recent_num_days: @data_gatherer.timeframe,
@@ -41,23 +42,24 @@
                                         recent_member_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym],
                                         recent_branding_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym]
 
-        .tab-pane.fade#n3
+        .tab-pane.fade#n3(role="tabpanel" aria-labelledby="tab-members")
           .section.membership-totals-current
             %h3.total-members
-              = styled_total(@data_gatherer.total_members, t('admin_only.dashboard.total_members'))
+              = styled_total(@data_gatherer.total_members, t('tabs.members.total_members', scope: i18n_scope))
 
-        .tab-pane.fade#n4
+        .tab-pane.fade#n4(role="tabpanel" aria-labelledby="tab-membership")
           = render 'admin_only/dashboard/m_fee_payments'
-        .tab-pane.fade#n5
+
+        .tab-pane.fade#n5(role="tabpanel" aria-labelledby="tab-h-branding")
           = render 'admin_only/dashboard/h_branding'
 
-        .tab-pane.fade#n6
+        .tab-pane.fade#n6(role="tabpanel" aria-labelledby="tab-applications")
           .section
-            %h3.section-title Applications
+            %h3.section-title= t("tabs.applications.title", scope: i18n_scope)
             %p= @data_gatherer.app_states_translated.map{|k, v| "#{k}: #{v}"}.join(', ')
             = pie_chart @data_gatherer.app_states_translated
             = line_chart ShfApplication.group_by_day(:created_at).count
 
 
-        .tab-pane.fade#n7
+        .tab-pane.fade#n7(role="tabpanel" aria-labelledby="tab-users")
           = render 'admin_only/dashboard/users'
