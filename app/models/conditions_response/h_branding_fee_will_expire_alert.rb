@@ -1,11 +1,12 @@
-# This emails all current members in a company if the h-branding fee is PAST DUE.
+# This emails all current members in a company if the h-branding fee
+# will expire soon.
 #
-# The alert is sent _after_ the HBranding license has expired.
+# The alert is sent _before_ the HBranding license has expired.
 #
-class HBrandingFeeDueAlert < CompanyEmailAlert
+class HBrandingFeeWillExpireAlert < CompanyEmailAlert
 
 
-  # If an H Branding Fee is due for the company, then
+  # If an H Branding Fee will be expiring for the company, then
   #   send the alert if today is in the configuration list of days
   #
   # Note that the number of days is based on the _expiration_date_ to remain
@@ -13,13 +14,9 @@ class HBrandingFeeDueAlert < CompanyEmailAlert
   # of dates.
   def send_alert_this_day?(timing, config, company)
 
-    if RequirementsForHBrandingFeeDue.requirements_met?({company: company})
+    if RequirementsForHBrandingFeeWillExpire.requirements_met?({ company: company})
 
-      due = if (latest_payment_expiry = company.branding_expire_date)
-              latest_payment_expiry
-            else
-              company.earliest_current_member_fee_paid
-            end
+      due = company.branding_expire_date
 
       day_to_check = self.class.days_today_is_away_from(due, timing)
 
@@ -33,7 +30,7 @@ class HBrandingFeeDueAlert < CompanyEmailAlert
 
 
   def mailer_method
-    :h_branding_fee_past_due
+    :h_branding_fee_will_expire
   end
 
 

@@ -18,6 +18,10 @@ namespace :shf do
           timing:     :after,
           config:     { days: std_reminder_after_schedule } },
 
+        { class_name: 'HBrandingFeeWillExpireAlert',
+          timing:     :before,
+          config:     { days: std_reminder_before_schedule } },
+
         { class_name: 'HBrandingFeeDueAlert',
           timing:     :after,
           config:     { days: std_reminder_after_schedule } },
