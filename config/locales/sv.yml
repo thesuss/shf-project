@@ -985,20 +985,44 @@ sv:
 
     dashboard:
       title: ADMIN DASHBOARD
-      total_members: "members"
 
-      payments: *payments
+      tabs:
+        current:
+          tab-title: Nuvarande
+          title: "Current Items of Note:"
+          open_apps_no_files: "Open Applications with no files uploaded"
+          app_approved_no_payment: "Applications approved but no membership payment yet"
+          companies_no_branding_payment: "companies Branding license fee not yet paid"
+          companies_incomplete: "companies with information not yet complete"
 
-      member_fee_payments: "%{number_payments} member fee payments"
-      branding_fee_payments: "%{number_payments} branding fee payments"
+        activity:
+          tab-title: Aktivitet
+          title: "Activity in the past %{recent_num_days} days:"
+          payments: *payments
+          member_fee_payments: "%{number_payments} medlemskap betalningar"
+          branding_fee_payments: "%{number_payments} H-Branding betalningar"
 
-      recent_activity_section_title: "Activity in the past %{recent_num_days} days:"
+        applications:
+          tab-title: &applications Ansökningar
+          title: *applications
 
-      current_items_section_title: "Current Items of Note:"
-      open_apps_no_files: "Open Applications with no files uploaded"
-      app_approved_no_payment: "Applications approved but no membership payment yet"
-      companies_no_branding_payment: "companies Branding license fee not yet paid"
-      companies_incomplete: "companies with information not yet complete"
+        users:
+          tab-title: &users Användare
+          title: *users
+
+        members:
+          tab-title: &members Företagsmedlemmar
+          title: *members
+          total_members: *members
+
+        payments_memberships:
+          tab-title: &payments_membership "Betalningar: medlemskap"
+          title: *payments_membership
+
+        payments_h_branding:
+          tab-title: &payments_h_branding "Betalningar: H-Branding"
+          title: *payments_h_branding
+
 
   mailers:
     login_here: "Klicka här för att gå till inloggningssidan."

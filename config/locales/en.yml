@@ -981,22 +981,47 @@ en:
       update:
         success: Application data updated successfully
         error: There was a problem with updating configuration data
+
     dashboard:
       title: ADMIN DASHBOARD
-      total_members: "members"
 
-      payments: *payments
+      tabs:
+        current:
+          tab-title: Current
+          title: "Current Items of Note:"
+          open_apps_no_files: "Open Applications with no files uploaded"
+          app_approved_no_payment: "Applications approved but no membership payment yet"
+          companies_no_branding_payment: "companies Branding license fee not yet paid"
+          companies_incomplete: "companies with information not yet complete"
 
-      member_fee_payments: "%{number_payments} member fee payments"
-      branding_fee_payments: "%{number_payments} branding fee payments"
+        activity:
+          tab-title: Activity
+          title: "Activity in the past %{recent_num_days} days:"
+          payments: *payments
+          member_fee_payments: "%{number_payments} member fee payments"
+          branding_fee_payments: "%{number_payments} branding fee payments"
 
-      recent_activity_section_title: "Activity in the past %{recent_num_days} days:"
+        applications:
+          tab-title: &applications Applications
+          title: *applications
 
-      current_items_section_title: "Current Items of Note:"
-      open_apps_no_files: "Open Applications with no files uploaded"
-      app_approved_no_payment: "Applications approved but no membership payment yet"
-      companies_no_branding_payment: "companies Branding license fee not yet paid"
-      companies_incomplete: "companies with information not yet complete"
+        users:
+          tab-title: &users Users
+          title: *users
+
+        members:
+          tab-title: &members Members
+          title: *members
+          total_members: *members
+
+        payments_memberships:
+          tab-title: &payments_membership "Payments: Membership"
+          title: *payments_membership
+
+        payments_h_branding:
+          tab-title: &payments_h_branding "Payments: H-Branding"
+          title: *payments_h_branding
+
 
   mailers:
     login_here: "Click here to go to the login page."
