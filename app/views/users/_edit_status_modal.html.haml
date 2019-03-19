@@ -10,7 +10,7 @@
             = t('users.user.edit_member_status')
           %button.close{ type: 'button', data: { dismiss: 'modal' } }
             %span{ 'aria-hidden' => 'true' } &times;
-            
+
         .modal-body
           .container-fluid
             %label
@@ -22,7 +22,7 @@
 
               = rb.label(class: 'form-check form-check-inline') do
                 = rb.radio_button + ' ' + rb.text  + ' '
-          
+
             %hr
             = fields_for :payment, user.most_recent_membership_payment do |pf|
               %label #{t('activerecord.attributes.payment.expire_date')}:
@@ -41,5 +41,3 @@
 
           %button(type='button' class='btn btn-sm btn-default' data-dismiss='modal')
             = t('cancel')
-
-
