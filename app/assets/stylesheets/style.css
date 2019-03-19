@@ -438,8 +438,11 @@ nav.navbar a img,.navbar-brand,nav.navbar a.navbar-brand,.nav-link {
 padding:0;
 }
 
-nav.navbar a:hover,a:focus,a:hover,button:hover,button:focus,.content .entry-title a:hover,.content .entry-title a:focus,.footer-widgets a:focus,.footer-widgets a:hover,.front-page .front-page-3 a:focus,.front-page .front-page-3 a:hover,.front-page .front-page-2 ul.checkmark li:before,.genesis-nav-menu .current-menu-item>a,.genesis-nav-menu a:focus,.genesis-nav-menu a:hover,.genesis-responsive-menu .genesis-nav-menu a:focus,.genesis-responsive-menu .genesis-nav-menu a:hover,.menu-toggle:focus,.menu-toggle:hover,.sub-menu-toggle:focus,.sub-menu-toggle:hover,.site-footer a:focus,.site-footer a:hover {
+nav.navbar a:hover,a:focus,a:hover,button:hover,.content .entry-title a:hover,.content .entry-title a:focus,.footer-widgets a:focus,.footer-widgets a:hover,.front-page .front-page-3 a:focus,.front-page .front-page-3 a:hover,.front-page .front-page-2 ul.checkmark li:before,.genesis-nav-menu .current-menu-item>a,.genesis-nav-menu a:focus,.genesis-nav-menu a:hover,.genesis-responsive-menu .genesis-nav-menu a:focus,.genesis-responsive-menu .genesis-nav-menu a:hover,.menu-toggle:focus,.menu-toggle:hover,.sub-menu-toggle:focus,.sub-menu-toggle:hover,.site-footer a:focus,.site-footer a:hover {
 color:#5692ce;
+}
+button:focus {
+color:#fff;    
 }
 
 p {
