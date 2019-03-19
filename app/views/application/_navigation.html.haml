@@ -4,6 +4,7 @@
   %button.navbar-toggler{ "aria-controls" => "dropdown-menu", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#dropdown-menu", "data-toggle" => "collapse", :type => "button" }
     = t('menus.menu')
   .collapse.navbar-collapse#dropdown-menu
+
     - if user_signed_in?
       - if current_user.admin?
         %ul.navbar-nav.ml-auto#menu-menu-3
@@ -17,26 +18,11 @@
             = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
           %li.dropdown
             = link_to t('menus.nav.members.shf_companies'), root_path, class: 'nav-link'
+
           - if current_user.member?
             = render 'navigation_member_pages'
-            - if (company_count = current_user.companies.count) > 0
-              %li.dropdown
-                %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }
-                  = t('my_company', count: company_count)
-                %ul.dropdown-menu
-                  - current_user.companies.each do |company|
-                    %li.dropdown
-                      %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: company_path(company.id) }
-                        - company_name = company.name.present? ? company.name : t('name_missing')
-                        = company_name
-                      %ul.dropdown-menu
-                        %li
-                          = link_to t('menus.nav.members.manage_company.view_company'),
-                                    company_path(company), class: 'nav-link'
-                        %li
-                          = link_to t('menus.nav.members.manage_company.edit_company'),
-                                    edit_company_path(company), class: 'nav-link'
-              = render 'navigation_edit_my_application', shf_app: current_user.shf_application
+            = render 'navigation_member_companies'
+            = render 'navigation_edit_my_application', shf_app: current_user.shf_application
 
           - else
             -# User is not a member nor admin
