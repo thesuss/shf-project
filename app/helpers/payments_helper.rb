@@ -1,5 +1,12 @@
 module PaymentsHelper
 
+  # Create a <span> that has the expire date for the entity with the CSS class
+  # set based on whether or not the date has expired and a tooltip that explains it.
+  #
+  # @param entity [User | Object]- the entity that provides the expiration date. If a User,
+  # must respond to :membership_expire_date; else must respond to :branding_expire_date
+  #
+  # @return [String] - the HTML <span> string
   def expire_date_label_and_value(entity)
     if entity.is_a? User
       expire_date = entity.membership_expire_date
@@ -9,7 +16,7 @@ module PaymentsHelper
       expire_after_tooltip_title = "#{t('companies.show.branding_fee_expire_date_tooltip')}"
     end
 
-    if !expire_date
+    unless expire_date
       return field_or_none("#{t('activerecord.attributes.payment.expire_date')}",
                            "#{t('none')}", label_class: 'standard-label')
     end
