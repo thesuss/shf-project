@@ -165,8 +165,12 @@ module ApplicationHelper
   end
 
 
-  # Create and return a span tag with a FontAwesome icon and data-toggle: 'tooltip'
-  # Default FontAwesome icon is 'fas.fa-info-circle'
+  # Create and return a span tag for use as a tooltip with a FontAwesome icon.
+  # Sets the text to appear in the tooltip, sets data-toggle: 'tooltip',
+  # and by default uses the 'fas' 'fa-info-circle' icon.
+  # You can optionally give the name of the icon to be used ("fa-" will be prepended),
+  # and optionally the name of the FontAwesome group.
+  #
   # Example: fas_tooltip("This is the text when the user hovers over the icon")
   #   will return
   #    '<span class="i fas fa-info-circle"
@@ -192,9 +196,9 @@ module ApplicationHelper
   #     </span>'
   #
   #
-  # @param title [String] - the
-  # @param fa_icon_group [String] - one of the main FontAwesome groups. default is 'fas'
-  # @param fa_icon [String] - the FontAwesome icon to use, _without_ the leading 'fa'. default is 'info-circle'
+  # @param title [String] - text the will appear in the tooltip
+  # @param fa_icon_group [String] - one of the main FontAwesome groups. Default is 'fas'
+  # @param fa_icon [String] - the FontAwesome icon to use, _without_ the leading 'fa'. Default is 'info-circle'
   #   The leading 'fa-' is added automatically
   #
   # @return [String] - the html safe string for the entire <span>
