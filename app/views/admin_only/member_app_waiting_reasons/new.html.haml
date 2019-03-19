@@ -3,7 +3,9 @@
 
 .entry-content
   = render 'form'
-
-  %p.center= link_to t('admin_only.member_app_waiting_reasons.all_member_app_waiting_reasons'), admin_only_member_app_waiting_reasons_path,
-    class: 'btn btn-secondary all-member-app-waiting-reasons',
-    id: 'all-member-app-waiting-reasons'
+  .row.mt-5
+    .col
+      .center
+        %p.center= link_to t('admin_only.member_app_waiting_reasons.all_member_app_waiting_reasons'), admin_only_member_app_waiting_reasons_path,
+          class: 'btn btn-secondary all-member-app-waiting-reasons',
+          id: 'all-member-app-waiting-reasons'
