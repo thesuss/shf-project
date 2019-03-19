@@ -19,13 +19,13 @@
         = f.collection_select :kommun_id, Kommun.all, :id, :name, {}, {class: 'form-control'}
       .col.form-group
         = f.label :region_id, "#{t('activerecord.attributes.address.region')}"
-        %i.fas.fa-info-circle{ title: "#{t('companies.form.region_tooltip')}", data: {toggle: 'tooltip'} }
+        = fas_tooltip(t('companies.form.region_tooltip'))
         = f.collection_select :region_id, Region.all, :id, :name, {}, {class: 'form-control'}
 
     .row
       .col.form-group.mt-1
         = f.label :visibility, "#{t('companies.address_visibility')}"
-        %i.fas.fa-info-circle{ title: "#{t('companies.form.visibility_tooltip')}", data: {toggle: 'tooltip'} }
+        = fas_tooltip(t('companies.form.visibility_tooltip'))
         = f.select :visibility, address_visibility_array, {}, {class: 'form-control'}
     .row
       .col

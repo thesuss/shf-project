@@ -69,9 +69,7 @@
         = f.text_field :membership_number,  class: 'form-control'
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
-
-    %i.fas.fa-info-circle{ title: "#{t('.company_numbers_tooltip')}",
-                                         data: {toggle: 'tooltip'} }
+    = fas_tooltip(t('.company_numbers_tooltip'))
 
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 

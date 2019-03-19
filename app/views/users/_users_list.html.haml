@@ -9,8 +9,7 @@
           %th= t('.logged_in_count')
           %th
             = t('.application')
-            %i.fas.fa-info-circle{ title: "#{t('.applications_tooltip')}",
-                                                 data: {toggle: 'tooltip'} }
+            = fas_tooltip(t('.applications_tooltip'))
           %th= t('.member')
           %th= t('.expire_date')
           %th

@@ -24,10 +24,7 @@
 
                   = f.label :company_number, "#{t('companies.show.company_number')}",
                             class: 'required'
-
-                  - title = 'companies.form.org_nr_tooltip'
-                  %span.i.fas.fa-info-circle{ title: "#{t(title)}",
-                                                       data: {toggle: 'tooltip'} }
+                  = fas_tooltip(t('companies.form.org_nr_tooltip'))
 
                 .col-sm-7
                   = f.number_field :company_number, class: 'wpcf7-form-control', size: 10
