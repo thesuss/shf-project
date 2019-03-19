@@ -1,4 +1,4 @@
-#companies_list
+#users_list
   .table-responsive
     %table.table.table-hover.table-sm.table-striped
       %thead
@@ -16,8 +16,8 @@
           %th
       %tbody.panel-body
         = render partial: 'user', collection: users
-    = render partial: 'application/paginate_footer',
-             locals: { entities: @users,
-                       paginate_class: 'users_pagination',
-                       items_count: items_count,
-                       url: users_path }
+  = render partial: 'application/paginate_footer',
+           locals: { entities: @users,
+                     paginate_class: 'users_pagination',
+                     items_count: items_count,
+                     url: users_path }
