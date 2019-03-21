@@ -9,7 +9,7 @@
     .col-lg-4
       = render 'map_companies', markers: location_and_markers_for(@all_visible_companies)
 
-    .col-lg-8
+    .col-lg-8.mt-3.mt-lg-0
       .panel-group.m-2#accordion{ "aria-multiselectable" => "true", :role => "tablist" }
         .panel.panel-default
           .panel-heading#heading-2{ :role => "tab" }
