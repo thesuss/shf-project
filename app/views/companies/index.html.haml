@@ -12,18 +12,15 @@
 
 
     .col-lg-8
-      .row
-        .col-sm-8
-        .col-sm-4
-          %br
-          %button.btn.btn-small.hide-search-form.btn-success.ml-auto{ id: 'toggle_search_form',
-                                            href: '#company_search_form' }
-            #{t('toggle.company_search_form.hide')}
-
-      .panel.panel-default.search-form#company_search_form
-
-        = render 'search_form', all_companies: @all_companies,
-                                search_params: @search__params
+      .panel-group.m-2#accordion{ "aria-multiselectable" => "true", :role => "tablist" }
+        .panel.panel-default
+          #heading-2.panel-heading{:role => "tab"}
+            %h4.panel-title.hide-toggler
+              %a{ id: 'toggle_search_form', href: '#company_search_form' }
+                #{t('toggle.company_search_form.hide')}
+          #company_search_form.panel-collapse{ "aria-labelledby" => "heading-2", :role => "tabpanel" }
+            .panel-body
+              = render 'search_form', all_companies: @all_companies, search_params: @search__params
 
 
   - if @companies.empty?
