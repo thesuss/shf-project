@@ -291,9 +291,8 @@ position:absolute;
 font-weight:700;
 }
 
-.table th,.table td {
+.table th {
 border-top:none;
-padding:.2rem .75rem;
 }
 
 .text-nicelabel {
@@ -452,12 +451,6 @@ margin-top:0;
 
 table {
 font-size:.9em;
-}
-
-table a {
-border-bottom:none;
-font-weight:600;
-text-decoration:none;
 }
 
 @media only screen and (max-width: 600px){
