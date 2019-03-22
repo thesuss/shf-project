@@ -254,7 +254,7 @@ Feature: Visitor sees all companies
     And "items_count" should have "25" selected
     And I should see "Company01"
     And I should see "Company02"
-    And I should see "Company11"r
+    And I should see "Company11"
     And I should see "Company12"
     And I should see "Company24"
     And I should see "Company25"
@@ -268,7 +268,6 @@ Feature: Visitor sees all companies
     And I click on t("toggle.company_search_form")
     And "items_count" should have "10" selected
     Then I select "All" in select list "items_count"
-    And I wait for all ajax requests to complete
     And I should see "27" companies
     And I should see "Company10"
     And I should see "Company27"
