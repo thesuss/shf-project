@@ -1,6 +1,6 @@
 var Utility = {
 
-  toggle_i18n_str: function () {
+  toggle: function () {
     // Toggles (hide or show) via an anchor element $(this) bound to
     // 'click' event.  The 'href' attribute of the element is the
     // id of the content (table, div, etc.) to be toggled
