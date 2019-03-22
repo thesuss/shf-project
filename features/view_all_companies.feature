@@ -198,22 +198,32 @@ Feature: Visitor sees all companies
 
   @selenium @time_adjust
   Scenario: Pagination
+    # Note: Using Bootstrap's collapse/show, we can not check for elements
+    # in a form being visible or not because
+    # they are not individually marked visible or not (e.g. display:none) -- which
+    # is what capybara drivers (selenium, etc.) will check for.  The company names
+    # listed in the drop-down list (options) for Companies in the search form
+    # will always be 'visible' to Capybara, so we cannot simply check if they are
+    # visible or not.  We can check to see
+    # if the company name occurs 1 times (in the search drop-down list) or 2 times
+    # in the search drop-down list _and_ in the body of the page.
+
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
     And I click on t("toggle.company_search_form.hide")
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
-    And I should see "Company02"
+    And I should see 2 "Company02"
     And I should not see "2120000142"
-    And I should see "Company01"
+    And I should see 2 "Company01"
     And I should not see "5560360793"
-    And I should see "Company10"
-    And I should not see "3609340140"
-    And I should not see "Company11"
+    And I should see 2 "Company10"
+    And I should see 1 "Company11"
     Then I click on t("will_paginate.next_label") link
-    And I should see "Company11"
-    And I should not see "Company10"
+    And I should see 2 "Company11"
+    And I should see 1 "Company10"
+
 
   @selenium @time_adjust
   Scenario: I18n translations
@@ -227,16 +237,28 @@ Feature: Visitor sees all companies
     And I should not see "Region"
     And I should not see "Category"
     Then I click on "change-lang-to-english"
-    And I set the locale to "en"
-    Then I click on t("toggle.company_search_form.hide")
+    #And I set the locale to "en"
+    And I wait 1 second
+    When I click on "toggle_search_form"
     And I wait 1 second
     And I should see "Region"
     And I should see "Category"
     And I should not see "Verksamhetslän"
     And I should not see "Kategori"
 
+
   @selenium @time_adjust
   Scenario: Pagination: Set number of items per page
+    # Note: Using Bootstrap's collapse/show, we can not check for elements
+    # in a form being visible or not because
+    # they are not individually marked visible or not (e.g. display:none) -- which
+    # is what capybara drivers (selenium, etc.) will check for.  The company names
+    # listed in the drop-down list (options) for Companies in the search form
+    # will always be 'visible' to Capybara, so we cannot simply check if they are
+    # visible or not.  We can check to see
+    # if the company name occurs 1 times (in the search drop-down list) or 2 times
+    # in the search drop-down list _and_ in the body of the page.
+
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
@@ -245,20 +267,21 @@ Feature: Visitor sees all companies
     And I should see "10" companies
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
-    And I should see "Company10"
-    And I should not see "Company11"
-    And I should not see "Company26"
+    And I should see 2 "Company10"
+    And I should see 1 "Company11"
+    And I should see 1 "Company26"
     Then I select "25" in select list "items_count"
     And I wait for all ajax requests to complete
     Then I should see "25" companies
     And "items_count" should have "25" selected
-    And I should see "Company01"
-    And I should see "Company02"
-    And I should see "Company11"
-    And I should see "Company12"
-    And I should see "Company24"
-    And I should see "Company25"
-    And I should not see "Company26"
+    And I should see 2 "Company01"
+    And I should see 2 "Company02"
+    And I should see 2 "Company11"
+    And I should see 2 "Company12"
+    And I should see 2 "Company24"
+    And I should see 2 "Company25"
+    And I should see 1 "Company26"
+
 
   @selenium @time_adjust
   Scenario: Companies lacking branding payment or members not shown

@@ -87,12 +87,23 @@ Scenario: View all searchable companies, sort by columns
 
 @selenium @time_adjust
 Scenario: Search by category
+  # Note: Using Bootstrap's collapse/show, we can not check for elements
+  # in a form being visible or not because
+  # they are not individually marked visible or not (e.g. display:none) -- which
+  # is what capybara drivers (selenium, etc.) will check for.  The company names
+  # listed in the drop-down list (options) for Companies in the search form
+  # will always be 'visible' to Capybara, so we cannot simply check if they are
+  # visible or not.  We can check to see
+  # if the company name occurs 1 times (in the search drop-down list) or 2 times
+  # in the search drop-down list _and_ in the body of the page.
+
   Given I am Logged out
   And I am on the "landing" page
   And I should see "Barky Boys"
   And I should see "HappyMutts"
   And I should see "Dogs R Us"
   And I should see "We Luv Dogs"
+  And I should see 2 "Psychologist"
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   And I click on t("search")
   Then I click on t("toggle.company_search_form.hide")
@@ -102,7 +113,7 @@ Scenario: Search by category
   And I should not see "Dogs R Us"
   And I should see "Trainer"
   And I should see "Walker"
-  And I should not see "Psychologist"
+  And I should see 1 "Psychologist"
 
 @selenium @time_adjust
 Scenario: Search by region
@@ -261,6 +272,16 @@ Scenario: Search by category and region 2
 
 @selenium @time_adjust
 Scenario: Toggle Hide/Show search form
+  # Note: Using Bootstrap's collapse/show, we can not check for elements
+  # in a form being visible or not because
+  # they are not individually marked visible or not (e.g. display:none) -- which
+  # is what capybara drivers (selenium, etc.) will check for.  The company names
+  # listed in the drop-down list (options) for Companies in the search form
+  # will always be 'visible' to Capybara, so we cannot simply check if they are
+  # visible or not.  We can check to see
+  # if the company name occurs 1 times (in the search drop-down list) or 2 times
+  # in the search drop-down list _and_ in the body of the page.
+
   Given I am Logged out
   And I am on the "landing" page
   And I should see t("toggle.company_search_form.hide")
@@ -268,4 +289,5 @@ Scenario: Toggle Hide/Show search form
   Then I click on t("toggle.company_search_form.hide")
   Then I wait 2 seconds
   And I should see t("toggle.company_search_form.show")
-  Then t("activerecord.models.company.one") should not be visible
+  And I should not see t("toggle.company_search_form.hide")
+
