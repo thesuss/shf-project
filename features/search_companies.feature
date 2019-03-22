@@ -100,7 +100,9 @@ Scenario: Search by category
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
   And I should not see "Dogs R Us"
-
+  And I should see "Trainer"
+  And I should see "Walker"
+  And I should not see "Psychologist"
 
 @selenium @time_adjust
 Scenario: Search by region
