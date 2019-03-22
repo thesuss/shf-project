@@ -86,10 +86,9 @@
       %br
       %br
 
-      %button.btn.alert-danger.hide-toggler.admin-set-new-password{ id: 'toggle_admin_set_password_form',
+      %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
                    href: '#set_new_password_form',
-                   style: 'text-transform:none;',
-                   "aria-expanded" => "true" }
+                   style: 'text-transform:none;' }
 
         #{ t('toggle.set_new_password_form.show') }
 
@@ -169,12 +168,3 @@
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }
-
-
-:javascript
-  $( document ).ready( function () {
-
-    // add an event listener to the 'click' action on the toggle_admin_set_password_form element
-    document.getElementById('toggle_admin_set_password_form').addEventListener("click", Utility.toggle_i18n_str);
-
-  });
