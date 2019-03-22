@@ -36,8 +36,6 @@ $(function() {
     // select2-with-ajax-gets-initialized-several-times-with-rails-turbolinks-events
 
     // Bind 'show/hide' search form toggle switch
-    $('#toggle_search_form').click(Utility.toggle);
-
     $('#toggle_admin_set_password_form').click(Utility.toggle);
 
     // Enable all Bootstrap tooltips
