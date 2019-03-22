@@ -14,8 +14,8 @@
         .panel.panel-default
           .panel-heading#heading-2{ role: "tab" }
             %h4.panel-title.hide-toggler
-              %a{ "aria-controls" => "#company_search_form", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#company_search_form", :role => "button", id: 'toggle_search_form' }
-                #{t('toggle.company_search_form.hide')}
+              = show_hide_element('a', t('toggle.company_search_form.hide'), 'toggle_search_form', 'company_search_form', data_parent: '#accordion')
+
           .panel-collapse#company_search_form{ "aria-labelledby" => "heading-2", role: "tabpanel" }
             .panel-body
               = render 'search_form', all_companies: @all_companies, search_params: @search__params

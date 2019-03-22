@@ -86,17 +86,12 @@
       %br
       %br
 
-      %button.btn.alert-danger.hide-toggler.admin-set-new-password{ id: 'toggle_admin_set_password_form',
-                   href: '#set_new_password_form',
-                   style: 'text-transform:none;',
-                   "aria-expanded" => "true",
-                   "aria-controls" => '#set_new_password_form' }
-
-        #{ t('toggle.set_new_password_form.show') }
+      = show_hide_element('button', t('toggle.set_new_password_form.show'), 'toggle_admin_set_password_form',
+       'set_new_password_form', css_class: 'btn alert-danger hide-toggler admin-set-new-password',
+       options: {style: 'text-transform:none;'})
 
       .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form',
                             style: 'display: none;' }
-
         = render 'password_form'
 
     %hr
