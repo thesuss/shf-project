@@ -221,14 +221,14 @@ Feature: Visitor sees all companies
     Given I am Logged out
     And I set the locale to "sv"
     And I am on the "landing" page
-    Then I click on t("toggle.company_search_form.hide") button
+    Then I click on t("toggle.company_search_form.hide")
     And I should see "Verksamhetslän"
     And I should see "Kategori"
     And I should not see "Region"
     And I should not see "Category"
     Then I click on "change-lang-to-english"
     And I set the locale to "en"
-    Then I click on t("toggle.company_search_form.hide") button
+    Then I click on t("toggle.company_search_form.hide")
     And I wait 1 second
     And I should see "Region"
     And I should see "Category"
