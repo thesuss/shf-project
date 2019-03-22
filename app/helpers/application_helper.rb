@@ -209,4 +209,46 @@ module ApplicationHelper
     end
   end
 
+
+  # Helper to produce standardized HTML for an element that will Hide or Show something,
+  # e.g. a button or link.
+  #
+  # Ex:
+  #   <button id="#id-string" href="#href-string" aria-expanded="true" aria-controls="#href-string" data-toggle="collapse" role="button" data-parent="d-parent">content</button>
+  #
+  # @param element [String] - the element, either 'a' for a link or 'button' for a button (or any other valid HTML element)
+  # @param id [String] - the id for this element. DO NOT include the '#' (It will be added automatically)
+  # @param href [String] - the id of the element this will hide/collapse. DO NOT include the '#' (It will be included automatically).
+  #    This will also be used to set the 'aria-controls' id
+  # @param css_class [String] - the class or classes for the element. Optional.  Works just like
+  #   the class: option with {ActionView::Helpers::TagHelper::TagBuilder#tag_helper}
+  #   If you have 1 class, just add it as a string:  css_class: "single-css-class"
+  #   If you have more than 2 class, add an Array of strings:  css_class: ["first-css-class", 'second-class', 'etc-class']
+  # @param data_parent: [String] - the data-parent for this element.  Optional
+  # @param aria_expanded [Boolean] - value of 'aria-expanded' Default = true. Optional (will effect the style)
+  # @param role [String] - role for the element.  Default = "button"  Optional
+  # @param [Hash] options - any other options to set for the element. Optional
+  #   Ex:  options: { style: 'text-transform:none;'}
+  #
+  # @return [String] - the HTML for an element with the right classes and attributes applied for a Show/Hide
+  #
+  def show_hide_element(element='a', content = '', id='', href='',
+                        css_class: '', data_parent: '', aria_expanded: true,
+                        role: 'button',
+                        options: {})
+
+    href_str =  "##{href}"
+    clean_options = {id: "#{id}",
+               href: href_str,
+               'aria-expanded': aria_expanded.to_s,
+               'aria-controls': href_str,
+               'data-toggle': 'collapse',
+               role: role
+    }
+    clean_options[:class] = css_class unless css_class.blank?
+    clean_options['data-parent'] = data_parent unless data_parent.blank?
+
+    content_tag(element, content, clean_options.merge(options))
+  end
+
 end

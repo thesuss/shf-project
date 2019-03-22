@@ -340,4 +340,110 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+
+  describe 'show_hide_element' do
+    # options = {id: id, href: href,
+    #                'aria-expanded': aria_expanded.to_s,
+    #                'aria-controls': id,
+    #                'data-toggle': collapse,
+    #                role: role
+    #     }
+    #     options['data-parent'] = data_parent unless data_parent.blank?
+    describe 'element' do
+
+      it 'creates the element given' do
+        expect(helper.show_hide_element('blorf')).to match(/<blorf (.*)><\/blorf>/)
+      end
+
+      it "defaults to 'a' (link)" do
+        expect(helper.show_hide_element()).to match(/<a (.*)><\/a>/)
+      end
+    end
+
+    it 'adds the content in the tag' do
+      expect(helper.show_hide_element('blorf', 'content string')).to match(/<blorf (.*)>content string<\/blorf>/)
+    end
+
+    describe 'id' do
+      it "default is '' " do
+        expect(helper.show_hide_element('blorf', 'content')).to match(/<blorf(.*)id=""(.*)>content<\/blorf>/)
+      end
+
+      it 'does not add a # to the start of the id given' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string')).to match(/<blorf(.*)id="id-string"(.*)>content<\/blorf>/)
+      end
+    end
+
+    describe 'href' do
+      it "default is '#' " do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string')).to match(/<blorf(.*)href="#"(.*)>content<\/blorf>/)
+      end
+
+      it 'adds a # to the start of the id given' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).to match(/<blorf(.*)href="#href-string"(.*)>content<\/blorf>/)
+      end
+    end
+
+    describe 'options:' do
+      it 'allows you to pass in any other options for the element' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string', options: { style: 'text-transform:none;'})).to match(/<blorf(.*)style="text-transform:none;"(.*)>content<\/blorf>/)
+      end
+    end
+
+    describe 'css_class' do
+      it 'no class attribute if it is not given' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).not_to include('class')
+      end
+
+      it 'only adds class: attribute if there is a value for it' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string', css_class: 'a-css-class')).to match(/<blorf(.*)class="a-css-class"(.*)>content<\/blorf>/)
+      end
+
+      it 'takes an array if there is more than 1 css class to add' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string', css_class: ['1css-class', '2css-class'])).to match(/<blorf(.*)class="1css-class 2css-class"(.*)>content<\/blorf>/)
+      end
+    end
+
+    describe 'data-toggle' do
+      it "is set to 'collapse'" do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).to match(/<blorf(.*)data-toggle="collapse"(.*)>content<\/blorf>/)
+      end
+    end
+
+    describe 'data-parent' do
+      it 'no data-parent attribute if it is not given' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).not_to include('data-parent')
+      end
+
+      it 'only adds data-parent if there is a value for it' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string', data_parent: 'd-parent')).to match(/<blorf(.*)data-parent="d-parent"(.*)>content<\/blorf>/)
+      end
+    end
+
+    describe 'aria-expanded' do
+      it 'default is true' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).to match(/<blorf(.*)aria-expanded="true"(.*)>content<\/blorf>/)
+      end
+
+      it 'uses the value given' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string', aria_expanded: false)).to match(/<blorf(.*)aria-expanded="false"(.*)>content<\/blorf>/)
+      end
+    end
+
+    it 'sets aria-controls to the href' do
+      expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).to match(/<blorf(.*)aria-controls="#href-string"(.*)>content<\/blorf>/)
+    end
+
+
+    describe 'role' do
+      it "default is 'button'" do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string')).to match(/<blorf(.*)role="button"(.*)>content<\/blorf>/)
+      end
+
+      it 'uses the value given' do
+        expect(helper.show_hide_element('blorf', 'content', 'id-string', 'href-string', role: 'florb')).to match(/<blorf(.*)role="florb"(.*)>content<\/blorf>/)
+      end
+    end
+  end
+
 end
