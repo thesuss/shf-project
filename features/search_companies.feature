@@ -95,7 +95,8 @@ Scenario: Search by category
   And I should see "We Luv Dogs"
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "Barky Boys"
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
@@ -108,7 +109,8 @@ Scenario: Search by region
   And I am on the "landing" page
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   Then I should see "HappyMutts"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
@@ -122,7 +124,8 @@ Scenario: Search by company (and confirm non-admin cannot search with non-search
   And I cannot select "NoMember" in select list t("activerecord.models.company.one")
   Then I select "We Luv Dogs" in select list t("activerecord.models.company.one")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
   And I should not see "Barky Boys"
@@ -157,10 +160,12 @@ Scenario: Search by kommun and region
   And I should not see "We Luv Dogs"
   And I should see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
+  #Then I click on t("toggle.company_search_form.show")
+  Then I show the search form
   Then I select "Norrbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should not see "HappyMutts"
   Then I click on t("toggle.company_search_form.show")
   Then I select "Stockholm" in select list t("activerecord.attributes.company.region")
@@ -174,20 +179,25 @@ Scenario: Search by category and region
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should not see "HappyMutts"
   And I should not see "We Luv Dogs"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
+  #Then I click on t("toggle.company_search_form.show")
+  Then I show the search form
   Then I select "Stockholm" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "Barky Boys"
-  Then I click on t("toggle.company_search_form.show")
+  #Then I click on t("toggle.company_search_form.show")
+  Then I show the search form
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "We Luv Dogs"
 
 @selenium @time_adjust
@@ -196,7 +206,8 @@ Scenario: Search by region
   And I am on the "landing" page
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   Then I should see "HappyMutts"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
@@ -208,7 +219,8 @@ Scenario: Search by company
   And I am on the "landing" page
   Then I select "We Luv Dogs" in select list t("activerecord.models.company.one")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
   And I should not see "Barky Boys"
@@ -220,15 +232,18 @@ Scenario: Search by kommun
   And I am on the "landing" page
   Then I select "Alingsås" in select list t("activerecord.attributes.company.kommun")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "Barky Boys"
   And I should not see "HappyMutts"
   And I should not see "We Luv Dogs"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
+  #Then I click on t("toggle.company_search_form.show")
+  Then I show the search form
   Then I select "Laxå" in select list t("activerecord.attributes.company.kommun")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "Barky Boys"
   And I should not see "HappyMutts"
   And I should see "We Luv Dogs"
@@ -241,20 +256,25 @@ Scenario: Search by category and region 2
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should not see "HappyMutts"
   And I should not see "We Luv Dogs"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
+  #Then I click on t("toggle.company_search_form.show")
+  Then I show the search form
   Then I select "Stockholm" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "Barky Boys"
-  Then I click on t("toggle.company_search_form.show")
+  #Then I click on t("toggle.company_search_form.show")
+  Then I show the search form
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("toggle.company_search_form.hide")
+  #Then I click on t("toggle.company_search_form.hide")
+  Then I hide the search form
   And I should see "We Luv Dogs"
 
 @selenium @time_adjust
