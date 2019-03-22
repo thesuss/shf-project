@@ -25,3 +25,11 @@
       #{t('.no_search_results')}
   - else
     = render 'companies_list', companies: @companies, search_params: @search_params
+
+
+:javascript
+  $( document ).ready( function () {
+
+    // add an event listener to the 'click' action on the toggle_search_form element
+    document.getElementById('toggle_search_form').addEventListener("click", Utility.toggle_i18n_str);
+  });
