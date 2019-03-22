@@ -77,11 +77,11 @@ en:
 
   toggle:
     company_search_form:
-      hide: Hide Form
-      show: Show Form
+      hide: &hide_form Hide Form
+      show: &show_form Show Form
     application_search_form:
-      hide: Hide Form
-      show: Show Form
+      hide: *hide_form
+      show: *show_form
     set_new_password_form:
       hide: "Hide the Change Password info"
       show: "Change the User's Password"

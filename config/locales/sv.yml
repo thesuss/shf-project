@@ -77,11 +77,11 @@ sv:
 
   toggle:
     company_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+      hide: &hide_form Dölj Sökfunktionen
+      show: &show_form Visa Sökfunktionen
     application_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+      hide: *hide_form
+      show: *show_form
     set_new_password_form:
       hide: "Dölj 'Byt lösenord' info"
       show: "Ändra användarens lösenord"
