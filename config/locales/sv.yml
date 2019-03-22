@@ -76,9 +76,7 @@ sv:
   org_nr: &org_nr Org nr.
 
   toggle:
-    company_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+    company_search_form: Visa/Dölj sökfunktionen
     application_search_form:
       hide: Dölj Sökfunktionen
       show: Visa Sökfunktionen

@@ -76,9 +76,7 @@ en:
   org_nr: &org_nr Org no.
 
   toggle:
-    company_search_form:
-      hide: Hide Form
-      show: Show Form
+    company_search_form: Show/Hide search form
     application_search_form:
       hide: Hide Form
       show: Show Form

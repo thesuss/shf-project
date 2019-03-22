@@ -201,7 +201,7 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    And I click on t("toggle.company_search_form.hide")
+    And I click on t("toggle.company_search_form")
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
     And I should see "Company02"
@@ -221,14 +221,14 @@ Feature: Visitor sees all companies
     Given I am Logged out
     And I set the locale to "sv"
     And I am on the "landing" page
-    Then I click on t("toggle.company_search_form.hide")
+    Then I click on t("toggle.company_search_form")
     And I should see "Verksamhetslän"
     And I should see "Kategori"
     And I should not see "Region"
     And I should not see "Category"
     Then I click on "change-lang-to-english"
     And I set the locale to "en"
-    Then I click on t("toggle.company_search_form.hide")
+    Then I click on t("toggle.company_search_form")
     And I wait 1 second
     And I should see "Region"
     And I should see "Category"
@@ -240,7 +240,7 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    And I click on t("toggle.company_search_form.hide")
+    And I click on t("toggle.company_search_form")
     And "items_count" should have "10" selected
     And I should see "10" companies
     # Ensure the list is sorted by name so we will see Company02
@@ -254,7 +254,7 @@ Feature: Visitor sees all companies
     And "items_count" should have "25" selected
     And I should see "Company01"
     And I should see "Company02"
-    And I should see "Company11"
+    And I should see "Company11"r
     And I should see "Company12"
     And I should see "Company24"
     And I should see "Company25"
@@ -265,7 +265,7 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    And I click on t("toggle.company_search_form.hide")
+    And I click on t("toggle.company_search_form")
     And "items_count" should have "10" selected
     Then I select "All" in select list "items_count"
     And I wait for all ajax requests to complete
