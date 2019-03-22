@@ -10,13 +10,13 @@
       = render 'map_companies', markers: location_and_markers_for(@all_visible_companies)
 
     .col-lg-8.mt-3.mt-lg-0
-      .panel-group.m-2#accordion{ "aria-multiselectable" => "true", role: "tablist" }
+      .panel-group.m-2#accordion{ "aria-multiselectable" => "true", :role => "tablist" }
         .panel.panel-default
-          .panel-heading#heading-2{ role: "tab" }
+          .panel-heading#heading-2{ :role => "tab" }
             %h4.panel-title.hide-toggler
               %a{ "aria-controls" => "#company_search_form", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#company_search_form", :role => "button", id: 'toggle_search_form' }
                 #{t('toggle.company_search_form.hide')}
-          .panel-collapse#company_search_form{ "aria-labelledby" => "heading-2", role: "tabpanel" }
+          .panel-collapse.collapse.show#company_search_form{ "aria-labelledby" => "heading-2", :role => "tabpanel" }
             .panel-body
               = render 'search_form', all_companies: @all_companies, search_params: @search__params
 
