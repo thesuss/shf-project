@@ -75,11 +75,15 @@ en:
   name: &name Name
   org_nr: &org_nr Org no.
 
+  accordion_label:
+    company_search_form:
+      hide: &hide_search Hide search form
+      show: &show_search Show search form
+
   toggle:
-    company_search_form: Show/Hide search form
     application_search_form:
-      hide: Hide Form
-      show: Show Form
+      hide: *hide_search
+      show: *show_search
     set_new_password_form:
       hide: "Hide the Change Password info"
       show: "Change the User's Password"
