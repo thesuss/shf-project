@@ -95,6 +95,7 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap-toggle-rails (2.2.1.0)
     bootstrap-will_paginate (1.0.0)
       will_paginate
     builder (3.2.3)
@@ -589,6 +590,7 @@ DEPENDENCIES
   binding_of_caller
   bootsnap
   bootstrap (~> 4.1.3)
+  bootstrap-toggle-rails
   bootstrap-will_paginate
   bullet
   capistrano (~> 3.11)

@@ -28,7 +28,7 @@
       .col.dinkurs-company-show
         = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
         = fas_tooltip(t('.dinkurs_show_tooltip'))
-        = f.check_box :show_dinkurs_events, { class: 'toggle', data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: 'YES', off: 'NO'} }, "true", "false"
+        = f.check_box :show_dinkurs_events, { class: 'toggle', data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger'} }, "true", "false"
 
     .row
       .col.form-group
@@ -36,7 +36,7 @@
         = f.cktext_area :description,  class: 'form-control'
 
     = f.submit "#{t('submit')}", class: 'btn btn-primary mb-2 form-control'
-    
+
 :javascript
   $(document).on('ready page:change', function() {
     $('input[type="checkbox"].toggle').bootstrapToggle(); // assumes the checkboxes have the class "toggle"
