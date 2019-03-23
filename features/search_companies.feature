@@ -95,7 +95,7 @@ Scenario: Search by category
   And I should see "We Luv Dogs"
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   And I click on t("search")
-  Then I click on t("accordion_label.company_search_form.show")
+  Then I click on t("accordion_label.company_search_form.hide")
   And I should see "Barky Boys"
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
