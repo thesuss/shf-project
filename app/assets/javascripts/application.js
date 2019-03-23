@@ -38,6 +38,8 @@ $(function() {
     // Bind 'show/hide' search form accordion label switch
     $('#company_search_form').click(Utility.toggle_accordion_label);
 
+    $('#toggle_search_form').click(Utility.toggle);
+
     $('#toggle_admin_set_password_form').click(Utility.toggle);
 
     // Enable all Bootstrap tooltips
