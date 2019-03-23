@@ -48,7 +48,7 @@
 
       = link_to "#{t('.add_address')}",
                 new_company_address_path(@company),
-                class: 'btn btn-info add-company-address'
+                class: 'btn btn-info btn-sm add-company-address'
 
 
     .row
@@ -65,7 +65,7 @@
             = button_to "#{t('.dinkurs_fetch_events')}",
                         fetch_from_dinkurs_company_path(@company),
                         remote: true,
-                        class: 'dinkurs-fetch-button pull-right',
+                        class: 'btn btn-info btn-sm dinkurs-fetch-button float-right',
                         form_class: 'dinkurs-fetch-events',
                         data: { disable_with: "#{t('.dinkurs_fetching')}" }
 
