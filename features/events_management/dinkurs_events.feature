@@ -117,4 +117,4 @@ Feature: As a member of a company
     And I should see t("events.show.no_events")
     Then I click on t("companies.show.dinkurs_fetch_events") button
     And I wait for all ajax requests to complete
-    Then I should see "3" events
+    Then I should see "2" events
