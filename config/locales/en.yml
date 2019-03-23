@@ -671,7 +671,7 @@ en:
   business_categories:
 
     index:
-      title: '*business_category / Company categories'
+      title: Company categories
       name: *business_category_name
       description: *description
       view: *view
