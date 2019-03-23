@@ -75,13 +75,15 @@ sv:
   name: &name Namn
   org_nr: &org_nr Org nr.
 
-  toggle:
+  accordion_label:
     company_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+      hide: &hide_search Dölj Sökfunktionen
+      show: &show_search Visa Sökfunktionen
+
+  toggle:
     application_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+      hide: *hide_search
+      show: *show_search
     set_new_password_form:
       hide: "Dölj 'Byt lösenord' info"
       show: "Ändra användarens lösenord"
