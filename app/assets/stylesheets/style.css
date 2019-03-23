@@ -354,7 +354,9 @@ opacity:0.5;
 float:left;
 margin-left:20px;
 }
-
+.toggle-handle {
+    background: #fff;
+}
 .upload-button-pre {
 margin-bottom:0;
 }
