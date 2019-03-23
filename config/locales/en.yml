@@ -75,8 +75,12 @@ en:
   name: &name Name
   org_nr: &org_nr Org no.
 
+  accordion_label:
+    company_search_form:
+      hide: Hide search form
+      show: Show search form
+
   toggle:
-    company_search_form: Show/Hide search form
     application_search_form:
       hide: Hide Form
       show: Show Form
