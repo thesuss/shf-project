@@ -75,13 +75,15 @@ en:
   name: &name Name
   org_nr: &org_nr Org no.
 
-  toggle:
+  accordion_label:
     company_search_form:
-      hide: Hide Form
-      show: Show Form
+      hide: &hide_search Hide search form
+      show: &show_search Show search form
+
+  toggle:
     application_search_form:
-      hide: Hide Form
-      show: Show Form
+      hide: *hide_search
+      show: *show_search
     set_new_password_form:
       hide: "Hide the Change Password info"
       show: "Change the User's Password"
@@ -671,7 +673,7 @@ en:
   business_categories:
 
     index:
-      title: '*business_category / Company categories'
+      title: Company categories
       name: *business_category_name
       description: *description
       view: *view
@@ -1168,8 +1170,8 @@ en:
         confirm_are_you_sure: Are you sure your want to DELETE your account?
         back: *back
         success: Your account has been updated successfully
-        password_header: Change passord
-        new_password: New passord
+        password_header: Change password
+        new_password: New password
         info_header: Edit name and e-mail
         password_confirmation: *password_confirmation
 
