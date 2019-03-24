@@ -111,7 +111,7 @@ Feature: As a member of a company
     And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
-    And I should see "3" events
+    And I should see "2" events
     Then all events for the company named "Mutts" are deleted from the database
     And I reload the page
     And I should see t("events.show.no_events")
