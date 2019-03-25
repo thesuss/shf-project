@@ -110,6 +110,15 @@ rescue Capybara::ElementNotFound
   page.execute_script("document.getElementById(\"#{element_id}\").click()")
 end
 
+When "I {action} the bootstrap checkbox with id {capture_string}" do |action, element_id|
+  event = action == 'check' ? 'on' : 'off'
+
+  page.execute_script("$('#{'#' + element_id}').bootstrapToggle('#{event}')")
+
+rescue Capybara::ElementNotFound
+  page.execute_script("document.getElementById(\"#{element_id}\").click()")
+end
+
 When "I click the radio button with id {capture_string}" do |element_id|
   find("##{element_id}").click
 end
