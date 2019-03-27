@@ -398,6 +398,8 @@ en:
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
       ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
+      files_delivery_method: Chosen files delivery method
+      method_chosen_when: (chosen %{date})
 
     index:
       title: All incoming applications

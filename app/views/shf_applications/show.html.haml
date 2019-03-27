@@ -32,9 +32,14 @@
         #supporting-files
           = render 'uploaded_files_list', shf_application: @shf_application, show_delete: false
 
+    .post-title-divider
+      %span
+
     .row
       .col
         %pre.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state} - #{@shf_application.updated_at.strftime('%F')}
+        - unless @shf_application.accepted? || @shf_application.rejected?
+          %pre.app-status= file_delivery_method_status(@shf_application)
 
         - if current_user.admin?
           = render partial: 'application_status_form'
