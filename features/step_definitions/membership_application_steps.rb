@@ -72,9 +72,7 @@ And(/^the following applications exist:$/) do |table|
       # We save without validation - so, confirm that the **only** validation errors
       # would be associated with the missing file-delivery method.
       ma.valid?
-      expect(ma.errors.keys)
-        .to match_array [:file_delivery_method,
-                         :'user.shf_application.file_delivery_method']
+      expect(ma.errors.keys).to match_array [:file_delivery_method]
     end
 
     ma.save(validate: (legacy_app ? false : true))

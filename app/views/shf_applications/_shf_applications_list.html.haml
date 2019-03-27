@@ -26,7 +26,7 @@
       %tbody
         - @shf_applications.each do |shf_application|
           %tr.applicant
-            %td.membership_number= shf_application.membership_number
+            %td.membership_number= shf_application.user.membership_number
             %td.name= link_to "#{shf_application.user.last_name + ', ' + shf_application.user.first_name}", user_path(shf_application.user)
             - company = shf_application.companies&.first
             %td.company_number= company == nil ? '' : link_to(company.company_number, company_path(company))

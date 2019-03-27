@@ -1,11 +1,11 @@
 %div{ :id => "#{unique_css_id(@shf_application)}", class: "#{item_view_class(@shf_application, controller.action_name)}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title', user_full_name: @shf_application.user_full_name)
+    %h1.entry-title= t('.title', user_full_name: @shf_application.user.full_name)
   .entry-content.container-fluid
     .row
       .col
-        %h2= @shf_application.user_full_name
+        %h2= @shf_application.user.full_name
 
         = render partial: 'membership_number', locals: { user: @shf_application.user }
 
