@@ -12,14 +12,17 @@
                         t('shf_applications.index.name'), {},
                         { class: 'applications_pagination', remote: true })
           %th
-            = sort_link(@search_params, :company_number,
+            = sort_link(@search_params, :companies_company_number,
                         t('shf_applications.index.org_nr'), {},
                         { class: 'applications_pagination', remote: true })
           %th
             = sort_link(@search_params, :state,
                         t('shf_applications.index.state'), {},
                         { class: 'applications_pagination', remote: true })
+
+          %th= t('shf_applications.index.files')
           %th
+
       %tbody
         - @shf_applications.each do |shf_application|
           %tr.applicant
@@ -28,6 +31,13 @@
             - company = shf_application.companies&.first
             %td.company_number= company == nil ? '' : link_to(company.company_number, company_path(company))
             %td.state=  shf_application.aasm.human_state
+
+            %td.number_of_files
+              - if shf_application.uploaded_files_count > 0
+                = shf_application.uploaded_files_count
+              - else
+                &mdash;
+
             %td.action= link_to "#{t('manage')}", shf_application_path(shf_application.id)
 
   = render partial: 'application/paginate_footer',

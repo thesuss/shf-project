@@ -48,6 +48,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to have_db_column :when_approved }
     it { is_expected.to have_db_column :file_delivery_method_id }
     it { is_expected.to have_db_column(:file_delivery_selection_date).with_options(null: true) }
+    it { is_expected.to have_db_column :uploaded_files_count }
   end
 
   describe 'Associations' do

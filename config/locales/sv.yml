@@ -412,6 +412,7 @@ sv:
       manage: *manage
       state: *state
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
+      files: Filer
 
     information:
       title: Om ansökan och medlemskap

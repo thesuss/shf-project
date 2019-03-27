@@ -409,6 +409,7 @@ en:
       state: *state
       manage: *manage
       no_search_results: No records matched your search criteria.
+      files: Files
 
     information:
       title: About Application and Membership
