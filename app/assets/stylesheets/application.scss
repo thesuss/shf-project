@@ -27,14 +27,17 @@ $light:           #6e644b !default;
 
 .yes, .Yes {
   background-color: LightGreen;
+  padding: 3px 8px;
 }
 
 .maybe, .Maybe {
   background-color: Yellow;
+  padding: 3px 8px;
 }
 
 .no, .No {
   background-color: LightCoral;
+  padding: 3px 8px;
 }
 
 .search-form {
