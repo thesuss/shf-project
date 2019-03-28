@@ -65,7 +65,7 @@ module CompaniesHelper
             payments_path(user_id: user_id,
                           company_id: company_id,
                           type: Payment::PAYMENT_TYPE_BRANDING),
-            { method: :post, class: 'btn btn-outline-primary btn-sm' })
+            { method: :post, class: 'btn btn-primary btn-sm' })
   end
 
   def company_number_selection_field(company_id=nil)

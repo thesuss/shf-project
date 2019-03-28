@@ -11,7 +11,7 @@ module UsersHelper
     link_to("#{t('menus.nav.members.pay_membership')}",
             payments_path(user_id: user.id,
                           type: Payment::PAYMENT_TYPE_MEMBER),
-            { method: :post, class: 'btn btn-outline-primary btn-sm' })
+            { method: :post, class: 'btn btn-primary btn-sm' })
   end
 
   def paperclip_path_str(attached_file, image_type, render_to)
