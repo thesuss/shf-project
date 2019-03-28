@@ -81,7 +81,7 @@
       %p
         - if user_can_edit
           = link_to "#{t('companies.edit_company')}",
-                    edit_company_path(@company), class: 'btn btn-secondary edit-company'
+                    edit_company_path(@company), class: 'btn btn-light edit-company'
 
         - if current_user.admin?
           = link_to "#{t('.delete')}", @company, method: :delete,
