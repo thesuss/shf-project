@@ -86,6 +86,8 @@ gem 'aws-sdk-s3'
 gem 'meta-tags'
 gem 'mini_magick'
 
+gem 'counter_culture', '~> 2.0'
+
 
 group :development, :test do
   gem 'rspec-rails'

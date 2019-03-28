@@ -11,6 +11,8 @@ en:
       keywords: 'dog, dog owner, dog instructor, dog entrepreneur, Swedish dog company, Swedish dog company, ethical, H-brand, H-mark, H-marked, dog training'
       image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
 
+  dog: dog
+
   home: Home
   about: About
   more: More
@@ -63,6 +65,7 @@ en:
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
 
   login_page: login page
+
 
   info:
     logged_in_as_admin: You are logged in as an admin.
@@ -149,6 +152,7 @@ en:
         email: &email Login Email
         password: *password
         password_confirmation: &password_confirmation Password confirmation
+        current_password: Current password
         membership_number: &membership_number Membership number
         created: &created Created
         current_sign_in_at: &user_current_signed_in_time Currently signed in at
@@ -395,6 +399,8 @@ en:
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
       ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
+      files_delivery_method: Chosen files delivery method
+      method_chosen_when: (chosen %{date})
 
     index:
       title: All incoming applications
@@ -404,6 +410,7 @@ en:
       state: *state
       manage: *manage
       no_search_results: No records matched your search criteria.
+      files: Files
 
     information:
       title: About Application and Membership

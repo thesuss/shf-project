@@ -1,11 +1,11 @@
 %div{ :id => "#{unique_css_id(@shf_application)}", class: "#{item_view_class(@shf_application, controller.action_name)}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title', user_full_name: @shf_application.user_full_name)
+    %h1.entry-title= t('.title', user_full_name: @shf_application.user.full_name)
   .entry-content.container-fluid
     .row
       .col
-        %h2= @shf_application.user_full_name
+        %h2= @shf_application.user.full_name
 
         = render partial: 'membership_number', locals: { user: @shf_application.user }
 
@@ -32,9 +32,14 @@
         #supporting-files
           = render 'uploaded_files_list', shf_application: @shf_application, show_delete: false
 
+    .post-title-divider
+      %span
+
     .row
       .col
         %pre.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state} - #{@shf_application.updated_at.strftime('%F')}
+        - unless @shf_application.accepted? || @shf_application.rejected?
+          %pre.app-status= file_delivery_method_status(@shf_application)
 
         - if current_user.admin?
           = render partial: 'application_status_form'
