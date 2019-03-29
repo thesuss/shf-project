@@ -14,7 +14,10 @@
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700');
 
 $primary:         #003a78 !default;
-$light:           #6e644b !default;
+$light:           #DAD9CD !default;
+$secondary:       #6e644b !default;
+$info:            #5692CE !default;
+$success:         #7ca059 !default;
 
 @import "bootstrap";
 @import "bootstrap-toggle";
@@ -24,20 +27,22 @@ $light:           #6e644b !default;
 @import "pagination";
 @import "style";
 
+.yes, .Yes,
+.no, .No,
+.maybe, .Maybe {
+    padding: 3px 8px;
+}
 
 .yes, .Yes {
-  background-color: LightGreen;
-  padding: 3px 8px;
+  background-color: #bcdc9d;
 }
 
 .maybe, .Maybe {
-  background-color: Yellow;
-  padding: 3px 8px;
+  background-color: #ffe7a8;
 }
 
 .no, .No {
-  background-color: LightCoral;
-  padding: 3px 8px;
+  background-color: #ffdede;
 }
 
 .search-form {
