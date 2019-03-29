@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     get 'app_configuration/redigera', to: 'app_configuration#edit',
         as: :edit_app_configuration
 
+    get 'designguide', to: 'design_guide#show'
 
   end
 
