@@ -17,7 +17,7 @@
             %td= business_category.description
             %td= link_to t('.view'), business_category
             %td= link_to t('.edit'), edit_business_category_path(business_category)
-            %td= l= link_to icon('fas', 'trash'),
+            %td.delete= link_to icon('fas', 'trash'),
               business_category, method: :delete,
               title: t('.delete_confirm'),
               :data => { :confirm => t('.delete_confirm') }

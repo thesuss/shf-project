@@ -16,11 +16,11 @@ Feature: As an admin
       | dog grooming | grooming dogs from head to tail |
       | dog crooning | crooning to dogs                |
 
-
+  @selenium
   Scenario: Admin wants to delete an existing business category
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
-    And I click the t("business_categories.index.delete") action for the row with "dog grooming"
+    When I click and accept the icon with CSS class "delete" for the row with "dog grooming"
     Then I should see t("business_categories.destroy.success")
     And I should not see "doggy grooming"
 
