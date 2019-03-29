@@ -86,7 +86,7 @@
       %br
       %br
 
-      %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
+      %button.btn.alert-light.admin-set-new-password{ id: 'toggle_admin_set_password_form',
                    href: '#set_new_password_form',
                    style: 'text-transform:none;' }
 
@@ -117,10 +117,10 @@
         = t('.image_how_to_use_html',
             download_link: link_to(t('.download_image'),
                                    proof_of_membership_path(@user, render_to: :jpg),
-                                   class: 'btn btn-sm btn-outline-info'),
+                                   class: 'btn btn-sm btn-outline-light'),
             show_link: link_to(t('.show_image'),
                                  proof_of_membership_path(@user, context: :internal),
-                                 class: 'btn btn-sm btn-outline-info'))
+                                 class: 'btn btn-sm btn-outline-light'))
         %br
         %br
         = t('.proof_of_membership_photo_needed')
@@ -155,11 +155,11 @@
               download_link: link_to(t('.download_image'),
                                      company_h_brand_path(company,
                                                            render_to: :jpg),
-                                     class: 'btn btn-sm btn-outline-info'),
+                                     class: 'btn btn-sm btn-outline-light'),
               show_link: link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),
-                                     class: 'btn btn-sm btn-outline-info'))
+                                     class: 'btn btn-sm btn-outline-light'))
           %br
           %br
           = t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),

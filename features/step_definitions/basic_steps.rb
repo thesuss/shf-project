@@ -136,7 +136,9 @@ end
 And(/^show me the page$/) do
   save_and_open_page
 end
-
+Then("show me the response") do
+  print page.html
+end
 Given(/^the date is set to "([^"]*)"$/) do |date|
   Timecop.freeze( Time.find_zone("UTC").parse(date))
 end
