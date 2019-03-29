@@ -1,5 +1,5 @@
 = search_form_for @q, method: :get, url: users_path do |f|
-  .form-row
+  .form-row.mb-3
     .col-sm
       = f.label :membership_number_in, "#{t('users.search_form.membership_number')}"
       = f.collection_select :membership_number_in,
