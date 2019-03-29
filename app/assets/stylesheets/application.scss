@@ -23,9 +23,8 @@ $warning:         #0067ce !default;
 @import "pagination";
 @import "style";
 
-
-.yes, .Yes {
-  background-color: LightGreen;
+.edit a, .delete a {
+    border-bottom: none;
 }
 
 .maybe, .Maybe {
@@ -41,4 +40,7 @@ $warning:         #0067ce !default;
   padding-right: 5px;
 }
 
+.yes, .Yes {
+  background-color: LightGreen;
+}
 @import "dashboard";
