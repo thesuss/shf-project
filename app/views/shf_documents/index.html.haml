@@ -5,7 +5,7 @@
 
   %p= t('.instructions')
 
-  %table#shf-documents.table.table-hover.table-sm
+  %table.table.table-hover.table-sm#shf-documents
     %thead
       %tr
         %th= sort_link(@ransack_query_results, :title, t('.title'))

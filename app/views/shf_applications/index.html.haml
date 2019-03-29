@@ -1,7 +1,7 @@
 %header.entry-header
   %h1.entry-title= t('.title')
 .entry-content
-  .row{ style: 'margin-bottom: 30px;' }
+  .row.mb-4
     .col-6
       = render partial: 'administration_panel' if @current_user.admin?
 
