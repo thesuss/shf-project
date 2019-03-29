@@ -26,34 +26,5 @@ $success:         #7ca059 !default;
 @import "maps";
 @import "pagination";
 @import "style";
-
-.yes, 
-.Yes,
-.no, 
-.No,
-.maybe,
-.Maybe {
-padding: 3px 8px;
-}
-
-.yes, 
-.Yes {
-background-color: #d8efc2;
-}
-
-.maybe,
-.Maybe {
-background-color: #ffe7a8;
-}
-
-.no,
-.No {
-background-color: #ffdede;
-}
-
-.search-form {
-padding-left: 5px;
-padding-right: 5px;
-}
-
+@import "custom";
 @import "dashboard";
