@@ -1181,6 +1181,8 @@ en:
         new_password: New password
         info_header: Edit name and e-mail
         password_confirmation: *password_confirmation
+      member_photo:
+        pic_header: Edit your picture
 
     sessions:
       new:
