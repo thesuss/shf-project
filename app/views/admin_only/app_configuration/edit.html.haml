@@ -36,5 +36,6 @@
         = render 'image_edit', app_config: @app_configuration,
                                image_title: 'sweden_dog_trainers',
                                f: f
-
+      = f.submit t('submit'), class: 'btn btn-primary form-control mt-4'
+      
   = render  'show_action_buttons', app_config: @app_configuration
