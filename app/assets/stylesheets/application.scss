@@ -23,9 +23,9 @@ $warning:         #0067ce !default;
 @import "pagination";
 @import "style";
 
-.edit a, 
+.edit a,
 .delete a {
-  border-bottom: none;
+  border-bottom: 0;
 }
 
 .maybe,
