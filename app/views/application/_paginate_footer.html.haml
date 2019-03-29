@@ -10,11 +10,11 @@
 
   .row
 
-    .col-md-10
+    .col-10
       %nav{ "aria-label" => "pages" }
         = paginate_links
 
-    .col-md-2
+    .col-2
       -# override min-width from 'custom.css' - too wide
       = select_tag(:items_count, paginate_count_options(items_count),
                    data: { remote: true,
