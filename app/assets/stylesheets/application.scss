@@ -13,8 +13,40 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:200,400,700");
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700');
 
+
+// Colors
 $primary:         #003a78 !default;
 $light:           #6e644b !default;
+
+$body-text: #333;
+
+$toggler-hide-color: #1a1a1a;
+$dark-gray-text: #6c757d;
+
+$categories-gray: #aaa;
+$label-gray: #a7a7a7;
+$menu-light-gray: #ddd;
+$med-gray-border: #dee2e6;
+$menu-very-light-gray: #eee;
+$toggler-border-bottom: #e1e1e1;
+
+$warn-red: #c51f1b;
+
+$secondary-blue: #5692ce;
+$border-light-blue: #8eadce;
+$pastel-blue-background: rgba(86,146,206,0.2);
+
+
+$very-very-dark-brown: #232525;
+$menu-link-very-dark-brown: #404040;
+$main-brown: #85795b;
+$light-taupe: #f7f7f7;
+
+$yes-green:  LightGreen;
+$maybe-yellow: Yellow;
+$no-red: LightCoral;
+
+
 
 @import "bootstrap";
 @import "bootstrap-toggle";
