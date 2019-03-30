@@ -21,3 +21,30 @@ background-color: #ffe7a8;
 .No {
 background-color: #ffdede;
 }
+
+.edit a,
+.delete a {
+  border-bottom: 0;
+}.yes, 
+.Yes,
+.no, 
+.No,
+.maybe,
+.Maybe {
+padding: 3px 8px;
+}
+
+.yes, 
+.Yes {
+background-color: #d8efc2;
+}
+
+.maybe,
+.Maybe {
+background-color: #ffe7a8;
+}
+
+.no,
+.No {
+background-color: #ffdede;
+}

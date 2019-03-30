@@ -1,9 +1,13 @@
 .shf-document.show#shf-document
 
-  - if policy(ShfDocument).contents_update?
-    .item-nav-buttons.pull-right#item-nav-buttons
+  %header.entry-header
+    %h1.entry-title
+      = @title
+  .entry-content
+    - if policy(ShfDocument).contents_update?
       = link_to "#{t('.edit_member_page')}",
                 contents_edit_path(page: @page),
+<<<<<<< HEAD
                 class: 'btn btn-light edit-member-page'
 
   .entry-content
@@ -13,4 +17,7 @@
 
     %hr
 
+=======
+                class: 'btn btn-outline-light edit-member-page mb-2'
+>>>>>>> be098740326c227a0f994189da1dbef77588cc86
     != @contents
