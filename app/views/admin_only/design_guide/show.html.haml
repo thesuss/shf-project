@@ -1,22 +1,39 @@
 :css
+
+  .row.dguide-section {
+    margin-top: 2rem;
+  }
+
   #design-guide .row .col h2.dguide-section {
     margin-top: 2rem;
     border-top: 2pt solid #5692ce;
   }
+
   #design-guide .row .col h3.dguide-section {
-    border-top: 1pt solid #5692ce;
+    border-top: 1pt dotted #5692ce;
   }
+
+  #design-guide .row .col h2.dguide-section ,
+  #design-guide .row .col h3.dguide-section {
+    padding-top: 1rem;
+  }
+
+  #design-guide .example {
+    margin-bottom: 2rem;
+  }
+
+
   p.ex { font-style: italic }
   p.q {
     font-style: italic;
     color: #9b009A;
     font-size: smaller;
     margin-top: 0;
-  }
+   %p
+          This shows the color for
+          %span.yes
+            yes}
 
-  #design-guide .example {
-    margin-bottom: 2rem;
-  }
 
   .btn-footer-light {
     background-color: #f7f7f2;
@@ -29,6 +46,13 @@
     border-color:  #003a78;
   }
 
+  .field-label {
+    font-weight: bold;
+  }
+
+  .code {
+  }
+
 
 %div#design-guide{ class: "#{controller.action_name}" }
 
@@ -39,289 +63,350 @@
     .row
       .col
         %p This shows examples of the typical elements and how they are and should be styled.
+        %p This needs a lot of formatting help. This has been quickly thrown together so that we can see the major elements (mostly the buttons) and record any standards or guidelines.
 
 
     .row
       .col
-        %h2.dguide-section Color palette
-        %p Examples of all of the colors used in style.css
-        %p Using color names in styles.css will make it easy to keep track of all colors used.
-        %p (And so styles.css should really be a .scss)
+        %h2 Contents
+        %ul
+          %li
+            %a{href: '#color-palette'}Color Palette
+          %li
+            %a{href: '#buttons'}Buttons
+            %ul
+              %li
+                %a{href: '#btns-bootstrap'}Standard bootstrap buttons
+              %li
+                %a{href: '#btns-size'}Size
+              %li
+                %a{href: '#btns-bottom'}Buttons at the bottom of a page
+              %li
+                %a{href: '#btns-in-body'}Buttons within the body of a page
+              %li
+                %a{href: '#btns-modal'}Buttons at the bottom of modals
+              %li
+                %a{href: '#btns-toggle'}Toggle buttons
+              %li
+                %a{href: '#btns-pagination'}Pagination
 
-    .row
-      // text
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #333"}
 
-    // grays
-    .row
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #1a1a1a;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #343a40;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #6c757d;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #aaa;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #a7a7a7;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #ddd;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #dee2e6;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #eee;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #e1e1e1;"}
-
-    // blues
-    .row
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #003a78"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #5692ce;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #8eadce;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #17a2b8;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: rgba(86,146,206,0.2)"}
-
-    // browns
-    .row
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #232525;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #404040;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #6e644b"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #85795b;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #f7f7f7;"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #ffc107;"}
-
-    // reds
-    .row
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #c51f1b"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #dc3545"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #ff0000"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: LightCoral"}
-
-    // greens
-    .row
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #28a745"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: #00ff00"}
-      .col-sm-1
-        .p-3.mb-2{style:"background-color: LightGreen"}
+          %li
+            %a{href: '#alerts'}Alerts
+          %li
+            %a{href: '#layout'}Layout
+          %li
+            %a{href: '#text-and-headings'}Text and Headings
 
 
 
+    .row.dguide-section#color-palette
+      .col
+        %h2.dguide-section Color Palette
+        %p Examples of all of the colors used in custom.css and style.scss
 
-    .row
+        = render 'palette_colors_table'
+
+
+    .row.dguide-section#buttons
       .col
         %h2.dguide-section Buttons
 
-        %h3 Standard bootstrap button classes (with our colors, etc. applied)
-        %p be sure to hover to see color changes (text, background, outline)
+        %h3.dguide-section#btns-bootstrap Standard bootstrap button classes with our colors applied
+
+        .row
+          .col.offset-sm-1
+
+            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn btn-secondary">Secondary</button>
+            <button type="button" class="btn btn-default">Default</button>
+            <button type="button" class="btn btn-success">Success</button>
+            <button type="button" class="btn btn-danger">Danger</button>
+            <button type="button" class="btn btn-warning">Warning</button>
+            <button type="button" class="btn btn-info">Info</button>
+            <button type="button" class="btn btn-light">Light</button>
+            <button type="button" class="btn btn-dark">Dark</button>
+
+            %p
+            <button type="button" class="btn btn-link">Link (.btn-link)</button>
 
 
-        <button type="button" class="btn btn-primary">Primary</button>
-        <button type="button" class="btn btn-secondary">Secondary</button>
-        <button type="button" class="btn btn-default">Default</button>
-        <button type="button" class="btn btn-success">Success</button>
-        <button type="button" class="btn btn-danger">Danger</button>
-        <button type="button" class="btn btn-warning">Warning</button>
-        <button type="button" class="btn btn-info">Info</button>
-        <button type="button" class="btn btn-light">Light</button>
-        <button type="button" class="btn btn-dark">Dark</button>
+        %h4#btns-other Other btn classes in use:
 
+        .row
+          .col.offset-sm-1
+
+            %code btn.alert-danger:
+            = link_to "#{t('companies.view_company')}", '#', class: 'btn btn-sm alert-danger'
+
+
+
+
+        %h3.dguide-section#size Size
         %p
-        <button type="button" class="btn btn-link">Link (.btn-link)</button>
-
-
-        %h4 Other btn classes in use:
-        %ul
-          %li
-            btn-info:
-            .example
-              = link_to "#{t('companies.view_company')}", '#', class: 'btn btn-sm btn-info'
-
-          %li
-            btn.alert-danger:
-            .example
-              = link_to "#{t('companies.view_company')}", '#', class: 'btn btn-sm alert-danger'
-
-
-        %h5 "Light" button should have a light background.  Ex:
-        .example
-          = link_to "#{t('companies.view_company')}", '#', class: 'btn btn-sm btn-footer-light'
-
-
-        %h5  Default button must at least have a border.  I suggest that it have the brown background (what is currently the "btn-light").  Ex:
-        .example
-          = link_to "#{t('companies.view_company')}", '#', class: 'btn btn-sm btn-light'
-
-
-        %h4 Size and position
+          All buttons should be
+          %code
+            'btn-sm'
+          except Submit/Save buttons, which should be
+          %code
+            'btn-block'
 
         %ul
 
           %li
-            btn-sm
+            %code btn-sm:
             .example
               = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-primary'
 
           %li
-            btn-block:
+            %code btn-block:
             .example
               = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-block btn-primary'
 
 
 
-    .row
+    .row.dguide-section#btns-bottom
       .col
 
-        %h3 Typical 'actions' at the bottom of a page:
+        %h3.dguide-section Buttons at the bottom of a page
 
-        %p Each button should have classes 'btn btn-sm'
-        %p.q (Should we just create a CSS class for this?)
-
-        %ul.attributes
-          %li Size:
-          %li Colors (including focus and hover):
-          %li
-            Layout (alignment, etc): All should be placed under a .text-center (div class = 'text-center')
-            %p.q (wouldn't it be better to define a class like "page-action-buttons" and apply that to it?)
+        %p
+          %span.field-label
+            Color and size:
+          Each button should have classes <code>'btn btn-sm btn-light'</code>
+          <em>except</em> for <b>Delete</b> buttons
 
 
-        .example
-          %p.ex Example (both have .btn-sm .btn-light and are under a div.text-center):
+        %p
+          %span.field-label
+            Layout (alignment, etc):
+          Some are under a <code>.text-center</code>, and some are under a <code>.text-right.</code>
+        %p When to use which one?
 
-          .text-center
-            = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
-            = link_to "#{t('companies.all_companies')}", companies_path, class: 'btn btn-sm btn-light'
-
-
-    .row
-      .col
-
-        %h3 Prev/Next pagination buttons:
-        %p  (TBD)
-
-        -#.row
-
-          .col-10
-            -# %nav{ "aria-label" => "pages" }
-              = paginate_links
-
-          .col-2
-            -# override min-width from 'custom.css' - too wide
-            =# select_tag(:items_count, paginate_count_options(items_count), data: { remote: true, url: url }, style: 'min-width: 50px;', class: paginate_class )
-
-    .row
-      .col
-
-        %h3 Toggle buttons:
-
-        <div class="toggle btn btn-danger off" data-toggle="toggle" style="width: 63px; height: 38px;"><input class="toggle" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" type="checkbox" value="true" name="company[show_dinkurs_events]" id="company_show_dinkurs_events"><div class="toggle-group"><label class="btn btn-success toggle-on">On</label><label class="btn btn-danger active toggle-off">Off</label><span class="toggle-handle btn btn-default"></span></div></div>
-        <div class="toggle btn btn-danger on" data-toggle="toggle" style="width: 63px; height: 38px;"><input class="toggle" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" type="checkbox" value="true" name="company[show_dinkurs_events]" id="company_show_dinkurs_events"><div class="toggle-group"><label class="btn btn-success toggle-on">On</label><label class="btn btn-danger active toggle-off">Off</label><span class="toggle-handle btn btn-default"></span></div></div>
-
-
-    .row
-      .col
-
-        %h3 At the bottom of modal windows (accept, cancel, etc.)
-
-
-    .row
-      .col
-        %h3 Our Specific CSS classes for buttons
 
         %ul
-          %li 'btn-light' Used for (intention): .... Description:
-          .example
-            %p.ex Example (this has both .btn-light and .btn-sm):
-            = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
+          %li.example
+            %code div.text-center
+            example:
+
+            .text-center
+              = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
+              = link_to "#{t('companies.all_companies')}", companies_path, class: 'btn btn-sm btn-light'
 
 
-          %li 'btn-info'  Used for (intention): .... Description:
-          .example
-            %p.ex Example (this has both .btn-info and .btn-sm):
+          %li.example
+            %code div.text-right
+            example:
 
-            = link_to "Add Address",
-                    new_company_address_path(@company),
-                    class: 'btn btn-info btn-sm add-company-address'
+            - addresses = @company.addresses
+
+            %table.table.table-hover
+              %thead
+                %tr
+                  %th
+                    = t('companies.show.address')
+
+                  %th= t('companies.address_visibility')
+                  %th= t('companies.show.mailing_address')
+
+              - addresses.includes(:kommun).order(:street_address).each do |address|
+                %tbody
+                  %tr.address
+                    %td
+                      = address.entire_address
+
+            .text-right
+              = link_to "#{t('companies.edit_company')}", @company, class: 'btn btn-sm btn-light'
+
+
+          %li.example
+            %code div.text-right
+            example with a delete button:
+
+            - addresses = @company.addresses
+
+            %table.table.table-hover
+              %thead
+                %tr
+                  %th
+                    = t('companies.show.address')
+
+                  %th= t('companies.address_visibility')
+                  %th= t('companies.show.mailing_address')
+
+              - addresses.includes(:kommun).order(:street_address).each do |address|
+                %tbody
+                  %tr.address
+                    %td
+                      = address.entire_address
+
+            .text-right
+              = link_to "#{t('companies.edit_company')}", @company, class: 'btn btn-sm btn-light'
+              = link_to "Delete", @company, method: :delete,
+                  class:'btn btn-danger delete-company',
+                  data: { confirm: "#{t('.confirm_are_you_sure')}" }
 
 
 
-    .row
+
+    .row.dguide-section#btns-in-body
       .col
-        %h2.dguide-section Other
 
-        %h3 Yes / No indicators
+        %h3.dguide-section Buttons within the body of a page
+
+        %p
+          Default classes should be
+          %code 'btn btn-secondary'
+          but there may be cases where different classes/styles should be used
+
+        .row
+          .col.offset-sm-1
+
+            .example
+              %br
+
+              = field_or_none('Name', 'Bob Ross')
+              %p
+                %span.field-label
+                  Company Number:
+                098219291
+                = link_to "Create a New Company",'#', class: 'btn btn-sm btn-secondary'
+              %br
+              = field_or_none('Categories', 'super mellow guy, squirrel lover, painter')
 
 
-    .row
+
+    .row.dguide-section#btns-modal
+      .col
+
+        %h3.dguide-section At the bottom of modals (accept, cancel, etc.)
+
+        %p
+          %span.field-label Submit/save button:
+          Use <code>btn-primary</code> which will set the color and expand the button to the next element or end of the column (= width)
+
+        %p
+          %span.field-label Cancel button:
+          Is an outlined button with the <code>secondary</code> color. Use <code>btn-outline-secondary</code>.  This should be aligned right.
+
+        .example
+
+          .row
+            .col.offset-sm-3{style:"border: #5692ce 1pt solid;"}
+
+              %p <b>This is some text in the modal.</b>
+              %p This is more text in the modal.
+              .modal-footer
+
+                %button{ type: 'button', class: "btn btn-primary form-control",}
+                  = t('companies.create.create_submit')
+                %button{ type: 'button', class: 'btn btn-outline-secondary', data: { dismiss: 'modal' } }
+                  = t('cancel')
+
+
+
+    .row.dguide-section#btns-toggle
+      .col
+
+        %h3.dguide-section Toggle buttons:
+
+        <div class="toggle btn btn-danger off" data-toggle="toggle" style="width: 63px; height: 38px;"><input class="toggle" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" type="checkbox" value="true" name="company[show_dinkurs_events]" id="company_show_dinkurs_events"><div class="toggle-group"><label class="btn btn-success toggle-on">On</label><label class="btn btn-danger active toggle-off">Off</label><span class="toggle-handle btn btn-default"></div></div>
+        <div class="toggle btn btn-danger on" data-toggle="toggle" style="width: 63px; height: 38px;"><input class="toggle" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" type="checkbox" value="true" name="company[show_dinkurs_events]" id="company_show_dinkurs_events"><div class="toggle-group"><label class="btn btn-success toggle-on">On</label><label class="btn btn-danger active toggle-off">Off</label><span class="toggle-handle btn btn-default"></div></div>
+
+
+
+
+    .row.dguide-section#buttons-pagination
+      .col
+
+        %h3.dguide-section Prev/Next pagination buttons:
+
+        .row
+          .col.offset-sm-1
+            .companies_pagination
+              %ul.pagination
+                %li.previous_page
+                  %a{'href':"#buttons-pagination"}
+                    « Previous
+                %li.active
+                  %a{'href':"#buttons-pagination"}
+                    1
+                %li
+                  %a{'href':"#buttons-pagination"}
+                    2
+                %li
+                  %a{'href':"#buttons-pagination"}3
+                %li
+                  %a{'href':"#buttons-pagination"}4
+                %li
+                  %a{'href':"#buttons-pagination"}5
+                %li.next.next_page
+                  %a{'href':"#buttons-pagination"}Next »
+
+          .col-2
+            %select.companies_pagination{name:"items_count", id:"items_count",  style:"min-width: 50px;"}
+              %option
+                10
+              %option
+                25
+              %option
+                50
+              %option
+                All
+            %span
+              %i.fas.fa-info-circle{data: {toggle:"tooltip", 'original-title': "Select number of items per page"}}
+
+
+
+    .row.dguide-section#alerts
       .col
         %h2.dguide-section Alerts (shows background colors)
 
-        .alert.alert-primary{role: "alert"}
-          A simple primary alert—check it out!
-
-        .alert.alert-secondary{role: "alert"}
-          A simple secondary alert—check it out!
-
-        .alert.alert-success{role: "alert"}
-          A simple success alert—check it out!
-
-        .alert.alert-warning{role: "alert"}
-          A simple warning alert—check it out!
-
-        .alert.alert-danger{role: "alert"}
-          A simple danger alert—check it out!
-
-        .alert.alert-info{role: "alert"}
-          A simple info alert—check it out!
-
-        .alert.alert-light{role: "alert"}
-          A simple light alert—check it out!
-
-        .alert.alert-dark{role: "alert"}
-          A simple dark alert—check it out!
+        = render 'alert_examples'
 
 
-
-    .row
+    .row.dguide-section#layout
       .col
 
         %h2.dguide-section Layout
-        %h3 Major elements on each page:
+        %h3.dguide-section Major elements on each page:
         %ul
           %li Page title is always h1.  (Only 1 "H1" element per page)
 
-        %p.cols / grid
 
-
-    .row
+    .row.dguide-section#text-and-headings
       .col
 
-        %h2.dguide-section Headings and Text
+        %h2.dguide-section Text and Headings
 
 
-    .row
+
+    .row.dguide-section
+      .col
+        %h2.dguide-section Other
+
+        %h3.dguide-section Yes / No / Maybe indicator colors
+
+        %p
+          This shows the color for
+          %span.yes
+            yes
+        %p
+          This shows the color for
+          %span.no
+            no
+        %p
+          This shows the color for
+          %span.maybe
+            maybe
+
+
+    .row.dguide-section
       .col
 
-        %h3 Headings
+        %h3.dguide-section Headings
 
-        %p font family =
+        %p font family = ??
 
         %h1 Heading 1
         %p Doggo ipsum smol what a nice floof length boy shoober you are doing me a frighten long water shoob blep very good spot.
@@ -341,9 +426,11 @@
         %h5 Heading 5
         %h6 Heading 6
 
-    .row
+
+    .row.dguide-section
       .col
 
-        %h3 non-heading text
+        %h3.dguide-section non-heading text
 
-        %p font family =
+        %p font family = ??
+

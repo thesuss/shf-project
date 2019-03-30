@@ -1,0 +1,108 @@
+:css
+
+  .color-ex-cell {
+    text-align: center;
+    vertical-align: top;
+    border-top: #ced4da solid 1pt;
+    border-bottom: #ced4da solid 1pt;
+  }
+
+  p.color-ex {
+    font-size: smaller;
+    text-align: center;
+    line-height: 1.1em;
+    padding-top: 0;
+    margin-top: 0
+  }
+
+  button.color-ex {
+    border-radius: 0;
+    border: none;
+    height: 27px;
+    width: 44px;
+    margin: 0.5rem 0.5rem 0.2rem 0.5rem ;
+    padding-bottom: 0;
+  }
+
+
+%table.color-examples
+  %tr
+    // text
+    %td.color-ex-cell
+      = color_ex('body text','#333')
+
+  %tr
+    %td.color-ex-cell
+      = color_ex('primary', '#003a78')
+    %td.color-ex-cell
+      = color_ex('secondary', '#6e644b')
+    %td.color-ex-cell
+      = color_ex('light', '#dad9cd')
+    %td.color-ex-cell
+      = color_ex('info', '#5692ce')
+    %td.color-ex-cell
+      = color_ex('success', '#7ca059')
+
+  // grays
+  %tr
+    %td.color-ex-cell
+      = color_ex('$toggler-hide-color', '#1a1a1a')
+    %td.color-ex-cell
+      = color_ex('pagination $dark-gray-text', '#6c757d')
+    %td.color-ex-cell
+      = color_ex('$categories-gray', '#aaa')
+    %td.color-ex-cell
+      = color_ex('.text-nicelabel $label-gray', '#a7a7a7')
+    %td.color-ex-cell
+      = color_ex('$menu-light-gray', '#ddd')
+    %td.color-ex-cell
+      = color_ex('pagination $med-gray-border', '#dee2e6')
+    %td.color-ex-cell
+      = color_ex('$menu-very-light-gray', '#eee')
+    %td.color-ex-cell
+      = color_ex('$toggler-border-bottom', '#e1e1e1')
+
+  // blues
+  %tr
+    %td.color-ex-cell
+      = color_ex('$primary', '#003a78')
+    %td.color-ex-cell
+      = color_ex('info', '#5692ce')
+    %td.color-ex-cell
+      = color_ex('$border-light-blue', '#8eadce')
+    %td.color-ex-cell
+      = color_ex('$pastel-blue-background', 'rgba(86,146,206,0.2)')
+
+  // browns
+  %tr
+    %td.color-ex-cell
+      = color_ex('$link-dark-brown', '#232525')
+    %td.color-ex-cell
+      = color_ex('$menu-link-very-dark-brown', '#404040')
+    %td.color-ex-cell
+      = color_ex('secondary', '#6e644b')
+    %td.color-ex-cell
+      = color_ex('page bottom $shf-main-brown', '#85795b')
+    %td.color-ex-cell
+      = color_ex('$body-background', '#f7f7f2')
+    %td.color-ex-cell
+      = color_ex('menu dropdown background $light-taupe', '#f7f7f7')
+
+  // reds
+  %tr
+    %td.color-ex-cell
+      = color_ex('$warn-red-text', '#c51f1b')
+    %td.color-ex-cell
+      = color_ex('no-red', '#ffdede')
+
+  // greens
+  %tr
+    %td.color-ex-cell
+      = color_ex('success', '#7ca059')
+    %td.color-ex-cell
+      = color_ex('yes-green', '#d8efc2')
+
+  // yellow
+  %tr
+    %td.color-ex-cell
+      = color_ex('maybe-yellow', '#ffe7a8')
