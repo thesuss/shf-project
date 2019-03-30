@@ -23,22 +23,29 @@ $warning:         #0067ce !default;
 @import "pagination";
 @import "style";
 
-
-.yes, .Yes {
-  background-color: LightGreen;
+.edit a,
+.delete a {
+  border-bottom: 0;
 }
 
-.maybe, .Maybe {
+.maybe,
+.Maybe {
   background-color: Yellow;
 }
 
-.no, .No {
+.no,
+.No {
   background-color: LightCoral;
 }
 
 .search-form {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.yes,
+.Yes {
+  background-color: LightGreen;
 }
 
 @import "dashboard";
