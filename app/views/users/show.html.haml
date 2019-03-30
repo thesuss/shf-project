@@ -1,37 +1,29 @@
 %header.entry-header
   - user_name = @user.full_name
-  - if @user.admin?
-    %h1.entry-title.is-admin
-      = user_name.empty? ? @user.email : user_name
+  %h1.entry-title.is-admin
+    = user_name.empty? ? @user.email : user_name
+    - if @user.admin?
       %span.small
         (#{t('.is_an_admin')})
-  - else
-    %h1.entry-title
-      = user_name.empty? ? @user.email : user_name
 
-.entry-content
-  .col-sm-6
-    = field_or_none("#{t('.email')}", mail_to(@user.email),
-                    label_class: 'standard-label')
-  .col-sm-4.col-sm-offset-2
-    = field_or_none("#{t('.membership_number')}", @user.membership_number,
-                    label_class: 'standard-label')
-  .clearfix
+.entry-content.container
+  .row
+    .col-md-6
+      = field_or_none("#{t('.email')}", mail_to(@user.email),
+                      label_class: 'standard-label')
+    .col-md-4
+      = field_or_none("#{t('.membership_number')}", @user.membership_number,
+                      label_class: 'standard-label')
 
   = render partial: 'member_payment_status', locals: { user: @user }
 
-  .clearfix
-
-  .col-sm-12
-
-    - unless @user.shf_application
-      = field_or_none("#{t('application')}", t('none'), label_class: 'standard-label')
-    - else
-      -# .col-sm-3{ style: 'margin-left: -15px;' }
-      %span.standard-label #{t('application')}:
-
-      .row
-        %table.table.table-hover
+  .row
+    .col.mt-2
+      - unless @user.shf_application
+        = field_or_none("#{t('application')}", t('none'), label_class: 'standard-label')
+      - else
+        %span.standard-label #{t('application')}:
+        %table.table.table-hover.table-sm.table-md-responsive
           %thead
             %tr
               %th
@@ -55,37 +47,33 @@
               - if app.companies.any?
                 %td= link_to(app.company_numbers, shf_application_path(app))
                 %td= app.company_names
+  .row
+    .col
+      - if current_user.admin?
+        %pre 
+          #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}.
+        - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
+          %pre 
+            #{@user.email} #{t('.user_has_never_signed_in')}
+        - else
+          %pre 
+            #{t('.last_login')}:
+            #{most_recent_login_time @user}
+            (#{i18n_time_ago_in_words(most_recent_login_time @user)})
+          %pre   
+            #{t('.logged_in_count')}:
+            = @user.sign_in_count
+        - if @user.reset_password_sent_at.blank?
+          %pre 
+            = t('.password_never_reset')
+        - else
+          %pre 
+            %b #{t('.reset_password_sent_at')}:
+            #{@user.reset_password_sent_at}
+            #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
 
-  .col-sm-12
-
-    Account #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}.
-    %br
-
-    - if current_user.admin?
-
-      - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
-        #{@user.email} #{t('.user_has_never_signed_in')}
-
-      - else
-
-        #{t('.last_login')}:
-        #{most_recent_login_time @user}
-        (#{i18n_time_ago_in_words(most_recent_login_time @user)})
-        %br
-        #{t('.logged_in_count')}:
-        = @user.sign_in_count
-
-      %p
-      - if @user.reset_password_sent_at.blank?
-        = t('.password_never_reset')
-      - else
-        %b #{t('.reset_password_sent_at')}:
-        #{@user.reset_password_sent_at}
-        #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
-
-      %br
-      %br
-
+  .row
+    .col
       %button.btn.alert-secondary.admin-set-new-password{ id: 'toggle_admin_set_password_form',
                    href: '#set_new_password_form',
                    style: 'text-transform:none;' }
@@ -101,7 +89,7 @@
 
 
   - if @user.member?
-    .row
+    .row.mt-3
       .col-md-5
         = render partial: 'proof_of_membership',
                  locals: { app_config: @app_configuration, user: @user,
