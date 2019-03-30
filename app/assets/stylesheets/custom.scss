@@ -1,4 +1,4 @@
-.yes, 
+.yes,
 .Yes,
 .no, 
 .No,
@@ -9,15 +9,15 @@ padding: 3px 8px;
 
 .yes, 
 .Yes {
-background-color: #d8efc2;
+background-color: $yes-green;
 }
 
 .maybe,
 .Maybe {
-background-color: #ffe7a8;
+background-color: $maybe-yellow;
 }
 
 .no,
 .No {
-background-color: #ffdede;
+background-color: $no-red;
 }
