@@ -193,6 +193,10 @@ font-weight: 900;
 content: "\f077"; /* fa-chevron-up */
 }
 
+.infotext p {
+    margin-bottom: 1rem;
+}
+
 .login {
 margin:auto 1px;
 vertical-align:middle;
