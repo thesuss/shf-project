@@ -45,10 +45,8 @@
         %p= render 'application/required_fields'
     .row
       .col
-        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary'
-  .row
-    .col.mt-2
-      %hr
-      %h3.entry-title= t('.unregister')
+        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary form-control m-2'
+  %hr
+    .text-center
       %p
-        #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
+        #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-sm btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
