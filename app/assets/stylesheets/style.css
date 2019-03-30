@@ -14,6 +14,11 @@ margin-bottom:1rem;
 margin-top:1rem;
 }
 
+#company-pay-modal p {
+margin-bottom:0;
+}
+
+
 #companies_list {
 margin-top: 30px;
 }
@@ -115,6 +120,11 @@ margin-bottom:.8em;
 
 .company td {
 white-space:nowrap;
+}
+
+.company-story img {
+max-width:100%;
+height:auto!important;
 }
 
 .company_search {
@@ -290,8 +300,14 @@ padding-right: 5px;
 font-weight:700;
 }
 
+.table {
+margin-top:20px;
+}
+
+
 .table th {
 border-top:none;
+padding: 0.15rem 0.75rem;
 }
 
 .text-nicelabel {

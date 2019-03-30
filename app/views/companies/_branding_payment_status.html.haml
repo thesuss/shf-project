@@ -1,24 +1,24 @@
-#company-branding-status
-  - if defined?(error) && error
-    .alert.alert-danger= error
-  %br
-  - licensed = company.branding_license? ? 'Yes' : 'No'
-  = field_or_none("#{t('companies.show.branding_license')}", "#{t(licensed)}",
-                  label_class: 'standard-label',
-                  value_class: licensed)
+.row#company-pay-modal
+  .col-md.pb-2.pb-md-0#company-branding-status
+    - if defined?(error) && error
+      .alert.alert-danger= error
 
-  = expire_date_label_and_value(company)
+    - licensed = company.branding_license? ? 'Yes' : 'No'
+    = field_or_none("#{t('companies.show.branding_license')}", "#{t(licensed)}",
+                    label_class: 'standard-label',
+                    value_class: licensed)
+  .col-md.pb-2.pb-md-0
+    = expire_date_label_and_value(company)
+  .col-md.pb-2.pb-md-0.text-right
+    = pay_branding_fee_link(company.id, current_user.id)
+    = fas_tooltip(t('companies.show.pay_branding_fee_tooltip'))
 
-  = pay_branding_fee_link(company.id, current_user.id)
-  = fas_tooltip(t('companies.show.pay_branding_fee_tooltip'))
-
-
-  %br
-  - if current_user.admin?
-    %br
-    = payment_notes_label_and_value(company)
-
-    -# NOTE: Capybara cannot find link without 'href' attribute
-    %a.btn.btn-outline-success.btn-sm{ href: '#', data: { toggle: 'modal',
+- if current_user.admin?
+  .row
+    .col-md
+      %pre= payment_notes_label_and_value(company)
+    .col-md
+      -# NOTE: Capybara cannot find link without 'href' attribute
+      %a.btn.btn-outline-success.btn-sm{ href: '#', data: { toggle: 'modal',
                                                   target: '#edit-branding-modal' } }
-      = t('companies.show.edit_branding_status')
+      %pre= t('companies.show.edit_branding_status')
