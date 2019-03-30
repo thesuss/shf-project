@@ -22,6 +22,7 @@ $info:            #5692ce !default;
 $success:         #7ca059 !default;
 
 $body-text: #333;
+$body-background: #f7f7f2;
 
 $toggler-hide-color: #1a1a1a;
 $dark-gray-text: #6c757d;
@@ -33,21 +34,21 @@ $med-gray-border: #dee2e6;
 $menu-very-light-gray: #eee;
 $toggler-border-bottom: #e1e1e1;
 
-$warn-red: #c51f1b;
+$warn-red-text: #c51f1b;
 
-$secondary-blue: #5692ce;
+$shf-blue: $info;
 $border-light-blue: #8eadce;
 $pastel-blue-background: rgba(86,146,206,0.2);
 
 
-$very-very-dark-brown: #232525;
+$link-dark-brown: #232525;
 $menu-link-very-dark-brown: #404040;
-$main-brown: #85795b;
+$shf-main-brown: #85795b;
 $light-taupe: #f7f7f7;
 
-$yes-green:  LightGreen;
-$maybe-yellow: Yellow;
-$no-red: LightCoral;
+$yes-green:  #d8efc2;
+$maybe-yellow: #ffe7a8;
+$no-red: #ffdede;
 
 
 
