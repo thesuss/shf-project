@@ -14,7 +14,7 @@ margin-bottom:1rem;
 margin-top:1rem;
 }
 
-#company-pay-modal p {
+#company-pay-modal p, #company-pay-modal pre {
 margin-bottom:0;
 }
 
