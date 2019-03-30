@@ -52,7 +52,3 @@
       %h3.entry-title= t('.unregister')
       %p
         #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
-      %hr
-  .row
-    .col
-      = link_to "#{t('.back')}", :back
