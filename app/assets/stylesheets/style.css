@@ -276,6 +276,12 @@ bottom:4px;
 position:absolute;
 }
 
+
+.search-form {
+padding-left: 5px;
+padding-right: 5px;
+}
+
 .show.shfapplication #uploaded-files .files-uploaded-list-title,.update.shfapplication #uploaded-files .files-uploaded-list-title,.company .field-label {
 font-weight:700;
 }

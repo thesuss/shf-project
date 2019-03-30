@@ -76,16 +76,15 @@
                                          items_count: @items_count
 
 
-    .row.center
-      %hr
-      %p
-        - if user_can_edit
-          = link_to "#{t('companies.edit_company')}",
-                    edit_company_path(@company), class: 'btn btn-secondary edit-company'
+    %hr
+    .text-center
+      - if user_can_edit
+        = link_to "#{t('companies.edit_company')}",
+                  edit_company_path(@company), class: 'btn btn-secondary btn-sm edit-company'
 
-        - if current_user.admin?
-          = link_to "#{t('.delete')}", @company, method: :delete,
-                    class:'btn btn-danger delete-company',
-                    data: { confirm: "#{t('.confirm_are_you_sure')}" }
+      - if current_user.admin?
+        = link_to "#{t('.delete')}", @company, method: :delete,
+                  class:'btn btn-danger btn-sm delete-company',
+                  data: { confirm: "#{t('.confirm_are_you_sure')}" }
 
 = render 'edit_branding_modal', company: @company

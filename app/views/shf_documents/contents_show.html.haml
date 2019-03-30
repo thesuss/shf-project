@@ -7,5 +7,6 @@
     - if policy(ShfDocument).contents_update?
       = link_to "#{t('.edit_member_page')}",
                 contents_edit_path(page: @page),
-                class: 'btn btn-outline-light edit-member-page mb-2'
+                class: 'btn btn-light edit-member-page'
+
     != @contents
