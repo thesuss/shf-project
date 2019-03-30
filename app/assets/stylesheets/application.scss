@@ -16,7 +16,10 @@
 
 // Colors
 $primary:         #003a78 !default;
-$light:           #6e644b !default;
+$light:           #dad9cd !default;
+$secondary:       #6e644b !default;
+$info:            #5692ce !default;
+$success:         #7ca059 !default;
 
 $body-text: #333;
 
@@ -55,26 +58,5 @@ $no-red: LightCoral;
 @import "maps";
 @import "pagination";
 @import "style";
-
-
-.yes, .Yes {
-  background-color: LightGreen;
-  padding: 3px 8px;
-}
-
-.maybe, .Maybe {
-  background-color: Yellow;
-  padding: 3px 8px;
-}
-
-.no, .No {
-  background-color: LightCoral;
-  padding: 3px 8px;
-}
-
-.search-form {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
+@import "custom";
 @import "dashboard";
