@@ -43,15 +43,10 @@
         %small.form-text.text-muted= t('.required_to_save_changes')
 
         %p= render 'application/required_fields'
-    .row
-      .col-sm
-        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary'
-  .row
-    .col-sm.mt-2
-      %hr
-      %h3.entry-title= t('.unregister')
-      %p
-        #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
-  %hr
-  .text-center
-    = link_to t('.back'), :back, class: 'btn btn-light btn-sm'
+        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary form-control mt-2'
+
+    %hr
+      .text-center
+        %p
+          #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
+  
