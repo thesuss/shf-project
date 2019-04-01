@@ -7,16 +7,22 @@
 
   %header.entry-header
     %h1.entry-title= @company.name
-
-    - if @company.categories
-      .categories
-        = render 'business_categories/as_list',
-          categories_names: @company.categories_names
-
   .entry-content
     .row
-      != @company.description
-    %hr
+      .col
+        - if @company.categories
+          .categories
+            = render 'business_categories/as_list',
+              categories_names: @company.categories_names
+        - if payment_visible_for_user?(current_user, @company)
+          %hr
+          = render partial: 'branding_payment_status', locals: { company: @company }
+          %hr
+
+    .row
+      .col.company-story
+        != @company.description
+      %hr
 
     .row
       .col-md-5
@@ -30,10 +36,6 @@
         = field_or_none t('.email'), mail_to(@company.email), tag_options: {class: 'email'}
 
         = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
-
-        - if payment_visible_for_user?(current_user, @company)                                              |
-
-          = render partial: 'branding_payment_status', locals: { company: @company }
 
       .col-md-7
         - if @company.any_visible_addresses?
@@ -51,11 +53,11 @@
 
       = link_to "#{t('.add_address')}",
                 new_company_address_path(@company),
-                class: 'btn btn-info btn-sm add-company-address'
+                class: 'btn btn-info btn-sm ml-2 add-company-address'
 
 
     .row
-      .col-12
+      .col
         - if ! @company.dinkurs_company_id.blank? && ! @company.show_dinkurs_events && user_can_edit
 
           .dinkurs-show-not
