@@ -95,7 +95,7 @@ Scenario: Search by category
   And I should see "We Luv Dogs"
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   And I click on t("search")
-  Then I click on t("accordion_label.company_search_form.hide")
+  Then I hide the companies search form
   And I should see "Barky Boys"
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
@@ -110,7 +110,7 @@ Scenario: Search by region
   And I am on the "landing" page
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search")
-  Then I click on t("accordion_label.company_search_form.hide")
+  Then I hide the companies search form
   Then I should see "HappyMutts"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
@@ -124,7 +124,7 @@ Scenario: Search by company (and confirm non-admin cannot search with non-search
   And I cannot select "NoMember" in select list t("activerecord.models.company.one")
   Then I select "We Luv Dogs" in select list t("activerecord.models.company.one")
   And I click on t("search")
-  Then I click on t("accordion_label.company_search_form.hide")
+  Then I hide the companies search form
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
   And I should not see "Barky Boys"
@@ -246,7 +246,7 @@ Scenario: Toggle Hide/Show search form
   And I am on the "landing" page
   And I should see t("accordion_label.company_search_form.hide")
   And t("activerecord.models.company.one") should be visible
-  Then I click on t("accordion_label.company_search_form.hide")
+  Then I hide the companies search form
   Then I wait 2 seconds
   And I should see t("accordion_label.company_search_form.show")
   Then t("activerecord.models.company.one") should not be visible

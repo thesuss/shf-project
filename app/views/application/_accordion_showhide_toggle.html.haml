@@ -1,0 +1,24 @@
+-# This partial expects the following locals to be set:
+-#
+-#  search_form_id = the id of the search form (the element being shown/hidden/toggled
+-#                    Default = 'toggled_search_form' if it is not provided
+-#
+-#  toggler_id = the id for a% element of the toggler; also used to look
+-#               the translation text from the locale files
+-#               Will default to "search_form_toggler" if it is blank
+-#
+-# The element to be shown/hidden (e.g. the search form)
+-# can then be written:
+-#
+-#    .panel.panel-default.search-form{id: 'toggled_search_form', 'aria-labelledby' => 'toggle-heading', role: 'tabpanel' }
+-#      = render 'search_form'
+-#
+-#   (where 'search_form' is the search form)
+-#
+- toggler_id = local_assigns.fetch(:toggler_id, false) ? local_assigns[:toggler_id] : 'search_form_toggler'
+- toggled_searchform_id = local_assigns.fetch(:search_form_id, false) ? local_assigns[:search_form_id] : 'toggled_search_form'
+
+.panel-group.m-2#accordion{ role: 'tablist' }
+  .panel.panel-default
+    = render 'application/accordion_showhide_toggle_panel_heading',
+     search_form_id: toggled_searchform_id, toggler_id: toggler_id

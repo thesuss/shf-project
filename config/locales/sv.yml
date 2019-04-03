@@ -82,6 +82,9 @@ sv:
     company_search_form:
       hide: &hide_search Dölj Sökfunktionen
       show: &show_search Visa Sökfunktionen
+    application_search_form_toggler:
+      hide: *hide_search
+      show: *show_search
 
   toggle:
     application_search_form:

@@ -74,39 +74,57 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
   Scenario: Pagination: default is All, can set to just 10 items
     Given I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
-    And I hide the search form
+    And I hide the membership applications search form
     Then "items_count" should have "All" selected
     And I select "10" in select list "items_count"
     Then "items_count" should have "10" selected
     # prevents getting the element not clickable at that position error in Chrome
+
     And I scroll so the top of the list of companies is visible
     When I click on t("shf_applications.index.org_nr")
+
     And I should see "6222279082" before "6613265393"
     And I should see "6613265393" before "6914762726"
+
+    # Capybara seems to be viewing the search form select lists (options) as 'visible',
+    #  so it pics those up with the simple "And I should see ..." steps.
+    # I am ensuring that we are checking in the actual list of shf applications
+    # (search select options are not within the div#shf_applications_list, so they'll be ignored)
+    And I should see "6222279082" in the list of applications
+    And I should see "6613265393" in the list of applications
+    And I should see "6914762726" in the list of applications
+
+    When I click on t("will_paginate.next_label") link
+    Then I should see "7661057765" in the list of applications
+    And I should see "8728875504" in the list of applications
+    And I should not see "6914762726" in the list of applications
+    And I should not see "8764985894" in the list of applications
+
     Then I click on t("will_paginate.next_label") link
-    And I should see "7661057765"
-    And I should see "8728875504"
-    And I should not see "6914762726"
-    And I should not see "8764985894"
-    Then I click on t("will_paginate.next_label") link
-    And I should see "8764985894"
-    And I should not see "8728875504"
+    And I should see "8764985894" in the list of applications
+    And I should not see "8728875504" in the list of applications
 
   @selenium
   Scenario: Pagination: Set number of items per page to various choices
     Given I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
-    And I hide the search form
+    And I hide the membership applications search form
     Then "items_count" should have "All" selected
     And I should see "28" applications
-    And I should see "2120000142"
-    And I should see "9475077674"
+
+    # Capybara seems to be viewing the search form select lists (options) as 'visible',
+    #  so it pics those up with the simple "And I should see ..." steps.
+    # I am ensuring that we are checking in the actual list of shf applications
+    # (search select options are not within the div#shf_applications_list, so they'll be ignored)
+    And I should see "2120000142" in the list of applications
+    And I should see "9475077674" in the list of applications
     Then I select "25" in select list "items_count"
     And I should see "25" applications
     And "items_count" should have "25" selected
-    And I should see "9243957975"
-    And I should not see "9267816362"
+    And I should see "9243957975" in the list of applications
+    And I should not see "9267816362" in the list of applications
+
     Then I select "10" in select list "items_count"
     And I should see "10" applications
-    And I should see "6914762726"
-    And I should not see "7661057765"
+    And I should see "6914762726" in the list of applications
+    And I should not see "7661057765" in the list of applications

@@ -40,11 +40,11 @@ var Utility = {
 
     if ($(this).attr('aria-expanded') === 'true') {
       // We are in the process of collapsing the accordion
-      var showStr = 'accordion_label.' + toggleId.replace('#','') + '.show';
+      var showStr = 'accordion_label.' + toggleId + '.show';
       $(this).text(I18n.t(showStr));
     } else {
       // We are in the process of opening the accordion
-      var hideStr = 'accordion_label.' + toggleId.replace('#','') + '.hide';
+      var hideStr = 'accordion_label.' + toggleId + '.hide';
       $(this).text(I18n.t(hideStr));
     }
   }

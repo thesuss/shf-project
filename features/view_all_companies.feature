@@ -38,22 +38,22 @@ Feature: Visitor sees all companies
       | Company11 | 2965790286     | cmpy11@mail.com | Stockholm    | Alingsås |
       | Company12 | 4268582063     | cmpy12@mail.com | Stockholm    | Alingsås |
       | Company13 | 8028973322     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company14 | 8356502446     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company15 | 8394317054     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company16 | 8423893877     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company17 | 8589182768     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company18 | 8616006592     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company19 | 8764985894     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company20 | 8822107739     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company21 | 5569767808     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company22 | 8909248752     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company23 | 9074668568     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company24 | 9243957975     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company25 | 9267816362     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company26 | 9360289459     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company27 | 9475077674     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company28 | 8728875504     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company29 | 5872150379     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company14 | 8356502446     | cmpy14@mail.com | Stockholm    | Alingsås |
+      | Company15 | 8394317054     | cmpy15@mail.com | Stockholm    | Alingsås |
+      | Company16 | 8423893877     | cmpy16@mail.com | Stockholm    | Alingsås |
+      | Company17 | 8589182768     | cmpy17@mail.com | Stockholm    | Alingsås |
+      | Company18 | 8616006592     | cmpy18@mail.com | Stockholm    | Alingsås |
+      | Company19 | 8764985894     | cmpy19@mail.com | Stockholm    | Alingsås |
+      | Company20 | 8822107739     | cmpy20@mail.com | Stockholm    | Alingsås |
+      | Company21 | 5569767808     | cmpy21@mail.com | Stockholm    | Alingsås |
+      | Company22 | 8909248752     | cmpy22@mail.com | Stockholm    | Alingsås |
+      | Company23 | 9074668568     | cmpy23@mail.com | Stockholm    | Alingsås |
+      | Company24 | 9243957975     | cmpy24@mail.com | Stockholm    | Alingsås |
+      | Company25 | 9267816362     | cmpy25@mail.com | Stockholm    | Alingsås |
+      | Company26 | 9360289459     | cmpy26@mail.com | Stockholm    | Alingsås |
+      | Company27 | 9475077674     | cmpy27@mail.com | Stockholm    | Alingsås |
+      | Company28 | 8728875504     | cmpy28@mail.com | Stockholm    | Alingsås |
+      | Company29 | 5872150379     | cmpy29@mail.com | Stockholm    | Alingsås |
 
     And the following company addresses exist:
       | company_name | region     | kommun  |
@@ -162,10 +162,10 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see "Company02"
-    And I should not see "2120000142"
-    And I should see "Company01"
-    And I should not see "5560360793"
+    Then I should see "Company02" in the list of companies
+    And I should not see "2120000142" in the list of companies
+    And I should see "Company01" in the list of companies
+    And I should not see "5560360793" in the list of companies
     And I should not see t("companies.new_company")
 
   @selenium @time_adjust
@@ -175,7 +175,7 @@ Feature: Visitor sees all companies
     And I am on the "landing" page
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
-    And I should see "Company02"
+    And I should see "Company02" in the list of companies
     And I should see "Västerbotten" in the row for "Company02"
     And I should see "Norrbotten" in the row for "Company02"
     And I should see "Uppsala" in the row for "Company02"
@@ -190,10 +190,10 @@ Feature: Visitor sees all companies
     Given I am logged in as "u1@mutts.com"
     And I am on the "landing" page
     Then I should see t("companies.index.title")
-    And I should see "Company02"
-    And I should not see "2120000142"
-    And I should see "Company01"
-    And I should not see "5560360793"
+    And I should see "Company02" in the list of companies
+    And I should not see "2120000142" in the list of companies
+    And I should see "Company01" in the list of companies
+    And I should not see "5560360793" in the list of companies
     And I should not see t("companies.new_company")
 
   @selenium @time_adjust
@@ -201,19 +201,19 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    And I click on t("accordion_label.company_search_form.hide")
+    And I hide the companies search form
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
-    And I should see "Company02"
-    And I should not see "2120000142"
-    And I should see "Company01"
-    And I should not see "5560360793"
-    And I should see "Company10"
-    And I should not see "3609340140"
-    And I should not see "Company11"
+    And I should see "Company02" in the list of companies
+    And I should not see "2120000142" in the list of companies
+    And I should see "Company01" in the list of companies
+    And I should not see "5560360793" in the list of companies
+    And I should see "Company10" in the list of companies
+    And I should not see "3609340140" in the list of companies
+    And I should not see "Company11" in the list of companies
     Then I click on t("will_paginate.next_label") link
-    And I should see "Company11"
-    And I should not see "Company10"
+    And I should see "Company11" in the list of companies
+    And I should not see "Company10" in the list of companies
 
   @selenium @time_adjust
   Scenario: I18n translations
@@ -221,14 +221,14 @@ Feature: Visitor sees all companies
     Given I am Logged out
     And I set the locale to "sv"
     And I am on the "landing" page
-    Then I click on t("accordion_label.company_search_form.hide")
+    Then I hide the companies search form
     And I should see "Verksamhetslän"
     And I should see "Kategori"
     And I should not see "Region"
     And I should not see "Category"
     Then I click on "change-lang-to-english"
     And I set the locale to "en"
-    Then I click on t("accordion_label.company_search_form.hide")
+    Then I hide the companies search form
     And I wait 1 second
     And I should see "Region"
     And I should see "Category"
@@ -240,39 +240,40 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    And I click on t("accordion_label.company_search_form.hide")
+    And I hide the companies search form
     And "items_count" should have "10" selected
     And I should see "10" companies
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
-    And I should see "Company10"
-    And I should not see "Company11"
-    And I should not see "Company26"
+    And I should see "Company10" in the list of companies
+    And I should not see "Company11" in the list of companies
+    And I should not see "Company26" in the list of companies
     Then I select "25" in select list "items_count"
     And I wait for all ajax requests to complete
     Then I should see "25" companies
     And "items_count" should have "25" selected
-    And I should see "Company01"
-    And I should see "Company02"
-    And I should see "Company11"
-    And I should see "Company12"
-    And I should see "Company24"
-    And I should see "Company25"
-    And I should not see "Company26"
+    And I should see "Company01" in the list of companies
+    And I should see "Company02" in the list of companies
+    And I should see "Company11" in the list of companies
+    And I should see "Company12" in the list of companies
+    And I should see "Company24" in the list of companies
+    And I should see "Company25" in the list of companies
+    And I should not see "Company26" in the list of companies
+    And I should not see "Company27" in the list of companies
 
   @selenium @time_adjust
   Scenario: Companies lacking branding payment or members not shown
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    And I click on t("accordion_label.company_search_form.hide")
+    And I hide the companies search form
     And "items_count" should have "10" selected
     Then I select "All" in select list "items_count"
     And I should see "27" companies
-    And I should see "Company10"
-    And I should see "Company27"
-    And I should not see "Company28"
-    And I should not see "Company29"
+    And I should see "Company10" in the list of companies
+    And I should see "Company27" in the list of companies
+    And I should not see "Company28" in the list of companies
+    And I should not see "Company29" in the list of companies
 
   @selenium @time_adjust
   Scenario: Admin can see all companies even if lacking branding payment or members
@@ -283,7 +284,7 @@ Feature: Visitor sees all companies
     Then I select "All" in select list "items_count"
     And I wait for all ajax requests to complete
     And I should see "29" companies
-    And I should see "Company10"
-    And I should see "Company27"
-    And I should see "Company28"
-    And I should see "Company29"
+    And I should see "Company10" in the list of companies
+    And I should see "Company27" in the list of companies
+    And I should see "Company28" in the list of companies
+    And I should see "Company29" in the list of companies

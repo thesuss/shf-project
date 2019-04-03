@@ -113,3 +113,27 @@ And "I should see {capture_string} files for the {capture_string} listed applica
 
   expect(ele.text).to eq count
 end
+
+
+# Find a string or not in the #shf_applications table
+# (= the list of shf membership applications on the #index page
+And "I should{negate} see {capture_string} in the list of applications" do | negated, expected_string |
+  step %{I should#{negated ? ' not' : ''} see "#{expected_string}" in the div with id "shf_applications_list"}
+end
+
+
+# Find a string [x] times in the #shf_applications table
+# (= the list of shf membership applications on the #index page
+And "I should see {capture_string} {digits} time(s) in the list of applications" do | expected_string, num_times|
+  step %{I should see "#{expected_string}" #{num_times} time in the div with id "shf_applications_list"}
+end
+
+
+And "I hide the membership applications search form" do
+  step %{I click on t("accordion_label.application_search_form_toggler.hide")}
+end
+
+
+And "I show the membership applications search form" do
+  step %{I click on t("accordion_label.application_search_form_toggler.show")}
+end

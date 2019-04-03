@@ -1,22 +1,26 @@
 %header.entry-header
   %h1.entry-title= t('.title')
 .entry-content
-  .row.mb-4
+
+  .row
     .col-6
+      = render 'application/accordion_showhide_toggle',
+        toggler_id: 'application_search_form_toggler', search_form_id: 'toggled_search_form'
+
+    .col-4.offset-2
       = render partial: 'administration_panel' if @current_user.admin?
 
-    .col-6
-      %button.btn.btn-outline-light.pull-right{ id: 'toggle_search_form',
-                                        href: '#application_search_form' }
-        #{t('toggle.application_search_form.hide')}
 
   .clearfix
 
-  .panel.panel-default.search-form#application_search_form
-    = render 'search_form'
+  .panel-collapse.collapse.show#toggled_search_form{ 'aria-labelledby' => 'toggle-heading', role: 'tabpanel' }
+    .panel-body
+      = render 'search_form'
+
 
   - if @shf_applications.empty?
     %strong
       #{t('.no_search_results')}
   - else
-    = render partial: 'shf_applications_list'
+    #shf_applications_list
+      = render partial: 'shf_applications_list'
