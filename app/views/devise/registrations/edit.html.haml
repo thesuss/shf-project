@@ -3,7 +3,7 @@
 .entry-content.container
   = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
     != model_errors_helper(resource)
-    = render partial: 'member_photo', locals: { user: resource, f: f }
+    = render partial: 'devise/shared/member_photo', locals: { user: resource, f: f }
     %h3= t('.info_header')
     .row
       .form-group.col-sm

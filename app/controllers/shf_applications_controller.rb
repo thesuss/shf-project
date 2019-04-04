@@ -422,7 +422,7 @@ class ShfApplicationsController < ApplicationController
     # do not display an error to the user
     send_new_shf_application_notice_to_admins(new_shf_app) if AdminOnly::AppConfiguration.config_to_use.email_admin_new_app_received_enabled
 
-end
+  end
 
 
   def send_new_shf_application_notice_to_admins(new_shf_app)
