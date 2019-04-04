@@ -1,7 +1,7 @@
 = search_form_for @search_params, method: :get, url: shf_applications_path,
                                   class: 'form-horizontal' do |f|
-  .form-group
-    .row
+  .form-group.mt-3
+    .form-row
       .col-sm-2
         = f.label :user_membership_number_in,
                   "#{t('shf_applications.index.membership_number')}"

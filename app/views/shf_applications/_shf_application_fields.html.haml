@@ -63,10 +63,6 @@
 .app-section
   %h2= t('shf_applications.new.section_title_about_you')
   .answers
-    - if current_user.admin? && user.membership_number
-      .form-group
-        = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
-        = f.text_field :membership_number,  class: 'form-control'
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
     = fas_tooltip(t('.company_numbers_tooltip'))

@@ -50,6 +50,9 @@ en:
   application: &application Application
   user_activity: User Activity
   none: &none None
+  none_t: *none
+  none_plur: *none
+  none_n: *none
   name_missing: Name Missing
 
   time_ago: '%{amount_of_time} ago'
@@ -1034,6 +1037,18 @@ en:
           tab-title: &payments_h_branding "Payments: H-Branding"
           title: *payments_h_branding
 
+    user_profile:
+      edit:
+        title: 'Edit profile: %{user}'
+        become_this_user: Become this User
+      update:
+        success: User profile updated successfully
+        error: One or more problems prevented the profile from being updated.
+      become:
+        have_become: You are now acting as user with id %{user_id}
+
+
+
 
   mailers:
     login_here: "Click here to go to the login page:"
@@ -1184,8 +1199,8 @@ en:
         new_password: New password
         info_header: Edit name and e-mail
         password_confirmation: *password_confirmation
-      member_photo:
-        pic_header: Edit your picture
+        member_photo:
+          pic_header: Edit your picture
 
     sessions:
       new:

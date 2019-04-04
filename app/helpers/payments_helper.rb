@@ -18,7 +18,7 @@ module PaymentsHelper
 
     unless expire_date
       return field_or_none("#{t('activerecord.attributes.payment.expire_date')}",
-                           "#{t('none')}", label_class: 'standard-label')
+                           "#{t('none_t')}", label_class: 'standard-label')
     end
 
     tag.p do
@@ -51,7 +51,7 @@ module PaymentsHelper
 
     if !notes || notes.empty?
       return field_or_none("#{t('activerecord.attributes.payment.notes')}",
-                           "#{t('none')}", label_class: 'standard-label')
+                           "#{t('none_plur')}", label_class: 'standard-label')
     end
     return field_or_none("#{t('activerecord.attributes.payment.notes')}",
                          notes, label_class: 'standard-label')
