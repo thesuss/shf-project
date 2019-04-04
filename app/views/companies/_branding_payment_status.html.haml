@@ -1,6 +1,6 @@
-#company-pay-modal
+#company-branding-status
   .row
-    .col-md.pb-2.pb-md-0#company-branding-status
+    .col-md.pb-2.pb-md-0
       - if defined?(error) && error
         .alert.alert-danger= error
 
@@ -17,8 +17,8 @@
   - if current_user.admin?
     .row
       .col.d-flex.justify-content-end.pt-2
-        .flex
-          %pre.pr-3= payment_notes_label_and_value(company)
+        .flex.pr-3.admin-note
+          = payment_notes_label_and_value(company)
         .flex
           -# NOTE: Capybara cannot find link without 'href' attribute
           %a.btn.btn-outline-success.btn-sm{ href: '#', data: { toggle: 'modal',

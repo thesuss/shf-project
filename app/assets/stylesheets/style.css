@@ -61,6 +61,11 @@ padding-top:0;
 background-color:#fff;
 }
 
+.admin-note {
+font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+font-size: 87%;
+}
+
 .alert {
 margin:1rem auto;
 max-width:1160px;
