@@ -318,7 +318,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
       fdm_msg = file_delivery_method_status(app)
 
       expect(fdm_msg).to match(/^#{I18n.t('shf_applications.show.files_delivery_method')}/)
-      expect(fdm_msg).to match(/#{I18n.t('none')}/)
+      expect(fdm_msg).to match(/#{I18n.t('none_plur')}/)
       expect(fdm_msg).to_not match(/#{Date.current}/)
     end
 
