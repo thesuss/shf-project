@@ -46,18 +46,6 @@ class ShfApplication < ApplicationRecord
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
-  # The following 2 methods should be removed - probably by moving the capability
-  # for the admin to edit a member's membership_number from the app edit view to
-  # the user profile edit view.
-  def membership_number
-    user.membership_number
-  end
-
-  def membership_number=(number)
-    user.update_attribute(:membership_number, number)
-  end
-
-
 
   def add_observers
     add_observer MembershipStatusUpdater.instance, :shf_application_updated

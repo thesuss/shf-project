@@ -32,7 +32,8 @@ class ApplicationController < ActionController::Base
     additional_permissions = [:first_name, :last_name, :member_photo,
                               { shf_application_attributes: :contact_email }]
     devise_parameter_sanitizer.permit(:sign_up, keys: additional_permissions)
-    devise_parameter_sanitizer.permit(:account_update, keys: additional_permissions)
+    devise_parameter_sanitizer.permit(:account_update,
+                                      keys: additional_permissions + [:membership_number])
   end
 
   def store_current_location

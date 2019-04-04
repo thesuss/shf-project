@@ -73,17 +73,6 @@
             #{@user.reset_password_sent_at}
             #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
 
-    .row
-      .col
-        %button.btn.alert-secondary.admin-set-new-password{ id: 'toggle_admin_set_password_form',
-                     href: '#set_new_password_form',
-                     style: 'text-transform:none;' }
-
-          #{ t('toggle.set_new_password_form.show') }
-
-        .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form',
-                              style: 'display: none;' }
-          = render 'password_form'
     %hr
   - if @user.member?
     .row.mt-3
