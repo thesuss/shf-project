@@ -49,6 +49,7 @@ sv:
   'No': *no
   application: &application Ansökan
   user_activity: Användaraktivitet
+  none: Ingen eller Inget
   none_t: &none_t Inget
   none_plur: &none_plur Inga
   none_n: &none_n Ingen

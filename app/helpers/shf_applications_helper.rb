@@ -106,7 +106,6 @@ module ShfApplicationsHelper
 
     fdm = application.file_delivery_method
     fdm_desc = fdm ? fdm.description_for_locale(locale) : t('none_plur')
-
     status = t('shf_applications.show.files_delivery_method')+ ': ' + fdm_desc
 
     if fdm
