@@ -50,6 +50,9 @@ en:
   application: &application Application
   user_activity: User Activity
   none: &none None
+  none_t: *none
+  none_plur: *none
+  none_n: *none
   name_missing: Name Missing
 
   time_ago: '%{amount_of_time} ago'

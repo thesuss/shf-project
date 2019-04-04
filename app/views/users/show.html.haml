@@ -20,7 +20,7 @@
   .row
     .col.mt-2
       - unless @user.shf_application
-        = field_or_none("#{t('application')}", t('none'), label_class: 'standard-label')
+        = field_or_none("#{t('application')}", t('none_n'), label_class: 'standard-label')
       - else
         %h3 #{t('application')}:
         %table.table.table-hover.table-sm.table-md-responsive

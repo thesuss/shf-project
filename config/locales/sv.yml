@@ -49,7 +49,9 @@ sv:
   'No': *no
   application: &application Ansökan
   user_activity: Användaraktivitet
-  none: &none Inget
+  none_t: &none_t Inget
+  none_plur: &none_plur Inga
+  none_n: &none_n Ingen
   name_missing: Namn Saknas
 
   time_ago: '%{amount_of_time} sedan'
@@ -310,7 +312,7 @@ sv:
     post_code: *post_code
     city: *city
     kommun: *kommun
-    none: *none
+    none: *none_n
 
   payment:
     payment_type:
