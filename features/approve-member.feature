@@ -51,7 +51,7 @@ Feature: As an admin
     And I should see t("shf_applications.accepted")
     Then I can go to the company page for "5562252998"
 
-  @selenium_browser
+  @selenium
   Scenario: Admin approves, member is added to existing company
     Given I am in "admin@shf.com" browser
     And I am logged in as "admin@shf.com"
@@ -92,15 +92,14 @@ Feature: As an admin
 
     Then I am in "admin@shf.com" browser
     And I am logged in as "admin@shf.com"
-    Then I am on the "application" page for "anna@nosnarkybarky.se"
-    And I click on t("shf_applications.edit_shf_application")
+    And I am on the "all users" page
+    Then I click the icon with CSS class "edit" for the row with "anna@nosnarkybarky.se"
 
-    And I fill in t("shf_applications.show.membership_number") with "902"
-    And I click on t("shf_applications.edit.submit_button_label")
+    And I fill in t("activerecord.attributes.user.membership_number") with "902"
+    Then I click on t("devise.registrations.edit.submit_button_label") button
+    And I should see t("admin_only.user_profile.update.success")
 
-    And I should see t("shf_applications.update.success_with_app_files_missing")
-
-    And I should see "902"
+    And the t("activerecord.attributes.user.membership_number") field should be set to "902"
 
     Then I am in "anna@nosnarkybarky.se" browser
     And I am on the "application" page for "anna@nosnarkybarky.se"
@@ -123,14 +122,16 @@ Feature: As an admin
 
     Then I am in "admin@shf.com" browser
     And I reload the page
-    And I am on the "edit application" page for "emma@happymutts.se"
 
-    And I fill in t("shf_applications.show.membership_number") with "901"
-    And I click on t("shf_applications.edit.submit_button_label")
+    And I am on the "all users" page
+    Then I click the icon with CSS class "edit" for the row with "emma@happymutts.se"
 
-    And I should see t("shf_applications.update.success_with_app_files_missing")
-    
-    And I should see "901"
+    And I fill in t("activerecord.attributes.user.membership_number") with "901"
+    Then I click on t("devise.registrations.edit.submit_button_label") button
+    And I should see t("admin_only.user_profile.update.success")
+
+    And the t("activerecord.attributes.user.membership_number") field should be set to "901"
+
     When I am on the "application" page for "emma@happymutts.se"
     And I click on t("shf_applications.reject_btn")
     Then I should see status line with status t("shf_applications.rejected")

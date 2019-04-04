@@ -1,5 +1,6 @@
 - if user.member?
-  %h3= t('.pic_header')
+  %h3
+    = t('devise.registrations.edit.member_photo.pic_header') unless current_user.admin?
   .row
     .form-group.col-sm
       = image_tag(user.member_photo.url(:standard))

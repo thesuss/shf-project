@@ -15,6 +15,8 @@
     - if expire_date
       %span{ class: expire_date_css_class(expire_date) }
         = expire_date
+  %td.edit
+    = link_to icon('fas', 'edit'), admin_only_user_profile_edit_path(user)
   %td.delete
     - delete_user = t('users.delete_user', user: "#{user.full_name}")
     = link_to icon('fas', 'trash', class: 'delete'),

@@ -79,7 +79,7 @@ RSpec.describe PaymentsHelper, type: :helper do
   describe 'payment_notes_label_and_value' do
 
     it 'returns label and "none" if no notes' do
-      response = /#{t('activerecord.attributes.payment.notes')}.*#{t('none')}/
+      response = /#{t('activerecord.attributes.payment.notes')}.*#{t('none_plur')}/
       expect(payment_notes_label_and_value(user)).to match response
     end
 

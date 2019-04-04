@@ -66,16 +66,13 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I should see t("payments.success.success")
 
     Then I am in "admin@shf.se" browser
-    And I am on the "application" page for "new_user@example.com"
-    And I click on t("shf_applications.edit_shf_application")
+    And I am on the "all users" page
+    Then I click the icon with CSS class "edit" for the row with "new_user@example.com"
+    And I fill in t("activerecord.attributes.user.membership_number") with "10101"
+    Then I click on t("devise.registrations.edit.submit_button_label") button
+    And I should see t("admin_only.user_profile.update.success")
 
-    And I fill in t("shf_applications.show.membership_number") with "10101"
-    And I click on t("shf_applications.edit.submit_button_label")
-
-    And I should see t("shf_applications.update.success_with_app_files_missing")
-
-    And I should see t("shf_applications.accepted")
-    And I should see "10101"
+    And the t("activerecord.attributes.user.membership_number") field should be set to "10101"
 
     And I am logged out
     And I am logged in as "new_user@example.com"

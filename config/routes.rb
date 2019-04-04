@@ -38,6 +38,9 @@ Rails.application.routes.draw do
     get 'app_configuration/redigera', to: 'app_configuration#edit',
         as: :edit_app_configuration
 
+    get 'user_profile_edit/:id', to: 'user_profile#edit', as: :user_profile_edit
+    put 'user_profile_update/:id', to: 'user_profile#update', as: :user_profile_update
+    get 'user_profile_become/:id', to: 'user_profile#become', as: :become_user
 
   end
 

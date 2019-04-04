@@ -49,7 +49,10 @@ sv:
   'No': *no
   application: &application Ansökan
   user_activity: Användaraktivitet
-  none: &none Inget
+  none: Ingen eller Inget
+  none_t: &none_t Inget
+  none_plur: &none_plur Inga
+  none_n: &none_n Ingen
   name_missing: Namn Saknas
 
   time_ago: '%{amount_of_time} sedan'
@@ -310,7 +313,7 @@ sv:
     post_code: *post_code
     city: *city
     kommun: *kommun
-    none: *none
+    none: *none_n
 
   payment:
     payment_type:
@@ -1035,6 +1038,16 @@ sv:
           tab-title: &payments_h_branding "Betalningar: H-Branding"
           title: *payments_h_branding
 
+    user_profile:
+      edit:
+        title: 'Redigera profil: %{user}'
+        become_this_user: Bli den här användaren
+      update:
+        success: Användarprofil uppdaterad framgångsrikt
+        error: Ett eller flera problem hindrade profilen från att uppdateras.
+      become:
+        have_become: Du fungerar nu som användare med id %{user_id}
+
 
   mailers:
     login_here: "Klicka här för att gå till inloggningssidan:"
@@ -1182,8 +1195,8 @@ sv:
         new_password: Nytt lösenord
         info_header: Redigera namn och e-post
         password_confirmation: *password_confirmation
-      member_photo:
-        pic_header: Redigera profilbild
+        member_photo:
+          pic_header: Redigera profilbild
 
     sessions:
       new:

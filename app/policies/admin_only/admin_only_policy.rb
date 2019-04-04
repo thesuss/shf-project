@@ -6,7 +6,7 @@ module AdminOnly
     # All methods do the same thing:  the user must be the admin
 
     all_actions_to_authorize = [:show?, :index?, :new?, :create?, :edit?,
-                                :update?, :destroy?]
+                                :update?, :destroy?, :become?]
 
     all_actions_to_authorize.each do |method|
 
