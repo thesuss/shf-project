@@ -51,6 +51,12 @@ ParameterType(
 )
 
 ParameterType(
+  name: 'checked',
+  regexp: /(checked|unchecked)/,
+  transformer: -> (str) { str }
+)
+
+ParameterType(
   name: 'digits',
   regexp: /(\d+)/,
   transformer: -> (str) { str.to_i }

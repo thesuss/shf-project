@@ -194,7 +194,7 @@ Feature: As an admin
     Then I should see "11" applications
 
 
-  @selenium @focus
+  @selenium
   Scenario: Admin tries to delete a company with 1 rejected app, 1 category (only co. associated with it)
     Given I am logged in as "admin@shf.se"
     When I am on the "business categories" page

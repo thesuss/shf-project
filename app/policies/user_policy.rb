@@ -10,4 +10,9 @@ class UserPolicy < ApplicationPolicy
   def show?
     user.admin? || record.id == user.id
   end
+
+  def toggle_membership_package_sent?
+    user.admin?
+  end
+
 end

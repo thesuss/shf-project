@@ -168,6 +168,7 @@ en:
         sign_in_count: &sign_in_count Logins
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
         member: &member Member
+        date_member_packet_sent: &date_member_packet_sent Date Member Packet sent
 
       payment:
         payment_type: Payment Type
@@ -781,6 +782,9 @@ en:
                                 </span>"
       company_h_brand: Company H-Brand for %{company}
       company_h_brand_describe: This image is your company's H-Brand.
+      member_packet: &member_packet member packet
+      sent: sent
+      not_sent: not sent
 
     update:
       passwords_dont_match: "The two passwords entered don't match."
@@ -823,6 +827,7 @@ en:
       application: *application
       applications_tooltip: User has an open application
       expire_date: *expire_date
+      member_packet: *member_packet
 
     destroy:
       success: User deleted successfully.
@@ -856,7 +861,10 @@ en:
     export_ansokan_csv:
       success: Export successful. Check your browser downloads for the file.
       error: There was a problem with the export.
+      date_state_changed: Date State changed
+      member_fee_paid: M fee paid
       member_fee_expires: M Expires
+      branding_fee_paid: H-brand paid
       branding_fee_expires: H Expires
       paid: *paid
       never_paid: *never_paid

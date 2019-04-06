@@ -101,4 +101,45 @@ RSpec.describe UsersHelper, type: :helper do
       expect(short_proof_of_membership_url(user)).to eq(url)
     end
   end
+
+
+  describe '#membership_packet_str' do
+
+    let(:i18n_scope) { 'users.show' }
+
+
+    it 'not empty even if user is not a member' do
+      not_a_member = create(:user)
+      expect(membership_packet_str(not_a_member)).not_to be_empty
+    end
+
+    context 'date_package_sent is nil' do
+      it 'says not sent; has no date sent' do
+        not_sent_member = create(:member_with_membership_app)
+        expect(membership_packet_str(not_sent_member)).to eq("#{t('member_packet', scope: i18n_scope).capitalize} #{t('not_sent', scope: i18n_scope)}")
+      end
+    end
+
+    context 'date_package_sent not nil' do
+      it 'says sent; has the date sent' do
+        today = DateTime.current
+        sent_member = create(:member_with_membership_app, date_membership_packet_sent: today)
+        expect(membership_packet_str(sent_member)).to eq("#{t('member_packet', scope: i18n_scope).capitalize} #{t('sent', scope: i18n_scope)} #{today.to_date}")
+      end
+    end
+
+  end
+
+
+  describe '#membership_packet_status_str' do
+
+    it 'is t(sent) if the package was sent' do
+      expect(membership_packet_status_str(true)).to eq I18n.t('users.show.sent')
+    end
+
+    it 'is t(not_sent) if the package was not sent' do
+      expect(membership_packet_status_str(false)).to eq I18n.t('users.show.not_sent')
+    end
+
+  end
 end

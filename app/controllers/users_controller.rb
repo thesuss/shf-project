@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   LOG_FILE = "#{Rails.root}/log/#{Rails.env}_users.log"
 
-  before_action :set_user, except: :index
+  before_action :set_user, except: [:index, :toggle_membership_package_sent]
   before_action :set_app_config, only: [:show, :proof_of_membership, :update]
   before_action :authorize_user, only: [:show]
   before_action :allow_iframe_request, only: [:proof_of_membership]
@@ -74,6 +74,31 @@ class UsersController < ApplicationController
            locals: { user: @user, error: t('users.update.error') }
   end
 
+
+  # Toggle whether or not a membership package was sent to a user.
+  #
+  # Just return a success or fail with error message.  Don't
+  # render a new page.  Just update info as needed and send
+  # 'success' or 'fail' info back.
+  def toggle_membership_package_sent
+
+    authorize User
+
+    user =  User.find_by_id(params[:user_id])
+    if user
+      user.toggle_membership_packet_status
+
+      respond_to do |format|
+        format.json { head :ok }
+      end
+
+    else
+      raise ActiveRecord::RecordNotFound,  "User not found! user_id = #{params[:user_id]}"
+    end
+
+  end
+
+
   def destroy
     @user.destroy
 
@@ -101,7 +126,8 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(:name, :email, :member, :password,
-                                 :password_confirmation)
+                                 :password_confirmation,
+                                 :date_membership_packet_sent)
   end
 
 

@@ -6,7 +6,7 @@ Feature: As a visitor
     Given I am on the "login" page
     And I click on t("devise.registrations.new.create_account")
     Then I should be on the "register as a new user" page
-    And I should see t("show_in_english") image
+    #And I should see t("show_in_english") image
     When I fill in t("activerecord.attributes.user.first_name") with "emma"
     And I fill in t("activerecord.attributes.user.last_name") with "andersson"
     And I fill in t("activerecord.attributes.user.email") with "emma@andersson.com"

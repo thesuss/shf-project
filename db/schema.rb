@@ -56,16 +56,16 @@ ActiveRecord::Schema.define(version: 2019_03_26_120854) do
     t.boolean "email_admin_new_app_received_enabled", default: true
   end
 
-  create_table "business_categories", id: :serial, force: :cascade do |t|
+  create_table "business_categories", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "business_categories_shf_applications", id: :serial, force: :cascade do |t|
-    t.integer "shf_application_id"
-    t.integer "business_category_id"
+  create_table "business_categories_shf_applications", force: :cascade do |t|
+    t.bigint "shf_application_id"
+    t.bigint "business_category_id"
     t.index ["business_category_id"], name: "index_on_categories"
     t.index ["shf_application_id"], name: "index_on_applications"
   end
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 2019_03_26_120854) do
     t.index ["type"], name: "index_ckeditor_assets_on_type"
   end
 
-  create_table "companies", id: :serial, force: :cascade do |t|
+  create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "company_number"
     t.string "phone_number"
@@ -191,11 +191,11 @@ ActiveRecord::Schema.define(version: 2019_03_26_120854) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "shf_applications", id: :serial, force: :cascade do |t|
+  create_table "shf_applications", force: :cascade do |t|
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "contact_email"
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
@@ -222,18 +222,18 @@ ActiveRecord::Schema.define(version: 2019_03_26_120854) do
     t.index ["uploader_id"], name: "index_shf_documents_on_uploader_id"
   end
 
-  create_table "uploaded_files", id: :serial, force: :cascade do |t|
+  create_table "uploaded_files", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "actual_file_file_name"
     t.string "actual_file_content_type"
     t.integer "actual_file_file_size"
     t.datetime "actual_file_updated_at"
-    t.integer "shf_application_id"
+    t.bigint "shf_application_id"
     t.index ["shf_application_id"], name: "index_uploaded_files_on_shf_application_id"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -256,6 +256,7 @@ ActiveRecord::Schema.define(version: 2019_03_26_120854) do
     t.integer "member_photo_file_size"
     t.datetime "member_photo_updated_at"
     t.string "short_proof_of_membership_url"
+    t.datetime "date_membership_packet_sent", comment: "When the user was sent a membership welcome packet"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["membership_number"], name: "index_users_on_membership_number", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

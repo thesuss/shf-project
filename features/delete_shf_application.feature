@@ -85,7 +85,7 @@ Feature: As an admin
     And I am on the "all companies" page
     And I should see "2120000142"
 
-  @focus @time_adjust
+  @time_adjust
   Scenario: Admin deletes the only membership application associated with a company. Company is deleted
     Given the date is set to "2017-10-01"
     Given I am logged in as "admin@shf.se"

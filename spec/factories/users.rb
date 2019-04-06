@@ -10,6 +10,7 @@ FactoryBot.define do
     member { false }
     short_proof_of_membership_url { nil }
     member_photo {nil}
+    date_membership_packet_sent { nil }
 
     factory :user_without_first_and_lastname do
 

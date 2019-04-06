@@ -129,6 +129,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_db_column :member_photo_content_type }
     it { is_expected.to have_db_column :member_photo_file_size }
     it { is_expected.to have_db_column :member_photo_updated_at }
+    it { is_expected.to have_db_column :short_proof_of_membership_url }
+    it { is_expected.to have_db_column :date_membership_packet_sent }
   end
 
   describe 'Validations' do
@@ -1336,4 +1338,57 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+
+  describe '#membership_packet_sent?' do
+
+    it 'true if there is a date' do
+      user_sent_package = create(:user, date_membership_packet_sent: Date.current )
+      expect(user_sent_package.membership_packet_sent?).to be_truthy
+    end
+
+    it 'false if there is no date' do
+      user_sent_package = create(:user, date_membership_packet_sent: nil )
+      expect(user_sent_package.membership_packet_sent?).to be_falsey
+    end
+  end
+
+
+  describe '#toggle_membership_packet_status' do
+
+    let(:user_sent_package) { create(:user, date_membership_packet_sent: nil ) }
+
+    it 'default date_sent is Timezone now' do
+
+      frozen_time = Time.new(2020, 10, 31, 2, 2, 2)
+      Timecop.freeze(frozen_time) do
+        user_sent_package.toggle_membership_packet_status
+      end
+
+      expect(user_sent_package.date_membership_packet_sent).to eq frozen_time
+    end
+
+
+    it 'can set the date_sent' do
+      set_date = Time.new(2020, 02, 02, 2, 2, 2)
+      user_sent_package.toggle_membership_packet_status(set_date)
+      expect(user_sent_package.date_membership_packet_sent).to eq set_date
+    end
+
+
+    it 'if it has been sent, now it is set to unsent' do
+      user_sent_package.update(date_membership_packet_sent: Time.now)
+      user_sent_package.toggle_membership_packet_status
+      expect(user_sent_package.date_membership_packet_sent).to be_nil
+    end
+
+
+    it 'if it has not been sent, it is set to sent' do
+      user_sent_package.update(date_membership_packet_sent: nil)
+      user_sent_package.toggle_membership_packet_status
+      expect(user_sent_package.date_membership_packet_sent).not_to be_nil
+    end
+
+  end
+
 end

@@ -5,6 +5,7 @@
     %small= i18n_time_ago_in_words(user.created_at)
   %td.sign-in-count= user.sign_in_count
   %td.applications-open= user_has_open_application(user)
+  %td.member-packet=  member_packet_sent_checkbox(user)
   %td.is-member
     - if user.member?
       %span.yes= t('.yes')

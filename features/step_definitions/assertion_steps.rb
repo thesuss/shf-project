@@ -238,6 +238,25 @@ Then "I should{negate} see {capture_string} in the row for user {capture_string}
 end
 
 
+Then "I should{negate} see the checkbox with id {capture_string} {checked} in the row for user {capture_string}" do | negate_see_it, checkbox_id, checked, user_email  |
+  td = page.find(:css, 'td', text: user_email)  # find the td with text = user_email
+  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
+
+  expect(tr).send (negate_see_it ? :not_to : :to), have_selector(:id, checkbox_id)
+  #checkbox = tr.find(:xpath, '//td[descendant::input[@id="date_membership_packet_sent"]]')
+
+  unless negate_see_it
+    case checked
+    when 'checked'
+      expect(tr).to have_checked_field(checkbox_id)
+    when 'unchecked'
+      expect(tr).to have_unchecked_field(checkbox_id)
+    end
+  end
+
+end
+
+
 Then "I should{negate} see {capture_string} for class {capture_string} in the row for user {capture_string}" do |negate, expected_text, css_class, user_email |
   td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
   tr = td.find(:xpath, './parent::tr') # get the parent tr of the td

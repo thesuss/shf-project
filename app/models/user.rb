@@ -195,6 +195,24 @@ class User < ApplicationRecord
   end
 
 
+  def membership_packet_sent?
+    !date_membership_packet_sent.nil?
+  end
+
+
+  # Toggle whether or not a membership package was sent to this user.
+  #
+  # If the old value was "true", now set it to false.
+  # If the old value was "false", now make it true and set the date sent
+  #
+  # @param date_sent [Time] - when the packet was sent. default = now
+  # @return [Boolean] - result of updating :date_membership_packet_sent
+  def toggle_membership_packet_status(date_sent = Time.zone.now)
+    new_sent_time = membership_packet_sent? ? nil : date_sent
+    update(date_membership_packet_sent: new_sent_time)
+  end
+
+
   # The fact that this can no longer be private is a smell that it should be refactored out into a separate class
   def issue_membership_number
     self.membership_number = self.membership_number.blank? ? get_next_membership_number : self.membership_number

@@ -117,6 +117,23 @@ module SeedHelper
   end
 
 
+  # Create a SHF Application for the user and set the application
+  # to the given :state.
+  # If the application is accepted, then also create payments
+  # (a membership payment and H-brand payment for the company).
+  #
+  # Set the file delivery method for the user and then finally
+  # set when the membership packet was sent to the user (as
+  # applicable depending on the application state).
+  #
+  # save the user.
+  #
+  # @param user [User] - the user
+  # @param state [String] - the state to put the Shf Application in
+  # @param co_number [String] - the Company Number (Org nummer) for
+  #   the company associated with the user; needed for the application
+  #
+  # @return [User] - the user
   def make_n_save_app(user, state, co_number = get_company_number)
     # Reset instance vars so AR records will be reloaded when run in TEST
     # (rspec DB tests load tasks but there is no "reload" available)
@@ -168,6 +185,9 @@ module SeedHelper
     user.shf_application = ma
 
     user.save!
+
+    set_membership_packet_sent user
+
     user
   end
 
@@ -185,6 +205,30 @@ module SeedHelper
     when MA_UNDER_REVIEW_STATE
       @email ||= klass.get_method(:email)
     end
+  end
+
+
+  PERCENT_WITH_SENT_PACKETS = 60
+
+  # If the user is a member, set a date for when the membership
+  # packet was sent -- about <PERCENT_WITH_SENT_PACKETS>% of the time.
+  # (It is left blank for the other %, which means it has not been sent.)
+  #
+  # Choose a random date within the last 30 days
+  #
+  # update (save) the user if the :date_membership_packet_sent was set
+  #
+  # @param user [User] - the user to check and possible set the :date_membership_packet_sent for
+  # @return [User] - return the user
+  def set_membership_packet_sent(user)
+
+    if user.shf_application.accepted?
+      if Random.rand(100) <= PERCENT_WITH_SENT_PACKETS
+        user.update(date_membership_packet_sent: (Date.current - Random.rand(0..30)).to_time )
+      end
+    end
+
+    user
   end
 
 

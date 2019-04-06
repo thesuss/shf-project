@@ -51,6 +51,11 @@
   - if current_user.admin?
     .row
       .col.admin-note
+
+        %p{class: "membership-packet #{ @user.membership_packet_sent? ? 'sent' : 'not-sent'}",
+        id: 'date-membership-packet-sent'}
+          = membership_packet_str(@user)
+
         %p
           #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}.
         - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?

@@ -89,6 +89,9 @@ Rails.application.routes.draw do
       member do
         put 'edit_status', to: 'users#edit_status', as: 'edit_status'
       end
+
+      post 'toggle_membership_package_sent', to: 'users#toggle_membership_package_sent'
+
     end
 
     get 'anvandare/:id/proof_of_membership', to: 'users#proof_of_membership',

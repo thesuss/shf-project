@@ -60,4 +60,44 @@ RSpec.describe UsersController, type: :controller do
 
   end
 
+
+  describe '#toggle_membership_package_sent' do
+
+    context 'user found' do
+
+      it 'returns success response' do
+        u = create(:user)
+
+        post :toggle_membership_package_sent,
+             xhr: true,
+             params:  { "utf8" => "✓",
+                       "date_membership_packet_sent"=>"false",
+                       "user_id"=>"#{u.id}",
+                       "locale"=>"en"
+                      }
+
+        expect(response).to have_http_status(:success) # 200
+      end
+    end
+
+
+    context 'cannot find user' do
+
+      it 'raises RecordNotFound error' do
+
+        expect{
+          post :toggle_membership_package_sent,
+               xhr: true,
+               params:  { "utf8" => "✓",
+                          "date_membership_packet_sent"=>"false",
+                          "user_id"=>"999",
+                          "locale"=>"en",
+                          format: :js
+               }
+          expect(response).to have_http_status(:not_found) # 404
+        }.to raise_exception ActiveRecord::RecordNotFound
+      end
+    end
+  end
+
 end

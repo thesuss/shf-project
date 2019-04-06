@@ -14,7 +14,7 @@ Feature: As a registered user
     Then the t("activerecord.attributes.user.first_name") field should be set to "emma"
     And the t("activerecord.attributes.user.last_name") field should be set to "andersson"
     And the t("activerecord.attributes.user.email") field should be set to "emma@andersson.com"
-    And I should see t("show_in_english") image
+    #And I should see t("show_in_english") image
     When I fill in t("activerecord.attributes.user.first_name") with "emma (changed)"
     When I fill in t("activerecord.attributes.user.last_name") with "andersson (changed)"
     And I fill in t("devise.registrations.edit.current_password") with "password"
