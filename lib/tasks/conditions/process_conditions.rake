@@ -3,11 +3,20 @@ require 'active_support/logger'
 namespace :shf do
 
   desc 'process conditions'
-  task :process_conditions => [:environment] do
+  task process_conditions: [:environment] do
 
-    LOG = 'log/conditions'
+    def process_klass(klass, condition, log)
+      if klass
+        klass.condition_response(condition, log)
+      else
+        raise 'klass is nil in task shf:process_conditions'
+      end
+    end
 
-    ActivityLogger.open(LOG, 'SHF_TASK', 'Conditions') do |log|
+
+    use_slack_notification = true
+
+    ActivityLogger.open(LogfileNamer.name_for(Condition), 'SHF_TASK', 'Conditions') do |log|
 
       class_name = nil
       klass = nil
@@ -19,20 +28,27 @@ namespace :shf do
           klass = class_name.constantize
         end
 
-        log.record('info', "#{class_name} ...")
+        log.info("#{class_name} ...")
 
-        SHFNotifySlack.notify_after(class_name) do
-
-          if klass
-            klass.condition_response(condition, log)
-          else
-            raise 'klass is nil in task shf:process_conditions'
+        if use_slack_notification
+          SHFNotifySlack.notify_after(class_name) do
+            process_klass(klass, condition, log)
           end
-          
+        else
+          process_klass(klass, condition, log)
         end
 
+      # If the problem is because of Slack Notification, log it and continue.
+      # Do not let it stop the processing.
+      rescue Slack::Notifier::APIError => slack_error
+        use_slack_notification = false
+        log.error("Slack::Notifier::APIError Exception: #{slack_error.inspect}")
+        log.error('Slack Notifications turned off! Condition processing continuing without it.')
+        log.error('Retrying the previous condition...')
+        retry
+
       rescue StandardError => e
-        log.record('error', "Exception: #{e.inspect}")
+        log.error("Exception: #{e}:  #{e.inspect}")
         raise
       end
     end
