@@ -22,11 +22,12 @@
                 .col
 
                   = f.label :company_number, "#{t('companies.show.company_number')}",
-                            class: 'required'
+                            class: 'required', for: 'company-number-in-modal'
                   = fas_tooltip(t('companies.form.org_nr_tooltip'))
 
                 .col
-                  = f.number_field :company_number, class: 'form-control', size: 10
+                  = f.number_field :company_number, class: 'form-control', size: 10,
+                                   id: 'company-number-in-modal'
               %hr
               .row
                 .col

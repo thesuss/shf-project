@@ -173,7 +173,7 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2120000142"
 
-  @selenium  @skip_ci_test
+  @selenium @skip_ci_test
   Scenario: User creates App with two companies, creates one company, corrects error in company number
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -182,15 +182,17 @@ Feature: Create a new membership application
       | 556036-07                            | 031-1234567                       | info@craft.se                      |
     And I select "Groomer" Category
 
-    And I select files delivery radio button "email"
-
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I fill in t("companies.show.company_number") with "2286411992"
+
+    And I fill in "company-number-in-modal" with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
+
     And I click on t("companies.create.create_submit")
     And I wait 4 seconds
     And I wait for all ajax requests to complete
+
+    And I select files delivery radio button "upload_later"
 
     And I click on t("shf_applications.new.submit_button_label")
     And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
@@ -231,11 +233,15 @@ Feature: Create a new membership application
 
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I fill in t("companies.show.company_number") with "2286411992"
+
+    And I fill in "company-number-in-modal" with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
+
     And I click on t("companies.create.create_submit")
     And I wait 4 seconds
     And I wait for all ajax requests to complete
+
+    And I should see t("shf_applications.new.file_delivery_selection")
 
     And I select files delivery radio button "files_uploaded"
 
@@ -263,7 +269,7 @@ Feature: Create a new membership application
     And the field t("shf_applications.new.phone_number") should not have a required field indicator
     And I should see t("is_required_field")
 
-  @selenium  @skip_ci_test
+  @selenium @skip_ci_test
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -272,15 +278,20 @@ Feature: Create a new membership application
       | 031-1234567                       | applicant_1@random.com             |
     And I select "Groomer" Category
 
-    And I select files delivery radio button "files_uploaded"
-
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I fill in t("companies.show.company_number") with "5562252998"
+
+    And I fill in "company-number-in-modal" with "5562252998"
     And I fill in t("companies.show.email") with "info@craft.se"
+
     And I click on t("companies.create.create_submit")
     And I wait 4 seconds
     And I wait for all ajax requests to complete
+
+    And I should see t("shf_applications.new.file_delivery_selection")
+
+    And I select files delivery radio button "upload_later"
+
     And I click on t("shf_applications.new.submit_button_label")
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
@@ -293,15 +304,18 @@ Feature: Create a new membership application
       | 2120000142                           | 031-1234567                       | applicant_2@random.com             |
     And I select "Groomer" Category
 
-    And I select files delivery radio button "files_uploaded"
-
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I fill in t("companies.show.company_number") with "6112107039"
+
+    And I fill in "company-number-in-modal" with "6112107039"
     And I fill in t("companies.show.email") with "info@craft.se"
+
     And I click on t("companies.create.create_submit")
     And I wait 4 seconds
     And I wait for all ajax requests to complete
+
+    And I select files delivery radio button "upload_later"
+
     And I click on t("shf_applications.new.submit_button_label")
 
 
@@ -384,9 +398,10 @@ Feature: Create a new membership application
 
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I fill in the translated form with data:
-      | companies.show.company_number | companies.show.email |
-      | 00                   | kicki@immi.nu           |
+
+    And I fill in "company-number-in-modal" with "00"
+    And I fill in t("companies.show.email") with "kicki@immi.nu"
+
     And I click on t("companies.create.create_submit")
     Then I should not see t("shf_applications.uploads.please_upload_again")
 

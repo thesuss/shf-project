@@ -93,7 +93,7 @@ Feature: Edit SHF Application
     And I should see t("shf_applications.update.success")
     And I should not see t("shf_applications.update.success_with_app_files_missing")
 
-  @selenium @skip_ci_test
+  @selenium
   Scenario: Create 2nd company, file delivery via email, user sees success and deliver-files reminder
     Given I am logged in as "emma@random.com"
     Given I am on the "edit application" page
@@ -101,11 +101,13 @@ Feature: Edit SHF Application
 
     # Create new company in modal
     And I click on t("companies.new.title")
-    And I fill in t("companies.show.company_number") with "2286411992"
+    And I fill in "company-number-in-modal" with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait 4 seconds
     And I wait for all ajax requests to complete
+
+    And I should see t("shf_applications.new.file_delivery_selection")
 
     And I select files delivery radio button "email"
 

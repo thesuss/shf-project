@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 gem 'dotenv-rails'
-gem 'rails', '5.2.2'
+gem 'rails', '5.2.3'
 gem 'bootsnap', require: false
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
@@ -33,20 +33,8 @@ gem 'i18n-js', '>= 3.0.0.rc11'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 
-# Loading `ckeditor` directly from github due to problem in production
-# environment where assets cannot be found.
-# See: https://github.com/galetahub/ckeditor/issues/719
-# According to above link, this issue has been fixed but not yet released
-# (writing this on April 14, 2017).
-# Once release, remove reference to github for loading.
-
-# Update on June 22, 2017 - it appears that the problem described abpve has
-# been fixed in the latest gem.  However, there is another problem - related
-# to Rails 5.1 - that is not yet fixed in the latest gem but *is* fixed in the
-# current "master" branch in Githib.  So, for now, will need to continue
-# to pull this code directly from Github.
-# https://github.com/galetahub/ckeditor/issues/752
-gem 'ckeditor', github: 'galetahub/ckeditor'
+gem 'ckeditor', '~> 4.2', '>= 4.2.4'
+# ^^ https://github.com/galetahub/ckeditor/issues/718
 
 gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
 
