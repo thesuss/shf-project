@@ -60,7 +60,7 @@ Feature: Alerts sent for H-branding fee needs to be paid; company has NO previou
     Given there is a condition with class_name "HBrandingFeeDueAlert" and timing "after"
     Given the condition has days set to [1, 32, 42, 60, 363 ]
 
-
+  @condition
   Scenario Outline: Emails sent when H-Brand Fee Due condition is processed (No H-Brand fees have been paid)
     Given the date is set to <today>
     And the process_condition task sends "condition_response" to the "HBrandingFeeDueAlert" class
@@ -93,7 +93,7 @@ Feature: Alerts sent for H-branding fee needs to be paid; company has NO previou
       | "2018-3-19" | no             | no           | no           | no           |
       | "2019-1-15" | no             | no           | an           | an           |
 
-
+  @condition
   Scenario Outline: The earliest membership paid expires; the due date changes (No H-Brand fees have been paid)
     Given the date is set to <today>
     And the process_condition task sends "condition_response" to the "HBrandingFeeDueAlert" class

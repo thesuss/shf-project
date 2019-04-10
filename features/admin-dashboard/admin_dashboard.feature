@@ -96,7 +96,7 @@ Feature: Admin sees the dashboard with summary of important information
   #Scenario: default date range for summary is the past 30 days
 
 
-  @selenium
+  @selenium @admin_dashboard
   Scenario: Admin sees the dashboard with summary info
     Given I am on the "admin dashboard" page
     Then I should see t("admin_only.dashboard.title")
@@ -165,8 +165,11 @@ Feature: Admin sees the dashboard with summary of important information
   #
 
 
+  @admin_dashboard
   Scenario: Default timeframe displayed is 7 days
 
+
+  @admin_dashboard
   Scenario: Change the timeframe displayed
   # when the timeframe option is changed:
   #  the number in the subtitle changes

@@ -12,6 +12,7 @@ Feature: Seed business categories
 
     And I am logged in as "admin@shf.com"
 
+  @db_seeding
   Scenario: 11 business categories are created when it's initially seeded
     Given There are no "BusinessCategories" records in the db
     When the system is seeded with initial data
@@ -19,6 +20,7 @@ Feature: Seed business categories
     Then I should see t("business_categories.index.title")
     And I should see 11 business_category rows
 
+  @db_seeding
   Scenario: only 11 business categories are ever created, even if it's seeded multiple times
     Given There are no "BusinessCategories" records in the db
     And the system is seeded with initial data

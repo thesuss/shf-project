@@ -70,7 +70,7 @@ Feature: Membership expiration alerts are sent out (Condition response)
       | member12_exp_mar_2@bowwowwow.se  | 2018-3-3   | 2019-3-2    | member_fee   | betald | none    |                |
 
 
-
+  @condition
   Scenario: On Jan 1, Membership Expire Alerts condition is processed
     Given the date is set to "2019-01-01"
     And there is a condition with class_name "MembershipExpireAlert" and timing "before"
@@ -92,7 +92,7 @@ Feature: Membership expiration alerts are sent out (Condition response)
     And "member11_exp_mar_2@bowwowwow.se" should receive an email
     And "member12_exp_mar_2@bowwowwow.se" should receive an email
 
-
+  @condition
   Scenario: On Jan 2, Membership Expire Alerts condition is processed
     Given the date is set to "2019-01-02"
     And there is a condition with class_name "MembershipExpireAlert" and timing "before"

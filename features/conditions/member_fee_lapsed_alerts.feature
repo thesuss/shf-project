@@ -54,7 +54,7 @@ Feature: Alerts for members whose membership has lapsed (a Condition response)
     Given there is a condition with class_name "MembershipLapsedAlert" and timing "after"
     Given the condition has days set to [1, 32, 363 ]
 
-
+  @condition
   Scenario Outline: Membership lapsed alert sent
     Given the date is set to <today>
     And the process_condition task sends "condition_response" to the "MembershipLapsedAlert" class

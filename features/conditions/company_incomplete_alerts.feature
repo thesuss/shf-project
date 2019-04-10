@@ -66,7 +66,7 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
     Given there is a condition with class_name "CompanyInfoIncompleteAlert" and timing "after"
     Given the condition has days set to [1, 7, 14, 363 ]
 
-
+  @condition
   Scenario Outline: emails go out only to members of companies with incomplete info
     Given the date is set to <today>
     And the name for company number "2120000142" is set to an empty string

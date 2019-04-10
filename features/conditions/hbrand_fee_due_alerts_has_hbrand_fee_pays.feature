@@ -83,7 +83,7 @@ Feature: Alerts sent for H-branding fee is due; company HAS previous H-Branding 
     Given the condition has days set to [1, 32, 42, 60, 363 ]
 
 
-
+  @condition
   Scenario Outline: HBrand fees paid, has expired; 1 member current until 18-1-3
 
     Given the date is set to <today>
@@ -115,7 +115,7 @@ Feature: Alerts sent for H-branding fee is due; company HAS previous H-Branding 
       | "2018-06-04" | no             | no           | no           | no           |
       | "2018-06-05" | no             | no           | no           | no           |
 
-
+  @condition
   Scenario Outline: HBrand fees paid, not expired at start; 1 member current until 18-1-3
     # Has not expired for the @voof... company. Which is what we're interested in
 

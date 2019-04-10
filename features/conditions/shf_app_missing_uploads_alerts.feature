@@ -43,7 +43,7 @@ Feature: Reminder if SHF Application is missing uploaded files (Condition respon
     Given there is a condition with class_name "ShfAppNoUploadedFilesAlert" and timing "after"
     Given the condition has days set to [1, 32, 363 ]
 
-
+  @condition
   Scenario Outline: Application has no uploaded files
     Given the date is set to <today>
     And the process_condition task sends "condition_response" to the "ShfAppNoUploadedFilesAlert" class
