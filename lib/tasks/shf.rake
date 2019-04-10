@@ -24,16 +24,19 @@ namespace :shf do
     end
   end
 
-  desc 'recreate db (current env): drop, setup, migrate, seed the db.'
-  task :db_recreate => [:environment] do
+  desc 'prepare db (current env): drop, setup, migrate, create baseline data.'
+  task db_prep: [:environment] do
 
     Rake::Task['db:drop'].invoke if database_exists?
 
-    tasks = ['db:create', 'db:migrate',
+    tasks = ['db:create', 'db:migrate', 'db:test:prepare',
              'shf:load_regions', 'shf:load_kommuns',
-             'shf:load_file_delivery_methods', 'db:seed']
+             'shf:load_file_delivery_methods']
 
-    tasks.each { |t| Rake::Task["#{t}"].invoke }
+    tasks.each { |t| Rake::Task[t].invoke }
+
+    puts "\n DB is created with baseline data.\n"
+    puts "\n Be sure to run 'rails db:seed' if you need seed data. \n\n"
   end
 
   desc "import membership apps from csv file. Provide the full filename (with path)"
