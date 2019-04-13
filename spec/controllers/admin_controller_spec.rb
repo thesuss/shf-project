@@ -15,14 +15,15 @@ RSpec.describe AdminController, type: :controller do
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.first_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.last_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.user.membership_number').strip}',"
+  out_str << "'#{I18n.t('activerecord.attributes.user.date_member_packet_sent').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.state').strip}',"
-  out_str << "'date of state',"
+  out_str << "'#{I18n.t('admin.export_ansokan_csv.date_state_changed').strip}',"
   out_str << "'#{I18n.t('activerecord.models.business_category.other').strip}',"
   out_str << "'#{I18n.t('activerecord.models.company.one').strip}',"
-  out_str << "'Member fee'," # should use I18n.t ? Check with Susanna L.
-  out_str << "'#{I18n.t('admin.export_ansokan_csv.member_fee_expires')}',"
-  out_str << "'H-branding'," # should use I18n.t ? Check with Susanna L.
-  out_str << "'#{I18n.t('admin.export_ansokan_csv.branding_fee_expires')}',"
+  out_str << "'#{I18n.t('admin.export_ansokan_csv.member_fee_paid').strip}',"
+  out_str << "'#{I18n.t('admin.export_ansokan_csv.member_fee_expires').strip}',"
+  out_str << "'#{I18n.t('admin.export_ansokan_csv.branding_fee_paid').strip}',"
+  out_str << "'#{I18n.t('admin.export_ansokan_csv.branding_fee_expires').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.street').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.post_code').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.city').strip}',"
@@ -32,7 +33,7 @@ RSpec.describe AdminController, type: :controller do
   out_str << "\n"
   out_str }
 
-  let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
+  let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
 
 
   describe '#export_ankosan_csv' do
@@ -46,21 +47,22 @@ RSpec.describe AdminController, type: :controller do
     FIRST_NAME         = 3
     LAST_NAME          = 4
     MEMBERSHIP_NUM     = 5
-    APPLICATION_STATUS = 6
-    APP_LAST_UPDATE    = 7
-    BUS_CATEGORY_START = 8 # if there is more than 1 business category, the positions of the following columns are different
+    DATE_MEMBER_PACKET_SENT = 6
+    APPLICATION_STATUS = 7
+    APP_LAST_UPDATE    = 8
+    BUS_CATEGORY_START = 9 # if there is more than 1 business category, the positions of the following columns are different
     # (ex: shifted by the number of additional business categories)
-    COMPANY_NAME          = 9
-    MEMBERSHIP_FEE_STATUS = 10
-    MEMBERSHIP_EXP_DATE   = 11
-    BRANDING_FEE_STATUS   = 12
-    BRANDING_LIC_EXP_DATE = 13
-    ADDR_STREET           = 14
-    ADDR_POSTCODE         = 15
-    ADDR_CITY             = 16
-    ADDR_KOMMUN           = 17
-    ADDR_COUNTY           = 18
-    ADDR_COUNTRY          = 19
+    COMPANY_NAME          = 10
+    MEMBERSHIP_FEE_STATUS = 11
+    MEMBERSHIP_EXP_DATE   = 12
+    BRANDING_FEE_STATUS   = 13
+    BRANDING_LIC_EXP_DATE = 14
+    ADDR_STREET           = 15
+    ADDR_POSTCODE         = 16
+    ADDR_CITY             = 17
+    ADDR_KOMMUN           = 18
+    ADDR_COUNTY           = 19
+    ADDR_COUNTRY          = 20
 
     describe 'logged in as admin' do
 
@@ -132,7 +134,7 @@ RSpec.describe AdminController, type: :controller do
                                   state:         app_state.name,
                                   user:          u
 
-            member1_info = "#{m.contact_email},#{u.first_name},#{u.last_name},#{u.membership_number}," + I18n.t("shf_applications.state.#{app_state.name}")
+            member1_info = "#{m.contact_email},#{u.first_name},#{u.last_name},#{u.membership_number},#{u.date_membership_packet_sent}," + I18n.t("shf_applications.state.#{app_state.name}")
 
 
             result_str << member1_info + ','
@@ -188,7 +190,8 @@ RSpec.describe AdminController, type: :controller do
         let(:u1) { FactoryBot.create(:user,
                                      first_name:        "u1",
                                      email:             "user1@example.com",
-                                     membership_number: '1234567890')
+                                     membership_number: '1234567890',
+                                     date_membership_packet_sent: '2019-07-07')
         }
 
         let(:c1) { FactoryBot.create(:company) }
@@ -197,7 +200,9 @@ RSpec.describe AdminController, type: :controller do
           FactoryBot.create :shf_application,
                             contact_email: "u1@example.com",
                             state:         :accepted,
-                            user:          u1
+                            user:          u1,
+                            company_number: c1.company_number
+
         end
 
         let(:membership_payment) do
@@ -227,13 +232,17 @@ RSpec.describe AdminController, type: :controller do
           response.body
         end
 
-        let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
+        let(:expected_pattern) { /(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m }
 
         let(:pattern_matches) { csv_response.match expected_pattern }
 
 
         # Note that the first item matched is the header line.
         #  That's why each of the positions (array indices) below have a +1
+
+        # -/(.*)\n(.*),(.*),(.*),(.*),(.*),(.*),(.*),([^"]*),"([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)","([^"]*)",'(.*),"([^"]*)",(.*),(.*),(.*)\n/m
+        # +'Kontakt e-post','E-post för inloggning','Förnamn','Efternamn','Medlemsnummer','Date Member Packet sent','Status','Date State changed','Kategorier','Företag','M fee paid','M Expires','H-brand paid','H Expires','Gata','Post nr.','Ort','Kommun','Verksamhetslän','Land'
+        # +[0]u1@example.com,[1]user1@example.com,[2]u1,[3]Lastname,[4]1234567890,[5]2019-07-07,[6]Godkänd,[7]2019-03-16,[8]"Business Category",[9]false,[10]"Betald",[11]"2019-11-08",[12]"Betald",[13]"2019-11-08",[14]"Hundforetagarevägen 1",'310 40,"Harplinge",Ale,MyString,Sverige
 
         it 'the result matches the header and expected number of fields' do
           expect(csv_response).to match expected_pattern
@@ -257,6 +266,10 @@ RSpec.describe AdminController, type: :controller do
 
         it 'membership number' do
           expect(pattern_matches[MEMBERSHIP_NUM + 1]).to eq '1234567890'
+        end
+
+        it 'date member packet sent' do
+          expect(pattern_matches[DATE_MEMBER_PACKET_SENT + 1]).to eq '2019-07-07'
         end
 
         it 'application status' do
@@ -339,7 +352,7 @@ RSpec.describe AdminController, type: :controller do
 
         let(:shf_app1_info) { "#{shf_app1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number}," + I18n.t("shf_applications.state.#{shf_app1.state}") }
 
-        let(:expected_pattern_with_email) { /(.*)\n([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^"^,]*),"",(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/ }
+        let(:expected_pattern_with_email) { /(.*)\n([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^"^,]*),"",(.*),(.*),(.*),(.*),(.*),#{c1.se_mailing_csv_str}/ }
 
         let(:pattern_before_categories) { /(.*),(.*),(.*),(.*),(.*),(.*),(.*),/ }
 
