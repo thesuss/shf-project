@@ -1,16 +1,6 @@
-$no-files-warn-color: #ff0000;
+// TODO:  Is this file used??
 
-$btn-background: #ffffff;
-
-$btn-choose-files-text: #ffffff;
-
-$border-med-blue: rgb(86, 146, 206);
-$border-med-blue-a-light: rgba(86, 146, 206, 0.2);
-
-$files-table-background: #ffffff;
-
-$app-state-border-blue: rgb(142, 173, 206);
-
+@import "shf-custom-colors";
 
 .shfapplication {
   .file-delivery-selection {

@@ -1,0 +1,33 @@
+@import "shf-custom-colors";
+
+
+.yes,
+.Yes,
+.no,
+.No,
+.maybe,
+.Maybe {
+  padding: 3px 8px;
+}
+
+.yes,
+.Yes {
+  background-color: $yes-background-green;
+}
+
+.maybe,
+.Maybe {
+  background-color: $maybe-background-yellow;
+}
+
+.no,
+.No {
+  background-color: $no-background-red;
+}
+
+
+
+.edit a,
+.delete a {
+  border-bottom: 0;
+}

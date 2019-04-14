@@ -1,0 +1,420 @@
+:css
+
+  .row.dguide-section {
+    margin-top: 2rem;
+  }
+
+  #design-guide .row .col h2.dguide-section {
+    margin-top: 2rem;
+    border-top: 2pt solid #5692ce;
+  }
+
+  #design-guide .row .col h3.dguide-section {
+    border-top: 1pt dotted #5692ce;
+  }
+
+  #design-guide .row .col h2.dguide-section ,
+  #design-guide .row .col h3.dguide-section {
+    padding-top: 1rem;
+  }
+
+  #design-guide .example {
+    margin-bottom: 2rem;
+  }
+
+
+  p.ex { font-style: italic; }
+  p.q {
+    font-style: italic;
+    color: #9b009A;
+    font-size: smaller;
+    margin-top: 0;
+   %p
+          This shows the color for
+          %span.yes
+            yes}
+
+
+  .btn-footer-light {
+    background-color: #f7f7f2;
+    border-color:  #6e644b;
+    color:  #6e644b;
+  }
+
+  a.btn-footer-light:hover {
+    color: #003a78;
+    border-color:  #003a78;
+  }
+
+  .field-label {
+    font-weight: bold;
+  }
+
+  .code {
+  }
+
+
+#design-guide{ class: "#{controller.action_name}" }
+
+  %header.entry-header
+    %h1.entry-title Design Guide: Element Examples
+
+  .entry-content
+    .row
+      .col
+        %p This shows examples of the typical elements and how they are and should be styled.
+
+    .row
+      .col
+        %h2 Contents
+        %ul
+          %li
+            %a{ href: '#color-palette' }Color Palette
+          %li
+            %a{ href: '#buttons' }Buttons
+            %ul
+              %li
+                %a{ href: '#btns-bootstrap' }Standard bootstrap buttons
+              %li
+                %a{ href: '#btns-size' }Size
+              %li
+                %a{ href: '#btns-bottom' }Buttons at the bottom of a page
+              %li
+                %a{ href: '#btns-in-body' }Buttons within the body of a page
+              %li
+                %a {href: '#btns-modal' }Buttons at the bottom of modals
+              %li
+                %a{ href: '#btns-toggle' }Toggle buttons
+              %li
+                %a{ href: '#btns-pagination' }Pagination
+
+
+          %li
+            %a{ href: '#alerts' }Alerts
+          %li
+            %a{ href: '#layout' }Layout
+          %li
+            %a{ href: '#text-and-headings' }Text and Headings
+
+
+    .row.dguide-section#color-palette
+      .col
+        %h2.dguide-section Color Palette
+        %p Examples of all of the colors defined in shf-custom-colors.scss  (created manually):
+
+        = render 'palette_colors_table'
+
+
+    .row.dguide-section#buttons
+      .col
+        %h2.dguide-section Buttons
+
+        %h3.dguide-section#btns-bootstrap Standard bootstrap button classes with our colors applied
+
+        .row
+          .col.offset-sm-1
+
+            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn btn-secondary">Secondary</button>
+            <button type="button" class="btn btn-default">Default</button>
+            <button type="button" class="btn btn-success">Success</button>
+            <button type="button" class="btn btn-danger">Danger</button>
+            <button type="button" class="btn btn-warning">Warning</button>
+            <button type="button" class="btn btn-info">Info</button>
+            <button type="button" class="btn btn-light">Light</button>
+            <button type="button" class="btn btn-dark">Dark</button>
+
+            %p
+            <button type="button" class="btn btn-link">Link (.btn-link)</button>
+
+
+        %h4#btns-other Other btn classes in use:
+
+        .row
+          .col.offset-sm-1
+
+            %code btn.alert-danger:
+            = link_to "#{t('companies.view_company')}", '#', class: 'btn btn-sm alert-danger'
+
+
+        %h3.dguide-section#size Size
+        %p
+          All buttons should be
+          %code
+            'btn-sm'
+          except Submit/Save buttons, which should be
+          %code
+            'form-control'
+
+        %ul
+
+          %li
+            %code btn-sm:
+            .example
+              = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-primary'
+
+          %li
+            %code form-control:
+            .example
+              = link_to "#{t('companies.view_company')}", @company, class: 'btn form-control btn-primary'
+
+
+    .row.dguide-section#btns-bottom
+      .col
+
+        %h3.dguide-section Buttons at the bottom of a page
+
+        %p
+          %span.field-label
+            Color and size:
+          Each button should have classes <code>'btn btn-sm btn-light'</code>
+          <em>except</em> for <b>Delete</b> buttons
+
+
+        %p
+          %span.field-label
+            Layout (alignment, etc):
+          Some are under a <code>.text-center</code>, and some are under a <code>.text-right.</code>
+        %p When to use which one?
+
+
+        %ul
+          %li.example
+            %code div.text-center
+            example:
+
+            .text-center
+              = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
+              = link_to "#{t('companies.all_companies')}", companies_path, class: 'btn btn-sm btn-light'
+
+
+          %li.example
+            example:
+
+            - addresses = @company.addresses
+
+            %table.table.table-hover
+              %thead
+                %tr
+                  %th
+                    = t('companies.show.address')
+
+                  %th= t('companies.address_visibility')
+                  %th= t('companies.show.mailing_address')
+
+              - addresses.includes(:kommun).order(:street_address).each do |address|
+                %tbody
+                  %tr.address
+                    %td
+                      = address.entire_address
+
+            .text-center
+              = link_to "#{t('companies.edit_company')}", @company, class: 'btn btn-sm btn-light'
+
+
+          %li.example
+            %code div.text-right
+            example with a delete button:
+
+            - addresses = @company.addresses
+
+            %table.table.table-hover
+              %thead
+                %tr
+                  %th
+                    = t('companies.show.address')
+
+                  %th= t('companies.address_visibility')
+                  %th= t('companies.show.mailing_address')
+
+              - addresses.includes(:kommun).order(:street_address).each do |address|
+                %tbody
+                  %tr.address
+                    %td
+                      = address.entire_address
+
+            .text-center
+              = link_to "#{t('companies.edit_company')}", @company, class: 'btn btn-sm btn-light'
+              = link_to "Delete", @company, method: :delete,
+                  class:'btn btn-danger delete-company',
+                  data: { confirm: "Are you sure?}" }
+
+
+    .row.dguide-section#btns-in-body
+      .col
+
+        %h3.dguide-section Buttons within the body of a page
+
+        %p
+          Default classes should be
+          %code 'btn btn-secondary'
+          but there may be cases where different classes/styles should be used
+
+        .row
+          .col.offset-sm-1
+
+            .example
+              %br
+
+              = field_or_none('Name', 'Bob Ross')
+              %p
+                %span.field-label
+                  Company Number:
+                098219291
+                = link_to "Create a New Company",'#', class: 'btn btn-sm btn-secondary'
+              %br
+              = field_or_none('Categories', 'super mellow guy, squirrel lover, painter')
+
+
+    .row.dguide-section#btns-modal
+      .col
+
+        %h3.dguide-section At the bottom of modals (accept, cancel, etc.)
+
+        %p
+          %span.field-label Submit/save button:
+          Use <code>btn-primary</code> which will set the color and expand the button to the next element or end of the column (= width)
+
+        %p
+          %span.field-label Cancel button:
+          Is an outlined button with the <code>secondary</code> color. Use <code>btn-outline-secondary</code>.  This should be aligned right.
+
+        .example
+
+          .row
+            .col.offset-sm-3{ style:"border: #5692ce 1pt solid;" }
+
+              %p <b>This is some text in the modal.</b>
+              %p This is more text in the modal.
+              .modal-footer
+
+                %button{ type: 'button', class: "btn btn-primary form-control" }
+                  = t('companies.create.create_submit')
+                %button{ type: 'button', class: 'btn btn-outline-secondary', data: { dismiss: 'modal' } }
+                  = t('cancel')
+
+
+    .row.dguide-section#btns-toggle
+      .col
+
+        %h3.dguide-section Toggle buttons:
+
+        <div class="toggle btn btn-danger off" data-toggle="toggle" style="width: 63px; height: 38px;"><input class="toggle" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" type="checkbox" value="true" name="company[show_dinkurs_events]" id="company_show_dinkurs_events"><div class="toggle-group"><label class="btn btn-success toggle-on">On</label><label class="btn btn-danger active toggle-off">Off</label><span class="toggle-handle btn btn-default"></div></div>
+        <div class="toggle btn btn-danger on" data-toggle="toggle" style="width: 63px; height: 38px;"><input class="toggle" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" type="checkbox" value="true" name="company[show_dinkurs_events]" id="company_show_dinkurs_events"><div class="toggle-group"><label class="btn btn-success toggle-on">On</label><label class="btn btn-danger active toggle-off">Off</label><span class="toggle-handle btn btn-default"></div></div>
+
+
+    .row.dguide-section#buttons-pagination
+      .col
+
+        %h3.dguide-section Prev/Next pagination buttons:
+
+        .row
+          .col.offset-sm-1
+            .companies_pagination
+              %ul.pagination
+                %li.previous_page
+                  %a{ 'href':"#buttons-pagination" }
+                    « Previous
+                %li.active
+                  %a{ 'href':"#buttons-pagination" }
+                    1
+                %li
+                  %a{ 'href':"#buttons-pagination" }
+                    2
+                %li
+                  %a{ 'href':"#buttons-pagination" }3
+                %li
+                  %a{ 'href':"#buttons-pagination" }4
+                %li
+                  %a{ 'href':"#buttons-pagination" }5
+                %li.next.next_page
+                  %a{ 'href':"#buttons-pagination" }Next »
+
+          .col-2
+            %select.companies_pagination{ name:"items_count", id:"items_count",  style:"min-width: 50px;" }
+              %option
+                10
+              %option
+                25
+              %option
+                50
+              %option
+                All
+            %span
+              %i.fas.fa-info-circle{ data: { toggle:"tooltip", 'original-title': "Select number of items per page" } }
+
+
+    .row.dguide-section#alerts
+      .col
+        %h2.dguide-section Alerts (shows background colors)
+
+        = render 'alert_examples'
+
+
+    .row.dguide-section#layout
+      .col
+
+        %h2.dguide-section Layout
+        %h3.dguide-section Major elements on each page:
+        %ul
+          %li Page title is always h1.  (Only 1 "H1" element per page)
+
+
+    .row.dguide-section#text-and-headings
+      .col
+
+        %h2.dguide-section Text and Headings
+
+
+    .row.dguide-section
+      .col
+        %h2.dguide-section Other
+
+        %h3.dguide-section Yes / No / Maybe indicator colors
+
+        %p
+          This shows the color for
+          %span.yes
+            yes
+        %p
+          This shows the color for
+          %span.no
+            no
+        %p
+          This shows the color for
+          %span.maybe
+            maybe
+
+
+    .row.dguide-section
+      .col
+
+        %h3.dguide-section Headings
+
+        %p font family = ??
+
+        %h1 Heading 1
+        %p Doggo ipsum smol what a nice floof length boy shoober you are doing me a frighten long water shoob blep very good spot.
+
+        %h2 Heading 2
+        %p Snoot many pats mlem the neighborhood pupper wow such tempt fluffer heckin good boys, heck shoob what a nice floof aqua doggo.
+
+        %ul
+          %li List item the first
+          %li List item the second
+          %li List item the next
+
+        %h3 Heading 3
+        %p Cat ipsum dolor sit amet, shake treat bag ignore the human until she needs to get up, then climb on her lap and sprawl making sure that fluff gets into the owner's eyes.
+
+        %h4 Heading 4
+        %h5 Heading 5
+        %h6 Heading 6
+
+
+    .row.dguide-section
+      .col
+
+        %h3.dguide-section non-heading text
+
+        %p font family = ??

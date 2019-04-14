@@ -1,7 +1,10 @@
-$admin-color: #ff0000;
+// TODO:  Is this file used??
+
+@import "shf-custom-colors";
+
 
 .is-admin {
-  color: $admin-color;
+  color: $is-admin-color;
   font-weight: bold;
 }
 

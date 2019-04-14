@@ -1,0 +1,155 @@
+// Colors for the SHF website
+
+// Define Bootstrap color variables
+$primary:         #003a78 !default;
+$light:           #dad9cd !default;
+$secondary:       #6e644b !default;
+$info:            #5692ce !default;
+$success:         #7ca059 !default;
+
+$white: #fff;
+$black: #000;
+
+
+// Colors uses in our SCSS files:
+//  Note that this is the _first step_ in organizing and standarizing the colors
+//  everywhere in the app:  to first just pull all colors used into this 1 file.
+//  (All of the other SCSS files now @import this file; they are all now defined
+//   here -- just like a constant in Ruby -- so this is the only place we have to
+//   change them.)
+//
+//  Next we can standarize them (e.g. make sure we're just using a few reds, etc.)
+//
+//  Then we can further improve as needed by giving them better names or whatever.
+//
+
+$body-text: #333;
+$body-background: #f7f7f2;
+
+$toggler-hide-color: #1a1a1a;
+$dark-gray-text: #6c757d;
+
+$categories-gray: #aaa;
+$label-gray: #a7a7a7;
+$menu-light-gray: #ddd;
+$med-gray-border: #dee2e6;
+$menu-very-light-gray: #eee;
+$toggler-border-bottom: #e1e1e1;
+$nav-navbar-shadow: rgba(0, 0, 0, .12);
+
+$warn-red-text: #c51f1b;
+
+$shf-blue: $info;
+$border-light-blue: #8eadce;
+$pastel-blue-background: rgba(86, 146, 206, .2);
+
+
+$link-dark-brown: #232525;
+$menu-link-very-dark-brown: #404040;
+$shf-main-brown: #85795b;
+$light-taupe: #f7f7f7;
+
+$yes-background-green:  #d8efc2;
+$maybe-background-yellow: #ffe7a8;
+$no-background-red: #ffdede;
+
+// -----------------------------------------------------
+// colors used in application-mailer.scss
+
+
+$mailer-footer-color: #6aa6ed;
+
+$mailer-sent-to-color: #606060;
+$mailer-background-light-gray: #f7f7f2;
+$mailer-border-light-gray: #e5e5e5;
+$mailer-gray-text: #656565;
+
+$mailer-border-lighter-gray: #eaeaea;
+
+$mailer-dark-gray: #222;
+$mailer-warning-yellow: #ff0;
+
+$mailer-no-files-uploaded-warn: #f00;
+
+
+// -----------------------------------------------------
+// colors used in companies.scss:
+
+$btn-hover-color: #7edd8b;
+$slider-checked: #2196f3;
+$slider-background-color: #f4f4f8;
+$slider-before-background-color: #fff;
+$dinkurs-fixed-table-border: #bfbfbf;
+
+
+// -----------------------------------------------------
+// colors used in company-h-brand.scss:
+
+$co-hbrand-background: #e4e3df;
+$co-hbrand-info-separator: #b9b9b5;
+
+
+// -----------------------------------------------------
+// colors used in dashboard.scss:
+
+$total-color: #1b3e70;
+$not-working-color: #f00;
+
+
+// -----------------------------------------------------
+// colors used in maps.scss:
+
+$border-color: #fff;
+$gray-shadow: #b1b1b1;
+
+
+
+
+// -----------------------------------------------------
+// colors used in member-app-waiting-reason.scss:
+
+$reason-border-color:  #ff7f50;  // coral; picked sort of at random
+
+
+// -----------------------------------------------------
+// colors used in pagination.scss:
+
+$paginate-background: #003a78;
+$paginate-li-a-border: #eee;
+$paginate-li-a-focus-shadow: rgba(0, 123, 255, .25);
+$paginate-li-a-hover: $black;
+$paginate-li-a-hover-background: #e9ecef;
+
+// -----------------------------------------------------
+// colors used in proof-of-membership:
+
+$pom-banner-background: #7a7866;
+$pom-footer-background: #1b3e70;
+
+// -----------------------------------------------------
+// colors used in shf-application:
+
+$no-files-warn-color: #f00;
+
+$btn-background: #fff;
+
+$btn-choose-files-text: #fff;
+
+$border-med-blue: rgb(86, 146, 206);
+$border-med-blue-a-light: rgba(86, 146, 206, .2);
+
+$files-table-background: #fff;
+
+$app-state-border-blue: rgb(142, 173, 206);
+
+// -----------------------------------------------------
+// colors used in shf-documents.scss:
+
+$shf-docs-table-not-striped-background: #fff;
+$shf-docs-table-striped-background: #fafafa;
+
+
+// -----------------------------------------------------
+// colors used in users.scss:
+
+$is-admin-color: #f00;

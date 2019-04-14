@@ -1,7 +1,6 @@
-$btn-hover-color: #7EDD8B;
-$slider-checked: #2196f3;
-$slider-background-color: #f4f4f8;
-$slider-before-background-color: #ffffff;
+// TODO:  Is this file used??
+
+@import "shf-custom-colors";
 
 .field-label {
   font-weight: bold;
@@ -88,7 +87,7 @@ $slider-before-background-color: #ffffff;
   }
 
   .fixed-table-with-border {
-    border-color: #bfbfbf;
+    border-color: $dinkurs-fixed-table-border;
     border-style: solid;
     border-width: 1px;
     margin-bottom: 20px;

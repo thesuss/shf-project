@@ -42,6 +42,8 @@ Rails.application.routes.draw do
     put 'user_profile_update/:id', to: 'user_profile#update', as: :user_profile_update
     get 'user_profile_become/:id', to: 'user_profile#become', as: :become_user
 
+    get 'designguide', to: 'design_guide#show'
+
   end
 
 

@@ -1,20 +1,7 @@
-$footer-color: #6aa6ed;
-
-$sent-to-color: #606060;
-$background-light-gray: #f7f7f2;
-$border-light-gray: #e5e5e5;
-$gray-text: #656565;
-
-$border-lighter-gray: #eaeaea;
-
-$white: #ffffff;
-$black: #000000;
-$dark-gray: #222222;
-$warning-yellow: #ffff00;
-
+@import "shf-custom-colors";
 
 .date-warning {
-  background-color: $warning-yellow;
+  background-color: $mailer-warning-yellow;
 }
 
 
@@ -23,7 +10,7 @@ $warning-yellow: #ffff00;
   // to match the emails sent by mailchip
   .mailchimp {
 
-    background-color: $background-light-gray;
+    background-color: $mailer-background-light-gray;
     background-image: none;
     background-position: center;
     background-repeat: no-repeat;
@@ -155,7 +142,7 @@ $warning-yellow: #ffff00;
         .body-container {
 
           .text-content {
-            color: $dark-gray;
+            color: $mailer-dark-gray;
             font-family: 'Open Sans', 'HelveticaNeue', Helvetica, Arial, sans-serif;
             font-size: 14px;
             line-height: 150%;
@@ -167,7 +154,7 @@ $warning-yellow: #ffff00;
             text-align: left;
 
             h1 {
-              color: $dark-gray;
+              color: $mailer-dark-gray;
               display: block;
               font-family: 'OpenSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
               font-size: 26px;
@@ -222,13 +209,13 @@ $warning-yellow: #ffff00;
               }
 
               .no-files-uploaded {
-                color: #ff0000;
+                color: $mailer-no-files-uploaded-warn;
                 font-weight: bold;
               }
             }
 
             p {
-              color: $dark-gray;
+              color: $mailer-dark-gray;
               font-family: 'Open Sans', 'HelveticaNeue', Helvetica, Arial, sans-serif;
               font-size: 14px;
               line-height: 150%;
@@ -289,7 +276,7 @@ $warning-yellow: #ffff00;
       }
 
       .sent-to {
-        color: $sent-to-color;
+        color: $mailer-sent-to-color;
         font-family: Helvetica, Arial, sans-serif;
         margin-top: 20px;
 
@@ -303,13 +290,13 @@ $warning-yellow: #ffff00;
 
       .template-container {
 
-        border-top: 1px solid $border-light-gray;
+        border-top: 1px solid $mailer-border-light-gray;
 
         .footer-container {
 
           .text-content {
             //word-break: break-word;
-            color: $gray-text;
+            color: $mailer-gray-text;
             font-family: Helvetica, sans-serif;
             font-size: 12px;
             line-height: 150%;
@@ -340,7 +327,7 @@ $warning-yellow: #ffff00;
 
           .divider-content {
             border-collapse: collapse;
-            border-top: 2px dotted $border-lighter-gray;
+            border-top: 2px dotted $mailer-border-lighter-gray;
             min-width: 100%;
             width: 100%;
           }
@@ -429,7 +416,7 @@ $warning-yellow: #ffff00;
   }
 
   .footer {
-    // color: $footer-color;
+    // color: $mailer-footer-color;
     // font-size: smaller;
   }
 
