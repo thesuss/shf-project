@@ -261,6 +261,7 @@ en:
               taken: This company (organization number) already exists in the system.
             dinkurs_company_id:
               invalid: is not recognized as a company key by Dinkurs
+              invalid_chars: contains invalid characters (characters such as Å, Ä, Ö are not allowed)
             company_has_active_memberships: "The company has active (accepted) membership applications."
 
         user:

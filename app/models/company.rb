@@ -17,6 +17,8 @@ class Company < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validate :swedish_organisationsnummer
 
+  validates :dinkurs_company_id, dinkurs_id: true
+
   before_save :sanitize_website, :sanitize_description
 
   has_many :company_applications
@@ -125,6 +127,9 @@ class Company < ApplicationRecord
     true
   rescue Dinkurs::Errors::InvalidKey
     errors.add(:dinkurs_company_id, :invalid)
+    return false
+  rescue URI::InvalidURIError
+    errors.add(:dinkurs_company_id, :invalid_chars)
     return false
   end
 

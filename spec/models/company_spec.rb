@@ -50,6 +50,9 @@ RSpec.describe Company, type: :model, focus: true do
     it { is_expected.to allow_value('user@example.com').for(:email) }
     it { is_expected.not_to allow_value('userexample.com').for(:email) }
 
+    it { is_expected.to allow_value('abcdef').for(:dinkurs_company_id) }
+    it { is_expected.not_to allow_value('åäöÅÄÖ').for(:dinkurs_company_id) }
+
     describe 'uniqueness of company_number' do
       let(:msg) { I18n.t('activerecord.errors.models.company.attributes.company_number.taken') }
       subject { FactoryBot.build(:company) }
