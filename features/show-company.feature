@@ -25,15 +25,15 @@ Feature: Show company page - display different info depending on role
       | Bromölla  |
 
     Given the following companies exist:
-      | name     | company_number | email          | region       | kommun   | visibility     |
-      | Company1 | 5560360793     | cmpy1@mail.com | Stockholm    | Alingsås | street_address |
-      | Company2 | 2120000142     | cmpy2@mail.com | Västerbotten | Bromölla | street_address |
-      | Company3 | 6613265393     | cmpy3@mail.com | Stockholm    | Alingsås | post_code      |
-      | Company4 | 6222279082     | cmpy4@mail.com | Stockholm    | Alingsås | city           |
-      | Company5 | 8025085252     | cmpy5@mail.com | Stockholm    | Alingsås | kommun         |
-      | Company6 | 6914762726     | cmpy6@mail.com | Stockholm    | Alingsås | none           |
-      | Company7 | 7661057765     | cmpy7@mail.com | Stockholm    | Alingsås | street_address |
-      | Company8 | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | street_address |
+      | name     | company_number | email          | region       | kommun   | city      | visibility     |
+      | Company1 | 5560360793     | cmpy1@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
+      | Company2 | 2120000142     | cmpy2@mail.com | Västerbotten | Bromölla | Harplinge | street_address |
+      | Company3 | 6613265393     | cmpy3@mail.com | Stockholm    | Alingsås | Harplinge | post_code      |
+      | Company4 | 6222279082     | cmpy4@mail.com | Stockholm    | Alingsås | Harplinge | city           |
+      | Company5 | 8025085252     | cmpy5@mail.com | Stockholm    | Alingsås | Harplinge | kommun         |
+      | Company6 | 6914762726     | cmpy6@mail.com | Stockholm    | Alingsås | Harplinge | none           |
+      | Company7 | 7661057765     | cmpy7@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
+      | Company8 | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
 
     And the following users exists
       | email           | admin | member |
@@ -77,7 +77,6 @@ Feature: Show company page - display different info depending on role
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6914762726     |
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
-
 
   Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out

@@ -6,7 +6,7 @@
 
 .entry-content
   .row
-    .col-lg-4
+    .col-lg-4#companies_map
       = render 'map_companies', markers: location_and_markers_for(@all_visible_companies)
 
     .col-lg-8
@@ -18,7 +18,9 @@
 
           .panel-collapse.collapse.show#toggled_search_form{ 'aria-labelledby' => 'toggle-heading', role: 'tabpanel' }
             .panel-body
-              = render 'search_form', all_companies: @all_companies, search_params: @search__params
+              = render 'search_form', all_companies: @all_companies,
+                                      search_params: @search__params,
+                                      language: @locale
 
   - if @companies.empty?
     %strong

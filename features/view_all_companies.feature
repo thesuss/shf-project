@@ -56,9 +56,9 @@ Feature: Visitor sees all companies
       | Company29 | 5872150379     | cmpy29@mail.com | Stockholm    | Alingsås |
 
     And the following company addresses exist:
-      | company_name | region     | kommun  |
-      | Company02    | Norrbotten | Alvesta |
-      | Company02    | Uppsala    | Aneby   |
+      | company_name | region     | kommun  | city    |
+      | Company02    | Norrbotten | Alvesta | Årsta   |
+      | Company02    | Uppsala    | Aneby   | Kolbäck |
 
     And the following users exists
       | email         | admin | member |
@@ -181,8 +181,8 @@ Feature: Visitor sees all companies
     And I should see "Uppsala" in the row for "Company02"
     And I should see "Bromölla" in the row for "Company02"
     And I should see "Alvesta" in the row for "Company02"
-    And I should see "Aneby" in the row for "Company02"
-    And I should not see "Stockholm" in the row for "Company02"
+    And I should see "Årsta" in the row for "Company02"
+    And I should see "Kolbäck" in the row for "Company02"
 
   @time_adjust
   Scenario: User sees all the companies

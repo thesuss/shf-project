@@ -2,12 +2,14 @@ And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
     region = company.delete('region') || 'Stockholm'
     kommun = company.delete('kommun') || 'Stockholm'
+    city = company.delete('city') || 'Stockholm'
     visibility = company.delete('visibility') || 'street_address'
 
     cmpy = FactoryBot.create(:company, company)
 
     cmpy.addresses.first.update(region: Region.find_or_create_by(name: region),
                                 kommun: Kommun.find_or_create_by(name: kommun),
+                                city: city,
                                 visibility: visibility)
 
   end
@@ -20,7 +22,9 @@ And(/^the following company addresses exist:$/) do |table|
 
     region = Region.find_by_name(address.delete('region') || 'Stockholm')
     kommun = Kommun.find_by_name(address.delete('kommun') || 'Stockholm')
-    FactoryBot.create(:company_address, region: region, kommun: kommun, addressable: company)
+    city = address.delete('city') || 'Stockholm'
+    FactoryBot.create(:company_address, region: region, kommun: kommun,
+                      city: city, addressable: company)
   end
 end
 
@@ -92,7 +96,7 @@ end
 
 
 And "I show the companies search form" do
-  step %{I click on t("accordion_label.company_search_form.hide")}
+  step %{I click on t("accordion_label.company_search_form.show")}
 end
 
 
@@ -110,4 +114,3 @@ end
 And "I should see {capture_string} {digits} time(s) in the list of companies" do | expected_string, num_times|
   step %{I should see "#{expected_string}" #{num_times} time in the div with id "#{COMPANIES_LIST_ID}"}
 end
-

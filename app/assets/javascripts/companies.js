@@ -1,10 +1,25 @@
 $(function() {
   'use strict';
 
-  $('body').on('ajax:success', '.companies_pagination', function (e, data) {
-    $('#companies_list').html(data);
-    // In case there is tooltip(s) in rendered element:
-    $('[data-toggle="tooltip"]').tooltip();
+  $('body').on('ajax:complete', '.companies_pagination', function (e, response) {
+
+    if (companyFunctions.handleError(e, response) === false) {
+      var data = JSON.parse(response.responseText);
+
+      $('#companies_list').html(data.list_html);
+      $('[data-toggle="tooltip"]').tooltip();
+    }
+  });
+
+  $('body').on('ajax:complete', '#companies_search', function (e, response) {
+
+    if (companyFunctions.handleError(e, response) === false) {
+      var data = JSON.parse(response.responseText);
+
+      $('#companies_list').html(data.list_html);
+      $('#companies_map').html(data.map_html);
+      $('[data-toggle="tooltip"]').tooltip();
+    }
   });
 
   $('body').on('ajax:success', '.events_pagination', function (e, data) {
@@ -33,7 +48,7 @@ $(function() {
     if (data.status === 'errors') {
       ele.html(data.value);
     } else {
-      
+
       $('#company-create-modal').on('hidden.bs.modal', function() {
         ele.val( function( index, val ) {
           return (val.length > 0 ? val + ', ' + data.value : data.value);
@@ -44,3 +59,14 @@ $(function() {
     }
   });
 });
+
+companyFunctions = {
+  handleError: function(event, response) {
+    if (response.status !== 200) {
+      event.stopPropagation();
+      alert('Something went wrong - please reload page and try again.');
+      return true;
+    }
+    return false;
+  }
+}

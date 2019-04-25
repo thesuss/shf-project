@@ -161,6 +161,10 @@ class Company < ApplicationRecord
     addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
+  def cities_names
+    addresses.select(:city).distinct.pluck(:city)
+  end
+
 
   def most_recent_branding_payment
     most_recent_payment(Payment::PAYMENT_TYPE_BRANDING)

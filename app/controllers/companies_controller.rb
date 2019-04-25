@@ -47,8 +47,27 @@ class CompaniesController < ApplicationController
 
     @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
-    render partial: 'companies_list', locals: { companies: @companies,
-                    search_params: @search_params } if request.xhr?
+    respond_to do |format|
+      format.html
+      
+      format.js do
+        list_html = render_to_string(partial: 'companies_list',
+                                     locals: { companies: @companies,
+                                               search_params: @search_params })
+
+        if params[:page]  # handling a pagination request - update companies list
+          render json: { list_html: list_html }
+        else              # handling a search request
+
+          markers = helpers.location_and_markers_for(@all_visible_companies)
+
+          map_html = render_to_string(partial: 'map_companies',
+                                      locals: { markers: markers })
+
+          render json: { list_html: list_html, map_html: map_html }
+        end
+      end
+    end
   end
 
 

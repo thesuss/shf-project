@@ -1,5 +1,5 @@
-.table-responsive
-  %table.table.table-hover.table-sm
+.table-responsive-lg
+  %table.table.table-hover.table-md
     %thead
       %tr
         %th
@@ -16,6 +16,8 @@
           = sort_link(search_params, :addresses_kommun_name,
                       t('activerecord.attributes.address.kommun'), {},
                       { class: 'companies_pagination', remote: true })
+        %th
+          = t('activerecord.attributes.address.city')
 
         - if current_user.admin?
           %th
@@ -35,11 +37,14 @@
             = safe_join(company.addresses_region_names, tag.br)
           %td.kommun
             = safe_join(company.kommuns_names, tag.br)
-            - if current_user.admin?
-              %td.company-number= company.company_number
-              %td.edit= link_to icon('fas', 'edit'), edit_company_path(company)
-              %td.delete= link_to icon('fas', 'trash', class: 'delete'), company, method: :delete,
-                              data: { :confirm => "#{t('confirm_are_you_sure')}" }
+          %td.city
+            = safe_join(company.cities_names, tag.br)
+
+          - if current_user.admin?
+            %td.company-number= company.company_number
+            %td.edit= link_to icon('fas', 'edit'), edit_company_path(company)
+            %td.delete= link_to icon('fas', 'trash', class: 'delete'), company, method: :delete,
+                            data: { :confirm => "#{t('confirm_are_you_sure')}" }
 
 = render 'application/paginate_footer', entities: companies,
                                         paginate_class: 'companies_pagination',
