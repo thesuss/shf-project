@@ -1059,8 +1059,18 @@ sv:
 
 
   mailers:
-    login_here: "Klicka här för att gå till inloggningssidan:"
-    may_need_to_login_first: "Du kan behöva logga in först.  Här är inloggningssidan:"
+    login_here: "Klicka här för att gå till inloggningssidan."
+    your_login_email_is: "Din e-post för att logga in är: "
+
+    how_to_pay_membership: "Så här betalar du medlemsavgiften:"
+    pay_membership_step: "När du är inloggad hittar du betalknappen på ditt konto."
+    here_is_acct_page: "Här är en länk till ditt konto: "
+
+    how_to_pay_hmarkt: "Så här betalar du H-märkespremien:"
+    pay_hmarkt_step: "När du är inloggad ser du när din H-märkningspremie går ut och hur du betalar på din företagssida."
+    here_is_co_page: "Här är länken där du kan redigera ditt företag: "
+    h_brand_exp_shown: "Du ser när din H-märkningspremie går ut på din företagssida."
+
 
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
@@ -1092,32 +1102,36 @@ sv:
 
 
     shf_application_mailer:
+      will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."
+
       acknowledge_received:
         subject: Din ansökan till Sveriges Hundföretagare är mottagen
         message_text: "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
         your_submitted_info: "Här är vad du har laddat upp:"
         review_after_recevied_files: *review_after_recevied_files
         upload_choice_intro: "Ditt val för att tillhandahålla underlag: "
-        need_to_upload: "Du måste ladda upp dina filer."
-        can_upload_more: "Du kan ladda upp fler filer."
+        need_to_upload: "Du måste ladda upp dina filer. Här är hur:"
+        can_upload_more: "Du kan ladda upp fler filer. Här är hur:"
         error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
 
       app_approved:
         subject: Din ansökan till Sveriges Hundföretagare är godkänd.
         message_text:
-          app_approved_and_next: "Din ansökan har nu blivit godkänd. Det som är kvar innan du är medlem i systemet är att betala din medlemsavgift. Det gör du via "
+          app_approved_and_next: "Din ansökan har nu blivit godkänd. Det som är kvar innan du är medlem i systemet är att betala din medlemsavgift:"
+          step_1_login_to_website: Logga in på webbplatsen
+          step_1_with_your_email: " WITH YOUR EMAIL: %{login_email}"
+          step_2_pay: "Det gör du via: "
           h_branding_not_paid: "När detta är gjort behöver du göra färdigt din företagssida och betala din H-märkesavgift. Mer information om hur du gör det kommer i ett mail efter att du betalt din medlemsavgift."
           thanks:  "Tack för att du vill vara medlem och bidrar till ett kvalitetssäkrat hundsverige."
           error_sending: *shf_email_error
 
 
     member_mailer:
-      member_account_link: "%{account_link} (Du kan behöva logga in först innan länken fungerar.)"
+      member_account_link: "%{account_link} (Du kan behöva logga in först innan länken fungerar. Your login is %{login_email}.)"
 
       app_no_uploaded_files:
         subject: Din ansökan till Sveriges Hundföretagare saknar underlag
-        message_text: "Detta är en automatisk påminnelse från systemet som meddelar att din ansökan saknar uppladdade filer. Filerna behövs för att vi ska kunna handlägga din ansökan."
-        will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."
+        message_text: "Detta är en automatisk påminnelse från systemet som meddelar att din ansökan saknar uppladdade filer. Filerna behövs för att vi ska kunna handlägga din ansökan. Här är hur:"
         thanks:  "Tack för att du vill vara medlem."
         error_sending: *shf_email_error
 
@@ -1126,7 +1140,8 @@ sv:
         greeting: *email_greeting
         message_text:
           welcome:  *subject_welcome
-          youre_active: "Du har nu aktiverats som medlem i systemet. Du kan logga in och hantera din profil och bygga upp din företagssida. När du är inloggad kan du redigera din företagssida (glöm inte lägga till adress) och betala din H-märkesavgift här: "
+          youre_active: "Du har nu aktiverats som medlem i systemet. Du kan logga in och hantera din profil och bygga upp din företagssida."
+          can_edit_co_pay: "När du är inloggad kan du redigera din företagssida (glöm inte lägga till adress) och betala din H-märkesavgift här: "
           access_fb_group: "Som medlem får du även tillgång till vår slutna Facebookgrupp: "
           and_member_pages: "samt dolda sidor i vårt medlemssystem: "
 
@@ -1134,16 +1149,14 @@ sv:
         subject: Ditt medlemskap löper ut snart
         greeting: *email_greeting
         message_text:
-          expire_alert_html: Observera att din nuvarande medlemsperiod löper ut den
-                        <span class="date-warning">%{expire_date}</span>.
-          extend_membership: Du kan förlänga ditt medlemskap i ytterligare
-                                  12 månader genom att betala medlemsavgiften.
+          expire_alert_html: "Observera att din nuvarande medlemsperiod löper ut den "
+          extend_membership: "Du kan förlänga ditt medlemskap i ytterligare 12 månader genom att betala medlemsavgiften."
 
       h_branding_fee_will_expire:
         subject: Det är snart dags att betala din H-märkningspremie
         greeting: *email_greeting
         message_text:
-          expire_alert_html: "Observera att din nuvarande H-märkningspremie löper ut den %{expire_date}."
+          expire_alert_html: "Observera att din nuvarande H-märkningspremie löper ut den "
           how_to_pay_fee:  &pay_hbrand_be_mapped  Betala den ett år till via länken nedan. Detta gör att du fortsätter synas på kartan och fortsätter ha ett H-märkt företag.
           company_link_login_msg: "När du är inloggad ser du när din H-märkningspremie går ut och hur du betalar på din företagssida:"
 

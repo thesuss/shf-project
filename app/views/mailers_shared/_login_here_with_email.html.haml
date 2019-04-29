@@ -1,0 +1,9 @@
+-# This partial shows the link to the website and the login email for a user.
+-#
+-# The partial expects these locals:
+-#   email - the email address to display
+-#
+%span.login-here
+  %span.login-here-link= link_to(t('mailers.login_here'), new_user_session_url, target: '_blank')
+  %span.your-login-email= t('mailers.your_login_email_is')
+  %span.login-email{ style: 'font-weight: bold;' }= email

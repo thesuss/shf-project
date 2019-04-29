@@ -5,12 +5,7 @@
 
 = render layout: 'layouts/mail_from_membership' do
 
-  %p
-    = t('fee_is_unpaid', scope: message_scope )
+  %p.fee-is-unpaid= t('fee_is_unpaid', scope: message_scope )
 
-  %p
-    = t('how_to_pay_fee', scope: message_scope)
+  = render 'how_to_pay_hmarkt', email: @recipient_email, company: @company
 
-  %p
-    = link_to(@company.name,  company_url(@company), target: '_blank')
-    = t('company_link_login_msg', scope: message_scope)

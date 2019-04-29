@@ -21,8 +21,8 @@
 
   %p= t('message_text.please_complete', scope: message_scope)
 
+  %p= render 'mailers_shared/login_here_with_email', email: @recipient_email
+
   %p
     = t('message_text.company_link_login_msg', scope: message_scope)
     = link_to(co_name_display,  company_url(@company), target: '_blank')
-
-  %p= render 'mailers_shared/may_need_to_login'

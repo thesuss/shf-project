@@ -10,6 +10,7 @@ class MemberMailerPreview < ActionMailer::Preview
 
   def membership_granted
     approved_app = ShfApplication.where(state: :accepted).first
+    check_co_name(approved_app.companies.first)
     MemberMailer.membership_granted(approved_app.user)
   end
 
@@ -23,16 +24,23 @@ class MemberMailerPreview < ActionMailer::Preview
   def h_branding_fee_will_expire
     licensed_co = Company.branding_licensed.first
     co_member = licensed_co.users.last
+    check_co_name(licensed_co)
     MemberMailer.h_branding_fee_will_expire(licensed_co, co_member)
   end
 
 
+  # Previewing can cause this to be called twice:  once to create the header,
+  # and again for the mail body.
+  # So if the user already exists, use it, else create a new one
   def h_branding_fee_past_due
 
     new_email         = unique_email
-    new_approved_user = FactoryBot.create(:member_with_membership_app, email: new_email)
-    new_co            = new_approved_user.shf_application.companies.first
 
+    unless (new_approved_user = User.find_by(email: new_email))
+      new_approved_user = FactoryBot.create(:member_with_membership_app, email: new_email)
+    end
+    new_co            = new_approved_user.shf_application.companies.first
+    check_co_name(new_co)
     MemberMailer.h_branding_fee_past_due(new_co, new_approved_user)
   end
 
@@ -71,6 +79,7 @@ class MemberMailerPreview < ActionMailer::Preview
     incomplete_co = approved_app.companies.first
     incomplete_co.update(name: '')
     incomplete_co.addresses.first.update(region: nil)
+    check_co_name(incomplete_co)
 
     MemberMailer.company_info_incomplete(incomplete_co, approved_user)
   end
@@ -109,5 +118,10 @@ class MemberMailerPreview < ActionMailer::Preview
   end
 
 
+  # Sometimes if company is created for the preview, there is no name.
+  # Check this and if the company name is blank, put one it.
+  def check_co_name(company)
+    company.update(name: 'Some Company AB') if company.name.blank?
+  end
 
 end

@@ -1058,10 +1058,19 @@ en:
 
 
 
-
   mailers:
-    login_here: "Click here to go to the login page:"
-    may_need_to_login_first: "You may need to log in first.  Here's the login page:"
+    login_here: "Click here to go to the login page."
+    your_login_email_is: "Your login email is "
+
+    how_to_pay_membership: "How to Pay Your Membership Fee:"
+    pay_membership_step: "Once you are logged in, go to your account page to pay."
+    here_is_acct_page: "Here is your account page: "
+
+    how_to_pay_hmarkt: "How to Pay the H-Markt License Fee:"
+    pay_hmarkt_step: &co_pay_after_loggedin "Once you are logged in, go to the company page where you will see the button to pay."
+    here_is_co_page: "Here is the company page: "
+    h_brand_exp_shown: "The H-markt license expiration date will be on the company page."
+
 
     application_mailer:
       greeting: &email_greeting "Hello %{greeting_name}"
@@ -1094,32 +1103,36 @@ en:
 
 
     shf_application_mailer:
+      will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."
+
       acknowledge_received:
         subject: Your application to Sveriges Hundföretagare has been received
         message_text: "Your application has been received.  We are all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
         your_submitted_info: "As a reminder, here is what you submitted:"
         review_after_recevied_files: *review_after_recevied_files
         upload_choice_intro: "Your choice for providing files: "
-        need_to_upload: "You need to upload your files."
-        can_upload_more: "You can upload more files."
+        need_to_upload: "You need to upload your files. Here's how:"
+        can_upload_more: "You can upload more files. Here's how:"
         error_sending: &shf_email_error "There was a problem sending email to you at {%email} about your application."
 
       app_approved:
         subject: Your application to Sveriges Hundföretagare is approved
         message_text:
-          app_approved_and_next: "Your application is now approved. What is left before you are registered as a member in the system is to pay your membership fee.  Log in to the website and then pay at this link: "
+          app_approved_and_next: "Your application is now approved. What is left before you are registered as a member in the system is to pay your membership fee:"
+          step_1_login_to_website: Log in to the website
+          step_1_with_your_email: " with your email: %{login_email}"
+          step_2_pay: "Then pay at this page: "
           h_branding_not_paid: "When this is done you will need to finish your company page and pay your H-branding fee. More information about how to do that will come after you paid your membership fee."
           thanks: "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
           error_sending: *shf_email_error
 
 
     member_mailer:
-      member_account_link: "%{account_link} (You may need to login first before the link works.)"
+      member_account_link: "%{account_link} (You may need to login first before the link works. Your login is %{login_email}.)"
 
       app_no_uploaded_files:
         subject: Please upload qualification files to your Sveriges Hundföretagare application
-        message_text: "This is a reminder that you need upload files for your SHF application so that it can be reviewed."
-        will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."
+        message_text: "This is a reminder that you need upload files for your SHF application so that it can be reviewed. Here's how: "
         thanks: "Thanks for wanting to be a member."
         error_sending: *shf_email_error
 
@@ -1128,7 +1141,8 @@ en:
         greeting: *email_greeting
         message_text:
           welcome:  *subject_welcome
-          youre_active: "You have been activated as a member in the system. You can login and manage your profile and build your business page. When you are signed in, you can edit your business page and pay your branding license fee here: "
+          youre_active: "You have been activated as a member in the system. You can login and manage your profile and build your business page."
+          can_edit_co_pay: "When you are signed in, you can edit your business page and pay your branding license fee here: "
           access_fb_group: "As a member, you will also have access to our closed Facebook group: "
           and_member_pages: "as well as hidden pages in our member system: "
 
@@ -1136,18 +1150,16 @@ en:
         subject: Your membership will expire soon
         greeting: *email_greeting
         message_text:
-          expire_alert_html: Please note that your current membership period will
-                        expire on <span class="date-warning">%{expire_date}</span>.
-          extend_membership: You can extend your membership for another
-                             12 months by paying the membership fee.
+          expire_alert_html: "Please note that your current membership period will expire on "
+          extend_membership: "You can extend your membership for another 12 months by paying the membership fee."
 
       h_branding_fee_will_expire:
         subject: The H-Branding fee for your company will be due soon
         greeting: *email_greeting
         message_text:
-          expire_alert_html: "Please note that your current H-branding fee period will expire on <span class='date-warning'>%{expire_date}</span>."
+          expire_alert_html: "Please note that your current H-branding fee period will expire on "
           how_to_pay_fee: &pay_hbrand_be_mapped You can extend your H-branding for another 12 months by paying the fee. This makes you visible on the map.
-          company_link_login_msg: "Once you are logged in, you will be able to see the license expiration date on the company page and see the button to pay:"
+          company_link_login_msg: &co_pay_after_loggedin "Once you are logged in, go to the company page where you will see the button to pay.  Here is the company page:"
 
       h_branding_fee_past_due:
           subject: The H-Branding fee for your company is unpaid/past due
@@ -1155,8 +1167,7 @@ en:
           message_text:
             fee_is_unpaid: Please note that your current H-branding fee is unpaid.
             how_to_pay_fee: *pay_hbrand_be_mapped
-            company_link_login_msg: " (You may need to login first before you can see the button to pay)."
-
+            company_link_login_msg: *co_pay_after_loggedin
 
       membership_lapsed:
         subject: "Your SHF membership has expired"
@@ -1171,7 +1182,7 @@ en:
         subject: Please complete the company information
         greeting: *email_greeting
         message_text:
-          complete_the_info: "You need to complete the info for %{co_identifier}. If you don't it won't show up on the map or in Google searches"
+          complete_the_info: "You need to complete the info for %{co_identifier}. If you don't it won't show up on the map or in Google searches."
           company_needs_name: "company number %{co_number}"
           what_is_missing: "Here is what's missing:"
           co_name_missing: "company name"

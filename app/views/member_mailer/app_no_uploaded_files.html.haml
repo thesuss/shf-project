@@ -5,7 +5,6 @@
 
 = render layout: 'layouts/mail_from_membership' do
   %p.message-text= t('message_text', scope: message_scope)
-  %p.login-url= login_url_link
-  %p.will-see-app-button= t('will_see_app_button', scope: message_scope)
-  %p.thanks= t('thanks', scope: message_scope)
+  = render 'mailers_shared/newapp_login_upload_files_instruction', email: @recipient_email
 
+  %p.thanks= t('thanks', scope: message_scope)

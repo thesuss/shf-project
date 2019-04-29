@@ -17,7 +17,7 @@ RSpec.describe AdminMailer, type: :mailer do
   let!(:test_user) { create(:user, email: 'user@example.com') }
 
 
-  describe '#new_member_application_received' do
+  describe '#new_shf_application_received' do
 
     let(:new_app) { create(:shf_application, user: test_user)  }
     let(:admin) { create(:user, email: 'admin@example.com', admin: true) }

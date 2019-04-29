@@ -48,6 +48,9 @@ RSpec.describe MemberMailer, type: :mailer do
       expect(email_sent).to have_body_text(I18n.t('message_text.and_member_pages', scope: MEM_GRANTED_SCOPE))
     end
 
+    it_behaves_like 'it shows the user the login page and their login email' do
+      let(:email_created) { email_sent }
+    end
 
     it_behaves_like 'from address is correct' do
       let(:mail_address) { email_sent.header['from'] }
@@ -56,6 +59,7 @@ RSpec.describe MemberMailer, type: :mailer do
     it_behaves_like 'reply-to address is correct' do
       let(:email_created) { email_sent }
     end
+
 
   end
 
@@ -88,9 +92,15 @@ RSpec.describe MemberMailer, type: :mailer do
                                                   expire_date: member.membership_expire_date))
     end
 
+
     it 'tells how to extend membership' do
       expect(email_sent).to have_body_text(I18n.t('message_text.extend_membership',
                                                   scope: MEMBERSHIP_EXP_SCOPE))
+    end
+
+    it_behaves_like 'it shows how to login and the page to pay the membership fee' do
+      let(:email_created) { email_sent }
+      let(:user) { member }
     end
 
     it_behaves_like 'from address is correct' do
@@ -110,10 +120,10 @@ RSpec.describe MemberMailer, type: :mailer do
 
     let(:jan1) { Date.new(2019, 1, 1) }
 
-    let(:company2) { create(:company) }
+    let(:company) { create(:company) }
 
     let(:member1_exp_jan1) do
-      app = create(:shf_application, :accepted, company_number: company2.company_number)
+      app = create(:shf_application, :accepted, company_number: company.company_number)
       m   = app.user
       m.email = 'only_member@example.com'
       m.payments << create(:payment, :successful,
@@ -125,7 +135,7 @@ RSpec.describe MemberMailer, type: :mailer do
     let(:email_sent) do
       # create the company and members
       member1_exp_jan1
-      MemberMailer.h_branding_fee_past_due(company2, member1_exp_jan1)
+      MemberMailer.h_branding_fee_past_due(company, member1_exp_jan1)
     end
 
     it_behaves_like 'a successfully created email',
@@ -141,17 +151,9 @@ RSpec.describe MemberMailer, type: :mailer do
                                                   scope: HBRANDING_PAST_DUE_SCOPE))
     end
 
-    it 'tells how to pay the H-branding fee' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.how_to_pay_fee',
-                                                  scope: HBRANDING_PAST_DUE_SCOPE))
+    it_behaves_like 'it shows how to login and the page to pay the H-markt fee' do
+      let(:email_created) { email_sent }
     end
-
-    it 'provides a link to the company and a reminder that you might have to log in' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.company_link_login_msg',
-                                                  scope: HBRANDING_PAST_DUE_SCOPE,
-                                           company_link: "<a href=\"#{company_url(company2)}\">#{company2.name}</a>") )
-    end
-
 
     it_behaves_like 'from address is correct' do
       let(:mail_address) { email_sent.header['from'] }
@@ -195,6 +197,11 @@ RSpec.describe MemberMailer, type: :mailer do
     it 'tells how to renew membership' do
       expect(email_sent).to have_body_text(I18n.t('message_text.renew_membership',
                                                   scope: MEMBERSHIP_LAPSED_SCOPE))
+    end
+
+    it_behaves_like 'it shows how to login and the page to pay the membership fee' do
+      let(:email_created) { email_sent }
+      let(:user) { member }
     end
 
     it_behaves_like 'from address is correct' do
@@ -307,7 +314,7 @@ RSpec.describe MemberMailer, type: :mailer do
                                                   company_link: "<a href=\"#{company_url(co_no_name_no_region)}\">#{co_no_name_no_region.name}</a>") )
     end
 
-    it_behaves_like 'it provides a link to the login page' do
+    it_behaves_like 'it shows the user the login page and their login email' do
       let(:email_created) { email_sent_co_noname_noregion }
     end
 
@@ -319,6 +326,7 @@ RSpec.describe MemberMailer, type: :mailer do
       let(:email_created) { email_sent_co_noname_noregion }
     end
   end
+
 
   describe '#app_no_uploaded_files' do
 
@@ -332,6 +340,10 @@ RSpec.describe MemberMailer, type: :mailer do
                     I18n.t('subject', scope: NO_UPLOADED_FILES_SCOPE),
                     'user_new@example.com',
                     'Firstname Lastname' do
+      let(:email_created) { email_sent }
+    end
+
+    it_behaves_like 'it shows how to login and the page to upload files' do
       let(:email_created) { email_sent }
     end
 
@@ -352,10 +364,10 @@ RSpec.describe MemberMailer, type: :mailer do
 
     let(:jan1_2020) { Date.new(2020, 1, 1) }
 
-    let(:company3) { create(:company) }
+    let(:company) { create(:company) }
 
     let(:member1_exp_jan1) do
-      app = create(:shf_application, :accepted, company_number: company3.company_number)
+      app = create(:shf_application, :accepted, company_number: company.company_number)
       m   = app.user
       m.email = 'only_member@example.com'
       m.payments << create(:payment, :successful,
@@ -367,7 +379,7 @@ RSpec.describe MemberMailer, type: :mailer do
     let(:email_sent) do
       # create the company and members
       member1_exp_jan1
-      MemberMailer.h_branding_fee_will_expire(company3, member1_exp_jan1)
+      MemberMailer.h_branding_fee_will_expire(company, member1_exp_jan1)
     end
 
 
@@ -381,21 +393,11 @@ RSpec.describe MemberMailer, type: :mailer do
     it 'tells you when the HBranding license will expire' do
       expect(email_sent).to have_body_text(I18n.t('message_text.expire_alert_html',
                                                   scope:       HBRAND_FEE_WILLEXPIRE_SCOPE,
-                                                  expire_date: company3.branding_expire_date))
+                                                  expire_date: company.branding_expire_date))
     end
 
-    it 'tells how to pay the fee' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.how_to_pay_fee',
-                                                  scope: HBRAND_FEE_WILLEXPIRE_SCOPE))
-    end
-
-    it 'has a link to the company' do
-      expect(email_sent).to have_body_text(/<a(.*)>#{company3.name}<\/a>/)
-    end
-
-    it 'says you may need to log in' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.company_link_login_msg',
-                                                  scope: HBRAND_FEE_WILLEXPIRE_SCOPE))
+    it_behaves_like 'it shows how to login and the page to pay the H-markt fee' do
+      let(:email_created) { email_sent }
     end
 
     it_behaves_like 'from address is correct' do

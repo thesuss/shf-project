@@ -4,11 +4,11 @@
 - message_scope = 'mailers.member_mailer.membership_will_expire.message_text'
 
 = render layout: 'layouts/mail_from_membership' do
-  %p
-    = t('expire_alert_html', scope: message_scope, expire_date: @expire_date)
+  %p.membership-will-expire
+    = t('expire_alert_html', scope: message_scope)
+    %span.date-warning= "#{@expire_date}."
 
   %p
     = t('extend_membership', scope: message_scope)
 
-  %p
-    = render 'user_account_link', member: @member, capitalize: true
+  = render 'mailers_shared/how_to_pay_membership', user: @member

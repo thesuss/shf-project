@@ -40,26 +40,13 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
       let(:email_created) { email_sent }
     end
 
-
     it 'says your app is approved' do
       expect(email_sent).to have_body_text(I18n.t('app_approved_and_next', scope: approved_text))
     end
 
-    describe 'has link to where to pay your membership fee' do
-
-      it 'html part has correct link' do
-        unless email_sent.html_part.nil?
-          expect(email_sent.html_part.body.encoded).to have_link(user_url(accepted_app.user))
-        end
-      end
-
-      it 'text part has correct link' do
-        unless email_sent.text_part.nil?
-          expect(email_sent.text_part).to have_body_text(user_url(accepted_app.user))
-        end
-      end
-
-
+    it_behaves_like 'it shows how to login and the page to pay the membership fee' do
+      let(:email_created) { email_sent }
+      let(:user) { accepted_app.user }
     end
 
     it 'closes with a thank you for wanting to be a member' do
@@ -154,7 +141,7 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
 
     end
 
-    it_behaves_like  'it provides a link to the login page' do
+    it_behaves_like 'it shows how to login and the page to upload files' do
       let(:email_created) { email_sent }
     end
 

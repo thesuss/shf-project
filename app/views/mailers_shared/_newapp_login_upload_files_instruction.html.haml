@@ -1,0 +1,8 @@
+-# This partial tells the user how to log in and that there will be a button
+-# to their application. (This assumes the user has a new -- not approved -- app.
+-#
+-# The partial expects these locals:
+-#   email - the email address to display
+-#
+%p.login_url= render 'mailers_shared/login_here_with_email', email: email
+%p.will-see-app-button= t('mailers.shf_application_mailer.will_see_app_button')

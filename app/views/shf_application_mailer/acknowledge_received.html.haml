@@ -18,4 +18,4 @@
   - else
     = t('can_upload_more', scope: i18n_scope)
 
-  = render 'mailers_shared/may_need_to_login'
+  = render 'mailers_shared/newapp_login_upload_files_instruction', email: @recipient_email
