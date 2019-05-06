@@ -2,7 +2,7 @@ And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
     region = company.delete('region') || 'Stockholm'
     kommun = company.delete('kommun') || 'Stockholm'
-    city = company.delete('city') || 'Stockholm'
+    city = (company.delete('city') || 'Stockholm').delete("'")
     visibility = company.delete('visibility') || 'street_address'
 
     cmpy = FactoryBot.create(:company, company)
@@ -11,7 +11,6 @@ And(/^the following companies exist:$/) do |table|
                                 kommun: Kommun.find_or_create_by(name: kommun),
                                 city: city,
                                 visibility: visibility)
-
   end
 end
 

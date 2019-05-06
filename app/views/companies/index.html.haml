@@ -20,6 +20,7 @@
             .panel-body
               = render 'search_form', all_companies: @all_companies,
                                       search_params: @search__params,
+                                      addresses_select_list: @addresses_select_list,
                                       language: @locale
 
   - if @companies.empty?
@@ -27,4 +28,7 @@
       #{t('.no_search_results')}
   - else
     #companies_list
-      = render 'companies_list', companies: @companies, search_params: @search_params
+      = render 'companies_list', companies: @companies,
+                                 search_params: @search_params,
+                                 addresses_select_list: @addresses_select_list,
+                                 language: @locale

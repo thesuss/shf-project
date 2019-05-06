@@ -18,6 +18,7 @@ class CompaniesController < ApplicationController
 
     self.params = fix_FB_changed_q_params(self.params)
     self.params = remove_sort_by_business_categories(self.params)
+    self.params = adjust_city_match_names(self.params)
 
     action_params, @items_count, items_per_page = process_pagination_params('company')
 
@@ -34,9 +35,24 @@ class CompaniesController < ApplicationController
     # allowing sorting on an associated table column ("region" in this case)
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
-    @all_companies = @all_companies.searchable unless current_user.admin?
+    if current_user.admin?
+      @all_visible_companies = @all_companies
+      @addresses_select_list = Address.select(:city).distinct
+                                 .sort { |a,b| a.city.downcase.strip <=> b.city.downcase.strip }
+    else
+      @all_companies = @all_companies.searchable
+      @all_visible_companies = @all_companies.address_visible
 
-    @all_visible_companies = @all_companies.address_visible
+      addresses = []
+      @all_visible_companies.each do |company|
+        company.addresses.where.not(visibility: 'none').select(:city).each do |address|
+          addresses << address
+        end
+      end
+
+      @addresses_select_list = addresses.uniq { |a| a.city.downcase.strip }
+                                .sort { |a,b| a.city.downcase.strip <=> b.city.downcase.strip }
+    end
 
     @all_visible_companies.each { |co| geocode_if_needed co }
 
@@ -49,7 +65,7 @@ class CompaniesController < ApplicationController
 
     respond_to do |format|
       format.html
-      
+
       format.js do
         list_html = render_to_string(partial: 'companies_list',
                                      locals: { companies: @companies,
@@ -316,6 +332,21 @@ class CompaniesController < ApplicationController
       params['q'] = params['q'].except('s')
     end
 
+    params
+  end
+
+  def adjust_city_match_names(params)
+    # Remove leading and trailing whitespace for city names and set up "LIKE" match
+
+    return params unless (city_matches = params[:q]&.[]('addresses_city_matches_any'))
+
+    params[:q]['addresses_city_matches_any'] = city_matches.map do |v|
+      if v.empty?
+        v
+      else
+        '%' + v.strip + '%'
+      end
+    end
     params
   end
 

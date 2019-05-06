@@ -38,25 +38,31 @@ Background:
   And the following companies exist:
     | name        | company_number | email                | region       | kommun    | city  |
     | Barky Boys  | 5560360793     | barky@barkyboys.com  | Stockholm    | Alingsås  | city1 |
+    | DogCo_01    | 5634016009     | dogco_01@mail.com    | Stockholm    | Alingsås  | CITY1 |
+    | DogCo_02    | 8471950124     | dogco_02@mail.com    | Stockholm    | Alingsås  | 'CITY1   ' |
     | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten | Bromölla  | city2 |
     | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Östersund | city3 |
     | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       | Laxå      | city4 |
     | NoPayment   | 8028973322     | hello@nopayment.se   | Stockholm    | Alingsås  | city5 |
     | NoMember    | 9697222900     | hello@nomember.se    | Stockholm    | Alingsås  | city6 |
+    | New Company | 8248600598     | newco@newco.com      | Stockholm    | Alingsås  | ' space city ' |
 
   And the following payments exist
     | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
     | fred@barkyboys.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+    | fred@barkyboys.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5634016009     |
     | john@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+    | john@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 8471950124     |
     | anna@dogsrus.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
     | emma@weluvdogs.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
+    | emma@weluvdogs.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 8248600598     |
 
   And the following applications exist:
     | user_email          | company_number | state    | categories      |
-    | fred@barkyboys.com  | 5560360793     | accepted | Groomer, Trainer|
-    | john@happymutts.com | 2120000142     | accepted | Psychologist    |
+    | fred@barkyboys.com  | 5560360793, 5634016009     | accepted | Groomer, Trainer|
+    | john@happymutts.com | 2120000142, 8471950124     | accepted | Psychologist    |
     | anna@dogsrus.com    | 5562252998     | accepted | Trainer         |
-    | emma@weluvdogs.com  | 5569467466     | accepted | Groomer, Walker |
+    | emma@weluvdogs.com  | 5569467466, 8248600598 | accepted | Groomer, Walker |
     | lars@nopayment.se   | 8028973322     | accepted | Groomer, Trainer|
 
   Given the date is set to "2017-10-01"
@@ -268,3 +274,22 @@ Scenario: Toggle Hide/Show search form
     And I should see "HappyMutts"
     And I should see "Barky Boys"
     And I should not see "We Luv Dogs" in the list of companies
+
+  @selenium @time_adjust
+  Scenario: Search by city ignores case, and leading and trailing whitespace in city name
+    Given I am Logged out
+    And I am on the "landing" page
+    Then I select "space city" in select list t("activerecord.attributes.company.city")
+    And I click on t("search")
+    And I should see "New Company"
+    And I should not see "HappyMutts" in the list of companies
+    And I should not see "We Luv Dogs" in the list of companies
+    And I should not see "Dogs R Us" in the list of companies
+
+    Then I select "city1" in select list t("activerecord.attributes.company.city")
+    And I click on t("search")
+    And I should see "Barky Boys"
+    And I should see "DogCo_01"
+    And I should see "DogCo_02"
+    And I should see "city1" in the list of companies
+    And I should see "CITY1" 2 times in the list of companies
