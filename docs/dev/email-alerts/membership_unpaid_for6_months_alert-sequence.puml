@@ -1,0 +1,106 @@
+@startuml
+
+!include plantuml-ae-style.iuml
+
+title Membership has been unpaid for 6 months alert sequence\n
+
+
+
+participant EmailAlert order 1 #lightcyan
+
+participant AdminEmailAlert order 2 #PaleTurquoise
+
+participant MemberUnpaidFor6MonthsAlert order 3  #lime
+
+participant RequirementsForMemberUnpaidForXMonths order 4
+
+participant "Entity (User)" as Entity order 5 #LemonChiffon
+
+participant "MemberUnpaidFor6MonthsAlert class" as MemberUnpaidFor6MonthsAlertClass order 6 #paleGreen
+
+
+participant "EmailAlert class" as EmailAlertClass order 7 #PaleTurquoise
+
+
+
+activate EmailAlertClass #PaleTurquoise
+
+MemberUnpaidFor6MonthsAlertClass -> EmailAlertClass: <b>condition_response(condition, log)</b>
+
+activate EmailAlert #lightcyan
+EmailAlertClass -> EmailAlert: condition_response(condition, log)
+
+EmailAlert -> EmailAlertClass: get_config(condition)
+EmailAlertClass -> EmailAlert: config
+EmailAlert -> EmailAlertClass: get_timing(condition)
+EmailAlertClass -> EmailAlert: timing
+deactivate EmailAlertClass
+
+
+activate AdminEmailAlert #PaleTurquoise
+
+EmailAlert -> AdminEmailAlert: entities_to_check
+AdminEmailAlert -> EmailAlert: User.not_admins
+
+EmailAlert -> AdminEmailAlert: process_entities(entities_to_check, log)
+
+
+group entities.each do | entity |
+  AdminEmailAlert -> AdminEmailAlert: take_action(entity, log)
+
+  activate MemberUnpaidFor6MonthsAlert #paleGreen
+  AdminEmailAlert ->  MemberUnpaidFor6MonthsAlert: add_entity_to_list?(user)
+
+  activate RequirementsForMemberUnpaidForXMonths
+  MemberUnpaidFor6MonthsAlert -> RequirementsForMemberUnpaidForXMonths: requirements_met?({ user: user, num_months: NUM_MONTHS })
+
+  activate Entity #lemonChiffon
+  RequirementsForMemberUnpaidForXMonths -> Entity
+  Entity -> RequirementsForMemberUnpaidForXMonths
+  deactivate Entity
+
+  RequirementsForMemberUnpaidForXMonths -> MemberUnpaidFor6MonthsAlert
+  deactivate RequirementsForMemberUnpaidForXMonths
+
+  deactivate MemberUnpaidFor6MonthsAlert #paleGreen
+
+  group if entity should be added to list
+  AdminEmailAlert -> AdminEmailAlert: entities_list.append(entity)
+  end group
+
+end group
+
+AdminEmailAlert -> AdminEmailAlert: send_alert_this_day?(@timing, @config)
+
+activate ConditionResponder
+AdminEmailAlert -> ConditionResponder: timing_matches_today?(timing, config)
+group if timing is every day
+  ConditionResponder -> ConditionResponder:  timing_is_every_day?(timing)
+end group
+
+group OR if timing = on a day of the month
+    ConditionResponder -> ConditionResponder:  today_is_timing_day_of_month?(timing, config)
+end group
+
+ConditionResponder -> AdminEmailAlert: (true | false)
+deactivate ConditionResponder
+
+group if send the alert this day is true
+
+  activate MemberUnpaidFor6MonthsAlert #paleGreen
+  AdminEmailAlert -> MemberUnpaidFor6MonthsAlert: recipients
+  MemberUnpaidFor6MonthsAlert -> AdminEmailAlert : only the email to the membership address\n ENV['SHF_MEMBERSHIP_EMAIL']
+  deactivate MemberUnpaidFor6MonthsAlert #paleGreen
+
+  group recipients.each do | recipient |
+     AdminEmailAlert -> EmailAlert: send_email(admin, log, [entities_list])
+  end group
+
+end group
+
+deactivate AdminEmailAlert
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

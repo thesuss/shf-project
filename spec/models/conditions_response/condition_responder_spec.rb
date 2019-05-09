@@ -269,9 +269,72 @@ RSpec.describe ConditionResponder, type: :model do
 
     end
 
+    describe '.timing_is_day_of_month?' do
+
+      it 'true if timing == :day_of_month' do
+        condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
+        expect(ConditionResponder.timing_is_day_of_month?(timing)).to be true
+      end
+
+      it 'false otherwise' do
+        condition.timing = ConditionResponder::DEFAULT_TIMING
+        expect(ConditionResponder.timing_is_day_of_month?(timing)).to be false
+      end
+    end
+
   end
 
+  describe '.timing_matches_today?' do
+
+    let(:condition) { build(:condition) }
+    let(:timing) { ConditionResponder.get_timing(condition) }
+
+    it 'true if timing is every day' do
+      config = {}
+      expect(ConditionResponder.timing_matches_today?(ConditionResponder::TIMING_EVERY_DAY, config)).to be true
+    end
+
+    it 'true if today is timing day of month? ' do
+      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
+      config = {on_month_day: Date.current.day}
+      expect(ConditionResponder.timing_matches_today?(ConditionResponder::TIMING_EVERY_DAY, config)).to be true
+    end
+
+    it 'false otherwise' do
+      condition.timing = ConditionResponder::DEFAULT_TIMING
+      expect(ConditionResponder.timing_matches_today?(timing, config)).to be false
+    end
+  end
+
+
+  describe '.today_is_timing_day_of_month?' do
+
+    let(:condition) { build(:condition) }
+    let(:timing) { ConditionResponder.get_timing(condition) }
+
+    it "true if timing is day of month AND config[:on_month_day] is today's day of the month" do
+      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
+      config = {on_month_day: Date.current.day}
+      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be true
+    end
+
+    it 'false if :on_month_day is not in config' do
+      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
+      config = {}
+      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be false
+    end
+
+    it "false if on_month_day is not today's date" do
+      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
+      config = {on_month_day: Date.current.day - 1}
+      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be false
+    end
+
+  end
+
+
   describe '.confirm_correct_timing' do
+
     let(:condition) { build(:condition, :every_day) }
     let(:timing) { ConditionResponder.get_timing(condition) }
 

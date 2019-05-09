@@ -11,6 +11,15 @@
 class CompanyEmailAlert < EmailAlert
 
 
+  def take_action(company, log)
+
+    if send_alert_this_day?(@timing, @config, company)
+      company_recipients(company).each do |member|
+        send_email(company, member, log)
+      end
+    end
+
+  end
 
   # Send the email to the entity. Put an entry in the log file about it.
   #
@@ -18,22 +27,19 @@ class CompanyEmailAlert < EmailAlert
   # Log the response (success or failure) to the log
   #
   # @param company [Company] - the company whose recipients will receive the email alert
-  # @param log [ActivityLog] - the log to record the response
+  # @param member [User] - the member of the company that is getting the email
+  # @param log [ActivityLog] - the log to record the response TODO use the @alert_logger
   #
-  def send_email(company, log)
+  def send_email(company, member, log)
 
-    company_recipients(company).each do |member|
       begin
         mail_response = mail_message(company, member).deliver_now
-        log_mail_response(log, mail_response, [company, member])
+        log_mail_response(log, mail_response, company, member)
 
       rescue => mailing_error
         # must pass in an Array of the email; when successful this is a Mail::AddressContainer
-        log_failure(log, log_msg_start,
-                    log_str_maker.failure_info([company, member]),
-                    mailing_error)
+        @alert_logger.log_failure(company, member, error: mailing_error)
       end
-    end
 
   end
 
@@ -61,20 +67,16 @@ class CompanyEmailAlert < EmailAlert
   end
 
 
-  def success_str(company, member)
-    info_str(company, member)
+  # @param [Array] args - the arguments.  Assumes the first one is _company_
+  #     and the second is _member_ and ignores any others
+  def success_str(*args)
+    info_str(args[0], args[1])
   end
 
-
-  def failure_str(company, member)
-    info_str(company, member)
-  end
-
-
-  # Return a log string maker specific to this class and subclasses
-  #
-  def log_str_maker
-    @log_str_maker ||= AlertLogStrMaker.new(self, :success_str, :failure_str)
+  # @param [Array] args - the arguments.  Assumes the first one is _company_
+  #     and the second is _member_ and ignores any others
+  def failure_str(*args)
+    info_str(args[0], args[1])
   end
 
 

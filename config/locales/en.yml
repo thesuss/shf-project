@@ -1101,6 +1101,14 @@ en:
           view_app_here: "You can view the membership application here: "
           must_be_logged_in: "(You must be logged in as the administrator to view it.)"
 
+      member_unpaid_over_x_months:
+        subject: Members unpaid for more than %{num_months} months
+        message_text:
+          these_are_unpaid: "These members are unpaid. Their membership fee was due %{num_months} months ago:"
+          full_name: Name
+
+        error_sending:  FIXME - need text to display if there is a problem sending this email
+
 
     shf_application_mailer:
       will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."

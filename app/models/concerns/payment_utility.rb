@@ -51,9 +51,38 @@ module PaymentUtility
     end
 
 
-    # THIS IS THE KEY RULE ABOUT WHEN PAYMENTS EXPIRE:
+    # Calculate the expiration date given a start date
     def expire_date_for_start_date(start_date)
-      start_date + 1.year - 1.day
+      other_date_for_given_date(start_date, is_start_date: true)
+    end
+
+
+    # Helper method for cases where we have the expire date (ex: in tests)
+    def start_date_for_expire_date(expire_date)
+      other_date_for_given_date(expire_date, is_start_date: false)
+    end
+
+
+    # THIS IS THE KEY RULE ABOUT WHEN PAYMENTS EXPIRE
+    #
+    # Given a date, get the 'other' date: if we have a start date, get the expiration date.
+    # If we have an expiration date, get the start date.
+    #
+    # The calculation is the same:  it is 1 year - 1 day "away" from the given date,
+    # no matter if we are looking into the future (we have a start date
+    #  and we and the expire date in the future)
+    # or if we are looking backwards to the past (we have an expiration date
+    #  and we want to know what the start date was).
+    # The only difference is whether we are subtracting 1 year and adding 1 day,
+    # or if we add one year and subtract 1 day; the difference is a multiplier of +/- 1.
+    #
+    # @param [Date] given_date - the date to calculate from
+    #
+    # @param [Boolean] is_start_date - is given_date the start date? (true by default)
+    # @return [Date] - the resulting Date that was calculated
+    def other_date_for_given_date(given_date, is_start_date: true)
+      multiplier = is_start_date ? 1 : -1
+      (given_date + (multiplier * 1.year) - (multiplier * 1.day) )
     end
 
   end

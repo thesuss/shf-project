@@ -307,4 +307,50 @@ RSpec.describe User, type: :model do
 
   end
 
+
+  describe 'start_date_for_expire_date' do
+
+    it 'is expire date minus 1 year + 1 day' do
+
+    end
+
+
+    it 'handles leap year' do
+
+    end
+  end
+
+
+  describe 'other_date_for_given_date' do
+
+    let(:start_2018_1_1) { Date.new(2018, 1, 1) }
+    let(:expire_2018_12_31) { Date.new(2018, 12, 31) }
+
+    it 'is_start_date is true by default' do
+      expect(described_class.other_date_for_given_date( start_2018_1_1) ).to eq described_class.other_date_for_given_date( start_2018_1_1, is_start_date: true)
+    end
+
+    it 'given a start date, calc the expiration' do
+      expect(described_class.other_date_for_given_date( start_2018_1_1) ).to eq expire_2018_12_31
+    end
+
+    it 'given an expiration date, calc the start date' do
+      expect(described_class.other_date_for_given_date( expire_2018_12_31, is_start_date: false) ).to eq start_2018_1_1
+    end
+
+    describe 'handles leap years' do
+
+      let(:start_2020_11_1) { Date.new(2020, 11, 1) }
+      let(:expire_2021_10_31) { Date.new(2021, 10, 31) }
+
+      it 'given a start date, calc the expiration' do
+        expect(described_class.other_date_for_given_date( start_2020_11_1) ).to eq expire_2021_10_31
+      end
+
+      it 'given an expiration date, calc the start date' do
+        expect(described_class.other_date_for_given_date( expire_2021_10_31, is_start_date: false) ).to eq start_2020_11_1
+      end
+    end
+
+  end
 end

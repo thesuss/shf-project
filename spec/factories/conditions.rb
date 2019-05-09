@@ -23,4 +23,8 @@ FactoryBot.define do
     timing { :every_day }
   end
 
+  trait :monthly do
+    timing { :on_month_day }
+  end
+
 end

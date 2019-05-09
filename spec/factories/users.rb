@@ -12,6 +12,12 @@ FactoryBot.define do
     member_photo {nil}
     date_membership_packet_sent { nil }
 
+
+    factory :admin do
+      admin { true }
+    end
+
+
     factory :user_without_first_and_lastname do
 
       after(:create) do |user|

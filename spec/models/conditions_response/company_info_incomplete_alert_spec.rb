@@ -212,6 +212,13 @@ RSpec.describe CompanyInfoIncompleteAlert do
     LOG_DIR      = 'tmp'
     LOG_FILENAME = 'testlog.txt'
 
+
+    before(:each) do
+      tmpfile = File.join(Rails.root, LOG_DIR, LOG_FILENAME)
+      File.delete(tmpfile) if File.exist?(tmpfile)
+      subject.create_alert_logger(log)
+    end
+
     after(:all) do
       tmpfile = File.join(Rails.root, LOG_DIR, LOG_FILENAME)
       File.delete(tmpfile) if File.exist?(tmpfile)
@@ -255,7 +262,9 @@ RSpec.describe CompanyInfoIncompleteAlert do
       expect(incomplete_co.current_members.size).to eq 2
 
       Timecop.freeze(dec_31) do
-        subject.send_email(incomplete_co, log)
+        incomplete_co.current_members.each do | member |
+          subject.send_email(incomplete_co, member, log)
+        end
       end
 
       expect(ActionMailer::Base.deliveries.size).to eq 2

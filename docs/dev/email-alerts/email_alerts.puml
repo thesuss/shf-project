@@ -1,0 +1,206 @@
+@startuml
+
+!include plantuml-ae-style.iuml
+
+skinparam Note {
+  FontStyle normal
+  FontSize 12
+  BorderColor green
+}
+
+skinparam defaultTextAlignment  left
+
+
+title
+  Email Alerts (Condition Responders)
+end title
+
+
+class ConditionResponder {
+
+self.get_config(condition)
+self.get_timing(condition)
+
+self.days_today_is_away_from(this_date, timing)
+self.days_1st_date_is_from_2nd(a_date, second_date, timing)
+
+self.timing_is_before?(timing)
+self.timing_is_after?(timing)
+self.timing_is_on?(timing)
+self.timing_is_every_day?(timing)
+self.timing_is_day_of_month?(timing)
+self.timing_matches_today?(timing, config)
+self.today_is_timing_day_of_month?(timing, config)
+
+self.confirm_correct_timing(timing, expected_timing, log)
+..
+<i>Subclasses must implement these methods:</i>
+
+self.condition_response(_condition, _log)
+
+}
+
+
+class EmailAlert {
+include Singleton
+
+@config
+@timing
+..
+self.condition_response(condition, log)
+..
+condtion_response(condition, log)
+process_entites(entities_to_check, log)
+take_action(entity, log)
+send_email(entity, log, email_args=[])
+mail_message(entity)
+log_mail_response(log, mail_response, *entities)
+create_alert_logger(log)
+send_on_day_number?(day_number, config)
+..
+
+<i>Subclasses must implement these methods:</i>
+
+entites_to_check()
+mailer_class()
+mailer_args(entity)
+mailer_method()
+send_alert_this_day?(timing, config, entity)
+success_str(args)
+failure_str(args)
+}
+
+
+ConditionResponder <|-- EmailAlert
+
+
+class UserEmailAlert {
+
+entities_to_check <i>(User.all)</i>
+mailer_class()
+mailer_args(user)
+success_str(user)
+failure_str(user)
+user_info(user)
+log_str_maker()
+}
+
+note left of UserEmailAlert
+  loops thru all entities (Users)
+  and sends an alert to it
+  if the requirement is satisfied
+end note
+
+EmailAlert <|-- UserEmailAlert
+
+class ShfAppNoUploadedFilesAlert {
+}
+UserEmailAlert <|-- ShfAppNoUploadedFilesAlert
+
+class MembershipLapsedAlert {
+}
+UserEmailAlert <|-- MembershipLapsedAlert
+
+class MembershipExpireAlert {
+}
+UserEmailAlert <|-- MembershipExpireAlert
+
+
+
+class CompanyEmailAlert {
+
+take_action(company, log)
+send_email(company, member, log)
+entities_to_check <i>(Company.all)</i>
+
+company_recipients(company)
+mail_message(company, member)
+
+mailer_class()
+success_str(*args)
+failure_str(*args)
+}
+
+EmailAlert <|-- CompanyEmailAlert
+
+note right of CompanyEmailAlert
+  loops thru all entities (Companies)
+  and sends an alert <i>to all current members</i>
+  if the requirement is satisfied
+end note
+
+
+class CompanyInfoIncompleteAlert {
+}
+CompanyEmailAlert <|-- CompanyInfoIncompleteAlert
+
+class HBrandingFeeDueAlert {
+}
+CompanyEmailAlert <|-- HBrandingFeeDueAlert
+
+class HBrandingFeeWillExpireAlert {
+}
+CompanyEmailAlert <|-- HBrandingFeeWillExpireAlert
+
+
+
+
+class AdminEmailAlert {
+@entities_list
+
+process_entities(entities_to_check, log)
+entities_to_check <i>(User.not_admins)</i>
+take_action(entity, _log)
+recipients <i>(User.admins)</i>
+send_alert_this_day?(timing, config)
+mailer_class()
+mailer_args(user)
+success_str(user)
+failure_str(user)
+..
+
+<i>Subclasses must implement these methods:</i>
+add_entity_to_list?(entity)
+
+}
+
+EmailAlert <|-- AdminEmailAlert
+
+note right of AdminEmailAlert
+  sends 1 alert to all admins
+  with info for each entity (User.not_admins)
+  that satisfied the Requirement
+end note
+
+
+class MemberUnpaidFor6MonthsAlert {
+NUM_MONTHS=6
+..
+add_entity_to_list?(user)
+recipients()
+mailer_method()
+mailer_args(admin)
+}
+
+AdminEmailAlert <|-- MemberUnpaidFor6MonthsAlert
+
+
+
+class AlertLogger {
+
+@log
+@logged_class
+@success_method
+@failure_method
+
+initialize(log, alert, success_info_method:, failure_info_method:)
+log_success(*log_args)
+log_failure(*log_args, error: '')
+
+}
+
+EmailAlert -right-> AlertLogger: alert_logger
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

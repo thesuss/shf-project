@@ -1,0 +1,48 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+title General Flow for CompanyEmail alerts\n activity diagram\n
+
+start
+
+#PaleTurquoise:entities_to_check;
+-> companies;
+note right
+ CompanyEmailAlert returns all Companies as the entities to check
+end note
+
+#LightCyan:process_entities;
+note right
+  (light cyan = inherits from EmailAlert parent class)
+end note
+
+
+while (entities.each do | entity |) is (\ncompany)
+  #LightCyan:take_action(company, log);
+
+  if (send_alert_this_day?) then (\ntrue)
+
+   while (company_recipients.each do | member|)
+      note right
+         <b>This is where CompanyEmailAlert differs from UserEmailAlert:</b>
+         instead of sending an email (alert) to each user (entity),
+         it sends it to all members of a Company.
+      end note
+
+      #PaleTurquoise:send_email(company,member, log);
+   endwhile
+
+  else (false)
+  endif
+
+  :<i>next company in entities.each</i> |
+endwhile
+
+
+:finished processing all entities;
+stop
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

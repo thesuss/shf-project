@@ -42,12 +42,14 @@ class User < ApplicationRecord
   validates :membership_number, uniqueness: true, allow_blank: true
 
   scope :admins, -> { where(admin: true) }
+  scope :not_admins, -> { where(admin: nil).or(User.where(admin: false)) }
 
   scope :members, -> { where(member: true) }
 
 
   successful_payment_with_type_and_expire_date = "payments.status = '#{Payment::SUCCESSFUL}' AND" +
       " payments.payment_type = ? AND payments.expire_date = ?"
+
   scope :membership_expires_in_x_days, -> (num_days){ includes(:payments)
                                                           .where(successful_payment_with_type_and_expire_date,
                                                                  Payment::PAYMENT_TYPE_MEMBER,

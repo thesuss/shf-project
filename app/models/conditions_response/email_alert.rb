@@ -13,24 +13,30 @@
 # This is a Singleton because subclasses may need their own instance of an
 #  AlertLogStringMaker. (Cannot accomplish that with a class variable).
 #
-#  SUBCLASSES MUST REDEFINE THESE METHODS:
-#     entities_to_check
-#     mailer_class
-#     mailer_args
-#     success_str
-#     failure_str
-#
-#     send_alert_this_day?
-#     mailer_method
+#  SUBCLASSES MUST IMPLEMENT SPECIFIC METHODS.
+#  They must be implemented to satisfy the interface for this abstract class.
+#  Any method that a subclass must implement will raise a NoMethod error
+#  here in this class unless a subclass implements it.
 #
 #
 #  All dates used are a Date (not a Time or DateTime). This allows us to easily
 #  determine the number of days between two dates.
 #
+#  TODO - started using @timing and @config instance vars; complete by also
+#         refactoring/changing all subclasses
+#
+#  TODO - this class is still too big.  It has too many responsibilities.  Can the
+#  mailer-related responsibilities be factored out into a different class? (e.g.
+#  mailer_class, mailer_args, mail_message)
+#
 class EmailAlert < ConditionResponder
 
 
   include Singleton
+
+
+  attr_accessor :config, :timing
+
 
   # pass the class method call to the singleton instance
   def self.condition_response(condition, log)
@@ -41,26 +47,39 @@ class EmailAlert < ConditionResponder
   # Loop through all 'entities' and send them an email if an alert should be sent today
   def condition_response(condition, log)
 
-    config = self.class.get_config(condition)
-    timing = self.class.get_timing(condition)
+    @config = self.class.get_config(condition)
+    @timing = self.class.get_timing(condition)
 
-    entities_to_check.each do | entity |
-      send_email(entity, log) if send_alert_this_day?(timing, config, entity)
-    end
+    create_alert_logger(log)
 
+    process_entities(entities_to_check, log)
+  end
+
+
+  # By default, process each entity and take action on it.
+  #
+  def process_entities(entities_to_check, log)
+    entities_to_check.each{ | entity | take_action(entity, log) }
+  end
+
+
+  # The default action is to send email to the entity if an alert should be sent this day,
+  # given the configuration and timing.
+  #
+  def take_action(entity, log)
+    send_email(entity, log) if send_alert_this_day?(@timing, @config, entity)
   end
 
 
   # Send the email to the entity. Put an entry in the log file about it.
-  def send_email(entity, log)
+  # subclasses can use email_args if needed to put additional info the email.
+  def send_email(entity, log, _email_args=[])
     begin
       mail_response = mail_message(entity).deliver_now
       log_mail_response(log, mail_response, entity)
 
     rescue => mailing_error
-      log_failure(log, log_msg_start,
-                  log_str_maker.failure_info([entity]),
-                  mailing_error)
+      @alert_logger.log_failure(entity, error: mailing_error)
     end
   end
 
@@ -71,6 +90,43 @@ class EmailAlert < ConditionResponder
   end
 
 
+  # create an AlertLogger to use to log success, failure, etc. about this alert
+  def create_alert_logger(log)
+    @alert_logger = AlertLogger.new(log, self)
+  end
+
+
+  # @param log [ActivityLog] - the log the message will be written to
+  # @param mail_response [Mail::Message] - checked to see if it was successful or not
+  # @param entity [Object] - the entity that was sent the email (a User; a Company; etc)
+  #
+  #  TODO - is the log really needed?  does the @alert_logger already have it?
+  #
+  def log_mail_response(_log, mail_response, *entities )
+
+    mail_response.errors.empty? ? @alert_logger.log_success(*entities)
+        : @alert_logger.log_failure(*entities)
+  end
+
+
+  # Method to improve readability. returns true if day_number is in config[:days]
+  #
+  # Expects config to include the :days key; returns false if it is not there
+  #
+  # If config is not a Hash, raises an Error because it really _should_ be a Hash
+  #  (it's a programming error to call this otherwise!)
+  #
+  # @param day_number [Integer] - the number of days away from today (before, after, or on)
+  # @param config [Hash] - other configuration info
+  def send_on_day_number?(day_number, config)
+    config.fetch(:days, false) ? config[:days].include?(day_number) : false
+  end
+
+
+  # ===========================================================================
+  #
+  # SUBCLASSES MUST DEFINE THESE METHODS
+  #
 
   # The list of entities that will be checked to see if an email needs to be sent
   #
@@ -93,7 +149,6 @@ class EmailAlert < ConditionResponder
   end
 
 
-
   # The arguments passed to the mailer method.
   #
   # SUBCLASSES MUST REDEFINE THIS TO SOMETHING USEFUL
@@ -105,17 +160,16 @@ class EmailAlert < ConditionResponder
   end
 
 
-  # method to improve readability. returns true if day_number is in config[:days]
+  # This is the method sent to the MemberMailer when this condition
+  # needs to send out an email.
   #
-  # Expects config to include the :days key; returns false if it is not there
-  #
-  # If config is not a Hash, raises an Error because it really _should_ be a Hash
-  #  (it's a programming error to call this otherwise!)
-  #
-  # @param day_number [Integer] - the number of days away from today (before, after, or on)
-  # @param config [Hash] - other configuration info
-  def send_on_day_number?(day_number, config)
-    config.fetch(:days, false) ? config[:days].include?(day_number) : false
+  # Subclasses must redefine this and return a symbol
+  # Ex:
+  #   def mailer_method
+  #     :membership_expiration_reminder
+  #   end
+  def mailer_method
+    raise NoMethodError, "Subclass must define the #{__method__} method and return a Symbol", caller
   end
 
 
@@ -134,12 +188,8 @@ class EmailAlert < ConditionResponder
   #
   #    day_to_check = <determined somehow>
   #
-  #    if timing_is_repeat_every?(timing)
-  #       is_today_a_repeat_day?(config[:starting_date], config[:days])
-  #     else
-  #       day_to_check = Date.current - config[:starting_date]
-  #       send_on_day_number?(day_to_check, config)
-  #     end
+  #    day_to_check = Date.current - config[:starting_date]
+  #    send_on_day_number?(day_to_check, config)
   #
   # If so, we can abstract that to here and have subclasses just provide the
   # method for return_false_condition and for determining the day_to_check
@@ -151,53 +201,6 @@ class EmailAlert < ConditionResponder
   #
   def send_alert_this_day?(_timing, _config, _entity)
     raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
-  end
-
-
-  # This is the method sent to the MemberMailer when this condition
-  # needs to send out an email.
-  #
-  # Subclasses must redefine this and return a symbol
-  # Ex:
-  #   def mailer_method
-  #     :membership_expiration_reminder
-  #   end
-  def mailer_method
-    raise NoMethodError, "Subclass must define the #{__method__} method and return a Symbol", caller
-  end
-
-
-  # Return a log string maker
-  #
-  def log_str_maker
-    @log_str_maker ||= AlertLogStrMaker.new(self, :success_str, :failure_str)
-  end
-
-
-  # @param log [ActivityLog] - the log the message will be written to
-  # @param mail_response [Mail::Message] - checked to see if it was successful or not
-  # @param entity [Object] - the entity that was sent the email (a User; a Company; etc)
-  #
-  def log_mail_response(log, mail_response, entity )
-    mail_response.errors.empty? ? log_success(log, log_msg_start, log_str_maker.success_info(entity))
-        : log_failure(log, log_msg_start, log_str_maker.failure_info(entity))
-  end
-
-
-  def log_success(log, msg_start, info_str)
-    log.record('info', "#{msg_start} email sent #{info_str}.")
-  end
-
-
-  def log_failure(log, msg_start, info_str, error = '')
-    log.record('error', "#{msg_start} email ATTEMPT FAILED #{info_str}. #{error} Also see for possible info #{ApplicationMailer::LOG_FILE} ")
-  end
-
-
-  # This string is the start of the line logged to the Alert log when
-  # this condition sends out an email = the name of the class
-  def log_msg_start
-    self.class.name
   end
 
 

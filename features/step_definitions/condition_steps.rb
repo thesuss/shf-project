@@ -45,6 +45,9 @@ And(/the condition has days set to \[(?:(.*),)(.*)\]/) do |days_list, last_day|
   condition.config[:days] = days_arr
 end
 
+And("the condition has the month day set to {digits}") do | month_day |
+  condition.config[:on_month_day] = month_day
+end
 
 #==================================================================================
 #

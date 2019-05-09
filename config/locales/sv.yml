@@ -1100,6 +1100,15 @@ sv:
           view_app_here: "Du kan se medlemskapsansökan här: "
           must_be_logged_in: "(Du måste vara inloggad som en administratör för att se det.)"
 
+      member_unpaid_over_x_months:
+        subject: "Members unpaid for more than %{num_months} months"
+        message_text:
+          these_are_unpaid: "These members are unpaid. Their membership fee was due over %{num_months} months ago:"
+          full_name: Namn
+
+        error_sending:  FIXME - need text to display if there is a problem sending this email
+
+
 
     shf_application_mailer:
       will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."

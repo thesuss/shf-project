@@ -1,0 +1,90 @@
+@startuml
+
+!include plantuml-ae-style.iuml
+
+title H-Branding Fee will expire alert sequence:\nparent classes and entities\n
+
+
+participant EmailAlert order 1 #lightcyan
+
+participant CompanyEmailAlert order 2 #PaleTurquoise
+
+participant HBrandingFeeWillExpireAlert order 3  #lime
+
+participant RequirementsForHBrandingFeeWillExpire order 4
+
+participant "Entity (Company)" as Entity order 5 #BlanchedAlmond
+
+participant "HBrandingFeeWillExpireAlert class" as HBrandingFeeWillExpireAlertClass order 6 #paleGreen
+
+participant "EmailAlert class" as EmailAlertClass order 7 #PaleTurquoise
+
+activate EmailAlertClass #PaleTurquoise
+
+HBrandingFeeWillExpireAlertClass -> EmailAlertClass: <b>condition_response(condition, log)</b>
+
+activate EmailAlert #lightcyan
+EmailAlertClass -> EmailAlert: condition_response(condition, log)
+
+EmailAlert -> EmailAlertClass: get_config(condition)
+EmailAlertClass -> EmailAlert: config
+EmailAlert -> EmailAlertClass: get_timing(condition)
+EmailAlertClass -> EmailAlert: timing
+deactivate EmailAlertClass
+
+
+activate CompanyEmailAlert #PaleTurquoise
+EmailAlert -> CompanyEmailAlert: entities_to_check
+CompanyEmailAlert -> EmailAlert: Company.all
+deactivate CompanyEmailAlert
+
+EmailAlert -> EmailAlert: process_entities(entities_to_check, log)
+
+activate CompanyEmailAlert #PaleTurquoise
+group entities.each do | entity |
+  EmailAlert -> CompanyEmailAlert: take_action(entity, log)
+
+  activate HBrandingFeeWillExpireAlert #paleGreen
+  CompanyEmailAlert -> HBrandingFeeWillExpireAlert: send_alert_this_day?(timing, config, entity)
+
+  HBrandingFeeWillExpireAlert -> RequirementsForHBrandingFeeWillExpire: requirements_met?({ company: company})
+
+  activate RequirementsForHBrandingFeeWillExpire
+  activate Entity #BlanchedAlmond
+  RequirementsForHBrandingFeeWillExpire -> Entity: !company.current_members.empty? && \n company.branding_license?
+  Entity -> RequirementsForHBrandingFeeWillExpire: (true | false)
+  deactivate Entity
+
+  RequirementsForHBrandingFeeWillExpire -> HBrandingFeeWillExpireAlert: (true | false)
+  deactivate RequirementsForHBrandingFeeWillExpire
+
+  activate HBrandingFeeWillExpireAlertClass  #paleGreen
+  HBrandingFeeWillExpireAlert -> HBrandingFeeWillExpireAlertClass: days_today_is_away_from(company.branding_expire_date, timing)
+  HBrandingFeeWillExpireAlertClass -> HBrandingFeeWillExpireAlert: day_to_check
+  deactivate HBrandingFeeWillExpireAlertClass
+
+  HBrandingFeeWillExpireAlert -> CompanyEmailAlert: send_on_day_number?(day_to_check, config)
+
+  deactivate HBrandingFeeWillExpireAlert
+
+  group if the alert should be sent today
+
+    CompanyEmailAlert -> CompanyEmailAlert: company_recipients(company)
+    activate Entity #BlanchedAlmond
+      CompanyEmailAlert -> Entity: current_members
+      Entity -> CompanyEmailAlert: current_members
+    deactivate Entity
+
+    group company_recipients(company).each do |member|
+      CompanyEmailAlert -> EmailAlert: send_email(company, member, log)
+    end group
+  end group
+
+end group
+
+deactivate CompanyEmailAlert #PaleTurquoise
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

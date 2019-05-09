@@ -33,6 +33,7 @@ class ConditionResponder
   TIMING_AFTER     = :after
   TIMING_ON        = :on
   TIMING_EVERY_DAY = :every_day
+  TIMING_DAY_OF_MONTH = :day_of_month
 
   DEFAULT_TIMING = TIMING_ON
   DEFAULT_CONFIG = {}
@@ -123,6 +124,27 @@ class ConditionResponder
 
   def self.timing_is_every_day?(timing)
     timing == TIMING_EVERY_DAY
+  end
+
+
+  def self.timing_is_day_of_month?(timing)
+    timing == TIMING_DAY_OF_MONTH
+  end
+
+
+  # True if the timing is every day
+  # OR if it is set to a day of the month and today is that day
+  def self.timing_matches_today?(timing, config)
+    timing_is_every_day?(timing) || today_is_timing_day_of_month?(timing, config)
+  end
+
+
+  # True if the timing is for the day of a month
+  # and today is the day of the month specified in the config
+  def self.today_is_timing_day_of_month?(timing, config)
+    self.timing_is_day_of_month?(timing) &&
+        config.fetch(:on_month_day, false) &&
+        config[:on_month_day] == Date.current.day
   end
 
 

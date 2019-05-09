@@ -372,10 +372,6 @@ RSpec.describe HBrandingFeeDueAlert do
     LOG_DIR      = 'tmp'
     LOG_FILENAME = 'testlog.txt'
 
-    after(:all) do
-      tmpfile = File.join(Rails.root, LOG_DIR, LOG_FILENAME)
-      File.delete(tmpfile) if File.exist?(tmpfile)
-    end
 
     let(:filepath) { File.join(Rails.root, LOG_DIR, LOG_FILENAME) }
     let(:log) { ActivityLogger.open(filepath, 'TEST', 'open', false) }
@@ -403,6 +399,18 @@ RSpec.describe HBrandingFeeDueAlert do
     }
 
 
+    before(:each) do
+      tmpfile = File.join(Rails.root, LOG_DIR, LOG_FILENAME)
+      File.delete(tmpfile) if File.exist?(tmpfile)
+      subject.create_alert_logger(log)
+    end
+
+    after(:all) do
+      tmpfile = File.join(Rails.root, LOG_DIR, LOG_FILENAME)
+      File.delete(tmpfile) if File.exist?(tmpfile)
+    end
+
+
     it 'emails sent to all members and logged' do
       paid_member1
       paid_member2
@@ -411,7 +419,9 @@ RSpec.describe HBrandingFeeDueAlert do
       expect(paid_member_co.current_members.size).to eq 2
 
       Timecop.freeze(jan_1) do
-        subject.send_email(paid_member_co, log)
+        paid_member_co.current_members.each do | member |
+          subject.send_email(paid_member_co, member, log)
+        end
       end
 
       expect(ActionMailer::Base.deliveries.size).to eq 2

@@ -240,10 +240,14 @@ RSpec.describe HBrandingFeeWillExpireAlert do
       paid_member2
       paid_member_co
 
+      subject.create_alert_logger(log)
+
       expect(paid_member_co.current_members.size).to eq 2
 
       Timecop.freeze(jan_1) do
-        subject.send_email(paid_member_co, log)
+        paid_member_co.current_members.each do | member |
+          subject.send_email(paid_member_co, member, log)
+        end
       end
 
       expect(ActionMailer::Base.deliveries.size).to eq 2
