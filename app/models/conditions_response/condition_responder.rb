@@ -1,6 +1,17 @@
 #!/usr/bin/ruby
 
 
+
+class ConditionResponderError < StandardError
+end
+
+class TimingNotValidError < ConditionResponderError
+end
+
+class ExpectedTimingsCannotBeEmptyError < ConditionResponderError
+end
+
+
 #--------------------------
 #
 # @class ConditionResponder
@@ -15,7 +26,7 @@
 # the overall design.
 #
 # TODO: ? rename to ConditionHandler - because it _handles_ conditions, it
-# doesn't respond _to_ them or _with_ them (it doesn't send a Condtion to anything.
+# doesn't respond _to_ them or _with_ them (it doesn't send a Condition to anything.
 #  It queries them and does it's own thing)
 #
 # @date   2018-12-13
@@ -23,8 +34,6 @@
 # @file condition_responder.rb
 #
 #--------------------------
-
-
 class ConditionResponder
 
   Timing = Symbol
@@ -34,6 +43,9 @@ class ConditionResponder
   TIMING_ON        = :on
   TIMING_EVERY_DAY = :every_day
   TIMING_DAY_OF_MONTH = :day_of_month
+
+  ALL_TIMINGS = [TIMING_BEFORE, TIMING_AFTER, TIMING_ON, TIMING_EVERY_DAY]
+
 
   DEFAULT_TIMING = TIMING_ON
   DEFAULT_CONFIG = {}
@@ -148,13 +160,39 @@ class ConditionResponder
   end
 
 
+  # keep this for backwards compatibility for now.  TODO: change usages to .validate_timing
   def self.confirm_correct_timing(timing, expected_timing, log)
-    unless timing == expected_timing
-      msg = "Received timing: #{timing} but expected: #{expected_timing}"
-      log.record('error', msg)
-      raise ArgumentError, msg
-    end
+    validate_timing(timing, [expected_timing], log)
   end
 
+
+  # Validates that the timing is in the list of valid timings.
+  # If it is not, it logs an error and raises and exception
+  #
+  # @param timing [Timing] - the timing to validate
+  # @param expected_timings [Array] - list of valid timings
+  # @param log [Log] - the log to record the error to
+  #
+ def self.validate_timing(timing, expected_timings=[], log)
+
+   if expected_timings.empty?
+     msg = "List of expected timings cannot be empty"
+     log.record('error', msg)
+     raise ExpectedTimingsCannotBeEmptyError, msg
+   end
+
+   valid_timings = expected_timings.is_a?(Enumerable) ? expected_timings : [expected_timings]
+
+   unless valid_timings.include? timing
+     msg = "Received timing :#{timing} which is not in list of expected timings: #{valid_timings}"
+     log.record('error', msg)
+     raise TimingNotValidError, msg
+   end
+ end
+
+
+  def self.all_timings
+    ALL_TIMINGS
+  end
 
 end # ConditionResponder

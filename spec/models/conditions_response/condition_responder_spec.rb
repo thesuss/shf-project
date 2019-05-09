@@ -4,6 +4,7 @@ require 'shared_context/activity_logger'
 
 
 RSpec.describe ConditionResponder, type: :model do
+
   include_context 'create logger'
 
 
@@ -339,16 +340,56 @@ RSpec.describe ConditionResponder, type: :model do
     let(:timing) { ConditionResponder.get_timing(condition) }
 
     it 'does not raise exception if received timing == expected' do
-      expect { ConditionResponder.confirm_correct_timing(:every_day, timing, log) }
+      expect(described_class).to receive(:validate_timing).with(:every_day, [:every_day], log)
+
+      expect { ConditionResponder.confirm_correct_timing(:every_day, :every_day, log) }
         .not_to raise_error
     end
 
     it 'raises exception if received timing != expected' do
-      expect { ConditionResponder.confirm_correct_timing(:not_every_day, :every_day, log) }
-        .to raise_exception ArgumentError,
-                            'Received timing: not_every_day but expected: every_day'
+      expect(described_class).to receive(:validate_timing).with(:not_every_day, [:every_day], log)
+      ConditionResponder.confirm_correct_timing(:not_every_day, :every_day, log)
     end
 
+  end
+
+
+  describe '.validate_timing' do
+
+    def invalid_timing_error_msg(invalid_timing, valid_list)
+      "Received timing :#{invalid_timing} which is not in list of expected timings: #{valid_list}"
+    end
+
+
+    it 'does not raise exception if timing IS in list of expected timings' do
+      expect { described_class.validate_timing(:every_day, [:every_day, :blorf], log) }
+          .not_to raise_error
+    end
+
+    it 'raises TimingNotValidConditionResponderError and writes to log if timing is not in list of expected timings' do
+      expect { described_class.validate_timing(:every_day, [:blorf], log) }
+          .to raise_error TimingNotValidError, "Received timing :every_day which is not in list of expected timings: [:blorf]"
+    end
+
+    it 'raises ExpectedTimingsCannotBeEmptyError and writes to log if list of expected timings is empty' do
+      expect { described_class.validate_timing(:every_day, [], log) }
+          .to raise_error ExpectedTimingsCannotBeEmptyError, "List of expected timings cannot be empty"
+    end
+
+
+    describe 'valid timings can be a single Timing (it will convert to an Array)' do
+
+      it 'does not raise exception if timing is the expected single Timing' do
+        expect { described_class.validate_timing(:blorf, :blorf, log) }
+            .not_to raise_error
+      end
+
+      it 'raises TimingNotValidConditionResponderError and writes to log if timing is NOT the expected single Timing' do
+        expect { described_class.validate_timing(:not_blorf, :blorf, log) }
+            .to raise_error TimingNotValidError, invalid_timing_error_msg(:not_blorf, [:blorf])
+      end
+
+    end
   end
 
 end

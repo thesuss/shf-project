@@ -44,8 +44,10 @@ namespace :shf do
         { class_name: 'Backup',
           timing:     :every_day,
           config:     { days_to_keep:     { code_backup: 4,
-                                            db_backup:   15 },
-                        backup_directory: nil } },
+                                            db_backup:   15,
+                                            files_backup: 31},
+                        backup_directory: nil,
+                        files: ['~/NOTES_RUNNING_LOG.txt', '/var/log/nginx']} },
 
         { class_name: 'DinkursFetch',
           timing:     :every_day },
