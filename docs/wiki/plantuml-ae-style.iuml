@@ -132,7 +132,7 @@ skinparam activity {
         Color       DEFAULT_NOT_SO_DARK
         'FontColor   DEFAULT_NOT_SO_DARK
         FontSize    12
-        FontStyle   italic
+        FontStyle   bold
     }
 
     BackgroundColor white
@@ -142,17 +142,32 @@ skinparam activity {
     ' it does not pick up the default for activity.
     ' maybe because it is defined?  have to define everything for it?
     Diamond {
-        FontStyle         italic  ' this is all we really want to change
+        'FontStyle         italic
         BackgroundColor   DEFAULT_BACKGROUND_COLOR
-        BorderColor       DEFAULT_BORDER_COLOR
-        BorderColor       DEFAULT_NOT_SO_DARK
-        FontColor         DEFAULT_FONT_COLOR
-        FontSize          14
+
+        BorderColor       SlateBlue
+        'FontColor         navy
+        FontSize          12
 
     }
-    'EndColor        red
+
+    Group {
+        BackgroundColor     white
+        BodyBackgroundColor white
+        BorderColor         DEFAULT_BORDER_COLOR
+        BorderThickness   1
+
+
+        Header {
+            FontStyle     normal
+        }
+    }
+
+
     FontSize        13
-    StartColor      DEFAULT_NOT_SO_DARK
+
+    StartColor      green
+    EndColor        red
 }
 
 
@@ -201,12 +216,13 @@ skinparam sequence {
     Group {
         BackgroundColor     white
         BodyBackgroundColor white
-        BorderColor         DEFAULT_BORDER_COLOR
+        BorderColor         #AAA
         BorderThickness     2
 
         Header {
             FontStyle     normal
         }
+
     }
 
     LifeLine {
@@ -214,8 +230,6 @@ skinparam sequence {
         BorderColor       navy
         BorderThickness   1
     }
-
-    'NewpageSeparatorColor
 
     Participant {
         BackgroundColor   white
@@ -243,7 +257,6 @@ skinparam sequence {
     Title {
         FontColor   black
         FontSize    TITLE_FONT_SIZE
-        'FontStyle
     }
 }
 
@@ -294,4 +307,20 @@ skinparam Usecase {
     ArrowColor          DEFAULT_NOT_SO_DARK
     BackgroundColor     white
     BorderColor         DEFAULT_BORDER_COLOR
+}
+
+
+
+skinparam note {
+   TextAlignment  left
+   FontSize 12
+}
+
+
+
+skinparam Partition {
+  FontSize 14
+  FontColor MediumSlateBlue
+  BorderColor MediumSlateBlue
+  BorderThickness 1
 }
