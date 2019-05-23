@@ -29,8 +29,11 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 
 Before do
- # I18n.locale = 'en'
- ENV['SHF_BETA'] = 'no'
+  # I18n.locale = 'en'
+  ENV['SHF_BETA'] = 'no'
+
+  # shush the ActivityLogger: Don't have it show every message to STDOUT.
+  allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
 end
 
 
