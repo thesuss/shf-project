@@ -86,6 +86,12 @@ RSpec.describe CompanyEmailAlert do
       subject.create_alert_logger(log)
     end
 
+    around(:each) do |example|
+      Timecop.freeze(jan1)
+      example.run
+      Timecop.return
+    end
+
 
     context 'successful' do
 
@@ -165,12 +171,16 @@ RSpec.describe CompanyEmailAlert do
 
 
   it '.company_recipients returns all current_members' do
+    Timecop.freeze(jan1)
+
     member1_c2_exp_jun6
     member2_c2_exp_jun1
     expect(subject.company_recipients(c2_2_members)).to match_array([member1_c2_exp_jun6, member2_c2_exp_jun1])
+
+    Timecop.return
   end
 
-  
+
   it '.success_str returns a string with member and company info' do
     expect(subject.success_str(c1_all_paid, member1_c1_exp_jun6))
         .to eq "to user id: #{member1_c1_exp_jun6.id} email: #{member1_c1_exp_jun6.email} company id: #{c1_all_paid.id} name: company1"

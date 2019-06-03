@@ -1358,6 +1358,7 @@ sv:
     try_login: Logga in först och försök igen med den sidan.
     format: "%{attribute} %{message}"
     bad_search_params: "Förlåt. Vi kunde inte söka efter %{search_item} med dessa kriterier. Var god försök igen."
+    something_wrong: 'Något gick fel - vänligen ladda om sidan och försök igen.'
     messages:
       accepted: måste accepteras
       blank: måste anges

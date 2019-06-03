@@ -120,6 +120,23 @@ class ShfApplicationsController < ApplicationController
     end
   end
 
+  def remove_attachment
+    if @shf_application.update(shf_application_params)
+
+      respond_to do |format|
+        format.js do
+          uploaded_html = render_to_string(partial: 'uploaded_files_list',
+                                           locals: { shf_application: @shf_application })
+          render json: { uploaded_html: uploaded_html, status: :ok }
+        end
+      end
+    else
+      respond_to do |format|
+        format.js { render json: { status: :unprocessable_entity } }
+      end
+    end
+  end
+
   def update_reason_waiting
 
     if (reason_id = params[:member_app_waiting_reasons])

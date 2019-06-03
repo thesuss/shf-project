@@ -47,6 +47,18 @@ var Utility = {
       var hideStr = 'accordion_label.' + toggleId + '.hide';
       $(this).text(I18n.t(hideStr));
     }
+  },
+
+  handleError: function(event, response) {
+
+    if (response.status !== 200 || (response.statusText !== 'OK')) {
+      // HTTP error or Action cannot be completed
+      event.stopPropagation();
+      alert(I18n.t('errors.something_wrong'));
+      return true;
+    }
+
+    return false;
   }
 
 };

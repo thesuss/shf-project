@@ -79,7 +79,7 @@ Feature: Applicant uploads a file for their application
   Scenario: Upload multiple files at one time (multiple select)
     Given I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page
-    When I choose the files named ["picture.jpg", "picture.png", "diploma.pdf"] to upload
+    When I choose files named "picture.jpg, picture.png, diploma.pdf" to upload
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.uploads.files_uploaded")
     And I should see "diploma.pdf" uploaded for this membership application
@@ -122,12 +122,14 @@ Feature: Applicant uploads a file for their application
     And I am logged in as "admin@shf.com"
     And I am on the "application" page for "applicant_1@random.com"
     Then I click on t("shf_applications.ask_applicant_for_info_btn")
-    And  I am logged in as "applicant_1@random.com"
+    And I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page
+
     And I click on trash icon for "diploma.pdf"
     And I confirm popup
+
     Then I should not see "diploma.pdf" uploaded for this membership application
-    And I should see t("shf_applications.update.success_with_app_files_missing")
+    And I should see t("shf_applications.uploads.no_files")
 
   @selenium
   Scenario: User uploads a file to an existing membership application

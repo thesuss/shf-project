@@ -1,5 +1,11 @@
-When(/^I choose a file named "([^"]*)" to upload$/) do | filename |
-  page.attach_file "uploaded_file[actual_files][]", File.join(Rails.root, 'spec', 'fixtures','uploaded_files', filename), visible: false #selenium won't find the upload button without visible: false
+When(/^I choose (?:a file|files) named "([^"]*)" to upload$/) do | filename |
+  filenames = filename.split(/\s*,\s*/)
+  filepaths = []
+  filenames.each do |file|
+    filepaths << File.join(Rails.root, 'spec', 'fixtures','uploaded_files', file)
+  end
+  page.attach_file "uploaded_file[actual_files][]", filepaths, visible: false
+  # ^^ selenium won't find the upload button without visible: false
 end
 
 And(/^I should( not)? see "([^"]*)" uploaded for this membership application$/) do |negate, filename|
@@ -23,4 +29,12 @@ end
 
 Then(/^I should( not)? see the file delete action$/) do | negate |
   expect(page).send (negate ? :not_to : :to), have_xpath("//th[contains(., #{I18n.t('delete')})][@class='action']")
+end
+
+When "I delete the{optional_string} uploaded file" do |ordinal|
+  index = ordinal ? [0, 1, 2, 3, 4].send(ordinal.lstrip) : 0
+
+  page.driver.accept_modal(:confirm, wait: 4) do
+    all("a[class='action-delete']")[index].click
+  end
 end

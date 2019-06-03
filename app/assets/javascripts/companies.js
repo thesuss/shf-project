@@ -3,7 +3,7 @@ $(function() {
 
   $('body').on('ajax:complete', '.companies_pagination', function (e, response) {
 
-    if (companyFunctions.handleError(e, response) === false) {
+    if (Utility.handleError(e, response) === false) {
       var data = JSON.parse(response.responseText);
 
       $('#companies_list').html(data.list_html);
@@ -13,7 +13,7 @@ $(function() {
 
   $('body').on('ajax:complete', '#companies_search', function (e, response) {
 
-    if (companyFunctions.handleError(e, response) === false) {
+    if (Utility.handleError(e, response) === false) {
       var data = JSON.parse(response.responseText);
 
       $('#companies_list').html(data.list_html);
@@ -59,14 +59,3 @@ $(function() {
     }
   });
 });
-
-companyFunctions = {
-  handleError: function(event, response) {
-    if (response.status !== 200) {
-      event.stopPropagation();
-      alert('Something went wrong - please reload page and try again.');
-      return true;
-    }
-    return false;
-  }
-}

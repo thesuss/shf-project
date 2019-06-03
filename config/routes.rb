@@ -55,6 +55,8 @@ Rails.application.routes.draw do
 
     resources :shf_applications, path: 'ansokan' do
       member do
+        put 'remove_attachment'
+
         put 'update-reason-waiting', to: 'shf_applications#update_reason_waiting',
             as: 'reason_waiting'
 

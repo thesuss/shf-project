@@ -171,7 +171,7 @@ class CompaniesController < ApplicationController
 
     # XHR request from modal in ShfApplication create view (to create company)
     if saved
-      status = 'success'
+      status = 'ok'
       id = 'shf_application_company_number'
       value = @company.company_number
     else

@@ -1,6 +1,17 @@
 $(function() {
   'use strict';
 
+  // Successful delete of file attached to application
+  $('body').on('ajax:complete', 'a[class="action-delete"]', function (e, response) {
+
+    if (Utility.handleError(e, response) === false) {
+      var data = JSON.parse(response.responseText);
+
+      $('#uploaded-files').html(data.uploaded_html);
+      $('[data-toggle="tooltip"]').tooltip();
+    }
+  });
+
   // Check to see if any file delivery radio button is selected -
   // if so, remove "disable" from submit button, hide explain text
   // if not, set callback function, on button change, to perform above actions
