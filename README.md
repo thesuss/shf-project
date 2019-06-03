@@ -37,6 +37,8 @@ This project runs on a Ruby on Rails stack with postgreSQL as the repository.
 Required for integration tests (cucumber + capybara):
 - chromedriver 2.32.498537 or higher https://sites.google.com/a/chromium.org/chromedriver/downloads
 
+**NOTE**: The developer (*you*) don't need to download chromedriver explicitly.  We use
+a gem (webdrivers) that downloads (and updates) chromedriver when needed.
 
 ## Installation
 
