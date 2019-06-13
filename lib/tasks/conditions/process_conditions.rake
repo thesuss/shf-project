@@ -38,7 +38,7 @@ namespace :shf do
           process_klass(klass, condition, log)
         end
 
-      # If the problem is because of Slack Notification, log it and continue.
+      # If the problem is because of Slack Notification .... log it and continue.
       # Do not let it stop the processing.
       rescue Slack::Notifier::APIError => slack_error
         use_slack_notification = false
@@ -47,9 +47,13 @@ namespace :shf do
         log.error('Retrying the previous condition...')
         retry
 
+      # .... Otherwise, an exception was raised during condition processing -
+      #      log the error and continue with condition processing.
+      #      (If Slack connection is up, we'll have already notified via that).
       rescue StandardError => e
+        log.error("Class: #{class_name}")
         log.error("Exception: #{e}:  #{e.inspect}")
-        raise
+        next
       end
     end
   end
