@@ -12,6 +12,8 @@ module ShfConditionError
   class BackupConfigFilesBadFormatError < BackupError
   end
 
+  class BackupCommandNotSuccessfulError < BackupError
+  end
 end
 
 # @desc Abstract class for all backup classes.
@@ -33,23 +35,30 @@ class AbstractBackupMaker
     @backup_sources = backup_sources
   end
 
+
   # Do the backup. Default target is the backup_target_filebase; default sources = the backup sources)
   def backup(_target = backup_target_filebase, _sources = backup_sources)
     raise NoMethodError, "Subclass must define the #{__method__} method", caller
   end
 
+
   def default_backup_filebase
-    "backup-#{self.class.name}.tar."
+    "backup-#{self.class.name}.tar"
   end
+
 
   def default_sources
     []
   end
 
-  # do a call to the Kernel shell.
-  # This method allows us to stub things during testing and encapsulate all calls.
+
+  # Run the command using Open3 which allows us to capture the output and status
+  # Raise an error unless the return status is success
   def shell_cmd(cmd)
-    %x(#{cmd})
+    stdout_str, stderr_str, status = Open3.capture3(cmd)
+    unless status&.success?
+      raise(ShfConditionError::BackupCommandNotSuccessfulError, "Command: #{cmd}. return status: #{status}  Error: #{stderr_str}  Output: #{stdout_str}")
+    end
   end
 
 end
@@ -66,16 +75,17 @@ class FilesBackupMaker < AbstractBackupMaker
 end
 
 
-# Backup a list of code directories.  Create 1 resulting backup file 'current.tar.'
+# Backup a list of code directories.  Create 1 resulting backup file 'current.tar'
 class CodeBackupMaker < FilesBackupMaker
 
   DEFAULT_SOURCES = [CODE_ROOT_DIRECTORY]
-  DEFAULT_BACKUP_FILEBASE = 'current.tar.'
+  DEFAULT_BACKUP_FILEBASE = 'current.tar'
 
 
   def default_backup_filebase
     DEFAULT_BACKUP_FILEBASE
   end
+
 
   def default_sources
     [CODE_ROOT_DIRECTORY]
@@ -89,22 +99,24 @@ end
 #
 class DBBackupMaker < AbstractBackupMaker
 
-  DB_BACKUP_FILEBASE   = 'db_backup.sql.'
+  DB_BACKUP_FILEBASE = 'db_backup.sql'
 
   # Backup all Postgres databases in sources, then gzip them into the target
   def backup(target = backup_target_filebase, sources = backup_sources)
 
     shell_cmd("touch #{target}")
 
-    sources.each do | source |
+    sources.each do |source|
       shell_cmd("pg_dump -d #{source} | gzip > #{target}")
     end
 
   end
 
+
   def default_backup_filebase
     DB_BACKUP_FILEBASE
   end
+
 
   def default_sources
     [DB_NAME]
@@ -112,13 +124,12 @@ class DBBackupMaker < AbstractBackupMaker
 end
 
 
-
 class Backup < ConditionResponder
 
 
-  DEFAULT_BACKUP_FILES_DIR     = '/home/deploy/SHF_BACKUPS/'
+  DEFAULT_BACKUP_FILES_DIR = '/home/deploy/SHF_BACKUPS/'
   DEFAULT_CODE_BACKUPS_TO_KEEP = 4
-  DEFAULT_DB_BACKUPS_TO_KEEP   = 15
+  DEFAULT_DB_BACKUPS_TO_KEEP = 15
   DEFAULT_FILE_BACKUPS_TO_KEEP = 31
 
   TIMESTAMP_FMT = '%Y-%m-%d'
@@ -131,20 +142,22 @@ class Backup < ConditionResponder
     validate_timing(get_timing(condition), [TIMING_EVERY_DAY], log)
 
     config = get_config(condition)
-    backup_targets = create_backup_targets(config)
+    backup_makers = create_backup_makers(config)
 
-    # Backup each backup_target to local storage
+    # Backup each backup_maker to local storage
 
     backup_files = []
     backup_dir = backup_dir(config)
 
-    backup_targets.each do |backup_target|
+    backup_makers.each do |backup_maker|
 
-      backup_file = backup_target_fn(backup_dir, backup_target[:backup_maker].backup_target_filebase)
+      backup_file = backup_target_fn(backup_dir, backup_maker[:backup_maker].backup_target_filebase)
       backup_files << backup_file
 
       log.record('info', "Backing up to: #{backup_file}")
-      backup_target[:backup_maker].backup
+
+      # this will use the default source and target set when the backup maker was created
+      backup_maker[:backup_maker].backup
     end
 
 
@@ -161,11 +174,11 @@ class Backup < ConditionResponder
 
     log.record('info', 'Pruning older backups on local storage')
 
-    backup_targets.each do |backup_target|
+    backup_makers.each do |backup_maker|
 
-      file_pattern = get_backup_files_pattern(backup_dir, backup_target[:backup_maker].backup_target_filebase)
+      file_pattern = get_backup_files_pattern(backup_dir, backup_maker[:backup_maker].backup_target_filebase)
 
-      delete_excess_backup_files(file_pattern, backup_target[:keep_num])
+      delete_excess_backup_files(file_pattern, backup_maker[:keep_num])
 
     end
   end
@@ -175,9 +188,11 @@ class Backup < ConditionResponder
     config.dig(:backup_directory) || DEFAULT_BACKUP_FILES_DIR
   end
 
+
   def self.backup_target_fn(backup_dir, backup_base_fn)
     File.join(backup_dir, backup_base_fn + today_timestamp + '.gz')
   end
+
 
   def self.today_timestamp
     Time.now.strftime TIMESTAMP_FMT
@@ -187,7 +202,7 @@ class Backup < ConditionResponder
   def self.get_s3_objects(today_ts = today_timestamp)
 
     s3 = Aws::S3::Resource.new(
-        region:      ENV['SHF_AWS_S3_BACKUP_REGION'],
+        region: ENV['SHF_AWS_S3_BACKUP_REGION'],
         credentials: Aws::Credentials.new(ENV['SHF_AWS_S3_BACKUP_KEY_ID'],
                                           ENV['SHF_AWS_S3_BACKUP_SECRET_ACCESS_KEY']))
 
@@ -207,7 +222,7 @@ class Backup < ConditionResponder
 
 
   def self.get_backup_files_pattern(backup_dir, beginning_of_file_name)
-    backup_dir + beginning_of_file_name + '*'
+    File.join(backup_dir,beginning_of_file_name) + '.*'
   end
 
 
@@ -226,29 +241,29 @@ class Backup < ConditionResponder
   end
 
 
-  def self.create_backup_targets(config)
+  def self.create_backup_makers(config)
     num_code_backups_to_keep = config.dig(:days_to_keep, :code_backup) || DEFAULT_CODE_BACKUPS_TO_KEEP
-    num_db_backups_to_keep   = config.dig(:days_to_keep, :db_backup) || DEFAULT_DB_BACKUPS_TO_KEEP
+    num_db_backups_to_keep = config.dig(:days_to_keep, :db_backup) || DEFAULT_DB_BACKUPS_TO_KEEP
     num_file_backups_to_keep = config.dig(:days_to_keep, :files_backup) || DEFAULT_FILE_BACKUPS_TO_KEEP
 
     # :keep_num key defines how many daily backups to retain on _local_ storage (e.g. on the production machine)
     # AWS (S3) backup files are retained based on settings in AWS.
-    backup_targets = [
+    backup_makers = [
         { backup_maker: CodeBackupMaker.new, keep_num: num_code_backups_to_keep },
         { backup_maker: DBBackupMaker.new, keep_num: num_db_backups_to_keep }
     ]
 
     files_backup_maker = create_files_backup_maker(config)
-    backup_targets << { backup_maker: files_backup_maker, keep_num: num_file_backups_to_keep } if files_backup_maker
+    backup_makers << { backup_maker: files_backup_maker, keep_num: num_file_backups_to_keep } if files_backup_maker
 
-    backup_targets
+    backup_makers
   end
 
 
   # only create a FilesBackupMaker if there is a list of files to be backed up
   def self.create_files_backup_maker(config)
     files_backup_maker = nil
-    if (backup_files = config.fetch(:files, false) )
+    if (backup_files = config.fetch(:files, false))
 
       unless backup_files.is_a?(Array)
         raise ShfConditionError::BackupConfigFilesBadFormatError.new('Backup Condition configuration for :files is bad.  Must be an Array.')

@@ -6,6 +6,9 @@ namespace :shf do
 
     std_reminder_before_schedule = [60, 30, 14, 2]
 
+    RUNNING_LOG = '~/NOTES-RUNNING-LOG.txt'
+    NGINX_LOG_DIR = '/var/log/nginx'
+
     # Add a Hash for each Condition to be created
     #
     conditions_to_create = [
@@ -47,7 +50,7 @@ namespace :shf do
                                             db_backup:   15,
                                             files_backup: 31},
                         backup_directory: nil,
-                        files: ['~/NOTES_RUNNING_LOG.txt', '/var/log/nginx']} },
+                        files: [RUNNING_LOG, NGINX_LOG_DIR]} },
 
         { class_name: 'DinkursFetch',
           timing:     :every_day },
