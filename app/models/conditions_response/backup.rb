@@ -17,32 +17,45 @@ module ShfConditionError
 end
 
 # @desc Abstract class for all backup classes.
-#   backup_sources = the list of files or glob pattern of the files to be backed up
-#   backup_target_filebase = the basic filename created by backing up the sources. Info
-#    is added to this basic filename (e.g. the date is added,
-#    perhaps another extension is appended like '.gz')
+#
+# base_filename - the default target filename.
+#                 This does _not_ have a directory, it is only a filename
+#                 and extension.
+#                 This can be used to construct a full filename for the
+#                 target_filename for the backup.
+#
+# target_filename - the filename used for the backup file that is created
+#                   The default value for this is the base_filename.
+#
+# backup_sources - a list that is used as the source for the backups.
+#                  Subclasses use this list to create their backups.
+#                  This is what is backed up.
+
 #
 # Each Backup class must implement :backup(backup_target, sources) to do whatever
 # it needs to do to create the backup
 #
 class AbstractBackupMaker
 
-  attr :backup_target_filebase, :backup_sources
+
+  attr :target_filename, :backup_sources
+
 
   # Set the backup target and the backup sources
-  def initialize(backup_target_filebase: default_backup_filebase, backup_sources: default_sources)
-    @backup_target_filebase = backup_target_filebase
+  def initialize(target_filename: base_filename,
+                 backup_sources: default_sources)
+    @target_filename = target_filename
     @backup_sources = backup_sources
   end
 
 
-  # Do the backup. Default target is the backup_target_filebase; default sources = the backup sources)
-  def backup(_target = backup_target_filebase, _sources = backup_sources)
+  # Do the backup. Default target is the target_filename; default sources = the backup sources)
+  def backup(target: target_filename, sources: backup_sources)
     raise NoMethodError, "Subclass must define the #{__method__} method", caller
   end
 
 
-  def default_backup_filebase
+  def base_filename
     "backup-#{self.class.name}.tar"
   end
 
@@ -57,7 +70,7 @@ class AbstractBackupMaker
   def shell_cmd(cmd)
     stdout_str, stderr_str, status = Open3.capture3(cmd)
     unless status&.success?
-      raise(ShfConditionError::BackupCommandNotSuccessfulError, "Command: #{cmd}. return status: #{status}  Error: #{stderr_str}  Output: #{stdout_str}")
+      raise(ShfConditionError::BackupCommandNotSuccessfulError, "Backup Command Failed: #{cmd}. return status: #{status}  Error: #{stderr_str}  Output: #{stdout_str}")
     end
   end
 
@@ -68,8 +81,10 @@ end
 class FilesBackupMaker < AbstractBackupMaker
 
   # use tar to compress all sources into the file named by target
-  def backup(target = backup_target_filebase, sources = backup_sources)
+  # @return [String] - the name of the backup target created
+  def backup(target: target_filename, sources: backup_sources)
     shell_cmd("tar -chzf #{target} #{sources.join(' ')}")
+    target
   end
 
 end
@@ -82,7 +97,7 @@ class CodeBackupMaker < FilesBackupMaker
   DEFAULT_BACKUP_FILEBASE = 'current.tar'
 
 
-  def default_backup_filebase
+  def base_filename
     DEFAULT_BACKUP_FILEBASE
   end
 
@@ -102,18 +117,19 @@ class DBBackupMaker < AbstractBackupMaker
   DB_BACKUP_FILEBASE = 'db_backup.sql'
 
   # Backup all Postgres databases in sources, then gzip them into the target
-  def backup(target = backup_target_filebase, sources = backup_sources)
+  # @return [String] - filename of the backup target created
+  def backup(target: target_filename, sources: backup_sources)
 
-    shell_cmd("touch #{target}")
+    shell_cmd("touch #{target}") # must ensure the file exists
 
     sources.each do |source|
       shell_cmd("pg_dump -d #{source} | gzip > #{target}")
     end
-
+    target
   end
 
 
-  def default_backup_filebase
+  def base_filename
     DB_BACKUP_FILEBASE
   end
 
@@ -137,7 +153,10 @@ class Backup < ConditionResponder
   # -------------
 
 
+  # TODO: Slack notification may or may not be used (= the use_slack_notification flag).
   def self.condition_response(condition, log)
+
+    @slack_error_already_logged = false # keep us from logging a Slack error every time it percolates up through rescue blocks
 
     validate_timing(get_timing(condition), [TIMING_EVERY_DAY], log)
 
@@ -145,42 +164,48 @@ class Backup < ConditionResponder
     backup_makers = create_backup_makers(config)
 
     # Backup each backup_maker to local storage
-
     backup_files = []
     backup_dir = backup_dir(config)
 
-    backup_makers.each do |backup_maker|
+    iterate_and_log_notify_errors(backup_makers, 'while in the backup_makers.each loop', log) do |backup_maker|
 
-      backup_file = backup_target_fn(backup_dir, backup_maker[:backup_maker].backup_target_filebase)
+      # Create a full file path that will be in the backup_directory,
+      # and have the filename and extension provided by the backup_maker,
+      # but with with date and '.gz' appended.
+      backup_file = backup_target_fn(backup_dir, backup_maker[:backup_maker].base_filename)
       backup_files << backup_file
 
       log.record('info', "Backing up to: #{backup_file}")
 
-      # this will use the default source and target set when the backup maker was created
-      backup_maker[:backup_maker].backup
+      # this will use the default backup sources set when the backup_maker was created
+      backup_maker[:backup_maker].backup(target: backup_file)
     end
 
 
-    # Copy backup files to S3
-
     log.record('info', 'Moving backup files to AWS S3')
-
     s3, bucket, bucket_folder = get_s3_objects(today_timestamp)
 
-    backup_files.each { |file| upload_file_to_s3(s3, bucket, bucket_folder, file) }
+    iterate_and_log_notify_errors(backup_files, 'in backup_files loop, uploading_file_to_s3', log) do |backup_file|
+      upload_file_to_s3(s3, bucket, bucket_folder, backup_file)
+    end
 
-
-    # Prune older backups beyond "keep" (days) limit
 
     log.record('info', 'Pruning older backups on local storage')
 
-    backup_makers.each do |backup_maker|
-
-      file_pattern = get_backup_files_pattern(backup_dir, backup_maker[:backup_maker].backup_target_filebase)
-
+    iterate_and_log_notify_errors(backup_makers, 'while pruning in the backup_makers.each loop', log) do |backup_maker|
+      file_pattern = get_backup_files_pattern(backup_dir, backup_maker[:backup_maker].base_filename)
       delete_excess_backup_files(file_pattern, backup_maker[:keep_num])
-
     end
+
+
+  rescue Slack::Notifier::APIError => slack_error
+    # Halt the backup if we cannot write to Slack; log then raise the error
+     log_slack_error(slack_error, log, '(in rescue at bottom of condition_response)')
+    raise slack_error
+
+  rescue => backup_error
+    log_and_notify(backup_error, log)
+
   end
 
 
@@ -190,7 +215,7 @@ class Backup < ConditionResponder
 
 
   def self.backup_target_fn(backup_dir, backup_base_fn)
-    File.join(backup_dir, backup_base_fn + today_timestamp + '.gz')
+    File.join(backup_dir, backup_base_fn + '.' + today_timestamp + '.gz')
   end
 
 
@@ -221,8 +246,8 @@ class Backup < ConditionResponder
   end
 
 
-  def self.get_backup_files_pattern(backup_dir, beginning_of_file_name)
-    File.join(backup_dir,beginning_of_file_name) + '.*'
+  def self.get_backup_files_pattern(backup_dir, filename)
+    File.join(backup_dir, filename) + '.*'
   end
 
 
@@ -274,4 +299,78 @@ class Backup < ConditionResponder
 
     files_backup_maker
   end
+
+
+  # Iterate through the list, rescuing errors. If it's a Slack error,
+  # log and raise the error (stop iterating).
+  # For any other error, log  and send a notification
+  # and continue iterating via the 'next' keyword.
+  #
+  # @param [Enumerable] list - items we are iterating through
+  # @param [String] additional_error_info - additional information to include
+  #                  when logging or notifying
+  # @param [Log] log - the log to write to
+  #
+  def self.iterate_and_log_notify_errors(list, additional_error_info, log)
+
+    list.each do |item|
+      yield(item)
+
+    rescue Slack::Notifier::APIError => slack_error
+      # Halt the backup if we cannot write to Slack; log then raise the error
+      log_slack_error(slack_error, log, "#{additional_error_info}. Current item: #{item.inspect}")
+      raise slack_error
+
+    rescue => backup_error
+      log_and_notify(backup_error, log, "#{additional_error_info}. Current item: #{item.inspect}")
+      next
+    end
+  end
+
+
+  # Record the error and additional_info to the given log and send a Slack notification.
+  #
+  # TODO  this seems like a general-purpose method that we need in many places.  Refactor into a class/module to be available all places
+  #
+  #
+  # @param [Error] original_error - Error that needs to be recorded
+  # @param [Log] log - the log to write to. Must respond to :error(message)
+  # @param [String] additional_info - any additional information that should also be recorded. Default = ''
+  #
+  def self.log_and_notify(original_error, log, additional_info = '')
+
+    log_string = additional_info.blank? ? original_error.to_s : "#{original_error} #{additional_info}"
+
+    log.error(log_string)
+    SHFNotifySlack.failure_notification(self.name, text: log_string)
+
+    # If the problem is because of Slack Notification, log it and raise it
+    #  so the caller can deal with it as needed.
+  rescue Slack::Notifier::APIError => slack_error
+
+    log.error("Slack error during #{self.name}.#{__method__}: #{slack_error.inspect}")
+    raise slack_error
+
+    # ... Otherwise, an exception was raised during writing to the log.
+    # Send a slack notification about that and continue (do _not_ raise it).
+  rescue => not_a_slack_error
+    # send a notification about the original error
+    SHFNotifySlack.failure_notification(self.name, text: log_string)
+
+    # send another notification about the error that happened in this method
+    SHFNotifySlack.failure_notification(self.name, text: "Error: Could not write to the log in #{self.name}.#{__method__}: #{not_a_slack_error}")
+  end
+
+
+  def self.slack_error_encountered_str(during_method = 'condition_response')
+    "Slack Notification failure during #{self.name}.#{during_method}"
+  end
+
+
+  # Only log the error if it has not already been logged.
+  def self.log_slack_error(slack_error, log, details = '')
+    log.error("#{slack_error_encountered_str} #{details}: #{slack_error}") unless @slack_error_already_logged
+    @slack_error_already_logged = true
+  end
+
 end

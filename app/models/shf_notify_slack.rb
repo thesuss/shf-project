@@ -26,6 +26,7 @@ class SHFNotifySlack
   SLACK_FAIL_EMOJI    = ':x:'
   SUCCESS_TEXT        = 'Successful'
   FAILURE_TEXT        = 'Failure!'
+  UNKNOWN_FAILURE     = 'Some unknown failure!'
 
   FOOTER_PREFIX = 'SHF'
 
@@ -66,10 +67,10 @@ class SHFNotifySlack
   end
 
 
-  def self.failure_notification(notification_source, text: FAILURE_TEXT,
+  def self.failure_notification(notification_source, text: UNKNOWN_FAILURE,
       emoji: SLACK_FAIL_EMOJI)
 
-    self.notification(notification_source, text,
+    self.notification(notification_source, "#{failure_word} #{text}",
                       emoji: emoji,
                       color: SLACK_FAIL_COLOR)
   end
@@ -130,6 +131,16 @@ class SHFNotifySlack
 
   def self.footer_text(f_text = '')
     "#{FOOTER_PREFIX}: #{f_text}"
+  end
+
+
+  def self.failure_word
+    FAILURE_TEXT
+  end
+
+
+  def self.successful_word
+    SUCCESS_TEXT
   end
 
 end # SHFNotifySlack

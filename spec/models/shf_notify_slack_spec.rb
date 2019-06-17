@@ -91,7 +91,7 @@ end
 
 # ===============================================================
 
-RSpec.describe 'SHFNotifySlack', type: :model do
+RSpec.describe SHFNotifySlack, type: :model do
 
   before(:all) do
     # send the notifications to the _testing_ channel
@@ -309,7 +309,34 @@ RSpec.describe 'SHFNotifySlack', type: :model do
 
 
     describe 'notification text' do
-      it_behaves_like "it has a default and allows custom text", 'Failure!', failure_notification_method
+
+      it 'the failure word is added before it' do
+        failure_notification_text = 'text about the failure'
+        expect(described_class).to receive(:notification)
+                                     .with('some source', "#{described_class.failure_word} text about the failure", anything)
+
+        described_class.failure_notification('some source', text: failure_notification_text)
+      end
+
+      it "default is 'Some unknown failure!'" do
+
+        expect(described_class).to receive(:notification)
+                                      .with(NOTIFICATION_SOURCE,
+                                            /(.*) Some unknown failure!/,
+                                            anything)
+        described_class.failure_notification(NOTIFICATION_SOURCE)
+      end
+
+      it 'can specify custom failure notification text' do
+        custom_notification_text = "some informative text to show in Slack"
+
+        expect(described_class).to receive(:notification)
+                                      .with(NOTIFICATION_SOURCE,
+                                            /(.*) #{custom_notification_text}/,
+                                            anything)
+
+        described_class.failure_notification(NOTIFICATION_SOURCE, text: custom_notification_text)
+      end
     end
 
     describe 'emoji' do
@@ -691,6 +718,15 @@ RSpec.describe 'SHFNotifySlack', type: :model do
   end
 
   it '.footer_text has "SHF:" at the start' do
-    expect(SHFNotifySlack.footer_text('blorf')).to eq('SHF: blorf')
+    expect(described_class.footer_text('blorf')).to eq('SHF: blorf')
   end
+
+  it '.failure_word  is "Failure!"' do
+    expect(described_class.failure_word).to eq "Failure!"
+  end
+
+  it '.successful_word is "Success!"' do
+    expect(described_class.successful_word).to eq "Successful"
+  end
+
 end
