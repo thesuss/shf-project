@@ -115,7 +115,7 @@ namespace :deploy do
 
 
   def remove_dir(full_dir_path)
-    if test("[ -f #{full_dir_path} ]") # if the file exists on the remote server
+    if test("[ -d #{full_dir_path} ]") # if the directory exists on the remote server
       execute %{rm -r #{full_dir_path} }
     else
       warn "Directory doesn't exist, so it could not be removed: #{full_dir_path}" # log and puts
