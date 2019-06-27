@@ -80,6 +80,10 @@ module SHFProject
   # Load from sub-folders of "models"
   Rails.application.config.autoload_paths += Dir[Rails.root.join("app", "models", "{*/}")]
 
+  # Load the /lib folder so that ShfDeviseFailureApp is loaded (redirects to login page if needed)
+  Rails.application.config.autoload_paths << Rails.root.join('lib')
+
+
   ############### New defaults from Rails version 5.0 ###############
 
   # Enable per-form CSRF tokens. Previous versions had false.
