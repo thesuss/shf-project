@@ -76,6 +76,7 @@ gem 'mini_magick'
 
 gem 'counter_culture', '~> 2.0'
 
+gem 'cookies_eu'
 
 group :development, :test do
   gem 'rspec-rails'

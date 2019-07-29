@@ -19,6 +19,7 @@
 //= require Chart.bundle
 //= require chartkick
 //= require bootstrap-toggle
+//= require cookies_eu
 
 $(function() {
     'use strict';

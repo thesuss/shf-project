@@ -1,0 +1,22 @@
+// Customize styles provided by the cookies_eu gem
+@import 'cookies_eu';
+
+.cookies-eu {
+
+  @media ($cookies-eu-mobile) {
+    font-size: 12px;
+    line-height: inherit;
+    position: fixed;   // ensure that the notice is always visible at the bottom
+  }
+
+  .cookies-eu-button-holder {
+
+    .cookies-eu-ok {
+      font-size: 0.75rem;
+
+      @media ($cookies-eu-mobile) {
+        font-size: 10px;
+      }
+    }
+  }
+}

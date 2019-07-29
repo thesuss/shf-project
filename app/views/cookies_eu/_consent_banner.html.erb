@@ -1,0 +1,17 @@
+<%# Possible local variable: link is a local variable              %>
+<%# link - the url to a page to show with more info about cookies. %>
+<% if cookies && cookies['cookie_eu_consented'] != 'true' %>
+  <div class="cookies-eu js-cookies-eu">
+    <p>
+      <span class="cookies-eu-content-holder">
+        <%= t('cookies_eu.cookies_text') %>
+      </span>
+      <span class="cookies-eu-button-holder">
+        <button class="btn cookies-eu-ok js-cookies-eu-ok"> <%= t('cookies_eu.ok') %> </button>
+        <% if defined?(link).present? %>
+          <a href="<%= link %>" class="cookies-eu-link" target="<%= defined?(target).present? ? target : '' %>"> <%= t('cookies_eu.learn_more') %> </a>
+        <% end %>
+      </span>
+    </p>
+  </div>
+<% end %>

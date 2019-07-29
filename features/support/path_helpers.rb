@@ -83,6 +83,8 @@ module PathHelpers
         path = admin_only_edit_app_configuration_path
       when 'admin show app configuration'
         path = admin_only_app_configuration_path
+      when 'cookies'
+        path = cookies_path
 
       else
         raise PagenameUnknown.new(page_name: pagename)

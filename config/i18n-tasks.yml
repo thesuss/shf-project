@@ -95,7 +95,14 @@ search:
 #   api_key: "AbC-dEf5"
 
 ## Do not consider these keys missing:
-# ignore_missing:
+#   Unable to get i18n-tasks to read the locale files for the cookies_eu gem,
+#   so am manually marking these as not missing.  They are used in a view, but
+#   the locale entries are provided by the cookies_eu gem.
+ignore_missing:
+  - cookies_eu.cookies_text
+  - cookies_eu.learn_more
+  - cookies_eu.ok
+
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 # - '{devise,simple_form}.*'
 
