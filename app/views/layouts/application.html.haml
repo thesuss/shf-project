@@ -1,5 +1,5 @@
 !!!
-%html
+%html{html_attrs(@locale), 'xml.lang': "#{@locale}"}
   %head
     = favicon_link_tag 'favicon.ico'
     = favicon_link_tag 'apple-touch-icon-120x120-shf_logo.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '120x120'

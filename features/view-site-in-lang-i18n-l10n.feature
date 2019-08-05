@@ -1,4 +1,5 @@
-Feature: As a visitor
+Feature: Site Language - default and visitor switches it
+  As a visitor
   In order to view the site in my language
   I need to be able choose either Swedish or English for the site
 
@@ -17,16 +18,29 @@ Feature: As a visitor
     Then I should see t("companies.index.title")
     And I should not see t("show_in_swedish") image
     And I should see t("show_in_english") image
+    And the html tag should include lang="sv"
+    And the html tag should include xml.lang="sv"
+    And the html tag should not include lang="en"
+    And the html tag should not include xml.lang="en"
 
 
   Scenario: Visitor switches the site language from English to Swedish
     Given I set the locale to "sv"
     And I am on the "all companies" page
     When I click on "change-lang-to-english"
+    And the html tag should not include lang="sv"
+    And the html tag should not include xml.lang="sv"
+    And the html tag should include lang="en"
+    And the html tag should include xml.lang="en"
     When I click on "change-lang-to-svenska"
     Then I should see t("companies.index.title")
     And I should not see t("show_in_swedish") image
     And I should see t("show_in_english") image
+    And the html tag should include lang="sv"
+    And the html tag should include xml.lang="sv"
+    And the html tag should not include lang="en"
+    And the html tag should not include xml.lang="en"
+
 
 
   Scenario: Visitor switches the site language from Swedish to English
@@ -35,3 +49,7 @@ Feature: As a visitor
     When I click on "change-lang-to-english"
     Then I should see t("show_in_swedish") image
     And I should not see t("show_in_english") image
+    And the html tag should not include lang="sv"
+    And the html tag should not include xml.lang="sv"
+    And the html tag should include lang="en"
+    And the html tag should include xml.lang="en"

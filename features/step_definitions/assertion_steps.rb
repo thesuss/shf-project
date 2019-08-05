@@ -304,7 +304,7 @@ end
 
 
 Then("the page title should{negate} be {capture_string}") do | negate, page_title |
-  expect(page).send (negate ? :not_to : :to), have_title(page_title)
+  expect(page).send((negate ? :not_to : :to), have_title(page_title))
 end
 
 
@@ -323,19 +323,19 @@ end
 
 Then("the page head should{negate} include meta {capture_string} {capture_string}") do | negate, meta_tag, value |
   meta_xpath = "/html/head/meta[@#{meta_tag}=\"#{value}\"]/@content"
-  expect(page).send (negate ? :not_to : :to), have_xpath(meta_xpath, visible: false)
+  expect(page).send((negate ? :not_to : :to), have_xpath(meta_xpath, visible: false))
 end
 
 
 Then("the page head should{negate} include a link tag with hreflang = {capture_string} and href = {capture_string}") do | negate, hreflang, href |
   hreflang_xpath = "/html/head/link[@rel='alternate'][@hreflang='#{hreflang}'][@href='#{href}']"
-  expect(page).send (negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false)
+  expect(page).send((negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false))
 end
 
 
 Then("the page head should{negate} include a link tag with rel = {capture_string} and href = {capture_string}") do | negate, rel, href |
   hreflang_xpath = "/html/head/link[@rel='#{rel}'][@href='#{href}']"
-  expect(page).send (negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false)
+  expect(page).send((negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false))
 end
 
 
@@ -376,9 +376,22 @@ And("the page head should{negate} include a ld+json script tag with key {capture
 end
 
 
+And("the html tag should{negate} include lang={capture_string}") do | negate,  lang_attrib|
+  lang_xpath = "/html[@lang=\"#{lang_attrib}\"]"
+  expect(page).send((negate ? :not_to : :to),  have_xpath(lang_xpath, visible: false))
+end
+
+
+And("the html tag should{negate} include xml\.lang={capture_string}") do | negate,  xml_lang_attrib|
+  lang_xpath = "/html[@xml.lang=\"#{xml_lang_attrib}\"]"
+  expect(page).send((negate ? :not_to : :to),  have_xpath(lang_xpath, visible: false))
+end
+
+
+
 def expect_head_has_ld_json_script(negated: false)
   ld_json_text_xpath  = "/html/head/script[@type='application/ld+json']/text()"
-  expect(page).send (negated ? :not_to : :to), have_xpath(ld_json_text_xpath, visible: false)
+  expect(page).send((negated ? :not_to : :to), have_xpath(ld_json_text_xpath, visible: false))
 
   ld_json = nil
   unless negated
