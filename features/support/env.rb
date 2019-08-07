@@ -14,6 +14,11 @@ require_relative '../../spec/support/geocoder'
 # Mock the AppConfiguration so that Paperclip commands are not called multiple times for every scenario
 require_relative '../../spec/shared_context/mock_app_configuration.rb'
 
+
+require 'show_me_the_cookies'
+World(ShowMeTheCookies)
+
+
 #
 # Configurations
 #
@@ -72,7 +77,9 @@ Capybara.register_driver :selenium_browser do |app|
       browser: :chrome
   )
 end
-
+# register this driver so that ShowMeTheCookies knows which adapater to use for it
+#   have to use the same driver name (symbol)
+ShowMeTheCookies.register_adapter(:selenium_browser, ShowMeTheCookies::SeleniumChrome)
 
 #
 # Global Before/After

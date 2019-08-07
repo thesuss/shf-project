@@ -1,6 +1,11 @@
 <%# Possible local variable: link is a local variable              %>
 <%# link - the url to a page to show with more info about cookies. %>
-<% if cookies && cookies['cookie_eu_consented'] != 'true' %>
+<%#                                                                %>
+<%# This uses ActionDispatch CookieJar for cookies, so they cannot %>
+<%# So we simply use  Rails.env != 'test'  to NOT display this     %>
+<%# during integration testing.                                    %>
+<%#                                                                %>
+<% if Rails.env != 'test' && cookies && cookies['cookie_eu_consented'] != 'true' %>
   <div class="cookies-eu js-cookies-eu">
     <p>
       <span class="cookies-eu-content-holder">

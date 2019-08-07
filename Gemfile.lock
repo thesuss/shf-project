@@ -506,6 +506,8 @@ GEM
     sexp_processor (4.12.0)
     shoulda-matchers (4.0.1)
       activesupport (>= 4.2.0)
+    show_me_the_cookies (5.0.0)
+      capybara (>= 2, < 4)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -667,6 +669,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   selenium-webdriver
   shoulda-matchers
+  show_me_the_cookies
   simplecov (>= 0.13.0)
   slack-notifier
   smarter_csv
