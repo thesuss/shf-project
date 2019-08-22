@@ -1,162 +1,53 @@
-# Backup code and DB data in production
-
-CODE_ROOT_DIRECTORY = '/var/www/shf/current/'
-DB_NAME = 'shf_project_production'
-LOGS_ROOT_DIRECTORY = '/var/log'
+#require_relative File.join(__dir__, 'shf_condition_error_backup_error')
+require_relative 'shf_condition_error_backup_error'
 
 # Errors
 module ShfConditionError
-  class BackupError < StandardError
-  end
-
-  class BackupConfigFilesBadFormatError < BackupError
-  end
 
   class BackupCommandNotSuccessfulError < BackupError
   end
-end
 
-# @desc Abstract class for all backup classes.
-#
-# base_filename - the default target filename.
-#                 This does _not_ have a directory, it is only a filename
-#                 and extension.
-#                 This can be used to construct a full filename for the
-#                 target_filename for the backup.
-#
-# target_filename - the filename used for the backup file that is created
-#                   The default value for this is the base_filename.
-#
-# backup_sources - a list that is used as the source for the backups.
-#                  Subclasses use this list to create their backups.
-#                  This is what is backed up.
-
-#
-# Each Backup class must implement :backup(backup_target, sources) to do whatever
-# it needs to do to create the backup
-#
-class AbstractBackupMaker
-
-
-  attr :target_filename, :backup_sources
-
-
-  # Set the backup target and the backup sources
-  def initialize(target_filename: base_filename,
-                 backup_sources: default_sources)
-    @target_filename = target_filename
-    @backup_sources = backup_sources
+  class BackupConfigError < BackupError
   end
 
-
-  # Do the backup. Default target is the target_filename; default sources = the backup sources)
-  def backup(target: target_filename, sources: backup_sources)
-    raise NoMethodError, "Subclass must define the #{__method__} method", caller
+  class BackupConfigFileSetBadFormatError < BackupConfigError
   end
 
-
-  def base_filename
-    "backup-#{self.class.name}.tar"
+  class BackupConfigFileSetMissingNameError < BackupConfigError
   end
 
-
-  def default_sources
-    []
+  class BackupConfigFileSetMissingBaseNameError < BackupConfigError
   end
 
-
-  # Run the command using Open3 which allows us to capture the output and status
-  # Raise an error unless the return status is success
-  def shell_cmd(cmd)
-    stdout_str, stderr_str, status = Open3.capture3(cmd)
-    unless status&.success?
-      raise(ShfConditionError::BackupCommandNotSuccessfulError, "Backup Command Failed: #{cmd}. return status: #{status}  Error: #{stderr_str}  Output: #{stdout_str}")
-    end
+  class BackupConfigFileSetMissingSourceFiles < BackupConfigError
   end
 
-end
-
-
-# Backup a list of files using tar. Create 1 resulting backup file
-class FilesBackupMaker < AbstractBackupMaker
-
-  # use tar to compress all sources into the file named by target
-  # @return [String] - the name of the backup target created
-  def backup(target: target_filename, sources: backup_sources)
-    shell_cmd("tar -chzf #{target} #{sources.join(' ')}")
-    target
-  end
-
-end
-
-
-# Backup a list of code directories.  Create 1 resulting backup file 'current.tar'
-class CodeBackupMaker < FilesBackupMaker
-
-  DEFAULT_SOURCES = [CODE_ROOT_DIRECTORY]
-  DEFAULT_BACKUP_FILEBASE = 'current.tar'
-
-
-  def base_filename
-    DEFAULT_BACKUP_FILEBASE
-  end
-
-
-  def default_sources
-    [CODE_ROOT_DIRECTORY]
+  class BackupConfigFileSetEmptySourceFiles < BackupConfigError
   end
 end
 
 
-# Backup a list of databases. For each database: first use pg_dump to dump it,
-# then add it to a gzip file.
-# Create 1 resulting gzip file
-#
-class DBBackupMaker < AbstractBackupMaker
-
-  DB_BACKUP_FILEBASE = 'db_backup.sql'
-
-  # Backup all Postgres databases in sources, then gzip them into the target
-  # @return [String] - filename of the backup target created
-  def backup(target: target_filename, sources: backup_sources)
-
-    shell_cmd("touch #{target}") # must ensure the file exists
-
-    sources.each do |source|
-      shell_cmd("pg_dump -d #{source} | gzip > #{target}")
-    end
-    target
-  end
-
-
-  def base_filename
-    DB_BACKUP_FILEBASE
-  end
-
-
-  def default_sources
-    [DB_NAME]
-  end
-end
+# Backup files and DB data in production
 
 
 class Backup < ConditionResponder
 
 
   DEFAULT_BACKUP_FILES_DIR = '/home/deploy/SHF_BACKUPS/'
-  DEFAULT_CODE_BACKUPS_TO_KEEP = 4
   DEFAULT_DB_BACKUPS_TO_KEEP = 15
-  DEFAULT_FILE_BACKUPS_TO_KEEP = 31
 
-  TIMESTAMP_FMT = '%Y-%m-%d'
+  TIMESTAMP_FMT = '%F'
+
+  # YYYY-MM-DD-HHMM-SS<millisec)>-Z
+  # provide minutes, seconds, etc. so that multiple backups per day can be kept
+  FILENAME_SUFFIX_TIMESTAMP_FMT = '%F-%H%M-%S%L-Z'
 
   # -------------
 
 
-  # TODO: Slack notification may or may not be used (= the use_slack_notification flag).
-  def self.condition_response(condition, log)
+  def self.condition_response(condition, log, use_slack_notification: true)
 
-    @slack_error_already_logged = false # keep us from logging a Slack error every time it percolates up through rescue blocks
+    @use_slack_notification = use_slack_notification
 
     validate_timing(get_timing(condition), [TIMING_EVERY_DAY], log)
 
@@ -197,10 +88,8 @@ class Backup < ConditionResponder
       delete_excess_backup_files(file_pattern, backup_maker[:keep_num])
     end
 
-
   rescue Slack::Notifier::APIError => slack_error
-    # Halt the backup if we cannot write to Slack; log then raise the error
-     log_slack_error(slack_error, log, '(in rescue at bottom of condition_response)')
+    # Halt the backup if we cannot write to Slack; raise the error
     raise slack_error
 
   rescue => backup_error
@@ -215,12 +104,17 @@ class Backup < ConditionResponder
 
 
   def self.backup_target_fn(backup_dir, backup_base_fn)
-    File.join(backup_dir, backup_base_fn + '.' + today_timestamp + '.gz')
+    File.join(backup_dir, backup_base_fn + '.' + backup_timestamp + '.gz')
   end
 
 
   def self.today_timestamp
     Time.now.strftime TIMESTAMP_FMT
+  end
+
+
+  def self.backup_timestamp
+    Time.now.strftime FILENAME_SUFFIX_TIMESTAMP_FMT
   end
 
 
@@ -267,37 +161,82 @@ class Backup < ConditionResponder
 
 
   def self.create_backup_makers(config)
-    num_code_backups_to_keep = config.dig(:days_to_keep, :code_backup) || DEFAULT_CODE_BACKUPS_TO_KEEP
+
     num_db_backups_to_keep = config.dig(:days_to_keep, :db_backup) || DEFAULT_DB_BACKUPS_TO_KEEP
-    num_file_backups_to_keep = config.dig(:days_to_keep, :files_backup) || DEFAULT_FILE_BACKUPS_TO_KEEP
 
     # :keep_num key defines how many daily backups to retain on _local_ storage (e.g. on the production machine)
     # AWS (S3) backup files are retained based on settings in AWS.
     backup_makers = [
-        { backup_maker: CodeBackupMaker.new, keep_num: num_code_backups_to_keep },
-        { backup_maker: DBBackupMaker.new, keep_num: num_db_backups_to_keep }
+        { backup_maker: ShfBackupMakers::DBBackupMaker.new, keep_num: num_db_backups_to_keep }
     ]
 
-    files_backup_maker = create_files_backup_maker(config)
-    backup_makers << { backup_maker: files_backup_maker, keep_num: num_file_backups_to_keep } if files_backup_maker
+    fileset_backup_makers = create_fileset_backup_makers(config)
+    fileset_backup_makers.each do |fileset_backup_maker|
+      backup_makers << { backup_maker: fileset_backup_maker, keep_num: fileset_backup_maker.days_to_keep }
+    end
 
     backup_makers
   end
 
 
-  # only create a FilesBackupMaker if there is a list of files to be backed up
-  def self.create_files_backup_maker(config)
-    files_backup_maker = nil
-    if (backup_files = config.fetch(:files, false))
+  # Create a FileSetBackupMaker for each definition in the config
+  #
+  # @param [String] config - the configuration
+  # @return [Array[FileSetBackupMakers]] - a list of FileSetBackupMakers
+  #           instantiated based on entries in the config
+  def self.create_fileset_backup_makers(config)
 
-      unless backup_files.is_a?(Array)
-        raise ShfConditionError::BackupConfigFilesBadFormatError.new('Backup Condition configuration for :files is bad.  Must be an Array.')
-      end
+    return [] unless config.has_key?(:filesets)
 
-      files_backup_maker = FilesBackupMaker.new(backup_sources: backup_files) unless backup_files.empty?
+    filesets = config.fetch(:filesets, false)
+    raise ShfConditionError::BackupConfigFileSetBadFormatError.new("Backup Condition configuration error. fileset: must be an Array.") unless filesets.is_a?(Array)
+
+    filesets.map(&method(:new_fileset_backup_maker)).compact
+  end
+
+
+  # Create a new FileSetBackupMaker from information in the fileset_config
+  # Raise errors if information is missing or the format is bad.
+  #
+  # @return [ShfBackupMakers::FileSetBackupMaker] - the new FileSetBackupMaker
+  #
+  def self.new_fileset_backup_maker(fileset_config)
+
+    raise ShfConditionError::BackupConfigFileSetMissingNameError unless fileset_config.has_key?(:name)
+    fileset_name = fileset_config[:name]
+
+    raise ShfConditionError::BackupConfigFileSetMissingSourceFiles unless fileset_config.has_key?(:files)
+    sources = fileset_config_array_entry(fileset_config, :files, fileset_name)
+    raise ShfConditionError::BackupConfigFileSetEmptySourceFiles if sources.empty?
+
+    excludes = fileset_config_array_entry(fileset_config, :excludes, fileset_name)
+
+    fsb = ShfBackupMakers::FileSetBackupMaker.new(name: fileset_name,
+                                                  backup_sources: sources,
+                                                  excludes: excludes)
+
+    fsb.base_filename = fileset_config[:base_filename] if fileset_config.has_key?(:base_filename)
+    fsb.days_to_keep = fileset_config[:days_to_keep] if fileset_config.has_key?(:days_to_keep)
+
+    fsb
+  end
+
+
+  # Get the value for an entry in a hash and
+  # validate that the value is an Array.
+  # If it is not an Array, raise ShfConditionError::BackupConfigFileSetBadFormatError
+  # with an error message, specifying the fileset name and the key that should
+  # have had a value that was an array
+  #
+  # @return [Array] - the value from the array
+  #
+  def self.fileset_config_array_entry(hash, key, fileset_name)
+    array_entry = hash.fetch(key, [])
+    unless array_entry.is_a?(Array)
+      raise ShfConditionError::BackupConfigFileSetBadFormatError.new("Backup Condition configuration for fileset '#{fileset_name}' error. #{key}: must be an Array.")
     end
 
-    files_backup_maker
+    array_entry
   end
 
 
@@ -317,8 +256,7 @@ class Backup < ConditionResponder
       yield(item)
 
     rescue Slack::Notifier::APIError => slack_error
-      # Halt the backup if we cannot write to Slack; log then raise the error
-      log_slack_error(slack_error, log, "#{additional_error_info}. Current item: #{item.inspect}")
+      # Halt the backup if we cannot write to Slack; raise the error
       raise slack_error
 
     rescue => backup_error
@@ -328,10 +266,9 @@ class Backup < ConditionResponder
   end
 
 
-  # Record the error and additional_info to the given log and send a Slack notification.
-  #
+  # Record the error and additional_info to the given log
+  # and send a Slack notification if we are using Slack notifications
   # TODO  this seems like a general-purpose method that we need in many places.  Refactor into a class/module to be available all places
-  #
   #
   # @param [Error] original_error - Error that needs to be recorded
   # @param [Log] log - the log to write to. Must respond to :error(message)
@@ -342,7 +279,7 @@ class Backup < ConditionResponder
     log_string = additional_info.blank? ? original_error.to_s : "#{original_error} #{additional_info}"
 
     log.error(log_string)
-    SHFNotifySlack.failure_notification(self.name, text: log_string)
+    SHFNotifySlack.failure_notification(self.name, text: log_string) if @use_slack_notification
 
     # If the problem is because of Slack Notification, log it and raise it
     #  so the caller can deal with it as needed.
@@ -354,23 +291,19 @@ class Backup < ConditionResponder
     # ... Otherwise, an exception was raised during writing to the log.
     # Send a slack notification about that and continue (do _not_ raise it).
   rescue => not_a_slack_error
-    # send a notification about the original error
-    SHFNotifySlack.failure_notification(self.name, text: log_string)
+    if @use_slack_notification
+      # send a notification about the original error
+      SHFNotifySlack.failure_notification(self.name, text: log_string)
 
-    # send another notification about the error that happened in this method
-    SHFNotifySlack.failure_notification(self.name, text: "Error: Could not write to the log in #{self.name}.#{__method__}: #{not_a_slack_error}")
+      # send another notification about the error that happened in this method
+      SHFNotifySlack.failure_notification(self.name, text: "Error: Could not write to the log in #{self.name}.#{__method__}: #{not_a_slack_error}")
+    end
+
   end
 
 
   def self.slack_error_encountered_str(during_method = 'condition_response')
     "Slack Notification failure during #{self.name}.#{during_method}"
-  end
-
-
-  # Only log the error if it has not already been logged.
-  def self.log_slack_error(slack_error, log, details = '')
-    log.error("#{slack_error_encountered_str} #{details}: #{slack_error}") unless @slack_error_already_logged
-    @slack_error_already_logged = true
   end
 
 end

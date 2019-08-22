@@ -8,6 +8,9 @@ namespace :shf do
 
     RUNNING_LOG = '~/NOTES-RUNNING-LOG.txt'
     NGINX_LOG_DIR = '/var/log/nginx'
+    APP_DIR = File.join(ENV['APP_PATH'], 'current/')
+    PUBLIC_DIR = file.join(APP_DIR, 'public')
+
 
     # Add a Hash for each Condition to be created
     #
@@ -47,10 +50,29 @@ namespace :shf do
         { class_name: 'Backup',
           timing:     :every_day,
           config:     { days_to_keep:     { code_backup: 4,
-                                            db_backup:   15,
-                                            files_backup: 31},
+                                            db_backup:   15 },
                         backup_directory: nil,
-                        files: [RUNNING_LOG, NGINX_LOG_DIR]} },
+                        filesets: [
+                            {name: 'logs',
+                             days_to_keep: 8,
+                             files: [RUNNING_LOG, NGINX_LOG_DIR, File.join(APP_DIR, 'log')]
+                            },
+                            {name: 'code',
+                             days_to_keep: 3,
+                             files: [APP_DIR],
+                             excludes: ['public', 'docs', 'features', 'spec','tmp', '.yardoc']
+                            },
+                            {name: 'app-public',
+                             days_to_keep: 3,
+                             files: [PUBLIC_DIR]
+                            },
+                            {name: 'config env secrets',
+                            days_to_keep: 32,
+                             files: [File.join(APP_DIR, 'config', '*.yml'), '.env']
+                            }
+                        ]
+          }
+        },
 
         { class_name: 'DinkursFetch',
           timing:     :every_day },

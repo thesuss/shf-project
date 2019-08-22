@@ -54,9 +54,9 @@ class ConditionResponder
   # All subclasses must implement this class. This is how they respond to/
   #  handle a condition.
   #
-  # @param condtion [Condition] - the Condition that must be responded do
+  # @param condition [Condition] - the Condition that must be responded do
   # @param log [ActivityLog] - the log file to write to
-  def self.condition_response(_condition, _log)
+  def self.condition_response(_condition, _log, use_slack_notification: true)
     raise NoMethodError, "Subclass must define the #{__method__} method", caller
   end
 

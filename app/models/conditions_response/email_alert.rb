@@ -39,7 +39,7 @@ class EmailAlert < ConditionResponder
 
 
   # pass the class method call to the singleton instance
-  def self.condition_response(condition, log)
+  def self.condition_response(condition, log, use_slack_notification: true)
     self.instance.condition_response(condition, log)
   end
 
@@ -96,9 +96,9 @@ class EmailAlert < ConditionResponder
   end
 
 
-  # @param log [ActivityLog] - the log the message will be written to
+  # @param _log [ActivityLog] - the log the message will be written to
   # @param mail_response [Mail::Message] - checked to see if it was successful or not
-  # @param entity [Object] - the entity that was sent the email (a User; a Company; etc)
+  # @param entities [Array] - a list of entities that received the mail (a User; a Company; etc)
   #
   #  TODO - is the log really needed?  does the @alert_logger already have it?
   #

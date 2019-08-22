@@ -5,9 +5,9 @@ namespace :shf do
   desc 'process conditions'
   task process_conditions: [:environment] do
 
-    def process_klass(klass, condition, log)
+    def process_klass(klass, condition, log, use_slack_notification: true)
       if klass
-        klass.condition_response(condition, log)
+        klass.condition_response(condition, log, use_slack_notification: use_slack_notification)
       else
         raise 'klass is nil in task shf:process_conditions'
       end
@@ -32,10 +32,10 @@ namespace :shf do
 
         if use_slack_notification
           SHFNotifySlack.notify_after(class_name) do
-            process_klass(klass, condition, log)
+            process_klass(klass, condition, log, use_slack_notification: use_slack_notification)
           end
         else
-          process_klass(klass, condition, log)
+          process_klass(klass, condition, log, use_slack_notification: use_slack_notification)
         end
 
       # If the problem is because of Slack Notification .... log it and continue.

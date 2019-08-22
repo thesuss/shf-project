@@ -23,6 +23,11 @@ RSpec.describe 'conditions/process_conditions shf:process_conditions', type: :ta
     File.delete(filepath) if File.file?(filepath)
   end
 
+  after(:each) do
+    File.delete(filepath) if File.file?(filepath)
+  end
+
+
   let(:valid_conditions) do
     [{ class_name: 'HBrandingFeeDueAlert',
        timing:     :after,
