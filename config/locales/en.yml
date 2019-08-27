@@ -4,12 +4,6 @@ en:
   title: "SWEDEN'S ETHICAL DOG COMPANIES"
 
   SHF_name: &SHF_name "Swedish Dog Industry Association"
-  meta:
-    default:
-      title: "Find H-markt dog companies, dog training instructors, dog trainers, or dog entrepreneurs."
-      description: "Here you will find ethical Swedish dog companies that have earned the H-brand mark. Find dog trainers, dog training instructors, dog psychologists, dog day care, grooming and more."
-      keywords: 'dog, dog owner, dog instructor, dog entrepreneur, Swedish dog company, Swedish dog company, ethical, H-brand, H-mark, H-marked, dog training'
-      image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
 
   dog: dog
 
@@ -243,6 +237,16 @@ en:
         description_sv: "Description (Swedish)"
         description_en: "Description (English)"
         is_custom: "Custom reason"
+
+      app_configuration:
+        site_name: &site_name Site name
+        site_meta_title: &site_meta_title Site meta title
+        site_meta_description: &site_meta_description Site meta description
+        site_meta_keywords: &site_meta_keywords Site meta keywords
+        site_meta_image: &site_meta_image Site meta image
+        og_type: &site_og_type OG type
+        twitter_card_type: &site_twitter_card_type Twitter card type
+        facebook_app_id: &site_facebook_app_id Facebook Application ID
 
 
     errors:
@@ -986,6 +990,8 @@ en:
       delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
 
     app_configuration:
+      image_show:
+        missing: &missing Missing!
       edit:
         title: &application_configuration Application Configuration
         chair_signature: &chair_signature_title Chairperson Signature
@@ -993,6 +999,15 @@ en:
         h_brand_logo: &h_branding_logo_title H-Branding Logo
         sweden_dog_trainers: &sweden_dog_trainers_logo_title Sweden Dog Trainers
         admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+        site_name: *site_name
+        site_meta_title: *site_meta_title
+        site_meta_description: *site_meta_description
+        site_meta_keywords: *site_meta_keywords
+        site_meta_image: *site_meta_image
+        og_type: *site_og_type
+        twitter_card_type: *site_twitter_card_type
+        facebook_app_id: *site_facebook_app_id
+        missing: *missing
 
       show:
         title: *application_configuration
@@ -1001,6 +1016,15 @@ en:
         h_brand_logo: *h_branding_logo_title
         sweden_dog_trainers: *sweden_dog_trainers_logo_title
         admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+        site_name: *site_name
+        site_meta_title: *site_meta_title
+        site_meta_description: *site_meta_description
+        site_meta_keywords: *site_meta_keywords
+        site_meta_image: *site_meta_image
+        og_type: *site_og_type
+        twitter_card_type: *site_twitter_card_type
+        facebook_app_id: *site_facebook_app_id
+        missing: *missing
 
       update:
         success: Application data updated successfully

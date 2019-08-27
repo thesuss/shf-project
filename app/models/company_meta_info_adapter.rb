@@ -6,7 +6,8 @@
 # @class CompanyMetaInfoAdapter
 #
 # @desc Responsibility: Given a company, knows how to convert (adapt) the info
-# into meta (tags) info for the company.
+# into meta (tags) info for the company.  Use AppConfiguration values
+# if value is blank for the Company
 #
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
@@ -25,21 +26,21 @@ class CompanyMetaInfoAdapter
   end
 
   def title
-    SiteMetaInfoDefaults.use_default_if_blank(:title, @company.name)
+    @company.name.blank? ? AdminOnly::AppConfiguration.config_to_use.site_meta_title : @company.name
   end
 
 
   def description
-    SiteMetaInfoDefaults.use_default_if_blank(:description, @company.description)
+    @company.description.blank? ? AdminOnly::AppConfiguration.config_to_use.site_meta_description : @company.description
   end
 
 
   def keywords
-    SiteMetaInfoDefaults.use_default_if_blank(:keywords,
-                                              @company.business_categories.map(&:name)
-    .join(', '))
-
-
+    if @company.business_categories.blank?
+      AdminOnly::AppConfiguration.config_to_use.site_meta_keywords
+    else
+      @company.business_categories.map(&:name).join(', ')
+    end
   end
 
 

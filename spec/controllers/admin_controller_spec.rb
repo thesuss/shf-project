@@ -64,6 +64,15 @@ RSpec.describe AdminController, type: :controller do
     ADDR_COUNTY           = 19
     ADDR_COUNTRY          = 20
 
+
+    # This lets us do the post: just once and then memoize the response body.
+    # export_response_body must be referred first in the test so that this is called at least once.
+    let(:export_response_body) do
+      post :export_ansokan_csv
+      response.body
+    end
+
+
     describe 'logged in as admin' do
 
       it 'content type is text/csv' do
@@ -84,9 +93,9 @@ RSpec.describe AdminController, type: :controller do
 
       it 'header line is correct' do
 
-        post :export_ansokan_csv
+        export_response_body
 
-        expect(response.body).to eq csv_header
+        expect(export_response_body).to eq csv_header
 
       end
 
@@ -95,9 +104,9 @@ RSpec.describe AdminController, type: :controller do
 
         it 'no membership applications has just the header' do
 
-          post :export_ansokan_csv
+          export_response_body
 
-          expect(response.body).to eq csv_header
+          expect(export_response_body).to eq csv_header
 
         end
 

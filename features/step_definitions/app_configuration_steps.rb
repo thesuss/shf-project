@@ -30,8 +30,29 @@
 #
 And(/^the App Configuration is not mocked and is seeded$/) do
 
-  # If this has been stubbed (e.g. to use MockAppConfig), unstub it
+  require_relative File.join(Rails.root, 'db/seed_helpers/app_configuration_seeder')
+
+  # Do not stub the AppConfiguration
   allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_call_original
 
-  AdminOnly::AppConfiguration.create(email_admin_new_app_received_enabled: false)
+  # ensure we will seed a new configuration (One is not created if one already exists.)
+  AdminOnly::AppConfiguration.delete_all
+
+  SeedHelper::AppConfigurationSeeder.seed
+end
+
+
+And("the {capture_string} attachment is available via a public url") do | attachment |
+  image_url = AdminOnly::AppConfiguration.config_to_use.send(attachment.to_sym).url
+  expect {
+    visit "#{root_url}#{image_url}"
+  }.not_to raise_error
+end
+
+
+# set the named attachment to nil in the ApplicationConfiguration
+And("the {capture_string} file is missing from the application configuration") do |missing_attachment|
+  app_config = AdminOnly::AppConfiguration.config_to_use
+  # update_attribute skips validations, which we must do because an ApplicationConfiguration validates_attachment_presence
+  app_config.update_attribute(missing_attachment.to_sym, nil) #  send("#{missing_attachment}=".to_sym, nil)
 end

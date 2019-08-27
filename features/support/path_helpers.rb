@@ -1,4 +1,3 @@
-
 #
 # @module PathHelpers
 #
@@ -80,7 +79,7 @@ module PathHelpers
       when 'admin dashboard'
         path = admin_only_dashboard_path
       when 'admin edit app configuration'
-        path = admin_only_edit_app_configuration_path
+        path = admin_only_edit_app_configuration_path(AdminOnly::AppConfiguration.config_to_use)
       when 'admin show app configuration'
         path = admin_only_app_configuration_path
       when 'cookies'

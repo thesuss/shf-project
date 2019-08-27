@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
 
   include Pundit
-  include PageMetaTagsSetter
 
   protect_from_forgery with: :exception
   before_action :set_locale
@@ -47,6 +46,15 @@ class ApplicationController < ActionController::Base
       stored_location_for(resource) || request.referer || root_path
     end
   end
+
+
+  def set_page_meta_robots_none
+    set_meta_tags helpers.meta_robots_none
+  end
+
+
+  # =======================================================================
+
 
   private
 

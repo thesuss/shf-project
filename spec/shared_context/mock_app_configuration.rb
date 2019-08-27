@@ -81,29 +81,43 @@ class MockAppConfig
 
   end
 
-  #
-  # def self.site_name
-  #   'site name'
-  # end
-  #
-  #
-  # def self.site_meta_title
-  #   'site title'
-  # end
-  #
-  #
-  # def self.site_meta_description
-  #   'site meta description'
-  # end
-  #
-  #
-  # def self.site_meta_keywords
-  #   'site meta keywords'
-  # end
+
+  def self.site_name
+    'site name'
+  end
+
+
+  def self.site_meta_title
+    'site title'
+  end
+
+
+  def self.site_meta_description
+    'site meta description'
+  end
+
+
+  def self.site_meta_keywords
+    'site meta keywords'
+  end
+
 
   def self.email_admin_new_app_received_enabled
     true
   end
+
+  def self.og_type
+    'og type'
+  end
+
+  def self.twitter_card_type
+    'twitter card type'
+  end
+
+  def self.facebook_app_id
+    1234567890
+  end
+
 
   # ----------------------------------------------------
   #  Default results to use to stub methods

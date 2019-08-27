@@ -74,7 +74,7 @@ search:
     - app/assets/images
     - app/assets/fonts
     - app/assets/videos
-    - app/controllers/concerns/page_meta_tags_setter.rb
+    - app/controllers/concerns/meta_tags_helper.rb
     - features/support/webdrivers
 
 

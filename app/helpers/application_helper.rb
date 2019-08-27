@@ -1,4 +1,10 @@
+require 'meta_image_tags_helper'
+
 module ApplicationHelper
+
+  include MetaTagsHelper
+  include MetaImageTagsHelper
+
 
   def flash_class(level)
     case level.to_sym
@@ -210,11 +216,28 @@ module ApplicationHelper
   end
 
 
-  def full_page_title(page_title: SiteMetaInfoDefaults.title, site_name: SiteMetaInfoDefaults.site_name)
-    not_blank_title = page_title.blank? ? SiteMetaInfoDefaults.title : page_title
-    not_blank_sitename = site_name.blank? ? SiteMetaInfoDefaults.site_name : site_name
+  def full_page_title(page_title: '',
+                      site_name: '')
+
+    not_blank_title = page_title.blank? ? AdminOnly::AppConfiguration.config_to_use.site_meta_title : page_title
+    not_blank_sitename = site_name.blank? ? AdminOnly::AppConfiguration.config_to_use.site_name : site_name
     "#{not_blank_title} | #{not_blank_sitename}"
   end
 
 
+  PRESENCE_VALIDATORS = [
+      Paperclip::Validators::AttachmentPresenceValidator,
+      ActiveRecord::Validations::PresenceValidator
+  ]
+
+
+  def presence_required?(model_instance, attribute)
+    presence_validators = model_instance.class.validators.select{|v| is_a_presence_validator?(v)}
+    presence_validators.any?{|pv| pv.attributes.include?(attribute.to_sym)}
+  end
+
+
+  def is_a_presence_validator?(validator)
+    PRESENCE_VALIDATORS.include?(validator.class)
+  end
 end

@@ -13,7 +13,7 @@
     -#
       Display meta tags here. "reverse: true" will put the page title before the site title
       as recommended by https://moz.com/learn/seo/title-tag
-    = display_meta_tags site: I18n.t('SHF_name'), reverse: true
+    = display_meta_tags(meta_tags_for_url_path(controller.request.base_url, controller.request.fullpath).merge(reverse: true))
 
     -#
       tags that tell search engines where to find pages in other languages

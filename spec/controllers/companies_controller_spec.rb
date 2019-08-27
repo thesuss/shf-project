@@ -12,7 +12,7 @@ RSpec.describe CompaniesController, type: :controller do
 
   let(:no_query_params) { { "utf8" => "✓" } }
 
-  let(:full_page_title) { 'Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare' }
+  let(:full_page_title) {  'site title | site name' }
 
 
   describe '#index will fix_FB_changed_params' do
@@ -227,21 +227,43 @@ RSpec.describe CompaniesController, type: :controller do
 
     describe 'meta info (renders view)' do
 
+      # This lets us call get :index just once.
+      # Must refer to index_response_body as the first line in a test to ensure this has been called at least once
+      let(:index_response_body) do
+        get :index
+        response.body
+      end
+
+
       render_views
 
 
-      it 'page title is from the locale file' do
-        get :index
+      it 'page title is from the AppConfiguration' do
+        expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_title)
+                                                                 .twice
+                                                                 .and_call_original
+
+        index_response_body
         expect(response.body).to match(full_page_title)
       end
 
 
       describe 'meta tags' do
 
+        RSpec::Matchers.define :not_starting_with do |start_str|
+          match { |actual| !((actual.to_s).start_with?(start_str)) }
+        end
+
+        RSpec::Matchers.define :starting_with do |start_str|
+          match { |actual| ((actual.to_s).start_with?(start_str)) }
+        end
+
+
         # Create the Regexp to match meta tag="<tag>" content="<content>"
         def meta_tag_with_content(tag, content)
           Regexp.new("<meta name=\"#{tag}\" content=\"#{content}\">")
         end
+
 
         # Create the Regexp to match meta property="<property>" content="<content>"
         def meta_property_with_content(property, content)
@@ -249,60 +271,49 @@ RSpec.describe CompaniesController, type: :controller do
         end
 
 
-        it 'description is from the locale file' do
-          # will return 'blorf' when it pretends (mocks) to look up something in a locale file
-          allow(I18n.config.backend).to receive(:translate)
-                                            .with(anything, anything, anything)
-                                            .and_return('blorf')
-          get :index
-          expect(response.body).to match(meta_tag_with_content('description', 'blorf'))
+        it 'description is from the AppConfiguration' do
+          index_response_body
+          expect(index_response_body).to match(meta_tag_with_content('description', 'site meta description'))
         end
 
 
         describe 'keywords' do
 
-          it 'always has what is in the locale file ' do
-            # will return 'blorf' when it pretends (mocks) to look up something in a locale file
-            allow(I18n.config.backend).to receive(:translate)
-                                              .with(anything, anything, anything)
-                                              .and_return('blorf')
-            get :index
-            expect(response.body).to match(meta_tag_with_content('keywords', 'blorf'))
+          it 'always has the AppConfiguration site_meta_keywords' do
+
+            index_response_body
+            expect(index_response_body).to match(meta_tag_with_content('keywords', AdminOnly::AppConfiguration.config_to_use.site_meta_keywords))
           end
 
 
-          describe 'appends the business categories after the locale file keywords' do
+          describe 'appends all business categories after the AppConfiguration keywords' do
 
-            it 'no business categories; is just the I18n keywords' do
-              # will return 'blorf' when it pretends (mocks) to look up something in a locale file
-              allow(I18n.config.backend).to receive(:translate)
-                                                .with(anything, anything, anything)
-                                                .and_return('blorf')
-              get :index
-              expect(response.body).to match(meta_tag_with_content('keywords', 'blorf'))
+            it 'no business categories; is just the Appconfiguration keywords' do
+
+              index_response_body
+              expect(index_response_body).to match(meta_tag_with_content('keywords', AdminOnly::AppConfiguration.config_to_use.site_meta_keywords))
             end
 
-            it 'some business categories' do
-              # will return 'blorf' when it pretends (mocks) to look up something in a locale file
-              allow(I18n.config.backend).to receive(:translate)
-                                                .with(anything, anything, anything)
-                                                .and_return('blorf')
+            it 'all business categories appended' do
+
               create(:business_category, name: 'Cat 1')
               create(:business_category, name: 'Cat 2')
-              get :index
+              index_response_body
 
-              meta_content = 'blorf' + ', Cat 1, Cat 2'
-              expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
+              expected_keywords =  AdminOnly::AppConfiguration.config_to_use.site_meta_keywords + ', Cat 1, Cat 2'
+              expect(index_response_body).to match(meta_tag_with_content('keywords', expected_keywords))
             end
           end
         end
 
 
-        it 'link rel="image_src" is the banner image in assets/images' do
-          get :index
+        it 'link rel="image_src" is the AppConfiguration site meta image' do
+          expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_image).twice.and_call_original
 
-          image_src_match = "<link rel=\"image_src\" href=\"http(.*)/assets/Sveriges_hundforetagare_banner_sajt.jpg\">"
-          expect(response.body).to match(image_src_match)
+          index_response_body
+
+          image_src_match = /link rel="image_src" href="#{@controller.request.base_url}#{AdminOnly::AppConfiguration.config_to_use.site_meta_image.url}"/
+          expect(index_response_body).to match(image_src_match)
         end
 
 
@@ -315,9 +326,9 @@ RSpec.describe CompaniesController, type: :controller do
 
 
           it 'default-x is <request.url> and has no language specifier in the path' do
-            get :index
+            index_response_body # ensure this is created before we use it; gets around needing to call 'index_response_body' as a before_all
 
-            default_hreflang_match = link_hreflang_with_href('x-default', @controller.request.url).match(response.body)
+            default_hreflang_match = link_hreflang_with_href('x-default', @controller.request.url).match(index_response_body)
             expect(default_hreflang_match).not_to be_nil
             expect(default_hreflang_match.size).to eq 1
             expect(default_hreflang_match[0].include?('/sv')).to be_falsey
@@ -325,13 +336,13 @@ RSpec.describe CompaniesController, type: :controller do
           end
 
           it 'alt for sv is <base url>/sv/<request.fullpath>' do
-            get :index
-            expect(response.body).to match(link_hreflang_with_href('sv', "#{@controller.request.base_url}/sv#{request.fullpath}"))
+            index_response_body # ensure this is created before we use it; gets around needing to call 'index_response_body' as a before_all
+            expect(index_response_body).to match(link_hreflang_with_href('sv', "#{@controller.request.base_url}/sv#{request.fullpath}"))
           end
 
           it 'alt for en is <base url>/en/<request.fullpath>' do
-            get :index
-            expect(response.body).to match(link_hreflang_with_href('en', "#{@controller.request.base_url}/en#{request.fullpath}"))
+            index_response_body # ensure this is created before we use it; gets around needing to call 'index_response_body' as a before_all
+            expect(index_response_body).to match(link_hreflang_with_href('en', "#{@controller.request.base_url}/en#{request.fullpath}"))
           end
         end
 
@@ -340,71 +351,80 @@ RSpec.describe CompaniesController, type: :controller do
 
           it 'title is the complete page title <title | site name>' do
             # <meta property="og:title" content="Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare">
-            get :index
-            expect(response.body).to match(meta_property_with_content('og:title', full_page_title))
+            index_response_body
+            expect(index_response_body).to match(meta_property_with_content('og:title', full_page_title))
           end
 
-          it 'description is the same as the page description' do
-            get :index
-            expect(response.body).to match(meta_property_with_content('og:description', 'Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera.'))
+          it 'description is from the AppConfiguration' do
+            expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_description).twice.and_call_original
+
+            index_response_body
+            expect(index_response_body).to match(meta_property_with_content('og:description', AdminOnly::AppConfiguration.config_to_use.site_meta_description))
           end
+
 
           it 'url is the url of the page' do
             # <meta property="og:url" content="http://0.0.0.0:3000/">
-            get :index
-            expect(response.body).to match(meta_property_with_content('og:url', request.url))
+            index_response_body
+            expect(index_response_body).to match(meta_property_with_content('og:url', request.url))
           end
 
-          it 'type is website' do
-            get :index
-            expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+
+          it 'type is website and comes from AppConfiguration' do
+            expect(AdminOnly::AppConfiguration.config_to_use).to receive(:og_type).and_return('site default type')
+
+            index_response_body
+            expect(index_response_body).to match(meta_property_with_content('og:type', 'site default type'))
           end
 
           it 'locale = sv_SE' do
-            get :index
-            expect(response.body).to match(meta_property_with_content('og:locale', 'sv_SE'))
+            index_response_body
+            expect(index_response_body).to match(meta_property_with_content('og:locale', 'sv_SE'))
           end
 
 
           describe 'image' do
 
-            it 'image is the same as the page image_src' do
-              # <meta property="og:image" content="http://0.0.0.0:3000/assets/Sveriges_hundforetagare_banner_sajt.jpg">
-              get :index
-              expect(response.body).to match(meta_property_with_content('og:image', 'http(.*)/assets/Sveriges_hundforetagare_banner_sajt.jpg'))
+            it 'image is the public url to the AppConfiguration site_meta_image url' do
+              expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_image).twice.and_call_original
+
+              index_response_body
+              expect(index_response_body).to match(meta_property_with_content('og:image', "#{@controller.request.base_url}#{AdminOnly::AppConfiguration.config_to_use.site_meta_image.url}"))
             end
 
-            it 'type = image/jpeg' do
+
+            it 'type is from the AppConfiguration site meta image content type' do
+
               # <meta property="og:image:type" content="image/jpeg">
-              get :index
-              expect(response.body).to match(meta_property_with_content('og:image:type', 'image/jpeg'))
+              index_response_body
+              expect(index_response_body).to match(meta_property_with_content('og:image:type', AdminOnly::AppConfiguration.config_to_use.site_meta_image_content_type))
             end
 
-            it 'width is 1245 (the width of the asset banner image)' do
+            it 'width is from the AppConfiguration site meta image width' do
+
               # <meta property="og:image:width" content="1245">
-              get :index
-              expect(response.body).to match(meta_property_with_content('og:image:width', '1245'))
+              index_response_body
+              expect(index_response_body).to match(meta_property_with_content('og:image:width', AdminOnly::AppConfiguration.config_to_use.site_meta_image_width))
             end
 
-            it 'height is 620 (the height of the asset banner image)' do
+            it 'height is the site meta image height' do
               # <meta property="og:image:height" content="620">
-              get :index
-              expect(response.body).to match(meta_property_with_content('og:image:height', '620'))
+              index_response_body
+              expect(index_response_body).to match(meta_property_with_content('og:image:height', AdminOnly::AppConfiguration.config_to_use.site_meta_image_height))
             end
 
           end
 
         end
 
-        describe 'twitter' do
 
-          it '<meta name="twitter:card" content="summary">' do
-            get :index
-            expect(response.body).to match(meta_tag_with_content('twitter:card', 'summary'))
-          end
+        it 'twitter:card is from AppConfiguration' do
+          expect(AdminOnly::AppConfiguration.config_to_use).to receive(:twitter_card_type).twice.and_call_original
+          index_response_body
+          expect(index_response_body).to match(meta_tag_with_content('twitter:card', AdminOnly::AppConfiguration.config_to_use.twitter_card_type))
         end
-      end
 
+      end
 
     end
 
@@ -413,18 +433,39 @@ RSpec.describe CompaniesController, type: :controller do
 
   describe '#show meta data (renders view)' do
 
-    render_views
+    let(:show_co1_params) { { "id" => "#{complete_co1.id}" } }
+    let(:show_co2_params) { { "id" => "#{complete_co2.id}" } }
+    let(:show_co3_params) { { "id" => "#{company_3_addrs.id}" } }
 
-    let(:show_co1_params) { { "id" => "#{complete_co1.id}"}  }
-    let(:show_co2_params) { { "id" => "#{complete_co2.id}"}  }
-    let(:show_co3_params) { { "id" => "#{company_3_addrs.id}"}  }
+    # This lets us call get :show with the company 1 parameters just once.
+    # Must refer to show_co1_response_body as the first line in a test to ensure this has been called at least once
+    let(:show_co1_response_body) do
+      get :show, params: show_co1_params
+      response.body
+    end
+
+    # This lets us call get :show with the company 1 parameters just once.
+    # Must refer to show_co1_response_body as the first line in a test to ensure this has been called at least once
+    let(:show_co2_response_body) do
+      get :show, params: show_co2_params
+      response.body
+    end
+
+    # This lets us call get :show with the company 1 parameters just once.
+    # Must refer to show_co1_response_body as the first line in a test to ensure this has been called at least once
+    let(:show_co3_response_body) do
+      get :show, params: show_co3_params
+      response.body
+    end
+
+
+    render_views
 
 
     it 'page title has the company name and site name' do
       complete_co1
-      get :show, params: show_co1_params
-
-      expect(response.body).to match(/<title>#{complete_co1.name} \| Sveriges Hundföretagare<\/title>/)
+      show_co1_response_body
+      expect(show_co1_response_body).to match(/<title>#{complete_co1.name} \| #{AdminOnly::AppConfiguration.config_to_use.site_name}<\/title>/)
     end
 
 
@@ -434,6 +475,7 @@ RSpec.describe CompaniesController, type: :controller do
       def meta_tag_with_content(tag, content)
         Regexp.new("<meta name=\"#{tag}\" content=\"#{content}\">")
       end
+
 
       # Create the Regexp to match meta property="<property>" content="<content>"
       def meta_property_with_content(property, content)
@@ -446,22 +488,22 @@ RSpec.describe CompaniesController, type: :controller do
         context 'company has a description' do
           it 'description is the company description' do
             complete_co1
-            get :show, params: show_co1_params
-            expect(response.body).to match(meta_tag_with_content('description', complete_co1.description))
+            show_co1_response_body
+            expect(show_co1_response_body).to match(meta_tag_with_content('description', complete_co1.description))
           end
 
         end
 
         context 'company description is blank' do
 
-          it 'is SHF default page meta description' do
-          complete_co2
-          complete_co2.update(description: '')
-          complete_co2.save
+          it 'is AppConfiguration meta description' do
+            complete_co2
+            complete_co2.update(description: '')
+            complete_co2.save
 
-          get :show, params: show_co2_params
+            show_co2_response_body
 
-          expect(response.body).to match(meta_tag_with_content('description', SiteMetaInfoDefaults.description))
+            expect(show_co2_response_body).to match(meta_tag_with_content('description', AdminOnly::AppConfiguration.config_to_use.site_meta_description))
 
           end
         end
@@ -470,18 +512,21 @@ RSpec.describe CompaniesController, type: :controller do
 
 
       it 'keywords are only the business categories for the company' do
-        meta_content = complete_co1.business_categories.map(&:name).join(', ')
-        get :show, params: show_co1_params
 
-        expect(response.body).to match(meta_tag_with_content('keywords', meta_content))
+        expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_keywords).once
+
+        meta_content = complete_co1.business_categories.map(&:name).join(', ')
+        show_co1_response_body
+
+        expect(show_co1_response_body).to match(meta_tag_with_content('keywords', meta_content))
       end
 
 
       it 'link rel="image_src" is the H-markt image for the company' do
         co_hmarkt_image_url = company_h_markt_url(complete_co1) # FIXME - this needs to be a permanent image and URL
-        get :show, params: show_co1_params
+        show_co1_response_body
 
-        expect(response.body).to match(co_hmarkt_image_url)
+        expect(show_co1_response_body).to match(co_hmarkt_image_url)
       end
 
 
@@ -495,23 +540,23 @@ RSpec.describe CompaniesController, type: :controller do
 
         it 'default is "(.)*/hundforetagare/[company id]' do
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
-          expect(response.body).to match(link_hreflang_with_href('x-default', "(.)*/hundforetag/#{complete_co1.id}"))
+          expect(show_co1_response_body).to match(link_hreflang_with_href('x-default', "(.)*/hundforetag/#{complete_co1.id}"))
         end
 
         it 'alt for sv is (.)*/hunforetagare/[company id]' do
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
-          expect(response.body).to match(link_hreflang_with_href('sv', "(.)*/hundforetag/#{complete_co1.id}"))
+          expect(show_co1_response_body).to match(link_hreflang_with_href('sv', "(.)*/hundforetag/#{complete_co1.id}"))
         end
 
         it 'alt for en is (.)*/en/hunforetagare/[company id]' do
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
-          expect(response.body).to match(link_hreflang_with_href('en', "(.)*/en/hundforetag/#{complete_co1.id}"))
+          expect(show_co1_response_body).to match(link_hreflang_with_href('en', "(.)*/en/hundforetag/#{complete_co1.id}"))
         end
       end
 
@@ -556,10 +601,10 @@ RSpec.describe CompaniesController, type: :controller do
 
         it 'is in ld+json format in a <script> tag' do
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
           script_regexp = /<script type=\"application\/ld\+json\">(\s)*(?<company_ld_json>.*)(\s)*<\/script>/
-          match = script_regexp.match(response.body)
+          match         = script_regexp.match(show_co1_response_body)
           expect(match.captures.size).to eq 1
 
           # turn the matched string into a Hash so we can compare info no matter the order
@@ -598,7 +643,7 @@ RSpec.describe CompaniesController, type: :controller do
           # when someone searches on "dog <whatever>"
           expect(co_ld_json.key?('knowsAbout')).to be_truthy
           expect(co_ld_json['knowsAbout']).to match_array(complete_co1.
-              business_categories.map{|category| "#{I18n.t('dog').capitalize} #{category.name}"} )
+              business_categories.map { |category| "#{I18n.t('dog').capitalize} #{category.name}" })
 
           expect(co_ld_json.key?('address')).to be_truthy
           expect(co_ld_json['address']).to be_a Hash
@@ -644,10 +689,10 @@ RSpec.describe CompaniesController, type: :controller do
         it 'company with 3 addresses: uses main address for address, lists all 3 addresses as locations' do
 
           company_3_addrs
-          get :show, params: show_co3_params
+          show_co3_response_body
 
           script_regexp = /<script type=\"application\/ld\+json\">(\s)*(?<company_ld_json>.*)(\s)*<\/script>/
-          match = script_regexp.match(response.body)
+          match         = script_regexp.match(response.body)
           expect(match.captures.size).to eq 1
 
           # turn the matched string into a Hash so we can compare info no matter the order
@@ -675,7 +720,7 @@ RSpec.describe CompaniesController, type: :controller do
           expect(address_hash['addressRegion']).to eq main_addr.region.name
 
           expect(address_hash.key?('addressLocality')).to be_truthy
-          expect(address_hash['addressLocality']).to eq main_addr.city  #main_addr.kommun.name
+          expect(address_hash['addressLocality']).to eq main_addr.city #main_addr.kommun.name
 
           expect(address_hash.key?('addressCountry')).to be_truthy
           expect(address_hash['addressCountry']).to eq main_addr.country
@@ -697,7 +742,7 @@ RSpec.describe CompaniesController, type: :controller do
           expect(location.size).to eq 3
 
           # expect 3 places, all with addresses and geo information
-          3.times do | i |
+          3.times do |i|
             expect(location[i]['@type']).to eq 'Place'
 
             expect(location[i].key?('address')).to be_truthy
@@ -723,7 +768,7 @@ RSpec.describe CompaniesController, type: :controller do
         it 'title is same as the page title' do
           # <meta property="og:title" content="Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare">
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
           expect(response.body).to match(meta_property_with_content('og:title', "#{complete_co1.name} \| Sveriges Hundföretagare"))
         end
@@ -731,13 +776,13 @@ RSpec.describe CompaniesController, type: :controller do
 
         it 'description is the same as the page description' do
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
           # get the content in the description tag
           page_desc_regexp = Regexp.new("<meta name=\"description\" content=\"(.*)\">")
           desc_in_response = page_desc_regexp.match(response.body)
 
-          expect(desc_in_response).not_to be_nil  # be super sure that we could find the meta name="description"
+          expect(desc_in_response).not_to be_nil # be super sure that we could find the meta name="description"
 
           expect(response.body).to match(meta_property_with_content('og:description', desc_in_response[1]))
         end
@@ -746,21 +791,22 @@ RSpec.describe CompaniesController, type: :controller do
         it 'url is the url of the page' do
           # <meta property="og:url" content="http://0.0.0.0:3000/">
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
           expect(response.body).to match(meta_property_with_content('og:url', request.url))
         end
 
-        it 'type is website' do
+        it 'type is from AppConfiguration' do
+          expect(AdminOnly::AppConfiguration.config_to_use).to receive(:og_type).twice.and_call_original
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
-          expect(response.body).to match(meta_property_with_content('og:type', 'website'))
+          expect(response.body).to match(meta_property_with_content('og:type', AdminOnly::AppConfiguration.config_to_use.og_type))
         end
 
         it 'locale = sv_SE' do
           complete_co1
-          get :show, params: show_co1_params
+          show_co1_response_body
 
           expect(response.body).to match(meta_property_with_content('og:locale', 'sv_SE'))
         end
@@ -768,66 +814,73 @@ RSpec.describe CompaniesController, type: :controller do
 
         describe 'image' do
 
-           it 'image is the same as the page image_src' do
-             pending("og:image will be done in a separate story/PR")
-             fail
+          # TODO: What is the definition of the 'main image for the company'? What image do we use?
 
-          #   co_hmarkt_image_url = company_h_markt_url(complete_co1)  # FIXME - this needs to be a permanent image and URL
-          #   get :show, params: show_co1_params
+          describe 'if there is no image for the company, use the site meta image' do
+            pending
+          end
+
+
+          it 'image is the same as the page image_src' do
+            pending("og:image will be done in a separate story/PR")
+            fail
+
+            #   co_hmarkt_image_url = company_h_markt_url(complete_co1)  # FIXME - this needs to be a permanent image and URL
+            #   show_co1_response_body
+            #
+            #   expect(response.body).to match(meta_property_with_content('og:image', co_hmarkt_image_url))
+          end
+
+          it 'type = image/png' do
+            pending("og:image will be done in a separate story/PR")
+            fail
+
+            #   # <meta property="og:image:type" content="image/png">
+            #   complete_co1
+            #   show_co1_response_body
+            #
+            #   expect(response.body).to match(meta_property_with_content('og:image:type', 'image/png'))
+          end
           #
-          #   expect(response.body).to match(meta_property_with_content('og:image', co_hmarkt_image_url))
-           end
+          it 'width is the width of the asset banner image)' do
+            pending("og:image will be done in a separate story/PR")
+            fail
 
-           it 'type = image/png' do
-             pending("og:image will be done in a separate story/PR")
-             fail
+            #   # <meta property="og:image:width" content="329">
+            #   complete_co1
+            #   show_co1_response_body
+            #
+            #   expect(response.body).to match(meta_property_with_content('og:image:width', '329'))
+          end
 
-             #   # <meta property="og:image:type" content="image/png">
-          #   complete_co1
-          #   get :show, params: show_co1_params
-          #
-          #   expect(response.body).to match(meta_property_with_content('og:image:type', 'image/png'))
-           end
-          #
-           it 'width is 329 (the width of the asset banner image)' do
-             pending("og:image will be done in a separate story/PR")
-             fail
+          it 'height is the height of the asset banner image)' do
+            pending("og:image will be done in a separate story/PR")
+            fail
 
-             #   # <meta property="og:image:width" content="329">
-          #   complete_co1
-          #   get :show, params: show_co1_params
-          #
-          #   expect(response.body).to match(meta_property_with_content('og:image:width', '329'))
-           end
-
-           it 'height is 424 (the height of the asset banner image)' do
-             pending("og:image will be done in a separate story/PR")
-             fail
-
-             #   # <meta property="og:image:height" content="424">
-          #   complete_co1
-          #   get :show, params: show_co1_params
-          #
-          #   expect(response.body).to match(meta_property_with_content('og:image:height', '424'))
-           end
+            #   # <meta property="og:image:height" content="424">
+            #   complete_co1
+            #   show_co1_response_body
+            #
+            #   expect(response.body).to match(meta_property_with_content('og:image:height', '424'))
+          end
 
         end
 
       end
 
 
-      describe 'twitter' do
+      describe 'twitter:card is summary and comes the AppConfiguration' do
 
-        it '<meta name="twitter:card" content="summary">' do
+        it 'comes from appConfiguration' do
+          expect(AdminOnly::AppConfiguration.config_to_use).to receive(:twitter_card_type).twice.and_call_original
+
           complete_co1
-          get :show, params: show_co1_params
-
-          expect(response.body).to match(meta_tag_with_content('twitter:card', 'summary'))
+          show_co1_response_body
+          expect(show_co1_response_body).to match(meta_tag_with_content('twitter:card', AdminOnly::AppConfiguration.config_to_use.twitter_card_type))
         end
       end
 
     end
-
 
   end
 

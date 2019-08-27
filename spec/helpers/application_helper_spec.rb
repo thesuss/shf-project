@@ -349,39 +349,66 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     context 'no page title or site name given' do
-      it 'gets both from SiteMetaInfoDefaults' do
-        expect(helper.full_page_title).to eq "#{SiteMetaInfoDefaults.title} | #{SiteMetaInfoDefaults.site_name}"
+      it 'gets both from AppConfiguration' do
+        expect(helper.full_page_title).to eq "#{AdminOnly::AppConfiguration.config_to_use.site_meta_title} | #{AdminOnly::AppConfiguration.config_to_use.site_name}"
       end
     end
 
     context 'only page title given' do
-      it 'uses the given page title, gets site name from SiteMetaInfoDefaults' do
-        expect(helper.full_page_title(page_title: 'PageTitle')).to eq "PageTitle | #{SiteMetaInfoDefaults.site_name}"
+      it 'uses the given page title, gets site name from AdminOnly::AppConfiguration.config_to_use' do
+        expect(helper.full_page_title(page_title: 'PageTitle')).to eq "PageTitle | #{AdminOnly::AppConfiguration.config_to_use.site_name}"
       end
     end
 
     context 'only site name given' do
-      it 'uses the given site name, gets page title from SiteMetaInfoDefaults' do
-        expect(helper.full_page_title(site_name: 'SiteName')).to eq "#{SiteMetaInfoDefaults.title} | SiteName"
+      it 'uses the given site name, gets page title from AdminOnly::AppConfiguration.config_to_use' do
+        expect(helper.full_page_title(site_name: 'SiteName')).to eq "#{AdminOnly::AppConfiguration.config_to_use.site_meta_title} | SiteName"
       end
     end
 
     context 'both page title the site name given' do
-      it 'uses the given site name, gets page title from SiteMetaInfoDefaults' do
+      it 'uses the given site name, gets page title from AdminOnly::AppConfiguration.config_to_use' do
         expect(helper.full_page_title(page_title: "PageTitle", site_name: 'SiteName')).to eq "PageTitle | SiteName"
       end
     end
 
     context 'page_title is blank' do
-      it 'uses the page title from SiteMetaInfoDefaults' do
-        expect(helper.full_page_title(page_title: '', site_name: 'SiteName')).to eq "#{SiteMetaInfoDefaults.title} | SiteName"
+      it 'uses the page title from AdminOnly::AppConfiguration.config_to_use' do
+        expect(helper.full_page_title(page_title: '', site_name: 'SiteName')).to eq "#{AdminOnly::AppConfiguration.config_to_use.site_meta_title} | SiteName"
       end
     end
 
     context 'site name is blank' do
-      it 'uses the site name from SiteMetaInfoDefaults' do
-        expect(helper.full_page_title(page_title: 'PageTitle', site_name: '')).to eq "PageTitle | #{SiteMetaInfoDefaults.site_name}"
+      it 'uses the site name from AdminOnly::AppConfiguration.config_to_use' do
+        expect(helper.full_page_title(page_title: 'PageTitle', site_name: '')).to eq "PageTitle | #{AdminOnly::AppConfiguration.config_to_use.site_name}"
       end
     end
   end
+
+
+  describe '#presence_required?' do
+
+    # the simplest model that has a presence validation
+    let(:biz_cat_model) { create(:business_category) }
+
+    describe 'model has no presence validators' do
+
+      it 'always false' do
+        allow(biz_cat_model.class).to receive(:validators).and_return([])
+        expect(helper.presence_required?(biz_cat_model, :name)).to be_falsey
+      end
+    end
+
+    describe 'model has at least 1 presence validator' do
+
+      it 'false if attribute does not have a presence validator' do
+        expect(helper.presence_required?(biz_cat_model, :description)).to be_falsey
+      end
+
+      it 'true if attribute does have a presence validator' do
+        expect(helper.presence_required?(biz_cat_model, :name)).to be_truthy
+      end
+    end
+  end
+
 end

@@ -271,10 +271,6 @@ module SeedHelper
   end
 
 
-  def load_app_config
-    AdminOnly::AppConfiguration.create
-  end
-
   # use lazy initialization; cache all Regions
   def regions
     @regions ||= Region.all.to_a

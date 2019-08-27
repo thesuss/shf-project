@@ -14,15 +14,16 @@ RSpec.describe CompanyMetaInfoAdapter do
 
     context 'not blank' do
       it 'is the company name' do
+        complete_co1
         expect(subject.title).to eq complete_co1.name
       end
     end
 
     context 'blank' do
-      it 'is the Site meta info default for title' do
+      it 'is the AppConfiguration site_meta_title' do
         blank_name_co = create(:company)
         blank_name_co.name = ''
-        expect(described_class.new(blank_name_co).title).to eq SiteMetaInfoDefaults.title
+        expect(described_class.new(blank_name_co).title).to eq AdminOnly::AppConfiguration.config_to_use.site_meta_title
       end
     end
   end
@@ -37,10 +38,10 @@ RSpec.describe CompanyMetaInfoAdapter do
     end
 
     context 'blank' do
-      it 'is the Site meta info default for description' do
+      it 'is the AppConfiguration site_meta_description' do
         blank_name_co = create(:company)
         blank_name_co.description = ''
-        expect(described_class.new(blank_name_co).description).to eq SiteMetaInfoDefaults.description
+        expect(described_class.new(blank_name_co).description).to eq AdminOnly::AppConfiguration.config_to_use.site_meta_description
       end
     end
   end
@@ -55,10 +56,10 @@ RSpec.describe CompanyMetaInfoAdapter do
     end
 
     context 'blank' do
-      it 'is the Site meta info default for keywords' do
+      it 'is the AppConfiguration AppConfiguration site_meta_description' do
         blank_name_co = create(:company)
         blank_name_co.business_categories.each{|cat| cat.name = ''}
-        expect(described_class.new(blank_name_co).keywords).to eq SiteMetaInfoDefaults.keywords
+        expect(described_class.new(blank_name_co).keywords).to eq AdminOnly::AppConfiguration.config_to_use.site_meta_keywords
       end
     end
   end

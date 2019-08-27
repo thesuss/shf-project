@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative File.join(Rails.root, 'db', 'seed_helpers', 'app_configuration_seeder')
 
 ENV_ADMIN_EMAIL_KEY = 'SHF_ADMIN_EMAIL' unless defined?(ENV_ADMIN_EMAIL_KEY)
 ENV_ADMIN_PASSWORD_KEY = 'SHF_ADMIN_PWD' unless defined?(ENV_ADMIN_PASSWORD_KEY)
@@ -22,6 +23,8 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
         # must stub this way so the rest of ENV is preserved
         stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
                                              ENV_ADMIN_PASSWORD_KEY => admin_pwd}) )
+
+        allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
 
         SHFProject::Application.load_tasks
         SHFProject::Application.load_seed
@@ -78,6 +81,9 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
         # must stub this way so the rest of ENV is preserved
         stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
                                              ENV_ADMIN_PASSWORD_KEY => admin_pwd}) )
+
+        allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
+
       end
     end
 
@@ -131,6 +137,8 @@ RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_use
       end
 
       expect(Geocoder).to receive(:search).at_most(geocode_max).times if geocode_max > 0
+
+      allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
 
       SHFProject::Application.load_seed
 

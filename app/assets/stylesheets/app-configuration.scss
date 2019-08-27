@@ -1,0 +1,67 @@
+@import 'shf-custom-colors';
+
+.app_configuration {
+
+  .field-label {
+    font-weight: bold;
+  }
+
+  .card {
+    margin: 3px;
+
+    .image {
+
+      a {
+        border: 0;
+      }
+
+      .card-header {
+        font-weight: bold;
+      }
+
+      .card-header.required {
+        background-color: $shf-blue;
+        color: white;
+      }
+
+      .card-body {
+        img {
+          border: 1pt solid $light;
+          width: 100%;
+        }
+      }
+
+      .missing {
+        .card-header {
+          color: $missing-info-color; // can use this to show that an image is not in the database (perhaps it's being read from the app/assets)
+        }
+
+        .card-header.required {
+          background-color: $missing-info-color;
+          color: white;
+        }
+      }
+
+
+    }
+
+  }
+
+  .field.upload-image {
+
+    margin-top: 1rem;
+
+    input {
+      border: 1pt solid $light;
+      font-size: smaller;
+    }
+  }
+
+}
+
+.app_configuration.edit {
+
+  .card {
+    margin-top: 2rem;
+  }
+}
