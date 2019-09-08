@@ -144,6 +144,11 @@ en:
         one: User
         other: Users
 
+      task_attempt:
+        one: Task Attempt
+        other: Task Attempts
+
+
     attributes:
 
       user:
@@ -248,6 +253,12 @@ en:
         twitter_card_type: &site_twitter_card_type Twitter card type
         facebook_app_id: &site_facebook_app_id Facebook Application ID
 
+      task_attempt:
+        task_name: Task name
+        task_source: Task source
+        was_successful: Was successful
+        attempted_on: Attempted on
+
 
     errors:
       models:
@@ -309,6 +320,20 @@ en:
             timing:
               invalid: must be a symbol
 
+        task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} must be true or false (a Boolean)"
+
+        successful_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} can only be true"
+
+        failed_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} can only be false"
 
 
       messages:

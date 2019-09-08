@@ -33,7 +33,8 @@ class LogfileNamer
   def self.name_for( klass_name )
 
     env_prefix = Rails.env.production? ? '' : "#{Rails.env}_"
-    File.join(Rails.configuration.paths['log'].absolute_current, "#{env_prefix}#{klass_name}.#{FILE_EXT}")
+    filename = klass_name.to_s.gsub('::', '_')
+    File.join(Rails.configuration.paths['log'].absolute_current, "#{env_prefix}#{filename}.#{FILE_EXT}")
   end
 
 

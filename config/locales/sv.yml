@@ -144,6 +144,11 @@ sv:
         one: Användaren
         other: Användare
 
+      task_attempt:
+        one: Task Attempt
+        other: Task Attempts
+
+
     attributes:
 
       user:
@@ -237,6 +242,12 @@ sv:
         description_en: "Beskrivning (engelska)"
         is_custom: "Annan anledning"
 
+      task_attempt:
+        task_name: Task namn
+        task_source: Task source
+        was_successful: was successful
+        attempted_on: attempted on
+
 
       app_configuration:
         site_name: &site_name Site name
@@ -308,6 +319,22 @@ sv:
           attributes:
             timing:
               invalid: måste vara en symbol
+
+        task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} must be true or false (a Boolean)"
+
+        successful_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "kan bara vara sant (värdet var %{value})"
+
+        failed_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "kan bara vara falskt (värdet var %{value})"
+
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'

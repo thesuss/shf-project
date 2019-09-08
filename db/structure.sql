@@ -600,6 +600,41 @@ CREATE SEQUENCE public.membership_number_seq
 
 
 --
+-- Name: one_time_tasker_task_attempts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.one_time_tasker_task_attempts (
+    id bigint NOT NULL,
+    task_name character varying NOT NULL,
+    task_source character varying,
+    attempted_on timestamp without time zone NOT NULL,
+    was_successful boolean DEFAULT false NOT NULL,
+    notes character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: one_time_tasker_task_attempts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.one_time_tasker_task_attempts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: one_time_tasker_task_attempts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.one_time_tasker_task_attempts_id_seq OWNED BY public.one_time_tasker_task_attempts.id;
+
+
+--
 -- Name: payments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -940,6 +975,13 @@ ALTER TABLE ONLY public.member_pages ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: one_time_tasker_task_attempts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.one_time_tasker_task_attempts ALTER COLUMN id SET DEFAULT nextval('public.one_time_tasker_task_attempts_id_seq'::regclass);
+
+
+--
 -- Name: payments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1091,6 +1133,14 @@ ALTER TABLE ONLY public.member_app_waiting_reasons
 
 ALTER TABLE ONLY public.member_pages
     ADD CONSTRAINT member_pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: one_time_tasker_task_attempts one_time_tasker_task_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.one_time_tasker_task_attempts
+    ADD CONSTRAINT one_time_tasker_task_attempts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1516,5 +1566,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190326120854'),
 ('20190514172102'),
 ('20190815215041');
+('20190326120854'),
+('20190601004310');
 
 
