@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+require File.join( 'shared_examples', 'condition_responder_timing_shared_spec')
 require 'shared_context/activity_logger'
 
 
@@ -22,8 +23,8 @@ RSpec.describe ConditionResponder, type: :model do
   end
 
 
-  it 'DEFAULT_TIMING is :on' do
-    expect(ConditionResponder::DEFAULT_TIMING).to eq :on
+  it 'default timing is on' do
+    expect(described_class.default_timing).to eq described_class.timing_on
   end
 
   describe '.get_timing' do
@@ -33,8 +34,8 @@ RSpec.describe ConditionResponder, type: :model do
     end
 
     context 'condition is nil' do
-      it 'returns the DEFAULT TIMING' do
-        expect(ConditionResponder.get_timing(nil)).to eq ConditionResponder::DEFAULT_TIMING
+      it 'returns the default timing' do
+        expect(ConditionResponder.get_timing(nil)).to eq described_class.default_timing
       end
     end
 
@@ -86,7 +87,7 @@ RSpec.describe ConditionResponder, type: :model do
 
     context 'timing is before' do
 
-      let(:timing_before) { ConditionResponder::TIMING_BEFORE }
+      let(:timing_before) { described_class.timing_before }
 
       it '1st is 1 day before 2nd date  = 1' do
         expect(ConditionResponder.days_1st_date_is_from_2nd(nov_30, dec_1, timing_before)).to eq 1
@@ -104,7 +105,7 @@ RSpec.describe ConditionResponder, type: :model do
 
     context 'timing is after' do
 
-      let(:timing_after) { ConditionResponder::TIMING_AFTER }
+      let(:timing_after) { described_class.timing_after }
 
       it '1st is 1 day before 2nd date  = -1' do
         expect(ConditionResponder.days_1st_date_is_from_2nd(nov_30, dec_1, timing_after)).to eq -1
@@ -121,9 +122,9 @@ RSpec.describe ConditionResponder, type: :model do
     end
 
 
-    context 'timing is on (always returns 0 days away; this means always check on the 2nd date no matter how many days away)' do
+    context 'timing is on always returns 0 days away. Always check on the 2nd date no matter how many days away' do
 
-      let(:timing_on) { ConditionResponder::TIMING_ON }
+      let(:timing_on) { described_class.timing_on }
 
       it '2nd date is 1 day before the date = 0' do
         expect(ConditionResponder.days_1st_date_is_from_2nd(dec_1, nov_30, timing_on)).to eq 0
@@ -157,7 +158,7 @@ RSpec.describe ConditionResponder, type: :model do
 
     context 'timing is before' do
 
-      let(:timing_before) { ConditionResponder::TIMING_BEFORE }
+      let(:timing_before) { described_class.timing_before }
 
       it 'today is 1 day before the date = ConditionResponder.days_1st_date_is_from_2nd(Date.current, nov_30, timing_before)' do
         expect(ConditionResponder.days_today_is_away_from(nov_30, timing_before)).to eq ConditionResponder.days_1st_date_is_from_2nd(dec_1, nov_30, timing_before)
@@ -175,7 +176,7 @@ RSpec.describe ConditionResponder, type: :model do
 
     context 'timing is after' do
 
-      let(:timing_after) { ConditionResponder::TIMING_AFTER }
+      let(:timing_after) { described_class.timing_after }
 
       it 'today is 1 day after the date = ConditionResponder.days_1st_date_is_from_2nd(Date.current, dec_2, timing_after)' do
         expect(ConditionResponder.days_today_is_away_from(dec_2, timing_after)).to eq  ConditionResponder.days_1st_date_is_from_2nd(Date.current, dec_2, timing_after)
@@ -192,9 +193,9 @@ RSpec.describe ConditionResponder, type: :model do
     end
 
 
-    context 'timing is on (always returns 0 days away; this means always check on today)' do
+    context 'timing is on always returns 0 days away. Always check on today' do
 
-      let(:timing_on) { ConditionResponder::TIMING_ON }
+      let(:timing_on) { described_class.timing_on }
 
       it 'date is 1 day before today = ConditionResponder.days_1st_date_is_from_2nd(Date.current, nov_30, timing_on)' do
         expect(ConditionResponder.days_today_is_away_from(nov_30, timing_on)).to eq ConditionResponder.days_1st_date_is_from_2nd(Date.current, nov_30, timing_on)
@@ -217,73 +218,28 @@ RSpec.describe ConditionResponder, type: :model do
     let(:condition) { build(:condition) }
     let(:timing) { ConditionResponder.get_timing(condition) }
 
+
     describe '.timing_is_before?(timing)' do
-      it 'returns true if timing == :before' do
-        condition.timing = ConditionResponder::TIMING_BEFORE
-        expect(ConditionResponder.timing_is_before?(timing)).to be true
-      end
-
-      it 'returns false otherwise' do
-        condition.timing = ConditionResponder::DEFAULT_TIMING
-        expect(ConditionResponder.timing_is_before?(timing)).to be false
-      end
+      it_behaves_like 'timing method is true if timing matches, else false', :timing_is_before?, described_class.timing_before
     end
-
 
     describe '.timing_is_after?(timing)' do
-      it 'returns true if timing == :after' do
-        condition.timing = ConditionResponder::TIMING_AFTER
-        expect(ConditionResponder.timing_is_after?(timing)).to be true
-      end
-
-      it 'returns false otherwise' do
-        condition.timing = ConditionResponder::DEFAULT_TIMING
-        expect(ConditionResponder.timing_is_after?(timing)).to be false
-      end
+      it_behaves_like 'timing method is true if timing matches, else false', :timing_is_after?, described_class.timing_after
     end
-
 
     describe '.timing_is_on?(timing)' do
-      it 'returns true if timing == :on' do
-        condition.timing = ConditionResponder::TIMING_ON
-        expect(ConditionResponder.timing_is_on?(timing)).to be true
-      end
-
-      it 'returns false otherwise' do
-        condition.timing = :not_on
-        expect(ConditionResponder.timing_is_on?(timing)).to be false
-      end
+      it_behaves_like 'timing method is true if timing matches, else false', :timing_is_on?, described_class.timing_on
     end
 
-
     describe '.timing_is_every_day?(timing)' do
-
-      it 'returns true if timing == :every_day' do
-        condition.timing = ConditionResponder::TIMING_EVERY_DAY
-        expect(ConditionResponder.timing_is_every_day?(timing)).to be true
-      end
-
-      it 'returns false otherwise' do
-        condition.timing = ConditionResponder::DEFAULT_TIMING
-        expect(ConditionResponder.timing_is_every_day?(timing)).to be false
-      end
-
+      it_behaves_like 'timing method is true if timing matches, else false', :timing_is_every_day?, described_class.timing_every_day
     end
 
     describe '.timing_is_day_of_month?' do
-
-      it 'true if timing == :day_of_month' do
-        condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
-        expect(ConditionResponder.timing_is_day_of_month?(timing)).to be true
-      end
-
-      it 'false otherwise' do
-        condition.timing = ConditionResponder::DEFAULT_TIMING
-        expect(ConditionResponder.timing_is_day_of_month?(timing)).to be false
-      end
+      it_behaves_like 'timing method is true if timing matches, else false', :timing_is_day_of_month?, described_class.timing_day_of_month
     end
-
   end
+
 
   describe '.timing_matches_today?' do
 
@@ -292,43 +248,40 @@ RSpec.describe ConditionResponder, type: :model do
 
     it 'true if timing is every day' do
       config = {}
-      expect(ConditionResponder.timing_matches_today?(ConditionResponder::TIMING_EVERY_DAY, config)).to be true
+      expect(ConditionResponder.timing_matches_today?(described_class.timing_every_day, config)).to be_truthy
     end
 
-    it 'true if today is timing day of month? ' do
-      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
-      config = {on_month_day: Date.current.day}
-      expect(ConditionResponder.timing_matches_today?(ConditionResponder::TIMING_EVERY_DAY, config)).to be true
+    it 'true if today is timing day of month? and this is that day of the month' do
+      condition.timing = described_class.timing_day_of_month
+      config = {days: [Date.current.day]}
+      expect(ConditionResponder.timing_matches_today?(described_class.timing_day_of_month, config)).to be_truthy
     end
 
     it 'false otherwise' do
-      condition.timing = ConditionResponder::DEFAULT_TIMING
-      expect(ConditionResponder.timing_matches_today?(timing, config)).to be false
+      condition.timing = described_class.default_timing
+      expect(ConditionResponder.timing_matches_today?(timing, config)).to be_falsey
     end
   end
 
 
   describe '.today_is_timing_day_of_month?' do
 
-    let(:condition) { build(:condition) }
-    let(:timing) { ConditionResponder.get_timing(condition) }
+    let(:condition) { build(:condition, timing: described_class.timing_day_of_month) }
+    let(:timing) { described_class.get_timing(condition) }
 
-    it "true if timing is day of month AND config[:on_month_day] is today's day of the month" do
-      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
-      config = {on_month_day: Date.current.day}
-      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be true
+    it "true if the timing is 'day of month' and config[:days] includes today's day of the month" do
+      config = {days: [Date.current.day]}
+      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be_truthy
     end
 
-    it 'false if :on_month_day is not in config' do
-      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
+    it "false if :days is not in config" do
       config = {}
-      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be false
+      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be_falsey
     end
 
-    it "false if on_month_day is not today's date" do
-      condition.timing = ConditionResponder::TIMING_DAY_OF_MONTH
-      config = {on_month_day: Date.current.day - 1}
-      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be false
+    it "false if config[:days] does not include today's date" do
+      config = {days: [Date.current.day - 1,  Date.current.day + 1]}
+      expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be_falsey
     end
 
   end
@@ -347,8 +300,8 @@ RSpec.describe ConditionResponder, type: :model do
     end
 
     it 'raises exception if received timing != expected' do
-      expect(described_class).to receive(:validate_timing).with(:not_every_day, [:every_day], log)
-      ConditionResponder.confirm_correct_timing(:not_every_day, :every_day, log)
+      expect(described_class).to receive(:validate_timing).with(:not_a_valid_timing, [:every_day], log)
+      ConditionResponder.confirm_correct_timing(:not_a_valid_timing, :every_day, log)
     end
 
   end
@@ -362,17 +315,17 @@ RSpec.describe ConditionResponder, type: :model do
 
 
     it 'does not raise exception if timing IS in list of expected timings' do
-      expect { described_class.validate_timing(:every_day, [:every_day, :blorf], log) }
+      expect { described_class.validate_timing(:valid_timing, [:valid_timing, :another_valid_timing], log) }
           .not_to raise_error
     end
 
     it 'raises TimingNotValidConditionResponderError and writes to log if timing is not in list of expected timings' do
-      expect { described_class.validate_timing(:every_day, [:blorf], log) }
-          .to raise_error TimingNotValidError, "Received timing :every_day which is not in list of expected timings: [:blorf]"
+      expect { described_class.validate_timing(:not_a_valid_timing, [:valid_timing, :another_valid_timing], log) }
+          .to raise_error TimingNotValidError, "Received timing :not_a_valid_timing which is not in list of expected timings: [:valid_timing, :another_valid_timing]"
     end
 
     it 'raises ExpectedTimingsCannotBeEmptyError and writes to log if list of expected timings is empty' do
-      expect { described_class.validate_timing(:every_day, [], log) }
+      expect { described_class.validate_timing(:not_a_valid_timing, [], log) }
           .to raise_error ExpectedTimingsCannotBeEmptyError, "List of expected timings cannot be empty"
     end
 
@@ -380,13 +333,13 @@ RSpec.describe ConditionResponder, type: :model do
     describe 'valid timings can be a single Timing (it will convert to an Array)' do
 
       it 'does not raise exception if timing is the expected single Timing' do
-        expect { described_class.validate_timing(:blorf, :blorf, log) }
+        expect { described_class.validate_timing(:valid_timing, :valid_timing, log) }
             .not_to raise_error
       end
 
       it 'raises TimingNotValidConditionResponderError and writes to log if timing is NOT the expected single Timing' do
-        expect { described_class.validate_timing(:not_blorf, :blorf, log) }
-            .to raise_error TimingNotValidError, invalid_timing_error_msg(:not_blorf, [:blorf])
+        expect { described_class.validate_timing(:not_a_valid_timing, :valid_timing, log) }
+            .to raise_error TimingNotValidError, invalid_timing_error_msg(:not_a_valid_timing, [:valid_timing])
       end
 
     end

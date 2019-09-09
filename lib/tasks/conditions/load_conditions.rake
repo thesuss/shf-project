@@ -16,14 +16,17 @@ namespace :shf do
     #
     conditions_to_create = [
 
+        # Once Repeating Task timing is implemented, the timing should be changed
+        # to repeat every 14 days.
         { class_name: 'MemberUnpaidOver6MonthsAlert',
-            timing:     :every_day },
+          timing:     :day_of_month,
+          config: {days: [1, 15]} },
 
         { class_name: 'MembershipExpireAlert',
           timing:     :before,
           config:     { days: std_reminder_before_schedule } },
 
-        { class_name: 'MembershipLapsedAlert',
+         { class_name: 'MembershipLapsedAlert',
           timing:     :after,
           config:     { days: std_reminder_after_schedule } },
 

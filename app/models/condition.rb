@@ -4,7 +4,7 @@
 #                 class can be instantiated and :condition_response
 #                 can run on those instances.
 #
-#                 This class is  _descriptive._  (= the configration pattern)
+#                 This class is  _descriptive._  (= the configuration pattern)
 #
 #                 Ex:  A nightly rake/rails task will go thru all of the
 #                 Condition record in the db and, using the information in each,

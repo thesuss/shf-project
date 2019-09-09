@@ -44,7 +44,7 @@ class ConditionResponder
   TIMING_EVERY_DAY = :every_day
   TIMING_DAY_OF_MONTH = :day_of_month
 
-  ALL_TIMINGS = [TIMING_BEFORE, TIMING_AFTER, TIMING_ON, TIMING_EVERY_DAY]
+  ALL_TIMINGS = [TIMING_BEFORE, TIMING_AFTER, TIMING_ON, TIMING_EVERY_DAY, TIMING_DAY_OF_MONTH]
 
 
   DEFAULT_TIMING = TIMING_ON
@@ -155,8 +155,8 @@ class ConditionResponder
   # and today is the day of the month specified in the config
   def self.today_is_timing_day_of_month?(timing, config)
     self.timing_is_day_of_month?(timing) &&
-        config.fetch(:on_month_day, false) &&
-        config[:on_month_day] == Date.current.day
+        config.fetch(:days, false) &&
+        config[:days].include?(Date.current.day)
   end
 
 
@@ -173,26 +173,56 @@ class ConditionResponder
   # @param expected_timings [Array] - list of valid timings
   # @param log [Log] - the log to record the error to
   #
- def self.validate_timing(timing, expected_timings=[], log)
+  def self.validate_timing(timing, expected_timings = [], log)
 
-   if expected_timings.empty?
-     msg = "List of expected timings cannot be empty"
-     log.record('error', msg)
-     raise ExpectedTimingsCannotBeEmptyError, msg
-   end
+    if expected_timings.empty?
+      msg = "List of expected timings cannot be empty"
+      log.record('error', msg)
+      raise ExpectedTimingsCannotBeEmptyError, msg
+    end
 
-   valid_timings = expected_timings.is_a?(Enumerable) ? expected_timings : [expected_timings]
+    valid_timings = expected_timings.is_a?(Enumerable) ? expected_timings : [expected_timings]
 
-   unless valid_timings.include? timing
-     msg = "Received timing :#{timing} which is not in list of expected timings: #{valid_timings}"
-     log.record('error', msg)
-     raise TimingNotValidError, msg
-   end
- end
+    unless valid_timings.include? timing
+      msg = "Received timing :#{timing} which is not in list of expected timings: #{valid_timings}"
+      log.record('error', msg)
+      raise TimingNotValidError, msg
+    end
+  end
 
 
   def self.all_timings
     ALL_TIMINGS
+  end
+
+
+  def self.default_timing
+    DEFAULT_TIMING
+  end
+
+
+  def self.timing_on
+    TIMING_ON
+  end
+
+
+  def self.timing_before
+    TIMING_BEFORE
+  end
+
+
+  def self.timing_after
+    TIMING_AFTER
+  end
+
+
+  def self.timing_every_day
+    TIMING_EVERY_DAY
+  end
+
+
+  def self.timing_day_of_month
+    TIMING_DAY_OF_MONTH
   end
 
 end # ConditionResponder

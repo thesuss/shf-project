@@ -37,16 +37,18 @@ And("the condition has starting date set to {date}") do | starting_date |
 end
 
 
-And(/the condition has days set to \[(?:(.*),)(.*)\]/) do |days_list, last_day|
+# This will match any of the following (note that what can be in the square brackets could include a shorter or longer list of comma separated digits)
+#
+#   the condition has days set to [1, 2, 3]
+#   the condition has the days set to [1, 2, 3]
+#   the condition has days of the month set to [1, 2, 3]
+#   the condition has the days of the month set to [1, 2, 3]
+And(/the condition has(?: the)? days(?: of the month)? set to \[(?:(.*),)(.*)\s*\]/) do |days_list, last_day|
   days_arr = []
   days_arr = days_list.split(',').map(&:to_i) unless days_list.nil?
 
   days_arr << last_day.to_i
   condition.config[:days] = days_arr
-end
-
-And("the condition has the month day set to {digits}") do | month_day |
-  condition.config[:on_month_day] = month_day
 end
 
 #==================================================================================
