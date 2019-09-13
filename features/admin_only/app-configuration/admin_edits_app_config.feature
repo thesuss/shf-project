@@ -113,3 +113,12 @@ Feature: Admin edits application configuration
     And I click on t("submit") button
     Then I should see t("admin_only.app_configuration.update.success")
     And the "site_meta_image" attachment is available via a public url
+
+
+    Scenario: Problem with editting AppConfig, goes back to edit page (SAD PATH)
+      And I am logged in as "admin@random.com"
+      And I am on the "admin edit app configuration" page
+      And I fill in t("admin_only.app_configuration.edit.site_name") with ""
+      And I click on t("submit") button
+      Then I should see t("admin_only.app_configuration.update.error")
+      And I should see t("admin_only.app_configuration.edit.title")

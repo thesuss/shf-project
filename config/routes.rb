@@ -36,10 +36,18 @@ Rails.application.routes.draw do
     # Admins only view and edit the AppConfiguration.
     # There is no need for index or destroy.
     #
-    get 'app_configuration', to: 'app_configuration#show'
-    get 'app_configuration/redigera', to: 'app_configuration#edit',
+    # :id is an optional parameter so that view buttons, etc., work fine
+    # with the Rails conventions
+    #
+    # as: :..app_configuration..  is needed when the id is an optional parameter
+
+    get 'app_configuration(/:id)/redigera', to: 'app_configuration#edit',
         as: :edit_app_configuration
-    put 'app_configuration', to: 'app_configuration#update'
+
+    # must use the as: :put_app_configuration so that the method does not conflict with get 'app_configuration(/:id)' route (#show)
+    put 'app_configuration(/:id)', to: 'app_configuration#update', as: :put_app_configuration
+
+    get 'app_configuration(/:id)', to: 'app_configuration#show', as: :app_configuration
 
 
     get 'user_profile_edit/:id', to: 'user_profile#edit', as: :user_profile_edit
