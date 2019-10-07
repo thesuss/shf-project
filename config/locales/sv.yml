@@ -823,7 +823,7 @@ sv:
       show_image: Visa bild
       company_h_brand: Företaget H-märke för %{company}
       company_h_brand_describe: Detta är ditt företags H-märke.
-      member_packet: &member_packet medlemspaket
+      member_packet: &member_packet pkt
       sent: skickat
       not_sent: inte skickat
 
