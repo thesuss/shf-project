@@ -30,6 +30,12 @@ When "I click on and accept{optional_string} {capture_string}{optional_string}" 
   end
 end
 
+# When I right click on <a CSS element>
+When "I right click on {capture_string}" do | element |
+  find(element).right_click
+end
+
+
 When /^I confirm popup$/ do
 
   if Capybara.current_driver == :poltergeist
