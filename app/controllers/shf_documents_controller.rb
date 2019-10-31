@@ -33,7 +33,8 @@ class ShfDocumentsController < ApplicationController
     if @shf_document.save
       redirect_to @shf_document, notice: t('.success', document_title: @shf_document.title)
     else
-      render :new, notice: t('.error', document_title: @shf_document.title )
+      helpers.flash_message(:error, t('.error', document_title: @shf_document.title ))
+      render :new
     end
 
   end

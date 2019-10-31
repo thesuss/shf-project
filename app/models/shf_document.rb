@@ -27,7 +27,7 @@ class ShfDocument < ApplicationRecord
 =begin
 
   If the size validation fails, then the error message is looked up in the
-  locale file(s) starting based on I18n conventions, then adding 'actual_file_file'
+  locale file(s) starting based on I18n conventions, then adding 'actual_file_'
   as the attribute, and finally adding 'file_too_large' which is what is specified by the
   'message' key within the 'size' hash above.  For some reason, the Paperclip gem will
   raise (or find) 2 error messages:  the one for 'actual_file_file_size' and
@@ -57,8 +57,6 @@ class ShfDocument < ApplicationRecord
     max = the upper bound of the file size
     count = the upper bound, converted to 'human_size' by ActiveSupport::NumberHelper.number_to_human_size(size)
     value = the actual size of the file
-
-
 
 =end
 

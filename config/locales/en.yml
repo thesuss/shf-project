@@ -234,7 +234,8 @@ en:
         title: &title Title
         description: *description
         uploader: &uploader Uploader
-
+        actual_file_content_type: Uploaded file type
+        actual_file: Uploaded file
 
       member_app_waiting_reason:
         name_sv: "Name (Swedish)"
@@ -911,7 +912,7 @@ en:
     all_shf_documents: All SHF Documents
     all_shf_minutes: All Meeting Minutes
 
-    invalid_upload_type: Sorry, this is not a file type you can upload.
+    invalid_upload_type: *invalid_upload_type
     file_too_large: *file_too_large_5MB
 
     contents_access_error: 'There was an error accessing the file: %{message}'

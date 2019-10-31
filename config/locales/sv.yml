@@ -234,6 +234,9 @@ sv:
         title: &title Titel
         description: *description
         uploader: &uploader Uppladdad av
+        actual_file_content_type: Uppladdad filtyp
+        actual_file: Uppladdad fil
+
 
       member_app_waiting_reason:
         name_sv: "Namn (svenska)"
