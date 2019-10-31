@@ -12,9 +12,9 @@ module AdminOnly
 
       bypass_sign_in(new_user)
 
-      current_user = new_user # neccessary so feature test passes
+      current_user = new_user # necessary so feature test passes
 
-      helpers.flash_message(:warn, t('.have_become', user_id: @user.id))
+      helpers.flash_message(:warn, t('.have_become', user_id: @user.id, user_name: @user.full_name) )
 
       redirect_to user_path(params[:id])
     end

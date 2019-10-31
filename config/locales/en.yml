@@ -1104,7 +1104,7 @@ en:
         success: User profile updated successfully
         error: One or more problems prevented the profile from being updated.
       become:
-        have_become: You are now acting as user with id %{user_id}
+        have_become: "You are now acting as user %{user_name} (id: %{user_id}). Log out then log back in as the admin if you need to administrate again."
 
 
 

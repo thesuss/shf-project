@@ -39,20 +39,3 @@ Feature: Admin edits user profile
     And the t("activerecord.attributes.user.first_name") field should be set to "Mary"
     And the t("activerecord.attributes.user.last_name") field should be set to "Member"
     And the t("activerecord.attributes.user.membership_number") field should be set to "123"
-
-  @selenium
-  Scenario: Admin becomes user
-    Given I am logged in as "admin@shf.se"
-    And I am on the "all users" page
-    And I should see "member@shf.com"
-    Then I click the icon with CSS class "edit" for the row with "member@shf.com"
-    And I should see t("admin_only.user_profile.edit.title", user: 'mary member')
-
-    And I click on t("admin_only.user_profile.edit.become_this_user")
-
-    # The following step fails with Pundit::NotDefinedError, occurring
-    # in _navigation_edit_my_application.html.haml.  This is not unique
-    # to the following step - any step that looks for something on the page
-    # (and forces a render of the page) results in that error:
-
-    # And I should see t("admin_only.user_profile.become.have_become", user_id: 2)

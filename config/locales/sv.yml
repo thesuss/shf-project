@@ -1109,7 +1109,7 @@ sv:
         success: Användarprofil uppdaterad framgångsrikt
         error: Ett eller flera problem hindrade profilen från att uppdateras.
       become:
-        have_become: Du fungerar nu som användare med id %{user_id}
+        have_become: "Du fungerar nu som användare %{user_name} (id: %{user_id}). Logga ut och logga sedan in som administratör om du behöver administrera igen."
 
 
   mailers:
