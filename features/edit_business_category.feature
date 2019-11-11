@@ -6,7 +6,7 @@ Feature: As an admin
 
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email                | admin |
       | applicant@random.com |       |
       | admin@shf.com        | true  |

@@ -2,7 +2,7 @@ Feature: Only members and admins can see members only (hidden) pages
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                    | admin | member    |
       | emma@happymutts.com      |       | true      |
       | not_a_member@bowsers.com |       | false     |

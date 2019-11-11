@@ -30,7 +30,8 @@ end
 
 class MockAttachment
 
-  def self.url
+  # Ignore any arguments. Always just return the Faux url
+  def self.url(*_args)
     FauxUrl.url
   end
 

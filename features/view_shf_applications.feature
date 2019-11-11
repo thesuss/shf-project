@@ -5,7 +5,7 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
   I want to see all membership applications
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email         | admin | member    |
       | u1@mutts.com  |       | false     |
       | u2@mutts.com  |       | false     |

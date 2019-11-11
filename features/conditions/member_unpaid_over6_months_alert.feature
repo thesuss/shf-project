@@ -10,7 +10,7 @@ Feature: Membership address get emails when a member has been unpaid for > 6 mon
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                          | admin | member |
       | exp_may_31_01@mutts.se         |       | true   |
       | exp_may_31_02@mutts.se         |       | true   |

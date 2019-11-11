@@ -7,7 +7,7 @@ Feature: As a member of a company
   I want to see schduled company events when I view the company's page
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email            | admin | member |
       | member@mutts.com |       | true   |
       | visitor@mail.com |       |        |

@@ -8,7 +8,7 @@ Feature: As an admin
   associated with a company, then delete the company too.
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email            | admin |
       | emma@random.com  |       |
       | hans@bowsers.com |       |

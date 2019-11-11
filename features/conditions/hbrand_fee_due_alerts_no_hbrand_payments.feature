@@ -15,7 +15,7 @@ Feature: Alerts sent for H-branding fee needs to be paid; company has NO previou
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                         | admin | member |
       | member01_start_jan_4@mutts.se |       | true   |
       | member02_start_jan_5@mutts.se |       | true   |

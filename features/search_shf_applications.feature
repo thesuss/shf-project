@@ -5,7 +5,7 @@ Feature: Admin can search Shf Applications
   I want to search for applications by various criteria
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | first_name | last_name | email               | admin | membership_number |
       | Fred       | Fransson  | fred@barkyboys.com  |       | 3                 |
       | John       | Johanssen | john@happymutts.com |       | 14                |

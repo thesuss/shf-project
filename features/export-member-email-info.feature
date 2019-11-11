@@ -5,7 +5,7 @@ Feature: export member information to a CSV file so I can use it in other system
 
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | last_name   | email                       | admin |
       | Emmasdottir | emma@happymutts.com         |       |
       | Wilson      | wils@woof.com               |       |

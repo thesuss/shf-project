@@ -7,7 +7,7 @@ Feature: Admin sees the dashboard with summary of important information
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                            | admin | member |
       | new_1@bowwowwow.se               |       |        |
       | new_2@mutts.se                   |       |        |

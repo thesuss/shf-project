@@ -5,7 +5,7 @@ Feature: Applicant uploads too large a file for their application
   PT: https://www.pivotaltracker.com/story/show/136316233
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email                 | admin |
       | hans@new_applicant.se |       |
       | emma@happymutts.se    |       |

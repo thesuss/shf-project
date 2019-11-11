@@ -27,7 +27,7 @@ Feature: Link categories to categories show for an Admin
       | Company7 | 7661057765     | cmpy7@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
       | stockholmCo | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
 
-    And the following users exists
+    And the following users exist:
       | email           | admin | member |
       | user1@mutts.com |       | true   |
       | user2@mutts.com |       | true   |

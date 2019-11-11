@@ -12,7 +12,7 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
     Given the date is set to "2018-01-01"
 
 
-    Given the following users exists
+    Given the following users exist:
       | email                              | admin | member |
       | memb01_paid_jan01@nil-region.se    |       | true   |
       | memb02_paid_jan03@nil-region.se    |       | true   |

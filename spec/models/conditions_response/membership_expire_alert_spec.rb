@@ -2,22 +2,16 @@ require 'rails_helper'
 require 'email_spec/rspec'
 require 'shared_context/activity_logger'
 require 'shared_context/stub_email_rendering'
+require 'shared_context/named_dates'
 
 
 RSpec.describe MembershipExpireAlert do
 
   include_context 'create logger'
+  include_context 'named dates'
 
   subject  { described_class.instance }
 
-
-  let(:jan_1) { Date.new(2018, 1, 1) }
-  let(:dec_1) { Date.new(2018, 12, 1) }
-  let(:dec_2) { Date.new(2018, 12, 2) }
-
-  let(:nov_30_last_year) { Date.new(2017, 11, 30) }
-  let(:dec_2_last_year) { Date.new(2017, 12, 2) }
-  let(:dec_3_last_year) { Date.new(2017, 12, 3) }
 
   let(:user) { create(:user, email: FFaker::InternetSE.disposable_email) }
 
@@ -38,8 +32,8 @@ RSpec.describe MembershipExpireAlert do
     create(:membership_fee_payment,
            :successful,
            user:        member,
-           start_date:  dec_3_last_year,
-           expire_date: User.expire_date_for_start_date(dec_3_last_year))
+           start_date:  lastyear_dec_3,
+           expire_date: User.expire_date_for_start_date(lastyear_dec_3))
     member
   }
 
@@ -98,8 +92,8 @@ RSpec.describe MembershipExpireAlert do
             create(:membership_fee_payment,
                    :successful,
                    user:        member,
-                   start_date:  dec_2_last_year,
-                   expire_date: User.expire_date_for_start_date(dec_2_last_year))
+                   start_date:  lastyear_dec_2,
+                   expire_date: User.expire_date_for_start_date(lastyear_dec_2))
             member
           }
 
@@ -120,8 +114,8 @@ RSpec.describe MembershipExpireAlert do
           create(:membership_fee_payment,
                  :successful,
                  user:        member,
-                 start_date:  nov_30_last_year,
-                 expire_date: User.expire_date_for_start_date(nov_30_last_year))
+                 start_date:  lastyear_nov_30,
+                 expire_date: User.expire_date_for_start_date(lastyear_nov_30))
           member
         }
 

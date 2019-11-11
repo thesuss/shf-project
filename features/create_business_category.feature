@@ -6,7 +6,7 @@ Feature: As an admin
   PT: https://www.pivotaltracker.com/story/show/135009339
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email                | admin |
       | applicant@random.com |       |
       | admin@shf.com        | true  |

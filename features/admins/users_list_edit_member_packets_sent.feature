@@ -8,7 +8,7 @@ Feature: Admin sets when member packets were sent on the all users page
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                  | admin | membership_number | member |
       | emma@bowsers.se        |       | 100               | true   |
       | lars@happymutts.se     |       | 101               | true   |

@@ -6,7 +6,7 @@ Feature: Admin uploads meeting PDFs
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email               | admin |
       | emma@happymutts.se  |       |
       | bob@snarkybarky.se  |       |

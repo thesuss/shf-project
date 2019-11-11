@@ -3,7 +3,7 @@ Feature: As a registered user
   Including my first name, last name, email and password
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email             | password | admin | member    | first_name | last_name |
       | admin@random.com  | password | true  | false     | emma       | admin     |
       | member@random.com | password | false | true      | mary       | member    |

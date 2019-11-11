@@ -4,7 +4,7 @@ Feature: As any type of visitor
   PT: https://www.pivotaltracker.com/story/show/135684057
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email               | admin | member |
       | emma@happymutts.com |       | true   |
       | ernt@mutts.com      |       | true   |

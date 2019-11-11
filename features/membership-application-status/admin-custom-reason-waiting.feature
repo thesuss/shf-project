@@ -19,7 +19,7 @@ Feature: "Other/Custom" waiting reason comes from locale file and Admin cannot e
     # Given the system is seeded with initial data
 
 
-    Given the following users exists
+    Given the following users exist:
       | email                                  | admin |
       | anna_waiting_for_info@nosnarkybarky.se |       |
       | anna_under_review@nosnarkybarky.se     |       |

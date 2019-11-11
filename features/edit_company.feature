@@ -3,7 +3,7 @@ Feature: As a member
   I need to be able to edit my company
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email                   | admin | member |
       | paid_member@mutts.com   |       | true   |
       | unpaid_member@mutts.com |       | true   |

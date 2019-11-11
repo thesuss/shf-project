@@ -8,7 +8,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
   PT: https://www.pivotaltracker.com/story/show/143810729
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email                                  | admin |
       | anna_waiting_for_info@nosnarkybarky.se |       |
       | admin@shf.com                          | true  |

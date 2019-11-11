@@ -9,7 +9,7 @@ Feature: Reminder if SHF Application is missing uploaded files (Condition respon
 
     Given the date is set to "2018-11-30"
 
-    Given the following users exists
+    Given the following users exist:
       | email                                   | admin | member |
       | member01_new@mutts.se                   |       | false  |
       | member02_under_review@mutts.se          |       | false  |

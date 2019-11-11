@@ -15,7 +15,7 @@ Feature: Admin can search on everything and save results
 
 #  Background:
 #
-#    Given the following users exists
+#    Given the following users exist:
 #      | email                       | admin | member |
 #      | emma_member@mutts.se        |       | true   |
 #      | hans_member@mutts.se        |       | true   |

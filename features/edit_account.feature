@@ -3,7 +3,7 @@ Feature: As a registered user
   I need to be able to edit my account
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | first_name | last_name | email              | password | admin |
       | emma       | andersson | emma@andersson.com | password | false |
 

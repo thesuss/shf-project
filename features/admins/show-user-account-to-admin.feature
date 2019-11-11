@@ -1,15 +1,15 @@
-Feature: Admin sees user account information
+Feature: Admin sees additional user details information
 
   As an admin
-  So that I can see and update the account info for a user
-  Show me all of the the user account information for a user
+  So that I can see and update the details for a user
+  Show me additional info about a user (in addition to all of the the user details information)
 
   PT:  https://www.pivotaltracker.com/story/show/140358959
 
   Background:
     Given the App Configuration is not mocked and is seeded
 
-    Given the following users exists
+    Given the following users exist:
       | email                           | admin | membership_number | member |
       | emma-new-app@bowsers.com        |       |                   |        |
       | lars-member@happymutts.com      |       | 101               | true   |
@@ -42,12 +42,56 @@ Feature: Admin sees user account information
       | rejected@happymutts.com      | rejected@happymutts.com | 5560360793     | rejected |
 
 
+    And the following payments exist
+      | user_email                   | start_date | expire_date | payment_type | status | hips_id | notes                              |
+      | hannah-member@happymutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    | This is the membership status note |
+
+
     And the following membership packets have been sent:
       | user_email                 | date_sent  |
       | lars-member@happymutts.com | 2019-03-01 |
 
 
     And I am logged in as "admin@shf.se"
+
+
+  # ====================
+  # Admin sees User Info
+
+  # -----------------------------------
+  # Membership Packet info
+
+  Scenario: Membership packet sent to a member: show that it was sent and the date
+    When I am on the "user details" page for "lars-member@happymutts.com"
+    Then I should see t("users.show.member_packet")
+    And I should see t("users.show.sent")
+    And I should see "2019-03-01"
+
+
+  Scenario: Membership packet: If a member but no date sent, should show 'Membership packet not sent'
+    When I am on the "user details" page for "hannah-member@happymutts.com"
+    Then I should see t("users.show.member_packet")
+    And I should see t("users.show.not_sent")
+
+
+  Scenario: Membership packet info shows for non-members (maybe they used to be a member)
+    When I am on the "user details" page for "rejected@happymutts.com"
+    Then I should see t("users.show.member_packet")
+    And I should see t("users.show.not_sent")
+
+
+  Scenario: A member cannot see membership packet info
+    When I am logged out
+    And I am logged in as "lars-member@happymutts.com"
+    And I am on the "user details" page for "lars-member@happymutts.com"
+    Then I should not see t("users.show.member_packet")
+
+
+  Scenario: A user cannot see membership packet info
+    When I am logged out
+    And I am logged in as "user-anna@personal.se"
+    And I am on the "user details" page for "user-anna@personal.se"
+    Then I should not see t("users.show.member_packet")
 
 
   # -----------------------------------
@@ -144,6 +188,9 @@ Feature: Admin sees user account information
     Then I should see t("users.show.password_never_reset")
 
 
+  # ======================
+  # Membership Information
+
   # -----------------------------------
   # Membership number
 
@@ -153,11 +200,27 @@ Feature: Admin sees user account information
     And I should see "101"
 
 
+  # -----------------------------------
+  # Membership status notes
+
+  Scenario: Show membership status notes
+    When I am on the "user details" page for "hannah-member@happymutts.com"
+    Then I should see t("activerecord.attributes.payment.notes")
+    And I should see "This is the membership status note"
+
+  Scenario: Show 'none' if there are no membership status notes
+    When I am on the "user details" page for "lars-member@happymutts.com"
+    Then I should see t("activerecord.attributes.payment.notes")
+    And I should see t("none_plur")
+
 
   Scenario: Do not show the membership number when there is none
     When I am on the "user details" page for "user-never-logged-in@example.se"
     Then I should not see t("users.show.membership_number")
 
+
+  # ================
+  # Application Info
 
   # -----------------------------------
   # Email address and application state
@@ -170,40 +233,4 @@ Feature: Admin sees user account information
     And I should see t("shf_applications.state.new")
     Then I click on "change-lang-to-english"
     And I should see t("shf_applications.state.new")
-
-
-  # -----------------------------------
-  # Membership Packet info
-
-  Scenario: Membership packet sent to a member: show that it was sent and the date
-    When I am on the "user details" page for "lars-member@happymutts.com"
-    Then I should see t("users.show.member_packet")
-    And I should see t("users.show.sent")
-    And I should see "2019-03-01"
-
-
-  Scenario: Membership packet: If a member but no date sent, should show 'Membership packet not sent'
-    When I am on the "user details" page for "hannah-member@happymutts.com"
-    Then I should see t("users.show.member_packet")
-    And I should see t("users.show.not_sent")
-
-
-  Scenario: Membership packet info shows for non-members (maybe they used to be a member)
-    When I am on the "user details" page for "rejected@happymutts.com"
-    Then I should see t("users.show.member_packet")
-    And I should see t("users.show.not_sent")
-
-
-  Scenario: A member cannot see membership packet info
-    When I am logged out
-    And I am logged in as "lars-member@happymutts.com"
-    And I am on the "user details" page for "lars-member@happymutts.com"
-    Then I should not see t("users.show.member_packet")
-
-
-  Scenario: A user cannot see membership packet info
-    When I am logged out
-    And I am logged in as "user-anna@personal.se"
-    And I am on the "user details" page for "user-anna@personal.se"
-    Then I should not see t("users.show.member_packet")
 

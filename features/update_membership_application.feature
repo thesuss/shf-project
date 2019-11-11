@@ -12,7 +12,7 @@ Feature: SHF Application status is changed
 
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | first_name      | email                                  | admin |
       | EmmaUnderReview | emma_under_review@happymutts.se        |       |
       | HansUnderReview | hans_under_review@happymutts.se        |       |
@@ -80,7 +80,7 @@ Feature: SHF Application status is changed
     Then I should see t("shf_applications.accepted") 1 time in the list of applications
     Then I should see t("shf_applications.rejected") 1 time in the list of applications
 
-    
+
 
   # From under_review to...
 
@@ -322,7 +322,7 @@ Feature: SHF Application status is changed
     And I click on t("shf_applications.edit.submit_button_label")
 
     And I should see t("shf_applications.update.success_with_app_files_missing")
-        
+
     And I should see status line with status t("shf_applications.rejected")
     And I should see "rehab"
     When I am on the "landing" page

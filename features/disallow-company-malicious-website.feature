@@ -6,7 +6,7 @@ Feature: Don't allow malicious code in Company website value
 
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email          | admin | member |
       | emma@mutts.com |       | true   |
       | admin@shf.se   | true  |        |

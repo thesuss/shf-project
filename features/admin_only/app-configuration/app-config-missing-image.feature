@@ -7,7 +7,7 @@ Feature: App Config has a missing image or images
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email             | password | admin | member    | first_name | last_name |
       | admin@shf.se  | password | true  | false     | emma       | admin     |
 

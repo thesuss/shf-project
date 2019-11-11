@@ -30,7 +30,7 @@ Feature: So that I do not get frustrated by trying to find out more
       | NoPayment    | 5562252998     | hello@nopayment.se     | Stockholm             | Alingsås |
       | NoMember     | 9697222900     | hello@nomember.se      | Stockholm             | Alingsås |
 
-    And the following users exists
+    And the following users exist:
       | email                        | admin | member |
       | emmagroomer@happymutts.com   |       | true   |
       | annatrainer@bowsers.com      |       | true   |

@@ -8,7 +8,7 @@ Feature: Alerts for members whose membership has lapsed (a Condition response)
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                       | admin | member |
       | member01_exp_jan_3@mutts.se |       | true   |
       | member02_exp_jan_4@mutts.se |       | true   |

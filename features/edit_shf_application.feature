@@ -8,7 +8,7 @@ Feature: Edit SHF Application
 
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email             | member    | admin |
       | emma@random.com   | false     |       |
       | hans@random.com   | false     |       |

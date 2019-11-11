@@ -1,4 +1,7 @@
-Given(/^the following users exist(?:s|)$/) do |table|
+# This should match any of the following
+#  the following users exist
+#  the following users exist:
+Given(/^the following users exist(?:[:])?$/) do |table|
 
   # Hash value "is_legacy" indicates a user account that was created before we
   # migrated the user's name attributes (first_name, last_name) from the

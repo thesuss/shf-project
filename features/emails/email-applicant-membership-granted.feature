@@ -10,7 +10,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email              | admin |
       | emma@happymutts.se |       |
       | admin@shf.com      | true  |

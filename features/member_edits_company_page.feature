@@ -5,7 +5,7 @@ Feature: As a member
   PT:  https://www.pivotaltracker.com/story/show/133081453
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email               | admin | member |
       | emma@happymutts.com |       | true   |
       | member@random.com   |       | true   |

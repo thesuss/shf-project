@@ -10,7 +10,7 @@ Feature: SHF members (and admins) can views board meeting minutes (SHF documents
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email              | admin | member |
       | emma@happymutts.se |       | true   |
       | bob@snarkybarky.se |       | false  |

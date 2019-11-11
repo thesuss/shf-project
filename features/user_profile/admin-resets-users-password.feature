@@ -5,7 +5,7 @@ Feature: As an admin
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email               | admin |
       | emma@happymutts.com |       |
       | bob@snarkybarky.se  |       |

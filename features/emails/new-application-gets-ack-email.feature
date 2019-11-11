@@ -8,7 +8,7 @@ Feature: New Applicant gets an email acknowledging their application
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email               | admin |
       | emma@happymutts.com |       |
 

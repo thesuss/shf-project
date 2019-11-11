@@ -5,7 +5,7 @@ Feature: As a user
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email               | is_legacy |
       | emma@happymutts.com | true      |
 

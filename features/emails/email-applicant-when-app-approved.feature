@@ -9,7 +9,7 @@ Feature: Applicant gets an email when the application is approved
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email              | admin |
       | emma@happymutts.se |       |
       | admin@shf.com      | true  |

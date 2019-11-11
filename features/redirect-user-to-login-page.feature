@@ -25,7 +25,7 @@ Feature: Redirect User to the login page if they need to be logged in
       | Company01 | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås |
 
 
-    And the following users exists
+    And the following users exist:
       | email         | admin | member |
       | u1@mutts.com  |       | true   |
 

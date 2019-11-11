@@ -8,7 +8,7 @@ Feature: Show user account information
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email            | admin | membership_number | member |
       | emma@example.com |       |                   |        |
       | lars@example.com |       | 101               | true   |

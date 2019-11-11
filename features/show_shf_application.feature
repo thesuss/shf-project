@@ -13,7 +13,7 @@ Feature: View a SHF Application
   PT: https://www.pivotaltracker.com/story/show/133080839
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | first_name         | email                               | admin |
       | Emma               | emma_waits@waiting.se               |       |
       | Emma               | emma@random.com                     |       |

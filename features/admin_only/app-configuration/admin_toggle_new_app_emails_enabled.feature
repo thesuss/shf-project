@@ -7,7 +7,7 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                 | admin | member |
       | new_user1@example.com |       |        |
       | admin@shf.se          | true  |        |

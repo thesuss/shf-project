@@ -15,7 +15,7 @@ Feature: Alerts sent for H-branding fee is due; company HAS previous H-Branding 
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                                      | admin | member |
       | memb01_exp_18_1_3@mutts-exp-17-6-6.se      |       | true   |
       | memb02_exp-17-1-4@mutts-exp-17-6-6.se      |       | true   |

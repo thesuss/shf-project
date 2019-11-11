@@ -9,7 +9,7 @@ Feature: When a new application is received, all admins get an email notificatio
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email               | admin | first_name | last_name  |
       | admin1@shf.se       | yes   |            |            |
       | admin2@shf.se       | yes   |            |            |

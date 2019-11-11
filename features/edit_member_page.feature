@@ -5,7 +5,7 @@ Feature: Edit a member page
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                    | admin |
       | admin@shf.se             | true  |
 

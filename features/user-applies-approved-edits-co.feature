@@ -4,7 +4,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
   Background:
     Given the App Configuration is not mocked and is seeded
 
-    Given the following users exists
+    Given the following users exist:
       | email                | admin | first_name | last_name |
       | new_user@example.com |       | NewUser1   | Lastname  |
       | admin@shf.se         | true  |            |           |

@@ -5,7 +5,7 @@ Feature: Applicant uploads a file for their application
   PT: https://www.pivotaltracker.com/story/show/133109591
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email                  | admin |
       | applicant_1@random.com |       |
       | applicant_2@random.com |       |

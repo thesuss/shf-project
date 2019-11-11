@@ -6,7 +6,7 @@ Feature: Admin edits application configuration
 
 
   Background:
-    Given the following users exists
+    Given the following users exist:
       | email             | password | admin | member    | first_name | last_name |
       | admin@random.com  | password | true  | false     | emma       | admin     |
 

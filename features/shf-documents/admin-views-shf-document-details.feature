@@ -8,7 +8,7 @@ Feature: Admin can edit details about an uploaded SHF Document
   Background:
 
 
-    Given the following users exists
+    Given the following users exist:
       | email               | admin |
       | emma@happymutts.se  |       |
       | bob@snarkybarky.se  |       |

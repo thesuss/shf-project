@@ -60,7 +60,7 @@ Feature: Visitor sees all companies
       | Company02    | Norrbotten | Alvesta | Årsta   |
       | Company02    | Uppsala    | Aneby   | Kolbäck |
 
-    And the following users exists
+    And the following users exist:
       | email         | admin | member |
       | u1@mutts.com  |       | true   |
       | u2@mutts.com  |       | true   |

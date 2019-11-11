@@ -14,7 +14,7 @@ Feature: As a visitor
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                 | admin |
       | emma@happymutts.com   |       |
       | lars@happymutts.com   |       |

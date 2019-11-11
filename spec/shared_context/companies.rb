@@ -1,5 +1,6 @@
-# This will create 7 companies:
+# This will create these companies:
 #
+#  company_no_payments - a company with no payments
 #  complete_co1 - has 2 branding payments
 #  complete_co2 - just has a company name, number, and the company Factory defaults
 #  co_no_viz_addresses - a company with just 1 address with visibility: none, and the company Factory defaults
@@ -13,6 +14,9 @@
 #
 RSpec.shared_context 'create companies' do
 
+  let(:company_no_payments)  { create(:company) }
+
+
   let(:complete_co1) do
     co1 = create(:company, name: 'Complete Company 1',
            description:    'This co has a 2 branding payments',
@@ -21,6 +25,8 @@ RSpec.shared_context 'create companies' do
     create(:shf_application, :accepted, company_number: co1.company_number, num_categories: 3)
     co1
   end
+
+
   let(:payment1_co1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
     create(:payment,

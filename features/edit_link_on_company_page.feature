@@ -4,7 +4,7 @@ Feature: As the owner of a company (or an admin)
 
   Background:
 
-    Given the following users exists
+    Given the following users exist:
       | email                 | admin | member    |
       | emma@happymutts.com   |       | true      |
       | lars@happymutts.com   |       | true      |

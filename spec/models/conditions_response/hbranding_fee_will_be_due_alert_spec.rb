@@ -2,27 +2,16 @@ require 'rails_helper'
 require 'email_spec/rspec'
 require 'shared_context/activity_logger'
 require 'shared_context/stub_email_rendering'
+require 'shared_context/named_dates'
 
 
 RSpec.describe HBrandingFeeWillExpireAlert do
 
   include_context 'create logger'
+  include_context 'named dates'
 
   subject  { described_class.instance }
 
-
-  let(:jan_1) { Date.new(2018, 1, 1) }
-
-  let(:nov_29) { Date.new(2018, 11, 29) }
-  let(:nov_30) { Date.new(2018, 11, 30) }
-  let(:dec_1)  { Date.new(2018, 12, 1) }
-  let(:dec_2)  { Date.new(2018, 12, 2) }
-  let(:dec_3)  { Date.new(2018, 12, 3) }
-  let(:dec_5)  { Date.new(2018, 12, 5) }
-
-  let(:nov_30_last_year) { Date.new(2017, 11, 30) }
-  let(:dec_2_last_year) { Date.new(2017, 12, 2) }
-  let(:dec_3_last_year) { Date.new(2017, 12, 3) }
 
   let(:user) { create(:user, email: FFaker::InternetSE.disposable_email) }
 
@@ -156,15 +145,15 @@ RSpec.describe HBrandingFeeWillExpireAlert do
 
       context 'h-branding fee has been paid but is expired' do
 
-        let(:hbrandpay_nov_30_last_year) do
+        let(:hbrandpay_lastyear_nov_30) do
 
-          Timecop.freeze(nov_30_last_year) do
+          Timecop.freeze(lastyear_nov_30) do
             create(:h_branding_fee_payment,
                    :successful,
                    user:        member_paid_dec_3,
                    company:     paid_members_co,
-                   start_date:  nov_30_last_year,
-                   expire_date: Company.expire_date_for_start_date(nov_30_last_year))
+                   start_date:  lastyear_nov_30,
+                   expire_date: Company.expire_date_for_start_date(lastyear_nov_30))
           end
         end
 
@@ -173,7 +162,7 @@ RSpec.describe HBrandingFeeWillExpireAlert do
 
           paid_members_co
           member_paid_dec_3
-          hbrandpay_nov_30_last_year
+          hbrandpay_lastyear_nov_30
 
           expect(paid_members_co.branding_expire_date).to eq nov_29
 
@@ -188,7 +177,7 @@ RSpec.describe HBrandingFeeWillExpireAlert do
         it 'false when the day  is not in the config list of days to send the alert' do
           paid_members_co
           member_paid_dec_3
-          hbrandpay_nov_30_last_year
+          hbrandpay_lastyear_nov_30
 
           expect(subject.send_alert_this_day?(timing, { days: [999] }, paid_members_co)).to be_falsey
         end

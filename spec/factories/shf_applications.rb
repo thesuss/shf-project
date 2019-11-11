@@ -17,7 +17,7 @@ FactoryBot.define do
     file_delivery_method { AdminOnly::FileDeliveryMethod.first ||
                            association(:file_delivery_method) }
 
-    file_delivery_selection_date { Date.current }                    
+    file_delivery_selection_date { Date.current }
 
     trait :legacy_application do
       file_delivery_method { nil }
@@ -41,6 +41,8 @@ FactoryBot.define do
       create_company { true }
     end
 
+    # TODO - this seems to _always_ create (build and save) a business category instead of trying to look up one with an existing name.
+    #    Fix and test very carefully.
     after(:build) do |shf_app, evaluator|
 
       if evaluator.num_categories == 1
