@@ -242,7 +242,10 @@ CREATE TABLE public.companies (
     description text,
     dinkurs_company_id character varying,
     show_dinkurs_events boolean,
-    short_h_brand_url character varying
+    short_h_brand_url character varying,
+    facebook_url character varying,
+    instagram_url character varying,
+    youtube_url character varying
 );
 
 
@@ -1552,6 +1555,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190326120854'),
 ('20190514172102'),
 ('20190601004310'),
-('20190815215041');
+('20190815215041'),
+('20191030162238');
 
 
