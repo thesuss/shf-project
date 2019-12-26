@@ -85,10 +85,10 @@ Then("user {capture_string} is paid through {capture_string}") do | user_email, 
   expect_user_has_expire_date(user, expected_expire_datestr)
 end
 
-Then("user {capture_string} has no payments") do | user_email |
+Then("user {capture_string} has no completed payments") do | user_email |
   user = User.find_by(email: user_email)
-  expect(user.payments).to be_empty
-  expect_user_has_expire_date(user, '')
+  expect(user.payments.completed).to be_empty
+  #expect_user_has_expire_date(user, '')
 end
 
 def expect_user_has_expire_date(user, expected_expire_date_str)
