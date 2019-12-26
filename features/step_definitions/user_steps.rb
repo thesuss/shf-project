@@ -105,3 +105,16 @@ Then("I should{negate} see membership status is {capture_string}") do | negate, 
   actual_status_element = page.find(:xpath, status_xpath)
   expect(actual_status_element).to have_text(membership_status)
 end
+
+
+And("my profile picture filename is {capture_string}") do | filename |
+  @user.reload # ensure we have the latest from the db
+  expect(@user.member_photo.original_filename).to eq(filename), "The profile picture filename was expected to be '#{filename}' but instead is '#{@user.member_photo.original_filename}'"
+end
+
+
+And("the profile picture filename is {capture_string} for {capture_string}") do | filename, user_email |
+  user = User.find_by_email(user_email)
+  expect(user).not_to be_nil, "The user #{user_email} could not be found."
+  expect(user.member_photo.original_filename).to eq(filename), "The profile picture filename was expected to be '#{filename}' but instead is '#{user.member_photo.original_filename}'"
+end
