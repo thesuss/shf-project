@@ -1,20 +1,27 @@
 Feature: Edit the social media urls (links) for a company
 
   Background:
+
     Given the following users exist:
       | email            | admin | member |
       | member@mutts.com |       | true   |
       | admin@shf.se     | true  | true   |
+
     And the following companies exist:
       | name    | company_number | email              | facebook_url          | youtube_url          | instagram_url          |
       | Bowsers | 2120000142     | bowwow@bowsers.com | original-facebook-url | original-youtube-url | original-instagram-url |
+
     And the following applications exist:
       | user_email       | company_number | state    |
       | member@mutts.com | 2120000142     | accepted |
+
     Given the following payments exist
       | user_email       | start_date | expire_date | payment_type | status | hips_id | company_number |
       | member@mutts.com | 2019-1-1   | 2019-12-31  | member_fee   | betald | none    |                |
       | member@mutts.com | 2019-1-1   | 2019-12-31  | branding_fee | betald | none    | 2120000142     |
+
+    Given the date is set to "2019-10-10"
+
 
   Scenario: All social media urls are changed
     Given I am logged in as "member@mutts.com"

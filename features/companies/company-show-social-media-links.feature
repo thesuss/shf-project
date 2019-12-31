@@ -4,22 +4,26 @@ Feature: Show social media links for a company
   Show social media icons for the social media URLs that are recorded for the company
 
   Background:
+
     Given the following users exist:
       | email                       | admin | member |
       | member@all-social-media.com |       | true   |
       | member@only-instagram.com   |       | true   |
       | member@no-social-media.com  |       | true   |
       | admin@shf.se                | true  | true   |
+
     And the following companies exist:
       | name             | company_number | email                      | facebook_url                | youtube_url                | instagram_url                     |
       | All Social Media | 2120000142     | hello@all-social-media.com | http://example.com/facebook | http://example.com/youtube | http://example.com/instagram      |
       | Only Instagram   | 5560360793     | hello@only-instagram.com   |                             |                            | http://example.com/only-instagram |
       | No Social Media  | 7661057765     | hello@no-social-media.com  |                             |                            |                                   |
+
     And the following applications exist:
       | user_email                  | company_number | state    |
       | member@all-social-media.com | 2120000142     | accepted |
       | member@only-instagram.com   | 5560360793     | accepted |
       | member@no-social-media.com  | 7661057765     | accepted |
+
     Given the following payments exist
       | user_email                  | start_date | expire_date | payment_type | status | hips_id | company_number |
       | member@all-social-media.com | 2019-1-1   | 2019-12-31  | member_fee   | betald | none    |                |
@@ -28,6 +32,8 @@ Feature: Show social media links for a company
       | member@only-instagram.com   | 2019-1-1   | 2019-12-31  | branding_fee | betald | none    | 5560360793     |
       | member@no-social-media.com  | 2019-1-1   | 2019-12-31  | member_fee   | betald | none    |                |
       | member@no-social-media.com  | 2019-1-1   | 2019-12-31  | branding_fee | betald | none    | 7661057765     |
+
+    Given the date is set to "2019-10-10"
 
   Scenario: Company has all social media urls; all social media icons are shown
     Given I am logged in as "member@all-social-media.com"
