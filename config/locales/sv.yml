@@ -541,6 +541,10 @@ sv:
                         du ett nytt mail med information om hur du skapar din
                         sökbara företagssida."
 
+    shf_application_min_info_as_table:
+      view_application: Visa ansökningar
+      org_nr: *org_nr
+      company_name: *name
 
     shf_application_fields:
       company_numbers_tooltip: Du kan ange flera företagsnummer, åtskilda av
@@ -824,6 +828,8 @@ sv:
     all_business_categories: Alla kategorier
 
   users:
+    edit_user_account: &edit_user_account Redigera kontot för %{name}
+
     index:
       title: Alla Användare
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
@@ -831,18 +837,10 @@ sv:
     delete_user: &delete_user "Radera %{user}"
 
     show:
+      edit_user_account: *edit_user_account
       membership_number: *membership_number
-      email: *email
-      current_sign_in_at: *user_current_signed_in_time
-      current_sign_in_ip: *user_current_ip
-      last_login: *user_last_login
-      last_login_ip: *user_last_login_ip
-      logged_in_count: *sign_in_count
-      created: *created
-      reset_password_sent_at: *user_reset_password_sent_at
-      password_never_reset: Användaren har aldrig återställt lösenordet.
-      user_has_never_signed_in: har aldrig loggat in.
-      is_an_admin: Är en admin
+      is_an_admin: &is_an_admin Är en admin
+
       'yes': *yes
       'no': *no
       reset_password: Byt lösenord
@@ -852,9 +850,9 @@ sv:
       please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
       submit_new_password: Spara det nya lösenordet
       member: *member
-      membership_status: Medlemsstatus
-      not_a_member: Är inte medlem
-      is_a_member: Är medlem
+      membership_status: &membership_status Medlemsstatus
+      not_a_member: &not_a_member Är inte medlem
+      is_a_member: &is_a_member Är medlem
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       membership_fee_payment: betalning av medlemskap
@@ -863,36 +861,56 @@ sv:
       payment_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
       membership_expire_date_tooltip: &membership_expire_date_tooltip Efter detta datum går perioden för ditt medlemskap ut.
       term_expire_date_tooltip: *membership_expire_date_tooltip
-      proof_of_membership: Behörighetsbevis
-      proof_of_membership_describe: Detta är ditt behörighetsbevis.
-      proof_of_membership_photo_needed: 'Om du saknar profilbild (ser "Photo
-                                        Unavailable"), ladda upp en bild av dig
-                                        själv (utan hund) här: '
-      image_how_to_use_html: Du kan ladda ner bilden, ta en
-                             skärmdump eller länka till den från din webbplats
-                             och använda den i sociala medier
-                             eller skriva ut för att använda i ett fysiskt
-                             sammanhang, till exempel att visa en kund.
-      image_use_guidelines_html: Observera att din användning av denna bild är föremål
-                                 för dessa %{use_guidelines_link}.
-      use_guidelines: riktlinjer
-      download_image: Ladda ner bild
-      image_dimensions_html: "Bildbredden är <span id = '%{width_id}'></span>
-                              pixlar och höjden är
-                              <span id = '%{height_id}'></span> pixlar."
-      use_this_image_link_html: "<span style='font-weight: bold'>
-                                Använd den här länken på en extern webbplats:
-                                </span>"
-      show_image: Visa bild
-      copy_image_url: Kopiera bildadress
-      copied: Kopierat
-      company_h_brand: Företaget H-märke för %{company}
-      company_h_brand_describe: Detta är ditt företags H-märke.
+
+      edit_member_status: &edit_member_status Redigera medlemsstatus
+      pay_membership: &pay_membership Betala medlemsavgift
+      edit_user_profile: &edit_user_profile Information om användaren %{name}
+
+    show_login_email_row_cols:
+        email: *email
+
+    show_info_for_admin_only:
+      admin_user_info_title: &admin_user_info_title Användare Info
+      created: *created
+      reset_password_sent_at: *user_reset_password_sent_at
+      password_never_reset: &password_never_reset Användaren har aldrig återställt lösenordet.
+      user_has_never_signed_in: har aldrig loggat in.
+      last_login: *user_last_login
+      last_login_ip: *user_last_login_ip
+      logged_in_count: *sign_in_count
+      current_sign_in_at: *user_current_signed_in_time
+      current_sign_in_ip: *user_current_ip
       member_packet: &member_packet pkt
       sent: skickat
       not_sent: inte skickat
-      edit_member_status: &edit_member_status Redigera medlemsstatus
-      pay_membership: &pay_membership Betala medlemsavgift
+
+
+    show_member_images_row_cols:
+      email: *email
+      proof_of_membership: &proof_of_membership Behörighetsbevis
+      proof_of_membership_describe: &proof_of_membership_describe Detta är ditt behörighetsbevis.
+      proof_of_membership_photo_needed: &proof_of_membership_photo_needed 'Om du saknar profilbild (ser "Photo
+                                           Unavailable"), ladda upp en bild av dig
+                                           själv (utan hund) här: '
+      company_h_brand: &company_h_brand Företaget H-märke för %{company}
+      company_h_brand_describe: &company_h_brand_describe Detta är ditt företags H-märke.
+
+      use_guidelines: &use_guidelines riktlinjer
+      download_image: &download_image Ladda ner bild
+      image_dimensions_html: "Bildbredden är <span id = '%{width_id}'></span>pixlar och höjden är<span id = '%{height_id}'></span> pixlar."
+      use_this_image_link_html: "<span style='font-weight: bold'>Använd den här länken på en extern webbplats:</span>"
+
+      image_how_to_use_html: &image_how_to_use_html "Du kan ladda ner bilden, ta en
+                             skärmdump eller länka till den från din webbplats
+                             och använda den i sociala medier
+                             eller skriva ut för att använda i ett fysiskt
+                             sammanhang, till exempel att visa en kund."
+      image_use_guidelines_html: &image_use_guidelines_html "Observera att din användning av denna bild är föremål
+                                 för dessa %{use_guidelines_link}."
+
+      show_image: &show_image Visa bild
+      copy_image_url: &copy_image_url Kopiera bildadress
+      copied:  &copied Kopierat
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.
@@ -917,11 +935,13 @@ sv:
 
     user:
       # is this entry used anywhere?  (the entry in .show above is, and follows rails convention)
-      user_has_never_signed_in: har aldrig loggat in.
+      user_has_never_signed_in: &user_has_never_signed_in har aldrig loggat in.
       'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
       edit_member_status: *edit_member_status
       submit_button_label: Uppdatera status
+      edit_user_account: *edit_user_account
+      edit_user_profile: *edit_user_profile
 
     users_list:
       membership_number: *membership_number_short
@@ -936,9 +956,15 @@ sv:
       applications_tooltip: Användaren har en öppen ansökan
       expire_date: *expire_date
       member_packet: *member_packet
+      edit_profile: Edit Profile
+      edit_account: (Edit Acct.)
 
     destroy:
       success: Användaren raderades framgångsrikt.
+
+  user_profiles:
+    edit:
+      edit_user_account: *edit_user_account
 
   payments:
     create:
@@ -1181,6 +1207,45 @@ sv:
         have_become: "Du fungerar nu som användare %{user_name} (id: %{user_id}). Logga ut och logga sedan in som administratör om du behöver administrera igen."
       become_user_button:
         become_this_user: *become_this_user
+
+    user_account:
+      edit:
+        is_an_admin: *is_an_admin
+        edit_user_profile: *edit_user_profile
+        email: *email
+        membership_number: *membership_number
+        admin_user_info_title: *admin_user_info_title
+        created: *created
+
+        current_sign_in_at: *user_current_signed_in_time
+        current_sign_in_ip: *user_current_ip
+        user_has_never_signed_in: *user_has_never_signed_in
+        last_login: *user_last_login
+        last_login_ip: *user_last_login_ip
+        logged_in_count: *sign_in_count
+        reset_password_sent_at: *user_reset_password_sent_at
+        password_never_reset: *password_never_reset
+
+        proof_of_membership: *proof_of_membership
+        proof_of_membership_describe: *proof_of_membership_describe
+        proof_of_membership_photo_needed: *proof_of_membership_photo_needed
+        company_h_brand: *company_h_brand
+        company_h_brand_describe: *company_h_brand_describe
+
+        image_how_to_use_html: *image_how_to_use_html
+        image_use_guidelines_html: *image_use_guidelines_html
+        use_guidelines: *use_guidelines
+
+        download_image: *download_image
+        show_image: *show_image
+        copy_image_url: *copy_image_url
+        copied: *copied
+
+
+      update:
+        success: Användarens information uppdaterad.
+        error: Ett problem hindrade användarinformationen från att uppdateras.
+
 
 
   mailers:

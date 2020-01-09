@@ -1,5 +1,8 @@
 module ImagesUtility
 
+  include SetAppConfiguration  # Need the Application Configuration for proof-of-membership
+
+
   private
 
   def download_image(type, width, image_html)
@@ -14,7 +17,7 @@ module ImagesUtility
   def image_html(image_type, app_config, object)
     object_sym = object.class.to_s.downcase.to_sym
     render_to_string(partial: image_type,
-                     locals: { app_config: app_config, 
+                     locals: { app_config: app_config,
                                render_to: params[:render_to]&.to_sym,
                                context: params[:context]&.to_sym,
                                object_sym => object})
@@ -27,10 +30,6 @@ module ImagesUtility
     kit
   end
 
-  def set_app_config
-    # Need app config items for proof-of-membership
-    @app_configuration = AdminOnly::AppConfiguration.config_to_use
-  end
 
   def allow_iframe_request
     response.headers.delete('X-Frame-Options')

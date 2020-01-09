@@ -88,7 +88,7 @@ RSpec.describe UsersHelper, type: :helper do
 
   describe '#membership_packet_str' do
 
-    let(:i18n_scope) { 'users.show' }
+    let(:i18n_scope) { 'users.show_info_for_admin_only' }
 
 
     it 'not empty even if user is not a member' do
@@ -116,12 +116,14 @@ RSpec.describe UsersHelper, type: :helper do
 
   describe '#membership_packet_status_str' do
 
+    let(:i18n_scope) { 'users.show_info_for_admin_only' }
+
     it 'is t(sent) if the package was sent' do
-      expect(membership_packet_status_str(true)).to eq I18n.t('users.show.sent')
+      expect(membership_packet_status_str(true)).to eq I18n.t('sent', scope: i18n_scope)
     end
 
     it 'is t(not_sent) if the package was not sent' do
-      expect(membership_packet_status_str(false)).to eq I18n.t('users.show.not_sent')
+      expect(membership_packet_status_str(false)).to eq I18n.t('not_sent', scope: i18n_scope)
     end
 
   end

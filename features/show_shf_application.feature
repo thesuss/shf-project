@@ -1,5 +1,8 @@
 Feature: View a SHF Application
 
+  As a User or Member,
+  I need to be able to see my membership application
+
   As an Admin
   So that we can accept or reject new Memberships,
   I need to review a Membership Application that has been submitted

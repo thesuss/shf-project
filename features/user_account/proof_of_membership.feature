@@ -35,9 +35,9 @@ Feature: Member gets their customized SHF membership card (proof of membership)
     Given I am on the "landing" page for "emma@mutts.se"
     And I should see t("hello", name: 'Emma')
     Then I click on the t("menus.nav.users.your_account") link
-    And I should see t("users.show.proof_of_membership")
+    And I should see t("users.show_member_images_row_cols.proof_of_membership")
     And I should see "groom, rehab"
-    And I click on the t("users.show.download_image") link
+    And I click on the t("users.show_member_images_row_cols.download_image") link
     Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
 
   @time_adjust
@@ -45,15 +45,15 @@ Feature: Member gets their customized SHF membership card (proof of membership)
     Given I am on the "landing" page for "emma@mutts.se"
     And I should see t("hello", name: 'Emma')
     Then I click on the t("menus.nav.users.your_account") link
-    And I should see t("users.show.proof_of_membership")
+    And I should see t("users.show_member_images_row_cols.proof_of_membership")
     And I should see "groom, rehab"
-    And I click on the t("users.show.show_image") link
-    And I should see t("users.show.use_this_image_link_html")
+    And I click on the t("users.show_member_images_row_cols.show_image") link
+    And I should see t("users.show_member_images_row_cols.use_this_image_link_html")
 
   @selenium @time_adjust
   Scenario: Member sees custom context menu instead of normal browser context menu
     Given I am on the "user account" page for "emma@mutts.se"
     When I right click on "#proof-of-membership"
-    Then I should see t("users.show.download_image")
-    And I should see t("users.show.show_image")
-    And I should see t("users.show.copy_image_url")
+    Then I should see t("users.show_member_images_row_cols.download_image")
+    And I should see t("users.show_member_images_row_cols.show_image")
+    And I should see t("users.show_member_images_row_cols.copy_image_url")

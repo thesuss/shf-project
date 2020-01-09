@@ -62,9 +62,9 @@ Feature: Admin sets when member packets were sent on the all users page
     When I check the checkbox with id "date_membership_packet_sent" for the row with "hannah@happymutts.se"
     Then I should see the checkbox with id "date_membership_packet_sent" checked in the row for user "hannah@happymutts.se"
     When I am on the "user details" page for "hannah@happymutts.se"
-    Then I should see t("users.show.member_packet")
-    And I should see t("users.show.sent")
-    And I should not see t("users.show.not_sent")
+    Then I should see t("users.show_info_for_admin_only.member_packet")
+    And I should see t("users.show_info_for_admin_only.sent")
+    And I should not see t("users.show_info_for_admin_only.not_sent")
     And I should see "2019-03-01"
 
 
@@ -76,6 +76,6 @@ Feature: Admin sets when member packets were sent on the all users page
     When I uncheck the checkbox with id "date_membership_packet_sent" for the row with "lars@happymutts.se"
     Then I should see the checkbox with id "date_membership_packet_sent" unchecked in the row for user "lars@happymutts.se"
     When I am on the "user details" page for "lars@happymutts.se"
-    Then I should see t("users.show.member_packet")
-    And I should see t("users.show.not_sent")
+    Then I should see t("users.show_info_for_admin_only.member_packet")
+    And I should see t("users.show_info_for_admin_only.not_sent")
     And I should not see "2019-03-01"

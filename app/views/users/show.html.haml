@@ -9,14 +9,14 @@
       %span.small
         (#{ t('.is_an_admin') })
 
+    - if @current_user.admin?
+      = link_to edit_icon, admin_only_edit_user_account_path(@user), class: ['shf-icon', 'edit-user-account-icon'], title: t('.edit_user_account', name: user_name)
+      = link_to user_profile_icon, admin_only_user_profile_edit_path(@user), class: ['shf-icon', 'edit-user-profile-icon'], title: t('.edit_user_profile', name: user_name)
+
+
 .entry-content.container
 
-  .login-name
-    .row
-      .col
-        = field_or_none("#{ t('.email') }", mail_to(@user.email),
-                        label_class: 'standard-label',
-                        value_class: 'login-email')
+  = render partial: 'show_login_email_row_cols', locals: { user: @user }
 
   .membership
     .row.section-title
@@ -31,110 +31,8 @@
     = render partial: 'membership_term_status', locals: { user: @user }
 
 
-  .applications
-    .row.section-title
-      .col.mt-2
-        - has_none = @user.shf_application.blank? ? t('none_n') : ''
-        %h3= "#{ t('application') }: #{ has_none }"
+  = render partial: 'show_application_section_row_cols', locals: { user: @user }
 
-    - unless @user.shf_application.blank?
-      .row
-        .col.mt-2
-          = render partial: 'shf_applications/shf_application_min_info_as_table', locals: { application: @user.shf_application }
+  = render partial: 'show_info_for_admin_only', locals: { user: @user }
 
-
-  - if current_user.admin?
-    .admin-only
-      = render partial: 'edit_status_modal', locals: { user: @user }
-
-      .user-info
-        .row.section-title
-          .col.mt-2
-            %h3.section-title User Info
-
-        .row
-          .col.admin-note
-
-            %p{ class: "membership-packet #{ @user.membership_packet_sent? ? 'sent' : 'not-sent' }",
-            id: 'date-membership-packet-sent' }
-              = membership_packet_str(@user)
-
-            %p
-              #{ t('.created') } #{ i18n_time_ago_in_words(@user.created_at) }.
-            - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
-              %p
-                #{ @user.email } #{ t('.user_has_never_signed_in') }
-            - else
-              %p
-                #{ t('.last_login') }:
-                #{ most_recent_login_time @user }
-                (#{ i18n_time_ago_in_words(most_recent_login_time @user) })
-              %p
-                #{ t('.logged_in_count') }:
-                = @user.sign_in_count
-            - if @user.reset_password_sent_at.blank?
-              %p= t('.password_never_reset')
-            - else
-              %p
-                %b #{ t('.reset_password_sent_at') }:
-                #{ @user.reset_password_sent_at }
-                #{ i18n_time_ago_in_words(@user.reset_password_sent_at) })
-
-      %hr
-
-
-  - if @user.member?
-    = render partial: 'image_actions_context_menu'
-
-    .membership_images
-      .row.mt-3
-        .col-md-5
-          = render partial: 'proof_of_membership',
-                   locals: { app_config: @app_configuration, user: @user,
-                             context: :user_show }
-        .col-md-7.infotext
-          %h3= t('.proof_of_membership')
-          %p= t('.proof_of_membership_describe')
-          = link_to(t('.download_image'),
-                                     proof_of_membership_path(@user, render_to: :jpg),
-                                     class: 'btn btn-sm btn-primary download_proof_of_membership')
-          = link_to(t('.copy_image_url'), proof_of_membership_url(@user.id), class: 'btn btn-sm btn-primary link_for_proof_of_membership copy-to-clipboard', "data-original-title" => t('.copied'))
-          = link_to(t('.show_image'),
-                                   proof_of_membership_path(@user, context: :internal),
-                                   class: 'btn btn-sm btn-primary preview_proof_of_membership')
-          %p= t('.image_how_to_use_html')
-
-          %p
-            = t('.proof_of_membership_photo_needed')
-            = link_to(t('devise.registrations.edit.title'), edit_user_registration_path,
-                    class: 'underlined_link')
-          %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
-              'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
-              class: 'underlined_link'))
-
-      - @user.companies.all.each do |company|
-        - next unless company.branding_license?
-        .row
-          .col-sm-12
-            %hr
-          .col-md-5
-            = render partial: 'companies/company_h_brand',
-                     locals: { app_config: @app_configuration, company: company,
-                               context: :user_show, user: @user }
-
-          .col-md-7.infotext
-            %h3= t('.company_h_brand', company: company.name)
-            %p= t('.company_h_brand_describe')
-            = link_to(t('.download_image'),
-                                       company_h_brand_path(company,
-                                                           render_to: :jpg),
-                                     class: 'btn btn-sm btn-primary download_h_mark')
-            = link_to(t('.copy_image_url'), company_h_brand_url(company), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
-            = link_to(t('.show_image'),
-                                   company_h_brand_path(company,
-                                                        context: :internal),
-                                       class: 'btn btn-sm btn-primary preview_h_brand')
-            %p= t('.image_how_to_use_html')
-            %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
-                'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
-                class: 'underlined_link'))
+  = render partial: 'show_member_images_row_cols', locals: { user: @user, app_configuration: @app_configuration }

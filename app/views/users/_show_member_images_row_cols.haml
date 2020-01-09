@@ -1,0 +1,66 @@
+-# This partial shows the images and information for a Member's proof of
+-# membership card and the Company H-Markt (license image) for each company
+-# that the member is associated with.
+-#
+-# The partial expects these locals:
+-#   user - the user (member) that this information is for
+-#   app_configuration - the Application Configuration (needed to generate the
+-#     the proof of membership and the company H-Markt images)
+-#
+
+- if user.member?
+  = render partial: 'users/image_actions_context_menu'
+
+  .membership_images
+    .row.mt-3
+      .col-md-5
+        = render partial: 'users/proof_of_membership',
+                 locals: { app_config: app_configuration, user: user,
+                           context: :user_show }
+      .col-md-7.infotext
+        %h3= t('.proof_of_membership')
+        %p= t('.proof_of_membership_describe')
+        = link_to(t('.download_image'),
+                                   proof_of_membership_path(user, render_to: :jpg),
+                                   class: 'btn btn-sm btn-primary download_proof_of_membership')
+        = link_to(t('.copy_image_url'), proof_of_membership_url(user.id), class: 'btn btn-sm btn-primary link_for_proof_of_membership copy-to-clipboard', "data-original-title" => t('.copied'))
+        = link_to(t('.show_image'),
+                                 proof_of_membership_path(user, context: :internal),
+                                 class: 'btn btn-sm btn-primary preview_proof_of_membership')
+        %p= t('.image_how_to_use_html')
+
+        %p
+          = t('.proof_of_membership_photo_needed')
+          = link_to(t('devise.registrations.edit.title'), edit_user_registration_path,
+                  class: 'underlined_link')
+        %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
+            'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
+            class: 'underlined_link'))
+
+    - user.companies.all.each do |company|
+      - next unless company.branding_license?
+      .row
+        .col-sm-12
+          %hr
+        .col-md-5
+          = render partial: 'companies/company_h_brand',
+                   locals: { app_config: app_configuration, company: company,
+                             context: :user_show, user: user }
+
+        .col-md-7.infotext
+          %h3= t('.company_h_brand', company: company.name)
+          %p= t('.company_h_brand_describe')
+          = link_to(t('.download_image'),
+                                     company_h_brand_path(company,
+                                                         render_to: :jpg),
+                                   class: 'btn btn-sm btn-primary download_h_mark')
+          = link_to(t('.copy_image_url'), company_h_brand_url(company), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
+          = link_to(t('.show_image'),
+                                 company_h_brand_path(company,
+                                                      context: :internal),
+                                     class: 'btn btn-sm btn-primary preview_h_brand')
+          %p= t('.image_how_to_use_html')
+          %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
+              'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
+              class: 'underlined_link'))
+

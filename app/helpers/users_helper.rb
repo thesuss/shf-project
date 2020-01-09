@@ -39,7 +39,7 @@ module UsersHelper
   end
 
 
-  I18N_USERS_SHOW = 'users.show'.freeze
+  I18N_USERS_SHOW = 'users.show_info_for_admin_only'.freeze
 
   # creates a human-readable string that says if the membership packet
   # was sent and on what date.

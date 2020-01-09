@@ -1,5 +1,6 @@
 @import 'shf-custom-colors';
 
+// TODO - what is the purpose/scope of this stylesheet?  should these be put into their respective model stylesheets? or if it's general, into custom ?
 
 #admin-change-status-buttons input {
   margin-left: 1em;
@@ -89,6 +90,15 @@ margin-bottom:0;
   margin-top: .9em;
   padding-top: .7em;
 }
+
+// the shf-application stylesheet doesn't seem to be used right now (it should be used; it should be put into the list in application.scss).  Until it is, these styles are here so they will be used
+.shf-applications-minimal-info {
+  .org-and-name {
+    font-size: smaller;
+    font-weight: normal;
+  }
+}
+
 
 .btco-menu .active a:focus,
 .btco-menu li a:focus,

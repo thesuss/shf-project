@@ -36,6 +36,7 @@ And(/^the following applications exist:$/) do |table|
 
     legacy_app = hash['is_legacy'] == 'true' ? true : false
 
+    # 'ma' = Member Application
     if (ma = user.shf_application)
 
       user.shf_application.companies << companies

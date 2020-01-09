@@ -2,7 +2,8 @@
 @import "payor";
 
 
-.is-admin {
+.is-admin,
+.is-admin a {
   color: $is-admin-color;
   font-weight: bold;
 }
@@ -50,5 +51,14 @@
     color: $primary;
     font-size: larger;
     font-weight: bold;
+  }
+}
+
+
+.entry-header {
+  .shf-icon {
+    border: 0;
+    font-size: 1.5rem;
+    vertical-align: super;
   }
 }

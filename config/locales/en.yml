@@ -534,6 +534,11 @@ en:
         h_expires_html: 'Your H-branding fee-payment for company <b>%{company}</b> expired:'
         pay_h_here_html: 'Your H-branding fee for company <b>%{company}</b> needs to be paid:'
 
+    shf_application_min_info_as_table:
+      view_application: View application
+      org_nr: *org_nr
+      company_name: *name
+
     shf_application_fields:
       company_numbers_tooltip: You can enter multiple company numbers, separated by
                                a comma or blank spaces
@@ -812,6 +817,8 @@ en:
     all_business_categories: All categories
 
   users:
+    edit_user_account: &edit_user_account Edit the account for %{name}
+
     index:
       title: All Users
       no_search_results: No records matched your search criteria.
@@ -819,18 +826,10 @@ en:
     delete_user: &delete_user "Delete %{user}"
 
     show:
+      edit_user_account: *edit_user_account
       membership_number: *membership_number
-      email: *email
-      current_sign_in_at: *user_current_signed_in_time
-      current_sign_in_ip: *user_current_ip
-      last_login: *user_last_login
-      last_login_ip: *user_last_login_ip
-      logged_in_count: *sign_in_count
-      created: *created
-      reset_password_sent_at: *user_reset_password_sent_at
-      password_never_reset: Password has never been reset by the user.
-      user_has_never_signed_in: has never logged in.
-      is_an_admin: Is an Admin
+      is_an_admin: &is_an_admin Is an Admin
+
       'yes': *yes
       'no': *no
       reset_password: Change the Password
@@ -840,9 +839,9 @@ en:
       please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
       submit_new_password: Save the New Password
       member: *member
-      membership_status: Membership Status
-      not_a_member: Not a member
-      is_a_member: Member in good standing
+      membership_status: &membership_status Membership Status
+      not_a_member: &not_a_member Not a member
+      is_a_member: &is_a_member Member in good standing
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       membership_fee_payment: membership payment
@@ -851,33 +850,54 @@ en:
       payment_tooltip: Paying the membership fee will extend your membership for one year.
       membership_expire_date_tooltip: &membership_expire_date_tooltip Membership expires after this date
       term_expire_date_tooltip : *membership_expire_date_tooltip
-      proof_of_membership: Proof of Membership
-      proof_of_membership_describe: This image is your proof of membership in SHF.
-      proof_of_membership_photo_needed: 'If you see "Photo Unavailable" then please
-                                         upload a photo of yourself here: '
-      image_how_to_use_html: You can download the image, take a screenshot,
-                            link to it from your website and use it in social media,
-                            or print it have and show (ex. show it to a customer/client).
-      image_use_guidelines_html: Please note that your use of this image is subject to
-                                 these %{use_guidelines_link}.
-      use_guidelines: guidelines
-      download_image: Download Image
-      show_image: Show image
-      copy_image_url: Copy image link
-      copied: Copied
-      image_dimensions_html: "The image width is <span id='%{width_id}'></span>
-                             pixels and the height is
-                             <span id='%{height_id}'></span> pixels."
-      use_this_image_link_html: "<span style='font-weight: bold'>
-                                Use this link in an external website:
-                                </span>"
-      company_h_brand: Company H-Brand for %{company}
-      company_h_brand_describe: This image is your company's H-Brand.
-      member_packet: &member_packet member packet
-      sent: sent
-      not_sent: not sent
       edit_member_status: &edit_member_status Edit Member Status
       pay_membership: &pay_membership Pay Membership Fee
+      edit_user_profile: &edit_user_profile Edit the profile for %{name}
+
+    show_login_email_row_cols:
+      email: *email
+
+    show_info_for_admin_only:
+      admin_user_info_title: &admin_user_info_title Användare Info
+      created: *created
+      reset_password_sent_at: *user_reset_password_sent_at
+      password_never_reset: &password_never_reset Password has never been reset by the user.
+      user_has_never_signed_in: &user_has_never_signed_in has never logged in.
+      last_login: *user_last_login
+      last_login_ip: *user_last_login_ip
+      logged_in_count: *sign_in_count
+      current_sign_in_at: *user_current_signed_in_time
+      current_sign_in_ip: *user_current_ip
+      member_packet: &member_packet pkt
+      sent: sent
+      not_sent: not sent
+
+    show_member_images_row_cols:
+      email: *email
+      proof_of_membership: &proof_of_membership Proof of Membership
+      proof_of_membership_describe: &proof_of_membership_describe This image is your proof of membership in SHF.
+      proof_of_membership_photo_needed: &proof_of_membership_photo_needed 'If you see "Photo Unavailable" then please
+                                           upload a photo of yourself here: '
+      company_h_brand: &company_h_brand Company H-Brand for %{company}
+      company_h_brand_describe: &company_h_brand_describe This image is your company's H-Brand.
+
+      image_how_to_use_html: &image_how_to_use_html "You can download the image, take a screenshot,
+        link to it from your website and use it in social media,
+        or print it have and show (ex. show it to a customer/client)."
+      image_use_guidelines_html: &image_use_guidelines_html Please note that your use of this image is subject to these %{use_guidelines_link}.
+      use_guidelines: &use_guidelines guidelines
+
+      show_image: &show_image Show image
+      download_image: &download_image Download Image
+      copy_image_url: &copy_image_url Copy image link
+      copied: &copied Copied
+      image_dimensions_html: "The image width is <span id='%{width_id}'></span>
+                               pixels and the height is
+                               <span id='%{height_id}'></span> pixels."
+      use_this_image_link_html: "<span style='font-weight: bold'>
+                                  Use this link in an external website:
+                                  </span>"
+
 
     update:
       passwords_dont_match: "The two passwords entered don't match."
@@ -902,11 +922,13 @@ en:
       all_users: 'All users'
 
     user:
-      user_has_never_signed_in: has never logged in.
+      user_has_never_signed_in: &user_has_never_signed_in has never logged in.
       'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
       edit_member_status: *edit_member_status
       submit_button_label: Update Status
+      edit_user_account: *edit_user_account
+      edit_user_profile: *edit_user_profile
 
     users_list:
       membership_number: *membership_number_short
@@ -921,9 +943,15 @@ en:
       applications_tooltip: User has an open application
       expire_date: *expire_date
       member_packet: *member_packet
+      edit_profile: Edit Profile
+      edit_account: (Edit Acct.)
 
     destroy:
       success: User deleted successfully.
+
+  user_profiles:
+    edit:
+      edit_user_account: *edit_user_account
 
   payments:
     create:
@@ -1172,6 +1200,43 @@ en:
         have_become: "You are now acting as user %{user_name} (id: %{user_id}). Log out then log back in as the admin if you need to administrate again."
       become_user_button:
         become_this_user: *become_this_user
+
+    user_account:
+      edit:
+        is_an_admin: *is_an_admin
+        edit_user_profile: *edit_user_profile
+        email: *email
+        membership_number: *membership_number
+        admin_user_info_title: *admin_user_info_title
+        created: *created
+
+        user_has_never_signed_in: *user_has_never_signed_in
+        current_sign_in_at: *user_current_signed_in_time
+        current_sign_in_ip: *user_current_ip
+        last_login: *user_last_login
+        last_login_ip: *user_last_login_ip
+        logged_in_count: *sign_in_count
+        reset_password_sent_at: *user_reset_password_sent_at
+        password_never_reset: *password_never_reset
+
+        proof_of_membership: *proof_of_membership
+        proof_of_membership_describe: *proof_of_membership_describe
+        proof_of_membership_photo_needed: *proof_of_membership_photo_needed
+        company_h_brand: *company_h_brand
+        company_h_brand_describe: *company_h_brand_describe
+        image_how_to_use_html: *image_how_to_use_html
+        image_use_guidelines_html: *image_use_guidelines_html
+        use_guidelines: *use_guidelines
+        download_image: *download_image
+        show_image: *show_image
+        copy_image_url: *copy_image_url
+        copied: *copied
+
+
+      update:
+        error: A problem kept the user account from being updated.
+        success: The user account was updated.
+
 
 
   mailers:

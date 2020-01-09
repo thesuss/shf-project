@@ -11,21 +11,28 @@
       %th
         = t('activerecord.attributes.shf_application.state')
       %th
-        = t('activerecord.attributes.shf_application.company_number')
+        = t('activerecord.models.company.one')
+        %span.org-and-name=  ' (' + t('.org_nr') + ', ' + t('.company_name') + ')'
       %th
-        = t('activerecord.attributes.company.name')
+
   %tbody
     %tr.shf-application-minimal-info
       - if application.nil?
         %td ---
       - else
-        %td.contact-email= mail_to(application.contact_email)
+        %td.contact-email= mail_to(application.contact_email, application.contact_email, title: "mail_to: #{application.contact_email}")
         %td.state
           - i18n_state = t("shf_applications.state.#{application.state}")
-          - if application.accepted?
-            %span.yes= i18n_state
-          - else
-            %span.maybe= i18n_state
+          - style_for_state =  (application.accepted? ? 'yes' : 'maybe')
+          = link_to i18n_state, application, title: t('.view_application'), class: style_for_state
+
         - if application.companies.any?
-          %td.company-numbers= link_to(application.company_numbers, shf_application_path(application))
-          %td.company-names= application.company_names
+          %td.company
+            %table.companies
+              - application.companies.each do | app_company |
+                %tr.company
+                  %td.company-number= link_to(app_company.company_number, company_path(app_company))
+                  %td.company-name= link_to(app_company.name, company_path(app_company))
+        - else
+          %td.company-number
+          %td.company-name

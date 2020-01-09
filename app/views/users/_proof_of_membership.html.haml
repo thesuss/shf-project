@@ -53,11 +53,11 @@
     - if render_to == :html && context == :internal
       %div
         %br
-        = t('users.show.image_dimensions_html', width_id: 'pom-width',
+        = t('users.show_member_images_row_cols.image_dimensions_html', width_id: 'pom-width',
             height_id: 'pom-height')
         %br
         %br
-        = t('users.show.use_this_image_link_html')
+        = t('users.show_member_images_row_cols.use_this_image_link_html')
         = short_proof_of_membership_url(user)
 
       :javascript

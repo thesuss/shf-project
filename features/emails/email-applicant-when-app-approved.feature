@@ -56,6 +56,6 @@ Feature: Applicant gets an email when the application is approved
     And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     When I follow "http://localhost:3000/anvandare/1" in the email
     Then I should see "Firstname Lastname"
-    And I should see t("users.show.email")
+    And I should see t("users.show_login_email_row_cols.email")
     And I should see t("application")
     And I should not see t("users.show.membership_number")

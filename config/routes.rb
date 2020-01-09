@@ -54,6 +54,11 @@ Rails.application.routes.draw do
     put 'user_profile_update/:id', to: 'user_profile#update', as: :user_profile_update
     get 'user_profile_become/:id', to: 'user_profile#become', as: :become_user
 
+    # Edit User Account
+    get 'anvandare/:user_id/redigera', to: 'user_account#edit', as: :edit_user_account
+    put 'anvandare/:user_id', to: 'user_account#update', as: :user_account
+
+    # Design Guide
     get 'designguide', to: 'design_guide#show'
 
   end
@@ -101,7 +106,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users, path: 'anvandare' do
+
+    # User Account.  Only admins can edit (see the route above for /admin)
+    resources :users, path: 'anvandare', except: [:edit, :update]  do
       member do
         put 'edit_status', to: 'users#edit_status', as: 'edit_status'
       end

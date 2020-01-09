@@ -11,6 +11,7 @@ module ApplicationHelper
 
   include MetaTagsHelper
   include MetaImageTagsHelper
+  include ShfIconsHelper
 
 
   # TODO standardize this method name:  should it end in '_css_class' to make it clear it is not related to Ruby classes?
