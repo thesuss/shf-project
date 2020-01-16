@@ -2,8 +2,8 @@
 #
 # @class  RequirementsForFirstMembershipFeeOwed
 #
-# @desc Responsibility: Knows if a User owes their firstmembership fee. No
-#   membership fee payments have been made since their application was approved.
+# @desc Responsibility: Knows if a User owes their first membership fee FOR THE LATEST APPLICATION.
+#   No membership fee payments have been made since the _latest_ application was approved.
 #
 #  Only 1 is needed for the system.
 #
@@ -22,7 +22,7 @@ class RequirementsForFirstMembershipFeeOwed < AbstractRequirements
   # Membership fee is due if application is approved AND there have been
   # no membership fee payments made since the application was approved.
   # This allows for the situation where someone might have applied and
-  # been a member in the past. ()Although we currently do not support more than
+  # been a member in the past. (Although we currently do not support more than
   # one SHF Application for a user, we will in the future. [2019-11-26])
   #
   # TODO if PR 723 is merged, use user.has_successful_payments?( <membership fee payment> ) instead of most_recent_membership_payment.blank?

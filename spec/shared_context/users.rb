@@ -5,6 +5,7 @@ require 'shared_context/named_dates'
 #
 # user - a user (no payments, not a member)
 # user_no_payments - a user (no payments, not a member)
+# user_all_paid_membership_not_granted-[uses create(), then saves] a user not yet granted membership with an approved membership application, membership and company payments made today
 # member_paid_up - [uses build(), then saves] a member with a membership application and a membership payment made today
 # member_expired - [uses build(), then saves] a member with a membership application and a membership payment that expired yesterday
 # user_pays_every_nov30 - current member with membership app; paid membership fee Nov 30 last year; paid branding fee Nov 30 last year; paid membership fee Nov 30 THIS_YEAR; paid branding fee Nov 30 THIS_YEAR;
@@ -27,6 +28,19 @@ RSpec.shared_context 'create users' do
   let(:user) { create(:user) }
 
   let(:user_no_payments) { create(:user) }
+
+
+  let(:user_all_paid_membership_not_granted) do
+    user = create(:user_with_membership_app)
+    app = user.shf_application
+    app.state = :accepted
+    app.when_approved = Time.zone.now
+
+    user.payments << create(:membership_fee_payment)
+    user.payments << create(:h_branding_fee_payment, company: app.companies.first)
+    user.save!
+    user
+  end
 
 
   let(:member_paid_up) do

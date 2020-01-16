@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+require 'shared_context/users'
+
 RSpec.describe MembershipStatusUpdater, type: :model do
 
   let(:subject) { MembershipStatusUpdater.instance }
@@ -217,6 +219,70 @@ RSpec.describe MembershipStatusUpdater, type: :model do
     it 'user.member? is false' do
       subject.send(:revoke_update_action, {user: user}) # this is equivalent to subject.revoke_update_action({user: user})
       expect(user.member?).to be_falsey
+    end
+
+  end
+
+  describe 'grant membership' do
+
+    include_context 'create users'
+
+    before(:each) do
+      # mock the MemberMailer so we don't try to send emails
+      allow(MemberMailer).to receive(:membership_granted).and_return(double('MemberMailer', deliver: true))
+    end
+
+    describe 'sends the Admin an email only if this is the first membership granted to a user' do
+
+      describe 'it is based on the previous membership status and membership number' do
+
+        it 'sends email if previous membership status = false (not a member) AND no previous membership number' do
+          expect(AdminMailer).to receive(:new_membership_granted_co_hbrand_paid).and_return(double('AdminMailer', deliver: true))
+          is_first_membership = user_all_paid_membership_not_granted
+          subject.send(:grant_membership,is_first_membership, true)
+        end
+
+        it 'no email sent if previous membership status = true (was a member)' do
+          expect(AdminMailer).not_to receive(:new_membership_granted_co_hbrand_paid) #.and_return(double('AdminMailer', deliver: true))
+          subject.send(:grant_membership, member_paid_up, true)
+        end
+
+        it 'no email sent if there was a previous membership number' do
+          expect(AdminMailer).not_to receive(:new_membership_granted_co_hbrand_paid) #.and_return(double('AdminMailer', deliver: true))
+          had_membership_number = user_all_paid_membership_not_granted
+          had_membership_number.membership_number = '1'
+          subject.send(:grant_membership,had_membership_number, true)
+        end
+      end
+    end
+
+  end
+
+
+  describe 'first_membership?(previous_membership_status, previous_membership_number)' do
+
+    context 'previous membership status = true' do
+
+      it 'false if previous membership number not nil' do
+        expect(subject.send(:first_membership?, true, 'blorf') ).to be_falsey
+      end
+
+      it  'false if previous membership number is nil'  do
+        expect(subject.send(:first_membership?, true, nil) ).to be_falsey
+        expect(subject.send(:first_membership?, true) ).to be_falsey
+      end
+    end
+
+    context 'previous membership status = false' do
+
+      it 'false if previous membership number not nil' do
+        expect(subject.send(:first_membership?, false, '') ).to be_falsey
+      end
+
+      it 'true if previous membership number is nil'  do
+        expect(subject.send(:first_membership?, false, nil) ).to be_truthy
+        expect(subject.send(:first_membership?, false) ).to be_truthy
+      end
     end
 
   end

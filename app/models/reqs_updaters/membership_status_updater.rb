@@ -1,11 +1,10 @@
-
 # Log messages:
 #
-LOGMSG_APP_UPDATED              = 'SHF_application updated'
-LOGMSG_APP_UPDATED_CHECKREASON  = 'Membership checked because this shf_application was updated: '
-LOGMSG_PAYMENT_MADE             = 'Payment made'
+LOGMSG_APP_UPDATED = 'SHF_application updated'
+LOGMSG_APP_UPDATED_CHECKREASON = 'Membership checked because this shf_application was updated: '
+LOGMSG_PAYMENT_MADE = 'Payment made'
 LOGMSG_PAYMENT_MADE_CHECKREASON = 'Finished checking membership status because this payment was  made: '
-LOGMSG_USER_UPDATED             = 'User updated'
+LOGMSG_USER_UPDATED = 'User updated'
 LOGMSG_USER_UPDATED_CHECKREASON = 'User updated: '
 
 LOGMSG_MEMBERSHIP_GRANTED = 'Membership granted'
@@ -62,7 +61,6 @@ class MembershipStatusUpdater < AbstractUpdater
   SEND_EMAIL_DEFAULT = true
 
 
-
   def self.update_requirements_checker
     RequirementsForMembership
   end
@@ -94,6 +92,7 @@ class MembershipStatusUpdater < AbstractUpdater
     check_user_and_log(user, user, LOGMSG_USER_UPDATED, LOGMSG_USER_UPDATED)
   end
 
+
   # end of Notifications received from observed classes
 
   def revoke_user_membership(user)
@@ -120,7 +119,7 @@ class MembershipStatusUpdater < AbstractUpdater
 
   # if already a member, then they RENEW, else membership is granted
   def update_action(args)
-    user       = args[:user]
+    user = args[:user]
     send_email = args.fetch(:send_email, SEND_EMAIL_DEFAULT)
 
     user.member ? renew_membership(user, send_email) : grant_membership(user, send_email)
@@ -143,15 +142,24 @@ class MembershipStatusUpdater < AbstractUpdater
 
     ActivityLogger.open(log_filename, self.class.to_s, LOGMSG_MEMBERSHIP_GRANTED, false) do |log|
 
+      previous_membership_status = user.member
+      previous_membership_number = user.membership_number
+
       user.update(member: true, membership_number: user.issue_membership_number) # I don't think a User should be responsible for figuring out the next membership number
 
       if send_email
         MemberMailer.membership_granted(user).deliver
 
-        # only send if there are companies that are complete AND branding license payment is current = "good companies" is how they're referred to here
-        user_good_cos = user.shf_application&.companies&.select{|co| co.complete? && co.branding_license? }
-        has_good_cos = user_good_cos.nil? ? false : user_good_cos.count > 0
-        AdminMailer.new_membership_granted_co_hbrand_paid(user).deliver if has_good_cos
+        if first_membership?(previous_membership_status, previous_membership_number)
+
+          # only send if there are companies that are complete AND branding license payment is current = "good companies" is how they're referred to here
+          user_good_cos = user.shf_application&.companies&.select { |co| co.complete? && co.branding_license? }
+          has_good_cos = user_good_cos.nil? ? false : user_good_cos.count > 0
+
+          AdminMailer.new_membership_granted_co_hbrand_paid(user).deliver if has_good_cos
+        end
+
+
       end
 
       log.record(:info, "#{LOGMSG_MEMBERSHIP_GRANTED}: #{user.inspect}")
@@ -164,11 +172,16 @@ class MembershipStatusUpdater < AbstractUpdater
 
     ActivityLogger.open(log_filename, self.class.to_s, LOGMSG_MEMBERSHIP_RENEWED, false) do |log|
 
-     # MemberMailer.membership_renewed(user).deliver if send_email
+      # MemberMailer.membership_renewed(user).deliver if send_email
 
       log.record(:info, "#{LOGMSG_MEMBERSHIP_RENEWED}: #{user.inspect}")
     end
 
+  end
+
+
+  def first_membership?(previous_membership_status = true, previous_membership_number = nil)
+    previous_membership_number.nil? && !(previous_membership_status)
   end
 
 end # MembershipStatusUpdater
