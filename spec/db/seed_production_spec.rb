@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+require File.join(Rails.root, 'db/require_all_seeders_and_helpers.rb')
+
 require File.join(__dir__, 'shared_specs_db_seeding')
 
 ENV_ADMIN_EMAIL_KEY = 'SHF_ADMIN_EMAIL' unless defined?(ENV_ADMIN_EMAIL_KEY)
@@ -20,7 +22,10 @@ RSpec.describe 'Production db is seeded with minimal info' do
       DatabaseCleaner.start
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
+
         allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+        allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+        allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
         # must stub this way so the rest of ENV is preserved
         stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
@@ -32,8 +37,6 @@ RSpec.describe 'Production db is seeded with minimal info' do
 
     after(:all) do
       DatabaseCleaner.clean
-      Rake::Task['shf:load_regions'].reenable
-      Rake::Task['shf:load_kommuns'].reenable
     end
 
     let(:admin_in_db) { User.find_by_email(admin_email) }

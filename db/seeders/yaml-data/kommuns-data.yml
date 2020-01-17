@@ -1,0 +1,2906 @@
+---
+# YAML Seed data for the SHF project
+# YAML Data for class: Seeders::KommunsSeeder
+# Date written: 2020-01-16 14:29:20 -0800
+# ----------------------
+- id: 1
+  name: Ale
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &1 2020-01-16 22:00:03.967315000 Z
+    zone: &2 !ruby/object:ActiveSupport::TimeZone
+      name: Etc/UTC
+    time: *1
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &3 2020-01-16 22:00:03.967315000 Z
+    zone: *2
+    time: *3
+- id: 2
+  name: Alingsås
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &4 2020-01-16 22:00:03.976375000 Z
+    zone: *2
+    time: *4
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &5 2020-01-16 22:00:03.976375000 Z
+    zone: *2
+    time: *5
+- id: 3
+  name: Alvesta
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &6 2020-01-16 22:00:03.979057000 Z
+    zone: *2
+    time: *6
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &7 2020-01-16 22:00:03.979057000 Z
+    zone: *2
+    time: *7
+- id: 4
+  name: Aneby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &8 2020-01-16 22:00:03.981003000 Z
+    zone: *2
+    time: *8
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &9 2020-01-16 22:00:03.981003000 Z
+    zone: *2
+    time: *9
+- id: 5
+  name: Arboga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &10 2020-01-16 22:00:03.983388000 Z
+    zone: *2
+    time: *10
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &11 2020-01-16 22:00:03.983388000 Z
+    zone: *2
+    time: *11
+- id: 6
+  name: Arjeplog
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &12 2020-01-16 22:00:03.985722000 Z
+    zone: *2
+    time: *12
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &13 2020-01-16 22:00:03.985722000 Z
+    zone: *2
+    time: *13
+- id: 7
+  name: Arvidsjaur
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &14 2020-01-16 22:00:03.987563000 Z
+    zone: *2
+    time: *14
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &15 2020-01-16 22:00:03.987563000 Z
+    zone: *2
+    time: *15
+- id: 8
+  name: Arvika
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &16 2020-01-16 22:00:03.989318000 Z
+    zone: *2
+    time: *16
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &17 2020-01-16 22:00:03.989318000 Z
+    zone: *2
+    time: *17
+- id: 9
+  name: Askersund
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &18 2020-01-16 22:00:03.991049000 Z
+    zone: *2
+    time: *18
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &19 2020-01-16 22:00:03.991049000 Z
+    zone: *2
+    time: *19
+- id: 10
+  name: Avesta
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &20 2020-01-16 22:00:03.992673000 Z
+    zone: *2
+    time: *20
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &21 2020-01-16 22:00:03.992673000 Z
+    zone: *2
+    time: *21
+- id: 11
+  name: Bengtsfors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &22 2020-01-16 22:00:03.994131000 Z
+    zone: *2
+    time: *22
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &23 2020-01-16 22:00:03.994131000 Z
+    zone: *2
+    time: *23
+- id: 12
+  name: Bergs
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &24 2020-01-16 22:00:03.995638000 Z
+    zone: *2
+    time: *24
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &25 2020-01-16 22:00:03.995638000 Z
+    zone: *2
+    time: *25
+- id: 13
+  name: Bjurholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &26 2020-01-16 22:00:03.997292000 Z
+    zone: *2
+    time: *26
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &27 2020-01-16 22:00:03.997292000 Z
+    zone: *2
+    time: *27
+- id: 14
+  name: Bjuv
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &28 2020-01-16 22:00:03.998913000 Z
+    zone: *2
+    time: *28
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &29 2020-01-16 22:00:03.998913000 Z
+    zone: *2
+    time: *29
+- id: 15
+  name: Boden
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &30 2020-01-16 22:00:04.000507000 Z
+    zone: *2
+    time: *30
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &31 2020-01-16 22:00:04.000507000 Z
+    zone: *2
+    time: *31
+- id: 16
+  name: Bollebygd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &32 2020-01-16 22:00:04.002026000 Z
+    zone: *2
+    time: *32
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &33 2020-01-16 22:00:04.002026000 Z
+    zone: *2
+    time: *33
+- id: 17
+  name: Bollnäs
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &34 2020-01-16 22:00:04.003595000 Z
+    zone: *2
+    time: *34
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &35 2020-01-16 22:00:04.003595000 Z
+    zone: *2
+    time: *35
+- id: 18
+  name: Borgholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &36 2020-01-16 22:00:04.005213000 Z
+    zone: *2
+    time: *36
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &37 2020-01-16 22:00:04.005213000 Z
+    zone: *2
+    time: *37
+- id: 19
+  name: Borlänge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &38 2020-01-16 22:00:04.006797000 Z
+    zone: *2
+    time: *38
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &39 2020-01-16 22:00:04.006797000 Z
+    zone: *2
+    time: *39
+- id: 20
+  name: Borås
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &40 2020-01-16 22:00:04.008352000 Z
+    zone: *2
+    time: *40
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &41 2020-01-16 22:00:04.008352000 Z
+    zone: *2
+    time: *41
+- id: 21
+  name: Botkyrka
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &42 2020-01-16 22:00:04.010022000 Z
+    zone: *2
+    time: *42
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &43 2020-01-16 22:00:04.010022000 Z
+    zone: *2
+    time: *43
+- id: 22
+  name: Boxholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &44 2020-01-16 22:00:04.011904000 Z
+    zone: *2
+    time: *44
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &45 2020-01-16 22:00:04.011904000 Z
+    zone: *2
+    time: *45
+- id: 23
+  name: Bromölla
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &46 2020-01-16 22:00:04.013602000 Z
+    zone: *2
+    time: *46
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &47 2020-01-16 22:00:04.013602000 Z
+    zone: *2
+    time: *47
+- id: 24
+  name: Bräcke
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &48 2020-01-16 22:00:04.015276000 Z
+    zone: *2
+    time: *48
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &49 2020-01-16 22:00:04.015276000 Z
+    zone: *2
+    time: *49
+- id: 25
+  name: Burlöv
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &50 2020-01-16 22:00:04.017049000 Z
+    zone: *2
+    time: *50
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &51 2020-01-16 22:00:04.017049000 Z
+    zone: *2
+    time: *51
+- id: 26
+  name: Båstad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &52 2020-01-16 22:00:04.018743000 Z
+    zone: *2
+    time: *52
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &53 2020-01-16 22:00:04.018743000 Z
+    zone: *2
+    time: *53
+- id: 27
+  name: Dals-Ed
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &54 2020-01-16 22:00:04.020306000 Z
+    zone: *2
+    time: *54
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &55 2020-01-16 22:00:04.020306000 Z
+    zone: *2
+    time: *55
+- id: 28
+  name: Danderyd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &56 2020-01-16 22:00:04.021906000 Z
+    zone: *2
+    time: *56
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &57 2020-01-16 22:00:04.021906000 Z
+    zone: *2
+    time: *57
+- id: 29
+  name: Degerfors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &58 2020-01-16 22:00:04.023527000 Z
+    zone: *2
+    time: *58
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &59 2020-01-16 22:00:04.023527000 Z
+    zone: *2
+    time: *59
+- id: 30
+  name: Dorotea
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &60 2020-01-16 22:00:04.025207000 Z
+    zone: *2
+    time: *60
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &61 2020-01-16 22:00:04.025207000 Z
+    zone: *2
+    time: *61
+- id: 31
+  name: Eda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &62 2020-01-16 22:00:04.026771000 Z
+    zone: *2
+    time: *62
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &63 2020-01-16 22:00:04.026771000 Z
+    zone: *2
+    time: *63
+- id: 32
+  name: Ekerö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &64 2020-01-16 22:00:04.028460000 Z
+    zone: *2
+    time: *64
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &65 2020-01-16 22:00:04.028460000 Z
+    zone: *2
+    time: *65
+- id: 33
+  name: Eksjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &66 2020-01-16 22:00:04.030168000 Z
+    zone: *2
+    time: *66
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &67 2020-01-16 22:00:04.030168000 Z
+    zone: *2
+    time: *67
+- id: 34
+  name: Emmaboda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &68 2020-01-16 22:00:04.031585000 Z
+    zone: *2
+    time: *68
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &69 2020-01-16 22:00:04.031585000 Z
+    zone: *2
+    time: *69
+- id: 35
+  name: Enköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &70 2020-01-16 22:00:04.033177000 Z
+    zone: *2
+    time: *70
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &71 2020-01-16 22:00:04.033177000 Z
+    zone: *2
+    time: *71
+- id: 36
+  name: Eskilstuna
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &72 2020-01-16 22:00:04.035017000 Z
+    zone: *2
+    time: *72
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &73 2020-01-16 22:00:04.035017000 Z
+    zone: *2
+    time: *73
+- id: 37
+  name: Eslöv
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &74 2020-01-16 22:00:04.036620000 Z
+    zone: *2
+    time: *74
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &75 2020-01-16 22:00:04.036620000 Z
+    zone: *2
+    time: *75
+- id: 38
+  name: Essunga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &76 2020-01-16 22:00:04.038201000 Z
+    zone: *2
+    time: *76
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &77 2020-01-16 22:00:04.038201000 Z
+    zone: *2
+    time: *77
+- id: 39
+  name: Fagersta
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &78 2020-01-16 22:00:04.039977000 Z
+    zone: *2
+    time: *78
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &79 2020-01-16 22:00:04.039977000 Z
+    zone: *2
+    time: *79
+- id: 40
+  name: Falkenberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &80 2020-01-16 22:00:04.042034000 Z
+    zone: *2
+    time: *80
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &81 2020-01-16 22:00:04.042034000 Z
+    zone: *2
+    time: *81
+- id: 41
+  name: Falköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &82 2020-01-16 22:00:04.043905000 Z
+    zone: *2
+    time: *82
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &83 2020-01-16 22:00:04.043905000 Z
+    zone: *2
+    time: *83
+- id: 42
+  name: Falu
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &84 2020-01-16 22:00:04.045737000 Z
+    zone: *2
+    time: *84
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &85 2020-01-16 22:00:04.045737000 Z
+    zone: *2
+    time: *85
+- id: 43
+  name: Filipstad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &86 2020-01-16 22:00:04.047659000 Z
+    zone: *2
+    time: *86
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &87 2020-01-16 22:00:04.047659000 Z
+    zone: *2
+    time: *87
+- id: 44
+  name: Finspång
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &88 2020-01-16 22:00:04.049428000 Z
+    zone: *2
+    time: *88
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &89 2020-01-16 22:00:04.049428000 Z
+    zone: *2
+    time: *89
+- id: 45
+  name: Flen
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &90 2020-01-16 22:00:04.051237000 Z
+    zone: *2
+    time: *90
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &91 2020-01-16 22:00:04.051237000 Z
+    zone: *2
+    time: *91
+- id: 46
+  name: Forshaga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &92 2020-01-16 22:00:04.053162000 Z
+    zone: *2
+    time: *92
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &93 2020-01-16 22:00:04.053162000 Z
+    zone: *2
+    time: *93
+- id: 47
+  name: Färgelanda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &94 2020-01-16 22:00:04.054983000 Z
+    zone: *2
+    time: *94
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &95 2020-01-16 22:00:04.054983000 Z
+    zone: *2
+    time: *95
+- id: 48
+  name: Gagnef
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &96 2020-01-16 22:00:04.056939000 Z
+    zone: *2
+    time: *96
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &97 2020-01-16 22:00:04.056939000 Z
+    zone: *2
+    time: *97
+- id: 49
+  name: Gislaved
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &98 2020-01-16 22:00:04.058728000 Z
+    zone: *2
+    time: *98
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &99 2020-01-16 22:00:04.058728000 Z
+    zone: *2
+    time: *99
+- id: 50
+  name: Gnesta
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &100 2020-01-16 22:00:04.060505000 Z
+    zone: *2
+    time: *100
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &101 2020-01-16 22:00:04.060505000 Z
+    zone: *2
+    time: *101
+- id: 51
+  name: Gnosjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &102 2020-01-16 22:00:04.062282000 Z
+    zone: *2
+    time: *102
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &103 2020-01-16 22:00:04.062282000 Z
+    zone: *2
+    time: *103
+- id: 52
+  name: Gotland
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &104 2020-01-16 22:00:04.064311000 Z
+    zone: *2
+    time: *104
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &105 2020-01-16 22:00:04.064311000 Z
+    zone: *2
+    time: *105
+- id: 53
+  name: Grums
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &106 2020-01-16 22:00:04.066274000 Z
+    zone: *2
+    time: *106
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &107 2020-01-16 22:00:04.066274000 Z
+    zone: *2
+    time: *107
+- id: 54
+  name: Grästorp
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &108 2020-01-16 22:00:04.068169000 Z
+    zone: *2
+    time: *108
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &109 2020-01-16 22:00:04.068169000 Z
+    zone: *2
+    time: *109
+- id: 55
+  name: Gullspång
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &110 2020-01-16 22:00:04.070029000 Z
+    zone: *2
+    time: *110
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &111 2020-01-16 22:00:04.070029000 Z
+    zone: *2
+    time: *111
+- id: 56
+  name: Gällivare
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &112 2020-01-16 22:00:04.071909000 Z
+    zone: *2
+    time: *112
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &113 2020-01-16 22:00:04.071909000 Z
+    zone: *2
+    time: *113
+- id: 57
+  name: Gävle
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &114 2020-01-16 22:00:04.073650000 Z
+    zone: *2
+    time: *114
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &115 2020-01-16 22:00:04.073650000 Z
+    zone: *2
+    time: *115
+- id: 58
+  name: Göteborg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &116 2020-01-16 22:00:04.075487000 Z
+    zone: *2
+    time: *116
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &117 2020-01-16 22:00:04.075487000 Z
+    zone: *2
+    time: *117
+- id: 59
+  name: Götene
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &118 2020-01-16 22:00:04.077576000 Z
+    zone: *2
+    time: *118
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &119 2020-01-16 22:00:04.077576000 Z
+    zone: *2
+    time: *119
+- id: 60
+  name: Habo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &120 2020-01-16 22:00:04.079306000 Z
+    zone: *2
+    time: *120
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &121 2020-01-16 22:00:04.079306000 Z
+    zone: *2
+    time: *121
+- id: 61
+  name: Hagfors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &122 2020-01-16 22:00:04.081151000 Z
+    zone: *2
+    time: *122
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &123 2020-01-16 22:00:04.081151000 Z
+    zone: *2
+    time: *123
+- id: 62
+  name: Hallsberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &124 2020-01-16 22:00:04.083063000 Z
+    zone: *2
+    time: *124
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &125 2020-01-16 22:00:04.083063000 Z
+    zone: *2
+    time: *125
+- id: 63
+  name: Hallstahammar
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &126 2020-01-16 22:00:04.084968000 Z
+    zone: *2
+    time: *126
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &127 2020-01-16 22:00:04.084968000 Z
+    zone: *2
+    time: *127
+- id: 64
+  name: Halmstad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &128 2020-01-16 22:00:04.086779000 Z
+    zone: *2
+    time: *128
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &129 2020-01-16 22:00:04.086779000 Z
+    zone: *2
+    time: *129
+- id: 65
+  name: Hammarö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &130 2020-01-16 22:00:04.088490000 Z
+    zone: *2
+    time: *130
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &131 2020-01-16 22:00:04.088490000 Z
+    zone: *2
+    time: *131
+- id: 66
+  name: Haninge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &132 2020-01-16 22:00:04.090213000 Z
+    zone: *2
+    time: *132
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &133 2020-01-16 22:00:04.090213000 Z
+    zone: *2
+    time: *133
+- id: 67
+  name: Haparanda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &134 2020-01-16 22:00:04.091865000 Z
+    zone: *2
+    time: *134
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &135 2020-01-16 22:00:04.091865000 Z
+    zone: *2
+    time: *135
+- id: 68
+  name: Heby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &136 2020-01-16 22:00:04.093647000 Z
+    zone: *2
+    time: *136
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &137 2020-01-16 22:00:04.093647000 Z
+    zone: *2
+    time: *137
+- id: 69
+  name: Hedemora
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &138 2020-01-16 22:00:04.095516000 Z
+    zone: *2
+    time: *138
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &139 2020-01-16 22:00:04.095516000 Z
+    zone: *2
+    time: *139
+- id: 70
+  name: Helsingborg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &140 2020-01-16 22:00:04.097325000 Z
+    zone: *2
+    time: *140
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &141 2020-01-16 22:00:04.097325000 Z
+    zone: *2
+    time: *141
+- id: 71
+  name: Herrljunga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &142 2020-01-16 22:00:04.099026000 Z
+    zone: *2
+    time: *142
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &143 2020-01-16 22:00:04.099026000 Z
+    zone: *2
+    time: *143
+- id: 72
+  name: Hjo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &144 2020-01-16 22:00:04.100899000 Z
+    zone: *2
+    time: *144
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &145 2020-01-16 22:00:04.100899000 Z
+    zone: *2
+    time: *145
+- id: 73
+  name: Hofors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &146 2020-01-16 22:00:04.102672000 Z
+    zone: *2
+    time: *146
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &147 2020-01-16 22:00:04.102672000 Z
+    zone: *2
+    time: *147
+- id: 74
+  name: Huddinge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &148 2020-01-16 22:00:04.104465000 Z
+    zone: *2
+    time: *148
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &149 2020-01-16 22:00:04.104465000 Z
+    zone: *2
+    time: *149
+- id: 75
+  name: Hudiksvall
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &150 2020-01-16 22:00:04.106198000 Z
+    zone: *2
+    time: *150
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &151 2020-01-16 22:00:04.106198000 Z
+    zone: *2
+    time: *151
+- id: 76
+  name: Hultsfred
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &152 2020-01-16 22:00:04.108085000 Z
+    zone: *2
+    time: *152
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &153 2020-01-16 22:00:04.108085000 Z
+    zone: *2
+    time: *153
+- id: 77
+  name: Hylte
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &154 2020-01-16 22:00:04.109831000 Z
+    zone: *2
+    time: *154
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &155 2020-01-16 22:00:04.109831000 Z
+    zone: *2
+    time: *155
+- id: 78
+  name: Håbo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &156 2020-01-16 22:00:04.111511000 Z
+    zone: *2
+    time: *156
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &157 2020-01-16 22:00:04.111511000 Z
+    zone: *2
+    time: *157
+- id: 79
+  name: Hällefors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &158 2020-01-16 22:00:04.113076000 Z
+    zone: *2
+    time: *158
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &159 2020-01-16 22:00:04.113076000 Z
+    zone: *2
+    time: *159
+- id: 80
+  name: Härjedalen
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &160 2020-01-16 22:00:04.114550000 Z
+    zone: *2
+    time: *160
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &161 2020-01-16 22:00:04.114550000 Z
+    zone: *2
+    time: *161
+- id: 81
+  name: Härnösand
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &162 2020-01-16 22:00:04.115955000 Z
+    zone: *2
+    time: *162
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &163 2020-01-16 22:00:04.115955000 Z
+    zone: *2
+    time: *163
+- id: 82
+  name: Härryda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &164 2020-01-16 22:00:04.117473000 Z
+    zone: *2
+    time: *164
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &165 2020-01-16 22:00:04.117473000 Z
+    zone: *2
+    time: *165
+- id: 83
+  name: Hässleholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &166 2020-01-16 22:00:04.118990000 Z
+    zone: *2
+    time: *166
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &167 2020-01-16 22:00:04.118990000 Z
+    zone: *2
+    time: *167
+- id: 84
+  name: Höganäs
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &168 2020-01-16 22:00:04.120524000 Z
+    zone: *2
+    time: *168
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &169 2020-01-16 22:00:04.120524000 Z
+    zone: *2
+    time: *169
+- id: 85
+  name: Högsby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &170 2020-01-16 22:00:04.122046000 Z
+    zone: *2
+    time: *170
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &171 2020-01-16 22:00:04.122046000 Z
+    zone: *2
+    time: *171
+- id: 86
+  name: Hörby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &172 2020-01-16 22:00:04.123594000 Z
+    zone: *2
+    time: *172
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &173 2020-01-16 22:00:04.123594000 Z
+    zone: *2
+    time: *173
+- id: 87
+  name: Höör
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &174 2020-01-16 22:00:04.125402000 Z
+    zone: *2
+    time: *174
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &175 2020-01-16 22:00:04.125402000 Z
+    zone: *2
+    time: *175
+- id: 88
+  name: Jokkmokk
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &176 2020-01-16 22:00:04.127385000 Z
+    zone: *2
+    time: *176
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &177 2020-01-16 22:00:04.127385000 Z
+    zone: *2
+    time: *177
+- id: 89
+  name: Järfälla
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &178 2020-01-16 22:00:04.129156000 Z
+    zone: *2
+    time: *178
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &179 2020-01-16 22:00:04.129156000 Z
+    zone: *2
+    time: *179
+- id: 90
+  name: Jönköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &180 2020-01-16 22:00:04.130924000 Z
+    zone: *2
+    time: *180
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &181 2020-01-16 22:00:04.130924000 Z
+    zone: *2
+    time: *181
+- id: 91
+  name: Kalix
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &182 2020-01-16 22:00:04.132803000 Z
+    zone: *2
+    time: *182
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &183 2020-01-16 22:00:04.132803000 Z
+    zone: *2
+    time: *183
+- id: 92
+  name: Kalmar
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &184 2020-01-16 22:00:04.134379000 Z
+    zone: *2
+    time: *184
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &185 2020-01-16 22:00:04.134379000 Z
+    zone: *2
+    time: *185
+- id: 93
+  name: Karlsborg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &186 2020-01-16 22:00:04.136014000 Z
+    zone: *2
+    time: *186
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &187 2020-01-16 22:00:04.136014000 Z
+    zone: *2
+    time: *187
+- id: 94
+  name: Karlshamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &188 2020-01-16 22:00:04.137676000 Z
+    zone: *2
+    time: *188
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &189 2020-01-16 22:00:04.137676000 Z
+    zone: *2
+    time: *189
+- id: 95
+  name: Karlskoga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &190 2020-01-16 22:00:04.139346000 Z
+    zone: *2
+    time: *190
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &191 2020-01-16 22:00:04.139346000 Z
+    zone: *2
+    time: *191
+- id: 96
+  name: Karlskrona
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &192 2020-01-16 22:00:04.141047000 Z
+    zone: *2
+    time: *192
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &193 2020-01-16 22:00:04.141047000 Z
+    zone: *2
+    time: *193
+- id: 97
+  name: Karlstad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &194 2020-01-16 22:00:04.142694000 Z
+    zone: *2
+    time: *194
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &195 2020-01-16 22:00:04.142694000 Z
+    zone: *2
+    time: *195
+- id: 98
+  name: Katrineholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &196 2020-01-16 22:00:04.144439000 Z
+    zone: *2
+    time: *196
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &197 2020-01-16 22:00:04.144439000 Z
+    zone: *2
+    time: *197
+- id: 99
+  name: Kil
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &198 2020-01-16 22:00:04.146306000 Z
+    zone: *2
+    time: *198
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &199 2020-01-16 22:00:04.146306000 Z
+    zone: *2
+    time: *199
+- id: 100
+  name: Kinda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &200 2020-01-16 22:00:04.148091000 Z
+    zone: *2
+    time: *200
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &201 2020-01-16 22:00:04.148091000 Z
+    zone: *2
+    time: *201
+- id: 101
+  name: Kiruna
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &202 2020-01-16 22:00:04.149901000 Z
+    zone: *2
+    time: *202
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &203 2020-01-16 22:00:04.149901000 Z
+    zone: *2
+    time: *203
+- id: 102
+  name: Klippan
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &204 2020-01-16 22:00:04.151707000 Z
+    zone: *2
+    time: *204
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &205 2020-01-16 22:00:04.151707000 Z
+    zone: *2
+    time: *205
+- id: 103
+  name: Knivsta
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &206 2020-01-16 22:00:04.153474000 Z
+    zone: *2
+    time: *206
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &207 2020-01-16 22:00:04.153474000 Z
+    zone: *2
+    time: *207
+- id: 104
+  name: Kramfors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &208 2020-01-16 22:00:04.155117000 Z
+    zone: *2
+    time: *208
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &209 2020-01-16 22:00:04.155117000 Z
+    zone: *2
+    time: *209
+- id: 105
+  name: Kristianstad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &210 2020-01-16 22:00:04.156973000 Z
+    zone: *2
+    time: *210
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &211 2020-01-16 22:00:04.156973000 Z
+    zone: *2
+    time: *211
+- id: 106
+  name: Kristinehamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &212 2020-01-16 22:00:04.158867000 Z
+    zone: *2
+    time: *212
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &213 2020-01-16 22:00:04.158867000 Z
+    zone: *2
+    time: *213
+- id: 107
+  name: Krokom
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &214 2020-01-16 22:00:04.160861000 Z
+    zone: *2
+    time: *214
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &215 2020-01-16 22:00:04.160861000 Z
+    zone: *2
+    time: *215
+- id: 108
+  name: Kumla
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &216 2020-01-16 22:00:04.162753000 Z
+    zone: *2
+    time: *216
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &217 2020-01-16 22:00:04.162753000 Z
+    zone: *2
+    time: *217
+- id: 109
+  name: Kungsbacka
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &218 2020-01-16 22:00:04.164496000 Z
+    zone: *2
+    time: *218
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &219 2020-01-16 22:00:04.164496000 Z
+    zone: *2
+    time: *219
+- id: 110
+  name: Kungsör
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &220 2020-01-16 22:00:04.166522000 Z
+    zone: *2
+    time: *220
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &221 2020-01-16 22:00:04.166522000 Z
+    zone: *2
+    time: *221
+- id: 111
+  name: Kungälv
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &222 2020-01-16 22:00:04.168393000 Z
+    zone: *2
+    time: *222
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &223 2020-01-16 22:00:04.168393000 Z
+    zone: *2
+    time: *223
+- id: 112
+  name: Kävlinge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &224 2020-01-16 22:00:04.170583000 Z
+    zone: *2
+    time: *224
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &225 2020-01-16 22:00:04.170583000 Z
+    zone: *2
+    time: *225
+- id: 113
+  name: Köping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &226 2020-01-16 22:00:04.178960000 Z
+    zone: *2
+    time: *226
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &227 2020-01-16 22:00:04.178960000 Z
+    zone: *2
+    time: *227
+- id: 114
+  name: Laholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &228 2020-01-16 22:00:04.180631000 Z
+    zone: *2
+    time: *228
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &229 2020-01-16 22:00:04.180631000 Z
+    zone: *2
+    time: *229
+- id: 115
+  name: Landskrona
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &230 2020-01-16 22:00:04.182318000 Z
+    zone: *2
+    time: *230
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &231 2020-01-16 22:00:04.182318000 Z
+    zone: *2
+    time: *231
+- id: 116
+  name: Laxå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &232 2020-01-16 22:00:04.183954000 Z
+    zone: *2
+    time: *232
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &233 2020-01-16 22:00:04.183954000 Z
+    zone: *2
+    time: *233
+- id: 117
+  name: Lekeberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &234 2020-01-16 22:00:04.185731000 Z
+    zone: *2
+    time: *234
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &235 2020-01-16 22:00:04.185731000 Z
+    zone: *2
+    time: *235
+- id: 118
+  name: Leksand
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &236 2020-01-16 22:00:04.187497000 Z
+    zone: *2
+    time: *236
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &237 2020-01-16 22:00:04.187497000 Z
+    zone: *2
+    time: *237
+- id: 119
+  name: Lerum
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &238 2020-01-16 22:00:04.189066000 Z
+    zone: *2
+    time: *238
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &239 2020-01-16 22:00:04.189066000 Z
+    zone: *2
+    time: *239
+- id: 120
+  name: Lessebo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &240 2020-01-16 22:00:04.190565000 Z
+    zone: *2
+    time: *240
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &241 2020-01-16 22:00:04.190565000 Z
+    zone: *2
+    time: *241
+- id: 121
+  name: Lidingö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &242 2020-01-16 22:00:04.192107000 Z
+    zone: *2
+    time: *242
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &243 2020-01-16 22:00:04.192107000 Z
+    zone: *2
+    time: *243
+- id: 122
+  name: Lidköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &244 2020-01-16 22:00:04.193580000 Z
+    zone: *2
+    time: *244
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &245 2020-01-16 22:00:04.193580000 Z
+    zone: *2
+    time: *245
+- id: 123
+  name: Lilla Edet
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &246 2020-01-16 22:00:04.195083000 Z
+    zone: *2
+    time: *246
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &247 2020-01-16 22:00:04.195083000 Z
+    zone: *2
+    time: *247
+- id: 124
+  name: Lindesberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &248 2020-01-16 22:00:04.196748000 Z
+    zone: *2
+    time: *248
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &249 2020-01-16 22:00:04.196748000 Z
+    zone: *2
+    time: *249
+- id: 125
+  name: Linköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &250 2020-01-16 22:00:04.198388000 Z
+    zone: *2
+    time: *250
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &251 2020-01-16 22:00:04.198388000 Z
+    zone: *2
+    time: *251
+- id: 126
+  name: Ljungby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &252 2020-01-16 22:00:04.199918000 Z
+    zone: *2
+    time: *252
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &253 2020-01-16 22:00:04.199918000 Z
+    zone: *2
+    time: *253
+- id: 127
+  name: Ljusdal
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &254 2020-01-16 22:00:04.201468000 Z
+    zone: *2
+    time: *254
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &255 2020-01-16 22:00:04.201468000 Z
+    zone: *2
+    time: *255
+- id: 128
+  name: Ljusnarsberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &256 2020-01-16 22:00:04.203226000 Z
+    zone: *2
+    time: *256
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &257 2020-01-16 22:00:04.203226000 Z
+    zone: *2
+    time: *257
+- id: 129
+  name: Lomma
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &258 2020-01-16 22:00:04.204743000 Z
+    zone: *2
+    time: *258
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &259 2020-01-16 22:00:04.204743000 Z
+    zone: *2
+    time: *259
+- id: 130
+  name: Ludvika
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &260 2020-01-16 22:00:04.206229000 Z
+    zone: *2
+    time: *260
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &261 2020-01-16 22:00:04.206229000 Z
+    zone: *2
+    time: *261
+- id: 131
+  name: Luleå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &262 2020-01-16 22:00:04.207824000 Z
+    zone: *2
+    time: *262
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &263 2020-01-16 22:00:04.207824000 Z
+    zone: *2
+    time: *263
+- id: 132
+  name: Lund
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &264 2020-01-16 22:00:04.209252000 Z
+    zone: *2
+    time: *264
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &265 2020-01-16 22:00:04.209252000 Z
+    zone: *2
+    time: *265
+- id: 133
+  name: Lycksele
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &266 2020-01-16 22:00:04.210693000 Z
+    zone: *2
+    time: *266
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &267 2020-01-16 22:00:04.210693000 Z
+    zone: *2
+    time: *267
+- id: 134
+  name: Lysekil
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &268 2020-01-16 22:00:04.212233000 Z
+    zone: *2
+    time: *268
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &269 2020-01-16 22:00:04.212233000 Z
+    zone: *2
+    time: *269
+- id: 135
+  name: Malmö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &270 2020-01-16 22:00:04.213817000 Z
+    zone: *2
+    time: *270
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &271 2020-01-16 22:00:04.213817000 Z
+    zone: *2
+    time: *271
+- id: 136
+  name: Malung-Sälen
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &272 2020-01-16 22:00:04.215625000 Z
+    zone: *2
+    time: *272
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &273 2020-01-16 22:00:04.215625000 Z
+    zone: *2
+    time: *273
+- id: 137
+  name: Malå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &274 2020-01-16 22:00:04.217275000 Z
+    zone: *2
+    time: *274
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &275 2020-01-16 22:00:04.217275000 Z
+    zone: *2
+    time: *275
+- id: 138
+  name: Mariestad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &276 2020-01-16 22:00:04.218728000 Z
+    zone: *2
+    time: *276
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &277 2020-01-16 22:00:04.218728000 Z
+    zone: *2
+    time: *277
+- id: 139
+  name: Mark
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &278 2020-01-16 22:00:04.220083000 Z
+    zone: *2
+    time: *278
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &279 2020-01-16 22:00:04.220083000 Z
+    zone: *2
+    time: *279
+- id: 140
+  name: Markaryd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &280 2020-01-16 22:00:04.221511000 Z
+    zone: *2
+    time: *280
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &281 2020-01-16 22:00:04.221511000 Z
+    zone: *2
+    time: *281
+- id: 141
+  name: Mellerud
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &282 2020-01-16 22:00:04.222934000 Z
+    zone: *2
+    time: *282
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &283 2020-01-16 22:00:04.222934000 Z
+    zone: *2
+    time: *283
+- id: 142
+  name: Mjölby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &284 2020-01-16 22:00:04.224307000 Z
+    zone: *2
+    time: *284
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &285 2020-01-16 22:00:04.224307000 Z
+    zone: *2
+    time: *285
+- id: 143
+  name: Mora
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &286 2020-01-16 22:00:04.225795000 Z
+    zone: *2
+    time: *286
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &287 2020-01-16 22:00:04.225795000 Z
+    zone: *2
+    time: *287
+- id: 144
+  name: Motala
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &288 2020-01-16 22:00:04.227249000 Z
+    zone: *2
+    time: *288
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &289 2020-01-16 22:00:04.227249000 Z
+    zone: *2
+    time: *289
+- id: 145
+  name: Mullsjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &290 2020-01-16 22:00:04.228844000 Z
+    zone: *2
+    time: *290
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &291 2020-01-16 22:00:04.228844000 Z
+    zone: *2
+    time: *291
+- id: 146
+  name: Munkedal
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &292 2020-01-16 22:00:04.230518000 Z
+    zone: *2
+    time: *292
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &293 2020-01-16 22:00:04.230518000 Z
+    zone: *2
+    time: *293
+- id: 147
+  name: Munkfors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &294 2020-01-16 22:00:04.232026000 Z
+    zone: *2
+    time: *294
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &295 2020-01-16 22:00:04.232026000 Z
+    zone: *2
+    time: *295
+- id: 148
+  name: Mölndal
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &296 2020-01-16 22:00:04.233594000 Z
+    zone: *2
+    time: *296
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &297 2020-01-16 22:00:04.233594000 Z
+    zone: *2
+    time: *297
+- id: 149
+  name: Mönsterås
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &298 2020-01-16 22:00:04.235186000 Z
+    zone: *2
+    time: *298
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &299 2020-01-16 22:00:04.235186000 Z
+    zone: *2
+    time: *299
+- id: 150
+  name: Mörbylånga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &300 2020-01-16 22:00:04.236822000 Z
+    zone: *2
+    time: *300
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &301 2020-01-16 22:00:04.236822000 Z
+    zone: *2
+    time: *301
+- id: 151
+  name: Nacka
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &302 2020-01-16 22:00:04.238523000 Z
+    zone: *2
+    time: *302
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &303 2020-01-16 22:00:04.238523000 Z
+    zone: *2
+    time: *303
+- id: 152
+  name: Nora
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &304 2020-01-16 22:00:04.240323000 Z
+    zone: *2
+    time: *304
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &305 2020-01-16 22:00:04.240323000 Z
+    zone: *2
+    time: *305
+- id: 153
+  name: Norberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &306 2020-01-16 22:00:04.259105000 Z
+    zone: *2
+    time: *306
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &307 2020-01-16 22:00:04.259105000 Z
+    zone: *2
+    time: *307
+- id: 154
+  name: Nordanstig
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &308 2020-01-16 22:00:04.261383000 Z
+    zone: *2
+    time: *308
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &309 2020-01-16 22:00:04.261383000 Z
+    zone: *2
+    time: *309
+- id: 155
+  name: Nordmaling
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &310 2020-01-16 22:00:04.263201000 Z
+    zone: *2
+    time: *310
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &311 2020-01-16 22:00:04.263201000 Z
+    zone: *2
+    time: *311
+- id: 156
+  name: Norrköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &312 2020-01-16 22:00:04.264977000 Z
+    zone: *2
+    time: *312
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &313 2020-01-16 22:00:04.264977000 Z
+    zone: *2
+    time: *313
+- id: 157
+  name: Norrtälje
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &314 2020-01-16 22:00:04.266910000 Z
+    zone: *2
+    time: *314
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &315 2020-01-16 22:00:04.266910000 Z
+    zone: *2
+    time: *315
+- id: 158
+  name: Norsjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &316 2020-01-16 22:00:04.268710000 Z
+    zone: *2
+    time: *316
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &317 2020-01-16 22:00:04.268710000 Z
+    zone: *2
+    time: *317
+- id: 159
+  name: Nybro
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &318 2020-01-16 22:00:04.270412000 Z
+    zone: *2
+    time: *318
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &319 2020-01-16 22:00:04.270412000 Z
+    zone: *2
+    time: *319
+- id: 160
+  name: Nykvarn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &320 2020-01-16 22:00:04.272159000 Z
+    zone: *2
+    time: *320
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &321 2020-01-16 22:00:04.272159000 Z
+    zone: *2
+    time: *321
+- id: 161
+  name: Nyköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &322 2020-01-16 22:00:04.274360000 Z
+    zone: *2
+    time: *322
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &323 2020-01-16 22:00:04.274360000 Z
+    zone: *2
+    time: *323
+- id: 162
+  name: Nynäshamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &324 2020-01-16 22:00:04.276165000 Z
+    zone: *2
+    time: *324
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &325 2020-01-16 22:00:04.276165000 Z
+    zone: *2
+    time: *325
+- id: 163
+  name: Nässjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &326 2020-01-16 22:00:04.277799000 Z
+    zone: *2
+    time: *326
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &327 2020-01-16 22:00:04.277799000 Z
+    zone: *2
+    time: *327
+- id: 164
+  name: Ockelbo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &328 2020-01-16 22:00:04.279502000 Z
+    zone: *2
+    time: *328
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &329 2020-01-16 22:00:04.279502000 Z
+    zone: *2
+    time: *329
+- id: 165
+  name: Olofström
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &330 2020-01-16 22:00:04.281142000 Z
+    zone: *2
+    time: *330
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &331 2020-01-16 22:00:04.281142000 Z
+    zone: *2
+    time: *331
+- id: 166
+  name: Orsa
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &332 2020-01-16 22:00:04.282938000 Z
+    zone: *2
+    time: *332
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &333 2020-01-16 22:00:04.282938000 Z
+    zone: *2
+    time: *333
+- id: 167
+  name: Orust
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &334 2020-01-16 22:00:04.284822000 Z
+    zone: *2
+    time: *334
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &335 2020-01-16 22:00:04.284822000 Z
+    zone: *2
+    time: *335
+- id: 168
+  name: Osby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &336 2020-01-16 22:00:04.286477000 Z
+    zone: *2
+    time: *336
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &337 2020-01-16 22:00:04.286477000 Z
+    zone: *2
+    time: *337
+- id: 169
+  name: Oskarshamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &338 2020-01-16 22:00:04.288096000 Z
+    zone: *2
+    time: *338
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &339 2020-01-16 22:00:04.288096000 Z
+    zone: *2
+    time: *339
+- id: 170
+  name: Ovanåker
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &340 2020-01-16 22:00:04.289657000 Z
+    zone: *2
+    time: *340
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &341 2020-01-16 22:00:04.289657000 Z
+    zone: *2
+    time: *341
+- id: 171
+  name: Oxelösund
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &342 2020-01-16 22:00:04.291309000 Z
+    zone: *2
+    time: *342
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &343 2020-01-16 22:00:04.291309000 Z
+    zone: *2
+    time: *343
+- id: 172
+  name: Pajala
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &344 2020-01-16 22:00:04.293032000 Z
+    zone: *2
+    time: *344
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &345 2020-01-16 22:00:04.293032000 Z
+    zone: *2
+    time: *345
+- id: 173
+  name: Partille
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &346 2020-01-16 22:00:04.294718000 Z
+    zone: *2
+    time: *346
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &347 2020-01-16 22:00:04.294718000 Z
+    zone: *2
+    time: *347
+- id: 174
+  name: Perstorp
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &348 2020-01-16 22:00:04.296503000 Z
+    zone: *2
+    time: *348
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &349 2020-01-16 22:00:04.296503000 Z
+    zone: *2
+    time: *349
+- id: 175
+  name: Piteå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &350 2020-01-16 22:00:04.298186000 Z
+    zone: *2
+    time: *350
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &351 2020-01-16 22:00:04.298186000 Z
+    zone: *2
+    time: *351
+- id: 176
+  name: Ragunda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &352 2020-01-16 22:00:04.299875000 Z
+    zone: *2
+    time: *352
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &353 2020-01-16 22:00:04.299875000 Z
+    zone: *2
+    time: *353
+- id: 177
+  name: Robertsfor
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &354 2020-01-16 22:00:04.301640000 Z
+    zone: *2
+    time: *354
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &355 2020-01-16 22:00:04.301640000 Z
+    zone: *2
+    time: *355
+- id: 178
+  name: Ronneby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &356 2020-01-16 22:00:04.303231000 Z
+    zone: *2
+    time: *356
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &357 2020-01-16 22:00:04.303231000 Z
+    zone: *2
+    time: *357
+- id: 179
+  name: Rättvik
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &358 2020-01-16 22:00:04.304724000 Z
+    zone: *2
+    time: *358
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &359 2020-01-16 22:00:04.304724000 Z
+    zone: *2
+    time: *359
+- id: 180
+  name: Sala
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &360 2020-01-16 22:00:04.306208000 Z
+    zone: *2
+    time: *360
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &361 2020-01-16 22:00:04.306208000 Z
+    zone: *2
+    time: *361
+- id: 181
+  name: Salem
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &362 2020-01-16 22:00:04.307836000 Z
+    zone: *2
+    time: *362
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &363 2020-01-16 22:00:04.307836000 Z
+    zone: *2
+    time: *363
+- id: 182
+  name: Sandviken
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &364 2020-01-16 22:00:04.309407000 Z
+    zone: *2
+    time: *364
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &365 2020-01-16 22:00:04.309407000 Z
+    zone: *2
+    time: *365
+- id: 183
+  name: Sigtuna
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &366 2020-01-16 22:00:04.311016000 Z
+    zone: *2
+    time: *366
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &367 2020-01-16 22:00:04.311016000 Z
+    zone: *2
+    time: *367
+- id: 184
+  name: Simrishamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &368 2020-01-16 22:00:04.312757000 Z
+    zone: *2
+    time: *368
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &369 2020-01-16 22:00:04.312757000 Z
+    zone: *2
+    time: *369
+- id: 185
+  name: Sjöbo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &370 2020-01-16 22:00:04.314601000 Z
+    zone: *2
+    time: *370
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &371 2020-01-16 22:00:04.314601000 Z
+    zone: *2
+    time: *371
+- id: 186
+  name: Skara
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &372 2020-01-16 22:00:04.316349000 Z
+    zone: *2
+    time: *372
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &373 2020-01-16 22:00:04.316349000 Z
+    zone: *2
+    time: *373
+- id: 187
+  name: Skellefteå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &374 2020-01-16 22:00:04.318181000 Z
+    zone: *2
+    time: *374
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &375 2020-01-16 22:00:04.318181000 Z
+    zone: *2
+    time: *375
+- id: 188
+  name: Skinnskatteberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &376 2020-01-16 22:00:04.319882000 Z
+    zone: *2
+    time: *376
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &377 2020-01-16 22:00:04.319882000 Z
+    zone: *2
+    time: *377
+- id: 189
+  name: Skurup
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &378 2020-01-16 22:00:04.321708000 Z
+    zone: *2
+    time: *378
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &379 2020-01-16 22:00:04.321708000 Z
+    zone: *2
+    time: *379
+- id: 190
+  name: Skövde
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &380 2020-01-16 22:00:04.323517000 Z
+    zone: *2
+    time: *380
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &381 2020-01-16 22:00:04.323517000 Z
+    zone: *2
+    time: *381
+- id: 191
+  name: Smedjebacken
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &382 2020-01-16 22:00:04.325391000 Z
+    zone: *2
+    time: *382
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &383 2020-01-16 22:00:04.325391000 Z
+    zone: *2
+    time: *383
+- id: 192
+  name: Sollefteå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &384 2020-01-16 22:00:04.327161000 Z
+    zone: *2
+    time: *384
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &385 2020-01-16 22:00:04.327161000 Z
+    zone: *2
+    time: *385
+- id: 193
+  name: Sollentuna
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &386 2020-01-16 22:00:04.328983000 Z
+    zone: *2
+    time: *386
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &387 2020-01-16 22:00:04.328983000 Z
+    zone: *2
+    time: *387
+- id: 194
+  name: Solna
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &388 2020-01-16 22:00:04.330700000 Z
+    zone: *2
+    time: *388
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &389 2020-01-16 22:00:04.330700000 Z
+    zone: *2
+    time: *389
+- id: 195
+  name: Sorsele
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &390 2020-01-16 22:00:04.332373000 Z
+    zone: *2
+    time: *390
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &391 2020-01-16 22:00:04.332373000 Z
+    zone: *2
+    time: *391
+- id: 196
+  name: Sotenäs
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &392 2020-01-16 22:00:04.334068000 Z
+    zone: *2
+    time: *392
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &393 2020-01-16 22:00:04.334068000 Z
+    zone: *2
+    time: *393
+- id: 197
+  name: Staffanstorp
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &394 2020-01-16 22:00:04.335672000 Z
+    zone: *2
+    time: *394
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &395 2020-01-16 22:00:04.335672000 Z
+    zone: *2
+    time: *395
+- id: 198
+  name: Stenungsund
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &396 2020-01-16 22:00:04.337427000 Z
+    zone: *2
+    time: *396
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &397 2020-01-16 22:00:04.337427000 Z
+    zone: *2
+    time: *397
+- id: 199
+  name: Stockholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &398 2020-01-16 22:00:04.339128000 Z
+    zone: *2
+    time: *398
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &399 2020-01-16 22:00:04.339128000 Z
+    zone: *2
+    time: *399
+- id: 200
+  name: Storfors
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &400 2020-01-16 22:00:04.340867000 Z
+    zone: *2
+    time: *400
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &401 2020-01-16 22:00:04.340867000 Z
+    zone: *2
+    time: *401
+- id: 201
+  name: Storuman
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &402 2020-01-16 22:00:04.342604000 Z
+    zone: *2
+    time: *402
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &403 2020-01-16 22:00:04.342604000 Z
+    zone: *2
+    time: *403
+- id: 202
+  name: Strängnäs
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &404 2020-01-16 22:00:04.344370000 Z
+    zone: *2
+    time: *404
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &405 2020-01-16 22:00:04.344370000 Z
+    zone: *2
+    time: *405
+- id: 203
+  name: Strömstad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &406 2020-01-16 22:00:04.345961000 Z
+    zone: *2
+    time: *406
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &407 2020-01-16 22:00:04.345961000 Z
+    zone: *2
+    time: *407
+- id: 204
+  name: Strömsund
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &408 2020-01-16 22:00:04.347642000 Z
+    zone: *2
+    time: *408
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &409 2020-01-16 22:00:04.347642000 Z
+    zone: *2
+    time: *409
+- id: 205
+  name: Sundbyberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &410 2020-01-16 22:00:04.349463000 Z
+    zone: *2
+    time: *410
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &411 2020-01-16 22:00:04.349463000 Z
+    zone: *2
+    time: *411
+- id: 206
+  name: Sundsvall
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &412 2020-01-16 22:00:04.351323000 Z
+    zone: *2
+    time: *412
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &413 2020-01-16 22:00:04.351323000 Z
+    zone: *2
+    time: *413
+- id: 207
+  name: Sunne
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &414 2020-01-16 22:00:04.352880000 Z
+    zone: *2
+    time: *414
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &415 2020-01-16 22:00:04.352880000 Z
+    zone: *2
+    time: *415
+- id: 208
+  name: Surahammar
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &416 2020-01-16 22:00:04.354462000 Z
+    zone: *2
+    time: *416
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &417 2020-01-16 22:00:04.354462000 Z
+    zone: *2
+    time: *417
+- id: 209
+  name: Svalöv
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &418 2020-01-16 22:00:04.356155000 Z
+    zone: *2
+    time: *418
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &419 2020-01-16 22:00:04.356155000 Z
+    zone: *2
+    time: *419
+- id: 210
+  name: Svedala
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &420 2020-01-16 22:00:04.357813000 Z
+    zone: *2
+    time: *420
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &421 2020-01-16 22:00:04.357813000 Z
+    zone: *2
+    time: *421
+- id: 211
+  name: Svenljunga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &422 2020-01-16 22:00:04.359375000 Z
+    zone: *2
+    time: *422
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &423 2020-01-16 22:00:04.359375000 Z
+    zone: *2
+    time: *423
+- id: 212
+  name: Säffle
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &424 2020-01-16 22:00:04.360954000 Z
+    zone: *2
+    time: *424
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &425 2020-01-16 22:00:04.360954000 Z
+    zone: *2
+    time: *425
+- id: 213
+  name: Säter
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &426 2020-01-16 22:00:04.362400000 Z
+    zone: *2
+    time: *426
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &427 2020-01-16 22:00:04.362400000 Z
+    zone: *2
+    time: *427
+- id: 214
+  name: Sävsjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &428 2020-01-16 22:00:04.363969000 Z
+    zone: *2
+    time: *428
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &429 2020-01-16 22:00:04.363969000 Z
+    zone: *2
+    time: *429
+- id: 215
+  name: Söderhamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &430 2020-01-16 22:00:04.365812000 Z
+    zone: *2
+    time: *430
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &431 2020-01-16 22:00:04.365812000 Z
+    zone: *2
+    time: *431
+- id: 216
+  name: Söderköping
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &432 2020-01-16 22:00:04.367654000 Z
+    zone: *2
+    time: *432
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &433 2020-01-16 22:00:04.367654000 Z
+    zone: *2
+    time: *433
+- id: 217
+  name: Södertälje
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &434 2020-01-16 22:00:04.369488000 Z
+    zone: *2
+    time: *434
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &435 2020-01-16 22:00:04.369488000 Z
+    zone: *2
+    time: *435
+- id: 218
+  name: Sölvesborg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &436 2020-01-16 22:00:04.371231000 Z
+    zone: *2
+    time: *436
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &437 2020-01-16 22:00:04.371231000 Z
+    zone: *2
+    time: *437
+- id: 219
+  name: Tanum
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &438 2020-01-16 22:00:04.372932000 Z
+    zone: *2
+    time: *438
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &439 2020-01-16 22:00:04.372932000 Z
+    zone: *2
+    time: *439
+- id: 220
+  name: Tibro
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &440 2020-01-16 22:00:04.374628000 Z
+    zone: *2
+    time: *440
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &441 2020-01-16 22:00:04.374628000 Z
+    zone: *2
+    time: *441
+- id: 221
+  name: Tidaholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &442 2020-01-16 22:00:04.376324000 Z
+    zone: *2
+    time: *442
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &443 2020-01-16 22:00:04.376324000 Z
+    zone: *2
+    time: *443
+- id: 222
+  name: Tierp
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &444 2020-01-16 22:00:04.377889000 Z
+    zone: *2
+    time: *444
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &445 2020-01-16 22:00:04.377889000 Z
+    zone: *2
+    time: *445
+- id: 223
+  name: Timrå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &446 2020-01-16 22:00:04.379305000 Z
+    zone: *2
+    time: *446
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &447 2020-01-16 22:00:04.379305000 Z
+    zone: *2
+    time: *447
+- id: 224
+  name: Tingsryd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &448 2020-01-16 22:00:04.380680000 Z
+    zone: *2
+    time: *448
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &449 2020-01-16 22:00:04.380680000 Z
+    zone: *2
+    time: *449
+- id: 225
+  name: Tjörn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &450 2020-01-16 22:00:04.382176000 Z
+    zone: *2
+    time: *450
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &451 2020-01-16 22:00:04.382176000 Z
+    zone: *2
+    time: *451
+- id: 226
+  name: Tomelilla
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &452 2020-01-16 22:00:04.383648000 Z
+    zone: *2
+    time: *452
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &453 2020-01-16 22:00:04.383648000 Z
+    zone: *2
+    time: *453
+- id: 227
+  name: Torsby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &454 2020-01-16 22:00:04.385194000 Z
+    zone: *2
+    time: *454
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &455 2020-01-16 22:00:04.385194000 Z
+    zone: *2
+    time: *455
+- id: 228
+  name: Torsås
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &456 2020-01-16 22:00:04.386679000 Z
+    zone: *2
+    time: *456
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &457 2020-01-16 22:00:04.386679000 Z
+    zone: *2
+    time: *457
+- id: 229
+  name: Tranemo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &458 2020-01-16 22:00:04.388193000 Z
+    zone: *2
+    time: *458
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &459 2020-01-16 22:00:04.388193000 Z
+    zone: *2
+    time: *459
+- id: 230
+  name: Tranås
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &460 2020-01-16 22:00:04.390725000 Z
+    zone: *2
+    time: *460
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &461 2020-01-16 22:00:04.390725000 Z
+    zone: *2
+    time: *461
+- id: 231
+  name: Trelleborg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &462 2020-01-16 22:00:04.392637000 Z
+    zone: *2
+    time: *462
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &463 2020-01-16 22:00:04.392637000 Z
+    zone: *2
+    time: *463
+- id: 232
+  name: Trollhättan
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &464 2020-01-16 22:00:04.394191000 Z
+    zone: *2
+    time: *464
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &465 2020-01-16 22:00:04.394191000 Z
+    zone: *2
+    time: *465
+- id: 233
+  name: Trosa
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &466 2020-01-16 22:00:04.395701000 Z
+    zone: *2
+    time: *466
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &467 2020-01-16 22:00:04.395701000 Z
+    zone: *2
+    time: *467
+- id: 234
+  name: Tyresö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &468 2020-01-16 22:00:04.397006000 Z
+    zone: *2
+    time: *468
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &469 2020-01-16 22:00:04.397006000 Z
+    zone: *2
+    time: *469
+- id: 235
+  name: Täby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &470 2020-01-16 22:00:04.398371000 Z
+    zone: *2
+    time: *470
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &471 2020-01-16 22:00:04.398371000 Z
+    zone: *2
+    time: *471
+- id: 236
+  name: Töreboda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &472 2020-01-16 22:00:04.399776000 Z
+    zone: *2
+    time: *472
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &473 2020-01-16 22:00:04.399776000 Z
+    zone: *2
+    time: *473
+- id: 237
+  name: Uddevalla
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &474 2020-01-16 22:00:04.401229000 Z
+    zone: *2
+    time: *474
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &475 2020-01-16 22:00:04.401229000 Z
+    zone: *2
+    time: *475
+- id: 238
+  name: Ulricehamn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &476 2020-01-16 22:00:04.402618000 Z
+    zone: *2
+    time: *476
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &477 2020-01-16 22:00:04.402618000 Z
+    zone: *2
+    time: *477
+- id: 239
+  name: Umeå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &478 2020-01-16 22:00:04.403925000 Z
+    zone: *2
+    time: *478
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &479 2020-01-16 22:00:04.403925000 Z
+    zone: *2
+    time: *479
+- id: 240
+  name: Upplands Väsby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &480 2020-01-16 22:00:04.405265000 Z
+    zone: *2
+    time: *480
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &481 2020-01-16 22:00:04.405265000 Z
+    zone: *2
+    time: *481
+- id: 241
+  name: Upplands-Bro
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &482 2020-01-16 22:00:04.406625000 Z
+    zone: *2
+    time: *482
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &483 2020-01-16 22:00:04.406625000 Z
+    zone: *2
+    time: *483
+- id: 242
+  name: Uppsala
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &484 2020-01-16 22:00:04.408084000 Z
+    zone: *2
+    time: *484
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &485 2020-01-16 22:00:04.408084000 Z
+    zone: *2
+    time: *485
+- id: 243
+  name: Uppvidinge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &486 2020-01-16 22:00:04.409582000 Z
+    zone: *2
+    time: *486
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &487 2020-01-16 22:00:04.409582000 Z
+    zone: *2
+    time: *487
+- id: 244
+  name: Vadstena
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &488 2020-01-16 22:00:04.410968000 Z
+    zone: *2
+    time: *488
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &489 2020-01-16 22:00:04.410968000 Z
+    zone: *2
+    time: *489
+- id: 245
+  name: Vaggeryd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &490 2020-01-16 22:00:04.412436000 Z
+    zone: *2
+    time: *490
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &491 2020-01-16 22:00:04.412436000 Z
+    zone: *2
+    time: *491
+- id: 246
+  name: Valdemarsvik
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &492 2020-01-16 22:00:04.413908000 Z
+    zone: *2
+    time: *492
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &493 2020-01-16 22:00:04.413908000 Z
+    zone: *2
+    time: *493
+- id: 247
+  name: Vallentuna
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &494 2020-01-16 22:00:04.415492000 Z
+    zone: *2
+    time: *494
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &495 2020-01-16 22:00:04.415492000 Z
+    zone: *2
+    time: *495
+- id: 248
+  name: Vansbro
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &496 2020-01-16 22:00:04.417047000 Z
+    zone: *2
+    time: *496
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &497 2020-01-16 22:00:04.417047000 Z
+    zone: *2
+    time: *497
+- id: 249
+  name: Vara
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &498 2020-01-16 22:00:04.418437000 Z
+    zone: *2
+    time: *498
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &499 2020-01-16 22:00:04.418437000 Z
+    zone: *2
+    time: *499
+- id: 250
+  name: Varberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &500 2020-01-16 22:00:04.419886000 Z
+    zone: *2
+    time: *500
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &501 2020-01-16 22:00:04.419886000 Z
+    zone: *2
+    time: *501
+- id: 251
+  name: Vaxholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &502 2020-01-16 22:00:04.421374000 Z
+    zone: *2
+    time: *502
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &503 2020-01-16 22:00:04.421374000 Z
+    zone: *2
+    time: *503
+- id: 252
+  name: Vellinge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &504 2020-01-16 22:00:04.422911000 Z
+    zone: *2
+    time: *504
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &505 2020-01-16 22:00:04.422911000 Z
+    zone: *2
+    time: *505
+- id: 253
+  name: Vetlanda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &506 2020-01-16 22:00:04.424448000 Z
+    zone: *2
+    time: *506
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &507 2020-01-16 22:00:04.424448000 Z
+    zone: *2
+    time: *507
+- id: 254
+  name: Vilhelmina
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &508 2020-01-16 22:00:04.425924000 Z
+    zone: *2
+    time: *508
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &509 2020-01-16 22:00:04.425924000 Z
+    zone: *2
+    time: *509
+- id: 255
+  name: Vimmerby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &510 2020-01-16 22:00:04.427478000 Z
+    zone: *2
+    time: *510
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &511 2020-01-16 22:00:04.427478000 Z
+    zone: *2
+    time: *511
+- id: 256
+  name: Vindeln
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &512 2020-01-16 22:00:04.428946000 Z
+    zone: *2
+    time: *512
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &513 2020-01-16 22:00:04.428946000 Z
+    zone: *2
+    time: *513
+- id: 257
+  name: Vingåker
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &514 2020-01-16 22:00:04.430399000 Z
+    zone: *2
+    time: *514
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &515 2020-01-16 22:00:04.430399000 Z
+    zone: *2
+    time: *515
+- id: 258
+  name: Vårgårda
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &516 2020-01-16 22:00:04.431802000 Z
+    zone: *2
+    time: *516
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &517 2020-01-16 22:00:04.431802000 Z
+    zone: *2
+    time: *517
+- id: 259
+  name: Vänersborg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &518 2020-01-16 22:00:04.433216000 Z
+    zone: *2
+    time: *518
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &519 2020-01-16 22:00:04.433216000 Z
+    zone: *2
+    time: *519
+- id: 260
+  name: Vännäs
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &520 2020-01-16 22:00:04.434672000 Z
+    zone: *2
+    time: *520
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &521 2020-01-16 22:00:04.434672000 Z
+    zone: *2
+    time: *521
+- id: 261
+  name: Värmdö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &522 2020-01-16 22:00:04.436150000 Z
+    zone: *2
+    time: *522
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &523 2020-01-16 22:00:04.436150000 Z
+    zone: *2
+    time: *523
+- id: 262
+  name: Värnamo
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &524 2020-01-16 22:00:04.437523000 Z
+    zone: *2
+    time: *524
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &525 2020-01-16 22:00:04.437523000 Z
+    zone: *2
+    time: *525
+- id: 263
+  name: Västervik
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &526 2020-01-16 22:00:04.438974000 Z
+    zone: *2
+    time: *526
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &527 2020-01-16 22:00:04.438974000 Z
+    zone: *2
+    time: *527
+- id: 264
+  name: Västerås
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &528 2020-01-16 22:00:04.440490000 Z
+    zone: *2
+    time: *528
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &529 2020-01-16 22:00:04.440490000 Z
+    zone: *2
+    time: *529
+- id: 265
+  name: Växjö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &530 2020-01-16 22:00:04.442090000 Z
+    zone: *2
+    time: *530
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &531 2020-01-16 22:00:04.442090000 Z
+    zone: *2
+    time: *531
+- id: 266
+  name: Ydre
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &532 2020-01-16 22:00:04.443606000 Z
+    zone: *2
+    time: *532
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &533 2020-01-16 22:00:04.443606000 Z
+    zone: *2
+    time: *533
+- id: 267
+  name: Ystad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &534 2020-01-16 22:00:04.445127000 Z
+    zone: *2
+    time: *534
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &535 2020-01-16 22:00:04.445127000 Z
+    zone: *2
+    time: *535
+- id: 268
+  name: Åmål
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &536 2020-01-16 22:00:04.446618000 Z
+    zone: *2
+    time: *536
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &537 2020-01-16 22:00:04.446618000 Z
+    zone: *2
+    time: *537
+- id: 269
+  name: Ånge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &538 2020-01-16 22:00:04.448079000 Z
+    zone: *2
+    time: *538
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &539 2020-01-16 22:00:04.448079000 Z
+    zone: *2
+    time: *539
+- id: 270
+  name: Åre
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &540 2020-01-16 22:00:04.449754000 Z
+    zone: *2
+    time: *540
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &541 2020-01-16 22:00:04.449754000 Z
+    zone: *2
+    time: *541
+- id: 271
+  name: Årjäng
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &542 2020-01-16 22:00:04.451269000 Z
+    zone: *2
+    time: *542
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &543 2020-01-16 22:00:04.451269000 Z
+    zone: *2
+    time: *543
+- id: 272
+  name: Åsele
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &544 2020-01-16 22:00:04.452675000 Z
+    zone: *2
+    time: *544
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &545 2020-01-16 22:00:04.452675000 Z
+    zone: *2
+    time: *545
+- id: 273
+  name: Åstorp
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &546 2020-01-16 22:00:04.454105000 Z
+    zone: *2
+    time: *546
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &547 2020-01-16 22:00:04.454105000 Z
+    zone: *2
+    time: *547
+- id: 274
+  name: Åtvidaberg
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &548 2020-01-16 22:00:04.455487000 Z
+    zone: *2
+    time: *548
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &549 2020-01-16 22:00:04.455487000 Z
+    zone: *2
+    time: *549
+- id: 275
+  name: Älmhult
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &550 2020-01-16 22:00:04.456858000 Z
+    zone: *2
+    time: *550
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &551 2020-01-16 22:00:04.456858000 Z
+    zone: *2
+    time: *551
+- id: 276
+  name: Älvdalen
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &552 2020-01-16 22:00:04.458393000 Z
+    zone: *2
+    time: *552
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &553 2020-01-16 22:00:04.458393000 Z
+    zone: *2
+    time: *553
+- id: 277
+  name: Älvkarleby
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &554 2020-01-16 22:00:04.459820000 Z
+    zone: *2
+    time: *554
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &555 2020-01-16 22:00:04.459820000 Z
+    zone: *2
+    time: *555
+- id: 278
+  name: Älvsbyn
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &556 2020-01-16 22:00:04.461256000 Z
+    zone: *2
+    time: *556
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &557 2020-01-16 22:00:04.461256000 Z
+    zone: *2
+    time: *557
+- id: 279
+  name: Ängelholm
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &558 2020-01-16 22:00:04.462699000 Z
+    zone: *2
+    time: *558
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &559 2020-01-16 22:00:04.462699000 Z
+    zone: *2
+    time: *559
+- id: 280
+  name: Öckerö
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &560 2020-01-16 22:00:04.464127000 Z
+    zone: *2
+    time: *560
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &561 2020-01-16 22:00:04.464127000 Z
+    zone: *2
+    time: *561
+- id: 281
+  name: Ödeshög
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &562 2020-01-16 22:00:04.465679000 Z
+    zone: *2
+    time: *562
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &563 2020-01-16 22:00:04.465679000 Z
+    zone: *2
+    time: *563
+- id: 282
+  name: Örebro
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &564 2020-01-16 22:00:04.467188000 Z
+    zone: *2
+    time: *564
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &565 2020-01-16 22:00:04.467188000 Z
+    zone: *2
+    time: *565
+- id: 283
+  name: Örkelljunga
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &566 2020-01-16 22:00:04.468684000 Z
+    zone: *2
+    time: *566
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &567 2020-01-16 22:00:04.468684000 Z
+    zone: *2
+    time: *567
+- id: 284
+  name: Örnsköldsvik
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &568 2020-01-16 22:00:04.470342000 Z
+    zone: *2
+    time: *568
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &569 2020-01-16 22:00:04.470342000 Z
+    zone: *2
+    time: *569
+- id: 285
+  name: Östersund
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &570 2020-01-16 22:00:04.472045000 Z
+    zone: *2
+    time: *570
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &571 2020-01-16 22:00:04.472045000 Z
+    zone: *2
+    time: *571
+- id: 286
+  name: Österåker
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &572 2020-01-16 22:00:04.473815000 Z
+    zone: *2
+    time: *572
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &573 2020-01-16 22:00:04.473815000 Z
+    zone: *2
+    time: *573
+- id: 287
+  name: Östhammar
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &574 2020-01-16 22:00:04.475495000 Z
+    zone: *2
+    time: *574
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &575 2020-01-16 22:00:04.475495000 Z
+    zone: *2
+    time: *575
+- id: 288
+  name: Östra Göinge
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &576 2020-01-16 22:00:04.477272000 Z
+    zone: *2
+    time: *576
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &577 2020-01-16 22:00:04.477272000 Z
+    zone: *2
+    time: *577
+- id: 289
+  name: Överkalix
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &578 2020-01-16 22:00:04.479075000 Z
+    zone: *2
+    time: *578
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &579 2020-01-16 22:00:04.479075000 Z
+    zone: *2
+    time: *579
+- id: 290
+  name: Övertorneå
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &580 2020-01-16 22:00:04.480701000 Z
+    zone: *2
+    time: *580
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &581 2020-01-16 22:00:04.480701000 Z
+    zone: *2
+    time: *581

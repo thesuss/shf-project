@@ -18,7 +18,10 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
 
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("#{rails_env}"))
+
         allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+        allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+        allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
         # must stub this way so the rest of ENV is preserved
         stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
@@ -33,8 +36,6 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
 
     after(:all) do
       DatabaseCleaner.clean
-      Rake::Task['shf:load_regions'].reenable
-      Rake::Task['shf:load_kommuns'].reenable
     end
 
 
@@ -76,7 +77,10 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
     before(:all) do
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("#{rails_env}"))
+
         allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+        allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+        allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
         # must stub this way so the rest of ENV is preserved
         stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
@@ -88,23 +92,39 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
     end
 
     it 'admin email not found' do
+      allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+      allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+
       admin_email_value = ENV.delete(ENV_ADMIN_EMAIL_KEY)
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
       ENV[ENV_ADMIN_EMAIL_KEY] = admin_email_value
     end
 
     it 'admin email is an empty string' do
+      allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+      allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+
       stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => ''}) )
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
     end
 
     it 'admin password not found' do
+      allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+      allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+
       admin_password_value = ENV.delete(ENV_ADMIN_PASSWORD_KEY)
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
       ENV[ENV_ADMIN_PASSWORD_KEY] = admin_password_value
     end
 
     it 'admin password is an empty string' do
+      allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+      allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+
       stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_PASSWORD_KEY => ''}) )
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
     end
@@ -125,7 +145,10 @@ RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_use
     RSpec::Mocks.with_temporary_scope do
 
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
+
       allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+      allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
       stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => num_users }))
       stub_const('ENV', ENV.to_hash.merge({ ENV_SEED_FAKE_CSV_FNAME_KEY => csv_filename }))

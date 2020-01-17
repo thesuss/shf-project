@@ -5,115 +5,176 @@
 
 require 'ffaker'
 require 'rake'
+
+require 'activity_logger'
+require 'logfile_namer'
+
 require_relative 'seed_helpers'
 require_relative 'seed_helpers/app_configuration_seeder'
 
+require_relative 'require_all_seeders_and_helpers'
+
+
 include SeedHelper
 
-# The test of defined? is due to the rspec file that executes the seed file
-# repeatedly.  Without this, rspec complains about "already initialized constant"
-SEED_STOP_MSG = '<<< SEEDING STOPPED' unless defined?(SEED_STOP_MSG)
 
-SEED_COMPLETE_MSG = '<<< SEEDING COMPLETED' unless defined?(SEED_COMPLETE_MSG)
+SEEDING_LOG_FILE_NAME = LogfileNamer.name_for('db:seed') unless defined?(SEEDING_LOG_FILE_NAME)
+SEEDING_LOG_FACILITY = 'db:seed' unless defined?(SEEDING_LOG_FACILITY)
+
 
 SEED_USERS = 100 unless defined?(SEED_USERS)
 
 DEFAULT_PASSWORD = 'whatever' unless defined?(DEFAULT_PASSWORD)
 
-unless Rails.env.development? || Rails.env.production? ||
-       Rails.env.test?        || ENV['HEROKU_STAGING']
 
-  puts 'Unknown Rails environment !!'
-  abort SEED_STOP_MSG
-end
+# The test of defined? is due to the rspec file that executes the seed file
+# repeatedly.  Without this, rspec complains about "already initialized constant"
 
-puts ">>> SEEDING ENVIRONMENT: #{Rails.env}"
+MSG_SEED_COMPLETE = '<<< SEEDING COMPLETED' unless defined?(MSG_SEED_COMPLETE)
+MSG_SEED_STOPPED = '<<< SEEDING STOPPED' unless defined?(MSG_SEED_STOPPED)
+MSG_ERROR_RESCUED = "\n >>> ERROR RESCUED!" unless defined?(MSG_ERROR_RESCUED)
+MSG_BE_PATIENT_ADDR_GEOCODING = "\n     If a company address must be created (instead of reading from a CSV file), it must be geocoded, which takes time.  Be patient." +
+    "\n     You can look at the /log/development.log to be Seeure that things are happening and this is not stuck." +
+    "\n     You can specify a CSV file of addresses to use in your .env file (.env.development etc.)."  unless defined?(MSG_BE_PATIENT_ADDR_GEOCODING)
 
-
-unless Region.exists?
-  puts 'Loading regions'
-  Rake::Task['shf:load_regions'].invoke
-end
-
-unless Kommun.exists?
-  puts 'Loading kommuns'
-  Rake::Task['shf:load_kommuns'].invoke
-end
-
-unless AdminOnly::FileDeliveryMethod.exists?
-  puts 'Loading SHF app file delivery methods'
-  Rake::Task['shf:load_file_delivery_methods'].invoke
-end
-
-puts 'Creating business categories'
-business_categories = %w(Träning Psykologi Rehab Butik Trim Friskvård Dagis Pensionat Skola)
-business_categories.each { |b_category| BusinessCategory.find_or_create_by(name: b_category) }
-BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 'Terapi-, vård- & skolhund dvs hundar som jobbar tillsammans med sin förare/ägare inom vård, skola och omsorg.')
-BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: 'Assistanshundar dvs hundar som jobbar åt sin ägare som service-, signal, diabetes, PH-hund mm')
+MSG_NO_APPCONFIG = 'No AppConfiguration seeded.  One already exists.' unless defined?(MSG_NO_APPCONFIG)
+MSG_APPCONFIG_NEEDS_SITEMETAIMAGE = ' ... but there is no site meta image! You need to set one on the edit app configuration page (as an admin).' unless defined?(MSG_APPCONFIG_NEEDS_SITEMETAIMAGE)
+# ----------------------------------------------------------------------------------------
 
 
-init_generated_seeding_info
-
-
-puts 'Creating admin user'
-
-email = env_invalid_blank('SHF_ADMIN_EMAIL')
-pwd = env_invalid_blank('SHF_ADMIN_PWD')
-
-if Rails.env.production?
-  begin
-    User.create!(email: email, password: pwd, admin: true,
-                 first_name: 'SHF', last_name: 'Admin')
-  rescue => e
-    puts e.inspect
-    puts SEED_STOP_MSG
-    raise
+def log_msg(severity, activity_msg, text)
+  ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, activity_msg) do |log|
+    log.record(severity, text)
   end
-else
-  User.create(email: email, password: pwd, admin: true,
-              first_name: 'SHF', last_name: 'Admin')
 end
 
-if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
- number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
- puts "Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])..."
+def seed_model_with_seeder(model_klass, seeder, log_activity = model_klass.name)
+  ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, log_activity) do |log|
+    if model_klass.exists?
+      log.warn("#{seeder} table not empty.")
+      log.info("#{model_klass} table contains #{model_klass.count} records.")
+      log.warn("zero #{model_klass} objects created.")
+    else
+      seeder.seed
+      log.info("Created #{model_klass.count} records.")
+    end
+  end
+end
 
- users = {}
-  while users.length < number_of_users-1 do
-    email = FFaker::InternetSE.disposable_email
-    first_name = FFaker::NameSE.first_name
-    last_name = FFaker::NameSE.last_name
-    users[email] = User.create!(email: email, password: DEFAULT_PASSWORD,
-                                first_name: first_name,
-                                last_name: last_name) unless users.key?(email)
+
+
+# ----------------------------------------------------------------------------------------
+
+begin
+  log_msg('info', 'START', ">>> SEEDING ENVIRONMENT: #{Rails.env}")
+
+  unless Rails.env.development? || Rails.env.production? ||
+      Rails.env.test? || ENV['HEROKU_STAGING']
+
+    log_msg('error', 'ERROR', 'Unknown Rails environment !!')
+    log_msg('error', 'FINISHED', MSG_SEED_STOPPED)
+    abort MSG_SEED_STOPPED
   end
 
-  puts "Users now in the db: #{User.count}"
 
-  puts "\nCreating membership applications ..."
-  puts "  If a company address must be created (instead of reading from a CSV file), it must be geocoded, which takes time.  Be patient."
-  puts "  You can look at the /log/development.log to be sure that things are happening and this is not stuck."
-  puts "  You can specify a CSV file of addresses to use in your .env file (.env.development etc.)."
+  seed_model_with_seeder(Region, Seeders::RegionsSeeder)
+  seed_model_with_seeder(Kommun, Seeders::KommunsSeeder)
+  seed_model_with_seeder(AdminOnly::FileDeliveryMethod, Seeders::FileDeliveryMethodsSeeder)
+  seed_model_with_seeder(BusinessCategory, Seeders::BusinessCategoriesSeeder)
 
-  make_applications(users.values)
 
-  puts "\n  Membership applications created: #{ShfApplication.count}"
-  puts "  Membership Applications by state:"
-  states = ShfApplication.aasm.states.map(&:name)
-  states.sort.each do | state |
-    puts "  #{state}: #{ShfApplication.where(state: state).count }"
+  init_generated_seeding_info
+
+  ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Admin User') do |log|
+    log.info('Creating admin user')
+
+    email = env_invalid_blank('SHF_ADMIN_EMAIL')
+    pwd = env_invalid_blank('SHF_ADMIN_PWD')
+
+    if Rails.env.production?
+      begin
+        User.create!(email: email, password: pwd, admin: true,
+                     first_name: 'SHF', last_name: 'Admin')
+      rescue => e
+        log.error(e.inspect)
+        log.error(MSG_SEED_STOPPED)
+        raise e
+      end
+    else
+      User.create(email: email, password: pwd, admin: true,
+                  first_name: 'SHF', last_name: 'Admin')
+    end
+
   end
 
- if AdminOnly::AppConfiguration.count == 0
-   puts "Seeding AppConfiguration..."
-   SeedHelper::AppConfigurationSeeder.seed
- else
-   puts "No AppConfiguration seeded.  One already exists."
-   puts ' ... but there is no site meta image! You need to set one on the edit app configuration page (as an admin).' unless AdminOnly::AppConfiguration.last.site_meta_image.exists?
- end
+
+  if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
+
+    users = {}
+
+    ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Users') do |log|
+
+      number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
+      log.info("Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])...")
+
+      while users.length < number_of_users - 1 do
+        email = FFaker::InternetSE.disposable_email
+        first_name = FFaker::NameSE.first_name
+        last_name = FFaker::NameSE.last_name
+        users[email] = User.create!(email: email, password: DEFAULT_PASSWORD,
+                                    first_name: first_name,
+                                    last_name: last_name) unless users.key?(email)
+      end
+
+      log.info("Users now in the db: #{User.count}")
+    end
 
 
+    ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Applications') do |log|
+      log.info('Creating membership applications ...')
+
+      log.info(MSG_BE_PATIENT_ADDR_GEOCODING)
+
+      make_applications(users.values)
+
+      log.info("Membership applications created: #{ShfApplication.count}")
+      log.info('   Membership Applications by state:')
+      states = ShfApplication.aasm.states.map(&:name)
+      states.sort.each do |state|
+        log.info("    #{state}: #{ShfApplication.where(state: state).count }")
+      end
+    end
+
+
+    ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'AppConfiguration') do |log|
+
+      if AdminOnly::AppConfiguration.count == 0
+        log.info('Seeding AppConfiguration...')
+        SeedHelper::AppConfigurationSeeder.seed
+      else
+        log.info(MSG_NO_APPCONFIG)
+        log.info(MSG_APPCONFIG_NEEDS_SITEMETAIMAGE) unless AdminOnly::AppConfiguration.last.site_meta_image.exists?
+      end
+    end
+
+  end
+
+  log_msg('info', 'FINISH', MSG_SEED_COMPLETE)
+
+
+rescue => error
+
+  ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'ERROR') do |log|
+    log.error(MSG_ERROR_RESCUED)
+    log.error(error.message)
+    log.info(MSG_SEED_STOPPED)
+  end
+
+  # Use 'puts' here in case there was a problem writing to the log.
+  puts MSG_ERROR_RESCUED
+  puts error.message
+  puts MSG_SEED_STOPPED
+
+  raise error
 end
-
-puts SEED_COMPLETE_MSG

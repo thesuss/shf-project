@@ -1,3 +1,4 @@
+require File.join(Rails.root, 'db/require_all_seeders_and_helpers.rb')
 
 Given(/^There are no "([^"]*)" records in the db$/) do | models|
   model_klass = ActiveSupport::Inflector.singularize(models)
@@ -5,10 +6,14 @@ Given(/^There are no "([^"]*)" records in the db$/) do | models|
 end
 
 When(/^the system is seeded with initial data$/) do
+
+  allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+  allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
+
+  allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+
   SHFProject::Application.load_tasks
   SHFProject::Application.load_seed
-  Rake::Task['shf:load_regions'].reenable
-  Rake::Task['shf:load_kommuns'].reenable
 end
 
 Then(/^(\d+) "([^"]*)" records should be created$/) do |number_of_records, models|

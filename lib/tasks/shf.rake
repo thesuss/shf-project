@@ -154,6 +154,8 @@ namespace :shf do
   desc "load regions data (counties plus 'Sverige' and 'Online')"
   task :load_regions => [:environment] do
 
+    # NOTE: This is now accomplished with the Seeder::RegionsSeeder
+
     ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Load Regions') do |log|
 
       # Populate the 'regions' table for Swedish regions (aka counties),
@@ -177,6 +179,8 @@ namespace :shf do
   desc "load kommuns data (290 Swedish municipalities)"
   task :load_kommuns => [:environment] do
 
+    # NOTE: This is now accomplished with the Seeder::KommunsSeeder
+
     require 'csv'
     require 'smarter_csv'
 
@@ -196,6 +200,8 @@ namespace :shf do
 
   desc "Initialize app file delivery methods"
   task load_file_delivery_methods: :environment do
+
+    # NOTE: This is now accomplished with the Seeder::FileDeliveryMethodsSeeder
 
     log_file = 'log/load_file_delivery_methods.log'
 
