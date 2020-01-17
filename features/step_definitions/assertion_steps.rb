@@ -129,6 +129,14 @@ Then "I should see {digits} {capture_string}" do |n, content|
   expect(page).not_to have_text("#{content}", count: n + 1)
 end
 
+Then "I should see {digits} visible {capture_string}" do |n, content|
+  n = n.to_i
+  assert_text :visible, content, count: n
+  assert_no_text :visible, content, count: n + 1
+  # expect(page).not_to have_text("#{content}", count: n + 1)
+end
+
+
 Then "{capture_string} should{negate} be visible" do |string, negate|
   expect(has_text?(:visible, "#{string}")).to be negate == nil
 end

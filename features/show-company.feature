@@ -14,15 +14,18 @@ Feature: Show company page - display different info depending on role
 
 
   Background:
+
+    Given the date is set to "2019-06-06"
+
     Given the following regions exist:
       | name         |
       | Stockholm    |
       | Västerbotten |
 
     Given the following kommuns exist:
-      | name      |
-      | Alingsås  |
-      | Bromölla  |
+      | name     |
+      | Alingsås |
+      | Bromölla |
 
     Given the following companies exist:
       | name     | company_number | email          | region       | kommun   | city      | visibility     |
@@ -42,12 +45,15 @@ Feature: Show company page - display different info depending on role
       | user3@mutts.com |       | true   |
       | user4@mutts.com |       | true   |
       | user5@mutts.com |       | true   |
+      | user6@mutts.com |       | true   |
       | admin@shf.se    | true  | false  |
 
     Given the following payments exist
       | user_email      | start_date | expire_date | payment_type | status | hips_id |
-      | user2@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
-      | user3@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | user1@mutts.com | 2019-01-01 | 2019-12-31  | member_fee   | betald | none    |
+      | user2@mutts.com | 2019-10-1  | 2019-12-31  | member_fee   | betald | none    |
+      | user3@mutts.com | 2019-10-1  | 2019-12-31  | member_fee   | betald | none    |
+      | user6@mutts.com | 2019-01-01 | 2019-12-31  | member_fee   | betald | none    |
 
 
     And the following business categories exist
@@ -60,12 +66,13 @@ Feature: Show company page - display different info depending on role
       | JustForFun   |
 
     And the following applications exist:
-      | user_email      | company_number | categories              | state    |
-      | user1@mutts.com | 5560360793     | Groomer, JustForFun     | accepted |
-      | user2@mutts.com | 2120000142     | Groomer, Trainer, Rehab | accepted |
-      | user3@mutts.com | 6914762726     | Psychologist, Groomer   | accepted |
-      | user4@mutts.com | 6613265393     | Groomer                 | accepted |
-      | user5@mutts.com | 2120000142     | Psychologist            | accepted |
+      | user_email      | company_number | categories                        | state    |
+      | user1@mutts.com | 5560360793     | Groomer, JustForFun               | accepted |
+      | user2@mutts.com | 2120000142     | Groomer, Trainer, Rehab           | accepted |
+      | user3@mutts.com | 6914762726     | Psychologist, Groomer             | accepted |
+      | user4@mutts.com | 6613265393     | Groomer                           | accepted |
+      | user5@mutts.com | 2120000142     | Psychologist                      | accepted |
+      | user6@mutts.com | 5560360793     | Groomer, JustForFun, Psychologist | accepted |
 
     And the following payments exist
       | user_email   | start_date | expire_date | payment_type | status | hips_id | company_number |
@@ -77,6 +84,7 @@ Feature: Show company page - display different info depending on role
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6914762726     |
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
+
 
   Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out
@@ -201,3 +209,15 @@ Feature: Show company page - display different info depending on role
     And I should not see "310 40"
     And I should not see "Harplinge"
     And I should not see "Alingsås"
+
+
+  Scenario: Should not show duplicate Business Categories
+    Given I am logged out
+    And I am the page for company number "5560360793"
+
+    # Should see 'Groomer' once in the list of categories, once for user1 and once for user6 = 3 total
+    And I should see 3 visible "Groomer"
+    # Should see 'JustForFun' once in the list of categories, once for user1 and once for user6 = 3 total
+    And I should see 3 visible "JustForFun"
+    # Should see 'Psychologist' once in the list of categories, and once for user6 = 2 total
+    And I should see 2 visible "Psychologist"
