@@ -10,8 +10,6 @@ require 'activity_logger'
 require 'logfile_namer'
 
 require_relative 'seed_helpers'
-require_relative 'seed_helpers/app_configuration_seeder'
-
 require_relative 'require_all_seeders_and_helpers'
 
 
@@ -130,6 +128,8 @@ begin
       log.info("Users now in the db: #{User.count}")
     end
 
+  Seeders::MasterChecklistsSeeder.seed
+  Seeders::UserChecklistsSeeder.seed
 
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Applications') do |log|
       log.info('Creating membership applications ...')

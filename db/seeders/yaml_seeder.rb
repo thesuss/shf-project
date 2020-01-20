@@ -12,7 +12,7 @@ module Seeders
   # @desc Responsibility: Provide the basic implementation to
   #   read data from a YML file and write data to a YML file for seeding.
   #
-  # Subclasses classes MUST:
+  # Subclasses MUST:
   #   1. define the base YAML filename to read the data from (and write to)
   #      this is the YAML_FILENAME constant
   #
@@ -106,7 +106,13 @@ module Seeders
     # @return [Array<Object>] - list of objects successfully created
     def self.create_objects(yaml_entries)
       created_objects = []
-      yaml_entries.each { |yaml_entry| created_objects << create_object(yaml_entry) }
+      yaml_entries.each do |yaml_entry|
+        begin
+          created_objects << create_object(yaml_entry)
+        rescue => error
+          raise error, "trying to create_object #{yaml_entry}\n   #{error.message}"
+        end
+      end
       created_objects
     end
 
@@ -208,8 +214,6 @@ module Seeders
     # =============================
 
 
-    # Create an OrderedListEntry from the yaml_hash, then each entry in [:children] (this recurses top-down)
-    #
     def self.create_entry_and_children(yaml_hash, parent_ordered_entry: nil)
 
       new_ordered_entry = create_ordered_entry(yaml_hash, parent_ordered_entry: parent_ordered_entry)
@@ -221,10 +225,10 @@ module Seeders
 
 
     def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil)
-      OrderedListEntry.create!(name: yaml_entry[:name],
-                               description: yaml_entry[:description],
-                               list_position: yaml_entry[:list_position] ? yaml_entry[:list_position] : 0,
-                               parent: parent_ordered_entry)
+      MasterChecklist.create!(name: yaml_entry[:name],
+                              description: yaml_entry[:description],
+                              list_position: yaml_entry[:list_position] ? yaml_entry[:list_position] : 0,
+                              parent: parent_ordered_entry)
     end
 
 
@@ -232,7 +236,7 @@ module Seeders
     #
     # @param [String] output_str - the string to write to the file
     # @param [Path | String] output_filename - the path of the file to write out to
-    def self.write_to_yaml_source(output_str = '', output_filename = YAML_FILENAME)
+    def self.write_to_yaml_source(output_str = '', output_filename = yaml_filename)
       File.open(output_filename, "a") { |file| file.write(output_str) }
     end
 

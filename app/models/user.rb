@@ -18,6 +18,8 @@ class User < ApplicationRecord
   #    is not also deleted.
   accepts_nested_attributes_for :payments
 
+  has_many :checklists, dependent: :destroy, class_name: 'UserChecklist'
+
   has_attached_file :member_photo, default_url: 'photo_unavailable.png',
                     styles:                     { standard: ['130x130#'] }, default_style: :standard
 

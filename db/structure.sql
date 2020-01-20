@@ -264,7 +264,10 @@ CREATE TABLE public.companies (
     description text,
     dinkurs_company_id character varying,
     show_dinkurs_events boolean,
-    short_h_brand_url character varying
+    short_h_brand_url character varying,
+    facebook_url character varying,
+    instagram_url character varying,
+    youtube_url character varying
 );
 
 
@@ -484,6 +487,72 @@ CREATE SEQUENCE public.kommuns_id_seq
 --
 
 ALTER SEQUENCE public.kommuns_id_seq OWNED BY public.kommuns.id;
+
+
+--
+-- Name: master_checklists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.master_checklists (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    displayed_text character varying NOT NULL,
+    description character varying,
+    list_position integer DEFAULT 0 NOT NULL,
+    ancestry character varying,
+    notes character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    is_in_use boolean DEFAULT true NOT NULL,
+    is_in_use_changed_at timestamp without time zone
+);
+
+
+--
+-- Name: COLUMN master_checklists.name; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.master_checklists.name IS 'This is a shortened way to refer to the item.';
+
+
+--
+-- Name: COLUMN master_checklists.displayed_text; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.master_checklists.displayed_text IS 'This is what users see';
+
+
+--
+-- Name: COLUMN master_checklists.list_position; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.master_checklists.list_position IS 'This is zero-based. It is the order (position) that this item should appear in its checklist';
+
+
+--
+-- Name: COLUMN master_checklists.notes; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.master_checklists.notes IS 'Notes about this item.';
+
+
+--
+-- Name: master_checklists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.master_checklists_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: master_checklists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.master_checklists_id_seq OWNED BY public.master_checklists.id;
 
 
 --
@@ -834,6 +903,50 @@ ALTER SEQUENCE public.uploaded_files_id_seq OWNED BY public.uploaded_files.id;
 
 
 --
+-- Name: user_checklists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_checklists (
+    id bigint NOT NULL,
+    user_id bigint,
+    master_checklist_id bigint,
+    name character varying NOT NULL,
+    description character varying,
+    date_completed timestamp without time zone,
+    ancestry character varying,
+    list_position integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN user_checklists.list_position; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.user_checklists.list_position IS 'This is zero-based. It is the order (position) that this item should appear in its checklist';
+
+
+--
+-- Name: user_checklists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_checklists_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_checklists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_checklists_id_seq OWNED BY public.user_checklists.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -969,6 +1082,13 @@ ALTER TABLE ONLY public.kommuns ALTER COLUMN id SET DEFAULT nextval('public.komm
 
 
 --
+-- Name: master_checklists id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.master_checklists ALTER COLUMN id SET DEFAULT nextval('public.master_checklists_id_seq'::regclass);
+
+
+--
 -- Name: member_app_waiting_reasons id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1022,6 +1142,13 @@ ALTER TABLE ONLY public.shf_documents ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.uploaded_files ALTER COLUMN id SET DEFAULT nextval('public.uploaded_files_id_seq'::regclass);
+
+
+--
+-- Name: user_checklists id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_checklists ALTER COLUMN id SET DEFAULT nextval('public.user_checklists_id_seq'::regclass);
 
 
 --
@@ -1128,6 +1255,14 @@ ALTER TABLE ONLY public.kommuns
 
 
 --
+-- Name: master_checklists master_checklists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.master_checklists
+    ADD CONSTRAINT master_checklists_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: member_app_waiting_reasons member_app_waiting_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1197,6 +1332,14 @@ ALTER TABLE ONLY public.shf_documents
 
 ALTER TABLE ONLY public.uploaded_files
     ADD CONSTRAINT uploaded_files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_checklists user_checklists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_checklists
+    ADD CONSTRAINT user_checklists_pkey PRIMARY KEY (id);
 
 
 --
@@ -1306,6 +1449,20 @@ CREATE UNIQUE INDEX index_file_delivery_methods_on_name ON public.file_delivery_
 
 
 --
+-- Name: index_master_checklists_on_ancestry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_master_checklists_on_ancestry ON public.master_checklists USING btree (ancestry);
+
+
+--
+-- Name: index_master_checklists_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_master_checklists_on_name ON public.master_checklists USING btree (name);
+
+
+--
 -- Name: index_on_applications; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1366,6 +1523,27 @@ CREATE INDEX index_shf_documents_on_uploader_id ON public.shf_documents USING bt
 --
 
 CREATE INDEX index_uploaded_files_on_shf_application_id ON public.uploaded_files USING btree (shf_application_id);
+
+
+--
+-- Name: index_user_checklists_on_ancestry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_checklists_on_ancestry ON public.user_checklists USING btree (ancestry);
+
+
+--
+-- Name: index_user_checklists_on_master_checklist_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_checklists_on_master_checklist_id ON public.user_checklists USING btree (master_checklist_id);
+
+
+--
+-- Name: index_user_checklists_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_checklists_on_user_id ON public.user_checklists USING btree (user_id);
 
 
 --
@@ -1430,6 +1608,14 @@ ALTER TABLE ONLY public.shf_applications
 
 
 --
+-- Name: user_checklists fk_rails_4ff2e06edf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_checklists
+    ADD CONSTRAINT fk_rails_4ff2e06edf FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: addresses fk_rails_76a66052a5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1483,6 +1669,14 @@ ALTER TABLE ONLY public.company_applications
 
 ALTER TABLE ONLY public.company_applications
     ADD CONSTRAINT fk_rails_cfd957fb2a FOREIGN KEY (shf_application_id) REFERENCES public.shf_applications(id);
+
+
+--
+-- Name: user_checklists fk_rails_e1e5ab0568; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_checklists
+    ADD CONSTRAINT fk_rails_e1e5ab0568 FOREIGN KEY (master_checklist_id) REFERENCES public.master_checklists(id);
 
 
 --
@@ -1575,6 +1769,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190514172102'),
 ('20190601004310'),
 ('20190815215041'),
-('20190830212208');
+('20190830212208'),
+('20191030162238'),
+('20191130225826'),
+('20191204203416'),
+('20200108194625');
 
 
