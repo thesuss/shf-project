@@ -1,5 +1,7 @@
 class AddressesController < ApplicationController
 
+  include RobotsMetaTagShowActionOnly
+
   before_action :get_address, except: [:new, :create]
   before_action :get_company
   before_action :authorize_address, except: [:new, :create]

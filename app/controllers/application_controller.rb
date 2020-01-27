@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   before_action :prepare_exception_notifier
   before_action :set_hreflang_tag_urls
 
+  before_action :set_page_meta_robots_none
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
 
@@ -25,6 +27,7 @@ class ApplicationController < ActionController::Base
     raise 'This is a just a test of the exception notifications to ensure they are working.'
   end
 
+
   protected
 
   def configure_permitted_parameters
@@ -35,12 +38,15 @@ class ApplicationController < ActionController::Base
                                       keys: additional_permissions + [:membership_number])
   end
 
+
   def store_current_location
     store_location_for(:user, request.url)
   end
 
+
   def set_after_action_path
     return unless self.is_a? Devise::RegistrationsController
+
 
     def self.after_update_path_for(resource)
       stored_location_for(resource) || request.referer || root_path
@@ -48,8 +54,36 @@ class ApplicationController < ActionController::Base
   end
 
 
+  # This sets the meta tags for a page with 'no-follow' and 'no-index' robots tags.
+  # (The meta-tags gem doesn't have a 'none' method, which covers both.)
+  # This should be used for pages that we do not want indexed or crawled (followed)
+  # by search engine robots.
+  #
+  # After this is called, a child Controller or the view can add to it as needed.
   def set_page_meta_robots_none
-    set_meta_tags helpers.meta_robots_none
+    set_meta_tags helpers.meta_robots_none if action_should_have_robots_none_tag?(action_name)
+  end
+
+
+  # Test for checking if an action should have the meta tag. Child classes can
+  # always return true, for example, if all of the actions should have the tag,
+  # or use pattern matching, etc.
+  #
+  # A child Controller cannot 'override' a before_action with a list of only: actions.
+  # So instead we need to use this construct: Always call the before_action method and then
+  # do a further test to see if something that can be done; child classes can override that
+  # 'further test' (this method).
+  #
+  # Do not put the tag on pages that Visitors can see.
+  # It is hard to do that cleanly using just the Pundit policy without knowing
+  # the Model class as well. Instead, use this default list of actions.
+  def action_should_have_robots_none_tag?(action_name = '')
+    !actions_do_not_put_robots_tag?.include?(action_name.to_sym)
+  end
+
+
+  def actions_do_not_put_robots_tag?
+    [:index, :show]
   end
 
 

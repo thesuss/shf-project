@@ -1,10 +1,10 @@
 module AdminOnly
 
-  class UserAccountController < ApplicationController
+
+  class UserAccountController < AdminOnlyController
 
     include SetAppConfiguration
 
-    before_action :authorize_admin
     before_action :get_user
     before_action :set_app_config, only: [:edit, :update]
 
@@ -27,10 +27,6 @@ module AdminOnly
 
 
     private
-
-    def authorize_admin
-      authorize AdminOnly::UserAccount
-    end
 
 
     def get_user

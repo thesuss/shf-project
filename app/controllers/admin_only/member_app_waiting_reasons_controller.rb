@@ -1,6 +1,6 @@
 module AdminOnly
 
-  class MemberAppWaitingReasonsController < ApplicationController
+  class MemberAppWaitingReasonsController < AdminOnlyController
 
     before_action :set_member_app_waiting_reason, only: [:show, :edit, :update, :destroy]
     before_action :authorize_member_app_waiting_reason, only: [:update, :show, :edit]

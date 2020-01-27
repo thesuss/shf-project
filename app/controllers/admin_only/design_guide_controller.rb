@@ -1,8 +1,7 @@
 module AdminOnly
 
-  class DesignGuideController < ApplicationController
 
-    before_action :authorize_admin
+  class DesignGuideController < AdminOnlyController
 
 
     def show
@@ -15,11 +14,6 @@ module AdminOnly
 
 
     private
-
-
-    def authorize_admin
-      authorize AdminOnly::DesignGuide
-    end
 
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -41,8 +41,6 @@ RSpec.describe MetaTagsHelper, type: :helper do
 
       expect(helper.meta_tags_for_url_path(MOCK_BASE_URL, MOCK_REQ_PATH)).to eq({ description: "site meta description",
                                                                                   keywords:    "site meta keywords",
-                                                                                  nofollow:    true,
-                                                                                  noindex:     true,
                                                                                   og: {},
                                                                                   site:        "site name",
                                                                                   title:       "site title" })
@@ -64,8 +62,6 @@ RSpec.describe MetaTagsHelper, type: :helper do
 
       expect(helper.meta_tags_for_url_path(MOCK_BASE_URL, MOCK_REQ_PATH)).to eq({ description: "site meta description",
                                                                                   keywords:    "site meta keywords",
-                                                                                  nofollow:    true,
-                                                                                  noindex:     true,
                                                                                   og: { description: "site meta description",
                                                                                         locale: "sv_SE",
                                                                                         site_name: "site name",
@@ -118,8 +114,6 @@ RSpec.describe MetaTagsHelper, type: :helper do
 
       expect(helper.meta_tags_for_url_path(MOCK_BASE_URL, MOCK_REQ_PATH)).to eq({ description: "site meta description",
                                                                                   keywords:    "#{AdminOnly::AppConfiguration.config_to_use.site_meta_keywords}, category1, category2",
-                                                                                  nofollow:    true,
-                                                                                  noindex:     true,
                                                                                   og: {},
                                                                                   site:        "site name",
                                                                                   title:       "site title" })

@@ -1,8 +1,7 @@
 module AdminOnly
 
-  class DashboardController < ApplicationController
+  class DashboardController < AdminOnlyController
 
-    before_action :authorize_admin
     before_action :set_data_gatherer
 
 
@@ -33,11 +32,6 @@ module AdminOnly
     def dashboard_params
       params.require(:admin_only_dashboard).permit(:name_sv, :description_sv, :name_en, :description_en, :is_custom,
                                                    :data_gatherer, :data_gatherer[:timeframe])
-    end
-
-
-    def authorize_admin
-      authorize :'admin_only/dashboard'
     end
 
 

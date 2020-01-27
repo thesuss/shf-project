@@ -1,4 +1,6 @@
 class ShfApplicationsController < ApplicationController
+
+  include RobotsMetaTagAllActions
   include PaginationUtility
 
   before_action :get_shf_application, except: [:information, :index, :new, :create]

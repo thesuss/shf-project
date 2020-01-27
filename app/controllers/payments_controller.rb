@@ -1,5 +1,7 @@
 class PaymentsController < ApplicationController
 
+  include RobotsMetaTagShowActionOnly
+
   class NotAuthorizedError < Pundit::NotAuthorizedError
   end
 

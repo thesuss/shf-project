@@ -1,6 +1,7 @@
 module AdminOnly
 
-  class UserProfileController < ApplicationController
+
+  class UserProfileController < AdminOnlyController
 
     before_action :authorize_admin
     before_action :get_user
@@ -46,9 +47,6 @@ module AdminOnly
 
     private
 
-    def authorize_admin
-      authorize AdminOnly::UserProfile
-    end
 
     def get_user
       @user = User.find(params[:id])

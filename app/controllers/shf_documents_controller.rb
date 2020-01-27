@@ -1,5 +1,7 @@
 class ShfDocumentsController < ApplicationController
 
+  include RobotsMetaTagShowActionOnly
+
   before_action :set_shf_document, only:  [ :show, :edit, :update, :destroy ]
   before_action :authorize_shf_doc, only: [ :show, :edit, :update, :destroy ]
   before_action :authorize_shf_doc_class,

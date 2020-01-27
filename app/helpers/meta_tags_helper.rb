@@ -78,7 +78,6 @@ module MetaTagsHelper
 
     tags.merge!(facebook_meta_tags)
         .merge!(twitter_meta_tags)
-        .merge!(meta_robots_none)
     tags
   end
 
@@ -90,17 +89,6 @@ module MetaTagsHelper
 
   def twitter_meta_tags(card: AdminOnly::AppConfiguration.config_to_use.twitter_card_type)
     { twitter: { card: card } }
-  end
-
-
-  # This sets the meta tags for a page with 'no-follow' and 'no-index' robots tags.
-  # (The meta-tags gem doesn't have a 'none' method, which covers both.)
-  # This should be used for pages that we do not want indexed or crawled (followed)
-  # by search engine robots.
-  #
-  # After this is called, a child Controller or the view can add to it as needed.
-  def set_page_meta_robots_none
-
   end
 
 

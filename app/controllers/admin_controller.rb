@@ -1,5 +1,5 @@
-class AdminController < ApplicationController
-  before_action :authorize_admin
+class AdminController < AdminOnlyController
+
 
   # export shf_appplications
   def export_ansokan_csv
@@ -24,11 +24,6 @@ class AdminController < ApplicationController
 
 
   private
-
-
-  def authorize_admin
-    AdminPolicy.new(current_user).authorized?
-  end
 
 
   # Create a comma separated string for all applications, each application is 1 row
