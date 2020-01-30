@@ -43,7 +43,7 @@ Feature: Redirect User to the login page if they need to be logged in
     Given I am on the "landing" page
     When I am on the "create a new company" page
     Then I should be on "login" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should see t("errors.try_login")
 
 
@@ -51,11 +51,11 @@ Feature: Redirect User to the login page if they need to be logged in
     Given I am on the "login" page
     When I am on the "all waiting for info reasons" page
     Then I should be on "login" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should see t("errors.try_login")
 
 
   Scenario: I can access a page that does not require a login (detail for 1 company)
     When  I am the page for company number "5560360793"
-    Then I should not see t("errors.not_permitted")
+    Then I should not see a message telling me I am not allowed to see that page
     And I should not see t("errors.try_login")

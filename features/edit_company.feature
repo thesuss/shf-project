@@ -48,9 +48,9 @@ Feature: As a member
   Scenario: Visitor tries to edit a company
     Given I am Logged out
     And I am on the edit company page for "5560360793"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   Scenario: User can not edit someone else's company
     Given I am logged in as "mere_user@mutts.com"
     And I am on the edit company page for "5560360793"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page

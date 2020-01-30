@@ -53,7 +53,7 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I click on t("submit") button
     And I am logged out
     When I am on the SHF document page for "Uploaded document"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   @user
   Scenario: User cannot view the details for a SHF document
@@ -65,7 +65,7 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I click on t("submit") button
     And I am logged in as "bob@snarkybarky.se"
     When I am on the SHF document page for "Uploaded document"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   @member
   Scenario: Member cannot view the details for a SHF document
@@ -77,4 +77,4 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I click on t("submit") button
     And I am logged in as "emma@happymutts.se"
     When I am on the SHF document page for "Uploaded document"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page

@@ -34,19 +34,19 @@ Feature: export member information to a CSV file so I can use it in other system
   Scenario: Visitor can't export
     Given I am Logged out
     When I am on the "membership applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
 
   Scenario: User can't export
     Given I am logged in as "wils@woof.com"
     When I am on the "membership applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
 
   Scenario: Member can't export
     Given I am logged in as "emma@happymutts.com"
     When I am on the "membership applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   Scenario: Admin can export
     Given I am logged in as "admin@shf.se"

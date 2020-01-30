@@ -108,10 +108,10 @@ Feature: SHF members (and admins) can views board meeting minutes (SHF documents
   Scenario: A visitor cannot see SHF documents
     Given I am logged out
     And I am on the "all SHF documents" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
 
   Scenario: A user cannot see SHF documents
     Given I am logged in as "bob@snarkybarky.se"
     And I am on the "all SHF documents" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page

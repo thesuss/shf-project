@@ -24,7 +24,7 @@ Feature: Only members and admins can see members only (hidden) pages
   Scenario: Visitor cannot see members only pages
     Given I am Logged out
     And I am on the static workgroups page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should not see "Yrkesråd"
 
   Scenario: Visitor cannot see members only menu
@@ -35,7 +35,7 @@ Feature: Only members and admins can see members only (hidden) pages
   Scenario: User cannot see members only pages
     Given I am logged in as "not_a_member@bowsers.com"
     And I am on the static workgroups page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should not see "Yrkesråd"
 
   Scenario: User cannot see members only menu
@@ -49,7 +49,7 @@ Feature: Only members and admins can see members only (hidden) pages
     Given I am logged in as "emma@happymutts.com"
     And  I am on the static workgroups page
     Then I should see "Yrkesrad"
-    Then I should not see t("errors.not_permitted")
+    Then I should not see a message telling me I am not allowed to see that page
 
   @time_adjust
   Scenario: Member can see members only menu
@@ -62,7 +62,7 @@ Feature: Only members and admins can see members only (hidden) pages
     Given I am logged in as "admin@shf.se"
     And  I am on the static workgroups page
     Then I should see "Yrkesrad"
-    Then I should not see t("errors.not_permitted")
+    Then I should not see a message telling me I am not allowed to see that page
 
   Scenario: Admin can see members only menu
     Given I am logged in as "admin@shf.se"

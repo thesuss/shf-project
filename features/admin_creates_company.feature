@@ -65,12 +65,12 @@ Feature: As an admin
   Scenario: User tries to create a company
     Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "create a new company" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   Scenario: Visitor tries to create a company
     Given I am Logged out
     And I am on the "create a new company" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   @time_adjust @dinkurs_fetch
   Scenario: Admin creates a company

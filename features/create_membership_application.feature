@@ -431,10 +431,10 @@ Feature: Create a new membership application
     Given I am logged out
     And I am logged in as "member@random.com"
     And I am on the "new application" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
 
   Scenario: An admin cannot submit a new application because we don't know which User it is for
     Given I am logged in as "admin@shf.se"
     And I am on the "new application" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page

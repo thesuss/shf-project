@@ -51,20 +51,20 @@ Feature: As an admin
   Scenario: Admin should see the 'delete' button
     Given I am logged in as "admin@shf.se"
     And I am on the "application" page for "emma@random.com"
-    Then I should not see t("errors.not_permitted")
+    Then I should not see a message telling me I am not allowed to see that page
     And I should see t("shf_applications.show.delete")
 
 
   Scenario: Member should not see the 'delete' button on their own application
     Given I am logged in as "emma@random.com"
     And I am on the "application" page for "emma@random.com"
-    Then I should not see t("errors.not_permitted")
+    Then I should not see a message telling me I am not allowed to see that page
     And I should not see t("shf_applications.show.delete")
 
   Scenario: Visitor should not see the 'delete' button
     Given I am Logged out
     And I am on the "application" page for "emma@random.com"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should not see t("shf_applications.show.delete")
 
 

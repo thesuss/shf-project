@@ -67,7 +67,7 @@ Feature: View a SHF Application
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "hans_waits@waiting.se"
     And I am on the "membership applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
 
   @admin

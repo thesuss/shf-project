@@ -1,3 +1,10 @@
+
+
+And("I should{negate} see a message telling me I am not allowed to see that page") do | negation |
+  step %{I should#{negation} see t("errors.not_permitted")}
+end
+
+
 # Set the EU cookie consent cookie and then VISIT A PAGE
 #
 # Here are examples of strings that will match (the regular expression for) this step:

@@ -42,9 +42,9 @@ Feature: As an admin
   Scenario: A non-admin user cannot edit business categories
     Given I am logged in as "applicant@random.com"
     And I navigate to the business category edit page for "dog grooming"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   Scenario: A visitor cannot edit business categories
     Given I am Logged out
     And I navigate to the business category edit page for "dog grooming"
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page

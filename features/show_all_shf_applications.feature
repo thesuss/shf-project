@@ -122,7 +122,7 @@ Feature: Admin can see all SHF applications so they can be managed
   Scenario: Visitor cannot see the list of all SHF Applications (denied access)
     Given I am logged out
     When I am on the "shf applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should not see t("shf_applications.index.title")
 
 
@@ -130,7 +130,7 @@ Feature: Admin can see all SHF applications so they can be managed
   Scenario: User cannot see the list of all SHF Applications (denied access)
     Given I am logged in as "emma_under_review@happymutts.se"
     When I am on the "shf applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should not see t("shf_applications.index.title")
 
 
@@ -138,5 +138,5 @@ Feature: Admin can see all SHF applications so they can be managed
   Scenario: Member cannot see the list of all SHF Applications (denied access)
     Given I am logged in as "markus_member@bowwowwow.se"
     When I am on the "shf applications" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
     And I should not see t("shf_applications.index.title")

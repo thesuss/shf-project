@@ -55,16 +55,16 @@ Feature: Admin uploads meeting PDFs
   Scenario: Visitor cannot upload a SHF document
     Given I am Logged out
     And I am on the "new SHF document" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   @user
   Scenario: User cannot upload a SHF document
     Given I am logged in as "bob@snarkybarky.se"
     And I am on the "new SHF document" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
 
   @member
   Scenario: Member cannot upload a SHF document
     Given I am logged in as "emma@happymutts.se"
     And I am on the "new SHF document" page
-    Then I should see t("errors.not_permitted")
+    Then I should see a message telling me I am not allowed to see that page
