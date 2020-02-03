@@ -1,5 +1,13 @@
 # Tasks to run to deploy the application.  Tasks defined here will be called by capistrano.
 
+# If you are not familiar with Capistrano, you should read the documentation:
+#   https://capistranorb.com/
+#   https://github.com/capistrano/rails
+#
+# In addition, here are a few helpful links:
+#   Good basic example of entire process using capistrano to deploy a Ruby on Rails application: https://semaphoreci.com/community/tutorials/how-to-use-capistrano-to-deploy-a-rails-application-to-a-puma-server
+#   Good write-up explaining some about capistrano: https://piotrmurach.com/articles/working-with-capistrano-tasks-roles-and-variables/
+
 # ============================================
 # Capistrano configuration settings
 #
@@ -54,6 +62,8 @@ set :keep_releases, 5
 
 set :migration_role, :app
 
+# whenever gem configuration:  we have the schedule.rb file in a slightly different place (under app/config)
+set :whenever_path,         ->{ "#{release_path}/app/config" }
 
 # ============================================
 # Tasks
