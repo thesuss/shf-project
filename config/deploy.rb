@@ -13,7 +13,7 @@
 #
 
 # config valid only for Capistrano 3.11
-lock '3.11'
+lock '~> 3.11.0'
 
 set :rbenv_type, :user
 set :rbenv_ruby, '2.5.1'
@@ -61,9 +61,6 @@ set :bundle_binstubs, nil
 set :keep_releases, 5
 
 set :migration_role, :app
-
-# whenever gem configuration:  we have the schedule.rb file in a slightly different place (under app/config)
-set :whenever_path,         ->{ "#{release_path}/app/config" }
 
 # ============================================
 # Tasks
