@@ -13,7 +13,7 @@
 #
 
 # config valid only for Capistrano 3.11
-lock '~> 3.11.0'
+lock '~> 3.11'
 
 set :rbenv_type, :user
 set :rbenv_ruby, '2.5.1'
@@ -30,7 +30,21 @@ set :deploy_to, ENV['APP_PATH']
 # deployment to the next, it should be listed here.
 # These individual files are in the 'shared' directory on the production system: /var/www/shf/shared/
 # (That is the convention for Capistrano deployments.)
-set :linked_files, %w{config/database.yml config/secrets.yml .env}
+#
+# The public/google......html files are files that Google Webmaster tools looks
+#   for to verify ownership and access to this site.
+#   These files verify that  Google webmasters (e.g. Susanna & Ashley as of 2020/02/02)
+#   are verified as to access this site with Google webmaster tools.
+#   Do not remove these files!
+append :linked_files, 'config/database.yml',
+       'config/secrets.yml',
+       '.env',
+       'public/google052aa706351efdce.html',
+       'public/google979ebbe196e9bd30.html',
+       'public/favicon.ico',
+       'public/apple-touch-icon.png',
+       'public/apple-touch-icon-precomposed.png'
+
 
 # These directories are shared among all deployments.  Every deployment has a
 # link to these directories.  They are not recreated (new) for each deployment.
@@ -38,15 +52,17 @@ set :linked_files, %w{config/database.yml config/secrets.yml .env}
 # deployment to the next, it should be listed here.
 # These directories are in the 'shared' directory on the production system: /var/www/shf/shared/
 # (That is the convention for Capistrano deployments.)
-set :linked_dirs, %w{
-  log tmp/pids tmp/cache tmp/sockets vendor/bundle
-  public/system
-  public/uploads
-  public/.well-known
-  public/storage
-  public/ckeditor_assets
-  app/views/pages
-}
+append  :linked_dirs, 'log',
+        'tmp/pids',
+        'tmp/cache',
+        'tmp/sockets',
+        'vendor/bundle',
+        'public/system',
+        'public/uploads',
+        'public/storage',
+        'public/ckeditor_assets',
+        'app/views/pages'
+
 
 # public/.well-known  created by diffouo (raoul) when this was set up. used for ??? (not used?)
 # public/system       created by diffouo (raoul) when this was set up. used for ??? (not used?)
@@ -61,6 +77,9 @@ set :bundle_binstubs, nil
 set :keep_releases, 5
 
 set :migration_role, :app
+
+# whenever gem configuration:  we have the schedule.rb file in a slightly different place (under app/config)
+set :whenever_path,         ->{ "#{release_path}/app/config" }
 
 # ============================================
 # Tasks
