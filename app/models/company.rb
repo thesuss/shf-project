@@ -65,6 +65,7 @@ class Company < ApplicationRecord
   # this scope is combined with a clause for a different table that also uses 'name',
   # SQL won't know which table to get 'name' from
   #  name could be NULL or it could be an empty string
+  # FIXME a company must have an address!  (cannot be nil)
   def self.complete
     where.not('companies.name' => '',
               id: Address.lacking_region.pluck(:addressable_id))
@@ -107,6 +108,10 @@ class Company < ApplicationRecord
     where.not(dinkurs_company_id: [nil, '']).order(:id)
   end
 
+
+  def searchable?
+    branding_license? && !current_members.empty?
+  end
 
   def complete?
     RequirementsForCoInfoComplete.requirements_met? company: self
@@ -234,6 +239,7 @@ class Company < ApplicationRecord
   end
 
 
+  # FIXME - the company member(s) need to set this.  Picking the 'first' one is arbitrary and may be wrong
   def main_address
 
     return addresses.mail_address.includes(:region)[0] if addresses.mail_address.exists?

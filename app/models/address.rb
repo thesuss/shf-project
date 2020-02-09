@@ -78,7 +78,7 @@ class Address < ApplicationRecord
     # Returns an array of address field values (strings) that starts with the
     # attribute associated with the  visibility level set for this address.
 
-    address_pattern = %w(street_address post_code city kommun)
+    address_pattern = %w(street_address post_code city kommun) # FIXME make this a constant
 
     pattern_length = address_pattern.length
 
