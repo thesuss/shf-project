@@ -224,19 +224,19 @@ sv:
       company:
         company_number: *org_nr
         name: *name
-        phone_number: &company_phone Telefonnummer till företaget
-        email: Företagets email
-        website: &company_website Webbplats
-        facebook_url: Facebook sida bildadress
-        instagram_url: Instagram bildadress
-        youtube_url: Youtube Kanal
+        phone_number: &company_phone Tel
+        email: @
+        website: &company_website Web
+        facebook_url: Facebook
+        instagram_url: Instagram
+        youtube_url: Youtube
         org_nr: *org_nr
         post_code: *post_code
         city: *city
         kommun: *kommun
         region: *region
         region_short: *region_short
-        dinkurs_key: &dinkurs_company_key Dinkurs Företag key
+        dinkurs_key: &dinkurs_company_key Dinkurs Företag Key
         dinkurs_company_id: Dinkurs företagsnyckel
 
       business_category:
@@ -403,7 +403,7 @@ sv:
 
   company_locator:
     error:
-      search_name_blank: 'Ange ett ställenamn (det kan inte vara tomt).'
+      search_name_blank: 'Ange en plats (det kan inte vara tomt).'
       search_distance_negative: 'Avståndet kan inte vara negativt'
       latitude_blank: "Latitude cannot be blank."
       longitude_blank: "Longitude cannot be blank."
@@ -1329,9 +1329,9 @@ sv:
       app_approved:
         subject: Din ansökan till Sveriges Hundföretagare är godkänd.
         message_text:
-          app_approved_and_next: "Din ansökan har nu blivit godkänd. Det som är kvar innan du är medlem i systemet är att betala din medlemsavgift:"
+          app_approved_and_next: "Din ansökan har nu blivit godkänd. Nu behöver du betala medlemsavgift:"
           step_1_login_to_website: Logga in på webbplatsen
-          step_1_with_your_email: " WITH YOUR EMAIL: %{login_email}"
+          step_1_with_your_email: " med: %{login_email}"
           step_2_pay: "Det gör du via: "
           h_branding_not_paid: "När detta är gjort behöver du göra färdigt din företagssida och betala din H-märkesavgift. Mer information om hur du gör det kommer i ett mail efter att du betalt din medlemsavgift."
           thanks:  "Tack för att du vill vara medlem och bidrar till ett kvalitetssäkrat hundsverige."
@@ -1354,7 +1354,7 @@ sv:
           welcome:  *subject_welcome
           youre_active: "Du har nu aktiverats som medlem i systemet. Du kan logga in och hantera din profil och bygga upp din företagssida."
           can_edit_co_pay: "När du är inloggad kan du redigera din företagssida (glöm inte lägga till adress) och betala din H-märkesavgift här: "
-          access_fb_group: "Som medlem får du även tillgång till vår slutna Facebookgrupp: "
+          access_fb_group: "Som medlem (med betald H-märkespremie) får du även tillgång till vår slutna Facebookgrupp: "
           and_member_pages: "samt dolda sidor i vårt medlemssystem: "
 
       membership_will_expire:
@@ -1421,7 +1421,7 @@ sv:
       edit:
         my_profile_title: &my_profile_title Redigera din profil
         title: *my_profile_title
-        edit_profile_for_title: 'Redigera profile: %{user}'
+        edit_profile_for_title: 'Redigera profil: %{user}'
         unconfirmed_email_for: 'Obekräftad mailadress för: %{unconfirmed_email}'
         leave_blank_if_no_change: lämna tomt om du inte vill byta
         confirm_password: *confirm_password
