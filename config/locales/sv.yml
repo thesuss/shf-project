@@ -1000,11 +1000,11 @@ sv:
   shf_documents:
 
     new_shf_document: &new_shf_document Nytt dokument
-    new_shf_minutes:  &new_shf_minutes Lägg till mötesprotokoll
+    new_shf_minutes:  &new_shf_minutes Lägg till dokument
     edit_shf_document: Redigera info om dokument
     view_shf_document: Information om dokument
     all_shf_documents: Alla uppladdade dokument
-    all_shf_minutes: Alla mötesprotokoll
+    all_shf_minutes: Alla uppladdade dokument
 
     invalid_upload_type: *invalid_upload_type
     file_too_large: *file_too_large_5MB
@@ -1012,8 +1012,8 @@ sv:
     contents_access_error: 'Det uppstod ett fel att komma åt filen: %{message}'
 
     index:
-      page_title: 'Styrelseprotokoll'
-      instructions: 'Här hittar du våra senaste styrelsemötesprotokoll. Klicka på titeln på ett dokument för att visa det. Beroende på dina webbläsarinställningar kan det öppnas i ett nytt fönster eller så laddas det ner.'
+      page_title: 'Dokument'
+      instructions: 'Här hittar du filer som kan vara bra att ha. Klicka på titeln på ett dokument för att visa det. Beroende på dina webbläsarinställningar kan det öppnas i ett nytt fönster eller så laddas det ner.'
       title: *title
       description: *description
       delete_confirm: 'Är du säker på att du vill radera %{document_title}?'
@@ -1056,7 +1056,7 @@ sv:
 
     minutes_and_static_pages:
       member_pages: &member_pages Medlemssidor
-      shf_meeting_minutes: &member_pages_board_meetings Styrelseprotokoll
+      shf_meeting_minutes: &member_pages_board_meetings Dokument
 
     contents_show:
       edit_member_page: Redigera sida

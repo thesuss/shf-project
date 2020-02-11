@@ -994,12 +994,12 @@ en:
 
   shf_documents:
 
-    new_shf_document: &new_shf_document New SHF Document
-    new_shf_minutes:  &new_shf_minutes Add Meeting Minutes Document
-    edit_shf_document: Edit the SHF document details
-    view_shf_document: View the SHF document details
-    all_shf_documents: All SHF Documents
-    all_shf_minutes: All Meeting Minutes
+    new_shf_document: &new_shf_document New Document
+    new_shf_minutes:  &new_shf_minutes Add Document
+    edit_shf_document: Edit the document details
+    view_shf_document: View the document details
+    all_shf_documents: All Documents
+    all_shf_minutes: All Documents
 
     invalid_upload_type: *invalid_upload_type
     file_too_large: *file_too_large_5MB
@@ -1007,15 +1007,15 @@ en:
     contents_access_error: 'There was an error accessing the file: %{message}'
 
     index:
-      page_title: 'Historical Documents: Board Meeting Minutes'
-      instructions: 'These are SHF Board meeting minutes.  Click on the title of a document to view it.  Depending on your browser settings, it might open in a new window or it might download.'
+      page_title: 'Documents'
+      instructions: 'These are "good to have" documents.  Click on the title of a document to view it.  Depending on your browser settings, it might open in a new window or it might download.'
       title: *title
       description: *description
       delete_confirm: 'Are you sure you want to delete %{document_title}?'
       view_details: View details
 
     show:
-      page_title: 'SHF Document: %{document_title}'
+      page_title: 'Document: %{document_title}'
       title: *title
       description: *description
       uploaded_by: &uploaded_by Uploaded by
@@ -1035,7 +1035,7 @@ en:
       error: 'There was a problem uploading %{document_title}'
 
     edit:
-      page_title: 'Edit Details for SHF Document: %{document_title}'
+      page_title: 'Edit Details for Document: %{document_title}'
       title: *title
       description: *description
       uploaded_by: *uploaded_by
@@ -1051,7 +1051,7 @@ en:
 
     minutes_and_static_pages:
       member_pages: &member_pages Member pages
-      shf_meeting_minutes: &member_pages_board_meetings SHF Board Meeting Minutes
+      shf_meeting_minutes: &member_pages_board_meetings Documents
 
     contents_show:
       edit_member_page: Edit page
@@ -1274,7 +1274,7 @@ en:
       signoff: Thanks
 
       new_application_received:
-        subject: A new SHF Member Application has been received
+        subject: A new Member Application has been received
 
         message_text:
           new_app_arrived: "A new membership application has been submitted that you should look at: "
