@@ -225,7 +225,7 @@ sv:
         company_number: *org_nr
         name: *name
         phone_number: &company_phone Tel
-        email: @
+        email: E-post
         website: &company_website Web
         facebook_url: Facebook
         instagram_url: Instagram
