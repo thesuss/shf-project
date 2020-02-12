@@ -220,7 +220,8 @@ RSpec.describe MembershipExpireAlert do
           expect(ActionMailer::Base.deliveries.size).to eq 2
 
           logfile_contents = File.read(logfilepath)
-          expect(logfile_contents).to match(/\[info\] Started at #{dec_1_ts.to_s}(\s*)(.*)#{paid_exp_dec30_logmsg}(\s*)(.*)#{paid_expires_dec2_logmsg}/)
+          expect(logfile_contents).to match(/\[info\] Started at #{dec_1_ts.to_s}(\s*)(.*)#{paid_exp_dec30_logmsg}/m)
+          expect(logfile_contents).to match(/\[info\] Started at #{dec_1_ts.to_s}(\s*)(.*)#{paid_expires_dec2_logmsg}/m)
         end
       end
 
