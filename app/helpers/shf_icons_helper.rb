@@ -1,10 +1,11 @@
-# Standardized icon helper methods and  names to use in this application.
+# Standardized icon styles, helper methods, and names to use in this application.
 #
 # This defines (creates) helper methods for using FontAwesome icons in the application.
-#  - itt defines a standard method for using an icon (ex: 'edit_icon'), and
+#  - it defines a standard method for using an icon (ex: 'edit_icon'),
+#  - it defines the standard look (FontAwesome style, color and other html_options), and
 #  - it defines a standard method for getting the [String] name of the icon (ex: 'edit_icon_fa_name')
 #
-# This defines exactly which FontAwesome icons are used.
+# This defines exactly which FontAwesome icons are used and how they look
 #
 # ** You should ALWAYS USE THE HELPER METHODs instead of using the constants here
 #    or specifying the FontAwesome icon yourself. **
@@ -62,6 +63,16 @@
 #   It is defined in application_helper.rb.
 #
 #
+# @example:
+#   to display the view icon with a specific color:
+#     view_icon(html_options: {style: "color: #123123;"})
+#
+#
+# @example:
+#   to add a class to the view icon:
+#     view_icon(html_options: {class: 'flurb'})
+#
+#
 # See the documentation below for more details.
 #
 module ShfIconsHelper
@@ -75,7 +86,7 @@ module ShfIconsHelper
   # Standard actions: edit, view, destroy, etc.,  icons:
   FA_EDIT = 'edit'
   FA_VIEW = 'eye'
-  FA_DESTROY = 'trash'
+  FA_DESTROY = 'trash-alt'
 
 
   # Icons for specific pages/views:
@@ -90,9 +101,9 @@ module ShfIconsHelper
   FA_WARNING = 'exclamation-triangle'
   FA_PROBLEM = 'times-circle'
 
-  FA_TOOLTIP = 'info-circle'  # Note that there is a specific helper method 'fas_tooltip(...) that can be used (Defined in application_helper.rb)
+  FA_TOOLTIP = 'info-circle' # Note that there is a specific helper method 'fas_tooltip(...) that can be used (Defined in application_helper.rb)
 
-  FA_BLANK = 'blank'  # placeholder
+  FA_BLANK = 'blank' # placeholder
 
 
   # arrows
@@ -217,8 +228,16 @@ module ShfIconsHelper
   #
   METHODS_AND_ICONS = [
       { method_name_start: 'edit', icon: FA_EDIT },
-      { method_name_start: 'view', icon: FA_VIEW },
-      { method_name_start: 'destroy', icon: FA_DESTROY },
+
+      { method_name_start: 'view', icon: FA_VIEW,
+        color: 'blue',
+        fa_style: 'far'
+      },
+
+      { method_name_start: 'destroy', icon: FA_DESTROY,
+        color: 'red',
+        fa_style: 'far'
+      },
 
 
       { method_name_start: 'user_profile', icon: FA_USER_PROFILE },
@@ -264,6 +283,7 @@ module ShfIconsHelper
     METHODS_AND_ICONS
   end
 
+
   def methods_and_icons
     self.class.methods_and_icons
   end
@@ -287,9 +307,32 @@ module ShfIconsHelper
     #   fa_style: [String] - a specific FontAwesome style to use. Default = FA_STYLE_DEFAULT = 'fas'
     #   text: [String] - any additional text to display.  Default = nil
     #
+
+    icon_fa_style = method_info.fetch(:fa_style, FA_STYLE_DEFAULT)
+    icon_html_options = method_info.fetch(:html_options, {})
+    icon_color = method_info.fetch(:color, false)
+
+    # if there is a color defined, create the string to use in the style key
+    #  Note this will overwrite any 'color: zzz' in the style:  string  defined in html_options
+    if icon_color
+      # replace any color defined in the html_options
+      if icon_html_options.has_key?(:style)
+        icon_html_options[:style].gsub!(/color:(.*[^;])/, "color: #{icon_color}")
+      else
+        icon_html_options[:style] = "color: #{icon_color};"
+      end
+    end
+
+
     module_eval <<-end_icon_method, __FILE__, __LINE__ + 1
-      def #{method_info[:method_name_start]}_icon(html_options: {}, fa_style: FA_STYLE_DEFAULT, text: nil)
-        get_fa_icon(fa_style, '#{method_info[:icon]}', text, html_options)
+      def #{method_info[:method_name_start]}_icon(html_options: #{icon_html_options},
+                       fa_style: '#{icon_fa_style}',
+                       text: nil)
+      
+        default_html_options = #{icon_html_options}
+        merged_html_options = default_html_options.merge(html_options)
+
+        get_fa_icon(fa_style, '#{method_info[:icon]}', text, merged_html_options)
       end
     end_icon_method
 
