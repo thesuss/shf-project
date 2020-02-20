@@ -6,6 +6,8 @@
 
 $indent-amount: 2rem;
 
+$tab-active-background-color: rgba(85, 145, 206, 0.2);
+
 .radio-button {
   font-weight: normal;
   margin-left: 2rem;
@@ -13,10 +15,33 @@ $indent-amount: 2rem;
 
 .admin {
 
-  .nav.nav-tabs {
+  .nav-tabs {
+    border-bottom: 1px solid $gray;
+  }
+
+
+  .nav.nav-tabs,
+  .nav-tabs .nav-link {
+
+    border-color: $verylightgray;
+    margin-top: 0.4rem;
+    padding: 0.3rem 0.3rem 0;
+
+
+    :hover,
+    :focus {
+      border-color: $primary;
+    }
+
     li {
       margin-right: 1em;
     }
+
+    .active {
+      background-color: $tab-active-background-color;
+      border-color: $shf-blue;
+    }
+
   }
 }
 
@@ -77,4 +102,59 @@ $indent-amount: 2rem;
 
   }
 
+  .code {
+    font-family: 'Courier New', Monospace, monospace;
+
+    .method-name {
+      font-weight: bold;
+    }
+  }
+
+  .payors-payment-status {
+
+    .those-not-paid {
+
+      .unpaid-payor {
+        i {
+          color: lighten($link-dark-brown, 50%);
+          font-size: 30%;
+          vertical-align: text-top;
+        }
+      }
+
+    }
+  }
+
+
+  .xhr-example {
+
+    .intro {
+      margin-bottom: 2rem;
+    }
+
+    .example {
+      border-bottom: 1px;
+      border-bottom-color: #5692ce;
+      border-bottom-style: solid;
+
+      margin-bottom: 2rem;
+      margin-left: 2rem;
+      margin-top: 2rem;
+
+      padding-bottom: 1rem;
+
+      p {
+        line-height: 1.1rem;
+        font-size: smaller;
+      }
+    }
+
+    .bad-request {
+      background-color: white;
+      border-color: red;
+      color: red;
+      font-size: smaller;
+    }
+
+  }
 }

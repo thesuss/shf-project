@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  # Standardize XHR response values
+  XHR_SUCCESS = 200
+  XHR_SUCCESSTEXT = 'OK'
+  XHR_ERROR = 500
+  XHR_ERRORTEXT = 'ERROR'
+
 
   def index
 
@@ -84,6 +90,50 @@ class ApplicationController < ActionController::Base
 
   def actions_do_not_put_robots_tag?
     [:index, :show]
+  end
+
+
+  # Template method (wrapper) for handling an XHR request.
+  # --> Expects the yield to return a Hash of information
+  #     that will be merged into the response data rendered as JSON
+  #     and sent back to the XHR requester.
+  #
+  def handle_xhr_request
+    status = XHR_ERROR
+    status_text = XHR_ERRORTEXT
+    error_text = ''
+    additional_response_data = {}
+
+    begin
+      validate_and_authorize_xhr
+
+      additional_response_data = additional_response_data.merge(yield)
+      status = XHR_SUCCESS
+      status_text = XHR_SUCCESSTEXT
+
+    rescue => error
+      error_text = error.message
+
+    ensure
+      response_data = { status: status,
+                        statusText: status_text,
+                        errorText: error_text }.merge(additional_response_data)
+
+      render json: response_data
+    end
+  end
+
+
+  # Subclasses should redefine this to authorize as needed.
+  # Ex:  a UserChecklistsController might define it as:
+  #
+  #   def validate_and_authorize_xhr
+  #     super
+  #     authorize_user_checklist_class  # this is the additional authorization
+  #   end
+  #
+  def validate_and_authorize_xhr
+    validate_xhr_request
   end
 
 
@@ -225,6 +275,11 @@ class ApplicationController < ActionController::Base
     @hreflang_default_url = request.url
     @hreflang_sv_url = request.base_url + '/sv' + request.fullpath
     @hreflang_en_url = request.base_url + '/en' + request.fullpath
+  end
+
+
+  def validate_xhr_request
+    raise 'Unsupported request' unless request.xhr?
   end
 
 end

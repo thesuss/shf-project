@@ -307,10 +307,10 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
   end
 
   describe '#nav_tab_html_styles' do
-    it 'returns a Hash with the id, display_text, and aria_is_selected as arguments' do
-      expect(helper.nav_tab_html_styles('someID', 'display this', aria_is_selected = 'true'))
+    it 'returns a Hash with active added to the class, and  id, display_text, and aria_is_selected as arguments' do
+      expect(helper.nav_tab_html_styles('someID', 'display this', is_active: true))
           .to include(role: 'tab',
-                      class: 'nav-link',
+                      class: 'nav-link active',
                       href: 'someID',
                       'data-toggle': 'tab',
                       'aria-controls': 'display this',

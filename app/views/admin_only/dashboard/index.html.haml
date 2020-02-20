@@ -1,3 +1,4 @@
+-# FIXME - don't load all of the tabs at once!  make each tab a (routed) page and only load it when requested
 - i18n_scope = 'admin_only.dashboard'
 %header.entry-header
   %h1.entry-title= t('title', scope: i18n_scope)
@@ -8,9 +9,9 @@
   .row
     .col-md-11
       %ul.nav.nav-tabs#dashboard-tabs{ role: 'tablist' }
-        %li.nav-item.current.active
+        %li.nav-item.current
           - tab_title = t('tabs.current.tab-title', scope: i18n_scope)
-          %a#tab-current{ nav_tab_html_styles('#n1', tab_title, 'true') }= tab_title
+          %a#tab-current{ nav_tab_html_styles('#n1', tab_title, is_active: true) }= tab_title
         %li.nav-item.activity
           - tab_title = t('tabs.activity.tab-title', scope: i18n_scope)
           %a#tab-activity{ nav_tab_html_styles('#n2', tab_title) }= tab_title
@@ -29,11 +30,14 @@
         %li.nav-item.h-branding
           - tab_title = t('tabs.payments_h_branding.tab-title', scope: i18n_scope)
           %a#tab-h-branding{ nav_tab_html_styles('#n5', tab_title) }= tab_title
+        %li.nav-item.xhr-example
+          - tab_title = 'XHR example'
+          %a#tab-xhr-example{ nav_tab_html_styles('#n8', tab_title) }= tab_title
 
 
       .tab-content#nav-tab-content
 
-        .tab-pane.fade.show.active#n1{ role: "tabpanel", 'aria-labelledby': "tab-current" }
+        .tab-pane.fade#n1{ role: "tabpanel", 'aria-labelledby': "tab-current" }
           -# smell:  passing so many vars to a view -> should encapsulate in a class
           .section
             = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
@@ -58,17 +62,31 @@
 
         .tab-pane.fade#n4{ role: 'tabpanel', 'aria-labelledby': 'tab-membership' }
           .section
-            = render 'admin_only/dashboard/m_fee_payments',
-             num_total: @data_gatherer.total_members,
-             num_paid: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count,
-             those_not_paid: @data_gatherer.apps_approved_member_fee_not_paid
+            = render partial: 'payors_payment_status',
+              locals: { title: t('admin_only.dashboard.tabs.payments_memberships.title'),
+                payor_display_method: :full_name,
+                num_total: @data_gatherer.total_members,
+                num_paid: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count,
+                are_paid_text: 'members have paid',
+                total_number_text: 'members in the system',
+                have_not_paid_text: 'users have not paid   (Either they have been approved and not paid, or membership has lapsed.)',
+                those_not_paid_list_title: 'View unpaid users',
+                those_not_paid: @data_gatherer.apps_approved_member_fee_not_paid }
+
 
         .tab-pane.fade#n5{ role: 'tabpanel', 'aria-labelledby': 'tab-h-branding' }
           .section
-            = render 'admin_only/dashboard/h_branding',
-             num_total: @data_gatherer.total_companies,
-             num_paid: Company.branding_licensed.count,
-             those_not_paid: @data_gatherer.companies_branding_not_paid
+            = render partial: 'payors_payment_status',
+                locals: { title: t('admin_only.dashboard.tabs.payments_h_branding.title'),
+                  payor_display_method: :name,
+                  num_total: @data_gatherer.total_companies,
+                  num_paid: Company.branding_licensed.count,
+                  are_paid_text: 'H-branding-fees are paid',
+                  total_number_text: 'companies in the system',
+                  have_not_paid_text: 'companies have not paid their H-mark license fee',
+                  those_not_paid_list_title: 'View unpaid companies',
+                  those_not_paid: @data_gatherer.companies_branding_not_paid }
+
 
         .tab-pane.fade#n6{ role: 'tabpanel', 'aria-labelledby': 'tab-applications' }
           .section
@@ -85,3 +103,8 @@
              users_grouped_by_membership: @data_gatherer.translated_users,
              users_grouped_by_day_created: User.all.group_by_day(:created_at).count,
              not_members: User.all.reject(&:member?)
+
+
+        .tab-pane.fade#n8{ role: "tabpanel", 'aria-labelledby': "tab-xhr-example" }
+          .section
+            = render 'xhr_example'

@@ -91,13 +91,14 @@ module AdminOnly
     # The only things that vary are the id and the text that is displayed.
     #
     # @return [Hash] - the HTML styles to apply to a navigation tab on the dashboard
-    def nav_tab_html_styles(id, display_text, aria_is_selected = 'false')
+    def nav_tab_html_styles(id, display_text, is_active: false)
+      active_class = is_active ? ' active' : ''
       {role: 'tab',
-       class: 'nav-link',
+       class: "nav-link#{active_class}",
        href: id,
        'data-toggle': 'tab',
        'aria-controls': display_text,
-       'aria-selected': aria_is_selected}
+       'aria-selected': is_active.to_s}
     end
 
 

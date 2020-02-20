@@ -28,7 +28,12 @@
 
 :javascript
 
-  $( document ).ajaxSuccess(function( event, request, settings ) {
-        console.info("document Triggered ajaxSuccess handler! event="+ event + "= response:" + request + ":");
-        // update the section-title with the new recent_num_days number from @data_gatherer.timeframe )
+  $('body').on('ajax:complete', '.recent-activity-zzz', function (e, response) {
+
+    if (Utility.handleError(e, response) === false) {
+     // update the section-title with the new recent_num_days number from @data_gatherer.timeframe )
+     //  var data = JSON.parse(response.responseText);
+
+    }
   });
+
