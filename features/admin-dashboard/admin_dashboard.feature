@@ -135,9 +135,9 @@ Feature: Admin sees the dashboard with summary of important information
     Then I should see t("admin_only.dashboard.tabs.members.title")
     And I should see t("admin_only.dashboard.tabs.members.total_members", total_num_members: 11)
 
-    When I click on t("admin_only.dashboard.tabs.payments_memberships.tab-title")
+    When I click on t("admin_only.dashboard.tabs.payments_membership.tab-title")
     # section title:
-    Then I should see t("admin_only.dashboard.tabs.payments_memberships.title")
+    Then I should see t("admin_only.dashboard.tabs.payments_membership.title")
 
     When I click on t("admin_only.dashboard.tabs.payments_h_branding.tab-title")
     # section title:

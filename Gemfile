@@ -83,6 +83,9 @@ gem 'sitemap_generator'
 
 gem 'whenever', require: false
 
+# Query ActiveRecord by time (ex:  Payment.by_year(2019), Payment.between_times(Time.zone.now - 3.hours, Time.zone.now)) # all posts in last 3 hours
+gem 'by_star'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'

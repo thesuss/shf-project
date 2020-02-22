@@ -985,8 +985,8 @@ sv:
     all_applications_received: Alla inkomna ansökningar
 
     export_ansokan_csv:
-      success: Exporten lyckades. Du hittar filen bland din webbläsares nedladdade filer.
-      error: Ett problem uppstod med exporten.
+      success: &export_success Exporten lyckades. Du hittar filen bland din webbläsares nedladdade filer.
+      error: &export_error Ett problem uppstod med exporten.
       date_state_changed: Date State changed
       member_fee_paid: M fee paid
       member_fee_expires: M Expires
@@ -995,6 +995,15 @@ sv:
       paid: *paid
       never_paid: *never_paid
       fee_payment_url: "Betalas som inloggad via: https://hitta.sverigeshundforetagare.se%{payment_url}"
+
+    export_payments_csv:
+      success: *export_success
+      error: *export_error
+
+    export_payments_covering_year_csv:
+      success: *export_success
+      error: *export_error
+
 
 
   shf_documents:
@@ -1158,6 +1167,11 @@ sv:
     dashboard:
       title: ADMIN DASHBOARD
 
+      payments:
+        export_all_payments: &dash_export_all_payments Export all payments
+        export_payments_year: &dash_export_payments_year Export payments covering year
+        export_payments_year_explain: Payments that cover any of the days in the year.
+
       tabs:
         current:
           tab-title: Nuvarande
@@ -1187,7 +1201,13 @@ sv:
           title: *members
           total_members: *members
 
-        payments_memberships:
+        payments:
+          tab-title: &payments "Betalningar"
+          title: *payments
+          export_all_payments: Export all payments
+          export_payments_year: Export payments covering year
+
+        payments_membership:
           tab-title: &payments_membership "Betalningar: medlemskap"
           title: *payments_membership
 

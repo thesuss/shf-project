@@ -59,7 +59,6 @@ module Adapters
       raise NoMethodError, "subclasses must implement #{__method__}"
     end
 
-
   end
 
 end

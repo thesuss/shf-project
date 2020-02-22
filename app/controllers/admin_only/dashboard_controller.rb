@@ -12,6 +12,22 @@ module AdminOnly
 
 
     def index
+
+      @payments_search = Payment.ransack(params[:q])
+      @payments = @payments_search.result
+
+      render partial: 'payments', locals: { payments_search: @payments_search,
+                                            payments: @payments } if request.xhr?
+
+    end
+
+    def payments
+      @payments_search = Payment.ransack(params[:q])
+      @payments = @payments_search.result
+
+      render partial: 'payments', locals: { payments_search: @payments_search,
+                                            payments: @payments } if request.xhr?
+
     end
 
 

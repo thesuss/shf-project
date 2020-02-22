@@ -75,6 +75,22 @@ class Payment < ApplicationRecord
   end
 
 
+  # Return all Payments that cover any days in the given year
+  # (used to help determine the total amount of money for all of the days in a given year)
+  #
+  # all payments that start in the given year OR
+  # all payments that expire in the given year OR
+  # (all payments that start_date < given year AND expire_date > given year)  (ex: the payment covered 3 years, including the given year)
+  # This uses the by_star gem for the scopes (ex: by_year(), before(), after() )
+  def self.covering_year(year)
+    year_start = DateTime.new(year,1,1)
+    year_end = year_start.end_of_year
+
+    by_year(year, field: :start_date).
+        or(by_year(year, field: :expire_date)).
+        or(before(year_start, field: :start_date).after(year_end, field: :expire_date)).distinct
+  end
+
   # The transaction was successful.  The transaction might depend on an external system (e.g. HIPS).
   # This method is called so we can do whatever it is we need to do
   # (e.g. set the status, notify observers, etc.).

@@ -47,6 +47,12 @@ $tab-active-background-color: rgba(85, 145, 206, 0.2);
 
 .dashboard {
 
+  .instructions {
+    font-size: smaller;
+    font-style: italic;
+  }
+
+
   .section {
     margin: 0 0 1.5em 3em;
     min-height: 300px;
@@ -122,6 +128,14 @@ $tab-active-background-color: rgba(85, 145, 206, 0.2);
         }
       }
 
+    }
+  }
+
+
+  .payments {
+
+    .row {
+      margin-top: 1rem;
     }
   }
 

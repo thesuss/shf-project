@@ -98,6 +98,8 @@ GEM
     bullet (5.9.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
+    by_star (3.0.0)
+      activesupport (> 3)
     byebug (11.0.1)
     capistrano (3.11.0)
       airbrussh (>= 1.0.0)
@@ -605,6 +607,7 @@ DEPENDENCIES
   bootstrap-toggle-rails
   bootstrap-will_paginate
   bullet
+  by_star
   capistrano (~> 3.11)
   capistrano-bundler (~> 1.1.2)
   capistrano-env-config

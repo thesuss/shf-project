@@ -23,15 +23,15 @@ RSpec.describe Payment, type: :model do
 
   let(:brand_pymt1) do
     create(:payment, status: success, expire_date: Time.zone.today + 1.day,
-           payment_type:     Payment::PAYMENT_TYPE_BRANDING)
+           payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
   let(:brand_pymt2) do
     create(:payment, status: created, expire_date: Time.zone.today + 1.year,
-           payment_type:     Payment::PAYMENT_TYPE_BRANDING)
+           payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
   let(:brand_pymt3) do
     create(:payment, status: success, expire_date: Time.zone.today + 1.year,
-           payment_type:     Payment::PAYMENT_TYPE_BRANDING)
+           payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
 
   describe 'Factory' do
@@ -101,6 +101,153 @@ RSpec.describe Payment, type: :model do
     describe 'updated_in_date_range(start_date, end_date)' do
       it_behaves_like 'it_has_updated_in_date_range_scope', :payment
     end
+
+
+    describe '.covering_year' do
+      let(:year) { 2020 }
+
+      let(:start_year_01_01) { Time.new(year, 1, 1) }
+      let(:payment_starts_year_01_01) do
+        create(:payment, status: success,
+               start_date: start_year_01_01,
+               expire_date: User.expire_date_for_start_date(start_year_01_01))
+      end
+      let(:payment_expires_year_01_01_minus_1sec) do
+        create(:payment, status: success,
+               start_date: User.start_date_for_expire_date(start_year_01_01 - 1.second),
+               expire_date: (start_year_01_01 - 1.second))
+      end
+      let(:payment_expires_year_01_01) do
+        create(:payment, status: success,
+               start_date: User.start_date_for_expire_date(start_year_01_01),
+               expire_date: start_year_01_01)
+      end
+
+
+      let(:start_year_06_30) { Time.new(year, 06, 30) }
+      let(:payment_starts_year_06_30) do
+        create(:payment, status: success,
+               start_date: start_year_06_30,
+               expire_date: User.expire_date_for_start_date(start_year_06_30))
+      end
+      let(:payment_expires_year_06_30) do
+        create(:payment, status: success,
+               start_date: User.start_date_for_expire_date(start_year_06_30),
+               expire_date: start_year_06_30)
+      end
+
+      let(:start_year_last_second) { DateTime.new(year, 1, 1).end_of_year }
+      let(:payment_starts_year_last_second) do
+        create(:payment, status: success,
+               start_date: start_year_last_second,
+               expire_date: User.expire_date_for_start_date(start_year_last_second))
+      end
+      let(:payment_expires_year_last_second) do
+        create(:payment, status: success,
+               start_date: User.start_date_for_expire_date(start_year_last_second),
+               expire_date: start_year_last_second)
+      end
+
+      let(:end_of_year_plus_1_sec) { DateTime.new(year, 1, 1).end_of_year + 1.second }
+      let(:payment_starts_at_end_of_year_plus_1_sec) do
+        create(:payment, status: success,
+               start_date: end_of_year_plus_1_sec,
+               expire_date: User.expire_date_for_start_date(end_of_year_plus_1_sec))
+      end
+      let(:payment_expires_at_end_of_year_plus_1_sec) do
+        create(:payment, status: success,
+               start_date: User.start_date_for_expire_date(end_of_year_plus_1_sec),
+               expire_date: end_of_year_plus_1_sec)
+      end
+
+      let(:payment_start_1sec_before_expire_1sec_after) do
+        create(:payment, status: success,
+               start_date: (DateTime.new(year, 1, 1) - 1.second),
+               expire_date: end_of_year_plus_1_sec)
+      end
+
+      let(:payment_start_2years_before_expire_2years_after) do
+        create(:payment, status: success,
+               start_date: (DateTime.new(year - 2, 1, 1) ),
+               expire_date: DateTime.new(year + 2, 1, 1) )
+      end
+
+      let(:payment_start_2years_before_expire_06_30) do
+        create(:payment, status: success,
+               start_date: (DateTime.new(year - 2, 1, 1) ),
+               expire_date: DateTime.new(year, 06, 30) )
+      end
+
+
+      it 'includes all payments that started in that year' do
+        # explicitly create the payments needed for this test
+        payment_starts_year_01_01
+        payment_starts_year_06_30
+        payment_starts_year_last_second
+        payment_starts_at_end_of_year_plus_1_sec
+
+        result = described_class.covering_year(year)
+        expect(result.count).to eq 3
+        expect(result.to_a).to match_array([payment_starts_year_01_01,
+                                            payment_starts_year_06_30,
+                                            payment_starts_year_last_second])
+      end
+
+      it 'includes all payments that expire in that year' do
+        # explicitly create the payments needed for this test
+        payment_expires_year_01_01
+        payment_expires_year_06_30
+        payment_expires_year_last_second
+        payment_starts_at_end_of_year_plus_1_sec
+
+        result = described_class.covering_year(year)
+        expect(result.count).to eq 3
+        expect(result.to_a).to match_array([payment_expires_year_01_01,
+                                            payment_expires_year_06_30,
+                                            payment_expires_year_last_second])
+      end
+
+      it 'includes all payments that span that year (multi-year payment)' do
+        # start before the year and end after the year
+        payment_start_1sec_before_expire_1sec_after
+
+        result = described_class.covering_year(year)
+        expect(result.count).to eq 1
+        expect(result.to_a).to match_array([payment_start_1sec_before_expire_1sec_after])
+      end
+
+      it 'All the distinct payments (OR-ed) that should be included (no duplicates)' do
+        # explicitly create the payments needed for this test
+        payment_expires_year_01_01_minus_1sec # This should not be in the result
+        payment_starts_year_01_01
+        payment_starts_year_06_30
+        payment_starts_year_last_second
+        payment_starts_at_end_of_year_plus_1_sec # this should not be in the result
+        payment_expires_year_01_01
+        payment_expires_year_06_30
+        payment_expires_year_last_second
+        payment_expires_at_end_of_year_plus_1_sec
+        payment_start_1sec_before_expire_1sec_after
+        payment_start_2years_before_expire_2years_after
+        payment_start_2years_before_expire_06_30
+
+        result = described_class.covering_year(year)
+        expect(result.count).to eq 10
+        expect(result.to_a).to match_array([payment_starts_year_01_01,
+                                            payment_starts_year_06_30,
+                                            payment_starts_year_last_second,
+                                            payment_expires_year_01_01,
+                                            payment_expires_year_06_30,
+                                            payment_expires_year_last_second,
+                                            payment_expires_at_end_of_year_plus_1_sec,
+                                            payment_start_1sec_before_expire_1sec_after,
+                                            payment_start_2years_before_expire_2years_after,
+                                            payment_start_2years_before_expire_06_30
+                                           ])
+      end
+    end
+
+
   end
 
   describe '.order_to_payment_status' do
