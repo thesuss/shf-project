@@ -54,6 +54,8 @@ sv:
   none_n: &none_n Ingen
   name_missing: Namn Saknas
 
+  unknown: okänd
+
   time_ago: '%{amount_of_time} sedan'
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker

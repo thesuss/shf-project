@@ -78,9 +78,6 @@ set :keep_releases, 5
 
 set :migration_role, :app
 
-# whenever gem configuration:  we have the schedule.rb file in a slightly different place (under app/config)
-set :whenever_path,         ->{ "#{release_path}/app/config" }
-
 # ============================================
 # Tasks
 #   See Task sequencing below, after the code for the tasks

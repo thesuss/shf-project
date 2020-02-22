@@ -54,6 +54,8 @@ en:
   none_n: *none
   name_missing: Name Missing
 
+  unknown: unknown
+
   time_ago: '%{amount_of_time} ago'
 
   confirm_are_you_sure: &are_you_sure_confirm Are you sure

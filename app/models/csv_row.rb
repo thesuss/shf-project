@@ -30,7 +30,17 @@ class CsvRow
     self
   end
 
+
   alias_method :<<, :append
+
+
+  def append_items(items = [])
+    @elements.concat(items)
+  end
+
+
+  alias_method :concat, :append_items
+
 
   def elements
     @elements ||= []

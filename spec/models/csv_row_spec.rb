@@ -40,4 +40,20 @@ RSpec.describe CsvRow do
     expect(new_row.to_s).to eq '1,2,3'
   end
 
+
+  describe 'append_items' do
+
+    it 'adds all of the elements in the given array  at the end' do
+      new_row = described_class.new([1, 2])
+      new_row.append_items [3, 4]
+      expect(new_row.to_s).to eq '1,2,3,4'
+    end
+
+  end
+
+  it 'concat is an alias for append_items' do
+    new_row = described_class.new([1, 2])
+    new_row.concat [3, 4]
+    expect(new_row.to_s).to eq '1,2,3,4'
+  end
 end

@@ -15,38 +15,22 @@ module Adapters
   #
   #
   #--------------------------
-  class PaymentCoveringYearToCsvAdapter < AbstractCsvAdapter
-
-
-    I18N_PAYMENT_ATTRIBS = 'activerecord.attributes.payment'.freeze
+  class PaymentCoveringYearToCsvAdapter < PaymentToCsvAdapter
 
 
     def set_target_attributes(target)
-      co_name = ''
-      co_num = ''
-      amount = 0
-
       payment_covering_year = @adaptee
       payment = @adaptee.payment
 
       target << payment.id
-      target << quote(payment.user.full_name)
-      target << payment.user.email
-      target << payment.user.membership_number
 
-      if payment.payment_type == Payment::PAYMENT_TYPE_BRANDING
-        co_name = payment.company.name
-        co_num = payment.company.company_number
-        amount = SHF_BRANDING_FEE / 100
-      else
-        amount = SHF_MEMBER_FEE / 100
-      end
+      target.append_items user_info(payment)
 
-      target << payment.payment_type
+      target.append_items payment_type_info(payment)
 
-      target << amount
-      target << quote(payment.start_date)
-      target << quote(payment.expire_date)
+      target.append_items payment_amount(payment)
+
+      target.append_items term_dates(payment)
 
       target << payment_covering_year.total_number_of_days_paid
       target << payment_covering_year.sek_per_day
@@ -56,11 +40,9 @@ module Adapters
 
       target << quote(payment.created_at.strftime('%F'))
 
-      target << quote(co_name)
-      target << co_num
+      target.append_items company_info(payment)
 
-      target << payment.status
-      target << payment.hips_id
+      target.append_items hips_info(payment)
 
       target << quote(payment.notes)
 
@@ -68,6 +50,8 @@ module Adapters
     end
 
 
+    # TODO - DRY with superclass
+    #
     # @return [Array<String] - a list of the header strings
     #
     def self.headers(year)

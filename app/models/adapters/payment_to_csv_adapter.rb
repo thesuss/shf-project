@@ -18,41 +18,27 @@ module Adapters
 
     I18N_PAYMENT_ATTRIBS = 'activerecord.attributes.payment'.freeze
 
+    UNKNOWN = I18n.t('unknown')
+
 
     def set_target_attributes(target)
-      co_name = ''
-      co_num = ''
-      amount = 0
-
       payment = @adaptee
 
       target << payment.id
-      target << quote(payment.user.full_name)
-      target << payment.user.email
-      target << payment.user.membership_number
 
-      target << payment.payment_type
+      target.append_items user_info(payment)
 
-      if payment.payment_type == Payment::PAYMENT_TYPE_BRANDING
-        co_name = payment.company.name
-        co_num = payment.company.company_number
-        amount = SHF_BRANDING_FEE / 100
-      else
-        amount = SHF_MEMBER_FEE / 100
-      end
+      target.append_items payment_type_info(payment)
 
-      target << amount
+      target.append_items payment_amount(payment)
 
-      target << quote(payment.start_date)
-      target << quote(payment.expire_date)
+      target.append_items term_dates(payment)
 
       target << quote(payment.created_at.strftime('%F'))
 
-      target << quote(co_name)
-      target << co_num
+      target.append_items company_info(payment)
 
-      target << payment.status
-      target << payment.hips_id
+      target.append_items hips_info(payment)
 
       target << quote(payment.notes)
 
@@ -81,6 +67,70 @@ module Adapters
       ]
     end
 
+
+    # entries for the Payment user
+    def user_info(payment)
+      column_entries = []
+
+      # There are Payments in the production db where the user_id is nil
+      if payment.user
+        column_entries << quote(payment.user.full_name)
+        column_entries << payment.user.email
+        column_entries << payment.user.membership_number
+
+      else
+        column_entries << UNKNOWN # << quote(payment.user.full_name)
+        column_entries << UNKNOWN # << payment.user.email
+        column_entries << UNKNOWN # << payment.user.membership_number
+      end
+
+      column_entries
+    end
+
+
+    def payment_type_info(payment)
+      [payment.payment_type]
+    end
+
+
+    def company_info(payment)
+      co_name = ''
+      co_num = ''
+
+      if payment.payment_type == Payment::PAYMENT_TYPE_BRANDING
+        if payment.company
+          co_name = payment.company.name
+          co_num = payment.company.company_number
+        else
+          co_name = UNKNOWN
+          co_num = UNKNOWN
+        end
+      end
+
+      [quote(co_name), co_num]
+    end
+
+
+    def payment_amount(payment)
+      amount = UNKNOWN
+      if payment.payment_type == Payment::PAYMENT_TYPE_BRANDING
+        amount = SHF_BRANDING_FEE / 100
+      else
+        amount = SHF_MEMBER_FEE / 100
+      end
+
+      [amount]
+    end
+
+
+    def term_dates(payment)
+      [quote(payment.start_date), quote(payment.expire_date)]
+    end
+
+
+    def hips_info(payment)
+      [payment.status, payment.hips_id]
+    end
   end
 
 end

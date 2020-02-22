@@ -3,8 +3,8 @@
 
 :ruby
   if payment.payment_type == Payment::PAYMENT_TYPE_BRANDING
-    co_name = payment.company.name
-    co_num = payment.company.company_number
+    co_name = payment.company&.name
+    co_num = payment.company&.company_number
     amount = SHF_BRANDING_FEE / 100
   else
     co_name = ''
@@ -13,8 +13,8 @@
   end
 
 %tr.payment
-  %td.user-full-name= payment.user.full_name
-  %td.user-email= payment.user.email
+  %td.user-full-name= payment.user&.full_name
+  %td.user-email= payment.user&.email
   %td.amount= amount
   %td.company-name= co_name
   %td.company-number= co_num
