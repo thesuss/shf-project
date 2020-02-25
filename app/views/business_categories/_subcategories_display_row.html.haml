@@ -1,0 +1,17 @@
+-# Local vars - see descriptions in `_category_display_row`
+
+%tr.ml-2{ id: "subcategories-for-#{business_category.id}" }
+
+  %td{ colspan: 6 }
+    -# Nested tables inherit BS styling from parent
+
+    %table.table.table-borderless.my-0.ml-2
+      = render 'cat_table_head', parent_category: false
+
+      %tbody
+        - business_category.children.each do |subcategory|
+
+          = render 'category_display_row',
+                   business_category: subcategory,
+                   context: 'subcategory',
+                   parent_cat_id: business_category.id

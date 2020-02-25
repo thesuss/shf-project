@@ -30,7 +30,9 @@ CREATE TABLE public.addresses (
     latitude double precision,
     longitude double precision,
     visibility character varying DEFAULT 'street_address'::character varying,
-    mail boolean DEFAULT false
+    mail boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -143,7 +145,8 @@ CREATE TABLE public.business_categories (
     name character varying,
     description character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    ancestry character varying
 );
 
 
@@ -1372,6 +1375,13 @@ CREATE UNIQUE INDEX index_app_configurations_on_singleton_guard ON public.app_co
 
 
 --
+-- Name: index_business_categories_on_ancestry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_business_categories_on_ancestry ON public.business_categories USING btree (ancestry);
+
+
+--
 -- Name: index_ckeditor_assets_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1754,11 +1764,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190326120854'),
 ('20190514172102'),
 ('20190601004310'),
+('20190616183023'),
 ('20190815215041'),
 ('20190830212208'),
 ('20191030162238'),
 ('20191130225826'),
 ('20191204203416'),
-('20200108194625');
+('20200108194625'),
+('20200205213528');
 
 

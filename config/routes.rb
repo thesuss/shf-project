@@ -83,7 +83,10 @@ Rails.application.routes.draw do
 
 
   scope(path_names: { new: 'ny', edit: 'redigera' }) do
-    resources :business_categories, path: 'kategori'
+    resources :business_categories, path: 'kategori' do
+      get :get_edit_row, on: :member
+      get :get_display_row, on: :member
+    end
 
     resources :shf_applications, path: 'ansokan' do
       member do

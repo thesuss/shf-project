@@ -1,0 +1,13 @@
+-# Local vars -
+  parent_category: `true` (boolean) if root category, `false` if child (subcategory)
+
+%thead
+  %tr
+    %th.name.col-width-25pc
+      = parent_category ? t('activerecord.models.business_category.one') : ''
+    %th.description.col-width-40pc
+      = parent_category ? t('activerecord.attributes.business_category.description') : ''
+    %th.col-width-20pc
+    %th.col-width-5pc
+    %th.col-width-5pc
+    %th.col-width-5pc

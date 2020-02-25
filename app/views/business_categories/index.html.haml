@@ -3,24 +3,27 @@
 .entry-content
   .table-responsive
     %table.table.table-hover.table-sm#business_categories
-      %thead
-        %tr
-          %th= t('.name')
-          %th= t('.description')
-          %th
-          %th
-          %th
+      = render 'cat_table_head', parent_category: true
+
       %tbody
-        - @business_categories.each do |business_category|
-          %tr.business_category
-            %td.name= business_category.name
-            %td.description= business_category.description
-            %td.view= link_to t('.view'), business_category
-            %td.edit= link_to icon('fas', 'edit'), edit_business_category_path(business_category)
-            %td.delete= link_to icon('fas', 'trash', class: 'delete'),
-              business_category, method: :delete,
-              :data => { :confirm => t('.delete_confirm') }
+        - @business_categories.roots.each do |business_category|
+
+          = render 'category_display_row',
+                   business_category: business_category,
+                   context: 'category',
+                   parent_cat_id: nil
+
+          - if business_category.children?
+
+            = render 'subcategories_display_row',
+                     business_category: business_category
 
   %hr
-  .text-center
-    = link_to t('business_categories.new_business_category'), new_business_category_path, class: 'btn btn-sm btn-light'
+    .text-center
+      = link_to t('business_categories.new.title'),
+                new_business_category_path,
+                remote: true,
+                class: 'btn btn-sm btn-light new-category-button'
+
+:javascript
+  $(document).ready(categories.init);

@@ -1,0 +1,40 @@
+-# Local vars -
+  context: 'subcategory' or 'category'
+  business_category: the BusinessCategory instance
+  parent_cat_id: ID of the parent category for a subcategory
+
+- parent_cat_id = local_assigns.fetch(:parent_cat_id, nil)
+
+- add_subcat_title = plus_icon(html_options: { class: 'add-entity-button' },
+                               text: t('business_categories.index.add_subcategory')).html_safe
+
+%tr.business_category.category-display-row{ id: "category-display-row-#{business_category.id}" }
+
+  %td.name= business_category.name
+
+  - if context == 'category'
+    %td.description= business_category.description
+    %td.add_subcategory
+      = link_to add_subcat_title,
+                new_business_category_path(parent_cat_id: business_category.id),
+                remote: true,
+                class: 'btn btn-sm btn-light new-category-button'
+  - else
+    %td.description{ colspan: 2 }= business_category.description
+
+
+  %td.view
+    = link_to view_icon, business_category
+
+  %td.edit
+    = link_to edit_icon,
+              get_edit_row_business_category_path(business_category,
+                                                  parent_cat_id: parent_cat_id),
+              remote: true,
+              class: 'edit-category-button'
+
+  %td.delete
+    = link_to destroy_icon(html_options: { class: 'delete-category text-danger' }),
+              business_category, method: :delete, remote: true,
+              data: { confirm: t('confirm_are_you_sure') },
+              class: 'delete-category'

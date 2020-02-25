@@ -100,6 +100,7 @@ module ShfIconsHelper
   FA_COMPLETE_CHECK = 'check-circle'
   FA_WARNING = 'exclamation-triangle'
   FA_PROBLEM = 'times-circle'
+  FA_PLUS = 'plus'
 
   FA_TOOLTIP = 'info-circle' # Note that there is a specific helper method 'fas_tooltip(...) that can be used (Defined in application_helper.rb)
 
@@ -248,6 +249,8 @@ module ShfIconsHelper
       { method_name_start: 'complete_check', icon: FA_COMPLETE_CHECK },
       { method_name_start: 'warning', icon: FA_WARNING },
       { method_name_start: 'problem', icon: FA_PROBLEM },
+      { method_name_start: 'plus', icon: FA_PLUS },
+
 
       { method_name_start: 'next_arrow', icon: FA_ARROW_RIGHT },
       { method_name_start: 'previous_arrow', icon: FA_ARROW_LEFT },
@@ -328,7 +331,7 @@ module ShfIconsHelper
       def #{method_info[:method_name_start]}_icon(html_options: #{icon_html_options},
                        fa_style: '#{icon_fa_style}',
                        text: nil)
-      
+
         default_html_options = #{icon_html_options}
         merged_html_options = default_html_options.merge(html_options)
 

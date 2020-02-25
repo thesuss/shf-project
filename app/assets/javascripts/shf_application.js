@@ -4,7 +4,7 @@ $(function() {
   // Successful delete of file attached to application
   $('body').on('ajax:complete', 'a[class="action-delete"]', function (e, response) {
 
-    if (Utility.handleError(e, response) === false) {
+    if (Utility.httpErrorOccurred(response) === false) {
       var data = JSON.parse(response.responseText);
 
       $('#uploaded-files').html(data.uploaded_html);

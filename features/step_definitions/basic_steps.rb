@@ -93,7 +93,7 @@ end
 
 
 When "I click the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
-  icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]//a/i[contains(@class, '#{icon_class}')]")
+  icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a/i[contains(@class, '#{icon_class}')]")
   icon_element.find(:xpath, './parent::a').click  # get the parent a of the icon)
 end
 

@@ -130,5 +130,3 @@ RSpec.describe ShfIconsHelper, type: :helper do
 
 
 end
-
-

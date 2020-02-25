@@ -3,7 +3,7 @@ $(function() {
 
   $('body').on('ajax:complete', '.companies_pagination', function (e, response) {
 
-    if (Utility.handleError(e, response) === false) {
+    if (Utility.httpErrorOccurred(response) === false) {
       var data = JSON.parse(response.responseText);
 
       $('#companies_list').html(data.list_html);
@@ -13,7 +13,7 @@ $(function() {
 
   $('body').on('ajax:complete', '#companies_search', function (e, response) {
 
-    if (Utility.handleError(e, response) === false) {
+    if (Utility.httpErrorOccurred(response) === false) {
       var data = JSON.parse(response.responseText);
 
       $('#companies_list').html(data.list_html);

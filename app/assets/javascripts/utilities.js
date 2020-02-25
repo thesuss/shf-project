@@ -49,16 +49,31 @@ var Utility = {
     }
   },
 
-  handleError: function(event, response) {
-
-    if (response.status !== 200 || (response.statusText !== 'OK')) {
-      // HTTP error or Action cannot be completed
-      event.stopPropagation();
+  httpErrorOccurred: function(response) {
+    // Check HTTP error code in jquery response
+    // Show alert if error.
+    // Return true if error, false otherwise
+    if (response.status !== 200 || response.statusText !== 'OK') {
       alert(I18n.t('errors.something_wrong'));
       return true;
     }
-
     return false;
+  },
+
+  actionErrorOccurred: function(response, data) {
+    // Check "status" value in response payload.
+    // Value should equal a Rails HTTP status code (int or lower-case string)
+    // Return true if error, false otherwise
+    var action_status;
+    if (data !== undefined && data.status !== undefined) {
+      action_status = data.status;
+    } else {
+      action_status = 200;
+    }
+
+    if (action_status === 200 || action_status === 'ok') { return false; }
+
+    return true;
   }
 
 };

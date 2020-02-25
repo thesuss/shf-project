@@ -1,0 +1,52 @@
+-# Local vars -
+  business_category: the BusinessCategory instance
+  record_type: 'new_category' or 'existing_category' (can be parent or child (sub))
+  context: 'category' or 'subcategory'
+  parent_cat_id: ID of the parent category for a subcategory
+
+%tr.category-edit-row{ id: "category-edit-row-#{business_category.id}" }
+
+  %td{ colspan: 6 }
+
+    #category-edit-errors
+
+    = form_for business_category, remote: true,
+               html: { class: 'edit-category-form' } do |f|
+
+      %table.table.border.border-dark
+        %thead
+          %tr
+            %th.center-text{ colspan: 4 }
+              :ruby
+                key = 'business_categories.index.'
+                key += record_type == 'new_category' ? 'add_' : 'edit_'
+                key += context
+              = t(key)
+        %tbody
+          %tr
+            %td
+              .form-group
+                = f.label :name, t('activerecord.attributes.business_category.name') , class: 'required'
+                = f.text_field :name, class: 'form-control'
+            %td
+              .form-group
+                = f.label :description, t('activerecord.attributes.business_category.description')
+                = f.text_field :description, class: 'form-control'
+
+            %td
+              = hidden_field_tag :parent_cat_id, parent_cat_id
+
+            %td.border-right.border-dark
+              .float-right
+                = f.submit t('submit'), class: 'btn btn-success btn-sm'
+                %br
+                %br
+                - if record_type == 'existing_category'
+                  = link_to t('cancel'),
+                            get_display_row_business_category_path(business_category),
+                            remote: true,
+                            class: 'edit-category-cancel-button btn btn-danger btn-sm mt-1',
+                            id: "cancel-category-edit-#{business_category.id}"
+                - else
+                  = link_to t('cancel'), {}, href: '#',
+                            class: 'new-category-cancel-button btn btn-danger btn-sm mb-1'

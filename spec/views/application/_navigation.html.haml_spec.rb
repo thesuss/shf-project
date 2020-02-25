@@ -240,14 +240,9 @@ RSpec.describe 'companies/index' do
         expect(rendered).to match %r{#{text}}
       end
 
-      it 'renders manage-categories link' do
-        text = t('menus.nav.admin.categories.manage_categories')
+      it 'renders categories link' do
+        text = t('menus.nav.admin.categories.submenu_title')
         expect(rendered).to match %r{<a class="nav-link" href=\"\/kategori\">#{text}}
-      end
-
-      it 'renders new-category link' do
-        text = t('menus.nav.admin.categories.new_category')
-        expect(rendered).to match %r{<a class="nav-link" href=\"\/kategori\/ny\">#{text}}
       end
     end
 

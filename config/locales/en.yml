@@ -58,7 +58,7 @@ en:
 
   time_ago: '%{amount_of_time} ago'
 
-  confirm_are_you_sure: &are_you_sure_confirm Are you sure
+  confirm_are_you_sure: &are_you_sure_confirm Are you sure?
 
   hello: 'Hello, %{name}'
 
@@ -244,6 +244,7 @@ en:
       business_category:
         name: &business_category_name  Name
         description: &description  Description
+        subcategory: &subcategory Subcategory
 
       shf_document:
         title: &title Title
@@ -783,6 +784,10 @@ en:
       edit: *edit
       delete: *remove
       delete_confirm: *are_you_sure_confirm
+      add_subcategory: Add Subcategory
+      add_category: Add Category
+      edit_subcategory: Edit Subcategory
+      edit_category: Edit Category
 
     show:
       title: Business category (type of dog-related service)
@@ -816,6 +821,7 @@ en:
       clue_selected_categories: &clue_selected_categories Blue box = selected categories
 
     new_business_category: New business category
+    new_business_subcategory: New subcategory
     all_business_categories: All categories
 
   users:

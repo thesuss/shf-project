@@ -76,6 +76,8 @@ gem 'mini_magick'
 
 gem 'counter_culture', '~> 2.0'
 
+gem 'ancestry'
+
 gem 'cookies_eu'
 
 gem 'ancestry'

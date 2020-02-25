@@ -304,7 +304,7 @@ GEM
     kwalify (0.7.2)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libv8 (6.7.288.46.1)
+    libv8 (6.7.288.46.1-x86_64-darwin-17)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)

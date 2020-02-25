@@ -3,7 +3,7 @@
 scss_files: "**/*.scss"
 plugin_directories: ['.scss-linters']
 
-# temporarily exclude these files 
+# temporarily exclude these files
 exclude: 'app/assets/stylesheets/shf-mailer.scss'
 
 # List of gem names to load custom linters from (make sure they are already
@@ -212,7 +212,7 @@ linters:
     spaces: 0
 
   StringQuotes:
-    enabled: true
+    enabled: false
     style: double_quotes # or single_quotes
 
   TrailingSemicolon:
