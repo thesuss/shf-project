@@ -36,6 +36,8 @@ set :deploy_to, ENV['APP_PATH']
 #   These files verify that  Google webmasters (e.g. Susanna & Ashley as of 2020/02/02)
 #   are verified as to access this site with Google webmaster tools.
 #   Do not remove these files!
+#
+# See the note below in the :linked_directories section for information about all of the map-markers files
 append :linked_files, 'config/database.yml',
        'config/secrets.yml',
        '.env',
@@ -43,8 +45,32 @@ append :linked_files, 'config/database.yml',
        'public/google979ebbe196e9bd30.html',
        'public/favicon.ico',
        'public/apple-touch-icon.png',
-       'public/apple-touch-icon-precomposed.png'
-
+       'public/apple-touch-icon-precomposed.png',
+       'public/map-markers/m1.png',
+       'public/map-markers/m2.png',
+       'public/map-markers/m3.png',
+       'public/map-markers/m4.png',
+       'public/map-markers/m5.png',
+       'public/map-markers/sv/m1.png',
+       'public/map-markers/sv/m2.png',
+       'public/map-markers/sv/m3.png',
+       'public/map-markers/sv/m4.png',
+       'public/map-markers/sv/m5.png',
+       'public/map-markers/en/m1.png',
+       'public/map-markers/en/m2.png',
+       'public/map-markers/en/m3.png',
+       'public/map-markers/en/m4.png',
+       'public/map-markers/en/m5.png',
+       'public/map-markers/sv/hundforetag/m1.png',
+       'public/map-markers/sv/hundforetag/m2.png',
+       'public/map-markers/sv/hundforetag/m3.png',
+       'public/map-markers/sv/hundforetag/m4.png',
+       'public/map-markers/sv/hundforetag/m5.png',
+       'public/map-markers/en/hundforetag/m1.png',
+       'public/map-markers/en/hundforetag/m2.png',
+       'public/map-markers/en/hundforetag/m3.png',
+       'public/map-markers/en/hundforetag/m4.png',
+       'public/map-markers/en/hundforetag/m5.png',
 
 # These directories are shared among all deployments.  Every deployment has a
 # link to these directories.  They are not recreated (new) for each deployment.
@@ -52,6 +78,23 @@ append :linked_files, 'config/database.yml',
 # deployment to the next, it should be listed here.
 # These directories are in the 'shared' directory on the production system: /var/www/shf/shared/
 # (That is the convention for Capistrano deployments.)
+#
+# We require 6 (!) directories for the map markers:
+#  public/map-markers,
+       #  public/en/map-markers,
+       #  public/sv/map-markers,
+       #  public/hundforetag,
+       #  public/en/hundforetag/map-markers,
+       #  public/sv/hundforetag/map-markers
+#
+# The application will create paths with the locale [sv|en] prepended, and then google-maps.js will
+# use those in the relative path that it constructs to get the map-marker image files (m*.png files).
+# The application creates the locale  paths because of the locale filter gem (used in the routes.rb) file.
+# The root route (for non-logged in visitors) will look for the map markers in /public[][/sv|en]/map-markers.
+# But often the path is specific to companies and so is /public[/sv|en]/hundforetag
+# /sv/[hundforetag/]map-markers and /en/[hundforetag/]map-markers just have symbolic markers to the public/map-markers directory.
+#   (This all seems a bit too complex, but it's what is needed to get this working.)
+#
 append  :linked_dirs, 'log',
         'tmp/pids',
         'tmp/cache',
@@ -61,7 +104,14 @@ append  :linked_dirs, 'log',
         'public/uploads',
         'public/storage',
         'public/ckeditor_assets',
-        'app/views/pages'
+        'app/views/pages',
+        'public/map-markers',
+        'public/sv/map-markers',
+        'public/en/map-markers',
+        'public/hundforetag/map-markers',
+        'public/sv/hundforetag/map-markers',
+        'public/en/hundforetag/map-markers'
+
 
 
 # public/.well-known  created by diffouo (raoul) when this was set up. used for ??? (not used?)

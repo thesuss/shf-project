@@ -34,10 +34,7 @@ function initCenteredMap(centerCoordinates, markers = [], icon) {
 
     var map = new google.maps.Map(document.getElementById('map'), {
         center: mapCenter,
-        zoom: 13,
-        mapTypeControl: false,
-        streetViewControl: false,
-        controlSize: 26 // Size (in pixels) of map control buttons       
+        zoom: 13
     });
 
 
@@ -53,7 +50,7 @@ function addMarkerClustererToMap (map, locations) {
     markers = [];
 
     var infoWindow = new google.maps.InfoWindow();
-    
+
     locations.forEach(addMarker);
 
     // For each location create a marker and add an event listener to open infoWindow
@@ -75,7 +72,7 @@ function addMarkerClustererToMap (map, locations) {
     }
 
     var markerCluster = new MarkerClusterer(map, markers, {
-        imagePath: 'assets/m'
+        imagePath: 'map-markers/m'
     });
 
     // fit the map center and zoom to see all markers, if markers exist
