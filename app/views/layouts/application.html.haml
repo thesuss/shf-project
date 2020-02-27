@@ -34,6 +34,7 @@
     = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=" + |
                              "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
                              "&region=SE" |
+    = javascript_include_tag 'https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js'
 
     = yield :javascript_for_view  # javascript markup specific to a view
 

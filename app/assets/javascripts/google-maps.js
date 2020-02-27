@@ -12,12 +12,12 @@
 //  else display all of the markers,and so the center is automatically
 //   determined by the center of all of them.
 //
-function initCenteredMap(centerCoordinates, markers, icon) {
+
+// markers default value is [] to be used if markers is null
+
+function initCenteredMap(centerCoordinates, markers = [], icon) {
 
     var mapCenter = {lat: 59.3293235, lng: 18.0685808};
-
-    var marks = markers === null ? [] : markers;
-
 
     if (centerCoordinates === null) {
         // try to get the user's coordinates
@@ -40,97 +40,51 @@ function initCenteredMap(centerCoordinates, markers, icon) {
         controlSize: 26 // Size (in pixels) of map control buttons       
     });
 
-    var bounds = new google.maps.LatLngBounds();
 
-    addMarkersToMap(map, marks, bounds, icon);
+    addMarkerClustererToMap(map, markers);
 
-    //now fit the map to the newly inclusive bounds
-    // this will zoom in too far if there's only 1 marker
-    if (marks.length > 1) {
+}
+
+
+
+
+function addMarkerClustererToMap (map, locations) {
+
+    markers = [];
+
+    var infoWindow = new google.maps.InfoWindow();
+    
+    locations.forEach(addMarker);
+
+    // For each location create a marker and add an event listener to open infoWindow
+    function addMarker(location, index){
+
+        var marker = new google.maps.Marker({
+            position: {lat: location.latitude, lng: location.longitude}
+        });
+
+        // don't create a pop-up box if there's no text to display
+        if (location.text !== ""){
+            marker.addListener('click', function() {
+                infoWindow.setContent(location.text.trim());
+                infoWindow.open(map, marker);
+            });
+        }
+
+        markers[index] = marker;
+    }
+
+    var markerCluster = new MarkerClusterer(map, markers, {
+        imagePath: 'assets/m'
+    });
+
+    // fit the map center and zoom to see all markers, if markers exist
+    if (markers.length > 1) {
+        var bounds = new google.maps.LatLngBounds();
+        addBound = (marker) => bounds.extend(marker.position);
+        markers.forEach(addBound);
         map.fitBounds(bounds);
     }
 
 }
 
-
-// add the markers to the map that is defined on the page with id = 'map'
-function addMarkersToMap(map, markers, bounds, icon) {
-
-    // if the map doesn't exist, do nothing
-    if (document.getElementById('map') !== null) {
-
-        var marks = markers === null ? [] : markers;
-        var bound = bounds === null ? new google.maps.LatLngBounds() : bounds;
-
-
-        for (var i = 0, len = marks.length; i < len; i++) {
-
-            var position = {
-                lat: marks[i].latitude,
-                lng: marks[i].longitude
-            };
-
-            addMarker(position, map, marks[i].text, icon);
-
-            //extend the bounds to include the position for this marker
-            bound.extend(position);
-        }
-    }
-
-}
-
-
-// get the text from element with id = element_id
-//  if there is no element_id in the document, return an empty string
-function getMarkerText(elementId) {
-    var text = "";
-
-    if (document.getElementById(elementId) !== null) {
-        text = document.getElementById(elementId).childNodes[0].nodeValue;
-    }
-    return text.trim();
-}
-
-
-// get the value for the element with id element_id and convert it to a Number
-//  If there is no element_id in the document, show an error on the console
-function getNumber(elementId) {
-
-    if (document.getElementById(elementId) !== null) {
-        return parseFloat(document.getElementById(elementId).childNodes[0].nodeValue);
-    } else {
-        console.error("Expected document to have an element with id '" + elementId + "' but it did not.");
-    }
-
-}
-
-
-// Create a marker. Optionally, set the icon to be used for it
-// When it's clicked, pop-up a box with text in it
-function addMarker(coordinates, map, text, icon) {
-    var marker;
-
-    marker = new google.maps.Marker({
-        position: coordinates,
-        map: map,
-        icon: icon
-    });
-
-
-    // don't create a pop-up box if there's no text to display
-    if (text !== "") {
-        google.maps.event.addListener(marker, "click", function () {
-            createInfoWindow(text).open(map, marker);
-        });
-    }
-
-    return marker;
-}
-
-
-// pop-up window with text
-function createInfoWindow(text) {
-    return new google.maps.InfoWindow({
-        content: text
-    });
-}
