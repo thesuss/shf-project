@@ -1,4 +1,6 @@
-Feature: As a visitor
+Feature: Show the company's location on a map
+
+  As a visitor
   So that I can how near or far a company is
   Show me the company location on a map on the company details page
 

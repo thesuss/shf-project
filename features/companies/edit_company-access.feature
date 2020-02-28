@@ -1,6 +1,9 @@
-Feature: As a member
-  in order to easily update my information
-  I need to be able to edit my company
+Feature: Only admins and company members can edit a company
+
+  As an admin or member of a company
+  to control who can change information about the company
+  Only I can edit company information
+
 
   Background:
     Given the following users exist:

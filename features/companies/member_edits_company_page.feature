@@ -1,4 +1,6 @@
-Feature: As a member
+Feature: Member edits a company attribute
+
+  As a member
   So that visitors can see if my company offers services they might be interested in
   I need to be able to set a page that displays information about my company
 

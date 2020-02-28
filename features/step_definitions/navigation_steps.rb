@@ -1,3 +1,16 @@
+# Steps for navigating through the site: Visiting pages (I am on the "zzz" page),
+# going to the next page, etc.
+#
+
+
+And("I am on the home page") do
+  step %{I am on the "home" page}
+end
+
+And("I am on the landing page") do
+  step %{I am on the "landing" page}
+end
+
 
 
 And("I should{negate} see a message telling me I am not allowed to see that page") do | negation |
@@ -110,4 +123,9 @@ end
 
 When(/^I reload the page$/) do
   visit current_path
+end
+
+
+When("I click on the pagination link to go to the next page") do
+  step %{I click on t("will_paginate.next_label") link}
 end

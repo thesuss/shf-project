@@ -24,15 +24,17 @@ class CompaniesController < ApplicationController
     @search_params = Company.ransack(action_params)
 
     # only select companies that are 'complete'; see the Company.complete scope
-
     @all_companies = @search_params.result(distinct: true)
                          .includes(:business_categories)
                          .includes(addresses: [:region, :kommun])
                          .joins(addresses: [:region, :kommun])
+                         .order(company_order)
+
     # The last qualifier ("joins") on above statement ("addresses: :region") is
     # to get around a problem with DISTINCT queries used with ransack when also
     # allowing sorting on an associated table column ("region" in this case)
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
+
 
     if current_user.admin?
       @all_visible_companies = @all_companies
@@ -367,4 +369,11 @@ class CompaniesController < ApplicationController
 
   end
 
+  # Set the scope for putting a list of companies in order.
+  # Right now this just returns the updated_at, sorted by desc (most recently updated = first)
+  #
+  # @return [Hash | String] - the arguments to use in the .order  method
+  def company_order
+    {updated_at: :desc}
+  end
 end

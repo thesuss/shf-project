@@ -187,9 +187,9 @@ Then(/^I should( not)? see xpath "([^"]*)"$/) do |negate, xp|
   expect(page).send (negate ? :not_to : :to), have_xpath(xp)
 end
 
-Then(/^I should( not)? see "([^"]*)" before "([^"]*)"$/) do |not_see, toSearch, last|
-  assert_text toSearch
-  regex = /#{Regexp.quote("#{toSearch}")}.*#{Regexp.quote("#{last}")}/m
+Then("I should{negate} see {capture_string} before {capture_string}") do |not_see, beforeItem, afterItem|
+  assert_text beforeItem
+  regex = /#{Regexp.quote("#{beforeItem}")}.*#{Regexp.quote("#{afterItem}")}/m
 
   if not_see
     assert_no_text :visible, regex
@@ -197,6 +197,22 @@ Then(/^I should( not)? see "([^"]*)" before "([^"]*)"$/) do |not_see, toSearch, 
     assert_text :visible, regex
   end
 end
+
+
+Then("I should{negate} see {capture_string} before {capture_string} in the div with id {capture_string}") do |not_see, before_item, after_item, withinElement|
+  node_to_search = withinElement ? page.find(:id, withinElement) : page
+
+  node_to_search.assert_text before_item
+  node_to_search.assert_text after_item
+  regex = /#{Regexp.quote("#{before_item}")}.*#{Regexp.quote("#{after_item}")}/m
+
+  if not_see
+    node_to_search.assert_no_text :visible, regex
+  else
+    node_to_search.assert_text :visible, regex
+  end
+end
+
 
 Then(/^I should be on the SHF document page for "([^"]*)"$/) do |doc_title|
   shf_doc = ShfDocument.find_by_title(doc_title)

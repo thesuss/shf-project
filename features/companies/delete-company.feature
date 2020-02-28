@@ -1,4 +1,6 @@
-Feature: As an admin
+Feature: Admin deletes a company
+
+  As an admin
   In order to keep the list of companies valid and up to date
   I need to be able to delete companies
 

@@ -27,7 +27,7 @@ module PathHelpers
 
 
       # Home a.k.a 'landing' pages
-      when 'landing'
+      when 'landing', 'home'
         path = root_path
 
       # Instruction pages

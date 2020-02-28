@@ -14,6 +14,7 @@ And(/^the following companies exist:$/) do |table|
   end
 end
 
+
 And(/^the following company addresses exist:$/) do |table|
   table.hashes.each do |address|
     company_name = address.delete('company_name')
@@ -43,19 +44,20 @@ Then(/^I can go to the company page for "([^"]*)"$/) do |company_number|
 end
 
 
-
-And(/^the name for company number "([^"]*)" is set to an empty string$/) do | company_number |
+And(/^the name for company number "([^"]*)" is set to an empty string$/) do |company_number|
   co = Company.find_by_company_number(company_number)
   co.update(name: '')
-  co.save!  # do not do validations in case we're putting this into a bad state on purpose
+  co.save! # do not do validations in case we're putting this into a bad state on purpose
 end
 
-And(/^the region for company named "([^"]*)" is set to nil$/) do | company_name |
+And(/^the region for company named "([^"]*)" is set to nil$/) do |company_name|
   co = Company.find_by_name(company_name)
   co.addresses.first.update(region: nil)
-  co.save!  # do not do validations in case we're putting this into a bad state on purpose
+  co.save! # do not do validations in case we're putting this into a bad state on purpose
 end
 
+# -------------------------------------------------
+# Addresses
 
 Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |company_name|
   co = Company.find_by_name(company_name)
@@ -70,10 +72,6 @@ Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |co
 
 end
 
-Then(/^all events for the company named "([^"]*)" are deleted from the database$/) do |company_name|
-  co = Company.find_by_name(company_name)
-  co.events.clear
-end
 
 When "I click the {ordinal} address for company {capture_string}" do |ordinal, company|
   cmpy = Company.find_by name: company
@@ -84,10 +82,18 @@ When "I click the {ordinal} address for company {capture_string}" do |ordinal, c
   click_link(addr_link)
 end
 
-And(/I scroll so the top of the list of companies is visible/) do
-  step %{I scroll so element with id "shf_applications_list" is visible}
+
+# -------------------------------------------------
+# Dinkurs Events
+
+Then(/^all events for the company named "([^"]*)" are deleted from the database$/) do |company_name|
+  co = Company.find_by_name(company_name)
+  co.events.clear
 end
 
+
+# -----------------------------------------------------------------------
+# Company Search form
 
 And "I hide the companies search form" do
   step %{I click on t("accordion_label.company_search_form.hide")}
@@ -98,24 +104,39 @@ And "I show the companies search form" do
   step %{I click on t("accordion_label.company_search_form.show")}
 end
 
+# -----------------------------------------------------------------------
+# Companies shown in the list of companies (or not)
 
-COMPANIES_LIST_ID = 'companies_list'
+COMPANIES_LIST_ID = 'companies-list-table'
 
-# Find a string or not in the #companies_list
+# Find a string (or not) in the list of companies
 # (= the list of companies on the #index page
-And "I should{negate} see {capture_string} in the list of companies" do | negated, expected_string |
+And "I should{negate} see {capture_string} in the list of companies" do |negated, expected_string|
   step %{I should#{negated ? ' not' : ''} see "#{expected_string}" in the div with id "#{COMPANIES_LIST_ID}"}
 end
 
 
-# Find a string [x] times in the #companies_list table
+# Find a string [x] times in the list of companies
 # (= the list of companies on the #index page
-And "I should see {capture_string} {digits} time(s) in the list of companies" do | expected_string, num_times|
+And "I should see {capture_string} {digits} time(s) in the list of companies" do |expected_string, num_times|
   step %{I should see "#{expected_string}" #{num_times} time in the div with id "#{COMPANIES_LIST_ID}"}
 end
 
+And "I should{negate} see {capture_string} before {capture_string} in the list of companies" do |negated, first_co, second_co|
+  step %{I should#{negated ? ' not' : ''} see "#{first_co}" before "#{second_co}" in the div with id "#{COMPANIES_LIST_ID}"}
+end
 
-Then("company number {capture_string} is paid through {capture_string}") do | company_number, expected_branding_expire_datestr |
+
+And(/I scroll so the top of the list of companies is visible/) do
+  step %{I scroll so element with id "shf_applications_list" is visible}
+end
+
+
+# -------------------------------------------------
+# Payments and status (e.g. paid through)
+
+Then("company number {capture_string} is paid through {capture_string}") do |company_number, expected_branding_expire_datestr|
   company = Company.find_by_company_number(company_number)
   expect(company.branding_expire_date.to_s).to eq expected_branding_expire_datestr
 end
+

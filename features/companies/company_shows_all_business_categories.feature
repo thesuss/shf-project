@@ -1,4 +1,6 @@
-Feature: As a visitor
+Feature: Show business categories for a company to a visitor
+
+  As a visitor
   So that I can see if a company offers skills/services that I want,
   I want to see the skills/services of all of the employees in the
   company on the company's info page

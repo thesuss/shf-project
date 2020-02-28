@@ -25,35 +25,38 @@ Feature: Visitor sees all companies
 
     Given the following companies exist:
       | name      | company_number | email           | region       | kommun   |
-      | Company01 | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås |
-      | Company02 | 2120000142     | cmpy2@mail.com  | Västerbotten | Bromölla |
-      | Company03 | 6613265393     | cmpy3@mail.com  | Stockholm    | Alingsås |
-      | Company04 | 6222279082     | cmpy4@mail.com  | Stockholm    | Alingsås |
-      | Company05 | 8025085252     | cmpy5@mail.com  | Stockholm    | Alingsås |
-      | Company06 | 6914762726     | cmpy6@mail.com  | Stockholm    | Alingsås |
-      | Company07 | 7661057765     | cmpy7@mail.com  | Stockholm    | Alingsås |
-      | Company08 | 7736362901     | cmpy8@mail.com  | Stockholm    | Alingsås |
-      | Company09 | 6112107039     | cmpy9@mail.com  | Stockholm    | Alingsås |
-      | Company10 | 3609340140     | cmpy10@mail.com | Stockholm    | Alingsås |
-      | Company11 | 2965790286     | cmpy11@mail.com | Stockholm    | Alingsås |
-      | Company12 | 4268582063     | cmpy12@mail.com | Stockholm    | Alingsås |
-      | Company13 | 8028973322     | cmpy13@mail.com | Stockholm    | Alingsås |
-      | Company14 | 8356502446     | cmpy14@mail.com | Stockholm    | Alingsås |
-      | Company15 | 8394317054     | cmpy15@mail.com | Stockholm    | Alingsås |
-      | Company16 | 8423893877     | cmpy16@mail.com | Stockholm    | Alingsås |
-      | Company17 | 8589182768     | cmpy17@mail.com | Stockholm    | Alingsås |
-      | Company18 | 8616006592     | cmpy18@mail.com | Stockholm    | Alingsås |
-      | Company19 | 8764985894     | cmpy19@mail.com | Stockholm    | Alingsås |
-      | Company20 | 8822107739     | cmpy20@mail.com | Stockholm    | Alingsås |
-      | Company21 | 5569767808     | cmpy21@mail.com | Stockholm    | Alingsås |
-      | Company22 | 8909248752     | cmpy22@mail.com | Stockholm    | Alingsås |
-      | Company23 | 9074668568     | cmpy23@mail.com | Stockholm    | Alingsås |
-      | Company24 | 9243957975     | cmpy24@mail.com | Stockholm    | Alingsås |
-      | Company25 | 9267816362     | cmpy25@mail.com | Stockholm    | Alingsås |
-      | Company26 | 9360289459     | cmpy26@mail.com | Stockholm    | Alingsås |
-      | Company27 | 9475077674     | cmpy27@mail.com | Stockholm    | Alingsås |
-      | Company28 | 8728875504     | cmpy28@mail.com | Stockholm    | Alingsås |
       | Company29 | 5872150379     | cmpy29@mail.com | Stockholm    | Alingsås |
+      | Company28 | 8728875504     | cmpy28@mail.com | Stockholm    | Alingsås |
+      | Company27 | 9475077674     | cmpy27@mail.com | Stockholm    | Alingsås |
+      | Company26 | 9360289459     | cmpy26@mail.com | Stockholm    | Alingsås |
+      | Company25 | 9267816362     | cmpy25@mail.com | Stockholm    | Alingsås |
+      | Company24 | 9243957975     | cmpy24@mail.com | Stockholm    | Alingsås |
+      | Company23 | 9074668568     | cmpy23@mail.com | Stockholm    | Alingsås |
+      | Company22 | 8909248752     | cmpy22@mail.com | Stockholm    | Alingsås |
+      | Company21 | 5569767808     | cmpy21@mail.com | Stockholm    | Alingsås |
+      | Company20 | 8822107739     | cmpy20@mail.com | Stockholm    | Alingsås |
+      | Company19 | 8764985894     | cmpy19@mail.com | Stockholm    | Alingsås |
+      | Company18 | 8616006592     | cmpy18@mail.com | Stockholm    | Alingsås |
+      | Company17 | 8589182768     | cmpy17@mail.com | Stockholm    | Alingsås |
+      | Company16 | 8423893877     | cmpy16@mail.com | Stockholm    | Alingsås |
+      | Company15 | 8394317054     | cmpy15@mail.com | Stockholm    | Alingsås |
+      | Company14 | 8356502446     | cmpy14@mail.com | Stockholm    | Alingsås |
+      | Company13 | 8028973322     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company12 | 4268582063     | cmpy12@mail.com | Stockholm    | Alingsås |
+      | Company11 | 2965790286     | cmpy11@mail.com | Stockholm    | Alingsås |
+      | Company10 | 3609340140     | cmpy10@mail.com | Stockholm    | Alingsås |
+      | Company09 | 6112107039     | cmpy9@mail.com  | Stockholm    | Alingsås |
+      | Company08 | 7736362901     | cmpy8@mail.com  | Stockholm    | Alingsås |
+      | Company07 | 7661057765     | cmpy7@mail.com  | Stockholm    | Alingsås |
+      | Company06 | 6914762726     | cmpy6@mail.com  | Stockholm    | Alingsås |
+      | Company05 | 8025085252     | cmpy5@mail.com  | Stockholm    | Alingsås |
+      | Company04 | 6222279082     | cmpy4@mail.com  | Stockholm    | Alingsås |
+      | Company03 | 6613265393     | cmpy3@mail.com  | Stockholm    | Alingsås |
+      | Company02 | 2120000142     | cmpy2@mail.com  | Västerbotten | Bromölla |
+      | Company01 | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås |
+
+
+
 
     And the following company addresses exist:
       | company_name | region     | kommun  | city    |

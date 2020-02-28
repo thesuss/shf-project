@@ -1,6 +1,9 @@
-Feature: As the owner of a company (or an admin)
-  As I am on the company
-  I should easily be able to edit it
+Feature: Only admin and company members see the button to edit a company
+
+  As the owner of a company (or an admin)
+  To protect access to the company info
+  Only I can edit it
+
 
   Background:
 
