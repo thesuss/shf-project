@@ -247,8 +247,8 @@
 - id: 15
   user_id: 4
   master_checklist_id: 8
-  name: SHF Member Guidelines
-  description: Commitments that all SHF members must affirm and follow
+  name: Medlemsåtagande
+  description: These standards ....(ensure integrity of the organization)....
   date_completed:
   ancestry:
   list_position: 2

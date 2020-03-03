@@ -28,6 +28,8 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
                                              ENV_ADMIN_PASSWORD_KEY => admin_pwd}) )
 
         allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
+
+        allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
         allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
         allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
@@ -84,6 +86,7 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
         allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
         allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
+        allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
         allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
 
         # must stub this way so the rest of ENV is preserved
@@ -154,6 +157,7 @@ RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_use
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
+      allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
       allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
       allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 

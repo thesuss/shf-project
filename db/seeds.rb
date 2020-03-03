@@ -128,8 +128,14 @@ begin
       log.info("Users now in the db: #{User.count}")
     end
 
-  Seeders::MasterChecklistsSeeder.seed
-  Seeders::UserChecklistsSeeder.seed
+    # -----------------------------------------
+    # Master and User checklists
+
+    Seeders::MasterChecklistTypesSeeder.seed
+    Seeders::MasterChecklistsSeeder.seed
+    Seeders::UserChecklistsSeeder.seed
+
+    # -----------------------------------------
 
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Applications') do |log|
       log.info('Creating membership applications ...')

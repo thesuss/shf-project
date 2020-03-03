@@ -88,6 +88,9 @@ class MembershipStatusUpdater < AbstractUpdater
   end
 
 
+  # FIXME should checklist_completed...  be added?
+
+
   def user_updated(user)
     check_user_and_log(user, user, LOGMSG_USER_UPDATED, LOGMSG_USER_UPDATED)
   end

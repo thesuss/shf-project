@@ -2,6 +2,13 @@ require 'rails_helper'
 
 RSpec.describe RequirementsForMemberUnpaidMoreThanXMonths, type: :model do
 
+  before(:each) do
+    # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
+    # if a ShfApplication is accepted.
+    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+  end
+
+
   let(:feb1_2018) { Date.new(2018, 2, 1) }
   let(:jun1_2018) { Date.new(2018, 6, 1) }
 

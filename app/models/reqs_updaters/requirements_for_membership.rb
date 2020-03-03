@@ -27,7 +27,24 @@ class RequirementsForMembership < AbstractRequirements
 
   def self.requirements_met?(args)
     user = args[:user]
-    user.membership_current? && user.has_approved_shf_application?
+
+
+    user.has_approved_shf_application? &&
+        membership_guidelines_checklist_done?(user) &&
+        user.membership_current?
+  end
+
+
+  # @return [Boolean] - if a user must have a completed Membershil Guidelines checklist,
+  #   return true if has been completed (false if not completed)
+  # else if the user does not have to have a completed Membership Guidelines checklist,
+  #   return true (we assume it's fine)
+  def self.membership_guidelines_checklist_done?(user)
+    if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
+      UserChecklistManager.completed_membership_guidelines_checklist?(user)
+    else
+      true
+    end
   end
 
 end # RequirementsForMembership

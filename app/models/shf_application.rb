@@ -153,6 +153,9 @@ class ShfApplication < ApplicationRecord
 
       update(when_approved: Time.zone.now)
 
+      # create the SHF Membership Guidelines checklist for the user
+      AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
+
       # Default company email = user's membership contact email
       companies.first.email = contact_email
 

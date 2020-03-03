@@ -63,27 +63,31 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
   end
 
 
-  describe '.all_as_array_nested_by_name' do
-    it "calls all_as_array with order: ['name']" do
-      expect(described_class).to receive(:all_as_array).with(order: %w(  name))
-      described_class.all_as_array_nested_by_name
-    end
-  end
-
-
   describe '.change_with_completed_user_checklists?' do
-    it 'true if attribute is :notes' do
-      expect(described_class.change_with_completed_user_checklists?(:notes)).to be_truthy
+
+    attribs_can_be_changed = ['is_in_use', 'is_in_use_changed_at', 'notes', 'updated_at']
+
+    it 'notes' do
+      expect(create(:master_checklist).change_with_completed_user_checklists?('notes')).to be_truthy
     end
-    it 'true if attribute is :is_in_use' do
-      expect(described_class.change_with_completed_user_checklists?(:is_in_use)).to be_truthy
+
+    puts "described_class: #{described_class}"
+
+    describe 'these attributes can be changed' do
+      attribs_can_be_changed.sort.each do |attrib_can_change|
+        it "#{attrib_can_change}" do
+          expect(described_class.change_with_completed_user_checklists?(attrib_can_change)).to be_truthy
+        end
+      end
     end
-    it 'true if attribute is :is_in_use' do
-      expect(described_class.change_with_completed_user_checklists?(:is_in_use_changed_at)).to be_truthy
-    end
-    it 'false otherwise' do
-      # TODO could get list of all attributes, reject the ones above, then run this test with each one
-      expect(described_class.change_with_completed_user_checklists?(:blorf)).to be_falsey
+
+    describe 'all other attributes cannot be changed' do
+      attribs_cannot_be_changed = described_class.attribute_names.reject { |attrib| attribs_can_be_changed.include? attrib }
+      attribs_cannot_be_changed.sort.each do |attrib_cant_be_changed|
+        it "#{attrib_cant_be_changed}" do
+          expect(described_class.change_with_completed_user_checklists?(attrib_cant_be_changed)).to be_falsey
+        end
+      end
     end
   end
 
@@ -101,8 +105,8 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
 
 
   describe '.attributes_displayed_to_users' do
-    it 'just displayed_text and description' do
-      expect(described_class.attributes_displayed_to_users).to match_array([:displayed_text, :description])
+    it 'displayed_text, description, list_position, ancestry' do
+      expect(described_class.attributes_displayed_to_users).to match_array([:displayed_text, :description, :list_position, :ancestry])
     end
   end
 
@@ -122,7 +126,15 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
   end
 
 
-  describe 'children_not_in_use' do
+  describe '.all_as_array_nested_by_name' do
+    it "calls all_as_array with order: ['name']" do
+      expect(described_class).to receive(:all_as_array).with(order: %w(  name))
+      described_class.all_as_array_nested_by_name
+    end
+  end
+
+
+  describe 'descendants_not_in_use' do
 
     it 'all children with is_in_use = false' do
       mc_parent = create(:master_checklist)
@@ -130,22 +142,23 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
       create(:master_checklist, name: 'in use 1', parent: mc_parent, is_in_use: true)
       create(:master_checklist, name: 'in use 2', parent: mc_parent, is_in_use: true)
 
-      children_found = mc_parent.children_not_in_use
+      children_found = mc_parent.descendants_not_in_use
       expect(children_found.to_a).to match_array([child1_not_in_use])
     end
   end
 
 
-  describe 'children_in_use' do
+  describe '.descendants_in_use' do
 
-    it 'all children with is_in_use = true' do
+    it 'all descendants with is_in_use = true' do
       mc_parent = create(:master_checklist)
       create(:master_checklist, name: 'not in use', parent: mc_parent, is_in_use: false)
-      child2_in_use = create(:master_checklist, name: 'in use 1', parent: mc_parent, is_in_use: true)
-      child3_in_use = create(:master_checklist, name: 'in use 2', parent: mc_parent, is_in_use: true)
+      child2_in_use = create(:master_checklist, name: 'child2_in_use', parent: mc_parent, is_in_use: true)
+      child3_in_use = create(:master_checklist, name: 'child3_in_use', parent: mc_parent, is_in_use: true)
+      child3_1_in_use = create(:master_checklist, name: 'child3_1_in_use', parent: mc_parent, is_in_use: true)
 
-      children_found = mc_parent.children_in_use
-      expect(children_found.to_a).to match_array([child2_in_use, child3_in_use])
+      children_found = mc_parent.descendants_in_use
+      expect(children_found.to_a).to match_array([child2_in_use, child3_in_use, child3_1_in_use])
     end
   end
 
@@ -215,9 +228,9 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
     end
 
     context 'is now set to is not in use' do
-      it 'calls make_unused_or_delete' do
+      it 'calls can_delete?' do
         master_c = create(:master_checklist, name: 'master_c parent')
-        expect(master_c).to receive(:delete_or_mark_unused)
+        expect(master_c).to receive(:can_delete?)
 
         master_c.set_is_in_use(false)
       end
@@ -243,97 +256,6 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
       master_c.change_to_being_in_use
     end
 
-  end
-
-
-  describe 'delete_or_mark_unused' do
-
-    let(:new_master) { create(:master_checklist) }
-
-    it 'uncompleted user checklists are deleted' do
-      expect(new_master).to receive(:delete_uncompleted_user_checklists)
-      new_master.delete_or_mark_unused
-    end
-
-    it 'checks to see if it can be deleted' do
-      expect(new_master).to receive(:can_delete?)
-      new_master.delete_or_mark_unused
-    end
-
-    context 'cannot be deleted' do
-
-      it 'is marked as no longer being used' do
-        allow(new_master).to receive(:can_delete?).and_return false
-
-        expect(new_master).to receive(:mark_as_no_longer_used)
-        new_master.delete_or_mark_unused
-      end
-    end
-
-    context 'can be deleted' do
-
-      it 'is deleted' do
-        allow(new_master).to receive(:can_delete?).and_return true
-
-        expect(new_master).to receive(:destroy)
-        new_master.delete_or_mark_unused
-      end
-    end
-  end
-
-
-  describe 'delete_uncompleted_user_checklists' do
-
-    MASTERC_NAME = 'master c'
-
-    # Set up a master checklist with 5 associated user checklists:
-    #   2 are completed, 1 is not completed
-    #
-    # Create other master checklists with a mix of completed and uncompleted user checklists.
-    #
-    # Then call delete_uncompleted_user_checklists
-    before(:all) do
-      master_c = create(:master_checklist, name: MASTERC_NAME)
-      create(:user_checklist, :completed, master_checklist: master_c)
-      create(:user_checklist, :completed, master_checklist: master_c)
-      create(:user_checklist, master_checklist: master_c)
-
-      some_other_master_checklist = create(:master_checklist)
-      create(:user_checklist, :completed, master_checklist: some_other_master_checklist)
-      create(:user_checklist, :completed, master_checklist: some_other_master_checklist)
-      create(:user_checklist, master_checklist: some_other_master_checklist)
-      yet_another_master_checklist = create(:master_checklist)
-      create(:user_checklist, :completed, master_checklist: yet_another_master_checklist)
-      create(:user_checklist, master_checklist: yet_another_master_checklist)
-
-      master_c.delete_uncompleted_user_checklists
-    end
-
-    let(:master_c) { described_class.find_by(name: MASTERC_NAME) }
-
-
-    it 'compeleted user checklists for this master checklist are not deleted ' do
-      remaining_user_checklists = UserChecklist.all
-      master_c_user_checklists = remaining_user_checklists.select { |uc| uc.master_checklist == master_c }
-
-      expect(master_c_user_checklists.count).to eq 2
-      expect(master_c_user_checklists.select(&:completed?).count).to eq 2
-    end
-
-    it 'completed user checklists for this master checklist are deleted ' do
-      remaining_user_checklists = UserChecklist.all
-      master_c_user_checklists = remaining_user_checklists.select { |uc| uc.master_checklist == master_c }
-
-      expect(master_c_user_checklists.reject(&:completed?)).to be_empty
-    end
-
-    it 'other user checklists are not affected ' do
-      remaining_user_checklists = UserChecklist.all
-      other_masters_user_checklists = remaining_user_checklists.reject { |uc| uc.master_checklist == master_c }
-
-      expect(other_masters_user_checklists.count).to eq 5
-      expect(other_masters_user_checklists.select(&:completed?).count).to eq 3
-    end
   end
 
 
@@ -385,54 +307,75 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
 
 
   describe 'destroy' do
+
     it 'calls can_be_destroyed? to check business rules/logic/data before it is actually destroyed' do
       master_c = create(:master_checklist)
       expect(master_c).to receive(:can_be_destroyed?)
-
       master_c.destroy
     end
   end
 
 
-  describe 'can_be_destroyed?' do
-    it 'throws :abort if it cannot be destroyed' do
-      master_c = create(:master_checklist)
-      allow(master_c).to receive(:can_delete?).and_return(false)
+  describe 'instance methods delegated to the change policy' do
 
-      expect { master_c.can_be_destroyed? }.to raise_error(UncaughtThrowError)
+    describe 'can_be_destroyed?' do
+
+      it 'calls the change policy with self' do
+        master_c = create(:master_checklist)
+        # allow(master_c).to receive(:can_delete?).and_return(false)
+        expect(described_class.change_policy).to receive(:can_be_destroyed?).with(master_c)
+        master_c.can_be_destroyed?
+      end
     end
 
-    it 'true if it can be destroyed' do
-      master_c = create(:master_checklist)
-      allow(master_c).to receive(:can_delete?).and_return(true)
 
-      expect(master_c.can_be_destroyed?).to be_truthy
+    describe 'can_delete?' do
+
+      it 'calls the change policy with self' do
+        master_c = create(:master_checklist)
+        expect(described_class.change_policy).to receive(:can_delete?).with(master_c)
+        master_c.can_delete?
+      end
+
     end
+
+    describe 'no_more_major_changes?' do
+
+      it 'calls the change policy with self' do
+        master_c = create(:master_checklist)
+        expect(described_class.change_policy).to receive(:no_more_major_changes?).with(master_c)
+        master_c.no_more_major_changes?
+      end
+    end
+
+
+    describe 'can_be_changed?' do
+
+      it 'calls the change policy with self and the list of attributes to check' do
+        master_c = create(:master_checklist)
+        expect(described_class.change_policy).to receive(:can_be_changed?).with(master_c, anything)
+        master_c.can_be_changed?(['this', 'that', :another])
+      end
+    end
+
   end
 
 
-  describe 'can_delete?' do
+  describe 'has_completed_user_checklists?' do
 
-    it 'false if it has children' do
-      mc_with_children = create(:master_checklist)
-      create(:master_checklist, parent: mc_with_children)
-      expect(mc_with_children.can_delete?).to be_falsey
+    it 'true if count of completed user checklists > 0' do
+      mc_with_completed = create(:master_checklist)
+      create(:user_checklist, :completed, master_checklist: mc_with_completed)
+      expect(mc_with_completed.has_completed_user_checklists?).to be_truthy
     end
 
-    it 'false if has completed user checklists' do
-      mc_with_completed_uchecklists = create(:master_checklist)
-      create(:user_checklist, :completed, master_checklist: mc_with_completed_uchecklists)
-      expect(mc_with_completed_uchecklists.can_delete?).to be_falsey
-    end
-
-    it 'else true' do
-      expect(create(:master_checklist).can_delete?).to be_truthy
-
-      mc_with_uncompleted_uchecklists = create(:master_checklist)
-      create(:user_checklist, master_checklist: mc_with_uncompleted_uchecklists)
-      expect(mc_with_uncompleted_uchecklists.can_delete?).to be_truthy
+    it 'false if count =< 0' do
+      mc_with_completed = create(:master_checklist)
+      create(:user_checklist, master_checklist: mc_with_completed)
+      expect(mc_with_completed.has_completed_user_checklists?).to be_falsey
     end
   end
+
 
   describe 'change_is_in_use' do
 
@@ -452,88 +395,6 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
       end
       expect(mc_in_use.is_in_use).to be_falsey
       expect(mc_in_use.is_in_use_changed_at).to eq changed_time
-    end
-  end
-
-
-  describe 'can_be_changed?' do
-
-    it 'always true if there are no associated user checklists' do
-      new_master = create(:master_checklist)
-      expect(new_master.can_be_changed?).to be_truthy
-      expect(new_master.can_be_changed?(['flurb'])).to be_truthy
-    end
-
-    context 'there are associated user checklists' do
-
-      context 'there are completed user checklists' do
-
-        it 'true if attribute changed is :is_in_use or :is_in_use_changed_at' do
-          new_master = create(:master_checklist)
-          create(:user_checklist, :completed, master_checklist: new_master)
-
-          expect(new_master.can_be_changed?([:is_in_use])).to be_truthy
-          expect(new_master.can_be_changed?([:is_in_use_changed_at])).to be_truthy
-        end
-
-        it 'raises exception if the attributes are anything else' do
-          new_master = create(:master_checklist)
-          create(:user_checklist, :completed, master_checklist: new_master)
-
-          expect { new_master.can_be_changed?(['flurb']) }.to raise_exception AdminOnly::HasCompletedUserChecklistsCannotChange
-          expect { new_master.can_be_changed?([:name]) }.to raise_exception AdminOnly::HasCompletedUserChecklistsCannotChange
-        end
-
-        it 'true if no attributes are changed (which should not really happen, but ok if it does)' do
-          new_master = create(:master_checklist)
-          create(:user_checklist, :completed, master_checklist: new_master)
-
-          expect(new_master.can_be_changed?).to be_truthy
-        end
-      end
-
-      context 'there are only uncompleted user checklists' do
-
-        let(:new_master) do
-          master_c = create(:master_checklist)
-          create(:user_checklist, master_checklist: master_c)
-          create(:user_checklist, master_checklist: master_c)
-          master_c
-        end
-
-        it 'notes' do
-          expect(new_master.can_be_changed?(['notes'])).to be_truthy
-          new_master.notes = 'notes is now changed'
-          expect(new_master.can_be_changed?).to be_truthy
-        end
-
-        describe 'raises exception for all attributes users see' do
-          [:displayed_text, :description].each do |attrib_user_sees|
-
-            it "#{attrib_user_sees}" do
-              expect { new_master.can_be_changed?([attrib_user_sees]) }.to raise_exception AdminOnly::CannotChangeUserVisibleInfo
-            end
-          end
-        end
-      end
-
-    end
-
-  end
-
-
-  describe 'has_completed_user_checklists?' do
-
-    it 'true if count of completed user checklists > 0' do
-      mc_with_completed = create(:master_checklist)
-      create(:user_checklist, :completed, master_checklist: mc_with_completed)
-      expect(mc_with_completed.has_completed_user_checklists?).to be_truthy
-    end
-
-    it 'false if count =< 0' do
-      mc_with_completed = create(:master_checklist)
-      create(:user_checklist, master_checklist: mc_with_completed)
-      expect(mc_with_completed.has_completed_user_checklists?).to be_falsey
     end
   end
 

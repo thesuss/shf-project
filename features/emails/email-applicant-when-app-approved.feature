@@ -33,6 +33,10 @@ Feature: Applicant gets an email when the application is approved
       | user_email         | company_number | categories | state        |
       | emma@happymutts.se | 5562252998     | Groomer    | under_review |
 
+    And the Membership Ethical Guidelines Master Checklist exists
+
+
+
   @selenium
   Scenario: Admin approves membership and email is sent to applicant
     Given I am logged in as "admin@shf.com"

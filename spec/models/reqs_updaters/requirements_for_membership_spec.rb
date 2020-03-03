@@ -2,6 +2,13 @@ require 'rails_helper'
 
 RSpec.describe RequirementsForMembership, type: :model do
 
+  before(:each) do
+    # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
+    # if a ShfApplication is accepted.
+    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+  end
+
+
   let(:subject) { RequirementsForMembership }
 
 
@@ -77,8 +84,11 @@ RSpec.describe RequirementsForMembership, type: :model do
 
     context 'meets the membership requirements' do
 
-      it 'has an approved application AND membership fee paid AND membership term has not expired' do
+      it 'has an approved application AND checked the membership requirement AND membership fee paid AND membership term has not expired' do
         member_current_payment
+        create(:user_checklist, :completed, user: member, name: 'Membership Guidelines list')
+        allow(UserChecklist).to receive(:membership_guidelines_for_user).and_return(member.checklists)
+
         expect(subject.requirements_met?({ user: member })).to be_truthy
       end
 
@@ -91,6 +101,9 @@ RSpec.describe RequirementsForMembership, type: :model do
 
     it '.has_expected_arguments? is true and requirements_met? is true' do
       member_current_payment
+      create(:user_checklist, :completed, user: member, name: 'Membership Guidelines list')
+      allow(UserChecklist).to receive(:membership_guidelines_for_user).and_return(member.checklists)
+
       expect(subject.satisfied?({ user: member })).to be_truthy
     end
 
@@ -100,6 +113,9 @@ RSpec.describe RequirementsForMembership, type: :model do
 
     it '.has_expected_arguments? is false and requirements_met? is true' do
       member_current_payment
+      create(:user_checklist, :completed, user: member, name: 'Membership Guidelines list')
+      allow(UserChecklist).to receive(:membership_guidelines_for_user).and_return(member.checklists)
+
       expect(subject.satisfied?({ not_user: member })).to be_falsey
     end
 

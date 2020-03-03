@@ -5,6 +5,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                | admin | first_name | last_name | password       |
@@ -81,7 +82,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
     And I am logged out
     And I am logged in as "new_user@example.com"
-    And I am on the "user details" page for "new_user@example.com"
+#    And I am on the "user details" page for "new_user@example.com"
 
     And I am on the "edit my company" page
 

@@ -11,13 +11,14 @@ Feature: Admin approves a member
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                 | admin |  password       |
-      | emma@happymutts.se    |       |  password       |
-      | hans@happymutts.se    |       |  password       |
-      | anna@nosnarkybarky.se |       |  password       |
-      | admin@shf.com         | true  |  admin_password |
+      | email                 | admin | password       |
+      | emma@happymutts.se    |       | password       |
+      | hans@happymutts.se    |       | password       |
+      | anna@nosnarkybarky.se |       | password       |
+      | admin@shf.com         | true  | admin_password |
 
     Given the following business categories exist
       | name         | description                     |
@@ -28,8 +29,8 @@ Feature: Admin approves a member
     And the application file upload options exist
 
     Given the following regions exist:
-      | name         |
-      | Stockholm    |
+      | name      |
+      | Stockholm |
 
     Given the following companies exist:
       | name                 | company_number | email                 | region    |

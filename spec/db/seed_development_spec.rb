@@ -37,6 +37,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
+      allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
       allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
       allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
@@ -70,6 +71,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
         allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
         allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
 
+        allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
         allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
         allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 

@@ -86,6 +86,63 @@ module OrderedAncestryEntry
     alias_method :<<, :insert
 
 
+    def sorted_siblings
+      siblings.order(:list_position)
+    end
+
+
+    def next_sibling?
+      siblings? && next_sibling
+    end
+
+
+    alias_method :has_next_sibling?, :next_sibling?
+
+
+    def next_sibling
+      if siblings?
+        sorted_sibs = sorted_siblings.to_a
+        this_index = this_index_in_sorted_sibs(sorted_sibs)
+        # if the next index (this_index + 1) is more than the size of the siblings,
+        #   then there isn't a next sibling
+        #   else return the next sibling
+        (this_index + 1 > sorted_sibs.count - 1) ? nil : sorted_sibs[this_index + 1]
+      end
+    end
+
+
+    def this_index_in_sorted_sibs(sorted_sibs = sorted_siblings.to_a)
+      sorted_sibs.find_index { |sib| sib.list_position == list_position }
+    end
+
+
+    def previous_sibling?
+      siblings? && previous_sibling
+    end
+
+
+    alias_method :has_previous_sibling?, :previous_sibling?
+
+
+    def previous_sibling
+      if siblings?
+        sorted_sibs = sorted_siblings.to_a
+        this_index = this_index_in_sorted_sibs(sorted_sibs)
+        # if the previous index (this_index - 1) is less than 0
+        #   then there isn't a previous sibling
+        #   else return the previous sibling
+        (this_index - 1 < 0) ? nil : sorted_sibs[this_index - 1]
+      end
+    end
+
+
+    # This method will eventually be available in the Ancestry gem. (and/or a SQL based version)
+    # Until then, here it is.
+    def leaves
+      subtree.select { |node| node.childless? }
+    end
+
+
     # Delete the entry from the list of children.
     # After the deletion, update the positions for all children as necessary.
     #
@@ -175,9 +232,6 @@ module OrderedAncestryEntry
     # This calls update_columns (_not_ update) so that any update... callbacks will NOT be triggered
     def increment_child_positions(position_start = children.size)
       children_to_inc = children_to_increment(position_start)
-      # children_to_increment.each do |child|
-      #   child.update_list_position_and_updated_cols(child.list_position + 1)
-      # end
       increment_positions(children_to_inc)
     end
 
@@ -185,9 +239,6 @@ module OrderedAncestryEntry
     # This calls update_columns (_not_ update) so that any update... callbacks will NOT be triggered
     def decrement_child_positions(position_start = children.size)
       children_to_dec = children_to_decrement(position_start)
-      # children_to_decrement.each do |child|
-      #   child.update_list_position_and_updated_cols(child.list_position - 1)
-      # end
       decrement_positions(children_to_dec)
     end
 
@@ -201,88 +252,81 @@ module OrderedAncestryEntry
     end
 
 
-  end
+    # =============================
+    private
 
 
-  # =============================
-  private
-
-
-  # Update the list positions for all entries in the parent list based on
-  # the about to be saved 'list_position' attribute for this entry.
-  # If this is a top level list and the position has changed, then update the
-  # list positions for all other top level lists ( = siblings ).
-  #
-  #
-  # See before_update
-  #
-  # This is not the most efficient way to do this, but it is the most straightforward.
-  # (If the list lengths were very large, it would be worth using a more efficient algorithm.)
-  #
-  def update_parent_list_positions
+    # Update the list positions for all entries in the parent list based on
+    # the about to be saved 'list_position' attribute for this entry.
+    # If this is a top level list and the position has changed, then update the
+    # list positions for all other top level lists ( = siblings ).
+    #
+    #
+    # See before_update
+    #
+    # This is not the most efficient way to do this, but it is the most straightforward.
+    # (If the list lengths were very large, it would be worth using a more efficient algorithm.)
+    #
+    def update_parent_list_positions
       original_list_position = attribute_change_to_be_saved('list_position').first
       new_position = attribute_change_to_be_saved('list_position').last
 
-    if ancestors?
-      # move all children "down" to fill where this entry used to be
-      parent.decrement_child_positions(original_list_position + 1)
+      if ancestors?
+        # move all children "down" to fill where this entry used to be
+        parent.decrement_child_positions(original_list_position + 1)
 
-      # make room for where this will be inserted in the new_position
-      parent.increment_child_positions(new_position)
-    else
-      # If this is a top level list, need to update all siblings
-      if siblings?
-        sibs_not_including_self = siblings.reject{|s| s == self}
-        sibs_after_orig_position = entries_to_decrement(sibs_not_including_self, original_list_position + 1)
-        decrement_positions(sibs_after_orig_position)
+        # make room for where this will be inserted in the new_position
+        parent.increment_child_positions(new_position)
+      else
+        # If this is a top level list, need to update all siblings
+        if siblings?
+          sibs_not_including_self = siblings.reject { |s| s == self }
+          sibs_after_orig_position = entries_to_decrement(sibs_not_including_self, original_list_position + 1)
+          decrement_positions(sibs_after_orig_position)
 
-        sibs_to_increment = entries_to_increment(sibs_not_including_self, new_position)
-        increment_positions(sibs_to_increment)
+          sibs_to_increment = entries_to_increment(sibs_not_including_self, new_position)
+          increment_positions(sibs_to_increment)
+        end
       end
     end
-  end
 
 
-  def decrement_positions(entries_to_decrement = [])
-    entries_to_decrement.each do |entry|
-      entry.update_list_position_and_updated_cols(entry.list_position - 1)
+    def decrement_positions(entries_to_decrement = [])
+      entries_to_decrement.each do |entry|
+        entry.update_list_position_and_updated_cols(entry.list_position - 1)
+      end
     end
-  end
 
 
-  def increment_positions(entries_to_increment = [])
-    entries_to_increment.each do |entry|
-      entry.update_list_position_and_updated_cols(entry.list_position + 1)
+    def increment_positions(entries_to_increment = [])
+      entries_to_increment.each do |entry|
+        entry.update_list_position_and_updated_cols(entry.list_position + 1)
+      end
     end
-  end
 
 
-  def children_to_increment(position_start = children.size)
-    entries_to_increment(children, position_start)
-    # position_to_start_incrementing = position_start.blank? ? children.size : position_start
-    # children.select { |child| child.list_position >= position_to_start_incrementing }
-  end
+    def children_to_increment(position_start = children.size)
+      entries_to_increment(children, position_start)
+    end
 
 
-  def children_to_decrement(position_start = children.size)
-    entries_to_decrement(children, position_start)
-    # position_to_start_decrementing = position_start.blank? ? children.size : position_start
-    #
-    # # do not decrement any list_position that is zero or less
-    # children.select { |child| child.list_position > 0 && child.list_position >= position_to_start_decrementing }
-  end
+    def children_to_decrement(position_start = children.size)
+      entries_to_decrement(children, position_start)
+    end
 
 
-  def entries_to_increment(entries = [], position_start)
-    position_to_start_incrementing = position_start.blank? ? entries.size : position_start
-    entries.select { |entry| entry.list_position >= position_to_start_incrementing }
-  end
+    def entries_to_increment(entries = [], position_start)
+      position_to_start_incrementing = position_start.blank? ? entries.size : position_start
+      entries.select { |entry| entry.list_position >= position_to_start_incrementing }
+    end
 
 
-  def entries_to_decrement(entries = [], position_start)
-    position_to_start_decrementing = position_start.blank? ? entries.size : position_start
-    # do not decrement any list_position that is zero or less
-    entries.select { |entry| entry.list_position > 0 && entry.list_position >= position_to_start_decrementing }
+    def entries_to_decrement(entries = [], position_start)
+      position_to_start_decrementing = position_start.blank? ? entries.size : position_start
+      # do not decrement any list_position that is zero or less
+      entries.select { |entry| entry.list_position > 0 && entry.list_position >= position_to_start_decrementing }
+    end
+
   end
 
 end

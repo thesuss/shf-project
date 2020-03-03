@@ -3,6 +3,13 @@ require 'rails_helper'
 
 describe ShfApplicationPolicy do
 
+  before(:each) do
+    # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
+    # if a ShfApplication is accepted.
+    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+  end
+
+
   SHFAPP_CRUD_ACTIONS = [:new, :create, :show, :edit, :update,  :destroy].freeze unless defined?(SHFAPP_CRUD_ACTIONS)
 
   APP_STATE_CHANGE_ACTIONS = [:accept, :reject, :need_info, :cancel_need_info, :start_review].freeze  unless defined?(APP_STATE_CHANGE_ACTIONS)
@@ -285,6 +292,7 @@ describe ShfApplicationPolicy do
             end
 
             it 'forbids edit and update for an approved application' do
+
               app_being_checked.start_review
               app_being_checked.accept
               expect(described_class.new(self.send(current_user), app_being_checked)).to forbid_edit_and_update_actions

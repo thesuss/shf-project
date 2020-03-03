@@ -9,6 +9,11 @@ RSpec.describe Company, type: :model, focus: true do
 
   include_context 'create companies'
 
+  before(:each) do
+    # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
+    # if a ShfApplication is accepted.
+    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+  end
 
   let(:complete_companies) { [complete_co1] }
 
@@ -614,7 +619,9 @@ RSpec.describe Company, type: :model, focus: true do
 
     context '.with_members' do
 
-      before(:each) { app_co1_user1; app_co1_user2; app_co2_user3 }
+      before(:each) do
+        app_co1_user1; app_co1_user2; app_co2_user3 # This creates the applications, users, and companies
+      end
 
       it 'returns no companies if no members' do
         expect(Company.with_members).to be_empty

@@ -12,6 +12,7 @@ FactoryBot.define do
     twitter_card_type { 'twitter card type'}
     facebook_app_id { 1234567890 }
 
+    association :membership_guideline_list, factory: :master_checklist
 
     chair_signature do
       File.new(File.join(APP_CONFIG_FIXTURES, 'chair_signature.png'))

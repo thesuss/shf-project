@@ -46,6 +46,8 @@ Feature: SHF Application status is changed
       | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |
       | new_nurdle@happymutts.se               | 5562252998     | dog grooming | new                   |
 
+    And the Membership Ethical Guidelines Master Checklist exists
+
     And I am logged in as "admin@shf.se"
     And time is frozen at 2016-12-16
 

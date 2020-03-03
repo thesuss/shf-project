@@ -17,6 +17,18 @@
 module PaymentUtility
   extend ActiveSupport::Concern
 
+  class_methods do
+
+    # TODO this should go in a 'Membership ...' class that is responsible for membership information.
+    MEMBERSHIP_TERM_DURATION = 1.year
+
+    def membership_term_duration
+      MEMBERSHIP_TERM_DURATION
+    end
+
+  end
+
+
   included do
 
     def most_recent_payment(payment_type = self.class::THIS_PAYMENT_TYPE)
@@ -226,7 +238,7 @@ module PaymentUtility
     # @return [Date] - the resulting Date that was calculated
     def other_date_for_given_date(given_date, is_start_date: true)
       multiplier = is_start_date ? 1 : -1
-      (given_date + (multiplier * 1.year) - (multiplier * 1.day))
+      (given_date + (multiplier * MEMBERSHIP_TERM_DURATION) - (multiplier * 1.day))
     end
 
   end

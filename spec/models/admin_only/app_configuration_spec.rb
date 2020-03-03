@@ -131,6 +131,10 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
       # we have to have a site_meta_image, so just use what already exists:
       new_config.site_meta_image = app_configuration.site_meta_image
 
+      # FIXME
+      # we have to have a Membership Guideline master checklist
+      new_config.membership_guideline_list = create(:master_checklist, name: 'Membership guidelines master')
+
       expect{new_config.save!}.to raise_error(ActiveRecord::RecordNotUnique)
     end
   end

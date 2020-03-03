@@ -7,6 +7,7 @@ FactoryBot.define do
     list_position { 0 }
     is_in_use { true }
 
+    association :master_checklist_type
 
     trait :not_in_use do
       is_in_use { false }

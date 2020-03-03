@@ -32,7 +32,6 @@ RSpec.describe Seeders::MasterChecklistsSeeder do
     yaml_output_filepath = yaml_output_file.path
     yaml_written_first_fn = described_class.write_yaml(basefn: File.basename(yaml_output_file), dir_path: File.dirname(yaml_output_filepath))
 
-
     # Ensure we'll start with the first object id = 1
     truncate_and_restart_id(seeded_class.connection, seeded_class.table_name)
 
@@ -51,7 +50,9 @@ RSpec.describe Seeders::MasterChecklistsSeeder do
     [orig_read_in, written_out].each do |file_lines|
       file_lines.each do |line|
         line.sub!(/Date written: \d\d\d\d-\d\d-\d\d \d\d\:\d\d\:\d\d.*/, 'Date written: (timestamp)')
-        line.sub!(/utc: &\d \d\d\d\d-\d\d-\d\d \d\d\:\d\d\:\d\d\.\d* Z/, 'utc: (timestamp)')
+        line.sub!(/^(\s*)utc:(.*)$/, 'utc: (timestamp)')
+        line.sub!(/^(\s*)zone:(.*)$/, 'zone: (timestamp)')
+        line.sub!(/^(\s*)time:(.*)$/, 'time: (timestamp)')
       end
     end
 

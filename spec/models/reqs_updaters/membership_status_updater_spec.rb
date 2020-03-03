@@ -112,19 +112,28 @@ RSpec.describe MembershipStatusUpdater, type: :model do
 
 
       it 'sends emails by default' do
+        allow(subject.class.update_requirements_checker).to receive(:satisfied?).and_return(true)
+
         expect(subject).to receive(:update_action).with({user: user_app_approved})
+
         payment_user_approved_app
         subject.check_requirements_and_act({user: user_app_approved})
       end
 
       it 'send_email: true will send emails' do
+        allow(subject.class.update_requirements_checker).to receive(:satisfied?).and_return(true)
+
         expect(subject).to receive(:update_action).with({user: user_app_approved, send_email: true } )
+
         payment_user_approved_app
         subject.check_requirements_and_act({user: user_app_approved, send_email: true} )
       end
 
       it 'send_email: false will not send emails' do
+        allow(subject.class.update_requirements_checker).to receive(:satisfied?).and_return(true)
+
         expect(subject).to receive(:update_action).with({user: user_app_approved, send_email: false } )
+
         payment_user_approved_app
         subject.check_requirements_and_act({user: user_app_approved, send_email: false} )
       end
