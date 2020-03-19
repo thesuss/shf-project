@@ -35,7 +35,7 @@ class RequirementsForMembership < AbstractRequirements
   end
 
 
-  # @return [Boolean] - if a user must have a completed Membershil Guidelines checklist,
+  # @return [Boolean] - if a user must have a completed Membership Guidelines checklist,
   #   return true if has been completed (false if not completed)
   # else if the user does not have to have a completed Membership Guidelines checklist,
   #   return true (we assume it's fine)

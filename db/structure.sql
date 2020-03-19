@@ -94,7 +94,8 @@ CREATE TABLE public.app_configurations (
     site_meta_image_file_size integer,
     site_meta_image_updated_at timestamp without time zone,
     singleton_guard integer DEFAULT 0 NOT NULL,
-    payment_too_soon_days integer DEFAULT 60 NOT NULL
+    payment_too_soon_days integer DEFAULT 60 NOT NULL,
+    membership_guideline_list_id bigint
 );
 
 
@@ -479,6 +480,38 @@ ALTER SEQUENCE public.kommuns_id_seq OWNED BY public.kommuns.id;
 
 
 --
+-- Name: master_checklist_types; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.master_checklist_types (
+    id bigint NOT NULL,
+    name character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: master_checklist_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.master_checklist_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: master_checklist_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.master_checklist_types_id_seq OWNED BY public.master_checklist_types.id;
+
+
+--
 -- Name: master_checklists; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -493,7 +526,8 @@ CREATE TABLE public.master_checklists (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     is_in_use boolean DEFAULT true NOT NULL,
-    is_in_use_changed_at timestamp without time zone
+    is_in_use_changed_at timestamp without time zone,
+    master_checklist_type_id bigint NOT NULL
 );
 
 
@@ -1071,6 +1105,13 @@ ALTER TABLE ONLY public.kommuns ALTER COLUMN id SET DEFAULT nextval('public.komm
 
 
 --
+-- Name: master_checklist_types id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.master_checklist_types ALTER COLUMN id SET DEFAULT nextval('public.master_checklist_types_id_seq'::regclass);
+
+
+--
 -- Name: master_checklists id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1244,6 +1285,14 @@ ALTER TABLE ONLY public.kommuns
 
 
 --
+-- Name: master_checklist_types master_checklist_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.master_checklist_types
+    ADD CONSTRAINT master_checklist_types_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: master_checklists master_checklists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1368,6 +1417,13 @@ CREATE INDEX index_addresses_on_region_id ON public.addresses USING btree (regio
 
 
 --
+-- Name: index_app_configurations_on_membership_guideline_list_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_app_configurations_on_membership_guideline_list_id ON public.app_configurations USING btree (membership_guideline_list_id);
+
+
+--
 -- Name: index_app_configurations_on_singleton_guard; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1449,6 +1505,13 @@ CREATE UNIQUE INDEX index_file_delivery_methods_on_name ON public.file_delivery_
 --
 
 CREATE INDEX index_master_checklists_on_ancestry ON public.master_checklists USING btree (ancestry);
+
+
+--
+-- Name: index_master_checklists_on_master_checklist_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_master_checklists_on_master_checklist_type_id ON public.master_checklists USING btree (master_checklist_type_id);
 
 
 --
@@ -1604,6 +1667,14 @@ ALTER TABLE ONLY public.shf_applications
 
 
 --
+-- Name: app_configurations fk_rails_488f5a5802; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.app_configurations
+    ADD CONSTRAINT fk_rails_488f5a5802 FOREIGN KEY (membership_guideline_list_id) REFERENCES public.master_checklists(id);
+
+
+--
 -- Name: user_checklists fk_rails_4ff2e06edf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1673,6 +1744,14 @@ ALTER TABLE ONLY public.company_applications
 
 ALTER TABLE ONLY public.user_checklists
     ADD CONSTRAINT fk_rails_e1e5ab0568 FOREIGN KEY (master_checklist_id) REFERENCES public.master_checklists(id);
+
+
+--
+-- Name: master_checklists fk_rails_eeb183e3fb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.master_checklists
+    ADD CONSTRAINT fk_rails_eeb183e3fb FOREIGN KEY (master_checklist_type_id) REFERENCES public.master_checklist_types(id);
 
 
 --
@@ -1771,6 +1850,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191130225826'),
 ('20191204203416'),
 ('20200108194625'),
+('20200119054308'),
+('20200122200839'),
+('20200122215813'),
 ('20200205213528');
 
 
