@@ -1564,6 +1564,7 @@ en:
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Manage Applications
         app_configuration: App Configuration
+        design_guide: Design Guide
         categories:
           submenu_title: Categories
           manage_categories: Manage Categories

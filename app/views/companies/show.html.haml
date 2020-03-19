@@ -89,14 +89,16 @@
 
 
     %hr
-    .text-center
-      - if user_can_edit
-        = link_to "#{t('companies.edit_company')}",
-                  edit_company_path(@company), class: 'btn btn-secondary btn-sm edit-company'
+    .row
+      .col.d-flex.justify-content-center
+        - if user_can_edit
+          = link_to "#{t('companies.edit_company')}",
+                    edit_company_path(@company),
+                    class: 'btn btn-light btn-sm edit-company mr-3'
 
-      - if current_user.admin?
-        = link_to "#{t('.delete')}", @company, method: :delete,
-                  class:'btn btn-danger btn-sm delete-company',
-                  data: { confirm: "#{t('.confirm_are_you_sure')}" }
+        - if current_user.admin?
+          = link_to "#{t('.delete')}", @company, method: :delete,
+                    class:'btn btn-danger btn-sm delete-company',
+                    data: { confirm: "#{t('.confirm_are_you_sure')}" }
 
 = render('edit_branding_modal', company: @company) if current_user.admin?

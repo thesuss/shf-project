@@ -1571,6 +1571,7 @@ sv:
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Hantera ansökningar
         app_configuration: Appkonfiguration
+        design_guide: Designguide
         categories:
           submenu_title: Kategorier
           manage_categories: Hantera kategorier
