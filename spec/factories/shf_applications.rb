@@ -34,6 +34,16 @@ FactoryBot.define do
       when_approved { nil }
     end
 
+    trait :new do
+      state { :new }
+      when_approved { nil }
+    end
+
+    trait :under_review do
+      state { :under_review }
+      when_approved { nil }
+    end
+
     transient do
       num_categories { 1 }
       category_name { "Business Category" }
