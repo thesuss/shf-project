@@ -5,7 +5,6 @@ FactoryBot.define do
     name { 'UserChecklist name' }
     description { nil }
     association :user
-    # master_checklist { association :master_checklist, name: name }
     association :master_checklist
     date_completed { nil }
     list_position { 0 }
