@@ -1,0 +1,38 @@
+-# This partial expects the following locals
+  master_checklists = list of MasterChecklist items that are no longer in use
+    These are the MasterChecklist items displayed in this table
+
+- name_length = 90
+
+%table.table-hover.no-longer-in-use
+  %thead
+    %th.name=t('.name')
+    %th.displayed-text=t('.displayed_text')
+    %th.list-position=t('.pos_in_list')
+    %th.completed=t('.completed')
+    %th.not-completed=t('.not_completed')
+
+  %tbody
+    - no_longer_in_use.each do | checklist_master |
+      %tr.master-list-item{ data: { href: admin_only_master_checklist_url(checklist_master) } }
+        %td.name= link_to checklist_master.name, checklist_master
+        %td.displayed-text= link_to checklist_master.displayed_text.truncate(name_length, separator: ' '), checklist_master
+        %td.list-position= checklist_master.list_position + 1
+        %td.completed= checklist_master.user_checklists.completed.count.to_s
+        %td.not-completed= checklist_master.user_checklists.uncompleted.count.to_s
+
+
+:javascript
+
+  // Make the entire row 'tr' clickable. (Any tr with 'data-href')
+  // If there is a problem with this not working when this is reloaded,
+  //  try uncommenting the first and last lines to see if turbolinks is the culprit.
+
+  // document.addEventListener('turbolinks:load', function() {
+    $(document).ready(function() {
+      $("tr[data-href]").click(function(event){
+        window.location.href = $(this).data("href");
+        event.preventDefault();
+      });
+    });
+  // })

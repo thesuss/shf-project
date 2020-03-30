@@ -1,6 +1,11 @@
-Feature: As a visitor
+Feature: Create an account (register as a user)
+
+  As a visitor
   in order to access the functions of the site
   I need to be able to create an account
+
+Background:
+  Given the Membership Ethical Guidelines Master Checklist exists
 
   Scenario: Creating an account
     Given I am on the "login" page

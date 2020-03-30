@@ -7,6 +7,8 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                 | admin | member |
       | new_user1@example.com |       |        |

@@ -1230,17 +1230,41 @@ RSpec.describe User, type: :model do
       end
 
       describe 'not a member == is a user' do
-        it 'true if user has app in "accepted" state' do
-          application
-          expect(user.allowed_to_pay_member_fee?).to be_truthy
+
+        context 'has agreed to all membership guidelines' do
+
+          let(:user_agreed_to_guidelines) do
+            u = create(:user)
+            create(:membership_guidelines_master_checklist)
+            AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(u)
+            UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
+            u
+          end
+
+          it 'true if user has app in "accepted" state' do
+            create(:shf_application,:accepted, user: user_agreed_to_guidelines)
+            expect(user_agreed_to_guidelines.allowed_to_pay_member_fee?).to be_truthy
+          end
+
+          describe 'false for an application in any other state' do
+
+            ShfApplication.all_states.reject{ |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
+              it "#{app_state} is false" do
+                app = create(:shf_application, state: app_state, user: user_agreed_to_guidelines)
+                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+              end
+            end
+          end
         end
 
-        describe 'false for an application in any other state' do
+        context 'has not agreed to all membership guidelines' do
 
-          ShfApplication.all_states.reject{ |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
-            it "#{app_state} is false" do
-              app = create(:shf_application, state: app_state)
-              expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+          describe 'false for all application states (even accepted)' do
+            ShfApplication.all_states.each do |app_state|
+              it "#{app_state} is false" do
+                app = create(:shf_application, state: app_state)
+                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+              end
             end
           end
         end

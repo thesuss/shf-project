@@ -53,6 +53,7 @@ module AdminOnly
     # ------------------------------------------------------------
 
 
+    # @return [UserChecklist] - the root of the created member guidelines
     def self.create_member_guidelines_checklist_for(user)
 
       # Get the SHF Membership Guidelines Checklist
@@ -60,7 +61,7 @@ module AdminOnly
       guidelines_template = get_member_guidelines_checklist_template
 
       if guidelines_template
-        create_nested_lists_for_user_from_master_checklists([guidelines_template], user)
+        create_nested_lists_for_user_from_master_checklists([guidelines_template], user).last
       else
         # TODO i18n error message
         raise UserChecklistTemplateNotFoundError, "Membership Guidelines checklist template (AdminOnly::MasterChecklist) Not Found!  #{__method__}"
@@ -81,7 +82,7 @@ module AdminOnly
       # If membership checklist is not found, raise an error and be sure to send a notification!
       membership_template = get_membership_checklist_template
       if membership_template
-        create_nested_lists_for_user_from_master_checklists([membership_template], user)
+        create_nested_lists_for_user_from_master_checklists([membership_template], user).last
       else
         # TODO i18n error message
         raise UserChecklistTemplateNotFoundError, "Membership checklist template (AdminOnly::MasterChecklist) Not Found!  #{__method__}"
@@ -102,7 +103,7 @@ module AdminOnly
     # @param [Array<AdminOnly::MasterChecklist>] list_of_checklistmaster_entries - the original checklist to use as the bases for UserChecklist entry(-ies)
     # @param [User] user - the user this is for (who will/won't be completing the entry(-ies) in the UserChecklist)
     #
-    # @return [Array<UserChecklist>] - the ordered list of UserChecklist entries
+    # @return [Array<UserChecklist>] - the ordered list of UserChecklist entries, root (or all top level) is the last item on the list
     #
     def self.create_nested_lists_for_user_from_master_checklists(list_of_checklistmaster_entries, user)
 

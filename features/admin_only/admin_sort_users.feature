@@ -8,6 +8,7 @@ Feature: Admin sorts users
   Background:
 
     Given the date is set to "2019-11-01"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | first_name            | last_name    | email                              | admin | membership_number | member | date_membership_packet_sent | sign_in_count | created_at |

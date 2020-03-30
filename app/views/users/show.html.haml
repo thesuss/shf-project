@@ -1,6 +1,3 @@
-- content_for :stylesheet_for_view do
-  = stylesheet_link_tag 'image-actions-custom-menu', media: 'all'
-
 %header.entry-header
   - user_name = @user.full_name
   %h1{ class: with_admin_css_class_if_needed(@current_user, ['entry-title']) }
@@ -15,24 +12,7 @@
 
 
 .entry-content.container
-
-  = render partial: 'show_login_email_row_cols', locals: { user: @user }
-
-  .membership
-    .row.section-title
-      .col.mt-2
-        %h3.section-title= t("membership").capitalize
-    .row
-      .col
-        = field_or_none(t('.membership_number'), @user.membership_number,
-                        label_class: 'standard-label',
-                        value_class: 'membership-number')
-
-    = render partial: 'membership_term_status', locals: { user: @user }
-
-
-  = render partial: 'show_application_section_row_cols', locals: { user: @user }
-
-  = render partial: 'show_info_for_admin_only', locals: { user: @user }
-
-  = render partial: 'show_member_images_row_cols', locals: { user: @user, app_configuration: @app_configuration }
+  - if @user.member?
+    = render partial: 'show_for_member', locals: { user: @user, current_user: @current_user, app_config: @app_configuration }
+  - else
+    = render partial: 'show_for_applicant', locals: { user: @user, current_user: @current_user }

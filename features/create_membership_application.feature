@@ -17,6 +17,8 @@ Feature: Create a new membership application
   PT: https://www.pivotaltracker.com/story/show/134192165
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist
       | email                  | admin | member | first_name | last_name |
       | applicant_1@random.com |       |        | Kicki      | Andersson |
@@ -31,6 +33,7 @@ Feature: Create a new membership application
       | Trainer      |
 
     And the application file upload options exist
+    And the Membership Ethical Guidelines Master Checklist exists
 
     And the following companies exist:
       | name                 | company_number | email                  | region     |
@@ -55,7 +58,7 @@ Feature: Create a new membership application
     And I select files delivery radio button "upload_now"
 
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
     And I should see t("shf_applications.create.success_with_app_files_missing")
     When I am on the "edit my application" page
     Then "applicant_1@random.com" should receive an email
@@ -82,7 +85,7 @@ Feature: Create a new membership application
 
     And I click on t("shf_applications.new.submit_button_label")
 
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
 
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
@@ -109,7 +112,7 @@ Feature: Create a new membership application
 
     And I click on t("shf_applications.new.submit_button_label")
 
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
     And I should see t("shf_applications.create.remember_to_deliver_files")
@@ -135,7 +138,7 @@ Feature: Create a new membership application
     And I select files delivery radio button "upload_now"
 
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
@@ -166,7 +169,7 @@ Feature: Create a new membership application
     And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
     Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2120000142"
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
@@ -198,7 +201,7 @@ Feature: Create a new membership application
     And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
     Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2286411992"
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
@@ -218,7 +221,7 @@ Feature: Create a new membership application
     And I select files delivery radio button "files_uploaded"
 
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page for "applicant_1@random.com"
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 

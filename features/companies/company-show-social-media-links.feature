@@ -4,6 +4,7 @@ Feature: Show social media links for a company
   Show social media icons for the social media URLs that are recorded for the company
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                       | admin | member |

@@ -6,6 +6,7 @@ Feature: Only admin and company members see the button to edit a company
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                 | admin | member    |

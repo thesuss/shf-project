@@ -18,6 +18,7 @@ Feature: "Other/Custom" waiting reason comes from locale file and Admin cannot e
     # it is important that this statement is first so that tables are empty, so that things will be seeded
     # Given the system is seeded with initial data
 
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                                  | admin |

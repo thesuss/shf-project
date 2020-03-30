@@ -1,10 +1,8 @@
 -# This partial shows information about a user that is for the admin only.
 -#
 -# The partial expects these locals:
+-#   current_user = the user the is logged in and looking at this (might be an admin)
 -#   user - the user (member) that this information is for
--#   app_configuration - the Application Configuration (needed to generate the
--#     the proof of membership and the company H-Markt images)
--#
 
 - if current_user.admin?
   .admin-only

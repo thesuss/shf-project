@@ -18,8 +18,10 @@ Given(/^the following users exist(?:[:])?$/) do |table|
     user.delete('first_name') if user['first_name'].blank?
     user['sign_in_count'] = 0 if user['sign_in_count'].blank?
 
-    is_legacy == 'true' ? FactoryBot.create(:user_without_first_and_lastname, user) : FactoryBot.create(:user, user)
+    new_user = (is_legacy == 'true' ? FactoryBot.create(:user_without_first_and_lastname, user) : FactoryBot.create(:user, user))
 
+    AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(new_user)
+    # new_user
   end
 end
 

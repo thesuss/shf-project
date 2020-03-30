@@ -9,6 +9,8 @@ Feature: Admins, Members, and Users edit their own User Profile
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email             | password | admin | member    | first_name | last_name |
       | admin@random.com  | password | true  | false     | emma       | admin     |

@@ -94,6 +94,7 @@ end
 
 When "I click the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
   icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a/i[contains(@class, '#{icon_class}')]")
+  # should this instead be:   icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]//a/i[contains(@class, '#{icon_class}')]")
   icon_element.find(:xpath, './parent::a').click  # get the parent a of the icon)
 end
 
@@ -111,6 +112,7 @@ When "I click and accept the {capture_string} action for the row with {capture_s
   end
 end
 
+# FIXME - why does this have to use 'execute_script' ?  Because of Bootstrap?
 When "I {action} the checkbox with id {capture_string}" do |action, element_id|
   send action, id: element_id
 rescue Capybara::ElementNotFound

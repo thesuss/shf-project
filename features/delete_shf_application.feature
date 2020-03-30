@@ -8,6 +8,8 @@ Feature: As an admin
   associated with a company, then delete the company too.
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email            | admin |
       | emma@random.com  |       |

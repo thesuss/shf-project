@@ -21,6 +21,8 @@ Feature: All companies are geocoded before being shown on the view all companies
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten | Bromölla | street_address |
       | CompanyNotVisible    | 5569467466     | company@notvisible.com | Stockholm    | Alingsås | none           |
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     And the following users exist:
       | email               | admin | member |
       | emma@happymutts.com |       | true   |

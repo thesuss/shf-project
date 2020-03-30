@@ -14,6 +14,7 @@ Feature: Alerts sent for H-branding fee is due; company HAS previous H-Branding 
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                                      | admin | member |

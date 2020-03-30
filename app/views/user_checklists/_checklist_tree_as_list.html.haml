@@ -1,0 +1,13 @@
+-# This partial expects these locals:
+  user_checklist [UserChecklist] - the checklist that will be displayed a list
+
+- if user_checklist.children?
+  = arranged_tree_as_list(user_checklist.children.arrange,
+         { sort_by: [:list_position],
+         list_type: 'ul',
+          ul_class: ['checklist-items' ],
+          ul_id_method: ul_id,
+          li_class: ['checklist-item'],
+          }) do | child_entry |
+    %span.name{ class: list_entry_css_classes(child_entry) }
+      = child_entry.name

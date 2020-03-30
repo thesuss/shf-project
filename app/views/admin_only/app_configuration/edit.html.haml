@@ -64,6 +64,26 @@
             = f.label :payment_too_soon_days, "#{t('.payment_too_soon_days')}:", class: 'control-label field-label'
             = f.number_field :payment_too_soon_days, class: 'form-control payment-too-soon-days', min: 0
 
+    %hr
+    .row
+      .col
+        %h2 Checklists
+
+    .section
+      .form-row
+        .col.membership-guideline-list
+          .form-inline
+            = f.label :membership_guideline_list, "#{t('.membership_guideline_list')}:", class: 'control-label field-label required'
+            = f.collection_select :membership_guideline_list_id, AdminOnly::MasterChecklist.top_level_in_use, :id, :name, {}, {class: 'form-control  membership-guideline-list'}
+
+      .row
+        .col
+          %p
+            = t('.membership_guideline_list_tooltip')
+            %br
+            %span.required-field-note= t('.required_field')
+
+
 
     %hr
     .row

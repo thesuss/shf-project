@@ -7,6 +7,7 @@ Feature: Must be logged in as admin to get to the test exception notification UR
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email               | admin | member |
@@ -21,7 +22,7 @@ Feature: Must be logged in as admin to get to the test exception notification UR
     Then the url "test_exception_notifications" should be a valid route
     And the page should not be blank
 
-    
+
   Scenario: A member cannot access the exception notification path
     Given I am logged in as "emma@happymutts.com"
     Then the url "test_exception_notifications" should not be a valid route

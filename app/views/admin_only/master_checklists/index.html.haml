@@ -1,0 +1,51 @@
+%header.entry-header
+  %h1.entry-title= t('.title')
+
+.entry-content
+  #master-list-items
+    - unless @master_checklists.empty?
+      - displayed_text_length = 60
+
+      = arranged_tree_as_list(@master_checklists.arrange,
+             { sort_by: [:list_position],
+              list_type: 'ol',
+              ul_class: ['master-list'],
+              ul_class_top: ['top'],
+              ul_class_children: ['children', 'collapse', 'show'],
+              ul_id_method: ul_id,
+              li_class: ['master-list-item'],
+              li_id_method: li_id }) do | child_entry |
+
+
+        - if child_entry.has_children?
+          - children_ul_id = "##{ ul_id.call(child_entry) }"
+          %i{ class:'expand-collapse-toggle fa fa-angle-down' ,
+          'aria-controls': children_ul_id, 'aria-expanded': 'true',
+           'data-toggle': 'collapse', href: children_ul_id, role: 'button' }
+
+        - list_specific_classes = list_entry_css_classes(child_entry)
+        = link_to child_entry do
+          %span.name{ class: list_specific_classes }= child_entry.name
+          %p.details
+            %span.displayed-text{ class: list_specific_classes }
+              %span.label= t('.displayed_text') + ': '
+              %span.value= child_entry.displayed_text.truncate(displayed_text_length, separator: ' ', omission: '... (cont.)')
+
+            = render partial: 'completed_numbers_span', locals: { master_checklist: child_entry }
+
+
+  %hr
+  %h3 Items that are no longer in use (archived)
+  = render partial: 'admin_only/master_checklists/non_nested_table', locals: { no_longer_in_use: @no_longer_in_use }
+
+  %hr
+
+  = link_to t('.new_item'), new_admin_only_master_checklist_path, class: 'btn btn-primary'
+
+
+:javascript
+
+  $(".expand-collapse-toggle").on("click",function(){
+    $(this).toggleClass("fa-angle-down");
+    $(this).toggleClass("fa-angle-up");
+  });

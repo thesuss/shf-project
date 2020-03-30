@@ -5,6 +5,8 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
   I want to see all membership applications
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email         | admin | member    |
       | u1@mutts.com  |       | false     |

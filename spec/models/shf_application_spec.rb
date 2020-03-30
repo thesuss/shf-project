@@ -34,7 +34,7 @@ RSpec.describe ShfApplication, type: :model do
   before(:each) do
     # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
     # if a ShfApplication is accepted.
-    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+    # allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
   end
 
 
@@ -195,7 +195,7 @@ RSpec.describe ShfApplication, type: :model do
         let!(:shf_approved_app_uploads_3) do
           member = create(:member_with_membership_app, email: 'user_6@random.com')
           shf_app = member.shf_application
-          shf_app.uploaded_files <<  create(:uploaded_file, :png, shf_application: shf_app)
+          shf_app.uploaded_files << create(:uploaded_file, :png, shf_application: shf_app)
           shf_app
         end
 
@@ -441,7 +441,7 @@ RSpec.describe ShfApplication, type: :model do
                                     actual_file: (File.new(File.join(FIXTURE_DIR,
                                                   'image.jpg')))) }
 
-      let(:jan_2_early_am) { Time.utc(2019, 1, 2, 3, 4, 5)}
+      let(:jan_2_early_am) { Time.utc(2019, 1, 2, 3, 4, 5) }
 
       describe 'application accepted' do
 
@@ -572,5 +572,28 @@ RSpec.describe ShfApplication, type: :model do
 
   end
 
+
+  describe 'applicant_can_edit?' do
+
+    it 'true if state is "new"' do
+      expect(create(:shf_application).applicant_can_edit?).to be_truthy
+    end
+
+    it 'true if state is "waiting for applicant"' do
+      expect(create(:shf_application, state: :waiting_for_applicant).applicant_can_edit?).to be_truthy
+    end
+
+
+    describe 'false otherwise:' do
+      other_states = described_class.all_states.reject{ |state| state.to_sym == :new || state.to_sym == :waiting_for_applicant }
+
+      other_states.each do | other_state |
+        it "#{other_state}" do
+          expect(create(:shf_application, state: other_state).applicant_can_edit?).to be_falsey
+        end
+      end
+
+    end
+  end
 
 end

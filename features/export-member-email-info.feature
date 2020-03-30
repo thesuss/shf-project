@@ -5,6 +5,8 @@ Feature: export member information to a CSV file so I can use it in other system
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | last_name   | email                       | admin |
       | Emmasdottir | emma@happymutts.com         |       |

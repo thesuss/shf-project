@@ -12,6 +12,8 @@ Feature: SHF Application status is changed
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | first_name      | email                                  | admin |
       | EmmaUnderReview | emma_under_review@happymutts.se        |       |

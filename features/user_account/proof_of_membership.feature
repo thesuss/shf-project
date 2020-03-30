@@ -7,6 +7,7 @@ Feature: Member gets their customized SHF membership card (proof of membership)
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email         | admin | member | membership_number | first_name | last_name |

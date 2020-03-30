@@ -12,6 +12,8 @@ Feature: As an admin
   PT:  https://www.pivotaltracker.com/story/show/133081453
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                      | admin | member |
       | applicant_1@happymutts.com |       | true   |

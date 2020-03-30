@@ -1,0 +1,28 @@
+-# TODO DRY with show view
+-  no_more_changes_class = @master_checklist.no_more_major_changes? ? 'no-more-major-changes' : ''
+
+%header.entry-header
+  %h1.entry-title{ class: @master_checklist.is_in_use ? '' : 'not-in-use' }= @master_checklist.name
+
+.entry-content.container{ class: "#{ no_more_changes_class }" }
+  .master-checklist-item
+
+    = render partial: 'no_more_major_changes_note_if_needed', locals: { master_checklist: @master_checklist }
+
+    = render partial: 'status_numbers_row', locals: { master_checklist: @master_checklist }
+
+
+    = render 'form', locals: { master_checklist: @master_checklist,
+       all_allowable_parents: @all_allowable_parents,
+       max_list_position_zerobased: @max_list_position_zerobased,
+       class_name: 'edit-master-checklist-item' }
+
+  %hr
+    .text-center
+      = link_to t('.view_list_item'), @master_checklist, class: 'btn btn-sm btn-light'
+
+      = render partial: 'delete_button_if_applicable', locals: { master_checklist: @master_checklist }
+
+      = link_to '(clone and mark this as no longer used) TBD', '#', class: 'btn btn-sm btn-primary'
+
+      = link_to t('.all_list_items'), admin_only_master_checklists_path, class: 'btn btn-sm btn-light'

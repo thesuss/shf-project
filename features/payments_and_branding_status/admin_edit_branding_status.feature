@@ -8,6 +8,7 @@ Feature: Admin edits H-brand license status
   Background:
 
     Given the date is set to "2017-10-01"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email          | admin | member | membership_number |

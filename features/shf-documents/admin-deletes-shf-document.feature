@@ -6,6 +6,7 @@ Feature: Admin can delete uploaded SHF Documents
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
 
     Given the following users exist:

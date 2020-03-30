@@ -5,6 +5,8 @@ Feature: As an admin
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                | admin |
       | applicant@random.com |       |

@@ -81,7 +81,7 @@ class ShfApplicationsController < ApplicationController
                                 t('.success', email_address: @shf_application.contact_email))
         end
 
-        redirect_to information_path
+        redirect_to user_path(@shf_application.user)
 
       else
         helpers.flash_message(:notice, t('.success_with_file_problem'))

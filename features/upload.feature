@@ -5,6 +5,8 @@ Feature: Applicant uploads a file for their application
   PT: https://www.pivotaltracker.com/story/show/133109591
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                  | admin |
       | applicant_1@random.com |       |
@@ -100,6 +102,7 @@ Feature: Applicant uploads a file for their application
     And I choose a file named "picture.png" to upload
     And I choose a file named "diploma.pdf" to upload
     Then I should see "diploma.pdf"
+    # FIXME - the following 2 lines sometimes fail:
     And I should not see "picture.jpg"
     And I should not see "picture.png"
 

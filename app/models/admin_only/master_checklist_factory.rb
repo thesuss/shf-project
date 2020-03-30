@@ -1,11 +1,10 @@
 module AdminOnly
 
-
   #--------------------------
   #
-  # @class MasterChecklistFactory
+  # @class AdminOnly::MasterChecklistFactory
   #
-  # @desc Responsibility: Creates MasterChecklist
+  # @desc Responsibility: Creates MasterChecklists
   #
   #
   # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)

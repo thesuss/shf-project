@@ -8,6 +8,7 @@ Feature:  Admin resets passwords for members and users
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                      | admin | password       |

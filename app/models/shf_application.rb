@@ -44,7 +44,10 @@ class ShfApplication < ApplicationRecord
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
 
+  # FIXME - rename this scope. It is only used in no_uploaded_files
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
+
+  CAN_EDIT_STATES = [:new, :waiting_for_applicant]
 
 
   def add_observers
@@ -148,13 +151,19 @@ class ShfApplication < ApplicationRecord
     companies.last&.branding_license?
   end
 
+  # @return [boolean] - is the application in a state where the applicant can edit it?
+  def applicant_can_edit?
+    CAN_EDIT_STATES.include? state.to_sym
+  end
+
+
   def accept_application
     begin
 
       update(when_approved: Time.zone.now)
 
       # create the SHF Membership Guidelines checklist for the user
-      AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
+      # AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
 
       # Default company email = user's membership contact email
       companies.first.email = contact_email

@@ -13,9 +13,14 @@ Rails.application.routes.draw do
         resources :master_checklists
         get  'master-checklists/max-list-position', to: 'master_checklists#max_list_position'
         post 'master-checklists/toggle-in-use', to: 'master_checklists#toggle_in_use'
+        post 'master-checklists/set-to-no-longer-used/:id', to: 'master_checklists#set_to_no_longer_used',
+             as: :master_checklists_set_to_no_longer_used
+
+        get 'master-checklists/next-onebased-list-position', to: 'master_checklists#next_one_based_list_position'
 
         get 'payments', to: 'dashboard#payments'
 
+        resources :master_checklist_types
       end
 
 
@@ -136,10 +141,18 @@ Rails.application.routes.draw do
       # ---------------------------------------------------
       # UserChecklist as a nested resource under User, with path '/lista' in the URI
       resources :user_checklists, only: [:show, :index], path: 'lista' do
+        get 'progress', to: 'user_checklists#show_progress'
+
         post 'all_changed_by_completion_toggle', to: 'user_checklists#all_changed_by_completion_toggle'
       end
 
     end
+
+    # UserChecklist
+    post 'anvandare/lista/set-all-completed/:id', to: 'user_checklists#set_complete_including_kids',
+         as: 'user_checklist_set_complete_including_kids'
+    post 'anvandare/lista/set-all-uncompleted/:id', to: 'user_checklists#set_uncomplete_including_kids',
+         as: 'user_checklist_set_uncomplete_including_kids'
 
 
     get 'anvandare/:id/proof_of_membership', to: 'users#proof_of_membership',

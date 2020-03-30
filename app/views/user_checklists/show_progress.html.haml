@@ -1,0 +1,170 @@
+-# The variables below are also used in the javascript
+:ruby
+  checkbox_id = 'completed-checkbox'
+  is_completed_icon_id = 'fas-is-complete-icon'
+  inner_progress_bar_id = 'progress-bar'
+  percent_text_class = 'percent-text'
+  next_arrow_id = 'fas-next-arrow-icon'
+  next_link_id = 'next-link'
+  contact_us_footer_id = 'contact-us-footer'
+
+  flex_class = 'flex'
+  whiteout_class = 'whiteout'
+  show_class = 'is-complete'
+  hide_class = 'd-none' # Bootstrap 4 class
+
+.membership-guidelines
+  - overall_progress = @overall_progress
+
+  = render partial: 'checklist_header', locals: { user: @current_user, user_checklist: @checklist_root }
+
+  .entry-content.container
+    .user-checklist
+      %p.description= @checklist_root.description
+
+      = render partial: 'shared/progress_bar', locals: {  percent_complete: overall_progress }
+
+      %p.instructions= t('.read_and_agree')
+
+      -# %p.instructions.scroll-down= t('.scroll_down_to_read_all')
+
+      .row
+        .col
+          -# Can't make the card a partial because we need to update the progress bar.
+          -# This is an excellent use case for using Vue or React (to take advantage of components automatically reacting to change)
+          .card
+            .card-body
+
+              %h4.card-title.guideline-name
+                %span.is-complete.show-inline#is-complete-icon
+
+                  -# The 'fa-fw' class is essential: That font awesome class sets a fixed width no matter what icon is shown.
+                  -# It keeps the content to the right of the icon from 'jumping over' when there is no icon to display.
+                  = complete_check_icon(html_options: { class: "fa-fw #{ whiteout_class }", id: is_completed_icon_id })
+
+                = @user_checklist.name
+
+              = render partial: 'checklist_tree_as_list', locals: { user_checklist: @user_checklist }
+
+              %p.have-read-confirmation
+
+                = check_box_tag(checkbox_id, 'checked', @user_checklist.all_completed?,
+                    { class: "fa-check-square",
+                      onchange:"toggleCompletedCheckbox(#{ @user.id }, #{ @user_checklist.id })" })
+
+                = label_tag checkbox_id, { onchange:"toggleCompletedCheckbox(#{ @user.id }, #{ @user_checklist.id })" } do
+                  = t('.read_and_agree_start')
+                  %span.name= @user_checklist.name
+                  = t('.read_and_agree_end')
+
+            .card-footer
+              .row
+                .col
+                  %p.contact-if-questions
+                    #contact-us-footer
+                      = t('.contact_if_questions')
+                      = mail_to(t('.email_display_name'), ENV['SHF_MEMBERSHIP_EMAIL'])
+
+                  - next_sibling = @user_checklist.next_sibling
+                  - if next_sibling
+                    .next
+                      = link_to  user_user_checklist_progress_path(@user, next_sibling), { id: next_link_id, class: hide_class } do
+                        = t('.next')
+                        %span.next-arrow-icon.show-inline#next-arrow-icon
+                          = next_arrow_icon(html_options: { class: 'fa-lg', id: next_arrow_id })
+
+
+:javascript
+
+  const setCompleteUrl = "/anvandare/lista/set-all-completed/";
+  const setUncompleteUrl = "/anvandare/lista/set-all-uncompleted/";
+
+  const checkboxId = "##{ checkbox_id }";
+  const isCompleteIconId = "##{ is_completed_icon_id }";
+  const innerProgressBarId = "##{ inner_progress_bar_id }";
+  const percentTextClass = ".#{ percent_text_class }";
+  const nextLinkId = "##{ next_link_id }";
+  const contactUsFooterId = "##{ contact_us_footer_id }";
+
+  const flexClass = "#{ flex_class }";
+  const whiteoutClass = "#{ whiteout_class }";
+  const showClass = "#{ show_class }";
+  const hideClass = "#{ hide_class }";
+
+  const ALL_COMPLETE = 100;
+
+  window.onload = function(){
+    updateBasedOnCompletedCheckbox();
+  };
+
+
+  function toggleCompletedCheckbox(userId, checklistId) {
+      let checkbox = $(checkboxId); //getCheckboxElement();
+      let ajaxPostURL = (checkbox.prop("checked") ? setCompleteUrl : setUncompleteUrl);
+
+      $.post( ajaxPostURL + checklistId)
+
+        .done(function(responseData) {
+          if (Utility.httpErrorOccurred(responseData) === false) {
+            // success
+            updateBasedOnCompletedCheckbox();
+            let newPercentComplete = responseData.overall_percent_complete;
+            updateProgressBar(newPercentComplete);
+            if (newPercentComplete === ALL_COMPLETE) {
+              window.location.reload(true);
+            }
+          }
+        })
+
+      .fail(function(responseData) { return failedRequest(responseData) });
+  }
+
+
+  function updateBasedOnCompletedCheckbox() {
+   let checkbox = $(checkboxId);
+    if (checkbox.prop("checked")) {
+      showCompleteCheckIcon();
+      hideContactUs();
+      showNextLink();
+    }
+    else {
+      hideCompleteCheckIcon();
+      showContactUs();
+      hideNextLink();
+    }
+  }
+
+
+  function updateProgressBar(progressPercent = 0) {
+    let progressBar = $(innerProgressBarId);
+    let percentText = progressBar.find(percentTextClass);
+    let progressPercentString = progressPercent + "%";
+    percentText.text(progressPercentString + " #{ t('.complete') }");
+    progressBar.innerWidth(progressPercentString);
+    progressBar.attr('aria-valuenow', progressPercent);
+  }
+
+
+  function showContactUs() {
+    $(contactUsFooterId).toggleClass(showClass, true).toggleClass(hideClass, false);
+  }
+
+  function hideContactUs() {
+    $(contactUsFooterId).toggleClass(showClass, false).toggleClass(hideClass, true);
+  }
+
+  function showNextLink() {
+    $(nextLinkId).toggleClass(flexClass, true).toggleClass(hideClass, false);
+  }
+
+  function hideNextLink() {
+    $(nextLinkId).toggleClass(flexClass, false).toggleClass(hideClass, true);
+  }
+
+  function hideCompleteCheckIcon() {
+    $(isCompleteIconId).toggleClass(showClass, false).toggleClass(whiteoutClass, true);
+  }
+
+  function showCompleteCheckIcon() {
+    $(isCompleteIconId).toggleClass(showClass, true).toggleClass(whiteoutClass, false);
+  }

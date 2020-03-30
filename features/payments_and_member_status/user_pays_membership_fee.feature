@@ -6,11 +6,16 @@ Feature: User pays membership fee
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                    | admin | member |
       | emma-applicant@mutts.com |       | false  |
       | admin@shf.se             | true  | false  |
+
+    Given the following users have agreed to the Membership Ethical Guidelines:
+      | email                    |
+      | emma-applicant@mutts.com |
 
     Given the following business categories exist
       | name  | description           |
@@ -26,13 +31,11 @@ Feature: User pays membership fee
     Given the date is set to "2018-7-01"
     And I am logged in as "emma-applicant@mutts.com"
     And I am on the "user account" page for "emma-applicant@mutts.com"
-    And I should see t("menus.nav.members.pay_membership")
-    And I should see t("payors.due")
-    Then I click on t("menus.nav.members.pay_membership")
+    When I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    And I should see t("payments.success.success")
+    Then I should see t("payments.success.success")
     And I should see "2019-06-30"
-    Then the user is paid through "2019-06-30"
+    And the user is paid through "2019-06-30"
 
 
      # This test consistently fails on Semaphore. (CI set-up on GitHub that runs our tests.)

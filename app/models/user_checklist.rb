@@ -10,24 +10,10 @@ require 'ordered_ancestry_entry'
 # Note: If a list has sublists (children), it cannot be manually set to un-/completed.
 #   The completion status is set automatically based on the children (e.g. if they are are complete or not).
 #
+#
 # What happens when you change the master list?  does it reflect that?
 #   - No:  SHF board decided that when a person renews again (or has reason to see the checklist again),
 #     the users will see the new/updated/changed information from a master list.  (Otherwise we have to notify each user of the change(s) each time.)
-#
-#
-# TODO:  if a new membership guideline list is generated each time a person renews,
-#    then we need a way to know which is the _current_ membership guideline list.
-#  - is this just the same as
-#    (1) setting something as 'current/ not in use / expiration date'
-#    (2) setting the associated "type" of a thing ( = --> a table/list of types )
-#
-# TODO: There is a _time_ component to a UserChecklist: there is a date when the list starts to take effect
-#    and a 'due date': a deadline by which the user must completed it,
-#    and perhaps even a date when the list no longer applies.
-#
-# Ex:
-#   in 2020, current members in good standing do not need to complete the Membership Guidelines until they renew next time.
-#
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date  2019-12-04
@@ -166,7 +152,7 @@ class UserChecklist < ApplicationRecord
   # @return [Array<UserChecklist>] - a list of all user checklists that were changed
   #
   def all_changed_by_completion_toggle(new_date_complete = Time.zone.now)
-    all_completed? ? all_toggled_to_uncomplete : all_toggled_to_complete(new_date_complete)
+    all_completed? ? set_uncomplete_update_parent : set_complete_update_parent(new_date_complete)
   end
 
 
@@ -174,6 +160,7 @@ class UserChecklist < ApplicationRecord
   def set_complete_including_children(new_date_completed = Time.zone.now)
     update(date_completed: new_date_completed)
     set_date_completed(descendants.uncompleted, new_date_completed)
+    set_complete_update_parent(new_date_completed)
   end
 
 
@@ -181,6 +168,7 @@ class UserChecklist < ApplicationRecord
   def set_uncomplete_including_children
     update(date_completed: nil)
     set_date_completed(descendants.completed, nil)
+    set_uncomplete_update_parent
   end
 
 
@@ -192,19 +180,19 @@ class UserChecklist < ApplicationRecord
   # Set this to uncompleted (not completed) and also update ancestors if needed.
   #
   # If already uncomplete, do nothing
-  #   (this might happen if we are an ancestor of what kicked off the all_toggled_to_uncomplete)
+  #   (this might happen if we are an ancestor of what kicked off the set_uncomplete_update_parent)
   #    if we are uncomplete, our ancestor must also be uncomplete so there is no need to update them.
   # Else change to uncomplete and also update ancestors
   #
   # @return [Array<UserChecklist>] - a list of all user checklists that were changed
   #
-  def all_toggled_to_uncomplete
+  def set_uncomplete_update_parent
     items_changed = []
 
     unless date_completed.nil?
       update(date_completed: nil) # we ignore new_date_complete in case nothing was passed in
       items_changed << self
-      items_changed.concat(parent.all_toggled_to_uncomplete) if has_parent?
+      items_changed.concat(parent.set_uncomplete_update_parent) if has_parent?
     end
 
     items_changed
@@ -214,7 +202,7 @@ class UserChecklist < ApplicationRecord
   # Set this to completed and also update ancestors if needed.
   #
   # If already complete
-  #   (this might happen if we are an ancestor of what kicked off the all_toggled_to_complete)
+  #   (this might happen if we are an ancestor of what kicked off the set_complete_update_parent)
   #   update the completion date anyway (because one of our children might have a new completion date.  This shouldn't happen, but we keep this here to ensure data consistency)
   #
   # Can only change to complete if all of our descendants are complete.
@@ -224,13 +212,13 @@ class UserChecklist < ApplicationRecord
   # @param [Time] new_date_complete- when the entry was completed. default = Time.zone.now
   # @return [Array<UserChecklist>] - a list of all user checklists that were changed
   #
-  def all_toggled_to_complete(new_date_complete = Time.zone.now)
+  def set_complete_update_parent(new_date_complete = Time.zone.now)
     items_changed = []
 
     if descendants_completed?
       update(date_completed: new_date_complete)
       items_changed << self
-      items_changed.concat(parent.all_toggled_to_complete(new_date_complete)) if has_parent?
+      items_changed.concat(parent.set_complete_update_parent(new_date_complete)) if has_parent?
     end
 
     items_changed

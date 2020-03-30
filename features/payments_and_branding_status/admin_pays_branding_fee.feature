@@ -8,6 +8,7 @@ Feature: Admin pays branding license fee for a company
   Background:
 
     Given the date is set to "2018-01-01"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email          | admin | member | membership_number | first_name |

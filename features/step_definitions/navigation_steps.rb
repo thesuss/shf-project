@@ -54,13 +54,9 @@ Given(/^I am on the "([^"]*)" page(?: for "([^"]*)")?(?: and the EU cookie is "(
     visit path_with_locale(get_path(page, user))
     step "the EU cookies consent cookie is set to \"#{eu_cookie_value}\""
 
-  rescue StandardError => orig_exception
-    raise orig_exception  # if the original exception
+  rescue ActionController::RoutingError => exception
 
-  rescue => exception  # FIXME -- only do this branch if the path cannot be found. Need to match on the message,  not just the exception class Do not swallow (loose) the original exception
-    # ex: Code above might through a NoMethod exception for some other reason (not having to do with the page path)
-
-    warn exception.message  # FIXME: what is the purpose of this statement?
+    warn exception.message  # warn and then try to see if we can fix it by splitting at spaces
 
     begin
       path_components = page.split(/\s+/)
@@ -69,15 +65,20 @@ Given(/^I am on the "([^"]*)" page(?: for "([^"]*)")?(?: and the EU cookie is "(
       step "the EU cookies consent cookie is set to \"#{eu_cookie_value}\""
 
     rescue NoMethodError, ArgumentError => error
-      raise "Can't find mapping from \"#{page}\" to a path.\n" +
+      raise "exception: #{exception}\n" +
+      "Tried to construct a path with the path components, but can't find mapping from \"#{page}\" to a path.\n" +
         "Now, go and add a mapping in #{__FILE__} or assertion_steps.rb\n" +
-          "original error: #{error}\n" +
-          "exception: #{exception}\n"
+          "original: #{error}\n"
+    end
 
+  rescue StandardError => orig_exception
+    raise orig_exception  # a non-routing exception.  Shouldn't have happened if background data is correct and steps are written and called correctly
     end
   end
 
 
+And("I should get a routing error when I try to visit the {capture_string} page") do | page |
+  expect{visit path_with_locale(get_path(page, @user))}.to raise_error(ActionController::RoutingError)
 end
 
 

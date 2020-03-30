@@ -8,13 +8,15 @@ Feature: Edit SHF Application
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
-      | email             | member    | admin |
-      | emma@random.com   | false     |       |
-      | hans@random.com   | false     |       |
-      | nils@random.com   | true      |       |
-      | bob@barkybobs.com | false     |       |
-      | admin@shf.se      | true      | true  |
+      | email             | member | admin |
+      | emma@random.com   | false  |       |
+      | hans@random.com   | false  |       |
+      | nils@random.com   | true   |       |
+      | bob@barkybobs.com | false  |       |
+      | admin@shf.se      | true   | true  |
 
     And the following business categories exist
       | name         |
@@ -27,7 +29,7 @@ Feature: Edit SHF Application
     And the following applications exist:
       | user_email        | company_number         | state                 | categories |
       | emma@random.com   | 5560360793             | waiting_for_applicant | Groomer    |
-      | hans@random.com   | 2120000142, 5560360793 | under_review          | Groomer    |
+      | hans@random.com   | 2120000142, 5560360793 | new                   | Groomer    |
       | nils@random.com   | 2120000142             | accepted              | Groomer    |
       | bob@barkybobs.com | 5560360793             | rejected              | Groomer    |
 
@@ -93,36 +95,36 @@ Feature: Edit SHF Application
     And I should see t("shf_applications.update.success")
     And I should not see t("shf_applications.update.success_with_app_files_missing")
 
-    @selenium
-    Scenario: User deletes uploaded files
-      Given I am logged in as "emma@random.com"
-      And I am on the "user instructions" page
-      And I click on first t("menus.nav.users.my_application") link
-      Then I should be on "Edit My Application" page
+  @selenium
+  Scenario: User deletes uploaded files
+    Given I am logged in as "emma@random.com"
+    And I am on the "user instructions" page
+    And I click on first t("menus.nav.users.my_application") link
+    Then I should be on "Edit My Application" page
 
-      And I select files delivery radio button "upload_now"
-      And I choose files named "diploma.pdf, image.jpg" to upload
+    And I select files delivery radio button "upload_now"
+    And I choose files named "diploma.pdf, image.jpg" to upload
 
-      And I click on t("shf_applications.edit.submit_button_label")
-      Then I should be on the "show my application" page for "emma@random.com"
+    And I click on t("shf_applications.edit.submit_button_label")
+    Then I should be on the "show my application" page for "emma@random.com"
 
-      And I should see t("shf_applications.update.success")
-      And I should not see t("shf_applications.update.success_with_app_files_missing")
+    And I should see t("shf_applications.update.success")
+    And I should not see t("shf_applications.update.success_with_app_files_missing")
 
-      And I click on first t("menus.nav.users.my_application") link
-      Then I should be on "Edit My Application" page
+    And I click on first t("menus.nav.users.my_application") link
+    Then I should be on "Edit My Application" page
 
-      And I delete the second uploaded file
-      And I should not see "image.jpg"
+    And I delete the second uploaded file
+    And I should not see "image.jpg"
 
-      And I should be on "Edit My Application" page
+    And I should be on "Edit My Application" page
 
-      And I should see "diploma.pdf"
+    And I should see "diploma.pdf"
 
-      And I delete the first uploaded file
-      And I should not see "diploma.pdf"
+    And I delete the first uploaded file
+    And I should not see "diploma.pdf"
 
-      And I should see t("shf_applications.uploads.no_files")
+    And I should see t("shf_applications.uploads.no_files")
 
 
   @selenium @skip_ci_test

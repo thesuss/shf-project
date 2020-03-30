@@ -1,8 +1,13 @@
-Feature: As a registered user
+Feature: Logging in
+
+  As a registered user
   in order to access the functions of the site
   I need to be able to login
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+    And the application file upload options exist
+
     Given the following users exist:
       | email                | password | admin | member |
       | emma@random.com      | password | false | true   |
@@ -11,9 +16,15 @@ Feature: As a registered user
       | arne@random.com      | password | true  | true   |
 
     And the following applications exist:
-      | user_email           | company_number | state    |
-      | emma@random.com      | 5562252998     | accepted |
+      | user_email           | company_number | state        |
+      | emma@random.com      | 5562252998     | accepted     |
       | lars-user@random.com | 2120000142     | under_review |
+
+    And the following payments exist
+      | user_email      | start_date | expire_date | payment_type | status | hips_id |
+      | emma@random.com | 2020-02-02 | 2021-02-01  | member_fee   | betald | none    |
+
+    And the date is set to "2020-06-20"
 
 
   Scenario: Logging in
@@ -95,5 +106,5 @@ Feature: As a registered user
     When I fill in t("activerecord.attributes.user.email") with "lars-user@random.com"
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
-    And I should be on "user instructions" page
+    And I should be on "user account" page for "lars-user@random.com"
     And I should not see t("info.logged_in_as_admin")

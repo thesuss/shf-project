@@ -11,6 +11,8 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                                  | admin |
       | anna_waiting_for_info@nosnarkybarky.se |       |

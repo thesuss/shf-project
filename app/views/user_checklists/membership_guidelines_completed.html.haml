@@ -1,0 +1,28 @@
+.membership-guidelines
+  - overall_progress = @overall_progress
+
+  = render partial: 'checklist_header', locals: { user: @current_user, user_checklist: @user_checklist.root }
+
+  .entry-content.container
+    .user-checklist.membership-guidelines-completed
+      %p.description= @user_checklist.root.description
+
+      .completed-progress-bar
+        = render partial: 'shared/progress_bar', locals: {  percent_complete: overall_progress }
+
+      .row
+        .col
+          .card
+            .card-body
+              %h3.card-title= t('.i_commit_to')
+
+              = render partial: 'checklist_tree_as_list', locals: { user_checklist: @user_checklist.root }
+
+            .card-footer
+              .row.justify-content-center
+                %h4
+                  %span.is-complete.show-inline#all-complete-icon
+                    = complete_check_icon(html_options: { class: 'fa-fw', id: 'fas-all-complete-icon' })
+                  = t('.agreed_to_all_terms')
+              .row.justify-content-center
+                %p= link_to 'back to my user profile', user_path(@user), class: 'btn btn-sm btn-primary'

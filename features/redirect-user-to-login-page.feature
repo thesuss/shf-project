@@ -6,6 +6,8 @@ Feature: Redirect User to the login page if they need to be logged in
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following regions exist:
       | name         |
       | Stockholm    |

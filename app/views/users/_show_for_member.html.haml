@@ -1,0 +1,28 @@
+- content_for :stylesheet_for_view do
+  = stylesheet_link_tag 'image-actions-custom-menu', media: 'all'
+
+= render partial: 'show_login_email_row_cols', locals: { user: user }
+
+.membership
+  .row.section-title
+    .col.mt-2
+      %h3.section-title= t("membership").capitalize
+  .row
+    .col
+      = field_or_none(t('.membership_number'), user.membership_number,
+                      label_class: 'standard-label',
+                      value_class: 'membership-number')
+
+  = render partial: 'membership_term_status', locals: { user: user }
+
+
+= render partial: 'show_application_section_row_cols', locals: { user: user }
+
+- if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
+  %p.membership-guidelines-checklist= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user}
+
+%hr
+
+= render partial: 'show_info_for_admin_only', locals: { user: user }
+
+= render partial: 'show_member_images_row_cols', locals: { user: user, app_configuration: app_config }

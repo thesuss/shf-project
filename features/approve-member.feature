@@ -75,6 +75,7 @@ Feature: Admin approves a member
 
     Then I am in "anna@nosnarkybarky.se" browser
     And I am logged in as "anna@nosnarkybarky.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "anna@nosnarkybarky.se"
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
@@ -122,6 +123,7 @@ Feature: Admin approves a member
 
     Then I am in "emma@happymutts.se" browser
     And I am logged in as "emma@happymutts.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "emma@happymutts.se"
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment

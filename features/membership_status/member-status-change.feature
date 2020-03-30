@@ -12,6 +12,7 @@ Feature: Membership status updated due to payments or expiration
   Background:
 
     Given the App Configuration is not mocked and is seeded
+    And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email               | admin | member | membership_number |
@@ -68,6 +69,7 @@ Feature: Membership status updated due to payments or expiration
   Scenario: Membership payment made 1 day after membership expires
     Given the date is set to "2019-01-01"
     And I am logged in as "emma@mutts.com"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "emma@mutts.com"
     And I should not be a member
     Then I click on t("menus.nav.members.pay_membership")
@@ -82,6 +84,7 @@ Feature: Membership status updated due to payments or expiration
   Scenario: Membership payment is made on expiration date
     Given the date is set to "2018-12-31"
     And I am logged in as "emma@mutts.com"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "emma@mutts.com"
     And I should not be a member
     Then I click on t("menus.nav.members.pay_membership")

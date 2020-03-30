@@ -8,6 +8,7 @@ Feature: Show the company's location on a map
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email               | admin |

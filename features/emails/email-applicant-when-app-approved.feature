@@ -8,6 +8,7 @@ Feature: Applicant gets an email when the application is approved
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email              | admin |
@@ -38,7 +39,7 @@ Feature: Applicant gets an email when the application is approved
 
 
   @selenium
-  Scenario: Admin approves membership and email is sent to applicant
+  Scenario: Admin approves application and email is sent to applicant
     Given I am logged in as "admin@shf.com"
     And I am on the "application" page for "emma@happymutts.se"
     When I click on t("shf_applications.accept_btn")
@@ -51,6 +52,7 @@ Feature: Applicant gets an email when the application is approved
     And I should see t("shf_applications.accepted")
     Then "emma@happymutts.se" should receive an email
     And I am logged in as "emma@happymutts.se"
+    And I have agreed to all of the Membership Guidelines
     And I open the email
     And I should see t("mailers.shf_application_mailer.app_approved.subject") in the email subject
     # must make sure this is not the edit page; it would also match the pattern for the show user page
@@ -59,7 +61,4 @@ Feature: Applicant gets an email when the application is approved
     And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
     And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     When I follow "http://localhost:3000/anvandare/1" in the email
-    Then I should see "Firstname Lastname"
-    And I should see t("users.show_login_email_row_cols.email")
-    And I should see t("application")
-    And I should not see t("users.show.membership_number")
+    Then I should be on the "user account" page

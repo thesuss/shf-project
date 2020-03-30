@@ -7,6 +7,7 @@ Feature: Admin can edit details about an uploaded SHF Document
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email               | admin |

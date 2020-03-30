@@ -78,6 +78,14 @@ module PathHelpers
         path = shf_documents_path
 
 
+      # User-ChecklistItems pages
+      when 'my checklists', 'checklists'
+        path = user_user_checklists_path(user)
+
+      when 'first unchecked membership guideline'
+        path = user_user_checklist_progress_path(user, UserChecklistManager.first_incomplete_membership_guideline_section_for(user))
+
+
       # ==================================================
       # Other Admin pages - pages only administrators can access
 
@@ -110,6 +118,12 @@ module PathHelpers
         path = new_admin_only_member_app_waiting_reason_path
       when 'all member app waiting reasons'
         path = admin_only_member_app_waiting_reasons_path
+
+
+      # MasterChecklist pages
+      when 'manage checklist masters'
+        path = admin_only_master_checklists_path
+
 
       when 'admin dashboard'
         path = admin_only_dashboard_path

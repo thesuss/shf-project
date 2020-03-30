@@ -8,6 +8,7 @@ Feature: Admin sees additional user details that only they can see
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                           | admin | membership_number | member |

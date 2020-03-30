@@ -14,6 +14,7 @@ Feature: Alerts sent for H-branding fee needs to be paid; company has NO previou
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                         | admin | member |

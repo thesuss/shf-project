@@ -6,6 +6,8 @@ Feature: Only admins and company members can edit a company
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                   | admin | member |
       | paid_member@mutts.com   |       | true   |

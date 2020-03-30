@@ -7,6 +7,7 @@ Feature: New Applicant gets an email acknowledging their application
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email               | admin |
@@ -37,7 +38,7 @@ Feature: New Applicant gets an email acknowledging their application
 
     And I click on t("shf_applications.new.submit_button_label")
 
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 

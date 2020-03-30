@@ -7,6 +7,8 @@ Feature: As a member of a company
   I want to see schduled company events when I view the company's page
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email            | admin | member |
       | member@mutts.com |       | true   |

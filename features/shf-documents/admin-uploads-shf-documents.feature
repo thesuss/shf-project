@@ -5,6 +5,7 @@ Feature: Admin uploads meeting PDFs
   I need to upload meeting minutes
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email               | admin |

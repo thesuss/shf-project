@@ -5,6 +5,8 @@ Feature: Admin edits user profile
   Including photo, name, emails, membership number, password, and all other info
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist
       | email                | password       | admin | member | first_name | last_name |
       | admin@shf.se         | admin_password | true  | false  | emma       | admin     |

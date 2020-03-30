@@ -2,6 +2,8 @@ Feature: Edit the social media urls (links) for a company
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email            | admin | member |
       | member@mutts.com |       | true   |

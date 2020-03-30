@@ -15,6 +15,7 @@ Feature: Show business categories for a company to a visitor
   PT https://www.pivotaltracker.com/story/show/135397241
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                 | admin |

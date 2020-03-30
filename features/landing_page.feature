@@ -3,6 +3,8 @@ Feature: As a Member
   Information page should show correct information
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist
       | email           | admin | member | membership_number |
       | anna@muffs.com  |       | false  |                   |

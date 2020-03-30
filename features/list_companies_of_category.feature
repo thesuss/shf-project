@@ -4,6 +4,8 @@ Feature: As any type of visitor
   PT: https://www.pivotaltracker.com/story/show/135684057
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email               | admin | member |
       | emma@happymutts.com |       | true   |

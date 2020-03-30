@@ -1,0 +1,333 @@
+// Styles for MasterChecklist list entries
+
+@import 'shf-custom-colors';
+
+$lighter-shf-blue: lighten($shf-blue, 30%);
+$no-more-changes-background: #e9ecef;
+
+$no-more-changes-note-color: darkred;
+
+[data-href] {
+  cursor: pointer;
+}
+
+tr {
+  .checklist-master-item {
+    border: 0;
+  }
+}
+
+.no-more-major-changes-note {
+  color: $no-more-changes-note-color;
+  font-weight: bolder;
+  margin-top: 1rem;
+}
+
+.not-in-use {
+  background-color: $med-gray-border;
+  color: darkred;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.show,
+.edit {
+
+  .displayed-to-users {
+    font-weight: bold;
+  }
+
+  .no-more-major-changes {
+    background-color: $no-more-changes-background;
+  }
+
+  .what-users-see {
+    border: 1pt dotted $shf-blue;
+    padding-left: 1rem;
+  }
+}
+
+body.master_checklists.index {
+
+  #master-list-items {
+
+    ul {
+      list-style-type: none;
+    }
+
+    li {
+
+      a {
+        .name.top-level-list {
+          font-size: larger;
+          font-weight: bold;
+        }
+      }
+
+      .displayed-text {
+        .label {
+          font-size: smaller;
+          font-style: italic;
+        }
+      }
+
+      .master-list-item {
+        .name {
+          font-weight: bold;
+        }
+
+
+        p.displayed-text.is-list {
+          padding-left: 1.5rem;
+        }
+
+      }
+
+      .numbers {
+        font-size: smaller;
+      }
+    }
+
+    i.expand-collapse-toggle {
+      padding-right: .5rem;
+    }
+
+    thead {
+      border-bottom: gray 1pt solid;
+    }
+  }
+
+
+  table {
+
+    col {
+      .name-start {
+        width: 1rem;
+      }
+
+      //.name-end {
+      //  //width: 55%;
+      //}
+
+      .parent-list {
+        width: 30%;
+      }
+
+      .list-position {
+        width: 2rem;
+      }
+
+      .delete {
+        width: 2rem;
+      }
+    }
+
+    .col1-spacer {
+      //border: 1pt yellow solid;
+      width: 1rem;
+    }
+
+    .item-info-3lines {
+      width: 100%;
+
+      .line1,
+      .line2,
+      .line3 {
+        width: 100%;
+      }
+
+      .name {
+        width: 75%;
+      }
+
+      .parent-list {
+        width: 30%;
+      }
+
+      .list-position {
+        width: 2rem;
+      }
+
+      .delete {
+        width: 2rem;
+      }
+    }
+
+    .small-title {
+      //border: 1pt green solid;
+      font-size: smaller;
+    }
+
+    .name,
+    .displayed-text,
+    .displayed-text a {
+      font-weight: bold;
+    }
+
+    .displayed-text,
+    .displayed-text a,
+    .description,
+    .description a {
+      //border: 1pt red solid;
+      color: #286cb1;
+    }
+
+    .description,
+    .parent-list {
+      font-size: smaller;
+    }
+
+    td {
+      //border: 1pt lightgray solid;
+
+      .delete {
+        padding-left: 1rem;
+      }
+
+      .list-position {
+        text-align: center;
+      }
+    }
+
+  }
+
+}
+
+
+.show {
+
+  .list-type {
+    font-style: italic;
+
+    a {
+      border-bottom: 1px dotted $shf-blue;
+      border-left: 1px transparent solid;
+      border-right: 1px transparent solid;
+      border-top: 1px transparent solid;
+
+      &:hover {
+        background-color: $lighter-shf-blue;
+        border: 1px $lighter-shf-blue solid;
+        color: $body-text;
+      }
+    }
+
+  }
+
+
+  .master-checklist-item {
+
+
+    .displayed-to-users {
+
+      color: $primary;
+      font-weight: bold;
+
+      .label {
+        color: gray;
+        font-style: italic;
+      }
+    }
+
+    .value {
+      margin-left: 2rem;
+    }
+  }
+
+  .what-users-see {
+    background-color: white;
+
+    .displayed-text {
+      font-size: larger;
+    }
+
+    .description {
+      padding-left: 1rem;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+.edit {
+
+  //.edit input.form-control.displayed-to-users,
+
+  .master-checklist-item {
+
+    .displayed-to-users {
+      margin-left: 2rem;
+
+      .form-group {
+        font-weight: bold;
+      }
+
+      label,
+      .label {
+        color: gray;
+      }
+
+      .value.displayed-to-users,
+      input.form-control.displayed-to-users {
+        color: $primary;
+      }
+
+    }
+  }
+}
+
+
+.master-checklist-item {
+
+  .numbers {
+    font-size: smaller;
+  }
+
+  a {
+    // just underline the bottom, but create space with transparent borders so this doesn't "jump" when hovered
+    border-bottom: 1px dotted $shf-blue;
+    border-left: 1px transparent solid;
+    border-right: 1px transparent solid;
+    border-top: 1px transparent solid;
+
+
+    &:hover {
+      //background-color:  $light-taupe;
+      background-color: $lighter-shf-blue;
+      border: 1px $lighter-shf-blue solid;
+      color: $body-text;
+    }
+  }
+
+  .is-list {
+    //font-weight: bold;
+  }
+
+  .top-level-list {
+    color: $primary;
+    font-weight: bold;
+  }
+
+}
+
+table.no-longer-in-use {
+
+  td,
+  th {
+    padding-right: 1rem;
+  }
+
+  thead {
+    tr {
+      border-bottom: solid 1pt;
+    }
+  }
+
+  a {
+    border-bottom: 0;
+  }
+}
+

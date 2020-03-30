@@ -35,6 +35,14 @@ FactoryBot.define do
       end
     end
 
+
+    factory :membership_guidelines_master_checklist do
+      name { "Membership Guideline Master" }
+      displayed_text { "This is the text that would be displayed to a user." }
+      description { "Membership Guideline Master description" }
+      association :master_checklist_type, factory: :membership_guidelines_master_checklist_type
+    end
+
   end
 
 end

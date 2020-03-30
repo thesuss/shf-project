@@ -11,6 +11,8 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     # Lars is already a member.
     # He is associated with the "AlreadyInGoodStanding" company (# 5562252998 )
 
@@ -58,8 +60,8 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
   Scenario: New Member granted membership and associated with company already in good standing. Email is sent when membership is granted.
     Given the date is set to "2020-01-05"
     And I am logged in as "new-member@good-standing.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user account" page for "new-member@good-standing.se"
-    And I should see t("payors.due")
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should see t("payments.success.success")
@@ -82,8 +84,9 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
   Scenario: Membership is granted, but company is not in good standing. No email sent.
     Given the date is set to "2020-01-05"
     And I am logged in as "new-member@no-h-brand.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user account" page for "new-member@no-h-brand.se"
-    And I should see t("payors.due")
+#    And I should see t("payors.due")
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should see t("payments.success.success")

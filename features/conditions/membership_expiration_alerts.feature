@@ -8,6 +8,7 @@ Feature: Membership expiration alerts are sent out (Condition response)
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                            | admin | member |

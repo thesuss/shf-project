@@ -9,6 +9,7 @@ Feature: Membership address get emails when a member has been unpaid for > 6 mon
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                          | admin | member |

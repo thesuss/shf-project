@@ -1,6 +1,7 @@
 Feature: Only members and admins can see members only (hidden) pages
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                    | admin | member    |

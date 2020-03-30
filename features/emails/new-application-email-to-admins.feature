@@ -8,6 +8,7 @@ Feature: When a new application is received, all admins get an email notificatio
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email               | admin | first_name | last_name  |
@@ -42,7 +43,7 @@ Feature: When a new application is received, all admins get an email notificatio
     And I select files delivery radio button "upload_later"
 
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
+    Then I should be on the "user account" page
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 

@@ -843,6 +843,20 @@ RSpec.describe UserChecklist, type: :model do
       expect(child2_complete.reload.date_completed.strftime(str_format)).to eq child2_complete_orig_date_completed.strftime(str_format)
     end
 
+    it 'sets ancestors to complete if appropriate' do
+      root = create(:user_checklist)
+      child1 = create(:user_checklist, parent: root, name: 'child1')
+      child1_1 = create(:user_checklist, parent: child1, name: 'child1_1')
+      child1_1_1_complete = create(:user_checklist, parent: child1_1, name: 'child1_1_1')
+      create(:user_checklist, :completed, parent: root, name: 'child2')
+
+      child1_1_1_complete.set_complete_including_children
+      expect(child1_1_1_complete.reload.completed?).to be_truthy
+      expect(child1_1.reload.completed?).to be_truthy
+      expect(child1.reload.completed?).to be_truthy
+      expect(root.reload.all_completed?).to be_truthy
+    end
+
     it 'can specify the date_completed' do
       root = create(:user_checklist)
       child1 = create(:user_checklist, parent: root, name: 'child1')
@@ -856,7 +870,7 @@ RSpec.describe UserChecklist, type: :model do
   end
 
 
-  describe 'set_uncomplete_including_children1' do
+  describe 'set_uncomplete_including_children' do
 
     # Would be good to stub things so these tests don't hit the db so much
 
@@ -897,4 +911,74 @@ RSpec.describe UserChecklist, type: :model do
 
   end
 
+
+  describe 'set_complete_update_parent' do
+    let(:given_date_completed) { Time.parse("2020-10-31") }
+
+
+    it 'returns empty list if descendents are not all complete' do
+      root = create(:user_checklist)
+      create(:user_checklist, parent: root, name: 'child1')
+
+      expect(root.send(:set_complete_update_parent)).to be_empty
+    end
+
+    context 'descendents are all complete' do
+
+      it 'updates date_completed to the new date complete' do
+        root = create(:user_checklist)
+        create(:user_checklist, :completed, parent: root, name: 'child1')
+        create(:user_checklist, :completed, parent: root, name: 'child2')
+
+        expect(root).to receive(:update).with(date_completed: given_date_completed)
+
+        expect(root.send(:set_complete_update_parent, given_date_completed)).not_to be_empty
+      end
+
+      context 'has a parent' do
+
+        let(:root) { create(:user_checklist) }
+        let(:child1) { create(:user_checklist, :completed, parent: root, name: 'child1') }
+        let(:child2) { create(:user_checklist, :completed, parent: root, name: 'child2') }
+
+
+        it 'adds the results of parent.set_complete_update_parent to the list of checklists changed' do
+          expect(child1.send(:set_complete_update_parent, given_date_completed)).to match_array([root, child1])
+        end
+      end
+    end
+  end
+
+
+  describe 'set_uncomplete_update_parent' do
+
+    it 'returns empty list if the checklist is already uncomplete' do
+      root = create(:user_checklist)
+
+      expect(root.send(:set_uncomplete_update_parent)).to be_empty
+    end
+
+    context 'is currently completed' do
+
+      it 'updates date_completed nil (= uncomplete)' do
+        root = create(:user_checklist, :completed)
+
+        expect(root).to receive(:update).with(date_completed: nil)
+
+        expect(root.send(:set_uncomplete_update_parent)).to match_array([root])
+      end
+
+      context 'has a parent' do
+
+        let(:root) { create(:user_checklist, :completed) }
+        let(:child1) { create(:user_checklist, :completed, parent: root, name: 'child1') }
+        let(:child2) { create(:user_checklist, :completed, parent: root, name: 'child2') }
+
+
+        it 'adds the results of parent.set_uncomplete_update_parent to the list of checklists changed' do
+          expect(child1.send(:set_uncomplete_update_parent)).to match_array([root, child1])
+        end
+      end
+    end
+  end
 end

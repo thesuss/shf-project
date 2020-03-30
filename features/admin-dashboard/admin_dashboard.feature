@@ -7,6 +7,8 @@ Feature: Admin sees the dashboard with summary of important information
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                            | admin | member |
       | new_1@bowwowwow.se               |       |        |

@@ -127,4 +127,9 @@ RSpec.describe UsersHelper, type: :helper do
     end
 
   end
+
+
+  it 'member_packet_sent_checkbox' do
+    expect(member_packet_sent_checkbox(create(:user))).to match(/<input type="checkbox" name="date_membership_packet_sent" id="date_membership_packet_sent" value="false" class="checkbox.membership-packet" data-remote="true" data-method="post" data-url="\/anvandare\/(\d+)\/toggle_membership_package_sent\s*/)
+  end
 end

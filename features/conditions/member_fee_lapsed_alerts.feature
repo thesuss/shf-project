@@ -7,6 +7,7 @@ Feature: Alerts for members whose membership has lapsed (a Condition response)
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                       | admin | member |

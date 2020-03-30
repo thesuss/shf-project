@@ -33,6 +33,17 @@ class UserChecklistManager
   end
 
 
+  def self.first_incomplete_membership_guideline_section_for(user)
+    if must_complete_membership_guidelines_checklist?(user)
+      guideline_list = membership_guidelines_list_for(user) ? membership_guidelines_list_for(user) : AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
+
+      guideline_list.children.select { |kid| !kid.completed? }&.sort_by { |kid| kid.list_position }&.first
+    else
+      nil
+    end
+  end
+
+
   # Is this user required to complete a Membership Guideline checklist?
   # As of 2020-01-23,
   # If someone is a current member as of < when the requirement starts >,

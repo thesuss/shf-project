@@ -6,6 +6,7 @@ Feature:  Alert for approved applicant telling them they owe the membershsip fee
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email              | admin |

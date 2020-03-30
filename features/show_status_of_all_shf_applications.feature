@@ -6,6 +6,8 @@ Feature: Admin sees the status of applications on page of all SHF applications
   PT: https://www.pivotaltracker.com/story/show/134357317
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                         | admin |
       | new@mail.se                   |       |

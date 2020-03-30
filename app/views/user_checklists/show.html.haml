@@ -1,0 +1,130 @@
+= render partial: 'checklist_header', locals: { user: @current_user, user_checklist: @user_checklist }
+
+.entry-content.container
+
+  .user-checklist
+    - li_id = "li-id-#{ @user_checklist.id }"
+
+    .row.mt-2
+      .col
+        - unless @user_checklist.description.nil?
+          %p
+            %b #{ t('.description') }:
+            = @user_checklist.description
+
+    - if @current_user.admin?
+      .row.mt-2
+        .col
+          %p
+            %b
+              -# TODO i18n
+              For user #{ @user_checklist.user.full_name }
+
+
+    .row.mt-2
+      .col
+        %p#date-completed{ style: 'display: none' }
+          -# TODO i18n
+          Date completed:
+          %span#date-completed-value
+            = @user_checklist.date_completed if @user_checklist.date_completed
+
+    = render partial: 'progress_bar', locals: { percent_complete: @user_checklist.percent_complete }
+
+
+
+    .row.mt-2
+      .col
+        %p{ style: "display: #{ @user_checklist.children? ? 'none' : 'inherit' }" }
+          %b
+            -# TODO i18n
+            Completed?
+            - disabled_setting = @user_checklist.children? ? { disabled: true } : { }
+            = check_box_tag("completed-checkbox-#{ li_id }", 'checked', @user_checklist.all_completed?, { class: "checkbox-date-completed",
+                onchange:"toggleCompletedCheckbox(#{ current_user.id }, #{ @user_checklist.id })" }.merge(disabled_setting))
+
+
+
+    .ordered-list-entry
+      - if @user_checklist.ancestors?
+        .row.mt-2
+          .col
+            %p
+              -# TODO I18n
+              %b In user checklist
+              = link_to @user_checklist.parent.name, user_user_checklist_path(@user_checklist.parent.user, @user_checklist.parent), class: list_entry_css_classes(@user_checklist.parent.master_checklist)
+
+
+      - if @user_checklist.children?
+        -# TODO: I18n 'Entries'
+        %h4.children Entries:
+        = arranged_tree_as_list(@user_checklist.children.arrange,
+         { sort_by: [:list_position], list_type: :ol,
+          ul_class: ['child-entries'], li_class: ['child-entry'] }) do | child_entry |
+          -# = fa_is_complete_checkbox(child_entry)
+          = link_to  child_entry.name,
+                    user_user_checklist_path(child_entry.user, child_entry),
+                    class: list_entry_css_classes(child_entry)
+          - if child_entry.all_completed?
+            %span.date-completed
+              -# TODO i18n
+              Date completed: #{ child_entry.date_completed }
+          - else
+            = "#{ child_entry.percent_complete }% complete"
+
+
+  %hr
+    .text-center
+      - all_lists_str = @current_user.admin? ?  t('.all_list_items_for_user', name: @user_checklist.user.full_name) : t('.all_list_items')
+      = link_to all_lists_str, user_user_checklists_path, class: 'btn btn-sm btn-light'
+
+
+
+:javascript
+
+  window.onload = function(){
+    displayOrHideDateCompleted();
+  };
+
+
+  function toggleCompletedCheckbox(userId, checklistId) {
+      let ajaxPostURL = "/anvandare/" + userId + "/lista/" + checklistId + "/all_changed_by_completion_toggle";
+      $.post( ajaxPostURL,  updateDateSuccessfulFor); // FIXME catch error and display as an alert
+      let checkBox = document.getElementsByClassName("checkbox-date-completed")[0];
+      updatePercentComplete((checkBox.checked ? "100" : "0"));
+  }
+
+
+  // show the date completed if completed checkbox is checked; hide otherwise
+  function displayOrHideDateCompleted() {
+    let checkBox = document.getElementsByClassName("checkbox-date-completed")[0];
+    let dateCompleted = document.getElementById("date-completed");
+    dateCompleted.style.display = (checkBox.checked ? "block" : "none");
+  }
+
+
+  function updateDateSuccessfulFor(responseData) {
+    let changedChecklists = responseData.changed_checklists;
+
+    console.log('id = #{ @user_checklist.id }');
+    changedChecklists.forEach(function(checklist){
+      console.log(checklist);
+      // changedChecklists should only contain the the checklist that we are showing, but we check to be sure
+      if (checklist.checklist_id === #{ @user_checklist.id }) {
+        let updatedDateCompleted = checklist.date_completed;
+        let dateCompletedElement = document.getElementById("date-completed-value");
+        // TODO use replaceChild() instead of innerHTML
+        dateCompletedElement.innerHTML = ''; // clear existing
+        dateCompletedElement.appendChild( document.createTextNode(updatedDateCompleted) );
+        displayOrHideDateCompleted();
+      }
+    });
+  }
+
+  function updatePercentComplete(percent) {
+    let percentComplete = document.getElementById('percent-complete');
+    // TODO use replaceChild() instead of innerHTML
+    percentComplete.innerHTML = ''; // clear existing
+    percentComplete.appendChild( document.createTextNode(percent + "% complete") );
+    // FIXME also update the progress bar
+  }

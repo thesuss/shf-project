@@ -1,0 +1,198 @@
+// Styles for UserChecklists
+
+@import 'shf-custom-colors';
+
+$med-soft-green: #64884266;
+$med-soft-green-darker: #5982329c;
+
+$blue-element-color: $info;
+
+$is-complete-color: $med-soft-green-darker;
+$checkbox-size: 20px;
+
+$guideline-list-left-padding: 2rem;
+
+#user-checklists {
+
+  li {
+    //list-style: none;
+
+    .is-list {
+      font-weight: bold;
+    }
+
+    .top-level-list {
+      color: $primary;
+      font-size: larger;
+    }
+
+    .date-completed {
+      font-size: smaller;
+      font-style: italic;
+    }
+  }
+}
+
+.membership-guidelines {
+
+  .show-inline {
+    display: inline;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .is-complete{
+    color: $is-complete-color;
+  }
+
+  .whiteout {
+    color: white;
+  }
+
+  .instructions {
+    font-weight: bold;
+    line-spacing: 1.2rem;
+    margin-top: 1rem;
+  }
+
+
+  .instructions.scroll-down {
+    font-size: smaller;
+    text-align: center;
+  }
+
+  .progress {
+
+    height: 2rem;
+    margin-bottom: .5rem;
+    margin-top: .5rem;
+
+    .percent-text {
+      color: $body-text;
+      font-size: 1rem;
+      //font-weight: bolder;
+    }
+
+    .progress-bar {
+      background-color: lighten($blue-element-color, 30%);
+    }
+
+    .progress-bar.is-complete {
+      background-color: $is-complete-color;
+    }
+
+  }
+
+  .card {
+
+    border: 1pt solid $primary;
+
+    .guideline-name {
+      font-weight: bold;
+    }
+
+    .card-footer {
+      text-align: center;
+    }
+  }
+
+  .checklist-items {
+
+    padding-inline-start: $guideline-list-left-padding;
+
+    li.checklist-item {
+      list-style: circle;
+    }
+  }
+
+  .have-read-confirmation {
+    .name {
+      font-weight: bold;
+    }
+  }
+
+  .checkbox-date-completed {
+    color: $blue-element-color;
+    height: $checkbox-size;
+    width: $checkbox-size;
+  }
+
+  .next,
+  .prev {
+
+    font-size: 1.25rem;
+
+    a {
+      border-bottom: 0;
+      color: $blue-element-color;
+    }
+  }
+
+
+  .contact-if-questions {
+    font-size: smaller;
+  }
+
+  .membership-guidelines-completed {
+
+    .completed-progress-bar {
+      margin-bottom: 1rem;
+
+      p {
+        font-style: italic;
+        margin-bottom: 0;
+      }
+
+      .progress-bar {
+        background-color: $is-complete-color;
+      }
+
+    }
+  }
+
+}
+
+// ---------------------------------------------------
+// These checkbox styles will use FontAwesome checkbox *only if they have the .fa-check-square class*
+
+// Hide the default checkbox, but let it remain available for keyboard navigation (= also screen readers & accessibility)
+input[type=checkbox].fa-check-square {
+  // using Html Boiler Plate .visuallyhidden code
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+$fa-var-check-square: '\f14a';
+$fa-var-square: '\f0c8';
+$fa-var-meh-blank: '\f5a4';
+
+input[type=checkbox].fa-check-square + label:before {
+  //color: #535353;
+  content: $fa-var-square;
+  display: inline-block;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 1.3em;
+  font-weight: 400;
+  letter-spacing: 5px;
+}
+
+input[type=checkbox].fa-check-square:checked + label:before {
+  color: $shf-blue;
+  content: $fa-var-check-square;
+  letter-spacing: 5px;
+}
+
+//
+//input[type=checkbox].fa-check-square:focus + label:before {
+//  color: orange;
+//  font-weight: bold;
+//}

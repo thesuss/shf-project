@@ -7,6 +7,8 @@ Feature: Admin sets when member packets were sent on the all users page
 
 
   Background:
+    Given the App Configuration is not mocked and is seeded
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                  | admin | membership_number | member |

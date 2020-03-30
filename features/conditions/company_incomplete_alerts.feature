@@ -10,6 +10,7 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
 
   Background:
     Given the date is set to "2018-01-01"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
 
     Given the following users exist:

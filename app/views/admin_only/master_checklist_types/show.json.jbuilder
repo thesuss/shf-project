@@ -1,0 +1,1 @@
+json.partial! "admin_only_master_checklist_types/admin_only_master_checklist_type", admin_only_master_checklist_type: @admin_only_master_checklist_type

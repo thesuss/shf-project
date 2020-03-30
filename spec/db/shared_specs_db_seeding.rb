@@ -78,6 +78,8 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
 
   describe 'sad path: errors are raised' do
 
+    EXPECT_ERR_MSG = "\n-----\nexpect ERROR RESCUED! to happen:"
+
     before(:all) do
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("#{rails_env}"))
@@ -98,41 +100,45 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
       end
     end
 
-    it 'admin email not found' do
+    it 'admin email not found (an ERROR will be RESCUED)' do
       allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
       admin_email_value = ENV.delete(ENV_ADMIN_EMAIL_KEY)
+      puts EXPECT_ERR_MSG
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
       ENV[ENV_ADMIN_EMAIL_KEY] = admin_email_value
     end
 
-    it 'admin email is an empty string' do
+    it 'admin email is an empty string (an ERROR will be RESCUED)' do
       allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
       stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => ''}) )
+      puts EXPECT_ERR_MSG
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
     end
 
-    it 'admin password not found' do
+    it 'admin password not found (an ERROR will be RESCUED)' do
       allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
       admin_password_value = ENV.delete(ENV_ADMIN_PASSWORD_KEY)
+      puts EXPECT_ERR_MSG
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
       ENV[ENV_ADMIN_PASSWORD_KEY] = admin_password_value
     end
 
-    it 'admin password is an empty string' do
+    it 'admin password is an empty string (an ERROR will be RESCUED)' do
       allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
       stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_PASSWORD_KEY => ''}) )
+      puts EXPECT_ERR_MSG
       expect { Rails.application.load_seed }.to raise_exception SeedHelper::SeedAdminENVError
     end
   end
@@ -157,8 +163,6 @@ RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_use
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
       allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
-      allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
-      allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
       allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
       stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => num_users }))

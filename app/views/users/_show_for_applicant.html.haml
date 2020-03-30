@@ -1,0 +1,58 @@
+- content_for :stylesheet_for_view do
+  = stylesheet_link_tag 'progress-bar', media: 'all'
+
+.row
+  .col
+    .welcome-message
+      %p  (some words encouraging them to become a member).
+      %p benefits of membership
+      %p Questions? you can always contact us...
+
+.row
+  .col
+    .next-steps
+      %h4= t('.title')
+
+      - submit_text = t('.submit_application')
+      %ol.steps
+        %li.step.submit-application
+          - if user.has_shf_application?
+            %p
+              = complete_check_icon(html_options: {class: 'is-complete'})
+              = submit_text
+              = link_to t('.my_application'), shf_application_path(user.shf_application), class: 'btn btn-sm btn-secondary'
+
+            = render partial: 'show_application_section_row_cols', locals: { user: user }
+
+            - t_key = "app_status_#{user.shf_application.state}"
+            %p.step-info= t(".#{t_key}")
+            %p.tbd-note If it is rejected, what else to display or do?
+
+          - else
+            = link_to t('.apply_for_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
+
+
+        - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
+          %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user}
+
+        %li.step.pay-membership-fee
+          - if user.allowed_to_pay_member_fee?
+            = link_to( t('.pay_membership'), payments_path(user_id: user.id, type: user.class::THIS_PAYMENT_TYPE),
+                  { method: :post, class: payment_button_classes })
+
+          - else
+            = link_to t('.pay_membership'), '#', class: 'btn btn-sm disabled btn-primary'
+            %p.step-info= t('.when_can_pay')
+            - if current_user.admin?
+              .admin-only
+                - unless user.admin_can_edit_status?
+                  %p.small.admin-cant-edit-status= t('payors.admin_cant_edit')
+
+.row
+  .col
+    = render partial: 'show_info_for_admin_only', locals: { current_user: current_user, user: user,  }
+
+
+%h
+
+= render 'contact_us_footer'

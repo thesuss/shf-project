@@ -6,6 +6,8 @@ Feature: Link categories to categories show for an Admin
   PT: https://www.pivotaltracker.com/n/projects/1904891/stories/164983459
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following regions exist:
       | name         |
       | Stockholm    |

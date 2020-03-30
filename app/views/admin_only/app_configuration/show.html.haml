@@ -68,6 +68,18 @@
             @app_configuration.payment_too_soon_days,
             tag_options: {class: 'payment-too-soon-days'})
 
+  %hr
+  .row
+    .col-sm-4
+      %h2 Checklists
+
+  .section
+    .row
+      .col
+        - name = @app_configuration.membership_guideline_list.nil? ? '<NONE SELECTED>' : "#{@app_configuration.membership_guideline_list.name} (#{@app_configuration.membership_guideline_list.displayed_text})"
+        = field_or_none(t('.membership_guideline_list'),
+        name,
+        tag_options: {class: 'membership-guideline-list'})
 
   %hr
 

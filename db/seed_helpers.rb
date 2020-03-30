@@ -120,7 +120,9 @@ module SeedHelper
   # If the company for co_number does not yet exist, create it. (find_or_create!(company_number: ...))
   #
   # If the application is accepted, then also create payments
-  # (a membership payment and H-brand payment for the company).
+  # (a membership payment and H-brand payment for the company)
+  # AND create the Membership Guidelines user checklist for the user
+  #   and make it all completed (user has checked all of them).
   #
   # Set the file delivery method for the user and then finally
   # set when the membership packet was sent to the user (as
@@ -169,6 +171,8 @@ module SeedHelper
 
       start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
 
+      AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
+      UserChecklistManager.membership_guidelines_list_for(user).set_complete_including_children
 
       MembershipStatusUpdater.instance.check_requirements_and_act({ user: user, send_email: false })
       #user.update_action(send_email: false)

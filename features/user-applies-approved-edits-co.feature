@@ -37,8 +37,8 @@ Feature: Whole process of a new user creating a login, applying, being approved,
   Scenario: User creates application, admin approves, user edits company, blank main address is displayed
     Given I am in "new_user@example.com" browser
     And I am logged in as "new_user@example.com"
-    Given I am on the "user instructions" page
-    And I click on first t("menus.nav.users.apply_for_membership") link
+    Given I am on the "user account" page for "new_user@example.com"
+    When I click on t("users.show_for_applicant.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | new_user@example.com               |
@@ -46,7 +46,10 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I select files delivery radio button "upload_later"
 
     And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("shf_applications.create.success_with_app_files_missing")
+    Then I should see t("shf_applications.create.success_with_app_files_missing")
+    And I should be on the "user account" page for "new_user@example.com"
+
+    And I have agreed to all of the Membership Guidelines
 
     Then I am in "admin@shf.se" browser
     And I am logged in as "admin@shf.se"
@@ -65,10 +68,10 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
     Given I am in "new_user@example.com" browser
     And I am logged in as "new_user@example.com"
-    And I am on the "user details" page for "new_user@example.com"
-    Then I click on t("menus.nav.members.pay_membership")
+    And I am on the "user account" page for "new_user@example.com"
+    When I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    And I should see t("payments.success.success")
+    Then I should see t("payments.success.success")
 
     Then I am in "admin@shf.se" browser
     And I am on the "all users" page

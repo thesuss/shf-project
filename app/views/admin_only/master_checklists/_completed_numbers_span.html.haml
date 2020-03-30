@@ -1,0 +1,4 @@
+%span.numbers
+  %span.completed= "[#{ t('.completed') }: " + master_checklist.user_checklists.completed.count.to_s
+  %span.not-completed= ", #{ t('.not_completed') }: " + master_checklist.user_checklists.uncompleted.count.to_s
+  ]

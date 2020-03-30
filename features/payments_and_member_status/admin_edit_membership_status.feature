@@ -6,6 +6,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                     | admin | member | membership_number |
@@ -24,6 +25,11 @@ Feature: Admin edits membership status, dates, notes (membership info)
       | emma@mutts.com       | 5562252998     | rehab, groom | accepted |
       | bad-member@mutts.com | 5562252998     | rehab, groom | accepted |
 
+    Given the following users have agreed to the Membership Ethical Guidelines:
+      | email                     |
+      | emma@mutts.com            |
+      | bad-member@mutts.com      |
+      | never-paid-user@mutts.com |
 
     Given the following payments exist
       | user_email           | start_date | expire_date | payment_type | status | hips_id |
@@ -54,7 +60,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And I wait for all ajax requests to complete
     And I reload the page
     # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
-    Then I should see "Extended their membership to 1 juni 2018."
+#    Then I should see "Extended their membership to 1 juni 2018."
     And user "emma@mutts.com" is paid through "2018-06-01"
 
   @selenium @time_adjust
@@ -71,14 +77,14 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And I wait for all ajax requests to complete
     And I reload the page
     # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
-    Then I should see membership status is t("users.show.not_a_member")
-    And I should see "Changed to not a member."
+
+    Then I should be on the "user account" page for "bad-member@mutts.com"
+    And I should see t("users.show_for_applicant.pay_membership")
 
 
   @selenium @time_adjust
   Scenario: Admin cannot change member status for someone that has never made a payment
     Given I am on the "user account" page for "never-paid-user@mutts.com"
-    And user "emma@mutts.com" is paid through "2017-12-31"
-    Then I should see t("payors.admin_cant_edit")
-    And the link button t("users.user.edit_member_status") should be disabled
+    Then the link button t("users.show_for_applicant.pay_membership") should be disabled
+    And I should see t("payors.admin_cant_edit")
 

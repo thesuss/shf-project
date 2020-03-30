@@ -4,6 +4,7 @@ Feature: Edit a member page
   I want to be able to maintain content in a member page
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                    | admin |

@@ -10,6 +10,8 @@ Feature: Applicant gets an email when membership has been granted. (They are now
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email              | admin |
       | emma@happymutts.se |       |
@@ -39,6 +41,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And the App Configuration is not mocked and is seeded
     When I am in "emma@happymutts.se" browser
     And I am logged in as "emma@happymutts.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "emma@happymutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
@@ -65,6 +68,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     Given the date is set to "2017-12-31"
     When I am in "emma@happymutts.se" browser
     And I am logged in as "emma@happymutts.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "emma@happymutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
@@ -78,6 +82,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     Given the date is set to "2018-01-01"
     When I am in "emma@happymutts.se" browser
     And I am logged in as "emma@happymutts.se"
+    And I have agreed to all of the Membership Guidelines
     And I am on the "user details" page for "emma@happymutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")

@@ -1,0 +1,10 @@
+-# This partial expects these locals:
+  shf_app - the ShfApplication that will be passed to the path.  Cannot be nil
+  classes [String] - a string that has all of the CSS classes to apply. Can be empty or nil
+
+- classes_str = local_assigns[:classes].blank? ? '' : local_assigns[:classes]
+
+- if policy(shf_app).update? && shf_app.applicant_can_edit?
+  = link_to t('menus.nav.users.my_application'), edit_shf_application_path(shf_app), class: classes_str
+- else
+  = link_to t('menus.nav.users.my_application'), shf_application_path(shf_app), class: classes_str

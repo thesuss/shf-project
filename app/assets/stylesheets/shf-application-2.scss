@@ -1,0 +1,132 @@
+// SCSS for ShfApplications
+//  (as of 2020-01-23)
+
+@import "shf-custom-colors";
+
+.edit_shf_application {
+
+  .section-instructions {
+    text-align: left;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .company-number-entry {
+    display: inline-flex;
+    width: 100%;
+
+    .company-number {
+      margin-right: 2rem;
+    }
+  }
+
+  .next-prev-section {
+    background-color: lightyellow;
+    display: inline-flix;
+    font-size: .8rem;
+    margin-top: .5rem;
+    padding: 1rem;
+    text-align: center;
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: content-box;
+    }
+
+  }
+
+}
+
+.progress-steps-line {
+  align-text: center;
+  border: 1pt solid #5692ce8f;
+  margin-left: 2rem;
+  padding: 1rem;
+
+  .progress-step {
+    margin-left: .5rem;
+    margin-right: .5rem;
+
+    &.completed {
+      color: gray;
+      font-style: italic;
+    }
+
+    &.current {
+      color: #0463c1;
+      font-weight: bold;
+    }
+
+  }
+}
+
+
+.card.business-category-choice {
+  border: 0;
+
+  .card-body {
+    padding-bottom: 0;
+    padding-left: .5rem;
+    padding-right: 1rem;
+    padding-top: 0;
+  }
+
+  label {
+    display: inline-flex;
+  }
+
+  *::before {
+    box-sizing: content-box;
+  }
+}
+
+
+// TODO DRY: make this section a separate stylesheet so this can be used on multiple pages
+
+.checkbox-text {
+  float: left;
+  margin-left: 20px;
+}
+
+// ---------------------------------------------------
+// These checkbox styles will use FontAwesome checkbox *only if they have the .fa-check-square class*
+
+// Hide the default checkbox, but let it remain available for keyboard navigation (= also screen readers & accessibility)
+input[type=checkbox].fa-check-square {
+  // using Html Boiler Plate .visuallyhidden code
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+$fa-var-check-square: '\f14a';
+$fa-var-square: '\f0c8';
+$fa-var-meh-blank: '\f5a4';
+
+input[type=checkbox].fa-check-square + label:before {
+  //color: #535353;
+  box-sizing: content-box;
+  content: $fa-var-square;
+  display: inline;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 1.3em;
+  font-weight: 400;
+  letter-spacing: 5px;
+}
+
+input[type=checkbox].fa-check-square:checked + label:before {
+  box-sizing: content-box;
+  color: $shf-blue;
+  content: $fa-var-check-square;
+  font-weight: bold;
+  letter-spacing: 5px;
+}

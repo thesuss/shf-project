@@ -1,0 +1,14 @@
+-# This partial expects these locals:
+-#
+-#  user - the user the membership guidelines checklist belongs to
+
+- if UserChecklistManager.completed_membership_guidelines_checklist?(user)
+  %p
+    = complete_check_icon(html_options: {class: 'is-complete'})
+    = t('.agreed_to') + ' '
+    = link_to t('.membership_guidelines'), 'https://sverigeshundforetagare.se/medlemsatagande/'
+- else
+  - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
+    - user_checklist = UserChecklistManager.first_incomplete_membership_guideline_section_for(user)
+    - if user_checklist
+      = link_to t('.agree_to_guidelines'), user_user_checklist_progress_path(user, user_checklist), class: 'btn btn-sm btn-primary'

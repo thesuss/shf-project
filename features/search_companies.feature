@@ -5,6 +5,8 @@ In order to find companies that I might want to work with
 I want to search for available companies by various criteria
 
 Background:
+  Given the Membership Ethical Guidelines Master Checklist exists
+
   Given the following users exist:
     | email                | admin | member |
     | fred@barkyboys.com   |       | true   |

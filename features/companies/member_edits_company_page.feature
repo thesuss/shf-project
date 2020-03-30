@@ -7,6 +7,8 @@ Feature: Member edits a company attribute
   PT:  https://www.pivotaltracker.com/story/show/133081453
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email               | admin | member |
       | emma@happymutts.com |       | true   |

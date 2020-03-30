@@ -6,6 +6,7 @@ Feature: User cannot pay a branding license fee
 
   Background:
     Given the App Configuration is not mocked and is seeded
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email          | admin | member |

@@ -6,6 +6,7 @@ Feature: Admin edits a user account
   Background:
 
     Given the App Configuration is not mocked and is seeded
+    And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email                | password       | admin | member | first_name | last_name | membership_number |

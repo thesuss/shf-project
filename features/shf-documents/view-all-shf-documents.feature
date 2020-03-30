@@ -9,6 +9,7 @@ Feature: SHF members (and admins) can views board meeting minutes (SHF documents
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email              | admin | member |

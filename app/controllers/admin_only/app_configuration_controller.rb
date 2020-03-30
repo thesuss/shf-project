@@ -23,6 +23,14 @@ module AdminOnly
       end
     end
 
+    # FIXME if the membership guideline list was changed,
+    #  need to track _any_ membership guideline list that has been used in the past because
+    #  we need a way to choose the master checklist for a user (that is: the membership guideline user checklist for a user).
+    #  If this was changed...
+    #   1) keep a list of all master checklists that have been used as a membership guideline list
+    #   2) when a user checklist is created by the memebership guideline factory, mark it somehow as the
+    #     _current_ membership guideline list.
+    #
 
     # =====================================================================
 
@@ -50,7 +58,8 @@ module AdminOnly
                   :twitter_card_type,
                   :facebook_app_id,
                   :site_meta_image,
-                  :payment_too_soon_days)
+                  :payment_too_soon_days,
+                  :membership_guideline_list_id)
     end
   end
 

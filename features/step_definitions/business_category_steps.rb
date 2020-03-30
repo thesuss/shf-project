@@ -47,6 +47,8 @@ And(/^I select "([^"]*)" Category/) do |element|
   #    And I uncheck the checkbox with id "shf_application_business_category_ids_1"
   #
 
+  # TODO is it really necessary to run a java script to do this?  Why not use ele.check ?
+  #
   ele = find :field, element, visible: :any
   page.evaluate_script("$(#{ele[:id]}).prop('checked', true)")
 end

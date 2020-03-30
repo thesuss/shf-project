@@ -62,3 +62,19 @@
     vertical-align: super;
   }
 }
+
+
+.steps {
+  .step {
+    margin-top: 1rem;
+
+    .step-info {
+      margin-top: 0;
+    }
+  }
+}
+
+
+.is-complete{
+  color: $checkbox-complete-color;
+}

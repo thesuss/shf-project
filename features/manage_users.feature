@@ -3,6 +3,8 @@ Feature: As an admin
   I need to be able to view and make changes to user records
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist
       | email               | admin | member | first_name | last_name  |
       | emma@happymutts.com |       |        | Emma       | Happymutts |

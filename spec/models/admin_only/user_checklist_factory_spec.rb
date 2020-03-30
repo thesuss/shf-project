@@ -68,7 +68,9 @@ RSpec.describe AdminOnly::UserChecklistFactory do
     it 'calls create_nested_lists_for_user_from_checklist_masters with the membership guidelines template and the user' do
       member_guidelines = create(:master_checklist, name: 'Become a Member')
 
-      expect(described_class).to receive(:create_nested_lists_for_user_from_master_checklists).with([member_guidelines], simple_user)
+      expect(described_class).to receive(:create_nested_lists_for_user_from_master_checklists)
+                                     .with([member_guidelines], simple_user)
+                                     .and_call_original
 
       described_class.create_membership_checklist_for(simple_user)
     end
@@ -87,7 +89,10 @@ RSpec.describe AdminOnly::UserChecklistFactory do
       guidelines_template = create(:master_checklist, name: 'SHF Member Guidelines')
       allow(described_class).to receive(:get_member_guidelines_checklist_template).and_return(guidelines_template)
 
-      expect(described_class).to receive(:create_nested_lists_for_user_from_master_checklists).with([guidelines_template], simple_user)
+      expect(described_class).to receive(:create_nested_lists_for_user_from_master_checklists)
+                                     .with([guidelines_template], simple_user)
+                                     .and_call_original
+
       described_class.create_member_guidelines_checklist_for(simple_user)
     end
   end

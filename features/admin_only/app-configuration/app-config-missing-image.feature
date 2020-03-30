@@ -7,6 +7,7 @@ Feature: App Config has a missing image or images
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
     Given the following users exist:
       | email             | password | admin | member    | first_name | last_name |
       | admin@shf.se  | password | true  | false     | emma       | admin     |

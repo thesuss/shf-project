@@ -6,10 +6,11 @@ Feature: User resets password
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email               | is_legacy |
-      | emma@happymutts.com | true      |
+      | email               |
+      | emma@happymutts.com |
 
   @user
   Scenario: User resets password

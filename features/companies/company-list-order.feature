@@ -48,6 +48,7 @@ Feature: Order of the list of companies by date last updated
       | Company14 | 8356502446     | cmpy14@mail.com | Stockholm | Stockholm | 2019-12-29 |
       | Company15 | 8394317054     | cmpy15@mail.com | Stockholm | Stockholm | 2019-12-31 |
 
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     # These users are all members in good standing:
     # their memberships do not expire until 2020-07-07.

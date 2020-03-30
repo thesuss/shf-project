@@ -5,6 +5,8 @@ Feature: Visitor sees all companies
   I want to see all companies
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following regions exist:
       | name         |
       | Stockholm    |

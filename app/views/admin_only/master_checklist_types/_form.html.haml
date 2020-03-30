@@ -1,0 +1,14 @@
+= form_for @admin_only_master_checklist_type do |f|
+
+  != model_errors_helper(@admin_only_master_checklist_type)
+
+  .form-group
+    = f.label :name, t('.name')
+    = f.text_field :name
+
+  .form-grup
+    = f.label :description, t('.description')
+    = f.text_field :description
+
+  .actions.form-group
+    = f.submit t('submit'), class: 'btn btn-primary mb-2 form-control'

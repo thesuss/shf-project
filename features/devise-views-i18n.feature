@@ -9,6 +9,8 @@ Feature: As a non-swedish speaking potential member
   PT: https://www.pivotaltracker.com/story/show/133316647
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                |
       | emma@random.com      |

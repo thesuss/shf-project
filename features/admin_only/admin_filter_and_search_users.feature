@@ -7,6 +7,8 @@ Feature: Admin filters and searches users
 
   Background:
 
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist
       | first_name | last_name | email                           | admin | membership_number | member |
       | John       | Adams     | ja@hotmail.com                  | false | 1                 | false  |

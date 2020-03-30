@@ -16,6 +16,8 @@ Feature: Admin deletes a company
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                          | admin |
       | emma@happymutts.com            |       |

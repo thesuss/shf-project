@@ -72,6 +72,17 @@ $admin-only-background: #f0f8ff;
 $grayed-button-background: #dadada;
 $grayed-button-text: #565656;
 
+// used for progress bars and checklists (colors for 100% complete)
+$med-soft-green: rgba(171, 205, 132, .6); // #64 88 42 66;
+$med-soft-green-darker: rgba(88, 129, 50, .6); // #59 82 32 9c;
+
+$blue-element-color: $info;
+
+$progress-bar-background-color: lighten($blue-element-color, 30%);
+$progress-bar-complete_color: $med-soft-green;
+
+$checkbox-complete-color: $med-soft-green-darker;
+$checkbox-size: 20px;
 
 // -----------------------------------------------------
 // colors used in application-mailer.scss

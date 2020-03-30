@@ -148,7 +148,7 @@ class User < ApplicationRecord
   # TODO this should not be the responsibility of the User class.
   def allowed_to_pay_member_fee?
     # TODO use membership_current? instead of member?
-    !admin? && (member? || shf_application&.accepted? )
+    !admin? && (member? || (shf_application&.accepted? && UserChecklistManager.completed_membership_guidelines_checklist?(self) ) )
   end
 
 

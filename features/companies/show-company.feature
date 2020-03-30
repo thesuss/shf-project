@@ -16,6 +16,7 @@ Feature: Show company page - display different info depending on role
   Background:
 
     Given the date is set to "2019-06-06"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following regions exist:
       | name         |

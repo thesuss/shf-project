@@ -6,6 +6,8 @@ Feature: Don't allow malicious code in Company website value
 
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email          | admin | member |
       | emma@mutts.com |       | true   |

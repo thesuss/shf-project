@@ -10,6 +10,7 @@ Feature: Admin pays a membership fee for a member
     Given the App Configuration is not mocked and is seeded
 
     Given the date is set to "2017-01-10"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email          | admin | member | membership_number |

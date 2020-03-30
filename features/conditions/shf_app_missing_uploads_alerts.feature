@@ -8,6 +8,7 @@ Feature: Reminder if SHF Application is missing uploaded files (Condition respon
   Background:
 
     Given the date is set to "2018-11-30"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
       | email                                   | admin | member |

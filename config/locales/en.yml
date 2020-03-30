@@ -18,6 +18,9 @@ en:
 
   password: &password Password
 
+  next: &next Next
+  previous: &previous Previous
+
   is_required_field: Indicates a required field
 
   user: &user user
@@ -77,12 +80,14 @@ en:
 
   membership: &membership membership
 
-  apply_for_membership: 'Apply for membership'
+  apply_for_membership: &apply_for_membership "Apply for membership"
 
   theme_copyright: "© 2017 Theme by Theme Feeder. All Rights Reserved."
 
   name: &name Name
   org_nr: &org_nr Org no.
+
+  complete: &complete complete
 
   accordion_label:
     company_search_form:
@@ -126,6 +131,12 @@ en:
     one: My Company
     other: My Companies
 
+  checklist_common:
+    done: &done Done
+    complete: &complete Complete
+    date_completed: &date_completed Date Complete
+
+
  # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
@@ -158,6 +169,15 @@ en:
         other: Task Attempts
 
 
+      master_checklist:
+        one: Master Checklist Item
+        other: Master Checklist Items
+
+      master_checklist_type:
+        one: Master Checklist Type
+        other: Master Checklist Types
+
+
     attributes:
 
       user:
@@ -183,7 +203,7 @@ en:
         status: Status
         start_date: Start Date
         expire_date: &expire_date Expire Date
-        notes: Notes
+        notes: &notes Notes
         created: *created
         last_updated: *last_updated
 
@@ -277,6 +297,30 @@ en:
         was_successful: Was successful
         attempted_on: Attempted on
 
+      user_checklist:
+        name: *name
+        description: *description
+        complete: *done
+        date_complete: *date_completed
+        completed: &checklist_completed Completed
+        not_completed: &checklist_not_completed Not Completed
+
+      master_checklist:
+        name: *name
+        is_in_use: &master_checklist_in_use Is Used
+        is_no_longer_used: &no_longer_used No longer in use
+        is_in_use_changed_at: &master_checklist_in_use_changed_at Is use changed
+        displayed_text: &displayed_text Name displayed to users
+        description: *description
+        list_position: Position in list
+        ancestry: Parent lists
+        notes: &master_checklist_admin_notes Notes (admin only)
+        list_type: Type
+
+      master_checklist_type:
+        name: *name
+        description: *description
+
 
     errors:
       models:
@@ -360,6 +404,12 @@ en:
           has_one: "Cannot delete record because a dependent %{record} exists"
           has_many: "Cannot delete record because dependent %{record} exist"
 
+
+  shared:
+    progress_bar:
+      complete: *complete
+
+
   address_visibility:
     street_address: *street
     post_code: *post_code
@@ -425,7 +475,7 @@ en:
       application_dog_category: &application_dog_category "Services You Provide"
       clue_selected_categories: &clue_selected_categories "Blue box = selected categories"
 
-      upload_files_section: Documents to support your application (certifications, etc.)
+      upload_files_section: &app_upload_files_section Documents to support your application (certifications, etc.)
       upload_files_instructions: 'The documents are very important for us to assess your application. We use them to authenticate your skills and education. This ensures that our membership standards remain high, which in turn means that the public know that the Swedish dog business is professional and reliable.'
       upload_files: 'Upload files from your computer:'
       upload_allowed_file_types: 'Allowed file types:'
@@ -880,6 +930,28 @@ en:
       sent: sent
       not_sent: not sent
 
+    show_for_member:
+      membership_number: *membership_number
+
+    show_for_applicant:
+      title: "Steps to SHF Membership:"
+      apply_for_membership: *apply_for_membership
+      my_application: &my_application My Application
+      submit_application: Fill out and submit your application.
+      app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
+      app_status_under_review: "Thanks for submitting your application. We're reviewing it. You'll get an email letting you know the status."
+      app_status_waiting_for_applicant: We are waiting for information from you.
+      app_status_ready_for_review: "Thanks for submitting your application and information. We'll start reviewing it soon. You can always email us with questions."
+      app_status_accepted: Your application has been accepted.
+      app_status_rejected: Your application has been denied.
+      pay_membership: *pay_membership
+      when_can_pay: Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
+
+    ethical_guidelines_link_or_checklist:
+      agree_to_guidelines: Agree to All Membership Guidelines
+      agreed_to: Agreed to
+      membership_guidelines: All Membership Guidelines
+
     show_member_images_row_cols:
       email: *email
       proof_of_membership: &proof_of_membership Proof of Membership
@@ -979,6 +1051,56 @@ en:
       search_distance_negative: 'Distance cannot be negative'
       latitude_blank: "Latitude cannot be blank."
       longitude_blank: "Longitude cannot be blank."
+
+  user_checklists:
+    all_list_items: &user_checklists_all_items Back to all of my checklists
+    all_list_items_for_user: &user_checklists_all_items_for_user Back to all user checklists for %{name}
+    if_you_have_qs_email_us: &if_you_have_qs_email_us "If you have any question, email us at "
+
+    progress_bar:
+      complete: &progress_complete complete
+
+    missing-checklist-param-error: &missing-checklist-param-error User Checklist missing parameter error!
+    not_found:  &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
+
+    index:
+      title: Checklists for %{name}
+      complete: *progress_complete
+
+    show:
+      title: "Checklist %{name}"
+      description: *description
+      delete_confirm: "Are you sure you want to delete the checklist '%{name}' for user %{user_name}?"
+      all_list_items: *user_checklists_all_items
+      all_list_items_for_user: *user_checklists_all_items_for_user
+
+    new:
+      title: New User Checklist
+
+    all_changed_by_completion_toggle:
+      missing-checklist-param-error: *missing-checklist-param-error
+      not_found:  *user_checklist_not_found
+
+    show_progress:
+      read_and_agree: Please read each one of these carefully. If you agree to the terms, check the box at the bottom. Then click 'Next' to go to the next list of terms.
+      scroll_down_to_read_all: Scroll down to read all items and see the button to go to the next group.
+      read_and_agree_start: I have read and agree to all of the
+      read_and_agree_end: terms.
+      contact_if_questions: *if_you_have_qs_email_us
+      email_display_name: Membership Chair
+
+      next: *next
+      previous: *previous
+      complete: *progress_complete
+
+    membership_guidelines_completed:
+      agreed_to_all_terms: I have agreed to all membership terms.
+      i_commit_to: "As a member of Sveriges Hundföretagare, I commit myself to:"
+      all_complete_percent: "100% complete"
+
+    set_uc_and_kids_date_completed:
+      not_found: *user_checklist_not_found
+      missing-checklist-param-error: *missing-checklist-param-error
 
 
   admin:
@@ -1142,6 +1264,9 @@ en:
         facebook_app_id: *site_facebook_app_id
         missing: *missing
         payment_too_soon_days: *payment_too_soon_days
+        membership_guideline_list: &membership_guideline_list Membership Guideline List
+        membership_guideline_list_tooltip: &membership_guideline_list_tooltip Choose a top level list that will be used as the Membership Guidelines list. (Only top level lists that are in use are shown.)
+        required_field: &required_field required field
 
       show:
         title: *application_configuration
@@ -1160,6 +1285,8 @@ en:
         facebook_app_id: *site_facebook_app_id
         missing: *missing
         payment_too_soon_days: *payment_too_soon_days
+        membership_guideline_list: *membership_guideline_list
+        required_field: *required_field
 
       update:
         success: Application data updated successfully
@@ -1266,6 +1393,186 @@ en:
         error: A problem kept the user account from being updated.
         success: The user account was updated.
 
+
+    master_checklists:
+      new_item: &new_master_list_item New Master List Item
+      all_list_items: &all_master_list_items All Master List items
+      view_list_item: &view_master_list_item View List Item
+      edit_list_item: &edit_master_list_item Edit List Item
+      delete_list_item: &delete_master_list_item Delete List Item
+
+      errors:
+        master_checklist_id_not_found: &master_checklist_id_not_found "Master Checklist item with id %{id} was not found"
+        cannot_change_has_completed: &master_checklist_error_cant_change_has_completed Cannot change "%{attributes}" of '%{name}' because there are completed User checklists based on it.
+        cannot_change_user_visible: Cannot change the master checklist info that users see because there are User checklists based on it.
+
+      form:
+        name: *name
+        list_type: &master_checklist_list_type List type
+        is_in_use: *master_checklist_in_use
+        is_no_longer_used: *no_longer_used
+        is_no_longer_used_as_of: "as of %{date}"
+        is_in_use_changed_at: *master_checklist_in_use_changed_at
+        displayed_text: *displayed_text
+        description: &master_checklist_description Description displayed to users
+        parent_list: &parent_list Parent list
+        list_position: &list_position Position in list
+        notes: *master_checklist_admin_notes
+        top_level_list: &top_level_list (This is a top level list.)
+        child_items: &child_items Items
+        leave_blank_adds_to_end: "Leave the position (order) blank to add this to the end of the list."
+
+      new:
+        title: New Master Checklist Item
+        name: *name
+        displayed_text: *displayed_text
+        description: *master_checklist_description
+        list_position: *list_position
+        all_list_items: *all_master_list_items
+      create:
+        error: "There was a problem creating and saving the master checklist item %{name}."
+        success: "%{name} was created and saved."
+      edit:
+        title: "Editing %{name}"
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        delete: &delete_master_checklist_item "Delete %{name}"
+        delete_confirm: &delete_master_checklist_item_confirm "Are you sure you want to delete the master checklist item %{name}?"
+        view_list_item: *view_master_list_item
+        all_list_items: *all_master_list_items
+
+      update:
+        error_cant_change_has_completed: *master_checklist_error_cant_change_has_completed
+        error:  "There was a problem updating the master checklist item %{name}."
+        success: "The master list item %{name} was updated."
+      index:
+        title: &master_checklist_index_title Master Checklists
+        name: *name
+        displayed_text: &master_checklist_index_displayed_text Displayed as
+        displayed_description: Displayed Description
+        pos_in_list: &pos_in_list "pos. in list"
+        in_parent_col: in list
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        new_item: *new_master_list_item
+        delete: *delete_master_checklist_item
+        delete_confirm: *delete_master_checklist_item_confirm
+      index_as_table:
+        title: *master_checklist_index_title
+        delete_confirm: *delete_master_checklist_item_confirm
+        displayed_text: *master_checklist_index_displayed_text
+        name: *name
+        new_item: *new_master_list_item
+      show:
+        title: "Master Checklist Item"
+        is_in_use: *master_checklist_in_use
+        is_no_longer_used: *no_longer_used
+        is_no_longer_used_as_of: "as of %{date}"
+        is_in_use_changed_at: *master_checklist_in_use_changed_at
+        displayed_text: *displayed_text
+        description: *master_checklist_description
+        list_position: *list_position
+        notes: *master_checklist_admin_notes
+        delete_confirm: *delete_master_checklist_item_confirm
+        parent_list: *parent_list
+        top_level_list: *top_level_list
+        child_items: *child_items
+        edit_list_item: *edit_master_list_item
+        delete_list_item: *delete_master_list_item
+        all_list_items: *all_master_list_items
+        new_child_in_list: New Item in this list
+        new_child_makes_this_a_list: New Child item (makes this a list)
+        list_type: *master_checklist_list_type
+        subtitle_list_type_start: "This is a "
+        subtitle_list_type_end: " list."
+
+      destroy:
+        error: "There was a problem deleting the master checklist item '%{name}'. It was not deleted."
+        success: "'%{name}' was deleted."
+
+      max_list_position:
+        not_found: *master_checklist_id_not_found
+
+      set_to_no_longer_used:
+        not_found: *master_checklist_id_not_found
+        error: "There was a problem setting '%{name}' to no longer in use."
+        success: "'%{name}' is now set to no longer in use."
+
+      toggle_in_use:
+        not_found: *master_checklist_id_not_found
+        cannot_change_has_completed: Cannot change the master checklist because there are completed User checklists based on it.
+        cannot_change_user_visible: Cannot change the master checklist that users see because there are User checklists based on it.
+
+      delete_button_if_applicable:
+        delete: *delete_master_checklist_item
+        delete_confirm: *delete_master_checklist_item_confirm
+
+      status_numbers_row:
+        status: Status
+
+      completed_numbers_span:
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+
+      non_nested_table:
+        name: *name
+        displayed_text: *displayed_text
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        pos_in_list: *pos_in_list
+
+      next_one_based_list_position:
+        not_found: *master_checklist_id_not_found
+
+    master_checklist_types:
+
+      new_master_checklist_type: &new_master_checklist_type "New Master Checklist Type"
+      edit_master_checklist_type: &edit_master_checklist_type "Edit Master Checklist Type '%{name}'"
+      all_master_checklist_types: &all_master_checklist_types "All Master Checklist Types"
+      delete_confirm_master_checklist_type: &delete_confirm_master_checklist_type "Delete master checklist type '%{name}'?"
+      view_master_checklist_type: &view_master_checklist_type "View '%{name}'"
+
+      index:
+        title: All Master Checklist Types
+        name: *name
+        description: *description
+        new_master_checklist_type: *new_master_checklist_type
+        delete_confirm: *delete_confirm_master_checklist_type
+
+      show:
+        name: *name
+        description: *description
+        all_master_checklist_types: *all_master_checklist_types
+        edit_master_checklist_type: *edit_master_checklist_type
+
+      new:
+        title: *new_master_checklist_type
+        name: *name
+        description: *description
+        all_master_checklist_types: *all_master_checklist_types
+
+      edit:
+        title: "Editting: %{name}"
+        name: *name
+        description: *description
+        view_master_checklist_type: *view_master_checklist_type
+        all_master_checklist_types: *all_master_checklist_types
+
+      form:
+        name: *name
+        description: *description
+
+      create:
+        error: "There was a problem creating and saving the master checklist type %{name}."
+        success: "%{name} was created and saved."
+
+      update:
+        error: "There was a problem updating the master checklist type %{name}."
+        success: "%{name} was updated."
+
+      destroy:
+        error: "There was a problem deleting the master checklist type '%{name}'. It was not deleted."
+        success: "'%{name}' was deleted."
 
 
   mailers:
@@ -1541,7 +1848,7 @@ en:
         find_dog_businesses: Find Dog Company
 
       users:
-        my_application: &my_application My Application
+        my_application: *my_application
         apply_for_membership: Apply for Membership
         your_account: My account
 
@@ -1565,6 +1872,10 @@ en:
         manage_applications: Manage Applications
         app_configuration: App Configuration
         design_guide: Design Guide
+        master_checklists: Master Checklists
+        dashboard: Dashboard
+        design_guide: Design Guide
+
         categories:
           submenu_title: Categories
           manage_categories: Manage Categories

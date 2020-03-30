@@ -3,6 +3,8 @@ Feature: So that I do not get frustrated by trying to find out more
   Only show companies with complete information for non admin users
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following regions exist:
       | name                  |
       | Stockholm             |

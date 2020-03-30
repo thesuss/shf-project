@@ -1,5 +1,16 @@
 World(PathHelpers)
 
+
+# Generate the xpath text for an element that has a CSS class.
+# It can be the only clas or one of a list of classes.
+def xpath_for_element_with_class(class_name)
+  "contains(concat(' ',normalize-space(@class),' '),' #{class_name} ')"
+  # must include spaces around the class name, otherwise it will find elements with class names that include that as a substring
+  # "contains(@class,' #{class_name} ') or contains(@class,'#{class_name} ') or contains(@class,' #{class_name}') or @class='#{class_name}'"
+end
+
+
+
 Then "I should{negate} see {capture_string}" do |negate, content|
   begin
     expect(page).send (negate ? :not_to : :to), have_content(/#{content}/i)
@@ -57,6 +68,12 @@ Then(/^I should see:$/) do |table|
     expect(page).to have_content hash[:content]
   end
 end
+
+
+And("I should see {capture_string} in the h1 title") do | title_text|
+  expect(page).to have_xpath( "//h1[contains(text(), '#{title_text}')]")
+end
+
 
 Then "I should{negate} see {capture_string} in the row for {capture_string}" do |negate, text, row_identifier|
   row = find(:xpath, "//tr[td//text()[contains(.,'#{row_identifier}')]]")

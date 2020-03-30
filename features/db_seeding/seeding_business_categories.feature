@@ -6,6 +6,8 @@ Feature: Seed business categories
   I expect to see business categories when the system is revised (when it's seeded).
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | email                | admin |
       | admin@shf.com        | true  |

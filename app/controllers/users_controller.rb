@@ -11,6 +11,8 @@ class UsersController < ApplicationController
   before_action :authorize_user, only: [:show]
   before_action :allow_iframe_request, only: [:proof_of_membership]
 
+  #================================================================================
+
   def show
   end
 
@@ -139,6 +141,12 @@ class UsersController < ApplicationController
 
   def payment_params
     params.require(:payment).permit(:expire_date, :notes)
+  end
+
+  # Set @user to @current_user for situations where the current user
+  # is the one viewing and requesting the controller actions.
+  def set_user_to_current_user
+    @user = @current_user
   end
 
 end

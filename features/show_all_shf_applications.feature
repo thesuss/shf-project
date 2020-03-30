@@ -7,6 +7,8 @@ Feature: Admin can see all SHF applications so they can be managed
   PT: https://www.pivotaltracker.com/story/show/133080839
 
   Background:
+    Given the Membership Ethical Guidelines Master Checklist exists
+
     Given the following users exist:
       | first_name         | email                               | admin |
       | Emma               | emma@personal.com                   |       |
