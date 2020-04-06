@@ -4,10 +4,13 @@
 .row
   .col
     .welcome-message
-      %p  (some words encouraging them to become a member).
-      %p benefits of membership
-      %p Questions? you can always contact us...
-
+      %p Vill du finnas med i ett sammanhang som innebär en bekräftelse på att dina meriter, engagemang och hundkunskaper räknas?
+      %p
+        %b Välkommen till Sveriges Hundföretagare!
+      %p Denna text visas just nu både för dig som vill bli medlem, och för dig som är medlem men ännu inte betalt medlemsavgift.  Du som redan är medlem men inte betalt behöver bara trycka på betala-knappen. 
+      %hr
+      %p Du som är här som ny medlem, ta ett steg i taget. Gör klart din medlemsansökan, läs och godkän medlemsåtagandet så kan du sedan betala medlemsavgift. 
+      %hr
 .row
   .col
     .next-steps
@@ -25,8 +28,9 @@
             = render partial: 'show_application_section_row_cols', locals: { user: user }
 
             - t_key = "app_status_#{user.shf_application.state}"
-            %p.step-info= t(".#{t_key}")
-            %p.tbd-note If it is rejected, what else to display or do?
+            %p
+              %strong.step-info= t(".#{t_key}")
+
 
           - else
             = link_to t('.apply_for_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
@@ -55,4 +59,3 @@
 
 %h
 
-= render 'contact_us_footer'
