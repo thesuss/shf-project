@@ -9,7 +9,7 @@ class InputSanitizer
   end
 
   def self.sanitize_html(html='')
-    # "relaxed" setting accomodates all input that the use can create by
+    # "relaxed" setting accommodates all input that a user can create by
     # using the available menu options in our Ckeditor configuration.
     # This also strips out unwanted code the user might enter in "source" mode.
     return '' if html.blank?

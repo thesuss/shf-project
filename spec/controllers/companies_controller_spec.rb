@@ -433,6 +433,9 @@ RSpec.describe CompaniesController, type: :controller do
 
   describe '#show meta data (renders view)' do
 
+    let(:co_html_in_desc) { create(:company, description: "<h1>HundCo</h1>   <p>The best <b>HundCo</b> \n there is!  </p>\n\n &nbsp;  \n") }
+    let(:clean_desc_co_html_in_desc) { "HundCo The best HundCo there is!" }
+
     let(:show_co1_params) { { "id" => "#{complete_co1.id}" } }
     let(:show_co2_params) { { "id" => "#{complete_co2.id}" } }
     let(:show_co3_params) { { "id" => "#{company_3_addrs.id}" } }
@@ -486,10 +489,10 @@ RSpec.describe CompaniesController, type: :controller do
       describe 'description' do
 
         context 'company has a description' do
-          it 'description is the company description' do
-            complete_co1
-            show_co1_response_body
-            expect(show_co1_response_body).to match(meta_tag_with_content('description', complete_co1.description))
+
+          it 'description is the company description with HTML removed and blanks squished' do
+            get :show, params: { "id" => "#{co_html_in_desc.id}" }
+            expect(response.body).to match(meta_tag_with_content('description', clean_desc_co_html_in_desc))
           end
 
         end
@@ -774,17 +777,9 @@ RSpec.describe CompaniesController, type: :controller do
         end
 
 
-        it 'description is the same as the page description' do
-          complete_co1
-          show_co1_response_body
-
-          # get the content in the description tag
-          page_desc_regexp = Regexp.new("<meta name=\"description\" content=\"(.*)\">")
-          desc_in_response = page_desc_regexp.match(response.body)
-
-          expect(desc_in_response).not_to be_nil # be super sure that we could find the meta name="description"
-
-          expect(response.body).to match(meta_property_with_content('og:description', desc_in_response[1]))
+        it 'description == Company desc with HTML and linefeeds removed' do
+          get :show, params: { "id" => "#{co_html_in_desc.id}" }
+          expect(response.body).to match(meta_property_with_content('og:description', clean_desc_co_html_in_desc))
         end
 
 

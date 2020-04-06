@@ -44,6 +44,11 @@ RSpec.describe CompanyMetaInfoAdapter do
         expect(described_class.new(blank_name_co).description).to eq AdminOnly::AppConfiguration.config_to_use.site_meta_description
       end
     end
+
+    it 'is santitized and spaces are squished' do
+      expect(InputSanitizer).to receive(:sanitize_string).and_call_original
+      expect(described_class.new(create(:company, description: "<p>something\n\n   &nbsp;</p>")).description).to eq 'something'
+    end
   end
 
 

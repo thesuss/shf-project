@@ -31,7 +31,7 @@ class CompanyMetaInfoAdapter
 
 
   def description
-    @company.description.blank? ? AdminOnly::AppConfiguration.config_to_use.site_meta_description : @company.description
+    @company.description.blank? ? AdminOnly::AppConfiguration.config_to_use.site_meta_description : InputSanitizer.sanitize_string(@company.description).squish
   end
 
 
@@ -51,5 +51,13 @@ class CompanyMetaInfoAdapter
     }
   end
 
-end # CompanyMetaInfoAdapter
+  # --------------------------------------------------------------------------
+
+  private
+
+  def clean_desc(desc)
+
+  end
+
+end
 
