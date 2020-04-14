@@ -16,7 +16,7 @@ Feature: As an admin
 
   Scenario Outline: Admin creates a new Business Category
     Given I am on the "business categories" page
-    And I click on t("business_categories.new_business_category")
+    And I click on t("business_categories.new.title")
     When I fill in the translated form with data:
       | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
       | <category_name>                        | <category_description>                        |
@@ -33,7 +33,7 @@ Feature: As an admin
 
   Scenario Outline: Create a new category - when things go wrong
     Given I am on the "business categories" page
-    And I click on t("business_categories.new_business_category")
+    And I click on t("business_categories.new.title")
     When I fill in the translated form with data:
       | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
       | <category_name>                        | <category_description>                        |
@@ -47,7 +47,7 @@ Feature: As an admin
 
   Scenario: Indicate required field
     Given I am on the "business categories" page
-    And I click on t("business_categories.new_business_category")
+    And I click on t("business_categories.new.title")
     Then the field t("activerecord.attributes.business_category.name") should have a required field indicator
 
   Scenario: Listing Business Categories restricted for Non-admins
