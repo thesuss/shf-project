@@ -1,12 +1,11 @@
-Feature: Access to Master Checklists (who can see/do what with master checklists)
+Feature: Access to Master Checklists
 
   A "master checklist" is a list with entries that can be nested and are in order.
   It is the basis/template for User Checklists.
-  Only an admin can create, edit, or delete them.
+  Only an admin can see them.
+
 
   Background:
-
-    Given the date is set to "2018-01-01"
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
@@ -24,37 +23,10 @@ Feature: Access to Master Checklists (who can see/do what with master checklists
       | Pay your membership fee  | Pay your membership fee (good for 1 year) | 2             | Membership  |
 
 
-    Given the following companies exist:
-      | name       | company_number | email               | region    |
-      | HappyMutts | 2120000142     | woof@happymutts.com | Stockholm |
-
-    Given the following applications exist:
-      | user_email    | company_number | state    |
-      | member@shf.se | 2120000142     | accepted |
-
-    Given the following payments exist
-      | user_email    | start_date | expire_date | payment_type | status | hips_id |
-      | member@shf.se | 2018-01-1  | 2018-12-31  | member_fee   | betald | none    |
-
-
   Scenario: Admin can see all Master lists.
     Given I am logged in as "admin@shf.se"
     Given I am on the "manage checklist masters" page
-    Then I should see t("admin_only.master_checklists.index.title")
-    And I should see 10 Master Checklist listed
-
-
-  Scenario: Admin can edit all Master Lists
-    Given I am logged in as "admin@shf.se"
-    Given I am on the "manage checklist masters" page
-    Then I should see t("admin_only.master_checklists.index.title")
-    And I should see 10 Master Checklist listed
-
-
-  Scenario: Admin can delete all Master Lists
-    Given I am logged in as "admin@shf.se"
-    Given I am on the "manage checklist masters" page
-    Then I should see t("admin_only.master_checklists.index.title")
+    Then I should see t("admin_only.master_checklists.index.title") in the h1 title
     And I should see 10 Master Checklist listed
 
 

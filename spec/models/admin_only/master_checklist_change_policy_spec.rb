@@ -97,10 +97,26 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
 
   describe 'can_delete?' do
 
-    it 'false if it has children' do
-      mc_with_children = create(:master_checklist)
-      create(:master_checklist, parent: mc_with_children)
-      expect(described_class.can_delete?(mc_with_children)).to be_falsey
+    context 'children' do
+
+      it 'true if there are no children' do
+        mc_no_children = create(:master_checklist, :not_in_use)
+        expect(described_class.can_delete?(mc_no_children)).to be_truthy
+      end
+
+      it 'true if all children can be deleted and it can be deleted' do
+        mc_with_children = create(:master_checklist, :not_in_use)
+        create(:master_checklist, :not_in_use, parent: mc_with_children, name: '1 Not in use')
+        create(:master_checklist, :not_in_use, parent: mc_with_children, name: '2 Not in use')
+        expect(described_class.can_delete?(mc_with_children)).to be_truthy
+      end
+
+      it 'false if any child cannot be deleted' do
+        mc_with_children = create(:master_checklist, :not_in_use)
+        create(:master_checklist, parent: mc_with_children, name: 'In use')  # is in use by default
+        create(:master_checklist, :not_in_use, parent: mc_with_children, name: 'Not in use')
+        expect(described_class.can_delete?(mc_with_children)).to be_falsey
+      end
     end
 
     it 'false if has completed user checklists' do
@@ -110,15 +126,19 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     end
 
     it 'false if has an uncompleted user checklist' do
-      expect(described_class.can_delete?(create(:master_checklist))).to be_truthy
+      expect(described_class.can_delete?(create(:master_checklist, :not_in_use))).to be_truthy
 
       mc_with_uncompleted_uchecklists = create(:master_checklist)
       create(:user_checklist, master_checklist: mc_with_uncompleted_uchecklists)
       expect(described_class.can_delete?(mc_with_uncompleted_uchecklists)).to be_falsey
     end
 
+    it 'false if is_in_use is true' do
+      expect(described_class.can_delete?(create(:master_checklist, :not_in_use))).to be_truthy
+      expect(described_class.can_delete?(create(:master_checklist))).to be_falsey  # is_in_use = true by default
+    end
     it 'else true (no user checklist, no children)' do
-      expect(described_class.can_delete?(create(:master_checklist))).to be_truthy
+      expect(described_class.can_delete?(create(:master_checklist, :not_in_use))).to be_truthy
     end
   end
 

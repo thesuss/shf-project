@@ -158,7 +158,7 @@ module AdminOnly
           respond_to do |format|
 
             # it may have been deleted (if it was allowed to be), or it may have just been set to 'not in use'
-            if MasterChecklist.find(@master_checklist.id)
+            if MasterChecklist.exists?(@master_checklist.id)
               format.html { redirect_to admin_only_master_checklist_path(@master_checklist), notice: t('.success', name: @master_checklist.name) }
               format.json { render :show, status: :ok, location: @master_checklist }
             else

@@ -38,7 +38,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     Given I am in "new_user@example.com" browser
     And I am logged in as "new_user@example.com"
     Given I am on the "user account" page for "new_user@example.com"
-    When I click on t("users.show_for_applicant.apply_for_membership") link
+    When I click on t("users.show_for_applicant.apply_4_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 5560360793                          | 031-1234567                       | new_user@example.com               |

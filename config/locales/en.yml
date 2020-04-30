@@ -935,7 +935,11 @@ en:
 
     show_for_applicant:
       title: "Steps to SHF Membership:"
-      apply_for_membership: *apply_for_membership
+      welcome: "Welcome to Sveriges Hundföretagare!"
+      welcome_want_to_have_benefits: "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
+      members_just_need_to_pay: "This text is currently displayed both for you who want to become a member and for you who are a member but not yet paid membership fee. You who are already a member but not paid just need to press the pay button."
+
+      apply_4_membership: *apply_for_membership
       my_application: &my_application My Application
       submit_application: Fill out and submit your application.
       app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
@@ -1097,6 +1101,7 @@ en:
       agreed_to_all_terms: I have agreed to all membership terms.
       i_commit_to: "As a member of Sveriges Hundföretagare, I commit myself to:"
       all_complete_percent: "100% complete"
+      back_to_my_profile: Back to my User Profile
 
     set_uc_and_kids_date_completed:
       not_found: *user_checklist_not_found
@@ -1396,10 +1401,18 @@ en:
 
     master_checklists:
       new_item: &new_master_list_item New Master List Item
-      all_list_items: &all_master_list_items All Master List items
-      view_list_item: &view_master_list_item View List Item
-      edit_list_item: &edit_master_list_item Edit List Item
-      delete_list_item: &delete_master_list_item Delete List Item
+      archived_items: &master_checklist_archived_items "Items that are no longer in use (archived)"
+
+      action_buttons:
+        view_list_item: View List Item
+        edit_list_item: Edit List Item
+        mark_no_longer_used_clone: "Mark as no longer used and create a clone"
+        all_list_items: &all_master_list_items All Master List items
+
+      delete_button_if_applicable:
+        delete: "Delete %{name}"
+        delete_confirm: &master_checklist_delete_confirm "Are you sure you want to delete the master checklist item %{name}?"
+        set_to_not_used: "Set to 'No Longer Used' (In use: cannot delete)"
 
       errors:
         master_checklist_id_not_found: &master_checklist_id_not_found "Master Checklist item with id %{id} was not found"
@@ -1429,6 +1442,7 @@ en:
         description: *master_checklist_description
         list_position: *list_position
         all_list_items: *all_master_list_items
+
       create:
         error: "There was a problem creating and saving the master checklist item %{name}."
         success: "%{name} was created and saved."
@@ -1436,10 +1450,6 @@ en:
         title: "Editing %{name}"
         completed: *checklist_completed
         not_completed: *checklist_not_completed
-        delete: &delete_master_checklist_item "Delete %{name}"
-        delete_confirm: &delete_master_checklist_item_confirm "Are you sure you want to delete the master checklist item %{name}?"
-        view_list_item: *view_master_list_item
-        all_list_items: *all_master_list_items
 
       update:
         error_cant_change_has_completed: *master_checklist_error_cant_change_has_completed
@@ -1455,11 +1465,11 @@ en:
         completed: *checklist_completed
         not_completed: *checklist_not_completed
         new_item: *new_master_list_item
-        delete: *delete_master_checklist_item
-        delete_confirm: *delete_master_checklist_item_confirm
+        archived_items: *master_checklist_archived_items
+
       index_as_table:
         title: *master_checklist_index_title
-        delete_confirm: *delete_master_checklist_item_confirm
+        delete_confirm: *master_checklist_delete_confirm
         displayed_text: *master_checklist_index_displayed_text
         name: *name
         new_item: *new_master_list_item
@@ -1473,18 +1483,15 @@ en:
         description: *master_checklist_description
         list_position: *list_position
         notes: *master_checklist_admin_notes
-        delete_confirm: *delete_master_checklist_item_confirm
         parent_list: *parent_list
         top_level_list: *top_level_list
         child_items: *child_items
-        edit_list_item: *edit_master_list_item
-        delete_list_item: *delete_master_list_item
-        all_list_items: *all_master_list_items
         new_child_in_list: New Item in this list
         new_child_makes_this_a_list: New Child item (makes this a list)
         list_type: *master_checklist_list_type
         subtitle_list_type_start: "This is a "
         subtitle_list_type_end: " list."
+        archived_items: *master_checklist_archived_items
 
       destroy:
         error: "There was a problem deleting the master checklist item '%{name}'. It was not deleted."
@@ -1498,14 +1505,14 @@ en:
         error: "There was a problem setting '%{name}' to no longer in use."
         success: "'%{name}' is now set to no longer in use."
 
+      no_more_major_changes_note_if_needed:
+        no_more_changes_allowed: There are User Checklists based on this, so no more major changes are allowed.
+        can_clone: "If you need to make changes, you can clone this one, which will set it to 'no longer in use', and then edit the new (cloned) one."
+
       toggle_in_use:
         not_found: *master_checklist_id_not_found
         cannot_change_has_completed: Cannot change the master checklist because there are completed User checklists based on it.
         cannot_change_user_visible: Cannot change the master checklist that users see because there are User checklists based on it.
-
-      delete_button_if_applicable:
-        delete: *delete_master_checklist_item
-        delete_confirm: *delete_master_checklist_item_confirm
 
       status_numbers_row:
         status: Status

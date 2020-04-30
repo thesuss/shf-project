@@ -8,10 +8,8 @@
   next_link_id = 'next-link'
   contact_us_footer_id = 'contact-us-footer'
 
-  flex_class = 'flex'
   whiteout_class = 'whiteout'
   show_class = 'is-complete'
-  hide_class = 'd-none' # Bootstrap 4 class
 
 .membership-guidelines
   - overall_progress = @overall_progress
@@ -26,8 +24,6 @@
 
       %p.instructions= t('.read_and_agree')
 
-      -# %p.instructions.scroll-down= t('.scroll_down_to_read_all')
-
       .row
         .col
           -# Can't make the card a partial because we need to update the progress bar.
@@ -35,7 +31,7 @@
           .card
             .card-body
 
-              %h4.card-title.guideline-name
+              %h4.card-title#guideline-name
                 %span.is-complete.show-inline#is-complete-icon
 
                   -# The 'fa-fw' class is essential: That font awesome class sets a fixed width no matter what icon is shown.
@@ -67,8 +63,10 @@
 
                   - next_sibling = @user_checklist.next_sibling
                   - if next_sibling
-                    .next
-                      = link_to  user_user_checklist_progress_path(@user, next_sibling), { id: next_link_id, class: hide_class } do
+                    -# Start with this not displayed; javascript below will display it via onchange
+                    -# Could use a class to change the display to none vs. setting it explicitly here. (Be careful to ensure that the DOM is set/updated correctly, especially for tests.)
+                    .next{ id: next_link_id, style: 'display: none;' }
+                      = link_to  user_user_checklist_progress_path(@user, next_sibling) do
                         = t('.next')
                         %span.next-arrow-icon.show-inline#next-arrow-icon
                           = next_arrow_icon(html_options: { class: 'fa-lg', id: next_arrow_id })
@@ -86,10 +84,8 @@
   const nextLinkId = "##{ next_link_id }";
   const contactUsFooterId = "##{ contact_us_footer_id }";
 
-  const flexClass = "#{ flex_class }";
   const whiteoutClass = "#{ whiteout_class }";
   const showClass = "#{ show_class }";
-  const hideClass = "#{ hide_class }";
 
   const ALL_COMPLETE = 100;
 
@@ -99,7 +95,7 @@
 
 
   function toggleCompletedCheckbox(userId, checklistId) {
-      let checkbox = $(checkboxId); //getCheckboxElement();
+      let checkbox = $(checkboxId);
       let ajaxPostURL = (checkbox.prop("checked") ? setCompleteUrl : setUncompleteUrl);
 
       $.post( ajaxPostURL + checklistId)
@@ -146,19 +142,19 @@
 
 
   function showContactUs() {
-    $(contactUsFooterId).toggleClass(showClass, true).toggleClass(hideClass, false);
+    $(contactUsFooterId).toggle(true);
   }
 
   function hideContactUs() {
-    $(contactUsFooterId).toggleClass(showClass, false).toggleClass(hideClass, true);
+    $(contactUsFooterId).toggle(false);
   }
 
   function showNextLink() {
-    $(nextLinkId).toggleClass(flexClass, true).toggleClass(hideClass, false);
+    $(nextLinkId).toggle(true);
   }
 
   function hideNextLink() {
-    $(nextLinkId).toggleClass(flexClass, false).toggleClass(hideClass, true);
+    $(nextLinkId).toggle(false);
   }
 
   function hideCompleteCheckIcon() {

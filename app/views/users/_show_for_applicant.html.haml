@@ -4,9 +4,10 @@
 .row
   .col
     .welcome-message
-      %p  (some words encouraging them to become a member).
-      %p benefits of membership
-      %p Questions? you can always contact us...
+      %p= t('.welcome_want_to_have_benefits')
+      %p
+        %b= t('.welcome')
+      %p= t('.members_just_need_to_pay')
 
 .row
   .col
@@ -26,10 +27,9 @@
 
             - t_key = "app_status_#{user.shf_application.state}"
             %p.step-info= t(".#{t_key}")
-            %p.tbd-note If it is rejected, what else to display or do?
 
           - else
-            = link_to t('.apply_for_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
+            = link_to t('.apply_4_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
 
 
         - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
@@ -55,4 +55,4 @@
 
 %h
 
-= render 'contact_us_footer'
+-# = render 'contact_us_footer'

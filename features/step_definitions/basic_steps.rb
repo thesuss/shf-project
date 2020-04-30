@@ -156,6 +156,11 @@ Then("print the page html") do
   print page.html
 end
 
+
+And(/save and open a screenshot/) do
+  save_and_open_screenshot
+end
+
 Given(/^the date is set to "([^"]*)"$/) do |date|
   Timecop.freeze( Time.find_zone("UTC").parse(date))
 end
