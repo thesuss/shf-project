@@ -737,8 +737,8 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
-      hbrand_status_paid: Får använda H-märkesbilden. (H-märkespremie betalad)
-      hbrand_status_not_paid: Får inte använda H-märkesbilden. (H-märkespremie ej betad)
+      hbrand_status_paid: Får använda H-märkesbilden. (H-märkespremie betald)
+      hbrand_status_not_paid: Får inte använda H-märkesbilden. (H-märkespremie ej betald)
       edit_branding_status: Redigera Status
       branding_license: Betald H-märkespremie
       term_paid_through: *term_paid_through
@@ -953,7 +953,7 @@ sv:
       apply_4_membership: *apply_for_membership
       app_status_new: "Tack för att du skickat in din ansökan. Den kommer att handläggas."
       app_status_under_review: "Tack för att du har skickat in din ansökan, vi bearbetar den."
-      app_status_waiting_for_applicant: Tack för att du har skickat in din ansökan, vi bearbetar den.
+      app_status_waiting_for_applicant: "Tack för att du har skickat in din ansökan, vi bearbetar den."
       app_status_ready_for_review: "Tack för att du uppdaterat din ansökan. Vi handlägger den så snart vi kan."
       app_status_accepted: Din ansökan är godkänd och klar.
       app_status_rejected: Din ansökan är avböjd.
@@ -963,7 +963,7 @@ sv:
 
     ethical_guidelines_link_or_checklist:
       agree_to_guidelines: Skriv under medlemsåtagandet
-      agreed_to: Skrivit under
+      agreed_to: Skrivit under 
       membership_guidelines: Alla medlemsåtaganden
 
     show_member_images_row_cols:

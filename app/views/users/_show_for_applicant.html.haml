@@ -8,7 +8,7 @@
       %p
         %b= t('.welcome')
       %p= t('.members_just_need_to_pay')
-
+      %hr
 .row
   .col
     .next-steps
@@ -26,7 +26,9 @@
             = render partial: 'show_application_section_row_cols', locals: { user: user }
 
             - t_key = "app_status_#{user.shf_application.state}"
-            %p.step-info= t(".#{t_key}")
+            %p
+              %strong.step-info= t(".#{t_key}")
+
 
           - else
             = link_to t('.apply_4_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
@@ -51,8 +53,3 @@
 .row
   .col
     = render partial: 'show_info_for_admin_only', locals: { current_user: current_user, user: user,  }
-
-
-%h
-
--# = render 'contact_us_footer'
