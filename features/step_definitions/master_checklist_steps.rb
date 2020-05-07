@@ -64,6 +64,8 @@ And(/^the following Master Checklist exist:$/) do |table|
     displayed_text = item.delete('displayed_text') || ''
     description = item.delete('description') || ''
     list_position = (item.delete('list position') || '0').to_i
+    is_in_use = item.delete('is in use') || true
+
     parent_name = item.delete('parent name') || ''
 
     type_name = item.delete('list type name') || ''
@@ -83,7 +85,8 @@ And(/^the following Master Checklist exist:$/) do |table|
                         displayed_text: displayed_text,
                         description: description,
                         parent_name: parent_name,
-                        list_position: list_position)
+                        list_position: list_position,
+                        is_in_use: is_in_use)
     end
   end
 end
@@ -145,8 +148,8 @@ And("I should see {digits} Master Checklist listed") do |num_items|
   expect(page).to have_selector(".#{MASTER_ITEM_CSSCLASS}", count: num_items)
 end
 
-And("I should see the item named {capture_string} in the list of Master Checklist items") do |item_name|
-  expect(page).to have_xpath(".//*[#{xpath_for_element_with_class(MASTER_ITEM_CSSCLASS)}]//*[#{xpath_for_element_with_class('name')} and contains(text(), '#{item_name}')]")
+And("I should{negate} see the item named {capture_string} in the list of Master Checklist items") do | negate, item_name|
+  expect(page).send (negate ? :not_to : :to), have_xpath(".//*[#{xpath_for_element_with_class(MASTER_ITEM_CSSCLASS)}]//*[#{xpath_for_element_with_class('name')} and contains(text(), '#{item_name}')]")
 end
 
 

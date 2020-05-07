@@ -43,7 +43,7 @@
 
     .row.mt-2.users-see-this
       .col
-        %h4 Users see:
+        %h4= t('.displayed_text')
 
         .what-users-see
           %p.displayed-text.displayed-to-users=  @master_checklist.displayed_text
@@ -75,24 +75,10 @@
           = @master_checklist.notes
 
     - unless @no_longer_in_use.empty?
-      %h5 Items that are no longer in use (archived)
+      %h5= t('.archived_items')
       = render partial: 'admin_only/master_checklists/non_nested_table', locals: { no_longer_in_use: @no_longer_in_use }
 
-
-  %hr
-  .action-buttons
-    .text-center
-      - if @master_checklist.can_be_changed?
-        = link_to t('.edit_list_item'),
-                    edit_admin_only_master_checklist_path(@master_checklist), class: 'btn btn-primary btn-sm edit-master-checklist-item'
-
-      = link_to '(clone and mark this as no longer used) TBD', '#', class: 'btn btn-sm btn-primary'
-
-      = render partial: 'delete_button_if_applicable', locals: { master_checklist: @master_checklist }
-
-      %p
-
-      = link_to t('.all_list_items'), admin_only_master_checklists_path, class: 'btn btn-sm btn-light'
+  = render partial: 'action_buttons', locals: { master_checklist: @master_checklist, show_view_button: false }
 
 
 :javascript

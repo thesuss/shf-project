@@ -105,9 +105,12 @@ module AdminOnly
     end
 
 
-    # Cannot delete if there are _any_ user checklists associated with it (completed or not)
+    # Cannot delete if
+    # it is in use OR
+    # there are _any_ user checklists associated with it (completed or not) OR
+    # there is a child that cannot be deleted
     def self.can_delete?(master_checklist)
-      !master_checklist.children? && !master_checklist.user_checklists.any?
+      (!master_checklist.is_in_use && !master_checklist.user_checklists.any?)  && master_checklist.children.map(&:can_delete?).all?
     end
 
   end

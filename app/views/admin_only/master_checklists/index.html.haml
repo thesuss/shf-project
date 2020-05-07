@@ -35,7 +35,7 @@
 
 
   %hr
-  %h3 Items that are no longer in use (archived)
+  %h3= t('.archived_items')
   = render partial: 'admin_only/master_checklists/non_nested_table', locals: { no_longer_in_use: @no_longer_in_use }
 
   %hr

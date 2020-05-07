@@ -945,10 +945,13 @@ sv:
 
     show_for_applicant:
       title: "Steg mot medlemskap:"
+      welcome: Välkommen till Sveriges Hundföretagare!
+      welcome_want_to_have_benefits: "Vill du finnas med i ett sammanhang som innebär en bekräftelse på att dina meriter, engagemang och hundkunskaper räknas?"
+      members_just_need_to_pay: Denna text visas just nu både för dig som vill bli medlem, och för dig som är medlem men ännu inte betalt medlemsavgift.  Du som redan är medlem men inte betalt behöver bara trycka på betala-knappen.
       submit_application: Fyll i och skicka in din ansökan.
       my_application: &my_application Min ansökan
-      apply_for_membership: *apply_for_membership
-      app_status_new: "Tack för att du skickat in din ansökan. Den kommer att handläggas"
+      apply_4_membership: *apply_for_membership
+      app_status_new: "Tack för att du skickat in din ansökan. Den kommer att handläggas."
       app_status_under_review: "Tack för att du har skickat in din ansökan, vi bearbetar den."
       app_status_waiting_for_applicant: "Tack för att du har skickat in din ansökan, vi bearbetar den."
       app_status_ready_for_review: "Tack för att du uppdaterat din ansökan. Vi handlägger den så snart vi kan."
@@ -1089,6 +1092,7 @@ sv:
       agreed_to_all_terms: I have agreed to all membership terms.
       i_commit_to: "Som medlem i Sveriges Hundföretagare åtar jag mig att:"
       all_complete_percent: "100% komplett"
+      back_to_my_profile: Back to my User Profile
 
     show_progress:
       read_and_agree: Please read and agree to them. Check the box beside each item to show you agree.
@@ -1403,10 +1407,18 @@ sv:
 
     master_checklists:
       new_item: &new_master_list_item New Master List Item
-      all_list_items: &all_master_list_items All Master List items
-      view_list_item: &view_master_list_item View List Item
-      edit_list_item: &edit_master_list_item Edit List Item
-      delete_list_item: &delete_master_list_item Delete List Item
+      archived_items: &master_checklist_archived_items "Items that are no longer in use (archived)"
+
+      action_buttons:
+        view_list_item: View List Item
+        edit_list_item: Edit List Item
+        mark_no_longer_used_clone: "Mark as no longer used and create a clone"
+        all_list_items: &all_master_list_items All Master List items
+
+      delete_button_if_applicable:
+        delete: "Delete %{name}"
+        delete_confirm: &master_checklist_delete_confirm "Are you sure you want to delete the master checklist item %{name}?"
+        set_to_not_used: "Set to 'No Longer Used' (In use: cannot delete)"
 
       errors:
         master_checklist_id_not_found: &master_checklist_id_not_found "Master Checklist item with id %{id} was not found"
@@ -1443,10 +1455,7 @@ sv:
         title: "Editing %{name}"
         completed: *checklist_completed
         not_completed: *checklist_not_completed
-        delete: &delete_master_checklist_item "Delete %{name}"
-        delete_confirm: &delete_master_checklist_item_confirm "Are you sure you want to delete the master checklist item %{name}?"
-        view_list_item: *view_master_list_item
-        all_list_items: *all_master_list_items
+
       update:
         error_cant_change_has_completed: *master_checklist_error_cant_change_has_completed
         error:  "There was a problem updating the master checklist item %{name}."
@@ -1461,11 +1470,11 @@ sv:
         completed: *checklist_completed
         not_completed: *checklist_not_completed
         new_item: *new_master_list_item
-        delete: *delete_master_checklist_item
-        delete_confirm: *delete_master_checklist_item_confirm
+        archived_items: *master_checklist_archived_items
+
       index_as_table:
         title: *master_checklist_index_title
-        delete_confirm: *delete_master_checklist_item_confirm
+        delete_confirm: *master_checklist_delete_confirm
         displayed_text: *master_checklist_index_displayed_text
         name: *name
         new_item: *new_master_list_item
@@ -1479,18 +1488,15 @@ sv:
         description: *master_checklist_description
         list_position: *list_position
         notes: *master_checklist_admin_notes
-        delete_confirm: *delete_master_checklist_item_confirm
         parent_list: *parent_list
         top_level_list: *top_level_list
         child_items: *child_items
-        edit_list_item: *edit_master_list_item
-        delete_list_item: *delete_master_list_item
-        all_list_items: *all_master_list_items
         new_child_in_list: New Item in this list
         new_child_makes_this_a_list: New Child item (makes this a list)
         list_type: *master_checklist_list_type
         subtitle_list_type_start: "Detta är en "
-        subtitle_list_type_end: "  lista."
+        subtitle_list_type_end: " lista."
+        archived_items: *master_checklist_archived_items
 
       destroy:
         error: "There was a problem deleting the master checklist item '%{name}'. It was not deleted."
@@ -1504,14 +1510,14 @@ sv:
         error: "There was a problem setting '%{name}' to no longer in use."
         success: "'%{name}' is now set to no longer in use."
 
+      no_more_major_changes_note_if_needed:
+        no_more_changes_allowed: There are User Checklists based on this, so no more major changes are allowed.
+        can_clone: "If you need to make changes, you can clone this one, which will set it to 'no longer in use', and then edit the new (cloned) one."
+
       toggle_in_use:
         not_found: *master_checklist_id_not_found
         cannot_change_has_completed: (sv) Cannot change the master checklist because there are completed User checklists based on it.
         cannot_change_user_visible: (sv) Cannot change the master checklist info that users see because there are User checklists based on it.
-
-      delete_button_if_applicable:
-        delete: *delete_master_checklist_item
-        delete_confirm: *delete_master_checklist_item_confirm
 
       status_numbers_row:
         status: Status
@@ -1877,7 +1883,6 @@ sv:
         shf_meeting_minutes: *member_pages_board_meetings
         manage_applications: Hantera ansökningar
         app_configuration: Appkonfiguration
-        design_guide: Designguide
         master_checklists: Master Checklists
         dashboard: Dashboard
         design_guide: Design Guide

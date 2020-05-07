@@ -7,32 +7,22 @@ Feature: User or Member checks or unchecks a user checklist item as completed
 
 
   Background:
-
-    Given the date is set to "2020-02-02"
-    Given the Membership Ethical Guidelines Master Checklist exists
-
-    Given the following users exist:
-      | email                | admin | member | first_name | last_name |
-      | applicant@random.com |       |        | Kicki      | Applicant |
-      | member@random.com    |       | true   | Lars       | Member    |
-      | admin@shf.se         | yes   |        |            |           |
-
 #
-#      | name                          | displayed_text   | list position | parent name       |
-#      | Medlemsåtagande               | Medlemsåtagande  |               |                   |
-#      | Section 1                     | Section 1        | 0             | Medlemsåtagande   |
-#      | Guideline 1.1                 | Guideline 1.1    | 0             | Section 1         |
-#      | Guideline 1.2                 | Guideline 1.2    | 1             | Section 1         |
-#      | Section 2                     | Section 2        | 1             | Medlemsåtagande   |
-#      | Guideline 2.1                 | Guideline 2.1    | 0             | Section 2         |
-
-
-    Given the following user checklist items have been completed:
-      | user email           | checklist name   | date completed |
-      | applicant@random.com | Guideline 1.2    | 2020-02-03     |
-      | applicant@random.com | Guideline 1.1    | 2020-02-02     |
-      | member@random.com    | Medlemsåtagande | 2020-02-02     |
-
+#    Given the date is set to "2020-02-02"
+#    Given the Membership Ethical Guidelines Master Checklist exists
+#
+#    Given the following users exist:
+#      | email                | admin | member | first_name | last_name |
+#      | applicant@random.com |       |        | Kicki      | Applicant |
+#      | member@random.com    |       | true   | Lars       | Member    |
+#      | admin@shf.se         | yes   |        |            |           |
+#
+#
+#    Given the following user checklist items have been completed:
+#      | user email           | checklist name   | date completed |
+#      | applicant@random.com | Guideline 1.2    | 2020-02-03     |
+#      | applicant@random.com | Guideline 1.1    | 2020-02-02     |
+#      | member@random.com    | Medlemsåtagande  | 2020-02-02     |
 
 
   @selenium

@@ -4,12 +4,10 @@
 .row
   .col
     .welcome-message
-      %p Vill du finnas med i ett sammanhang som innebär en bekräftelse på att dina meriter, engagemang och hundkunskaper räknas?
+      %p= t('.welcome_want_to_have_benefits')
       %p
-        %b Välkommen till Sveriges Hundföretagare!
-      %p Denna text visas just nu både för dig som vill bli medlem, och för dig som är medlem men ännu inte betalt medlemsavgift.  Du som redan är medlem men inte betalt behöver bara trycka på betala-knappen. 
-      %hr
-      %p Du som är här som ny medlem, ta ett steg i taget. Gör klart din medlemsansökan, läs och godkän medlemsåtagandet så kan du sedan betala medlemsavgift. 
+        %b= t('.welcome')
+      %p= t('.members_just_need_to_pay')
       %hr
 .row
   .col
@@ -33,7 +31,7 @@
 
 
           - else
-            = link_to t('.apply_for_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
+            = link_to t('.apply_4_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
 
 
         - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
@@ -55,7 +53,3 @@
 .row
   .col
     = render partial: 'show_info_for_admin_only', locals: { current_user: current_user, user: user,  }
-
-
-%h
-

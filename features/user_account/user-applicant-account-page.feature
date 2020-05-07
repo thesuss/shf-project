@@ -58,14 +58,14 @@ Feature: Applicant account page - version 1.0
       | app-guidelines-payment@random.com | 2020-02-02 | 2021-02-01  | member_fee   | betald | none    |
 
 
-  Scenario: After loggin in, a newly registered user is taken to their account page
+  Scenario: After logging in, a newly registered user is taken to their account page
     Given I am on the "login" page
     When I fill in t("activerecord.attributes.user.email") with "registered-only@random.com"
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should see t("users.show_for_applicant.apply_for_membership") link
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+    And I should see t("users.show_for_applicant.apply_4_membership") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -75,9 +75,9 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_for_membership") link
+    And I should not see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.show_for_applicant.app_status_new")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -87,9 +87,9 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_for_membership") link
+    And I should not see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.show_for_applicant.app_status_accepted")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -99,9 +99,9 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_for_membership") link
+    And I should not see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.show_for_applicant.app_status_rejected")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -111,9 +111,9 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_for_membership") link
+    And I should not see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.show_for_applicant.app_status_under_review")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -123,9 +123,9 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_for_membership") link
+    And I should not see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.show_for_applicant.app_status_waiting_for_applicant")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -135,9 +135,9 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_for_membership") link
+    And I should not see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.show_for_applicant.app_status_ready_for_review")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -147,8 +147,8 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should see t("users.show_for_applicant.apply_for_membership") link
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
+    And I should see t("users.show_for_applicant.apply_4_membership") link
+#    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -158,9 +158,8 @@ Feature: Applicant account page - version 1.0
     And I fill in t("activerecord.attributes.user.password") with "password"
     And I click on t("devise.sessions.new.log_in") button
     Then I should see t("devise.sessions.signed_in")
-    And I should see t("users.show_for_applicant.apply_for_membership") link
+    And I should see t("users.show_for_applicant.apply_4_membership") link
     And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to")
-    And I should see t("users.ethical_guidelines_link_or_checklist.membership_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -172,7 +171,6 @@ Feature: Applicant account page - version 1.0
     Then I should see t("devise.sessions.signed_in")
     And I should see t("users.show_for_applicant.app_status_accepted")
     And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to")
-    And I should see t("users.ethical_guidelines_link_or_checklist.membership_guidelines")
     And I should see t("users.show.pay_membership") link
 
 

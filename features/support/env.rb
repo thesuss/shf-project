@@ -27,6 +27,10 @@ Webdrivers.install_dir = Rails.root.join('features', 'support', 'webdrivers')
 
 ActionController::Base.allow_rescue = false
 
+Capybara.server = :puma # Ensure puma is used
+# Capybara.server = :puma, { Silent: true } # To clean up your test output
+
+
 begin
   DatabaseCleaner.strategy = :truncation
 rescue NameError
@@ -86,6 +90,8 @@ ShowMeTheCookies.register_adapter(:selenium_browser, ShowMeTheCookies::SeleniumC
 #
 
 Before do
+  DatabaseCleaner.clean
+
   # I18n.locale = 'en'
   ENV['SHF_BETA'] = 'no'
 

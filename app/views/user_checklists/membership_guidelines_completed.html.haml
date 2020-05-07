@@ -25,4 +25,4 @@
                     = complete_check_icon(html_options: { class: 'fa-fw', id: 'fas-all-complete-icon' })
                   = t('.agreed_to_all_terms')
               .row.justify-content-center
-                %p= link_to 'back to my user profile', user_path(@user), class: 'btn btn-sm btn-primary'
+                %p= link_to t('.back_to_my_profile'), user_path(@user), class: 'btn btn-sm btn-primary'

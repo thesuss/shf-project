@@ -15,13 +15,15 @@ class UserChecklistsController < ApplicationController
 
 
   def index
-    authorize_user_checklist_class
+    @user = User.find(params[:user_id])
+    @user = current_user unless @user  # default to the current_user if couldn't find the User
+
+    # Verify that the current user is authorized to access the checklists for @user:
+    authorize(@user, nil, policy_class: UserChecklistPolicy)
 
     # Get all the checklists for the user in the path. Ex: If the current user is an admin,
     # then we want to be sure to see the checklists for a specific user, not for the admin.
-    @user = current_user.admin? ? User.find(params[:user_id]) : current_user
-
-    found_lists = UserChecklist.where(user: @user) #.includes(:master_checklist)
+    found_lists = UserChecklist.where(user: @user)  #.includes(:master_checklist)
     @user_checklists = found_lists.blank? ? [] : found_lists
   end
 

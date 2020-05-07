@@ -21,7 +21,11 @@ class UserChecklistPolicy < ApplicationPolicy
 
 
   def index?
-    not_a_visitor?
+    # Authorized if an admin OR
+    #  the current user is getting their own checklists,
+    #  else authorization fails.
+    # @user is the pundit user ( = current_user).  @record is the user that we are getting the checklists for
+    not_a_visitor? && (@user.admin? || ( @user == @record ))
   end
 
 

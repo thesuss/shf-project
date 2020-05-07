@@ -244,3 +244,7 @@ And ("I have agreed to all of the Membership Guidelines") do
   user_guidelines.set_complete_including_children
 end
 
+And("I should{negate} see {capture_string} as the guideline name to agree to") do | negate, guideline_name |
+  guideline =  page.find_by_id("guideline-name")
+  expect(guideline).send (negate ? :not_to : :to), have_content(/#{guideline_name}/i)
+end
