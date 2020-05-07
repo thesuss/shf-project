@@ -737,8 +737,8 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
-      hbrand_status_paid: Får använda H-märkesbilden. (H-märkespremie betalad)
-      hbrand_status_not_paid: Får inte använda H-märkesbilden. (H-märkespremie ej betad)
+      hbrand_status_paid: Får använda H-märkesbilden. (H-märkespremie betald)
+      hbrand_status_not_paid: Får inte använda H-märkesbilden. (H-märkespremie ej betald)
       edit_branding_status: Redigera Status
       branding_license: Betald H-märkespremie
       term_paid_through: *term_paid_through
