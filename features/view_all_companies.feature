@@ -240,7 +240,7 @@ Feature: Visitor sees all companies
     And I should not see "Verksamhetslän"
     And I should not see "Kategori"
 
-  @selenium @time_adjust
+  @selenium @time_adjust @skip_ci_test
   Scenario: Pagination: Set number of items per page
     Given the date is set to "2017-10-01"
     Given I am Logged out

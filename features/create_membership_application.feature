@@ -369,7 +369,7 @@ Feature: Create a new membership application
 
 
 
-  @selenium
+  @selenium @skip_ci_test
   Scenario Outline: Apply for membership - when things go wrong with company create [SAD PATH]
     Given I am on the "new application" page
     And I fill in the translated form with data:
