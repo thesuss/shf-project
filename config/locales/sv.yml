@@ -1056,16 +1056,16 @@ sv:
       success: Betalning framgångsrikt genomförd - tack!
 
     error:
-      error: Det uppstod ett fel vid behandlingen av din betalning
+      error: Det uppstod ett fel vid hantering av din betalning
 
   user_checklists:
-    all_list_items: &user_checklists_all_items Back to all of my checklists
+    all_list_items: &user_checklists_all_items Tillbaka till medlemsåtagandet
     all_list_items_for_user: &user_checklists_all_items_for_user Back to all user checklists for %{name}
 
     if_you_have_qs_email_us: &if_you_have_qs_email_us "Om du har några frågor om dessa, maila oss till "
 
     progress_bar:
-      complete: &progress_complete komplett
+      complete: &progress_complete klar
 
     missing-checklist-param-error: &missing-checklist-param-error User Checklist missing parameter error!
     not_found: &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
