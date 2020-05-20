@@ -1060,7 +1060,7 @@ sv:
 
   user_checklists:
     all_list_items: &user_checklists_all_items Tillbaka till medlemsåtagandet
-    all_list_items_for_user: &user_checklists_all_items_for_user Back to all user checklists for %{name}
+    all_list_items_for_user: &user_checklists_all_items_for_user Tillbaka till alla listor för %{name} 
 
     if_you_have_qs_email_us: &if_you_have_qs_email_us "Om du har några frågor om dessa, maila oss till "
 
@@ -1086,21 +1086,21 @@ sv:
       not_found: *user_checklist_not_found
 
     new:
-      title: New User Checklist
+      title: Medlemsåtagande
 
     membership_guidelines_completed:
-      agreed_to_all_terms: I have agreed to all membership terms.
+      agreed_to_all_terms: Jag har läst och godkänt alla medlemsåtaganden.
       i_commit_to: "Som medlem i Sveriges Hundföretagare åtar jag mig att:"
       all_complete_percent: "100% komplett"
-      back_to_my_profile: Back to my User Profile
+      back_to_my_profile: Tillbaka till mitt konto
 
     show_progress:
-      read_and_agree: Please read and agree to them. Check the box beside each item to show you agree.
-      scroll_down_to_read_all: Scroll down to read all items and see the button to go to the next group.
-      read_and_agree_start: I have read and agree to all of the
-      read_and_agree_end: terms.
+      read_and_agree: Vänligen läs och godkän medlemsåtagandet. Kryssa för rutan för varje punkt för att visa att du läst och skriver under.
+      scroll_down_to_read_all: Scrolla ner för att läsa alla åtaganden och för att se knappen för att gå vidare.
+      read_and_agree_start: Jag har läst och skriver under på alla 
+      read_and_agree_end: medlemsåtaganden.
       contact_if_questions: *if_you_have_qs_email_us
-      email_display_name: Membership Chair
+      email_display_name: Ordförande
 
       next: *next
       previous: *previous
