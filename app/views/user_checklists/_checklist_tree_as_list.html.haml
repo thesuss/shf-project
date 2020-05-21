@@ -10,4 +10,4 @@
           li_class: ['checklist-item'],
           }) do | child_entry |
     %span.name{ class: list_entry_css_classes(child_entry) }
-      = child_entry.name
+      = child_entry.name.html_safe
