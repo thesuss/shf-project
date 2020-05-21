@@ -18,7 +18,7 @@
 
   .entry-content.container
     .user-checklist
-      %p.description= @checklist_root.description
+      = render partial: 'user_checklists/checklist_top_desc', locals: {user_checklist: @user_checklist}
 
       = render partial: 'shared/progress_bar', locals: {  percent_complete: overall_progress }
 

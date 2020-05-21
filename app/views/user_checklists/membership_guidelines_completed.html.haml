@@ -5,13 +5,15 @@
 
   .entry-content.container
     .user-checklist.membership-guidelines-completed
-      %p.description= @user_checklist.root.description
+      = render partial: 'user_checklists/checklist_top_desc', locals: {user_checklist: @user_checklist}
 
       .completed-progress-bar
         = render partial: 'shared/progress_bar', locals: {  percent_complete: overall_progress }
 
       .row
         .col
+          -# Can't make the card a shared partial because the other view that uses this card needs to update the progress bar.
+          -# This is an excellent use case for using Vue or React (to take advantage of components automatically reacting to change)
           .card
             .card-body
               %h3.card-title= t('.i_commit_to')
