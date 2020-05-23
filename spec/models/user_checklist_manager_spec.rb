@@ -9,6 +9,58 @@ RSpec.describe UserChecklistManager do
   include_context 'create users'
 
 
+  describe '.membership_guidelines_agreement_required_now?' do
+
+    it 'true if right now is after the date guidelines start date' do
+      Timecop.freeze(described_class.membership_guidelines_reqd_start_date + 1.hour) do
+        expect(described_class.membership_guidelines_agreement_required_now?).to be_truthy
+      end
+    end
+
+    it 'true if right now is == the date guidelines start date' do
+      Timecop.freeze(described_class.membership_guidelines_reqd_start_date) do
+        expect(described_class.membership_guidelines_agreement_required_now?).to be_truthy
+      end
+    end
+
+    it 'false if right now is before the date guidelines start date' do
+      Timecop.freeze(described_class.membership_guidelines_reqd_start_date - 1.hour) do
+        expect(described_class.membership_guidelines_agreement_required_now?).to be_falsey
+      end
+    end
+  end
+
+
+  describe '.completed_membership_guidelines_if_reqd?' do
+
+    context 'user does not have to complete the membership guidelines' do
+
+      it 'always true' do
+        allow(described_class).to receive(:must_complete_membership_guidelines_checklist?).and_return(false)
+
+        expect(described_class.completed_membership_guidelines_if_reqd?(applicant_approved_no_payments)).to be_truthy
+        expect(described_class.completed_membership_guidelines_if_reqd?(member_paid_up)).to be_truthy
+      end
+    end
+
+    context 'user does have to complete the membership guidelines' do
+
+      it 'true if the user has completed the guidelines' do
+        allow(described_class).to receive(:must_complete_membership_guidelines_checklist?).and_return(true)
+
+        expect(described_class.completed_membership_guidelines_if_reqd?(applicant_approved_ethical_agreed_no_payments)).to be_truthy
+      end
+
+      it 'false if the user has not completed the guidelines' do
+        allow(described_class).to receive(:must_complete_membership_guidelines_checklist?).and_return(true)
+
+        expect(described_class.completed_membership_guidelines_if_reqd?(applicant_approved_no_payments)).to be_falsey
+        expect(described_class.completed_membership_guidelines_if_reqd?(member_paid_up)).to be_falsey
+      end
+    end
+  end
+
+
   describe '.completed_membership_guidelines_checklist?' do
 
     it 'returns nil if there are no lists for the user' do

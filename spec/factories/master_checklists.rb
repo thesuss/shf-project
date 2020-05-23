@@ -1,9 +1,9 @@
 FactoryBot.define do
 
   factory :master_checklist, class: AdminOnly::MasterChecklist do
-    name { "MasterChecklist name" }
-    displayed_text { "This is the text that would be displayed to a user." }
-    description { "MasterChecklist description" }
+    name { 'MasterChecklist name' }
+    displayed_text { 'This is the text that would be displayed to a user.' }
+    description { 'MasterChecklist description' }
     list_position { 0 }
     is_in_use { true }
 
@@ -37,9 +37,9 @@ FactoryBot.define do
 
 
     factory :membership_guidelines_master_checklist do
-      name { "Membership Guideline Master" }
-      displayed_text { "This is the text that would be displayed to a user." }
-      description { "Membership Guideline Master description" }
+      name { 'Membership Guideline Master' }
+      displayed_text { 'Membership guidelines text displayed to a user.' }
+      description { 'Membership Guideline Master description' }
       association :master_checklist_type, factory: :membership_guidelines_master_checklist_type
     end
 

@@ -1,8 +1,10 @@
-Feature: Show user account (details) information to a member
+Feature:  Member home (account) page
 
-  As a user
+  Show account (details) information to a member
+
+  As a member
   So that I know what information SHF has about me
-  Show me my user account page
+  Show me my account page (which is my home/landing page)
 
   PT:  https://www.pivotaltracker.com/story/show/140358959
 
@@ -15,6 +17,7 @@ Feature: Show user account (details) information to a member
 
     Given the date is set to "2018-06-06"
     And the Membership Ethical Guidelines Master Checklist exists
+
 
     Given the following users exist:
       | email                              | admin | membership_number | member | first_name | last_name      |
