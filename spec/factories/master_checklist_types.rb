@@ -6,7 +6,7 @@ FactoryBot.define do
   factory :master_checklist_type, class: 'AdminOnly::MasterChecklistType' do
     # name is created by the sequence above
     name
-    description { "description" }
+    description { 'description' }
 
 
     factory :membership_guidelines_master_checklist_type, class: 'AdminOnly::MasterChecklistType' do

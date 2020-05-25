@@ -22,6 +22,23 @@ class UserChecklistManager
   MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START = Time.zone.parse(ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQUIRED_START_DATE'])
 
 
+  # @return
+  #   true if
+  #     1. the user must complete the membership guidelines AND they have completed it
+  #     OR
+  #     2. the user does _not_ have to complete the guidelines
+  #
+  #   false if
+  #    1. the user must complete the membership guidelines AND they have _not_ completed it
+  #
+  def self.completed_membership_guidelines_if_reqd?(user)
+    guidelines_required = must_complete_membership_guidelines_checklist?(user)
+    return true if !guidelines_required
+    return true if guidelines_required && completed_membership_guidelines_checklist?(user)
+    false
+  end
+
+
   def self.completed_membership_guidelines_checklist?(user)
     membership_guidelines_list_for(user)&.all_completed?
   end
@@ -30,6 +47,11 @@ class UserChecklistManager
   # @return [ nil | UserChecklist] - return nil if there aren't any, else return the most recent one
   def self.membership_guidelines_list_for(user)
     UserChecklist.membership_guidelines_for_user(user)&.last
+  end
+
+
+  def self.membership_guidelines_agreement_required_now?
+    Time.zone.now >= membership_guidelines_reqd_start_date
   end
 
 
@@ -59,11 +81,10 @@ class UserChecklistManager
   def self.must_complete_membership_guidelines_checklist?(user)
     raise ArgumentError, "User should not be nil. #{__method__}" if user.nil?
 
-    right_now = Time.zone.now
-    return false if right_now < MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START
+    return false unless membership_guidelines_agreement_required_now?
     return true unless user.membership_current?
 
-    # They are are current member and today is after the day we start requiring the Membership Guidelines checklist
+    # They are are current member AND the guidelines are required today
 
     one_term_after_req_start_date = User.expire_date_for_start_date(membership_guidelines_reqd_start_date)
 

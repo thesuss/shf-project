@@ -10,6 +10,12 @@ FactoryBot.define do
     list_position { 0 }
 
 
+    factory :membership_ethical_guidelines do
+      name { 'Ethical Guidelines' }
+      description { 'SHF ethical guidelines applicant must agree to' }
+      association :master_checklist, factory: :membership_guidelines_master_checklist
+    end
+
     trait :completed do
       date_completed { Time.zone.now }
     end

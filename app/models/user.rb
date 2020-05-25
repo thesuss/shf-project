@@ -98,7 +98,7 @@ class User < ApplicationRecord
   # TODO this should not be the responsibility of the User class.
   def membership_current?
     # TODO can use term_expired?(THIS_PAYMENT_TYPE)
-    membership_expire_date&.future?
+    !!membership_expire_date&.future?  # using '!!' will turn a nil into false
   end
 
 
@@ -143,12 +143,16 @@ class User < ApplicationRecord
   #      AND
   # 2. the user is a member
   #     OR
-  #    user has at least one application with status == :accepted
+  #    ( user has at least one application with status == :accepted
+  #       AND
+  #       ( user has checked all ethical guidelines if they have to)
+  #    )
+  #
   # What if a payment has already been made?  any check for that?
   # TODO this should not be the responsibility of the User class.
   def allowed_to_pay_member_fee?
     # TODO use membership_current? instead of member?
-    !admin? && (member? || (shf_application&.accepted? && UserChecklistManager.completed_membership_guidelines_checklist?(self) ) )
+    !admin? && (member? || (shf_application&.accepted? && UserChecklistManager.completed_membership_guidelines_if_reqd?(self) ) )
   end
 
 

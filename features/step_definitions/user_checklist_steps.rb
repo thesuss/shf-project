@@ -1,6 +1,9 @@
 # Steps for UserChecklist items
-#
-# # These must all start with 'USERCHECKLIST' because Cucumber will add them to the list of all constants defined in all step files (so they must be unique)
+
+require 'cucumber/rspec/doubles'
+
+
+# These must all start with 'USERCHECKLIST' because Cucumber will add them to the list of all constants defined in all step files (so they must be unique)
 
 USERCHECKLISTS_ID = 'user-checklists'.freeze
 USERCHECKLIST_TABLE_ID = USERCHECKLISTS_ID
@@ -148,6 +151,11 @@ And("the following users have agreed to the Membership Ethical Guidelines:") do 
       raise e, "Could not create the Member Guidelines UserChecklist or set it to completed for user #{user}\n #{e.inspect} "
     end
   end
+end
+
+
+And("the start date for the Membership Ethical Guidelines is {date}") do | req_start_date |
+  allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date).and_return(req_start_date)
 end
 
 

@@ -5,6 +5,8 @@ require 'shared_context/named_dates'
 #
 # user - a user (no payments, not a member)
 # user_no_payments - a user (no payments, not a member)
+# applicant_approved_no_payments - applicant with an approved application, but no payments made, no ethical guidelines agreed to
+# applicant_approved_ethical_agreed_no_payments - applicant with an application approved, all ethical guidelines agreed to, but no payments made
 # user_all_paid_membership_not_granted-[uses create(), then saves] a user not yet granted membership with an approved membership application, membership and company payments made today
 # member_paid_up - [uses build(), then saves] a member with a membership application and a membership payment made today
 # member_expired - [uses build(), then saves] a member with a membership application and a membership payment that expired yesterday
@@ -28,6 +30,31 @@ RSpec.shared_context 'create users' do
   let(:user) { create(:user) }
 
   let(:user_no_payments) { create(:user) }
+
+  # applicant with an application approved, but no payments made and no ethical guidelines agreed to
+  let(:applicant_approved_no_payments) do
+    user = create(:user_with_membership_app)
+    app = user.shf_application
+    app.state = :accepted
+    app.when_approved = Time.zone.now
+
+    user.save!
+    user
+  end
+
+
+  # applicant with an application approved, all ethical guidelines agreed to, but no payments made
+  let(:applicant_approved_ethical_agreed_no_payments) do
+    user = create(:user_with_membership_app)
+    app = user.shf_application
+    app.state = :accepted
+    app.when_approved = Time.zone.now
+    user.save!
+
+    create(:membership_ethical_guidelines, :completed, user: user)
+
+    user
+  end
 
 
   let(:user_all_paid_membership_not_granted) do

@@ -7,24 +7,24 @@ require 'shared_context/named_dates'
 # TODO use the users already defined/created in the shared_context/users
 
 # ================================================================================
-RSpec.shared_examples 'it finds the right number of membership expires for date' do |x_days, num_found, on_date |
+RSpec.shared_examples 'it finds the right number of membership expires for date' do |x_days, num_found, on_date|
 
   it "expires in #{x_days} days (#{on_date}) finds #{num_found}" do
     expire_today = User.membership_expires_in_x_days(x_days).pluck(:expire_date)
     expect(expire_today.count).to eq num_found
     expect(expire_today.uniq.count).to eq 1
-    expect(expire_today.uniq.first).to eq( on_date )
+    expect(expire_today.uniq.first).to eq(on_date)
   end
 end
 
 # ================================================================================
-RSpec.shared_examples 'it finds the right number of branding fee expires for date' do |x_days, num_found, on_date |
+RSpec.shared_examples 'it finds the right number of branding fee expires for date' do |x_days, num_found, on_date|
 
   it "expires in #{x_days} days (#{on_date}) finds #{num_found}" do
     expire_today = User.company_hbrand_expires_in_x_days(x_days).pluck(:expire_date)
     expect(expire_today.count).to eq num_found
     expect(expire_today.uniq.count).to eq 1
-    expect(expire_today.uniq.first).to eq( on_date )
+    expect(expire_today.uniq.first).to eq(on_date)
   end
 end
 # ================================================================================
@@ -78,26 +78,26 @@ RSpec.describe User, type: :model do
   let(:member_payment2) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
     create(:payment, user: user, status: success,
-           payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-           notes:          'these are notes for member payment2',
-           start_date:     start_date,
-           expire_date:    expire_date)
+           payment_type: Payment::PAYMENT_TYPE_MEMBER,
+           notes: 'these are notes for member payment2',
+           start_date: start_date,
+           expire_date: expire_date)
   end
   let(:branding_payment1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
     create(:payment, user: user, status: success, company: complete_co,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment1',
-           start_date:     start_date,
-           expire_date:    expire_date)
+           payment_type: Payment::PAYMENT_TYPE_BRANDING,
+           notes: 'these are notes for branding payment1',
+           start_date: start_date,
+           expire_date: expire_date)
   end
   let(:branding_payment2) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
     create(:payment, user: user, status: success, company: complete_co,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment2',
-           start_date:     start_date,
-           expire_date:    expire_date)
+           payment_type: Payment::PAYMENT_TYPE_BRANDING,
+           notes: 'these are notes for branding payment2',
+           start_date: start_date,
+           expire_date: expire_date)
   end
 
   # --------
@@ -247,7 +247,7 @@ RSpec.describe User, type: :model do
 
       it 'h-branding payments' do
         company_id = complete_co.id
-        user_id    = user.id
+        user_id = user.id
 
         expect { branding_payment1; branding_payment2 }.to change(Payment, :count).by(2)
 
@@ -266,7 +266,7 @@ RSpec.describe User, type: :model do
       it 'returns 2 users that are admins and 0 that are not' do
         admin1 = create(:user, admin: true, first_name: 'admin1')
         admin2 = create(:user, admin: true, first_name: 'admin2')
-        user1  = create(:user, first_name: 'user1')
+        user1 = create(:user, first_name: 'user1')
 
         all_admins = described_class.admins
 
@@ -285,8 +285,8 @@ RSpec.describe User, type: :model do
         user_member2 = create(:member_with_membership_app, first_name: 'Member 2')
 
         user_has_app_not_member = create(:user_with_membership_app, first_name: 'App')
-        visitor                 = create(:user, first_name: 'Visitor')
-        admin                   = create(:user, admin: true, first_name: 'Admin')
+        visitor = create(:user, first_name: 'Visitor')
+        admin = create(:user, admin: true, first_name: 'Admin')
 
         members = described_class.members
 
@@ -314,7 +314,7 @@ RSpec.describe User, type: :model do
       let(:user_no_app) { create(:user) }
       let(:user_app_not_accepted) { create(:user_with_membership_app) }
 
-      let(:member_exp_jan1_today)   { create(:member_with_expiration_date, expiration_date: jan_1) }
+      let(:member_exp_jan1_today) { create(:member_with_expiration_date, expiration_date: jan_1) }
       let(:member_current_exp_jan2) { create(:member_with_expiration_date, expiration_date: jan_2) }
       let(:member_current_exp_jan3) { create(:member_with_expiration_date, expiration_date: jan_3) }
 
@@ -326,7 +326,7 @@ RSpec.describe User, type: :model do
         member_current_exp_jan2
         member_current_exp_jan3
         in_scope = User.current_members
-        app_states = in_scope.map{|member| member.shf_application.state}.uniq
+        app_states = in_scope.map { |member| member.shf_application.state }.uniq
         expect(app_states).to match_array([ShfApplication::STATE_ACCEPTED.to_s])
       end
 
@@ -337,7 +337,7 @@ RSpec.describe User, type: :model do
         member_current_exp_jan2
         member_current_exp_jan3
         in_scope = User.current_members
-        payment_states = in_scope.map{|member| member.most_recent_membership_payment.status}.uniq
+        payment_states = in_scope.map { |member| member.most_recent_membership_payment.status }.uniq
         expect(payment_states).to match_array([Payment::SUCCESSFUL])
       end
 
@@ -348,9 +348,9 @@ RSpec.describe User, type: :model do
         member_current_exp_jan2
         member_current_exp_jan3
         in_scope = User.current_members
-        expires_dates = in_scope.map{|member| member.most_recent_membership_payment.expire_date}.uniq
-        payments_expire_today_or_before = expires_dates.select{|date| date <= Date.current}
-        payments_expire_after_today = expires_dates.select{|date| date > Date.current}
+        expires_dates = in_scope.map { |member| member.most_recent_membership_payment.expire_date }.uniq
+        payments_expire_today_or_before = expires_dates.select { |date| date <= Date.current }
+        payments_expire_after_today = expires_dates.select { |date| date > Date.current }
 
         expect(payments_expire_today_or_before).to be_empty
         expect(payments_expire_after_today).to match_array([jan_2, jan_3])
@@ -406,91 +406,91 @@ RSpec.describe User, type: :model do
 
 
         # branding fees paid (only)
-            create(:h_branding_fee_payment, :successful,
-                   user:        member_only_branding_fees_exp_jan01,
-                   expire_date: jan_01)
+        create(:h_branding_fee_payment, :successful,
+               user: member_only_branding_fees_exp_jan01,
+               expire_date: jan_01)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        member_only_branding_fees_exp_dec31,
-                   expire_date: dec_31_2018)
+        create(:h_branding_fee_payment, :successful,
+               user: member_only_branding_fees_exp_dec31,
+               expire_date: dec_31_2018)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        branding_exp_jan15_1,
-                   expire_date: jan_15)
+        create(:h_branding_fee_payment, :successful,
+               user: branding_exp_jan15_1,
+               expire_date: jan_15)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        branding_exp_jan15_2,
-                   expire_date: jan_15)
+        create(:h_branding_fee_payment, :successful,
+               user: branding_exp_jan15_2,
+               expire_date: jan_15)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        branding_exp_jan15_3,
-                   expire_date: jan_15)
+        create(:h_branding_fee_payment, :successful,
+               user: branding_exp_jan15_3,
+               expire_date: jan_15)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        branding_exp_jan15_4,
-                   expire_date: jan_15)
+        create(:h_branding_fee_payment, :successful,
+               user: branding_exp_jan15_4,
+               expire_date: jan_15)
 
 
         # TODO can use new :member_with_expiration_date factory
         # member fee paid only:
 
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_dec31_2018,
-                   expire_date: dec_31_2018)
+        create(:membership_fee_payment, :successful,
+               user: member_exp_dec31_2018,
+               expire_date: dec_31_2018)
 
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_jan01_1,
-                   expire_date: jan_01)
-
-
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_jan02_1,
-                   expire_date: jan_02)
+        create(:membership_fee_payment, :successful,
+               user: member_exp_jan01_1,
+               expire_date: jan_01)
 
 
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_jan31_1,
-                   expire_date: jan_31)
+        create(:membership_fee_payment, :successful,
+               user: member_exp_jan02_1,
+               expire_date: jan_02)
 
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_jan31_2,
-                   expire_date: jan_31)
 
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_jan31_3,
-                   expire_date: jan_31)
+        create(:membership_fee_payment, :successful,
+               user: member_exp_jan31_1,
+               expire_date: jan_31)
 
-            create(:membership_fee_payment, :successful,
-                   user:        member_exp_jan31_4,
-                   expire_date: jan_31)
+        create(:membership_fee_payment, :successful,
+               user: member_exp_jan31_2,
+               expire_date: jan_31)
+
+        create(:membership_fee_payment, :successful,
+               user: member_exp_jan31_3,
+               expire_date: jan_31)
+
+        create(:membership_fee_payment, :successful,
+               user: member_exp_jan31_4,
+               expire_date: jan_31)
 
 
         # both branding fee and membership fee paid on Jan 1:
-            create(:membership_fee_payment, :successful,
-                   user:        both_exp_jan01_1,
-                   expire_date: jan_01)
+        create(:membership_fee_payment, :successful,
+               user: both_exp_jan01_1,
+               expire_date: jan_01)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        both_exp_jan01_1,
-                   expire_date: jan_01)
+        create(:h_branding_fee_payment, :successful,
+               user: both_exp_jan01_1,
+               expire_date: jan_01)
 
 
         # both branding fee and membership fee paid on Jan 2:
-            create(:membership_fee_payment, :successful,
-                   user:        both_exp_jan02_1,
-                   expire_date: jan_02)
+        create(:membership_fee_payment, :successful,
+               user: both_exp_jan02_1,
+               expire_date: jan_02)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        both_exp_jan02_1,
-                   expire_date: jan_02)
+        create(:h_branding_fee_payment, :successful,
+               user: both_exp_jan02_1,
+               expire_date: jan_02)
 
-            create(:membership_fee_payment, :successful,
-                   user:        both_exp_jan02_2,
-                   expire_date: jan_02)
+        create(:membership_fee_payment, :successful,
+               user: both_exp_jan02_2,
+               expire_date: jan_02)
 
-            create(:h_branding_fee_payment, :successful,
-                   user:        both_exp_jan02_2,
-                   expire_date: jan_02)
+        create(:h_branding_fee_payment, :successful,
+               user: both_exp_jan02_2,
+               expire_date: jan_02)
 
 
         # Data to test different payment statuses:
@@ -501,16 +501,16 @@ RSpec.describe User, type: :model do
         member_exp_jun_1_all_pay_statuses = create(:member_with_membership_app, first_name: 'Exp Jun 1 all payment statuses')
         jun_1 = Date.new(2019, 6, 1)
 
-        payment_statuses.each do | payment_status |
+        payment_statuses.each do |payment_status|
 
           create(:h_branding_fee_payment,
                  status: payment_status,
-                 user:        member_exp_jun_1_all_pay_statuses,
+                 user: member_exp_jun_1_all_pay_statuses,
                  expire_date: jun_1)
 
           create(:membership_fee_payment,
                  status: payment_status,
-                 user:        member_exp_jun_1_all_pay_statuses,
+                 user: member_exp_jun_1_all_pay_statuses,
                  expire_date: jun_1)
         end
 
@@ -518,7 +518,7 @@ RSpec.describe User, type: :model do
 
       describe 'membership_expires_in_x_days' do
 
-        it_behaves_like 'it finds the right number of membership expires for date', 0, 2, Date.new(2019,1,1)
+        it_behaves_like 'it finds the right number of membership expires for date', 0, 2, Date.new(2019, 1, 1)
         it_behaves_like 'it finds the right number of membership expires for date', -1, 1, Date.new(2018, 12, 31)
         it_behaves_like 'it finds the right number of membership expires for date', 30, 4, Date.new(2019, 1, 31)
 
@@ -652,7 +652,7 @@ RSpec.describe User, type: :model do
   describe '#member_or_admin?' do
 
     it 'false for user: no application' do
-       expect(create(:user).member_or_admin?).to be_falsey
+      expect(create(:user).member_or_admin?).to be_falsey
     end
 
     it 'false for user: 1 saved application' do
@@ -752,13 +752,13 @@ RSpec.describe User, type: :model do
 
         let(:user_with_app) { create(:user, email: 'user-app-doesnt-have-given-co@example.com') }
 
-        ShfApplication.all_states.each do | app_state |
+        ShfApplication.all_states.each do |app_state|
 
           it "#{app_state} application state" do
             create(:shf_application,
-                      user: user_with_app,
-                      state: app_state,
-                      company_number: given_co.company_number)
+                   user: user_with_app,
+                   state: app_state,
+                   company_number: given_co.company_number)
 
             expect(user_with_app.allowed_to_pay_hbrand_fee?(given_co)).to be_falsey
           end
@@ -779,9 +779,9 @@ RSpec.describe User, type: :model do
       it 'false if company number not in accepted application (with 2 other companies)' do
         user_with_app = create(:user, email: 'user-app-doesnt-have-given-co@example.com')
         app1 = create(:shf_application,
-                        :accepted,
-                        user: user_with_app,
-                        company_number: other_co_num1)
+                      :accepted,
+                      user: user_with_app,
+                      company_number: other_co_num1)
         app1.companies << other_co2
 
         expect(user_with_app.has_approved_app_for_company?(given_co)).to be_falsey
@@ -790,8 +790,8 @@ RSpec.describe User, type: :model do
       describe 'false if company in app but app not approved' do
         # TODO refactor:DRY up with the other loop that uses not_accepted_states
         # all states except ACCEPTED
-        not_accepted_states = ShfApplication.all_states.reject{|state| state == ShfApplication::STATE_ACCEPTED }
-        not_accepted_states.each do | app_state |
+        not_accepted_states = ShfApplication.all_states.reject { |state| state == ShfApplication::STATE_ACCEPTED }
+        not_accepted_states.each do |app_state|
 
           it "false for state = #{app_state}" do
             user_with_app = create(:user, email: "user-#{app_state}@example.com")
@@ -849,7 +849,6 @@ RSpec.describe User, type: :model do
   end
 
 
-
   describe '#has_app_for_company?' do
 
     describe 'not a member' do
@@ -861,7 +860,7 @@ RSpec.describe User, type: :model do
       describe 'false if company not in application (with 2 other companies)' do
         let(:user_with_app) { create(:user, email: 'user-app-doesnt-have-given-co@example.com') }
 
-        ShfApplication.all_states.each do | app_state |
+        ShfApplication.all_states.each do |app_state|
           it "#{app_state} application state" do
             app1 = create(:shf_application,
                           user: user_with_app,
@@ -878,7 +877,7 @@ RSpec.describe User, type: :model do
       describe 'true if company not in application (with 2 other companies)' do
         let(:user_with_app) { create(:user, email: 'user-app-has-given-company@example.com') }
 
-        ShfApplication.all_states.each do | app_state |
+        ShfApplication.all_states.each do |app_state|
           it "#{app_state} application state" do
             app1 = create(:shf_application,
                           user: user_with_app,
@@ -930,7 +929,7 @@ RSpec.describe User, type: :model do
       describe 'false if company number not in application (with 2 other companies)' do
         let(:user_with_app) { create(:user, email: 'user-app-doesnt-have-given-co@example.com') }
 
-        ShfApplication.all_states.each do | app_state |
+        ShfApplication.all_states.each do |app_state|
           it "#{app_state} application state" do
             app1 = create(:shf_application,
                           user: user_with_app,
@@ -947,7 +946,7 @@ RSpec.describe User, type: :model do
       describe 'true if company number not in application (with 2 other companies)' do
         let(:user_with_app) { create(:user, email: 'user-app-has-given-company@example.com') }
 
-        ShfApplication.all_states.each do | app_state |
+        ShfApplication.all_states.each do |app_state|
           it "#{app_state} application state" do
             app1 = create(:shf_application,
                           user: user_with_app,
@@ -967,8 +966,8 @@ RSpec.describe User, type: :model do
 
       it 'false if company number not in the app with 2 other companies' do
         member = create(:member_with_membership_app,
-                      email: 'member-app-does-not-have-given-company@example.com',
-                      company_number: other_co_num1)
+                        email: 'member-app-does-not-have-given-company@example.com',
+                        company_number: other_co_num1)
         member.shf_application.companies << other_co2
 
         expect(member.has_app_for_company_number?(given_co_num)).to be_falsey
@@ -1221,7 +1220,7 @@ RSpec.describe User, type: :model do
       expect(create(:admin).allowed_to_pay_member_fee?).to be_falsey
     end
 
-    describe 'not an admin' do
+    context 'not an admin' do
 
       it 'true if is a member' do
         user.member = true
@@ -1229,41 +1228,75 @@ RSpec.describe User, type: :model do
         expect(user.allowed_to_pay_member_fee?).to be_truthy
       end
 
-      describe 'not a member == is a user' do
+      describe 'not a member == is a user (is an applicant)' do
 
-        context 'has agreed to all membership guidelines' do
+        context 'does not have to agree to membership guidelines' do
 
-          let(:user_agreed_to_guidelines) do
-            u = create(:user)
-            create(:membership_guidelines_master_checklist)
-            AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(u)
-            UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
-            u
-          end
+          context 'has not agreed to all membership guidelines' do
 
-          it 'true if user has app in "accepted" state' do
-            create(:shf_application,:accepted, user: user_agreed_to_guidelines)
-            expect(user_agreed_to_guidelines.allowed_to_pay_member_fee?).to be_truthy
-          end
+            it 'true if user has app in "accepted" state' do
+              allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(true)
 
-          describe 'false for an application in any other state' do
+              expect(applicant_approved_no_payments.allowed_to_pay_member_fee?).to be_truthy
+            end
 
-            ShfApplication.all_states.reject{ |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
-              it "#{app_state} is false" do
-                app = create(:shf_application, state: app_state, user: user_agreed_to_guidelines)
-                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+            describe 'false for an application in any other state' do
+
+              ShfApplication.all_states.reject { |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
+                it "#{app_state} is false" do
+                  allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(false)
+
+                  app = create(:shf_application, state: app_state)
+                  expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+                end
               end
             end
           end
         end
 
-        context 'has not agreed to all membership guidelines' do
 
-          describe 'false for all application states (even accepted)' do
-            ShfApplication.all_states.each do |app_state|
-              it "#{app_state} is false" do
-                app = create(:shf_application, state: app_state)
-                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+        context 'does have to agree to membership guidelines' do
+
+          context 'has agreed to all membership guidelines' do
+
+            let(:user_agreed_to_guidelines) do
+              u = create(:user)
+              create(:membership_guidelines_master_checklist)
+              AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(u)
+              UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
+              u
+            end
+
+            it 'true if user has app in "accepted" state' do
+              allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(true)
+
+              create(:shf_application, :accepted, user: user_agreed_to_guidelines)
+              expect(user_agreed_to_guidelines.allowed_to_pay_member_fee?).to be_truthy
+            end
+
+            describe 'false for an application in any other state' do
+
+              ShfApplication.all_states.reject { |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
+                it "#{app_state} is false" do
+                  allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(true)
+
+                  app = create(:shf_application, state: app_state, user: user_agreed_to_guidelines)
+                  expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+                end
+              end
+            end
+          end
+
+          context 'has not agreed to all membership guidelines' do
+
+            describe 'false for all application states (even accepted)' do
+              ShfApplication.all_states.each do |app_state|
+                it "#{app_state} is false" do
+                  allow(UserChecklistManager).to receive(:must_complete_membership_guidelines_checklist?).and_return(true)
+
+                  app = create(:shf_application, state: app_state)
+                  expect(app.user.allowed_to_pay_member_fee?).to be_falsey
+                end
               end
             end
           end
@@ -1282,8 +1315,8 @@ RSpec.describe User, type: :model do
         member = create(:member_with_membership_app)
         create(:membership_fee_payment,
                :successful,
-               user:        member,
-               start_date:  jan_1,
+               user: member,
+               start_date: jan_1,
                expire_date: User.expire_date_for_start_date(jan_1))
         member
       }
@@ -1304,8 +1337,8 @@ RSpec.describe User, type: :model do
         member = create(:member_with_membership_app)
         create(:membership_fee_payment,
                :successful,
-               user:        member,
-               start_date:  lastyear_dec_3,
+               user: member,
+               start_date: lastyear_dec_3,
                expire_date: User.expire_date_for_start_date(lastyear_dec_3))
         member
       }
@@ -1356,8 +1389,8 @@ RSpec.describe User, type: :model do
         member = create(:member_with_membership_app)
         create(:membership_fee_payment,
                :successful,
-               user:        member,
-               start_date:  jan_1,
+               user: member,
+               start_date: jan_1,
                expire_date: User.expire_date_for_start_date(jan_1))
         member
       }
@@ -1376,8 +1409,8 @@ RSpec.describe User, type: :model do
         member = create(:member_with_membership_app)
         create(:membership_fee_payment,
                :successful,
-               user:        member,
-               start_date:  lastyear_dec_3,
+               user: member,
+               start_date: lastyear_dec_3,
                expire_date: User.expire_date_for_start_date(lastyear_dec_3))
         member
       }
@@ -1417,8 +1450,8 @@ RSpec.describe User, type: :model do
           member = create(:member_with_membership_app)
           create(:membership_fee_payment,
                  :successful,
-                 user:        member,
-                 start_date:  jan_1,
+                 user: member,
+                 start_date: jan_1,
                  expire_date: User.expire_date_for_start_date(jan_1))
           member
         }
@@ -1449,8 +1482,8 @@ RSpec.describe User, type: :model do
           member = create(:member_with_membership_app)
           create(:membership_fee_payment,
                  :successful,
-                 user:        member,
-                 start_date:  lastyear_dec_3,
+                 user: member,
+                 start_date: lastyear_dec_3,
                  expire_date: User.expire_date_for_start_date(lastyear_dec_3))
           member
         }
@@ -1524,8 +1557,8 @@ RSpec.describe User, type: :model do
           user = create(:user_with_membership_app) # not approved; not a member Maybe it was later rejected
           create(:membership_fee_payment,
                  :successful,
-                 user:        user,
-                 start_date:  jan_1,
+                 user: user,
+                 start_date: jan_1,
                  expire_date: User.expire_date_for_start_date(jan_1))
           user
         }
@@ -1546,8 +1579,8 @@ RSpec.describe User, type: :model do
           user = create(:user_with_membership_app) # not approved; not a member Maybe it was later rejected
           create(:membership_fee_payment,
                  :successful,
-                 user:        user,
-                 start_date:  lastyear_dec_3,
+                 user: user,
+                 start_date: lastyear_dec_3,
                  expire_date: User.expire_date_for_start_date(lastyear_dec_3))
           user
         }
@@ -1602,8 +1635,8 @@ RSpec.describe User, type: :model do
           member = create(:member_with_membership_app)
           create(:membership_fee_payment,
                  :successful,
-                 user:        member,
-                 start_date:  jan_1,
+                 user: member,
+                 start_date: jan_1,
                  expire_date: User.expire_date_for_start_date(jan_1))
           member
         }
@@ -1626,8 +1659,8 @@ RSpec.describe User, type: :model do
           member = create(:member_with_membership_app)
           create(:membership_fee_payment,
                  :successful,
-                 user:        member,
-                 start_date:  lastyear_dec_3,
+                 user: member,
+                 start_date: lastyear_dec_3,
                  expire_date: User.expire_date_for_start_date(lastyear_dec_3))
           member
         }
@@ -1686,8 +1719,8 @@ RSpec.describe User, type: :model do
           user = create(:user_with_membership_app) # not approved; not a member Maybe it was later rejected
           create(:membership_fee_payment,
                  :successful,
-                 user:        user,
-                 start_date:  jan_1,
+                 user: user,
+                 start_date: jan_1,
                  expire_date: User.expire_date_for_start_date(jan_1))
           user
         }
@@ -1706,8 +1739,8 @@ RSpec.describe User, type: :model do
           user = create(:user_with_membership_app) # not approved; not a member Maybe it was later rejected
           create(:membership_fee_payment,
                  :successful,
-                 user:        user,
-                 start_date:  lastyear_dec_3,
+                 user: user,
+                 start_date: lastyear_dec_3,
                  expire_date: User.expire_date_for_start_date(lastyear_dec_3))
           user
         }
@@ -1767,12 +1800,12 @@ RSpec.describe User, type: :model do
   describe '#membership_packet_sent?' do
 
     it 'true if there is a date' do
-      user_sent_package = create(:user, date_membership_packet_sent: Date.current )
+      user_sent_package = create(:user, date_membership_packet_sent: Date.current)
       expect(user_sent_package.membership_packet_sent?).to be_truthy
     end
 
     it 'false if there is no date' do
-      user_sent_package = create(:user, date_membership_packet_sent: nil )
+      user_sent_package = create(:user, date_membership_packet_sent: nil)
       expect(user_sent_package.membership_packet_sent?).to be_falsey
     end
   end
@@ -1780,7 +1813,7 @@ RSpec.describe User, type: :model do
 
   describe '#toggle_membership_packet_status' do
 
-    let(:user_sent_package) { create(:user, date_membership_packet_sent: nil ) }
+    let(:user_sent_package) { create(:user, date_membership_packet_sent: nil) }
 
     it 'default date_sent is Timezone now' do
 
