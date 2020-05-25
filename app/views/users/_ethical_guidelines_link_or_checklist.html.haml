@@ -6,7 +6,9 @@
   %p
     = complete_check_icon(html_options: {class: 'is-complete'})
     = t('.agreed_to') + ' '
-    = link_to t('.membership_guidelines'), 'https://sverigeshundforetagare.se/medlemsatagande/'
+    = link_to  'https://sverigeshundforetagare.se/medlemsatagande/', target: '_blank' do
+      = t('.membership_guidelines')
+      %sup= external_link_icon
 - else
   - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
     - user_checklist = UserChecklistManager.first_incomplete_membership_guideline_section_for(user)
