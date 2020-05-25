@@ -1095,10 +1095,10 @@ sv:
       back_to_my_profile: Tillbaka till mitt konto
 
     show_progress:
-      read_and_agree: Vänligen läs och godkän medlemsåtagandet. Kryssa för rutan för varje punkt för att visa att du läst och skriver under.
+      read_and_agree: "Som medlem i Sveriges Hundföretagare förbinder du dig att följa vissa riktlinjer, kallade medlemsåtaganden. Här nedan följer Medlemsåtagandet uppdelat per rubrik. Du behöver kryssa för varje rubrik, och på så sätt verifiera att du läst, förstått, och avser att följa dessa riktlinjer."
       scroll_down_to_read_all: Scrolla ner för att läsa alla åtaganden och för att se knappen för att gå vidare.
-      read_and_agree_start: Jag har läst och skriver under på alla 
-      read_and_agree_end: medlemsåtaganden.
+      read_and_agree_start: " - " 
+      read_and_agree_end: Jag har läst och förstått dessa riktlinjer.
       contact_if_questions: *if_you_have_qs_email_us
       email_display_name: Ordförande
 
