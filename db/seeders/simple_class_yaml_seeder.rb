@@ -54,14 +54,37 @@ module Seeders
 
     ATTRIBS_TO_REMOVE = [:id, :created_at, :updated_at].freeze
 
+    # SUBCLASSES can redefine this
+    def self.ignore_existing
+      false
+    end
+
+
     # Create a SEEDED_CLASS instance and save it in the database
     # Do _not_ save the id, created_at, or updated_at information that might be in the yaml entry.
     # These attributes should be newly created when the instance is saved.
     #
+    # @param yaml_entry [Hash] - the attributes for the created object
+    # @param ignore_if_already_exists [Boolean] - if true: if the object already exists, ignore it and move on
+    #    if false (default) - if the object already exists, raise an error
+    #
     # @return [<SEEDED_CLASS>] - the object created
     #
-    def self.create_object(yaml_entry)
-      seeded_class.create!(stripped_attribs(yaml_entry))
+    def self.create_object(yaml_entry, ignore_if_already_exists = self.ignore_existing, log: nil)
+      fixed_up_attribs = stripped_attribs(yaml_entry)
+      if ignore_if_already_exists
+        found_item = seeded_class.find_by(fixed_up_attribs)
+        if found_item.nil?
+          seeded_class.create!(fixed_up_attribs)
+        else
+          info_str = " INFO: #{self.name}.#{__method__} : #{seeded_class} already exists; not seeded: \n #{found_item.inspect}"
+          tell(info_str)
+          log_str(info_str, log: log)
+          nil # don't return the found object; nothing was created
+        end
+      else
+        seeded_class.create!(fixed_up_attribs)
+      end
     end
 
 

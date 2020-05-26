@@ -30,9 +30,9 @@ module Seeders
     SEEDED_CLASS = nil
 
 
-    def self.create_objects(yaml_entries)
+    def self.create_objects(yaml_entries, log: nil)
       created_objects = []
-      yaml_entries.each { |yaml_entry| created_objects.concat create_entry_and_children(yaml_entry) }
+      yaml_entries.each { |yaml_entry| created_objects.concat create_entry_and_children(yaml_entry, log: log) }
       created_objects
     end
 
@@ -40,28 +40,35 @@ module Seeders
     # Abstract method to create an AncestryOrdered item from the yaml_hash, then each entry in [:children] (this recurses top-down)
     #
     # @return [Array<SEEDED_CLASS>] - list of the entry and children created
-    def self.create_entry_and_children(yaml_hash, parent_ordered_entry: nil)
+    def self.create_entry_and_children(yaml_hash, parent_ordered_entry: nil, log: nil)
 
       entries_created = []
       begin
-        new_ordered_entry = create_ordered_entry(yaml_hash, parent_ordered_entry: parent_ordered_entry)
+        new_ordered_entry = create_ordered_entry(yaml_hash, parent_ordered_entry: parent_ordered_entry, log: log)
       rescue => error
-        raise error, "trying to create! #{yaml_hash}\n   #{error.message}"
+        err_str = "trying to create! #{yaml_hash}\n   #{error.message}"
+        log_str(err_str, log: log, level: :error)
+        raise error, err_str
       end
       entries_created << new_ordered_entry
 
+      # get the parent. Need to get from the db because if it already existed, new_ordered_entry will be nil
+      parent = new_ordered_entry.nil? ? self::SEEDED_CLASS.find_by(name: yaml_hash[:name]) : new_ordered_entry
+
       yaml_hash.fetch(:children, []).each do |yaml_child_entry|
         begin
-          entries_created.concat(create_entry_and_children(yaml_child_entry, parent_ordered_entry: new_ordered_entry))
+          entries_created.concat(create_entry_and_children(yaml_child_entry, parent_ordered_entry: parent, log: log))
         rescue => error
-          raise error, "trying to create! #{yaml_child_entry}\n   #{error.message}"
+          err_str =   "trying to create! #{yaml_child_entry}\n   #{error.message}"
+          log_str(err_str, log: log, level: :error)
+          raise error, err_str
         end
       end
       entries_created
     end
 
 
-    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil)
+    def self.create_ordered_entry(_yaml_entry, _parent_ordered_entry: nil, _log: nil)
       raise NoMethodError, "Subclass must define the #{__method__} method", caller
 
       # Example of how a subclass might implement this method:

@@ -73,16 +73,18 @@ module Seeders
     #  and return the list of objects created.
     #
     # @param [String] source_file_path - the full path of the YAML file to read
+    # @param [ActivityLogger] log - the log to write to
+    #
     # @return [Array<Object>] - list of all objects successfully created
     #
-    def self.seed(source_file_path = full_yaml_filename)
+    def self.seed(source_file_path = full_yaml_filename, log: nil)
       yaml_entries = read_yaml(source_file_path)
-      objects_created = create_objects(yaml_entries)
+      objects_created = create_objects(yaml_entries, log: log).compact
 
       if objects_created.empty?
-        tell_zero_objects_created_warning(self.name)
+        tell_zero_objects_created_warning(self.name, log: log)
       else
-        tell_num_objects_created(self.name, objects_created.size)
+        tell_num_objects_created(self.name, objects_created.size, log: log)
       end
 
       objects_created
@@ -104,16 +106,18 @@ module Seeders
     # Subclasses can override this as needed, especially if creating objects from the yaml is complex.
     #
     # @return [Array<Object>] - list of objects successfully created
-    def self.create_objects(yaml_entries)
+    def self.create_objects(yaml_entries, log: nil)
       created_objects = []
       yaml_entries.each do |yaml_entry|
         begin
-          created_objects << create_object(yaml_entry)
+          created_objects << create_object(yaml_entry, log: log)
         rescue => error
-          raise error, "trying to create_object #{yaml_entry}\n   #{error.message}"
+          err_str =  "trying to create_object #{yaml_entry}\n   #{error.message}"
+          log.error(err_str)
+          raise error, err_str
         end
       end
-      created_objects
+      created_objects.compact
     end
 
 
@@ -121,7 +125,7 @@ module Seeders
     #
     # @return [Object] - the object created
     #
-    def self.create_object(_yaml_entry)
+    def self.create_object(_yaml_entry, log: nil)
       raise NoMethodError, "Subclass must define the #{__method__} method", caller
     end
 
@@ -214,17 +218,18 @@ module Seeders
     # =============================
 
 
-    def self.create_entry_and_children(yaml_hash, parent_ordered_entry: nil)
+    def self.create_entry_and_children(yaml_hash, parent_ordered_entry: nil, log: nil)
 
-      new_ordered_entry = create_ordered_entry(yaml_hash, parent_ordered_entry: parent_ordered_entry)
+      new_ordered_entry = create_ordered_entry(yaml_hash, parent_ordered_entry: parent_ordered_entry, log: log)
 
       yaml_hash.fetch(:children, []).each do |yaml_child_entry|
-        create_entry_and_children(yaml_child_entry, parent_ordered_entry: new_ordered_entry)
+        create_entry_and_children(yaml_child_entry, parent_ordered_entry: new_ordered_entry, log: log)
       end
     end
 
 
-    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil)
+    # FIXME - is this called?  if so, why is this hardcoded?
+    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil, log: nil)
       MasterChecklist.create!(name: yaml_entry[:name],
                               description: yaml_entry[:description],
                               list_position: yaml_entry[:list_position] ? yaml_entry[:list_position] : 0,
@@ -241,24 +246,38 @@ module Seeders
     end
 
 
-    def self.tell_file_already_exists(existing_fn, filename_used_instead)
-      tell(" WARNING: #{self.name} .write_yaml : #{existing_fn} already exists.  Writing out to #{filename_used_instead}")
+    def self.tell_file_already_exists(existing_fn, filename_used_instead, log: nil)
+      str = " WARNING: #{self.name} .write_yaml : #{existing_fn} already exists.  Writing out to #{filename_used_instead}"
+      tell(str)
+      log_str(str, log: log, level: :warn)
     end
 
 
-    def self.tell_num_objects_created(name, num)
-      tell("#{num} #{OBJECTS_CREATED_END} #{name}.")
+    def self.tell_num_objects_created(name, num, log: nil)
+      str = "#{num} #{OBJECTS_CREATED_END} #{name}."
+      tell(str)
+      log_str(str, log: log)
     end
 
 
-    def self.tell_zero_objects_created_warning(name)
-      tell("#{WARN_ZERO_OBJECTS_PREFIX} #{name} #{WARN_ZERO_OBJECTS_END}")
+    def self.tell_zero_objects_created_warning(name, log: nil)
+      str = "#{WARN_ZERO_OBJECTS_PREFIX} #{name} #{WARN_ZERO_OBJECTS_END}"
+      tell(str)
+      log_str(str, log: log, level: :warn)
     end
 
 
+    # Show the str to stdout
     # Having this method makes it easy to silence any puts output (e.g. for testing)
     def self.tell(str)
       puts(str)
+    end
+
+
+    # Write the string to the log as an info message, if log is not nil
+    # Having this method makes it easy to silence any logging (e.g. for testing)
+    def self.log_str(str, log: nil, level: :info)
+      log.send(level, str) if log
     end
 
 

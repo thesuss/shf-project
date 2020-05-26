@@ -20,17 +20,10 @@ module Seeders
     SEEDED_CLASS = AdminOnly::MasterChecklist
 
 
-    # FIXME
-    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil)
-      # SEEDED_CLASS.create!(name: yaml_entry[:name],
-      #                      displayed_text: yaml_entry[:displayed_text],
-      #                      description: yaml_entry[:description],
-      #                      list_position: yaml_entry[:list_position] ? yaml_entry[:list_position] : 0,
-      #                      parent: parent_ordered_entry)
 
+    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil, log: nil)
       associations = find_or_create_associations(yaml_entry)
-      find_or_create_object(yaml_entry, associations, parent_ordered_entry: parent_ordered_entry)
-
+      find_or_create_object(yaml_entry, associations, parent_ordered_entry: parent_ordered_entry, log: log)
     end
 
 
@@ -42,25 +35,29 @@ module Seeders
       end
     end
 
-
-    def self.find_or_create_object(obj_yaml_entry, associations_info = {}, parent_ordered_entry: nil)
+    # @return [MasterChecklist | nil] - the object created (return nil if nothing was created)
+    def self.find_or_create_object(obj_yaml_entry, associations_info = {}, parent_ordered_entry: nil, log: nil)
 
       obj_yaml_entry.delete(:id)
       obj_yaml_entry.delete(:master_checklist_type_id)
       obj_yaml_entry.delete(:master_checklist_type)
 
-      master_checklist = seeded_class.find_or_create_by!(name: obj_yaml_entry[:name]) do |new_master_checklist|
-
-        new_master_checklist.displayed_text = obj_yaml_entry[:displayed_text]
-        new_master_checklist.description = obj_yaml_entry[:description]
-        new_master_checklist.list_position = obj_yaml_entry[:list_position] ? obj_yaml_entry[:list_position] : 0
-        new_master_checklist.parent = parent_ordered_entry
-
-        new_master_checklist.master_checklist_type = associations_info[:master_checklist_type]
-        new_master_checklist
+      entry_name = obj_yaml_entry[:name]
+      found_checklist = seeded_class.find_by(name: entry_name)
+      if found_checklist
+        info_str = " INFO: #{self.name}.#{__method__} : #{seeded_class} already exists; not seeded: [id] name = [#{found_checklist.id}] #{found_checklist.name}"
+        tell(info_str)
+        log_str(info_str, log: log)
+        nil # nothing was created; no created object is returned
+      else
+        seeded_class.create!(name: entry_name,
+                             displayed_text: obj_yaml_entry[:displayed_text],
+                             description: obj_yaml_entry[:description],
+                             list_position: obj_yaml_entry[:list_position] ? obj_yaml_entry[:list_position] : 0,
+                             parent: parent_ordered_entry,
+                             master_checklist_type: associations_info[:master_checklist_type]
+        )
       end
-
-      master_checklist
     end
 
 

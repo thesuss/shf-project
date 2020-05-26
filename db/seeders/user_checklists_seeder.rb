@@ -21,7 +21,7 @@ module Seeders
     SEEDED_CLASS = UserChecklist
 
 
-    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil)
+    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil, _log: nil)
       self::SEEDED_CLASS.create!(user_id: yaml_entry[:user_id],
                                  name: yaml_entry[:name],
                                  description: yaml_entry[:description],
@@ -30,6 +30,10 @@ module Seeders
                                  list_position: yaml_entry[:list_position] ? yaml_entry[:list_position] : 0,
                                  parent: parent_ordered_entry)
 
+    rescue => error
+      err_str =  "trying to #{__method__} #{yaml_entry}\n   #{error.message}"
+      log.error(err_str)
+      raise error, err_str
     end
 
   end

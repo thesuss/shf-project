@@ -37,20 +37,20 @@ RSpec.describe Seeders::YamlSeeder do
 
     it 'calls create_objects to instantiate objects read in from the YAML file' do
       allow(described_class).to receive(:read_yaml).and_return([])
-      expect(described_class).to receive(:create_objects).with([]).and_call_original
+      expect(described_class).to receive(:create_objects).with([], {log: nil}).and_call_original
       described_class.seed
     end
 
     it 'returns a list of objects created' do
       allow(described_class).to receive(:read_yaml).and_return([])
-      allow(described_class).to receive(:create_objects).with([]).and_call_original
+      allow(described_class).to receive(:create_objects).with([], {log: nil}).and_call_original
 
       expect(described_class.seed).to be_a Array
     end
 
     it 'puts a message about the number of objects seeded' do
       allow(described_class).to receive(:read_yaml).and_return([])
-      allow(described_class).to receive(:create_objects).with([]).and_return([String.new])
+      allow(described_class).to receive(:create_objects).with([], {log: nil}).and_return([String.new])
 
       expect(described_class).to receive(:tell_num_objects_created).and_call_original
       described_class.seed
@@ -58,7 +58,7 @@ RSpec.describe Seeders::YamlSeeder do
 
     it 'if zero objects are seeded, it puts message includes a warning' do
       allow(described_class).to receive(:read_yaml).and_return([])
-      allow(described_class).to receive(:create_objects).with([]).and_return([])
+      allow(described_class).to receive(:create_objects).with([], {log: nil}).and_return([])
 
       expect(described_class).to receive(:tell_zero_objects_created_warning).and_call_original
       described_class.seed

@@ -37,6 +37,13 @@ RSpec.describe Seeders::SimpleClassYamlSeeder do
     end
   end
 
+  describe '.ignore_existing' do
+    it 'is false (but subclasses can overwrite the method to change this)' do
+      expect(described_class.ignore_existing).to be_falsey
+    end
+  end
+
+
   describe '.create_object' do
 
     it 'calls create! with the seeded_class to create and save a new object to the database' do
@@ -51,6 +58,73 @@ RSpec.describe Seeders::SimpleClassYamlSeeder do
 
     it 'subclasses must define SEEDED_CLASS' do
       expect { described_class.create_object({ id: 1, name: 'this' }) }.to raise_exception(NoMethodError, /undefined method .create!. for String:Class/)
+    end
+
+    context 'ignore existing objects' do
+
+      context 'object already exists' do
+        it 'uses tell to display a message when an object already exists' do
+          allow(described_class).to receive(:ignore_existing).and_return(true)
+
+          faux_ar_class = double("Faux ActiveRecord class")
+          allow(faux_ar_class).to receive(:find_by).and_return(true)
+
+          allow(described_class).to receive(:seeded_class).and_return(faux_ar_class)
+
+          expect(described_class).to receive(:tell).with(/already exists; not seeded/)
+          described_class.create_object({ id: 1, name: 'this' })
+        end
+      end
+
+      context 'object does not already exist' do
+
+        it 'creates the object' do
+          allow(described_class).to receive(:ignore_existing).and_return(true)
+
+          faux_ar_class = double("Faux ActiveRecord class")
+          allow(faux_ar_class).to receive(:find_by).and_return(nil)
+
+          allow(described_class).to receive(:seeded_class).and_return(faux_ar_class)
+
+          expect(faux_ar_class).to receive(:create!).once
+          described_class.create_object({ id: 1, name: 'this' })
+        end
+      end
+    end
+
+    context 'do not ignore existing objects (raise error)' do
+
+      context 'object already exists' do
+
+        it 'raises an exception/error' do
+          allow(described_class).to receive(:ignore_existing).and_return(false)
+
+          faux_ar_class = double("Faux ActiveRecord class")
+          allow(faux_ar_class).to receive(:create!).and_raise
+          allow(faux_ar_class).to receive(:find_by).and_return(true)
+
+          allow(described_class).to receive(:seeded_class).and_return(faux_ar_class)
+
+          expect { described_class.create_object({ id: 1, name: 'this' }) }.to raise_exception
+        end
+      end
+
+      context 'object does not already exist' do
+
+        it 'creates the object' do
+          allow(described_class).to receive(:ignore_existing).and_return(false)
+
+          faux_ar_class = double("Faux ActiveRecord class")
+          allow(faux_ar_class).to receive(:find_by).and_return(nil)
+          allow(faux_ar_class).to receive(:create!).and_return(true)
+
+          allow(described_class).to receive(:seeded_class).and_return(faux_ar_class)
+
+          expect(faux_ar_class).to receive(:create!)
+          described_class.create_object({ id: 1, name: 'this' })
+        end
+      end
+
     end
   end
 

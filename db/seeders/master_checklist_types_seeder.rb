@@ -17,6 +17,12 @@ module Seeders
     YAML_FILENAME = 'master-checklist-types-data.yml'
     SEEDED_CLASS = AdminOnly::MasterChecklistType
 
+
+    # Ignore entries that already exist in the db.
+    def self.ignore_existing
+      true
+    end
+
   end
 
 end
