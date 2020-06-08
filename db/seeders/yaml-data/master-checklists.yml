@@ -286,7 +286,7 @@
     :children:
     - id: 10
       name: prioritize dog welfare
-      displayed_text: Alltid prioritera hundarnas välfärd och tar hänsyn till individen.
+      displayed_text: att alltid prioritera hundarnas välfärd och tar hänsyn till individen.
       description: ''
       list_position: 0
       ancestry: 8/9
@@ -317,7 +317,7 @@
       :children: []
     - id: 11
       name: Run my business safely
-      displayed_text: bedriva min verksamhet i en trygg miljö med så gynnsamma förutsättningar
+      displayed_text: att bedriva min verksamhet i en trygg miljö med så gynnsamma förutsättningar
         för hund och ägare som möjligt.
       description: Run my business in a safe environment with as favorable conditions
         for dog and owner as possible.
@@ -350,7 +350,7 @@
       :children: []
     - id: 12
       name: Follow the hierarchy of behavior change procedures
-      displayed_text: följa <a href="http://www.behaviorworks.org/files/downloadable_art/Hierarchy%20Road%20Map%20curve-Swedish.png" target="_blank">"Hierarki för procedurer för beteendeförändring"<sup><i class="fas fa-external-link-alt"></i></sup></a> (2016 Friedman, Fritzler) vid samtliga tillfällen då jag medvetet påverkar hundars beteende.
+      displayed_text: att följa <a href="http://www.behaviorworks.org/files/downloadable_art/Hierarchy%20Road%20Map%20curve-Swedish.png" target="_blank">"Hierarki för procedurer för beteendeförändring"<sup><i class="fas fa-external-link-alt"></i></sup></a> (2016 Friedman, Fritzler) vid samtliga tillfällen då jag medvetet påverkar hundars beteende.
       description: Follow the <a href="http://www.behaviorworks.org/files/downloadable_art/Hierarchy%20Road%20Map%20curve-Swedish.png" target="_blank">"Hierarki för procedurer för beteendeförändring"<sup><i class="fas fa-external-link-alt"></i></sup></a> (2016 Friedman, Fritzler) on all occasions when I consciously influence the behavior of dogs. http://www.behaviorworks.org/files/downloadable_art/Hierarchy%20Road%20Map%20curve-Swedish.png
       list_position: 2
       ancestry: 8/9
@@ -383,7 +383,7 @@
     name: Respektera hundens ägare.
     displayed_text: Respektera hundens ägare.
     description: Respect the dog owner.
-    list_position: 1
+    list_position: 3
     ancestry: '8'
     notes:
     created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -412,8 +412,8 @@
     :children:
     - id: 14
       name: Respect dog and owner relationship, understand owner's knowledge.
-      displayed_text: visa respekt för relationen mellan ägare och hund och tar vid
-        uppdrag hänsyn till hundägarens kunskap och förmåga.
+      displayed_text: att visa respekt för relationen mellan ägare och hund och vid
+        uppdrag ta hänsyn till hundägarens kunskap och förmåga.
       description: Show respect for the relationship between the owner and the dog
         and take into account the dog owner's knowledge and ability when commissioning.
       list_position: 0
@@ -445,7 +445,7 @@
       :children: []
     - id: 15
       name: inte diskriminera några hundtyper eller hundägare.
-      displayed_text: inte diskriminera några hundtyper eller hundägare.
+      displayed_text: att inte diskriminera några hundtyper eller hundägare.
       description: do not discriminate against any dog ​​types or dog owners.
       list_position: 1
       ancestry: 8/13
@@ -476,7 +476,7 @@
       :children: []
     - id: 16
       name: vid all kommunikation visa respekt och hänsyn.
-      displayed_text: vid all kommunikation visa respekt och hänsyn.
+      displayed_text: att vid all kommunikation visa respekt och hänsyn.
       description: In all communication show respect and consideration.
       list_position: 2
       ancestry: 8/13
@@ -507,7 +507,7 @@
       :children: []
     - id: 17
       name: Don't disclose information without permission
-      displayed_text: inte delge information om klienter till andra företag eller
+      displayed_text: att inte delge information om klienter till andra företag eller
         privatpersoner utan klientens tillstånd.
       description: ''
       list_position: 3
@@ -541,7 +541,7 @@
     name: Hålla mig uppdaterad på mitt område.
     displayed_text: Hålla mig uppdaterad på mitt område.
     description: Keep me updated on my field.
-    list_position: 2
+    list_position: 1
     ancestry: '8'
     notes:
     created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -570,7 +570,7 @@
     :children:
     - id: 19
       name: Conduct business based on scientific, evidence-based principles
-      displayed_text: bedriva en verksamhet som vilar på en evidensbaserad och vetenskaplig
+      displayed_text: att bedriva en verksamhet som vilar på en evidensbaserad och vetenskaplig
         grund.
       description: Conduct a business based on an evidence-based and scientific basis
       list_position: 0
@@ -603,7 +603,7 @@
     - id: 20
       name: If non-scientific, non-evidence-based method are used, explain why and
         the risks.
-      displayed_text: " tydligt framföra om icke evidensbaserade metoder, behandlingar
+      displayed_text: "att tydligt framföra om icke evidensbaserade metoder, behandlingar
         eller preparat rekommenderas. Dessutom ska dessa åtföljas av din grund för
         denna rekommendation. Hundägaren ska delges ansvaret att kontrollera dess
         påverkan på eventuell annan medicinering/behandling."
@@ -640,7 +640,7 @@
       :children: []
     - id: 21
       name: Annually certify my continuing education and development
-      displayed_text: 'årligen intyga hur jag fortbildat mig samt hållit mig väl underrättad
+      displayed_text: 'att årligen intyga hur jag fortbildat mig, samt hållit mig väl underrättad
         om forskning och utveckling inom mitt yrkesområde. '
       description: 'Annually certify how I have continued my education and have kept
         myself well informed about research and development in my field. '
@@ -676,7 +676,7 @@
     displayed_text: Följa gällande lagar och bedriva mitt företag på ett professionellt
       sätt.
     description: ''
-    list_position: 3
+    list_position: 5
     ancestry: '8'
     notes:
     created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -705,7 +705,7 @@
     :children:
     - id: 23
       name: Contact relevant authorities if owner in violation of Animal Welfare Ordinance
-      displayed_text: kontakta berörd myndighet om jag upptäcker att hundägaren bryter
+      displayed_text: att kontakta berörd myndighet om jag upptäcker att hundägaren bryter
         mot djurskyddslagen, djurskyddsförordningen och/eller de specifika föreskrifterna.
       description: ''
       list_position: 0
@@ -737,7 +737,7 @@
       :children: []
     - id: 24
       name: Comply with laws and regulations, including Swedish animal welfare laws.
-      displayed_text: följa lagar och föreskrifter, så som svensk djurskyddslagstiftning
+      displayed_text: att följa lagar och föreskrifter, så som svensk djurskyddslagstiftning
         och Jordbruksverkets förordningar och föreskrifter samt lokala bestämmelser.
       description: Comply with laws and regulations, such as Swedish animal welfare
         legislation and the Swedish Agricultural Agency's regulations and regulations
@@ -771,7 +771,7 @@
       :children: []
     - id: 25
       name: Comply with Swedish business laws and regulations, including GDPR.
-      displayed_text: följa svensk lagstiftning gällande företagande exempelvis svensk
+      displayed_text: att följa svensk lagstiftning gällande företagande exempelvis svensk
         skattelagstiftning, bokföringslagen, GDPR.
       description: Comply with Swedish legislation regarding business, for example
         Swedish tax legislation, the Accounting Act, GDPR.
@@ -804,7 +804,7 @@
       :children: []
     - id: 26
       name: föra journalanteckningar på ett lämpligt, korrekt sätt för min yrkeskategori.
-      displayed_text: föra journalanteckningar på ett lämpligt, korrekt sätt för min
+      displayed_text: att föra journalanteckningar på ett lämpligt, korrekt sätt för min
         yrkeskategori.
       description: Keep journal notes in an appropriate, correct way for my professional
         category.
@@ -837,7 +837,7 @@
       :children: []
     - id: 27
       name: In case of complaints, I will follow the board's rulings.
-      displayed_text: vid eventuella klagomål som behandlats av Allmänna Reklamationsnämnden
+      displayed_text: att vid eventuella klagomål, som behandlats av Allmänna Reklamationsnämnden,
         utan undantag och dröjsmål följa ARN:s utslag.
       description: In case of any complaints that have been dealt with by the General
         Complaints Board without exception and delay, follow ARN's ruling.
@@ -870,7 +870,7 @@
       :children: []
     - id: 28
       name: Have business liability insurance
-      displayed_text: ha en företagsförsäkring som inkluderar ansvarsförsäkring.
+      displayed_text: att ha en företagsförsäkring som inkluderar ansvarsförsäkring.
       description: Have a business insurance that includes liability insurance.
       list_position: 5
       ancestry: 8/22
@@ -903,7 +903,7 @@
     name: Respektera min egen roll i förhållande till andra professionella.
     displayed_text: Respektera min egen roll i förhållande till andra professionella.
     description: Respect my own role in relation to other professionals.
-    list_position: 4
+    list_position: 2
     ancestry: '8'
     notes:
     created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -932,7 +932,7 @@
     :children:
     - id: 31
       name: Get dog's pain/disease history and medications/treatments
-      displayed_text: fråga hundägaren om hundens smärt-/sjukdomshistorik, medicinering/behandling
+      displayed_text: att fråga hundägaren om hundens smärt-/sjukdomshistorik, medicinering/behandling
         och ta hänsyn till informationen vid mitt uppdrag.
       description: Ask the dog owner about the dog's pain / disease history, medication
         / treatment and take into account the information in my assignment.
@@ -965,13 +965,13 @@
       :children: []
     - id: 30
       name: Refer to another professional if I am unsuitable or unsure
-      displayed_text: hänvisa klienten vidare till annan professionell med erfarenheter/kunskap
+      displayed_text: att hänvisa klienten vidare till annan professionell med erfarenheter/kunskap
         som gagnar klienten om jag är osäker, saknar rätt kunskap eller på annat vis
         inte är lämpad för ett uppdrag.
       description: Refer the client to another professional with experience / knowledge
         that will benefit the client if I am unsure, lack the right knowledge or otherwise
         is not suitable for an assignment.
-      list_position: 0
+      list_position: 2
       ancestry: 8/29
       notes:
       created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -1000,7 +1000,7 @@
       :children: []
     - id: 32
       name: Recommend the owner contact a licensed vet in suspected illness or injury
-      displayed_text: rekommendera hundägaren att kontakta legitimerad veterinär vid
+      displayed_text: att rekommendera hundägaren att kontakta legitimerad veterinär vid
         misstanke om odiagnosticerad sjukdom eller smärta.
       description: Recommend the dog owner to contact a licensed veterinarian in case
         of suspected undiagnosed illness or pain.
@@ -1035,7 +1035,7 @@
     name: Representera Sveriges hundföretagare på ett positivt sätt.
     displayed_text: Representera Sveriges hundföretagare på ett positivt sätt.
     description: Represent Sweden dog owners in a positive way.
-    list_position: 5
+    list_position: 4
     ancestry: '8'
     notes:
     created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -1064,7 +1064,7 @@
     :children:
     - id: 34
       name: only use H-Markt in my categories
-      displayed_text: ndast använda H-märket vid försäljning och marknadsföring inom
+      displayed_text: att endast använda H-märket vid försäljning och marknadsföring inom
         de yrkeskategorier för vilka mitt företag är H-märkt.
       description: Only use the H-mark in sales and marketing within the professional
         categories for which my company is H-marked.
@@ -1097,7 +1097,7 @@
       :children: []
     - id: 35
       name: enbart arbeta med de yrkesområden jag är utbildad inom.
-      displayed_text: enbart arbeta med de yrkesområden jag är utbildad inom.
+      displayed_text: att enbart arbeta med de yrkesområden jag är utbildad inom.
       description: Only working with the professional areas in which I am educated
       list_position: 1
       ancestry: 8/33
@@ -1128,7 +1128,7 @@
       :children: []
     - id: 36
       name: I will be notified by the Board if I violate the rules
-      displayed_text: acceptera att jag kan bli anmäld till styrelsen om jag bryter
+      displayed_text: att acceptera att jag kan bli anmäld till styrelsen om jag bryter
         mot föreningens etiska policy eller dessa medlemsåtaganden.
       description: Accept that I may be notified to the Board if I violate the association's
         ethical policy or these membership commitments.
@@ -1161,7 +1161,7 @@
       :children: []
     - id: 37
       name: accept Board review and their decisions
-      displayed_text: acceptera att jag kan bli granskad av styrelsen och förbinder
+      displayed_text: att acceptera att jag kan bli granskad av styrelsen och förbinder
         mig att rätta mig efter deras beslut.
       description: accept that I can be reviewed by the Board and commit myself to
         comply with their decisions.

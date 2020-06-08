@@ -144,7 +144,6 @@ begin
 
     Seeders::MasterChecklistTypesSeeder.seed
     Seeders::MasterChecklistsSeeder.seed
-    Seeders::UserChecklistsSeeder.seed
 
     # -----------------------------------------
 
