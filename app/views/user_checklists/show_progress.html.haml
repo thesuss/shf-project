@@ -40,9 +40,12 @@
 
                 = @user_checklist.name
 
-              = render partial: 'checklist_tree_as_list', locals: { user_checklist: @user_checklist }
+              .agree-to-sub-guidelines
+                %p.i-commit-to= t('.i_commit_to')
 
-              %p.have-read-confirmation
+                = render partial: 'checklist_tree_as_list', locals: { user_checklist: @user_checklist }
+
+                %p.have-read-confirmation
 
                 = check_box_tag(checkbox_id, 'checked', @user_checklist.all_completed?,
                     { class: "fa-check-square",

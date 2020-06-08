@@ -1087,6 +1087,7 @@ en:
 
     show_progress:
       read_and_agree: As a member of the Swedish Dog Company, you undertake to follow certain guidelines, called membership commitments. Below is the Member Commitment broken down by heading. You need to tick each heading, and thus verify that you have read, understood, and intend to follow these guidelines.
+      i_commit_to: As a member of the Swedish Dog Company I commit to
       scroll_down_to_read_all: Scroll down to read all items and see the button to go to the next group.
       read_and_agree_start: ""
       read_and_agree_end: I have read and understood these guidelines.
