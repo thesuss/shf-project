@@ -937,7 +937,6 @@ en:
       title: "Steps to SHF Membership:"
       welcome: "Welcome to Sveriges Hundföretagare!"
       welcome_want_to_have_benefits: "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
-      members_just_need_to_pay: "This text is currently displayed both for you who want to become a member and for you who are a member but not yet paid membership fee. You who are already a member but not paid just need to press the pay button."
 
       apply_4_membership: *apply_for_membership
       my_application: &my_application My Application
@@ -1882,7 +1881,6 @@ en:
         design_guide: Design Guide
         master_checklists: Master Checklists
         dashboard: Dashboard
-        design_guide: Design Guide
 
         categories:
           submenu_title: Categories

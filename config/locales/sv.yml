@@ -947,7 +947,6 @@ sv:
       title: "Steg mot medlemskap:"
       welcome: Välkommen till Sveriges Hundföretagare!
       welcome_want_to_have_benefits: "Vill du finnas med i ett sammanhang som innebär en bekräftelse på att dina meriter, engagemang och hundkunskaper räknas?"
-      members_just_need_to_pay: Denna text visas just nu både för dig som vill bli medlem, och för dig som är medlem men ännu inte betalt medlemsavgift.  Du som redan är medlem men inte betalt behöver bara trycka på betala-knappen.
       submit_application: Fyll i och skicka in din ansökan.
       my_application: &my_application Min ansökan
       apply_4_membership: *apply_for_membership
