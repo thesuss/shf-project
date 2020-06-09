@@ -310,4 +310,64 @@ RSpec.describe Payment, type: :model do
     end
 
   end
+
+
+  describe 'note_payor_deleted' do
+
+    let(:time_pattern) { '\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d UTC' }
+
+    describe "deleted payor info = <payor_type> <payor_email> for this payment was deleted on <deleted_time>" do
+
+      context 'defaults' do
+
+        it 'payor_type: User' do
+          expect(subject.notes).to be_nil
+          subject.note_payor_deleted
+          expect(subject.notes).to match(/^User /)
+        end
+
+        it 'payor_email: <email unknown>' do
+          expect(subject.notes).to be_nil
+          subject.note_payor_deleted
+          expect(subject.notes).to match(/^\w+ <email unknown>/)
+        end
+
+        it 'deleted_time: Time.zone.now' do
+          expect(subject.notes).to be_nil
+          tz_now = Time.zone.now
+          Timecop.freeze(tz_now) do
+            subject.note_payor_deleted
+            expect(subject.notes).to match(/#{tz_now}$/)
+          end
+        end
+      end
+
+      it 'record the info passed in' do
+        expect(subject.notes).to be_nil
+        time_deleted = Time.now.utc
+        subject.note_payor_deleted('Some class', 'some-email@example.com', time_deleted)
+        expect(subject.notes).to match(/^Some class some-email@example.com for this payment was deleted on #{time_deleted}/)
+      end
+    end
+
+    context 'notes is nil' do
+      it 'notes is now just the deleted payor info' do
+        expect(subject.notes).to be_nil
+        subject.note_payor_deleted
+        expect(subject.notes).to match(/^User <email unknown> for this payment was deleted on #{time_pattern}/)
+      end
+    end
+
+    context 'notes is not nil' do
+      it 'the deleted payor info is appended to the existing notes' do
+        orig_notes = 'original notes'
+        subject.update(notes: orig_notes)
+        expect(subject.notes).to eq orig_notes
+
+        subject.note_payor_deleted
+        expect(subject.notes).to match(/^#{orig_notes}; User <email unknown> for this payment was deleted on #{time_pattern}/)
+      end
+
+    end
+  end
 end

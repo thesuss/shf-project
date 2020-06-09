@@ -28,7 +28,8 @@ class Company < ApplicationRecord
   has_many :users, through: :shf_applications
   has_many :events, dependent: :destroy
 
-  has_many :payments, dependent: :destroy
+  has_many :payments, dependent: :nullify
+  # ^^ need to retain h-branding payment(s) so that the total amount of $ paid to SHF is correct
   accepts_nested_attributes_for :payments
 
   has_many :business_categories,
@@ -220,6 +221,7 @@ class Company < ApplicationRecord
 
     error_if_has_applications?
 
+    record_deleted_payorinfo_in_payment_notes
   end
 
 

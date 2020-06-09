@@ -216,11 +216,13 @@ RSpec.describe User, type: :model do
     it 'member_photo' do
       expect(user_with_member_photo.member_photo).not_to be_nil
       expect(user_with_member_photo.member_photo.exists?).to be true
+      member_photo = user_with_member_photo.member_photo
 
       user_with_member_photo.destroy
 
-      expect(user_with_member_photo.destroyed?).to be true
-      expect(user_with_member_photo.member_photo.exists?).to be false
+      expect(member_photo.exists?).to be_falsey
+      expect(user_with_member_photo.destroyed?).to be_truthy
+      expect(user_with_member_photo.member_photo.exists?).to be_falsey
     end
 
     context 'membership application' do
@@ -235,25 +237,42 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context 'nullify user_id in associated payment records' do
-      it 'membership payments' do
-        user_id = user.id
+    context 'payments are NOT deleted if a user is deleted' do
 
-        expect { member_payment1; member_payment2 }.to change(Payment, :count).by(2)
+      context 'membership payments' do
 
-        expect { user.destroy }.not_to change(Payment, :count)
-        expect(Payment.find_by_user_id(user_id)).to be_nil
+        before(:each) do
+          # create the payments
+          member_payment1
+          member_payment2
+        end
+
+        it 'user (id) is set to nil' do
+          user_id = user.id
+          expect(Payment.where(user_id: nil).count).to eq 0
+          expect { user.destroy }.not_to change(Payment, :count)
+
+          expect(Payment.find_by_user_id(user_id)).to be_nil
+          expect(Payment.where(user_id: nil).count).to eq 2
+        end
       end
 
-      it 'h-branding payments' do
-        company_id = complete_co.id
-        user_id = user.id
 
-        expect { branding_payment1; branding_payment2 }.to change(Payment, :count).by(2)
+      context 'h-branding (h-markt licensing) payments' do
 
-        expect { user.destroy }.not_to change(Payment, :count)
-        expect(Payment.find_by_company_id(company_id)).not_to be_nil
-        expect(Payment.find_by_user_id(user_id)).to be_nil
+        it 'user (id) is set to nil' do
+          company_id = complete_co.id
+          user_id = user.id
+
+          # create the payments
+          expect { branding_payment1; branding_payment2 }.to change(Payment, :count).by(2)
+          expect(Payment.where(user_id: nil).count).to eq 0
+
+          expect { user.destroy }.not_to change(Payment, :count)
+          expect(Payment.find_by_company_id(company_id)).not_to be_nil
+          expect(Payment.find_by_user_id(user_id)).to be_nil
+          expect(Payment.where(user_id: nil).count).to eq 2
+        end
       end
     end
   end

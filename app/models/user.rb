@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_destroy { self.member_photo = nil } # remove photo file from file system
+  before_destroy :adjust_related_info_for_destroy
 
   has_one :shf_application, dependent: :destroy
   accepts_nested_attributes_for :shf_application, update_only: true
@@ -296,6 +296,12 @@ class User < ApplicationRecord
   end
 
 
+  def adjust_related_info_for_destroy
+    remove_photo_from_filesystem
+    record_deleted_payorinfo_in_payment_notes(self.class, email)
+  end
+
+
   private
 
 
@@ -304,5 +310,10 @@ class User < ApplicationRecord
     self.class.connection.execute("SELECT nextval('membership_number_seq')").getvalue(0, 0).to_s
   end
 
+
+  # remove the associated member photo from the file system by setting it to nil
+  def remove_photo_from_filesystem
+    member_photo = nil
+  end
 
 end

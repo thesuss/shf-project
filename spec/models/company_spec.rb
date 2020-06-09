@@ -93,7 +93,8 @@ RSpec.describe Company, type: :model, focus: true do
     it { is_expected.to have_many(:events).dependent(:destroy) }
   end
 
-  describe 'destroy associated records when company is destroyed' do
+  describe 'destroy or nullify associated records when a Company is destroyed' do
+
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let(:application1) do
@@ -129,6 +130,14 @@ RSpec.describe Company, type: :model, focus: true do
       pic
     end
 
+
+    it 'destroy_checks is called before destory' do
+      co = create(:company)
+      expect(co).to receive(:destroy_checks)
+      co.destroy
+    end
+
+
     it 'addresses' do
       expect { company_3_addrs }.to change(Address, :count).by(3)
       expect { company_3_addrs.destroy }.to change(Address, :count).by(-3)
@@ -148,13 +157,29 @@ RSpec.describe Company, type: :model, focus: true do
       expect { company_3_addrs.destroy }.to change(Ckeditor::Picture, :count).by(-2)
     end
 
-    it 'payments' do
+    it 'payments are NOT deleted if a company is deleted; company_id is set to nil' do
+      # create the payments
       brand_pymt1
       brand_pymt2
       expect(company_3_addrs.payments.count).to eq 2
-      expect { company_3_addrs.destroy }.to change(Payment, :count).by(-2)
+      expect(Payment.where(company_id: nil).count).to eq 0
+
+      expect { company_3_addrs.destroy }.not_to change(Payment, :count)
+      expect(Payment.where(company_id: nil).count).to eq 2
+    end
+
+  end
+
+
+  describe 'destroy_checks' do
+
+    it 'calls record_deleted_payorinfo_in_payment_notes' do
+      co = create(:company)
+      expect(co).to receive(:record_deleted_payorinfo_in_payment_notes)
+      co.destroy
     end
   end
+
 
   describe 'events update management' do
 

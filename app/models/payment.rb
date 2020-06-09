@@ -17,6 +17,11 @@ class Payment < ApplicationRecord
   PAYMENT_TYPE_MEMBER   = 'member_fee'
   PAYMENT_TYPE_BRANDING = 'branding_fee'
 
+  NOTES_DEFAULT_PAYOR = 'User'
+  NOTES_UNKNOWN_EMAIL = '<email unknown>'
+  NOTES_SEPARATOR = '; '  unless defined?(NOTES_SEPARATOR)
+
+
   # This hash maps a HIPS order status to an SHF payment status.
   # The payment values are stored in the DB and exposed to the user.
   # (The user is paying a fee to SHF (payment).  In order to process that
@@ -98,6 +103,14 @@ class Payment < ApplicationRecord
     self.update(status: SUCCESSFUL)
     changed
     notify_observers(self)
+  end
+
+
+  def note_payor_deleted(payor_type = NOTES_DEFAULT_PAYOR,
+                         payor_email = NOTES_UNKNOWN_EMAIL,
+                         deleted_time = Time.zone.now)
+    deleted_note = "#{payor_type} #{payor_email} for this payment was deleted on #{deleted_time}"
+    update(notes: (notes.nil? ? deleted_note : "#{notes}#{NOTES_SEPARATOR}#{deleted_note}") )
   end
 
 end
