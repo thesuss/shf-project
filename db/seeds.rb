@@ -20,11 +20,11 @@ SEEDING_LOG_FILE_NAME = LogfileNamer.name_for('db:seed') unless defined?(SEEDING
 SEEDING_LOG_FACILITY = 'db:seed' unless defined?(SEEDING_LOG_FACILITY)
 
 ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Init') do |log|
-  unless ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQUIRED_START_DATE']
-    ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQUIRED_START_DATE'] = Time.zone.tomorrow.to_s
+  unless ENV.has_key?('SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START')
+    ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START'] = UserChecklistManager.missing_membership_guidelines_reqd_start_date
 
     log.warn("****************************************************************************")
-    log.warn("Using default for SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQUIRED_START_DATE")
+    log.warn("Using default for SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START: #{UserChecklistManager.missing_membership_guidelines_reqd_start_date}")
     log.warn("If you don't want this you should define that in .env.development\n")
     log.warn("****************************************************************************")
   end

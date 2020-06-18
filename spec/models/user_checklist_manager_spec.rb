@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+require 'shared_examples/check_env_vars'
 require 'shared_context/users'
 
 RSpec.describe UserChecklistManager do
@@ -7,6 +8,43 @@ RSpec.describe UserChecklistManager do
   include ActiveSupport::Testing::TimeHelpers
 
   include_context 'create users'
+
+
+  let(:june_6) { Time.zone.local(2020, 6, 6) }
+  let(:june_5) { Time.zone.local(2020, 6, 5) }
+
+
+  context 'ENV variables' do
+    it_behaves_like 'expected ENV variables exist', %w( SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START )
+  end
+
+
+  describe '.missing_membership_guidelines_reqd_start_date' do
+    it '= yesterday' do
+      travel_to(june_6) do
+        expect(described_class.missing_membership_guidelines_reqd_start_date).to eq june_5
+      end
+    end
+  end
+
+
+  describe '.membership_guidelines_reqd_start_date' do
+
+    it "uses ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START']" do
+      expect(ENV.fetch('SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START', nil)).not_to be_nil, "You must define SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START in your .env or .env.test file"
+
+      expect(described_class.membership_guidelines_reqd_start_date).to eq ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START']
+    end
+
+    it 'calls missing_membership_guidelines_reqd_start_date if key is not found in ENV' do
+      allow(ENV).to receive(:has_key?).with('SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START').and_return(false)
+      allow(described_class).to receive(:missing_membership_guidelines_reqd_start_date).and_return(june_5)
+
+      expect(described_class).to receive(:missing_membership_guidelines_reqd_start_date)
+
+      expect(described_class.membership_guidelines_reqd_start_date).to eq june_5
+    end
+  end
 
 
   describe '.membership_guidelines_agreement_required_now?' do

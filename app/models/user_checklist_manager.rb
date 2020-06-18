@@ -19,9 +19,6 @@
 class UserChecklistManager
 
 
-  MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START = Time.zone.parse(ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQUIRED_START_DATE'])
-
-
   # @return
   #   true if
   #     1. the user must complete the membership guidelines AND they have completed it
@@ -103,7 +100,17 @@ class UserChecklistManager
 
 
   def self.membership_guidelines_reqd_start_date
-    MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START
+    # Could use a class variable here to store/cache ('memoize') this, but reading ENV and parsing the Time.zone is pretty fast.  Plus, this won't happen often.
+    if ENV.has_key?('SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START')
+      Time.zone.parse(ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START']).to_time
+    else
+      missing_membership_guidelines_reqd_start_date
+    end
+  end
+
+
+  def self.missing_membership_guidelines_reqd_start_date
+    Time.zone.now.localtime.yesterday
   end
 
 end
