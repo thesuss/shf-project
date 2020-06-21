@@ -63,6 +63,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
 #    Then I should see "Extended their membership to 1 juni 2018."
     And user "emma@mutts.com" is paid through "2018-06-01"
 
+
   @selenium @time_adjust
   Scenario: Admin changes membership status from member to not a member
     Given I am on the "user details" page for "bad-member@mutts.com"
@@ -72,19 +73,31 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And I should see t("activerecord.attributes.payment.expire_date")
     And I should see t("activerecord.attributes.payment.notes")
     When I select radio button t("No")
-    And I fill in t("activerecord.attributes.payment.notes") with "Changed to not a member."
+    And I fill in t("activerecord.attributes.payment.notes") with "Changed to NOT a member."
     And I click on t("users.user.submit_button_label")
     And I wait for all ajax requests to complete
-    And I reload the page
+#    And I reload the page
     # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
 
     Then I should be on the "user account" page for "bad-member@mutts.com"
+    And I should see t("users.show_for_applicant.title")
     And I should see t("users.show_for_applicant.pay_membership")
+    And I should see "Changed to NOT a member."
 
 
-  @selenium @time_adjust
-  Scenario: Admin cannot change member status for someone that has never made a payment
-    Given I am on the "user account" page for "never-paid-user@mutts.com"
-    Then the link button t("users.show_for_applicant.pay_membership") should be disabled
-    And I should see t("payors.admin_cant_edit")
+  @selenium
+  Scenario: Admin changes not a member to a member
+    Given I am on the "user account" page for "bad-member@mutts.com"
+    When I click on t("users.user.edit_member_status")
+    Then I should see t("users.user.edit_member_status")
+    And I should see t("users.show.member")
+    When I select radio button t("Yes")
+    And I fill in t("activerecord.attributes.payment.notes") with "Changed to IS a member."
+    And I click on t("users.user.submit_button_label")
+    And I wait for all ajax requests to complete
+#    And I reload the page
+    # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
 
+    Then I should be on the "user account" page for "bad-member@mutts.com"
+    And I should see t("users.show.is_a_member")
+    And I should see "Changed to IS a member."

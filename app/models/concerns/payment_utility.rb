@@ -170,7 +170,8 @@ module PaymentUtility
     end
 
 
-    # This is our current rule:  an admin cannot edit the  status if there are no payments [2019-12-05]
+    # This is our current rule:  an admin cannot edit the membership status if there are no successful payments in this system [2019-12-05];
+    #   reviewed in Team meeting 2020-06-18 (see the notes there)
     def admin_can_edit_status?
       has_successful_payments?
     end

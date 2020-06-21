@@ -8,14 +8,14 @@ $(function() {
     $('[data-toggle="tooltip"]').tooltip();
   });
 
-  $("#user-status-form").on("ajax:success", function(e, data) {
-    $("#user-member-status").html(data);
+  // Note that we must use javascript to remove the CSS fade class: https://stackoverflow.com/a/59871455/661471
+  $("body").on("ajax:success", "#user-status-form", function(e, data) {
+    $("#edit-status-modal").removeClass("fade");
+    $("#edit-status-modal").modal("hide");
+    $("#user-info").html(data);
     $('[data-toggle="tooltip"]').tooltip();
   });
 
-  $("#edit-user-status-submit").click(function() {
-    $("#edit-status-modal").modal("hide");
-  });
 
   $(".custom-context-menu").on("contextmenu", e => {
     e.preventDefault();

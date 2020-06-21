@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   LOG_FILE = LogfileNamer.name_for('users')
 
   before_action :set_user, except: [:index, :toggle_membership_package_sent]
-  before_action :set_app_config, only: [:show, :proof_of_membership, :update]
+  before_action :set_app_config, only: [:show, :proof_of_membership, :update, :edit_status]
   before_action :authorize_user, only: [:show]
   before_action :allow_iframe_request, only: [:proof_of_membership]
 
@@ -75,7 +75,12 @@ class UsersController < ApplicationController
     @user.update!(user_params) && (payment ?
                                        payment.update!(payment_params) : true)
 
-    render partial: 'membership_term_status', locals: { user: @user }
+    if @user.member?
+      render partial: 'show_for_member', locals: { user: @user, current_user: @current_user, app_config: @app_configuration }
+    else
+      render partial: 'show_for_applicant', locals: { user: @user, current_user: @current_user }
+    end
+
 
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
     render partial: 'membership_term_status',

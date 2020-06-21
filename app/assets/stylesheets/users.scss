@@ -39,6 +39,13 @@
     margin-top: 0;
   }
 
+  .admin-only {
+    .membership-status-title {
+      font-family: 'Crimson Text', serif;
+      font-size: 150%;
+      //font-weight: bold;
+    }
+  }
 }
 
 #text {
