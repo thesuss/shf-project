@@ -76,7 +76,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And I fill in t("activerecord.attributes.payment.notes") with "Changed to NOT a member."
     And I click on t("users.user.submit_button_label")
     And I wait for all ajax requests to complete
-#    And I reload the page
+    And I reload the page
     # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
 
     Then I should be on the "user account" page for "bad-member@mutts.com"
@@ -95,7 +95,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And I fill in t("activerecord.attributes.payment.notes") with "Changed to IS a member."
     And I click on t("users.user.submit_button_label")
     And I wait for all ajax requests to complete
-#    And I reload the page
+    And I reload the page
     # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
 
     Then I should be on the "user account" page for "bad-member@mutts.com"

@@ -188,6 +188,7 @@ Feature: Visitor sees all companies
     And I should see "Alvesta" in the row for "Company02"
     And I should see "Årsta" in the row for "Company02"
     And I should see "Kolbäck" in the row for "Company02"
+    And I wait for all ajax requests to complete
 
   @time_adjust
   Scenario: User sees all the companies
