@@ -28,7 +28,7 @@
 
         - if application.companies.any?
           %td.company
-            %table.companies
+            %table.companies.table-borderless
               - application.companies.each do | app_company |
                 %tr.company
                   %td.company-number= link_to(app_company.company_number, company_path(app_company))
