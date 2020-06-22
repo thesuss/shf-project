@@ -53,7 +53,7 @@ module ApplicationHelper
 
   # ActiveRecord::Assocations::CollectionAssociation is a proxy and won't
   # always load info. see the class documentation for more info
-  def assocation_empty?(assoc)
+  def association_empty?(assoc)
     assoc.reload unless assoc.nil? || assoc.loaded?
     assoc.nil? ? true : assoc.size == 0
   end

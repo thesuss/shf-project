@@ -4,7 +4,7 @@
 %header.entry-header
   %h1.entry-title= t('.title', company_name: @company.name)
   .text-center
-    - unless assocation_empty?(@all_business_categories)
+    - unless association_empty?(@all_business_categories)
       = render 'business_categories/as_list',
           categories: @company.business_categories
       %hr

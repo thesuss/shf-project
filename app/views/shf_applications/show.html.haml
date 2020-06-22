@@ -22,7 +22,7 @@
 
         %p #{t('.company_number')}: #{@shf_application.company_numbers}
 
-        - unless assocation_empty?(@categories)
+        - unless association_empty?(@categories)
           %h4 #{t('.with_categories')}:
           %ul
             - @categories.each do | business_category |

@@ -67,9 +67,9 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   end
 
-  describe '#assocation_empty?' do
+  describe '#association_empty?' do
     it 'true if nil' do
-      expect(helper.assocation_empty?(nil)).to be_truthy
+      expect(helper.association_empty?(nil)).to be_truthy
     end
   end
 
