@@ -12,10 +12,4 @@
       = shf_app_to_html(@shf_application)
   %hr
 
-  - if @shf_application.uploaded_files.size == 0
-    %p.nofiles-will-review= t('review_after_recevied_files', scope: i18n_scope)
-    = t('need_to_upload', scope: i18n_scope)
-  - else
-    = t('can_upload_more', scope: i18n_scope)
-
   = render 'mailers_shared/newapp_login_upload_files_instruction', email: @recipient_email
