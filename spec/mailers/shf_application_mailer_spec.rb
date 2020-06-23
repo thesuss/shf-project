@@ -124,6 +124,10 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
     it 'shows information submitted in the application' do
         expect(email_sent).to have_body_text(I18n.t('mailers.shf_application_mailer.acknowledge_received.your_submitted_info'))
     end
+    
+    it_behaves_like 'it shows how to login and the page to upload files' do
+      let(:email_created) { email_sent }
+    end
 
     it_behaves_like 'from address is correct' do
       let(:mail_address) { email_sent.header['from'] }
