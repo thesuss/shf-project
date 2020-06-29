@@ -92,6 +92,9 @@ class CompaniesController < ApplicationController
     setup_events_and_events_pagination
     set_meta_tags_for_company(@company)
 
+    @applications = @company.shf_applications
+                            .includes(:user, :business_categories, :shfapplications_business_categories)
+
     show_events_list if request.xhr?
   end
 

@@ -55,7 +55,7 @@
 
     - user_can_edit = policy(@company).update?
 
-    = render 'company_members', company: @company
+    = render 'company_members', company: @company, applications: @applications
 
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit
 
