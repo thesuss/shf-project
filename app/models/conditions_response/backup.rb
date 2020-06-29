@@ -29,7 +29,15 @@ end
 
 # Backup files and DB data in production
 
-
+# FIXME: some class methods require a class attribute to be set to work
+#        correctly, @use_slack_notification. The only point where we
+#        can set that attribute is in `::condition_response`, but the other
+#        methods are public and can be called independently, causing them to
+#        behave erratically depending on the last call of
+#        `::condition_response` or lack thereof.
+#        As a stopgag measure I added an extra optional parameter to every
+#        method signature, but we should really consider if those methods
+#        should be private or if we should make this class non-static.
 class Backup < ConditionResponder
 
 
@@ -250,7 +258,7 @@ class Backup < ConditionResponder
   #                  when logging or notifying
   # @param [Log] log - the log to write to
   #
-  def self.iterate_and_log_notify_errors(list, additional_error_info, log)
+  def self.iterate_and_log_notify_errors(list, additional_error_info, log, use_slack_notification: @use_slack_notification)
 
     list.each do |item|
       yield(item)
@@ -260,7 +268,7 @@ class Backup < ConditionResponder
       raise slack_error
 
     rescue => backup_error
-      log_and_notify(backup_error, log, "#{additional_error_info}. Current item: #{item.inspect}")
+      log_and_notify(backup_error, log, "#{additional_error_info}. Current item: #{item.inspect}", use_slack_notification: use_slack_notification)
       next
     end
   end
@@ -274,12 +282,12 @@ class Backup < ConditionResponder
   # @param [Log] log - the log to write to. Must respond to :error(message)
   # @param [String] additional_info - any additional information that should also be recorded. Default = ''
   #
-  def self.log_and_notify(original_error, log, additional_info = '')
+  def self.log_and_notify(original_error, log, additional_info = '', use_slack_notification: @use_slack_notification)
 
     log_string = additional_info.blank? ? original_error.to_s : "#{original_error} #{additional_info}"
 
     log.error(log_string)
-    SHFNotifySlack.failure_notification(self.name, text: log_string) if @use_slack_notification
+    SHFNotifySlack.failure_notification(self.name, text: log_string) if use_slack_notification
 
     # If the problem is because of Slack Notification, log it and raise it
     #  so the caller can deal with it as needed.
@@ -291,7 +299,7 @@ class Backup < ConditionResponder
     # ... Otherwise, an exception was raised during writing to the log.
     # Send a slack notification about that and continue (do _not_ raise it).
   rescue => not_a_slack_error
-    if @use_slack_notification
+    if use_slack_notification
       # send a notification about the original error
       SHFNotifySlack.failure_notification(self.name, text: log_string)
 

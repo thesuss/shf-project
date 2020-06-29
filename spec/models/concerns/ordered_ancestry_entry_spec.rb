@@ -29,32 +29,13 @@ RSpec.describe "module OrderedAncestryEntry" do
     list
   end
 
-  after(:each) {AdminOnly::MasterChecklist.delete_all;  DatabaseCleaner.clean }
-
-  after(:all) do
-    DatabaseCleaner.clean
-    UserChecklist.delete_all
-    AdminOnly::MasterChecklist.delete_all
-    User.delete_all
-  end
-
-
   describe 'all_as_array' do
-
-    before(:each) { DatabaseCleaner.clean }
-
-    after(:each) {AdminOnly::MasterChecklist.delete_all;  DatabaseCleaner.clean }
-
     it "calls arrange_as_array with the order [ancestry, list_position]" do
-      AdminOnly::MasterChecklist.delete_all
-
       expect(class_that_includes).to receive(:arrange_as_array).with(order: %w(ancestry list_position))
       class_that_includes.all_as_array
     end
 
     it 'concats any additional order attributes to the defaults' do
-      AdminOnly::MasterChecklist.delete_all
-
       expect(class_that_includes).to receive(:arrange_as_array).with(order: %w(ancestry list_position one two three))
       class_that_includes.all_as_array(order: ['one', 'two', 'three'])
     end
@@ -62,28 +43,16 @@ RSpec.describe "module OrderedAncestryEntry" do
 
 
   describe 'arrange_as_array(options = {}, nodes_to_arrange_hash = nil)' do
-
-    before(:each) { DatabaseCleaner.clean }
-
-    after(:all) { DatabaseCleaner.clean }
-
-
     def fail_message(expected_array, actual_array)
       "\nExpected:\n   #{expected_array.pretty_inspect}\nActual:\n   #{actual_array.pretty_inspect}"
     end
 
-
     it 'if no nodes_to_arrange_hash is given, calls arrange to create the hash of nodes' do
-      AdminOnly::MasterChecklist.delete_all
-
       expect(class_that_includes).to receive(:arrange).and_call_original
       class_that_includes.arrange_as_array
     end
 
-
     it 'uses the hash of nodes given' do
-      AdminOnly::MasterChecklist.delete_all
-
       entry1 = create(:master_checklist, name: 'entry1')
       two_children = create(:master_checklist, name: '1 child')
       two_children.insert(entry1)
@@ -96,24 +65,18 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'returns an Array just with the entry if entry has no chidren' do
-      AdminOnly::MasterChecklist.delete_all
-
       no_children = create(:master_checklist)
       actual = class_that_includes.arrange_as_array
       expect(actual).to match_array([no_children]), fail_message([no_children], actual)
     end
 
     it 'calls arrange_as_array for all children of each node' do
-      AdminOnly::MasterChecklist.delete_all
-
       create(:master_checklist, num_children: 2)
       expect(class_that_includes).to receive(:arrange_as_array).exactly(4).times.and_call_original
       class_that_includes.arrange_as_array
     end
 
     it 'adds the entry and its children (arranged as an array) to the array returned' do
-      AdminOnly::MasterChecklist.delete_all
-
       one_child_list = create(:master_checklist, name: 'two_children_list')
 
       first_child = create(:master_checklist, name: 'first_child')
@@ -136,8 +99,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     context 'is a top level list' do
 
       it 'other top level list positions are updated' do
-        AdminOnly::MasterChecklist.delete_all
-
         top_list_0 = create(:master_checklist, displayed_text: 'list 0', list_position: 0)
         top_list_2 = create(:master_checklist, displayed_text: 'list 2', list_position: 2)
         top_list_1 = create(:master_checklist, displayed_text: 'list 1', list_position: 1)
@@ -154,12 +115,8 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'insert' do
-
     it 'appends to the end if no position given' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 2)
       expect(newlist).to receive(:increment_child_positions).and_call_original
 
@@ -171,8 +128,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'calls increment_child_positions for entries that come after this list position' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 2)
       expect(newlist).to receive(:increment_child_positions).with(1).and_call_original
 
@@ -180,8 +135,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'updates the list_position and the parent for the entry' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 2)
       expect(newlist).to receive(:increment_child_positions).and_call_original
 
@@ -204,12 +157,8 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'delete_from_children' do
-
     it 'does nothing if the entry is not in the list' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 2)
       not_in_list = create(:master_checklist, name: 'not in the list')
 
@@ -218,16 +167,12 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'deletes the entry from list' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 1)
       newlist.delete_from_children(newlist.children.first)
       expect(newlist.children).to be_empty
     end
 
     it 'calls decrement_child_positions starting with the position where the entry was' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 3)
       expect(newlist).to receive(:decrement_child_positions).with(2)
                              .and_call_original
@@ -240,12 +185,8 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'delete_child_at (deletes child at the zero-based position)' do
-
     it 'does nothing if no children' do
-      AdminOnly::MasterChecklist.delete_all
-
       no_children = create(:master_checklist)
 
       expect(no_children).not_to receive(:delete)
@@ -253,15 +194,11 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'does nothing if the position >= the number of children' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 2)
       expect(newlist.delete_child_at(2).size).to eq 2
     end
 
     it 'removes the entry at that position' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 3)
 
       expect(newlist).to receive(:decrement_child_positions).with(2).and_call_original
@@ -273,8 +210,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'calls decrement_child_positions after entry deleted if entry was in the list_entry' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 3)
 
       expect(newlist).to receive(:decrement_child_positions).with(2).and_call_original
@@ -284,15 +219,10 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(newlist.children.size).to eq 2
       expect(newlist.children.map(&:list_position)).to match_array([0, 1])
     end
-
   end
 
-
   describe 'increment_child_positions' do
-
     it 'empty list' do
-      AdminOnly::MasterChecklist.delete_all
-
       empty_list = create(:master_checklist)
       expect(empty_list.children.map(&:list_position)).to match_array([])
 
@@ -300,12 +230,8 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(empty_list.children.map(&:list_position)).to match_array([])
     end
 
-
     context 'not an empty list' do
-
       it 'at the start' do
-        AdminOnly::MasterChecklist.delete_all
-
         list_5_kids = create(:master_checklist, num_children: 5)
         expect(list_5_kids.children.map(&:list_position)).to match_array([0, 1, 2, 3, 4])
 
@@ -314,8 +240,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
 
       it 'in the middle' do
-        AdminOnly::MasterChecklist.delete_all
-
         list_5_kids = create(:master_checklist, num_children: 5)
         expect(list_5_kids.children.map(&:list_position)).to match_array([0, 1, 2, 3, 4])
 
@@ -324,8 +248,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
 
       it 'at the end' do
-        AdminOnly::MasterChecklist.delete_all
-
         list_5_kids = create(:master_checklist, num_children: 5)
         expect(list_5_kids.children.map(&:list_position)).to match_array([0, 1, 2, 3, 4])
 
@@ -335,12 +257,8 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'decrement_child_positions' do
-
     it 'empty list' do
-      AdminOnly::MasterChecklist.delete_all
-
       empty_list = create(:master_checklist)
       expect(empty_list.children.map(&:list_position)).to match_array([])
 
@@ -348,12 +266,9 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(empty_list.children.map(&:list_position)).to match_array([])
     end
 
-
     context 'not an empty list' do
 
       it 'at the start - will not decrement 0' do
-        AdminOnly::MasterChecklist.delete_all
-
         list_5_kids = create(:master_checklist, num_children: 5)
         expect(list_5_kids.children.map(&:list_position)).to match_array([0, 1, 2, 3, 4])
 
@@ -362,8 +277,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
 
       it 'in the middle' do
-        AdminOnly::MasterChecklist.delete_all
-
         list_5_kids = create(:master_checklist, num_children: 5)
         expect(list_5_kids.children.map(&:list_position)).to match_array([0, 1, 2, 3, 4])
 
@@ -372,8 +285,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
 
       it 'at the end' do
-        AdminOnly::MasterChecklist.delete_all
-
         list_5_kids = create(:master_checklist, num_children: 5)
         expect(list_5_kids.children.map(&:list_position)).to match_array([0, 1, 2, 3, 4])
 
@@ -383,8 +294,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'default decrement starting position is the last position' do
-      AdminOnly::MasterChecklist.delete_all
-
       newlist = create(:master_checklist, num_children: 3)
 
       expect(newlist).to receive(:decrement_child_positions).with(no_args)
@@ -394,21 +303,14 @@ RSpec.describe "module OrderedAncestryEntry" do
       newlist.send(:decrement_child_positions)
       expect(newlist.children.map(&:list_position)).to match_array(original_positions)
     end
-
   end
 
-
   describe 'last_used_list_position' do
-
     it '-1 if the list is empty' do
-      AdminOnly::MasterChecklist.delete_all
-
       expect(create(:master_checklist).last_used_list_position).to eq class_that_includes::NO_CHILDREN_LAST_USED_POSITION
     end
 
     it 'maximum value of children.list_position if there are any children' do
-      AdminOnly::MasterChecklist.delete_all
-
       root_mc = create(:master_checklist, num_children: 2)
       expect(root_mc.last_used_list_position).to eq 1
 
@@ -418,19 +320,14 @@ RSpec.describe "module OrderedAncestryEntry" do
 
     context 'not saved' do
       it 'is NO_CHILDREN_LAST_USED_POSITION (-1)' do
-        AdminOnly::MasterChecklist.delete_all
-
         expect(build(:master_checklist).last_used_list_position).to eq class_that_includes::NO_CHILDREN_LAST_USED_POSITION
       end
 
     end
   end
 
-
   describe 'next_list_position' do
     it 'is (maximum list_position of all children) + 1 [list positions may not be contiguous]' do
-      AdminOnly::MasterChecklist.delete_all
-
       root_mc = create(:master_checklist, num_children: 2)
       expect(root_mc.next_list_position).to eq 2
 
@@ -439,16 +336,11 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'is zero if there are no children' do
-      AdminOnly::MasterChecklist.delete_all
-
       expect(create(:master_checklist).next_list_position).to eq 0
     end
   end
 
-
   it 'list_entry can hold other list_entries (be nested)' do
-    AdminOnly::MasterChecklist.delete_all
-
     toplist = create(:master_checklist, name: 'toplist', num_children: 3)
     level2_1_list = create(:master_checklist, name: 'level2_1_list', num_children: 2)
     level2_2_list = create(:master_checklist, name: 'level2_2_list', num_children: 1)
@@ -466,12 +358,8 @@ RSpec.describe "module OrderedAncestryEntry" do
     expect(toplist.children.map(&:name)).to match_array(['child entry 0', 'child entry 1', 'child entry 2', 'level2_1_list', 'level2_2_list'])
   end
 
-
   describe 'child_at_position' do
-
     it 'no children returns nil' do
-      AdminOnly::MasterChecklist.delete_all
-
       no_children = create(:master_checklist)
       expect(no_children.child_at_position(0)).to be_nil
     end
@@ -479,15 +367,11 @@ RSpec.describe "module OrderedAncestryEntry" do
     describe 'has children' do
 
       it 'no child at that position' do
-        AdminOnly::MasterChecklist.delete_all
-
         #two_children = create(:master_checklist, num_children: 2)
         expect(two_children.child_at_position(5)).to be_nil
       end
 
       it 'returns the child at that position' do
-        AdminOnly::MasterChecklist.delete_all
-
         three_kids = create(:master_checklist, num_children: 3)
         kid_two = create(:master_checklist, name: 'kid 2')
         three_kids.insert(kid_two, 1)
@@ -499,25 +383,16 @@ RSpec.describe "module OrderedAncestryEntry" do
 
 
   describe 'allowable_as_parents' do
-
-    after(:all) { DatabaseCleaner.clean }
-
     it 'an emtpy list will just return that same empty list as allowed parents' do
-      AdminOnly::MasterChecklist.delete_all
-
       expect(create(:master_checklist).allowable_as_parents).to be_empty
     end
 
     it 'self cannot be a parent' do
-      AdminOnly::MasterChecklist.delete_all
-
       new_entry = create(:master_checklist)
       expect(new_entry.allowable_as_parents([new_entry])).to be_empty
     end
 
     it 'children cannot be a parent' do
-      AdminOnly::MasterChecklist.delete_all
-
       toplist = create(:master_checklist, name: 'toplist', num_children: 3)
       not_a_child = create(:master_checklist, name: 'not a child')
 
@@ -525,8 +400,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
 
     it 'if the entry has not been saved, is the list of potential parents given' do
-      AdminOnly::MasterChecklist.delete_all
-
       not_saved = build(:master_checklist)
       toplist = create(:master_checklist, name: 'toplist', num_children: 3)
 
@@ -534,12 +407,8 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(not_saved.allowable_as_parents([toplist])).to eq [toplist]
     end
 
-
     describe 'is sorted' do
-
       it 'default is to sort by list position' do
-        AdminOnly::MasterChecklist.delete_all
-
         pos0_n1 = create(:master_checklist, name: '1', list_position: 0)
         create(:master_checklist, name: '1.1', list_position: 0, parent: pos0_n1)
         create(:master_checklist, name: '1.2', list_position: 1, parent: pos0_n1)
@@ -557,8 +426,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
 
       it 'can provide a block to use for sorting' do
-        AdminOnly::MasterChecklist.delete_all
-
         pos0_n1 = create(:master_checklist, name: '1', list_position: 0)
         create(:master_checklist, name: '1.1', list_position: 0, parent: pos0_n1)
         create(:master_checklist, name: '1.2', list_position: 1, parent: pos0_n1)
@@ -576,5 +443,4 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
     end
   end
-
 end
