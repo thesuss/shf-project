@@ -1,7 +1,7 @@
 # Set the host name for URL creation
 SitemapGenerator::Sitemap.default_host = "https://hitta.sverigeshundforetagare.se"
 
-SitemapGenerator::Sitemap.compress = false
+SitemapGenerator::Sitemap.compress = true
 
 SitemapGenerator::Sitemap.create do
 
