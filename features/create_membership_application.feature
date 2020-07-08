@@ -176,7 +176,7 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2120000142"
 
-  @selenium @skip_ci_test
+  @selenium
   Scenario: User creates App with two companies, creates one company, corrects error in company number
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -226,7 +226,7 @@ Feature: Create a new membership application
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
 
-  @selenium @skip_ci_test
+  @selenium
   Scenario: A user cannot submit a new Membership Application with no category [SAD PATH]
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -272,7 +272,7 @@ Feature: Create a new membership application
     And the field t("shf_applications.new.phone_number") should not have a required field indicator
     And I should see t("is_required_field")
 
-  @selenium @skip_ci_test
+  @selenium
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -367,33 +367,44 @@ Feature: Create a new membership application
       # | kickiimmi.nu  | 0706898525 |
 
 
-
-
-  @selenium @skip_ci_test
-  Scenario Outline: Apply for membership - when things go wrong with company create [SAD PATH]
+  @selenium
+  Scenario: Apply for membership- New Company- no company number [SAD PATH]
     Given I am on the "new application" page
+
     And I fill in the translated form with data:
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
       | <c_email>                          | <phone>                           |
 
     And I select files delivery radio button "files_uploaded"
 
-    # Create new company in modal
+    # Create new company in modal but do not fill in the company number
     And I click on t("companies.new.title")
-    And I fill in the translated form with data:
-      | companies.show.company_number | companies.show.email |
-      | <c_number>                    | <c_email>            |
-
+    And I fill in "company_email" with "kicki@immi.nu"
     And I click on t("companies.create.create_submit")
-
-    Then I should see error <model_attribute> <error>
+    Then I should see error t("activerecord.attributes.company.company_number") t("errors.messages.blank")
     And I should receive no emails
     And "admin@shf.se" should receive no emails
 
-    Scenarios:
-      | c_number   | c_email       | phone      | model_attribute                                     | error                        |
-      |            | kicki@immi.nu | 0706898525 | t("activerecord.attributes.company.company_number") | t("errors.messages.blank")   |
-      | 5562252998 |               | 0706898525 | t("activerecord.attributes.company.email")          | t("errors.messages.invalid") |
+
+  @selenium
+  Scenario: Apply for membership- New Company- no email [SAD PATH]
+    Given I am on the "new application" page
+
+    And I fill in the translated form with data:
+      | shf_applications.new.contact_email | shf_applications.new.phone_number |
+      | <c_email>                          | <phone>                           |
+
+    And I select files delivery radio button "files_uploaded"
+
+    # Create new company in modal but do not fill in the company number
+    And I click on t("companies.new.title")
+    And I fill in "company-number-in-modal" with "5562252998"
+    And I click on t("companies.create.create_submit")
+    Then I should see error t("activerecord.attributes.company.email") t("errors.messages.invalid")
+    And I should receive no emails
+    And "admin@shf.se" should receive no emails
+
+
 
 
   Scenario: Apply for membership: company number wrong length (no uploads) [SAD PATH]
