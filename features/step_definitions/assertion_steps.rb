@@ -60,6 +60,17 @@ Then(/^I should( not)? see the (?:checkbox|radio button) with id "([^"]*)" unche
   expect(page).send (negate ? :not_to : :to), have_unchecked_field(checkbox_id)
 end
 
+Then(/^I should( not)? see the (?:checkbox|radio button) with label "([^"]*)" checked$/) do |negate,  label_str|
+  for_id = for_value_of_label(label_str)
+  expect(page).send (negate ? :not_to : :to), have_checked_field(for_id)
+end
+
+Then(/^I should( not)? see the (?:checkbox|radio button) with label "([^"]*)" unchecked$/) do |negate,  label_str|
+  for_id = for_value_of_label(label_str)
+  expect(page).send (negate ? :not_to : :to), have_unchecked_field(for_id)
+end
+
+
 Then(/^I should be on (?:the )*"([^"]*)" page(?: for "([^"]*)")?$/) do |page, email|
   user = email == nil ? @user : User.find_by(email: email)
   expect(current_path_without_locale(current_path)).to eq get_path(page, user)

@@ -87,6 +87,11 @@ When "I select radio button {capture_string}" do |label_text|
   find(:xpath, "//label[contains(.,'#{label_text}')]//input[@type='radio']").click
 end
 
+When "I select the radio button with( the) label {capture_string}" do | label_text|
+  for_id = for_value_of_label(label_text)
+  find(:xpath, "//input[@id='#{for_id}']").click
+end
+
 When "I click the {capture_string} action for the row with {capture_string}" do |action, row_content|
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end

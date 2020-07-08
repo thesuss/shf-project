@@ -31,14 +31,10 @@ Feature: Member edits a company attribute
 
     And the following companies exist:
       | name                 | company_number | email                  |
-      | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
       | Woof Woof            | 5560360793     | emma@happymutts.com    |
 
     And the following business categories exist
       | name         |
-      | Groomer      |
-      | Psychologist |
-      | Trainer      |
       | Awesome      |
 
     And the following applications exist:
@@ -82,36 +78,45 @@ Feature: Member edits a company attribute
     And I click on t("submit")
     Then I should see t("addresses.create.success")
 
-    Then I click the radio button with id "cb_address_3"
-    And I should not see the radio button with id "cb_address_3" unchecked
-    And I should see the radio button with id "cb_address_4" unchecked
-    And I should see the radio button with id "cb_address_5" unchecked
+    When I select the radio button with label "Hundforetagarevägen 1, 310 40, Harplinge, Ale, Sverige"
+    Then I should see the radio button with label "Hundforetagarevägen 1, 310 40, Harplinge, Ale, Sverige" checked
+    And I should see the radio button with label "Ålstensgatan 4, 123 45, Bromma, Alingsås, Sverige" unchecked
+    And I should see the radio button with label "Acksjö Gräsbacken 1, 441 94, Alingsås, Alingsås, Sverige" unchecked
 
-    Then I click the radio button with id "cb_address_5"
-    And I should not see the radio button with id "cb_address_5" unchecked
-    And I should see the radio button with id "cb_address_3" unchecked
-    And I should see the radio button with id "cb_address_4" unchecked
+    When I select the radio button with label "Acksjö Gräsbacken 1, 441 94, Alingsås, Alingsås, Sverige"
+    Then I should see the radio button with label "Acksjö Gräsbacken 1, 441 94, Alingsås, Alingsås, Sverige" checked
+    And I should see the radio button with label "Hundforetagarevägen 1, 310 40, Harplinge, Ale, Sverige" unchecked
+    And I should see the radio button with label "Ålstensgatan 4, 123 45, Bromma, Alingsås, Sverige" unchecked
 
-    And I click the first address for company "Happy Mutts"
+
+    When I click the first address for company "Happy Mutts"
     And I select t("address_visibility.none") in select list t("companies.address_visibility")
     And I click on t("submit")
-    And I should see "3" addresses
+    Then I should see "3" addresses
 
-    Then I click the third address for company "Happy Mutts"
-    And I should see t("addresses.edit.cannot_delete_address")
+    When I click the third address for company "Happy Mutts"
+    Then I should see t("addresses.edit.cannot_delete_address")
     And I should not see t("'addresses.edit.delete'")
-    And I click on the t("companies.view_company") link
 
+    When I click on the t("companies.view_company") link
     And I click the second address for company "Happy Mutts"
-    And I should not see t("addresses.edit.cannot_delete_address")
-    And I click on and accept the t("addresses.edit.delete") link
+    Then I should not see t("addresses.edit.cannot_delete_address")
+
+    When I click on and accept the t("addresses.edit.delete") link
     Then I should see t("addresses.destroy.success")
     And I should see "2" addresses
 
-    And I am Logged out
+    When I am Logged out
     And I am on the "landing" page
     And I click on "Happy Mutts"
-    And I should see "1" address
+    Then I should see "1" address
+
+
+    Scenario: Member enters invalid facebook URL
+
+
+
+  # Authorization/Access (who can/cannot edit a company page)
 
   @time_adjust
   Scenario: Another tries to edit your company page (gets rerouted)

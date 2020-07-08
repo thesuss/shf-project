@@ -18,6 +18,9 @@ require_relative '../../spec/shared_context/mock_app_configuration.rb'
 require 'show_me_the_cookies'
 World(ShowMeTheCookies)
 
+# add the FindHelpers module
+require_relative './find_helpers'
+World(FindHelpers)
 
 #
 # Configurations
