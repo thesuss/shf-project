@@ -247,7 +247,7 @@ namespace :shf do
 
             unless test("[ -l #{linked_file} ]")
               # unless File.symlink?(linked_file)
-              execute :rm, target if test "[ -f #{linked_file} ]"
+              execute :rm, linked_file if test "[ -f #{linked_file} ]"
               # File.delete(linked_file) if File.exist?(linked_file)
 
               execute :ln, "-s", "#{relative_target_path}/#{source_fname}", linked_file
