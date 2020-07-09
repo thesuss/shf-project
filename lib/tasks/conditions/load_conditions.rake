@@ -2,10 +2,28 @@ namespace :shf do
   desc 'load conditions to DB'
   task load_conditions: [:environment] do
 
+    # Schedules for when alerts are sent:
     std_reminder_after_schedule = [2, 9, 14, 30, 60]
-
     std_reminder_before_schedule = [60, 30, 14, 2]
 
+
+    # NUMBER OF DAYS TO KEEP BACKUPS ON THE PRODUCTION SERVER:
+    # -------------------------------------------------------
+    # 8 days is the default because: if there is a problem (e.g. coping to AWS)
+    #  and we don't spot it for a week
+    #  (perhaps we didn't have a weekly meeting on a Thursday), the backup files still exist on the production server.
+    DEFAULT_DAYS_TO_KEEP = 8
+
+    # Code also exists on GitHub and in a the version control system (git). [In fact, those
+    #   are the authoritative/canonical source. ] So we don't need to keep very many days of backups.
+    DAYS_TO_KEEP_CODE = 3
+
+    # TODO: how many days should we keep the public files on the production server?  what if copying to AWS has a problem?
+    #   = DEFAULT_DAYS_TO_KEEP  (e.g. 8 days so we have time to notice and fix if something goes wrong)
+    DAYS_TO_KEEP_PUBLIC_FILES = DEFAULT_DAYS_TO_KEEP
+
+
+    # Filesystem locations
     RUNNING_LOG = '~/NOTES-RUNNING-LOG.txt'
     NGINX_LOG_DIR = '/var/log/nginx'
     APP_DIR = File.join(ENV['APP_PATH'], 'current/')
@@ -56,27 +74,28 @@ namespace :shf do
         # days_to_keep - specifies number of (daily) backups to retain on production server
         # backup_directory - where daily backups are retained on production server;
         #                    omit or set to nil to use default directory
+        #
         { class_name: 'Backup',
           timing:     :every_day,
-          config:     { days_to_keep:     { code_backup: 4,
-                                            db_backup:   15 },
+          config:     { days_to_keep:     { code_backup: DAYS_TO_KEEP_CODE,
+                                            db_backup:   DEFAULT_DAYS_TO_KEEP },
                         backup_directory: nil,
                         filesets: [
                             {name: 'logs',
-                             days_to_keep: 8,
+                             days_to_keep: DEFAULT_DAYS_TO_KEEP,
                              files: [RUNNING_LOG, NGINX_LOG_DIR, File.join(APP_DIR, 'log')]
                             },
                             {name: 'code',
-                             days_to_keep: 3,
+                             days_to_keep: DAYS_TO_KEEP_CODE,
                              files: [APP_DIR],
                              excludes: ['public', 'docs', 'features', 'spec','tmp', '.yardoc']
                             },
                             {name: 'app-public',
-                             days_to_keep: 3,
+                             days_to_keep: DAYS_TO_KEEP_PUBLIC_FILES,
                              files: [PUBLIC_DIR]
                             },
                             {name: 'config env secrets',
-                            days_to_keep: 32,
+                            days_to_keep: DEFAULT_DAYS_TO_KEEP,
                              files: [File.join(APP_DIR, 'config', '*.yml'), '.env']
                             }
                         ]
