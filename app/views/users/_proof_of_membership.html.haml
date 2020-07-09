@@ -12,8 +12,7 @@
         = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_to),
                     class: 'shf-logo')
 
-      %p.proof-banner
-        BEHÖRIGHETSBEVIS
+      %p.proof-banner= t('.proof_title').upcase
 
       .member-photo-div
         - if user.member_photo
@@ -25,8 +24,9 @@
           = user.full_name
         %br
         - if user.membership_current?
+          = succeed ':' do
+            = t('.member_number')
 
-          Medlemsnr.:
           %span.membership-number
             #{user.membership_number}
           %br
@@ -35,20 +35,21 @@
 
           %br
           %span.issued-by
-            Utfärdat av:
+            = succeed ':' do
+              = t('.issued_by')
+
           %br
           - if app_config.chair_signature
             = image_tag(paperclip_path_str(app_config.chair_signature,
                                        :standard, render_to))
           %br
-          Giltigt till #{user.membership_expire_date}
+          = t('.valid_thru', expire_date: user.membership_expire_date)
           %br
           -# Kategorier: #{list_app_categories(user.shf_application)}
         - else
-          Medlemskapet löpte ut
+          = t('.expired')
 
-      %p.proof-footer
-        sverigeshundforetagare.se
+      %p.proof-footer= t('.footer')
 
     - if render_to == :html && context == :internal
       %div

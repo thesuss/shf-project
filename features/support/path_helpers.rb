@@ -47,6 +47,8 @@ module PathHelpers
         path = user_path(user)
       when 'edit user account'
         path = admin_only_edit_user_account_path(user)
+      when 'proof of membership image'
+        path = proof_of_membership_path(user)
 
       # SHF application pages
       when 'new application', 'submit new membership application'

@@ -15,4 +15,7 @@ class UserPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def proof_of_membership?
+    show?
+  end
 end

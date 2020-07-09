@@ -70,6 +70,7 @@ en:
   shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
+  shf_short_url: &shf_short_url sverigeshundforetagare.se
 
   login_page: login page
 
@@ -981,6 +982,13 @@ en:
                                   Use this link in an external website:
                                   </span>"
 
+    proof_of_membership:
+      proof_title: *proof_of_membership
+      member_number: Medlemsnr.
+      issued_by: Utfärdat av
+      valid_thru: Giltigt till %{expire_date}
+      expired: Medlemskapet löpte ut
+      footer: *shf_short_url
 
     update:
       passwords_dont_match: "The two passwords entered don't match."

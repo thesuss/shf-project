@@ -70,7 +70,7 @@ sv:
   shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
   shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
   shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
-
+  shf_short_url: &shf_short_url sverigeshundforetagare.se
 
   login_page: login sida
 
@@ -990,6 +990,14 @@ sv:
       show_image: &show_image Visa bild
       copy_image_url: &copy_image_url Kopiera bildadress
       copied:  &copied Kopierat
+
+    proof_of_membership:
+      proof_title: *proof_of_membership
+      member_number: Medlemsnr.
+      issued_by: Utfärdat av
+      valid_thru: Giltigt till %{expire_date}
+      expired: Medlemskapet löpte ut
+      footer: *shf_short_url
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.
