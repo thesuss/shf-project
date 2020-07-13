@@ -14,10 +14,10 @@ Feature: Show social media links for a company
       | admin@shf.se                | true  | true   |
 
     And the following companies exist:
-      | name             | company_number | email                      | facebook_url                | youtube_url                | instagram_url                     |
-      | All Social Media | 2120000142     | hello@all-social-media.com | http://example.com/facebook | http://example.com/youtube | http://example.com/instagram      |
-      | Only Instagram   | 5560360793     | hello@only-instagram.com   |                             |                            | http://example.com/only-instagram |
-      | No Social Media  | 7661057765     | hello@no-social-media.com  |                             |                            |                                   |
+      | name             | company_number | email                      | facebook_url                 | youtube_url                   | instagram_url                     |
+      | All Social Media | 2120000142     | hello@all-social-media.com | https://facebook.com/example | https://youtube.com/mychannel | https://instagram.com/example      |
+      | Only Instagram   | 5560360793     | hello@only-instagram.com   |                              |                               | https://instagram.com/only-instagram |
+      | No Social Media  | 7661057765     | hello@no-social-media.com  |                              |                               |                                   |
 
     And the following applications exist:
       | user_email                  | company_number | state    |
@@ -39,16 +39,16 @@ Feature: Show social media links for a company
   Scenario: Company has all social media urls; all social media icons are shown
     Given I am logged in as "member@all-social-media.com"
     And I am on the page for company number "2120000142"
-    Then I should see an icon with CSS class "fa-facebook" that is linked to "http://example.com/facebook"
-    And I should see an icon with CSS class "fa-youtube" that is linked to "http://example.com/youtube"
-    And I should see an icon with CSS class "fa-instagram" that is linked to "http://example.com/instagram"
+    Then I should see an icon with CSS class "fa-facebook" that is linked to "https://facebook.com/example"
+    And I should see an icon with CSS class "fa-youtube" that is linked to "https://youtube.com/mychannel"
+    And I should see an icon with CSS class "fa-instagram" that is linked to "https://instagram.com/example"
 
   Scenario: Company only has Instagram; only that icon is shown
     Given I am logged in as "member@only-instagram.com"
     And I am on the page for company number "5560360793"
     Then I should not see an icon with CSS class "fa-facebook"
     And I should not see an icon with CSS class "fa-youtube"
-    And I should see an icon with CSS class "fa-instagram" that is linked to "http://example.com/only-instagram"
+    And I should see an icon with CSS class "fa-instagram" that is linked to "https://instagram.com/only-instagram"
 
   Scenario: Company has no social media urls; no social media icons are shown
     Given I am logged in as "member@no-social-media.com"

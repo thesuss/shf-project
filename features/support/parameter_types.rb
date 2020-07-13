@@ -74,10 +74,13 @@ def parse_i18n_string(i18n_string)
   separator = i18n_string.index(',')
   if separator
     i18n_key = i18n_string[0..separator-1]
-    parameters_array = i18n_string[separator+1..-1].split(',')
+    parameters_array = i18n_string[separator+1..-1].strip.split(',')
 
     parameters_array.each do |e|
-      keyvalue = e.sub(' :', ' ').split(':')
+      keyvalue = e.sub(' :', ' ').split(':', 2)
+      # Only split on the first ':', in case the value string includes a ':'
+      #  Ex:  "url_start: 'http://facebook.com'"
+      #   We don't want to also split on the ':' in the url (http://facebook.com)
       key = keyvalue[0].strip.to_sym
       value = keyvalue[1].strip
 

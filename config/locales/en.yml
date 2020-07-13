@@ -777,6 +777,15 @@ en:
       dinkurs_id_tooltip: If you have a Dinkurs.se account and want to also show
                           the company events here, enter the Dinkurs.se company key.
                           (You can leave it blank if you don't have a Dinkurs.se account.)
+      social_url_ex: "Ex: %{example_url}"
+      facebook_url: URL for your Facebook page
+      facebook_url_ex_path: "YourFacebookName"
+      bad_url_must_start_with: 'Invalid url. It must start with %{url_start}/ and specify your page'
+      instagram_url: URL for your Instagram page
+      instagram_url_ex_path: "YourInstagramName"
+      youtube_url: URL for your YouTube page
+      youtube_url_ex_path: "YourChannel"
+
     company:
       submit_button_label: Update Status
 

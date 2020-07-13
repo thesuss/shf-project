@@ -574,6 +574,18 @@ input.checklist-checkbox-small {
   width: 14px;
 }
 
+form {
+  .error {
+    color: $warn-red;
+  }
+
+  label {
+    &.error {
+      font-weight: bold;
+    }
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .entry-title {
     font-size: 36px;
