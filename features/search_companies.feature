@@ -6,6 +6,7 @@ I want to search for available companies by various criteria
 
 Background:
   Given the Membership Ethical Guidelines Master Checklist exists
+  Given the App Configuration is not mocked and is seeded
 
   Given the following users exist:
     | email                | admin | member |
@@ -17,11 +18,11 @@ Background:
     | admin@shf.se         | true  |        |
 
   And the following business categories exist
-    | name         |
-    | Groomer      |
-    | Psychologist |
-    | Trainer      |
-    | Walker       |
+    | name         | subcategories |
+    | Groomer      | Groomer Subcat1, Groomer Subcat2 |
+    | Psychologist | Psycho Subcat1                   |
+    | Trainer      | Trainer Subcat1, Trainer Subcat2 |
+    | Walker       | Walker Subcat1, Walker Subcat2   |
 
   Given the following regions exist:
     | name         |
@@ -60,10 +61,10 @@ Background:
     | emma@weluvdogs.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 8248600598     |
 
   And the following applications exist:
-    | user_email          | company_number | state    | categories      |
-    | fred@barkyboys.com  | 5560360793, 5634016009     | accepted | Groomer, Trainer|
+    | user_email          | company_number | state     | categories      |
+    | fred@barkyboys.com  | 5560360793, 5634016009     | accepted | Groomer, Groomer Subcat1, Groomer Subcat2, Trainer, Trainer Subcat2|
     | john@happymutts.com | 2120000142, 8471950124     | accepted | Psychologist    |
-    | anna@dogsrus.com    | 5562252998     | accepted | Trainer         |
+    | anna@dogsrus.com    | 5562252998     | accepted  | Trainer, Trainer Subcat1, Trainer Subcat2 |
     | emma@weluvdogs.com  | 5569467466, 8248600598 | accepted | Groomer, Walker |
     | lars@nopayment.se   | 8028973322     | accepted | Groomer, Trainer|
 
@@ -110,6 +111,29 @@ Scenario: Search by category
   And I should see "Trainer" in the list of companies
   And I should see "Walker" in the list of companies
   And I should not see "Psychologist" in the list of companies
+
+@selenium @time_adjust
+Scenario: Search by subcategory
+  Given I am Logged out
+  And I am on the "landing" page
+  And I should see "Barky Boys" in the list of companies
+  And I should see "HappyMutts" in the list of companies
+  And I should see "Dogs R Us" in the list of companies
+  And I should see "We Luv Dogs" in the list of companies
+  Then I select "Groomer Subcat1" in select list t("activerecord.models.business_category.one")
+  And I click on t("search")
+  And I should see "Barky Boys" in the list of companies
+  And I should see "DogCo_01" in the list of companies
+  And I should not see "We Luv Dogs" in the list of companies
+  And I should not see "HappyMutts" in the list of companies
+  And I should not see "Dogs R Us" in the list of companies
+  And I should see "Trainer" in the list of companies
+  And I should see "Groomer" in the list of companies
+  And I should not see "Psychologist" in the list of companies
+  And I should not see "Walker" in the list of companies
+  Then I select "Trainer Subcat2" in select list t("activerecord.models.business_category.one")
+  And I click on t("search")
+  And I should see "Dogs R Us" in the list of companies
 
 @selenium @time_adjust
 Scenario: Search by region

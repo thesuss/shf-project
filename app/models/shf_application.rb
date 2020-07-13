@@ -16,7 +16,7 @@ class ShfApplication < ApplicationRecord
   belongs_to :user
 
   #  A Company for a membership application (an instantiated one)
-  #  is created (instantiated) when a embership application is created,
+  #  is created (instantiated) when a membership application is created,
   #  unless the company already exists, in which case that existing instance
   #  is associated with the new membership application.
 
@@ -48,6 +48,7 @@ class ShfApplication < ApplicationRecord
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
   CAN_EDIT_STATES = [:new, :waiting_for_applicant]
+
 
 
   def add_observers
@@ -122,6 +123,36 @@ class ShfApplication < ApplicationRecord
     where( updated_at: start_date..end_date )
   end
 
+
+  def business_subcategories(business_category)
+    return nil unless business_category.is_root?
+    return nil unless business_categories.include?(business_category)
+
+    subcategories = []
+
+    business_category_ids =  business_categories.map(&:id)
+
+    BusinessCategory.children_of(business_category.id).order(:name).each do |subcategory|
+      subcategories << subcategory if business_category_ids.include?(subcategory.id)
+    end
+
+    subcategories
+  end
+
+  def set_business_subcategories(business_category, subcategories)
+
+    return unless business_category.is_root? &&
+                  business_categories.include?(business_category)
+
+    # Remove existing and reset new subcategories for this business category
+    self.business_categories.children_of(business_category.id).each do |subcategory|
+      self.business_categories.delete(subcategory)
+    end
+
+    subcategories.each do |subcategory|
+      self.business_categories << subcategory
+    end
+  end
 
 
   # these are only used by the submisssion form and are not saved to the db

@@ -24,7 +24,7 @@ Feature: As an admin
     When I click the icon with CSS class "edit" for the row with "dog grooming"
     Then I should see t("business_categories.index.edit_category")
     And I fill in t("activerecord.attributes.business_category.name") with "doggy grooming"
-    And I click on t("submit")
+    And I click on t("save")
     And I should see "doggy grooming"
 
   @selenium
@@ -37,7 +37,7 @@ Feature: As an admin
 
     Then I should see t("business_categories.index.edit_category")
     And I fill in t("activerecord.attributes.business_category.name") with ""
-    And I click on t("submit")
+    And I click on t("save")
     Then I should see error t("activerecord.attributes.business_category.name") t("errors.messages.blank")
 
   Scenario: A non-admin user cannot edit business categories

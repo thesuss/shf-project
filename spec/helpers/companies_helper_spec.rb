@@ -17,9 +17,16 @@ RSpec.describe CompaniesHelper, type: :helper do
       ma3 = create(:shf_application, :accepted, user: create(:user, member: true), category_name: 'cat3')
       ma3.companies = ma1.companies
 
+      cat1 = BusinessCategory.find_by(name: 'cat1')
+
+      cat1.children.create(name: 'cat1_subcat1')
+      cat1.children.create(name: 'cat1_subcat2')
+      cat1.children.create(name: 'cat1_subcat3')
+
       company = ma1.companies.first
 
-      expect(helper.list_categories(company)).to eq 'cat1 cat3'
+      expect(helper.list_categories(company, ' ', true)).to eq 'cat1 cat1_subcat1 cat1_subcat2 cat1_subcat3 cat3'
+      expect(helper.list_categories(company, ' ', false)).to eq 'cat1 cat3'
       expect(helper.list_categories(company)).not_to include 'Träning'
     end
   end

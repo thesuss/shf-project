@@ -16,6 +16,7 @@ Feature:  Member home (account) page
   Background:
 
     Given the date is set to "2018-06-06"
+    Given the App Configuration is not mocked and is seeded
     And the Membership Ethical Guidelines Master Checklist exists
 
 
@@ -40,10 +41,15 @@ Feature:  Member home (account) page
       | Bowsers              | 2120000142     | bark@bowsers.com    | Stockholm |
 
 
+    And the following business categories exist
+      | name         | description      | subcategories          |
+      | dog grooming | grooming dogs    | light trim, custom cut |
+
+
     And the following applications exist:
-      | user_email                         | contact_email              | company_number | state    |
-      | lars-member@example.com            | lars-member@happymutts.com | 5560360793     | accepted |
-      | emma-member@example.com            | emma-member@bowsers.com    | 2120000142     | accepted |
+      | user_email                | contact_email              | company_number | state    | categories   |
+      | lars-member@example.com   | lars-member@happymutts.com | 5560360793     | accepted | dog grooming |
+      | emma-member@example.com   | emma-member@bowsers.com    | 2120000142     | accepted | dog grooming |
 
 
     And the following payments exist
@@ -91,6 +97,25 @@ Feature:  Member home (account) page
     Then I should see t("users.show.term_paid_through")
     And the user is paid through "2018-12-31"
 
+
+  @selenium @time_adjust
+  Scenario: Member can add subcategories to a category
+    Given I am logged in as "emma-member@example.com"
+    When I am on the "user account" page for "emma-member@example.com"
+    And I should see t("activerecord.models.business_category.other")
+    Then I click the first icon with CSS class "fa-edit"
+    And I select "light trim" in select list "subcategories-for-category-1"
+    And I select "custom cut" in select list "subcategories-for-category-1"
+    And I click on first t("save") button
+    And I should see "light trim"
+    And I should see "custom cut"
+    Then I click the first icon with CSS class "fa-edit"
+    And I should see "light trim"
+    And I should see "custom cut"
+    And I unselect "light trim" in select list "subcategories-for-category-1"
+    And I click on first t("save") button
+    Then I should see "custom cut"
+    And I should not see "light trim"
 
 
   # Proof of Membership and Company H-Branding Information: see separate features

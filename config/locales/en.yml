@@ -56,6 +56,8 @@ en:
   none_plur: *none
   none_n: *none
   name_missing: Name Missing
+  including: including
+  administrator: administrator
 
   unknown: unknown
 
@@ -266,6 +268,7 @@ en:
         name: &business_category_name  Name
         description: &description  Description
         subcategory: &subcategory Subcategory
+        subcategories: Subcategories
 
       shf_document:
         title: &title Title
@@ -535,6 +538,15 @@ en:
       ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
       files_delivery_method: Chosen files delivery method
       method_chosen_when: (chosen %{date})
+
+    business_category_display_row:
+      category_no_subcategories_html: This business category does not have any
+        subcategories yet.  You can request the %{mailto_admin} to assign
+        one or more subcategories.
+      subcategories_for: Subcategories for %{category_name}
+
+    business_category_edit_row:
+      add_remove_subcategories: Add/Remove Subcategories
 
     index:
       title: All incoming applications
@@ -837,7 +849,7 @@ en:
   business_categories:
 
     index:
-      title: Company categories
+      title: Company Categories
       name: *business_category_name
       description: *description
       view: *view

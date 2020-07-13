@@ -27,7 +27,7 @@ Feature: As an admin
       | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
       | <subcategory_name>                             | <subcategory_description>                             |
 
-    When I click on t("submit")
+    When I click on t("save")
     Then I should see "<subcategory_name>"
 
     Scenarios:
@@ -48,7 +48,7 @@ Feature: As an admin
       | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
       | <subcategory_name>                             | <subcategory_description>                             |
 
-    When I click on t("submit")
+    When I click on t("save")
     Then I should see <error>
 
     Scenarios:
@@ -61,7 +61,7 @@ Feature: As an admin
   Scenario: Delete a subcategory
     Given I am on the "business categories" page
     Then I should see "light trim"
-    When I click and accept the icon with CSS class "delete-category" for the row with "light trim"
+    When I click and accept the first icon with CSS class "fa-trash-alt"
     Then I should not see "light trim"
 
 

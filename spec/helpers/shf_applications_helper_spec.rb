@@ -324,4 +324,39 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
       end
     end
   end
+
+  context 'business categories string for views' do
+
+    let(:cat) do
+      cat = create(:business_category)
+      cat.children.create(name: 'cat1_subcat1')
+      cat.children.create(name: 'cat1_subcat2')
+      cat.children.create(name: 'cat1_subcat3')
+      cat
+    end
+
+    let(:app) do
+      app = build(:shf_application, num_categories: 0)
+      app.save(validate: false)
+      app.business_categories << cat
+      app.business_categories << cat.children
+      app
+    end
+
+    describe '#subcategories_list_in_parens' do
+
+      it 'returns string of subcategories names in parens with "including:" preface' do
+        subcategories = app.business_subcategories(cat)
+        expect(subcategories_list_in_parens(subcategories)).to eq " (#{t('including')}: cat1_subcat1, cat1_subcat2, cat1_subcat3)"
+      end
+    end
+
+    describe '#business_categories_str' do
+
+      it 'returns string with category and subcategory names' do
+        expect(business_categories_str(app))
+          .to eq "Business Category (#{t('including')}: cat1_subcat1, cat1_subcat2, cat1_subcat3)"
+      end
+    end
+  end
 end

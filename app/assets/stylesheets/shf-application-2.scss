@@ -3,6 +3,14 @@
 
 @import "shf-custom-colors";
 
+.tooltip {
+  pointer-events: none; // Prevent flickering for tooltip (esp. in Chrome)
+}
+
+.far.fa-question-circle {
+  font-size: 16px;
+}
+
 .edit_shf_application {
 
   .section-instructions {

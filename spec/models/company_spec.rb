@@ -30,6 +30,55 @@ RSpec.describe Company, type: :model, focus: true do
   let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
   let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
 
+  let(:company_emp_cats) { create(:company) }
+
+  let(:cat1) { create(:business_category, name: 'cat1') }
+  let(:cat2) { create(:business_category, name: 'cat2') }
+  let(:cat3) { create(:business_category, name: 'cat3') }
+  let(:cat4) { create(:business_category, name: 'cat4') }
+  let(:cat5) { create(:business_category, name: 'cat5') }
+  let(:cat6) { create(:business_category, name: 'cat6') }
+
+  let(:applicant1) { create(:user) }
+  let(:applicant2) { create(:user) }
+  let(:applicant3) { create(:user) }
+
+
+  let(:m1) do
+    m           = create(:shf_application, :accepted, user: employee1)
+    m.companies = [company_emp_cats]
+    m
+  end
+  let(:m2) do
+    m           = create(:shf_application, :accepted, user: employee2)
+    m.companies = m1.companies.to_a
+    m
+  end
+  let(:m3) do
+    m           = create(:shf_application, :accepted, user: employee3)
+    m.companies = m1.companies.to_a
+    m
+  end
+  let(:m4) do
+    m           = create(:shf_application, :new, user: applicant1)
+    m.companies = m1.companies.to_a
+    m
+  end
+  let(:m5) do
+    m           = create(:shf_application, :under_review, user: applicant2)
+    m.companies = m1.companies.to_a
+    m
+  end
+  let(:m6) do
+    m           = create(:shf_application, :rejected, user: applicant3)
+    m.companies = m1.companies.to_a
+    m
+  end
+
+  let(:employee1) { create(:user, member: true) }
+  let(:employee2) { create(:user, member: true) }
+  let(:employee3) { create(:user, member: true) }
+
 
   describe 'Factory' do
     it 'has a valid factory' do
@@ -569,55 +618,6 @@ RSpec.describe Company, type: :model, focus: true do
 
     let(:complete_scope) { Company.complete }
 
-
-    let(:company_emp_cats) { create(:company) }
-
-    let(:employee1) { create(:user, member: true) }
-    let(:employee2) { create(:user, member: true) }
-    let(:employee3) { create(:user, member: true) }
-
-    let(:applicant1) { create(:user) }
-    let(:applicant2) { create(:user) }
-    let(:applicant3) { create(:user) }
-
-    let(:cat1) { create(:business_category, name: 'cat1') }
-    let(:cat2) { create(:business_category, name: 'cat2') }
-    let(:cat3) { create(:business_category, name: 'cat3') }
-    let(:cat4) { create(:business_category, name: 'cat4') }
-    let(:cat5) { create(:business_category, name: 'cat5') }
-    let(:cat6) { create(:business_category, name: 'cat6') }
-
-    let(:m1) do
-      m           = create(:shf_application, :accepted, user: employee1)
-      m.companies = [company_emp_cats]
-      m
-    end
-    let(:m2) do
-      m           = create(:shf_application, :accepted, user: employee2)
-      m.companies = m1.companies.to_a
-      m
-    end
-    let(:m3) do
-      m           = create(:shf_application, :accepted, user: employee3)
-      m.companies = m1.companies.to_a
-      m
-    end
-    let(:m4) do
-      m           = create(:shf_application, :new, user: applicant1)
-      m.companies = m1.companies.to_a
-      m
-    end
-    let(:m5) do
-      m           = create(:shf_application, :under_review, user: applicant2)
-      m.companies = m1.companies.to_a
-      m
-    end
-    let(:m6) do
-      m           = create(:shf_application, :rejected, user: applicant3)
-      m.companies = m1.companies.to_a
-      m
-    end
-
     context '.categories (all categories for users with accepted applications)' do
 
       it 'returns 3 employees, 3 non-accepted applicants, each with 1 unique category' do
@@ -645,39 +645,6 @@ RSpec.describe Company, type: :model, focus: true do
       end
     end
 
-
-    context '.categories_names' do
-
-      before(:each) do
-        m1.business_categories = [cat1]
-        m2.business_categories = [cat2]
-        m3.business_categories = [cat3]
-        m4.business_categories = [cat4]
-        m5.business_categories = [cat5]
-        m6.business_categories = [cat6]
-      end
-
-      it 'returns all categories for members with accepted applications' do
-        expect(company_emp_cats.categories_names.count).to eq 3
-        expect(company_emp_cats.categories_names)
-            .to contain_exactly('cat1', 'cat2', 'cat3')
-      end
-
-      it 'does not return categories for non-members with accepted applications' do
-        employee1.update_attribute(:member, false)
-        expect(company_emp_cats.categories_names.count).to eq 2
-        expect(company_emp_cats.categories_names)
-            .to contain_exactly('cat2', 'cat3')
-      end
-
-      it 'does not return categories for members with non-accepted applications' do
-        m2.update_attribute(:state, :under_review)
-        expect(company_emp_cats.categories_names.count).to eq 2
-        expect(company_emp_cats.categories_names)
-            .to contain_exactly('cat1', 'cat3')
-      end
-
-    end
 
     context '.complete' do
 
@@ -851,6 +818,52 @@ RSpec.describe Company, type: :model, focus: true do
     end
 
   end #scopes
+
+  context '.categories_names' do
+
+    let(:cat1_subcat1) { cat1.children.create(name: 'cat1_subcat1') }
+    let(:cat1_subcat2) { cat1.children.create(name: 'cat1_subcat2') }
+    let(:cat1_subcat3) { cat1.children.create(name: 'cat1_subcat3') }
+
+    before(:each) do
+      m1.business_categories = [cat1]
+      m2.business_categories = [cat2]
+      m3.business_categories = [cat3]
+      m4.business_categories = [cat4]
+      m5.business_categories = [cat5]
+      m6.business_categories = [cat6]
+      cat1_subcat1
+      cat1_subcat2
+      cat1_subcat3
+    end
+
+    it 'returns all categories for members with accepted applications' do
+      expect(company_emp_cats.categories_names(false).count).to eq 3
+      expect(company_emp_cats.categories_names(false))
+          .to contain_exactly('cat1', 'cat2', 'cat3')
+    end
+
+    it 'returns categories and subcategories for members with accepted applications' do
+      expect(company_emp_cats.categories_names(true).count).to eq 6
+      expect(company_emp_cats.categories_names(true))
+          .to contain_exactly('cat1', 'cat1_subcat1', 'cat1_subcat2', 'cat1_subcat3', 'cat2', 'cat3')
+    end
+
+    it 'does not return categories for non-members with accepted applications' do
+      employee1.update_attribute(:member, false)
+      expect(company_emp_cats.categories_names(false).count).to eq 2
+      expect(company_emp_cats.categories_names(false))
+          .to contain_exactly('cat2', 'cat3')
+    end
+
+    it 'does not return categories for members with non-accepted applications' do
+      m2.update_attribute(:state, :under_review)
+      expect(company_emp_cats.categories_names(false).count).to eq 2
+      expect(company_emp_cats.categories_names(false))
+          .to contain_exactly('cat1', 'cat3')
+    end
+
+  end
 
   describe '#get_short_h_brand_url' do
     context 'there is already a shortened url in the table' do

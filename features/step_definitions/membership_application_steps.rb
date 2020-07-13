@@ -65,7 +65,7 @@ And(/^the following applications exist:$/) do |table|
         categories << BusinessCategory.find_by_name(category_name) unless
           ma.business_categories.where(name: category_name).exists?
       end
-      ma.business_categories = categories
+      ma.business_categories << categories
     end
 
 
@@ -76,7 +76,7 @@ And(/^the following applications exist:$/) do |table|
       expect(ma.errors.keys).to match_array [:file_delivery_method]
     end
 
-    ma.save(validate: (legacy_app ? false : true))
+    ma.save!(validate: (legacy_app ? false : true))
   end
 end
 

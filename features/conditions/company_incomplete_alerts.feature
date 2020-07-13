@@ -19,8 +19,8 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
       | memb02_paid_jan03@nil-region.se    |       | true   |
       | memb03_paid_jan10@blank-co-name.se |       | true   |
       | memb04_paid_jan15@blank-co-name.se |       | true   |
-      | memb20@complete_company.se         |       | true   |
-      | memb21@complete_company.se         |       | true   |
+      | memb20@complete-company.se         |       | true   |
+      | memb21@complete-company.se         |       | true   |
       | admin@shf.se                       | true  |        |
 
 
@@ -47,8 +47,8 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
       | memb02_paid_jan03@nil-region.se    | 5562252998     | rehab      | accepted | 2018-01-01    |
       | memb03_paid_jan10@blank-co-name.se | 2120000142     | rehab      | accepted | 2018-01-01    |
       | memb04_paid_jan15@blank-co-name.se | 2120000142     | rehab      | accepted | 2018-01-01    |
-      | memb20@complete_company.se         | 2664181183     | rehab      | accepted | 2018-01-01    |
-      | memb21@complete_company.se         | 2664181183     | rehab      | accepted | 2018-01-01    |
+      | memb20@complete-company.se         | 2664181183     | rehab      | accepted | 2018-01-01    |
+      | memb21@complete-company.se         | 2664181183     | rehab      | accepted | 2018-01-01    |
 
 
     Given the following payments exist
@@ -59,9 +59,9 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
       | memb03_paid_jan10@blank-co-name.se | 2018-1-10  | 2019-01-09  | member_fee   | betald | none    |                |
       | memb03_paid_jan10@blank-co-name.se | 2018-1-10  | 2019-01-09  | branding_fee | betald | none    | 2120000142     |
       | memb04_paid_jan15@blank-co-name.se | 2018-1-15  | 2019-01-14  | member_fee   | betald | none    |                |
-      | memb20@complete_company.se         | 2018-1-1   | 2018-12-31  | member_fee   | betald | none    |                |
-      | memb20@complete_company.se         | 2018-1-1   | 2018-12-31  | branding_fee | betald | none    | 2664181183     |
-      | memb21@complete_company.se         | 2018-1-1   | 2018-12-31  | member_fee   | betald | none    |                |
+      | memb20@complete-company.se         | 2018-1-1   | 2018-12-31  | member_fee   | betald | none    |                |
+      | memb20@complete-company.se         | 2018-1-1   | 2018-12-31  | branding_fee | betald | none    | 2664181183     |
+      | memb21@complete-company.se         | 2018-1-1   | 2018-12-31  | member_fee   | betald | none    |                |
 
 
     Given there is a condition with class_name "CompanyInfoIncompleteAlert" and timing "after"
@@ -77,8 +77,8 @@ Feature: Alerts sent if Company info is incomplete (a Condition response)
     And "memb02_paid_jan03@nil-region.se" should receive <memb02_email> email
     And "memb03_paid_jan10@blank-co-name.se" should receive <memb03_email> email
     And "memb04_paid_jan15@blank-co-name.se" should receive <memb04_email> email
-    And "memb20@complete_company.se" should receive no email
-    And "memb21@complete_company.se" should receive no email
+    And "memb20@complete-company.se" should receive no email
+    And "memb21@complete-company.se" should receive no email
 
     Scenarios:
       | today        | member01_email | memb02_email | memb03_email | memb04_email |

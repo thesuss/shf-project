@@ -34,7 +34,7 @@
               class: 'edit-category-button'
 
   %td.delete
-    = link_to destroy_icon(html_options: { class: 'delete-category text-danger' }),
+    = link_to destroy_icon(html_options: { class: 'text-danger' }),
               business_category, method: :delete, remote: true,
               data: { confirm: t('confirm_are_you_sure') },
               class: 'delete-category'

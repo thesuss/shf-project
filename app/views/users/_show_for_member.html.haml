@@ -6,7 +6,9 @@
 .membership
   .row.section-title
     .col.mt-2
-      %h3.section-title= t("membership").capitalize
+      %h3.section-title
+        = succeed ':' do
+          = t("membership").capitalize
   .row
     .col
       = field_or_none(t('.membership_number'), user.membership_number,
@@ -17,6 +19,9 @@
 
 
 = render partial: 'show_application_section_row_cols', locals: { user: user }
+
+= render partial: 'shf_applications/show_business_categories',
+                  locals: { shf_application: user.shf_application }
 
 - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
   %p.membership-guidelines-checklist= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user}

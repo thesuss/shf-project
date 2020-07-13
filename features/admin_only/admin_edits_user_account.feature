@@ -37,7 +37,6 @@ Feature: Admin edits a user account
       | user-with-old-pays@example.com      | 2018-10-31 | 2019-10-30  | member_fee   | betald | none    |
       | member@shf.com                      | 2020-09-01 | 2021-08-30  | member_fee   | betald | none    |
 
-
     Given I am logged in as "admin@shf.se"
 
 
@@ -92,6 +91,3 @@ Feature: Admin edits a user account
     And I should not see t("users.show_for_applicant.app_status_new")
     And I should not see t("users.show.edit_member_status")
     And I should see t("payors.admin_cant_edit")
-
-
-

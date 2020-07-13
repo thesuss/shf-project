@@ -1,0 +1,28 @@
+-# This partial shows a members's business categories, and allows editing of subcategcories.
+  The partial expects these locals:
+    shf_application - a member's SHF application
+
+
+.categories
+  .row.section-title
+    .col.mt-2
+      %h3
+        = succeed ':' do
+          = t('activerecord.models.business_category.other')
+
+  .row
+    .col.mt-2
+      .table-responsive
+        %table.table.table-hover.table-sm
+
+          %thead
+            %th= t('activerecord.models.business_category.one')
+            %th= t('activerecord.attributes.business_category.subcategories')
+            %th
+
+          %tbody
+            - shf_application.business_categories.roots.each do |business_category|
+
+              = render 'shf_applications/business_category_display_row',
+                       shf_application: shf_application,
+                       business_category: business_category

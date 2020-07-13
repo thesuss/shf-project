@@ -1,7 +1,12 @@
 .post-category
   %ul.post-categories
     - categories.each do | category |
-      - if current_user.admin?
-        %li= link_to category.name, business_category_path(category)
-      - else
-        %li= category.name
+
+      :ruby
+        if current_user.admin?
+          name = link_to(category.name, business_category_path(category))
+        else
+          name = category.name
+        end
+
+      %li= name

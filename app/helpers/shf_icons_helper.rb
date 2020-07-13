@@ -101,6 +101,7 @@ module ShfIconsHelper
   FA_WARNING = 'exclamation-triangle'
   FA_PROBLEM = 'times-circle'
   FA_PLUS = 'plus'
+  FA_QUESTION = 'question-circle'
 
   FA_TOOLTIP = 'info-circle' # Note that there is a specific helper method 'fas_tooltip(...) that can be used (Defined in application_helper.rb)
 
@@ -250,6 +251,7 @@ module ShfIconsHelper
       { method_name_start: 'warning', icon: FA_WARNING },
       { method_name_start: 'problem', icon: FA_PROBLEM },
       { method_name_start: 'plus', icon: FA_PLUS },
+      { method_name_start: 'question', icon: FA_QUESTION, fa_style: 'far' },
 
 
       { method_name_start: 'next_arrow', icon: FA_ARROW_RIGHT },

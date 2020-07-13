@@ -4,7 +4,9 @@ class ShfApplicationsController < ApplicationController
   include PaginationUtility
 
   before_action :get_shf_application, except: [:information, :index, :new, :create]
-  before_action :authorize_shf_application
+  before_action :authorize_shf_application, except: [:get_edit_row_business_category,
+                                                     :get_display_row_business_category,
+                                                     :business_subcategories]
   before_action :set_other_waiting_reason,
     only: [:show, :edit, :update_reason_waiting, :need_info]
   before_action :set_allowed_file_types, only: [:edit, :new, :update, :create]
@@ -47,6 +49,55 @@ class ShfApplicationsController < ApplicationController
 
   def show
     @categories = @shf_application.business_categories
+  end
+
+  def get_edit_row_business_category
+    business_category = BusinessCategory.find(params[:business_category_id])
+    subcategories = @shf_application.business_subcategories(business_category)
+
+    edit_row = render_to_string(partial: 'business_category_edit_row',
+                                locals: { shf_application: @shf_application,
+                                          business_category: business_category,
+                                          subcategories: subcategories,
+                                          language: @locale })
+    respond_to do |format|
+      format.js do
+        render json: { business_category_id: business_category.id,
+                       edit_row: edit_row }
+      end
+    end
+  end
+
+  def get_display_row_business_category
+    business_category = BusinessCategory.find(params[:business_category_id])
+    display_row = render_to_string(partial: 'business_category_display_row',
+                                   locals: { shf_application: @shf_application,
+                                             business_category: business_category })
+
+    respond_to do |format|
+      format.js do
+        render json: { business_category_id: business_category.id,
+                       display_row: display_row }
+      end
+    end
+  end
+
+  def business_subcategories
+    business_category = BusinessCategory.find(params[:business_category_id])
+
+    @shf_application.set_business_subcategories(business_category,
+                          BusinessCategory.where(id: params[:subcategories]))
+
+    display_row = render_to_string(partial: 'business_category_display_row',
+                                   locals: { shf_application: @shf_application,
+                                             business_category: business_category })
+
+    respond_to do |format|
+      format.js do
+        render json: { business_category_id: business_category.id,
+                       display_row: display_row }
+      end
+    end
   end
 
 

@@ -596,4 +596,56 @@ RSpec.describe ShfApplication, type: :model do
     end
   end
 
+  context 'Business Subcategories' do
+
+    let(:parent) { create(:business_category, name: 'parent') }
+    let(:unassociated_category) { create(:business_category) }
+
+    let(:child1) { parent.children.create(name: 'child 1') }
+    let(:child2) { parent.children.create(name: 'child 2') }
+    let(:child3) { parent.children.create(name: 'child 3') }
+    let(:child4) { parent.children.create(name: 'child 4') }
+    let(:child5) { parent.children.create(name: 'child 5') }
+
+    let(:app) do
+      app = build(:shf_application, num_categories: 0)
+      app.business_categories = [parent, child1, child2, child3]
+      app.save!
+      app
+    end
+
+    describe '#business_subcategories' do
+
+      it 'returns all subcategories for a category associated with the app' do
+        expect(app.business_subcategories(parent)).to eq [child1, child2, child3]
+      end
+
+      it 'returns nil if called with a subcategory' do
+        expect(app.business_subcategories(child1)).to be_nil
+      end
+
+      it 'returns nil if category is not associated with this application' do
+        expect(app.business_subcategories(unassociated_category)).to be_nil
+      end
+    end
+
+    describe '#set_business_subcategories' do
+
+      it 'set subcategories for a category associated with the app' do
+        app.set_business_subcategories(parent, [child4, child5])
+        expect(app.business_subcategories(parent)).to eq [child4, child5]
+      end
+
+      it 'takes no action if called with a subcategory' do
+        app.set_business_subcategories(child1, [child4, child5])
+        expect(app.business_subcategories(parent)).to eq [child1, child2, child3]
+      end
+
+      it 'takes no action if called with an unassociated category' do
+        app.set_business_subcategories(unassociated_category, [child4, child5])
+        expect(app.business_subcategories(parent)).to eq [child1, child2, child3]
+      end
+    end
+  end
+
 end

@@ -5,8 +5,8 @@
       = f.label :business_categories_id_in,
                 "#{t('activerecord.models.business_category.one')}"
       = f.collection_select :business_categories_id_in,
-                      BusinessCategory.order(:name).distinct,
-                      :id, :name, { include_blank: false },
+                      BusinessCategory.category_and_subcategory_names,
+                      :id, :full_ancestry_name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
                         class: 'form-control search_field',
                         data: {language: language } }

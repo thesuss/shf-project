@@ -32,7 +32,7 @@
         - companies.each do |company|
           %tr.company
             %td.categories
-              = safe_join(company.categories_names, tag.br)
+              = safe_join(company.categories_names(false), tag.br)
             %td.name= link_to company.name.blank? ? t('name_missing') : company.name, company
             %td.region
               = safe_join(company.addresses_region_names, tag.br)

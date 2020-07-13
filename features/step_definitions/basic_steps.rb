@@ -83,6 +83,10 @@ When "I select {capture_string} in select list {capture_string}" do |option, lis
   select option, from: list
 end
 
+When("I unselect {capture_string} in select list {capture_string}") do |option, list|
+  unselect option, from: list
+end
+
 When "I select radio button {capture_string}" do |label_text|
   find(:xpath, "//label[contains(.,'#{label_text}')]//input[@type='radio']").click
 end
@@ -99,9 +103,21 @@ end
 
 When "I click the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
   icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a/i[contains(@class, '#{icon_class}')]")
-  # should this instead be:   icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]//a/i[contains(@class, '#{icon_class}')]")
   icon_element.find(:xpath, './parent::a').click  # get the parent a of the icon)
 end
+
+When "I click and accept the{optional_string} icon with CSS class {capture_string}" do |ordinal, icon_class|
+  page.driver.accept_modal(:confirm, wait: 4) do
+    step %{I click the #{ordinal} icon with CSS class "#{icon_class}"}
+  end
+end
+
+When "I click the{optional_string} icon with CSS class {capture_string}" do |ordinal, icon_class|
+  index = ordinal ? [0, 1, 2, 3, 4].send(ordinal.lstrip) : 0
+
+  all("i.#{icon_class}")[index].click
+end
+
 
 
 When "I click and accept the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |

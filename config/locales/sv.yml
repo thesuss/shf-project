@@ -56,6 +56,8 @@ sv:
   none_plur: &none_plur Inga
   none_n: &none_n Ingen
   name_missing: Namn Saknas
+  including: inklusive
+  administrator: administratör
 
   unknown: okänd
 
@@ -264,6 +266,7 @@ sv:
         name: &business_category_name  Namn
         description: &description  Beskrivning
         subcategory: &subcategory Underkategori
+        subcategories: Underkategorier
 
       shf_document:
         title: &title Titel
@@ -538,6 +541,15 @@ sv:
       ready_for_review_instructions: "När du är redo för att vi ska hantera din ansökan igen, kryssa i rutan nedan. När du trycker på knappen Skicka och kryssrutan är markerad, vet vi att vi måste se över den igen. \nDu kan göra ändringar utan att kryssa i rutan. Du kan om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du skickar in den för granskning."
       files_delivery_method: Du har valt att leverera filer via
       method_chosen_when: (vald %{date})
+
+    business_category_display_row:
+      category_no_subcategories_html: Den här kategorin har inga
+              underkategorier ännu. Du kan be %{mailto_admin} att lägga till
+              en eller flera underkategorier.
+      subcategories_for: Underkategorier för %{category_name}
+
+    business_category_edit_row:
+      add_remove_subcategories: Lägg till / ta bort underkategorier
 
     index:
       title: Alla inkomna ansökningar

@@ -4,6 +4,24 @@ module ShfApplicationsHelper
     policy(@shf_application).permitted_attributes_for_edit.include? :state
   end
 
+  def business_categories_str(application)
+    cats_str = ''
+    application.business_categories.roots.order(:name).each do |category|
+      cats_str += ', ' unless cats_str.empty?
+      cats_str += category.name
+      sub_cats = application.business_subcategories(category)
+
+      cats_str += subcategories_list_in_parens(sub_cats)
+    end
+    cats_str
+  end
+
+  def subcategories_list_in_parens(subcategories)
+    return '' unless subcategories.present?
+
+    " (#{t('including')}: #{subcategories.map(&:name).join(', ')})"
+  end
+
 
   # The AASM gem caches the display_name for a State.  We cannot do that because
   # the I18n.locale may have changed, so we must get the localized name every time
@@ -56,7 +74,7 @@ module ShfApplicationsHelper
 
   def list_app_categories application, separator=', '
     if application&.business_categories.any?
-      application.business_categories.includes(:shf_applications)
+      application.business_categories.roots.includes(:shf_applications)
         .map(&:name).sort.join(separator)
     end
   end

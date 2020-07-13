@@ -12,6 +12,45 @@ $(function() {
     }
   });
 
+  $('body').on('ajax:complete', '.edit-subcategories-button', function(e, response) {
+    if (Utility.httpErrorOccurred(response) === false) {
+      var data = JSON.parse(response.responseText);
+
+      // Receiving an edit row from server - replace display row with that
+      var $displayRow = $('#subcategories-display-row-' + data.business_category_id);
+
+      $displayRow.replaceWith(data.edit_row);
+
+      initSelect2Fields('.subcategories_field');
+
+      return false;
+    }
+  });
+
+  $('body').on('ajax:complete', '.edit-subcategories-cancel-button', function(e, response) {
+    if (Utility.httpErrorOccurred(response) === false) {
+      var data = JSON.parse(response.responseText);
+
+      // Receiving display row from server - replace edit row with that
+      var $editRow = $('#subcategories-edit-row-' + data.business_category_id);
+
+      $editRow.replaceWith(data.display_row);
+      return false;
+    }
+  });
+
+  $('body').on('ajax:complete', '.edit-category-form', function(e, response) {
+    if (Utility.httpErrorOccurred(response) === false) {
+      var data = JSON.parse(response.responseText);
+
+      var $editRow = $('#subcategories-edit-row-' + data.business_category_id);
+
+      $editRow.replaceWith(data.display_row);
+
+      return false;
+    }
+  });
+
   // Check to see if any file delivery radio button is selected -
   // if so, remove "disable" from submit button, hide explain text
   // if not, set callback function, on button change, to perform above actions

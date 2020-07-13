@@ -13,7 +13,7 @@
         - if @company.categories
           .categories
             = render 'business_categories/as_list',
-              categories: @company.business_categories.distinct
+              categories: @company.business_categories.roots.distinct
         - if payment_visible_for_user?(current_user, @company)
           %hr
             .branding-license

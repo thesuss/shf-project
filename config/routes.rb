@@ -118,6 +118,10 @@ Rails.application.routes.draw do
         get 'received-payment', to: 'shf_applications#show'
         post 'received-payment', to: 'shf_applications#received_payment'
 
+        get 'get_edit_row_business_category'
+        get 'get_display_row_business_category'
+
+        put 'business_subcategories'
       end
 
     end

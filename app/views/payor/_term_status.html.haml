@@ -30,7 +30,8 @@
   .status-details
     .row.mt-2.justify-content-between
       .flex.status
-        %span.label= status_label.html_safe
+        = succeed ':' do
+          %span.label= status_label.html_safe
         %span.value= status_text.html_safe
 
     .row.mt-2.justify-content-between

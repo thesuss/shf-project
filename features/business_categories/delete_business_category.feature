@@ -21,5 +21,5 @@ Feature: As an admin
   Scenario: Admin wants to delete an existing business category
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
-    When I click and accept the icon with CSS class "delete-category" for the row with "doggy grooming"
+    When I click and accept the icon with CSS class "fa-trash-alt" for the row with "doggy grooming"
     Then I should not see "doggy grooming"

@@ -7,11 +7,11 @@
       %table.table.table-hover.company-members
         %thead
           %tr
-            %th= t('companies.show.members')
+            %th.text-nowrap= t('companies.show.members')
             %th= t('activerecord.models.business_category.other')
 
         - applications.each do |application|
           %tbody
             %tr.member
               %td= application.user.full_name
-              %td= application.business_categories.pluck(:name).join(', ')
+              %td= business_categories_str(application)
