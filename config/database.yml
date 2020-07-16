@@ -14,7 +14,14 @@ test: &test
   <<: *default
   database: shf_project_test
 
-production:
+
+production: &production
+  <<: *default
+  database: shf_project_production
+  username: shf_project
+  password: <%= ENV['SHF_PROJECT_DATABASE_PASSWORD'] %>
+
+staging:
   <<: *default
   database: shf_project_production
   username: shf_project

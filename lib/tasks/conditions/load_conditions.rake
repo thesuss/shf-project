@@ -26,7 +26,7 @@ namespace :shf do
     # Filesystem locations
     RUNNING_LOG = '~/NOTES-RUNNING-LOG.txt'
     NGINX_LOG_DIR = '/var/log/nginx'
-    APP_DIR = File.join(ENV['APP_PATH'], 'current/')
+    APP_DIR = File.join(ENV['SHF_APP_PATH'], 'current/')
     PUBLIC_DIR = File.join(APP_DIR, 'public')
 
 

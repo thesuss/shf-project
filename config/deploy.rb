@@ -23,10 +23,10 @@ set :rbenv_type, :user
 set :rbenv_ruby, '2.5.1'
 
 set :application, 'shf'
-set :repo_url, 'git@github.com:AgileVentures/shf-project.git'
-set :branch, ENV['BRANCH']
+set :repo_url, ENV['SHF_GIT_REPO']
+set :branch, ENV['SHF_GIT_BRANCH']
 
-set :deploy_to, ENV['APP_PATH']
+set :deploy_to, ENV['SHF_APP_PATH']
 
 # Ensure the binstubs (files in /bin) are generated on each deploy. (From capistrano-bundle gem: https://github.com/capistrano/bundler)
 set :bundle_binstubs, -> { shared_path.join('bin') }
@@ -36,12 +36,12 @@ set :keep_releases, 5
 set :migration_role, :app
 
 
-# -------------------------
+# -----------------------------------------------------------------
 # Map Markers
 #  The map marker files are used to display markers on Google maps.
 #
 #  We require 6 (!) directories for the map markers:
-#   public/map-markers,
+#   public/map-markers,    ** this is the definitive directory
 #   public/sv/map-markers,
 #   public/sv/hundforetag/map-markers,
 #   public/en/map-markers,
@@ -56,100 +56,54 @@ set :migration_role, :app
 #  The root route (for non-logged in visitors) will look for the map markers in /public[/sv|en]/map-markers.
 #  But often the path is specific to companies and so is /public[/sv|en]/hundforetag
 #
-#  /sv/[hundforetag/]map-markers and /en/[hundforetag/]map-markers just have symbolic markers to the public/map-markers directory.
 #   (This all seems a bit too complex, but it's what is needed to get this working.)
-set :map_marker_root_dir, 'public'
+#
+#  The definitive directory is public/map-markers and it must have all of the map-marker files.
+#  The other directories/files are just symbolic links too the definitive directory and files.
+#
+#  The definitive directory and files _must_ exist. A task checks to see if they do and fails if they don't.
+#  The symbolic links are all created in another task.
+#
+set :map_marker_parent_dir, 'public'
 set :map_marker_dir, 'map-markers'
-set :map_marker_linked_dirs, ['sv', 'en', 'hundforetag', 'sv/hundforetag', 'en/hundforetag']
 set :map_marker_filenames, ['m1.png', 'm2.png', 'm3.png', 'm4.png', 'm5.png']
+set :locale_prefixes, ['sv', 'en']
+set :map_marker_linked_dirs, ['hundforetag']
 
 
-def mapmarker_root_path
-  # map_marker_root_dir = 'public'
-  # shared_path = Pathname.new('.')
-  # mapmarker_root_path = shared_path.join(map_marker_root_dir)
-  shared_path.join(fetch(:map_marker_root_dir))
+# @return Pathname - top-level path (within the Rails app) where the map-marker directory resides (the parent of the map-marker directory)
+def mapmarkers_parent_path
+  release_path.join(fetch(:map_marker_parent_dir))
 end
 
 
-def mapmarker_main_path
-  # map_marker_dir = 'map-markers'
-  # markers_path = Pathname.new(map_marker_dir)
-  markers_path = Pathname.new(fetch(:map_marker_dir))
-  mapmarker_root_path.join(markers_path)
+# @return Pathname - full path (within the Rails app) for the definitive map-markers directory
+def mapmarkers_main_path
+  mapmarkers_parent_path.join(Pathname.new(fetch(:map_marker_dir)))
 end
 
 
-# @return Array[String] - list of all files in the main mapmarkers directory
-def mapmarker_main_files
-  # ['m1.png', 'm2.png', 'm3.png', 'm4.png', 'm5.png']
-  fetch(:map_marker_filenames, [])
+# --------------------------
+
+
+def required_linked_files
+  rails_files = ['config/database.yml',
+                 'config/secrets.yml',
+                 '.env',
+                 'public/robots.txt',
+                 'public/favicon.ico',
+                 'public/apple-touch-icon.png',
+                 'public/apple-touch-icon-precomposed.png']
+
+  google_webmaster_files = ['public/google052aa706351efdce.html',
+                            'public/google979ebbe196e9bd30.html']
+
+  sitemap_files = ['public/sitemap.xml.gz',
+                   'public/svenska.xml.gz',
+                   'public/english.xml.gz']
+
+  [] + rails_files + google_webmaster_files + sitemap_files
 end
-
-
-def mapmarker_linked_paths
-  # markerlinked_dirs = ['sv', 'en','hundforetag','sv/hundforetag', 'en/hundforetag']
-  # map_marker_dir = 'map-markers'
-  markerlinked_dirs = fetch(:map_marker_linked_dirs, [])
-  map_marker_dir = fetch(:map_marker_dir)
-  markerlinked_dirs.map { |marker_linked_dir| mapmarker_root_path.join(marker_linked_dir).join(map_marker_dir) }
-end
-
-
-# @return Array[String] - list of all Map Marker directories, including those that are symlinks.
-#   Note these are not Pathnames
-def all_mapmarker_dirs
-  ["#{mapmarker_main_path}"].concat(mapmarker_linked_paths.map(&:to_s))
-end
-
-
-# @return Array[String] - list of all Map Marker files in all directories, including those that are symlinks
-def all_mapmarker_fpaths
-  all_fpaths = []
-  all_mapmarker_dirs.each do |mapmarker_dir|
-    all_fpaths.concat(mapmarker_main_files.map { |source_fn| "#{mapmarker_dir}/#{source_fn}" })
-  end
-  all_fpaths
-end
-
-
-# -------------------
-# LINKED FILES
-#
-# These files are shared among all deployments.  Every deployment has a
-# link to these files.  They are not recreated (new) for each deployment.
-# If any specific file for the system must remain the same from one
-# deployment to the next, it should be listed here.
-# These individual files are in the 'shared' directory on the production system:
-#     /var/www/shf/shared/
-# (That is the convention for Capistrano deployments.)
-#
-append :linked_files, 'config/database.yml',
-       'config/secrets.yml',
-       '.env',
-       'public/robots.txt',
-       'public/favicon.ico',
-       'public/apple-touch-icon.png',
-       'public/apple-touch-icon-precomposed.png'
-
-# Sitemap files.  These are generated by the sitemap_generator gem. (They are generated by a task, using the config/sitemap.rb configuration file)
-append :linked_files,
-       'public/sitemap.xml.gz',
-       'public/svenska.xml.gz',
-       'public/english.xml.gz'
-
-# Google webmaster files
-# The public/google......html files are files that Google Webmaster tools looks
-#   for to verify ownership and access to this site.
-#   These files verify that Google webmasters (e.g. Susanna & Ashley as of 2020/02/02)
-#   are verified as to access this site with Google webmaster tools.
-#   Do not remove these files!
-append :linked_files,
-       'public/google052aa706351efdce.html',
-       'public/google979ebbe196e9bd30.html'
-
-# Map marker files.
-append :linked_files, *all_mapmarker_fpaths
 
 
 # -------------------
@@ -182,8 +136,6 @@ append :linked_dirs, 'app/views/pages'
 # Files uploaded by members and admins when using the ckeditor (ex: company page custom infor, SHF member documents)
 append :linked_dirs, 'public/ckeditor_assets'
 
-# Map Marker directories:
-append :linked_dirs, *all_mapmarker_dirs
 
 # Tasks that should be run just once.
 #  Files are renamed once they are run, so we don't want to keep overwriting them each time we deploy.
@@ -199,18 +151,61 @@ append :linked_dirs, '.bundle'
 
 namespace :shf do
 
+  desc 'show all Capistrano variables'
+  task :show_cap_vars do
+    all_variables = Capistrano::Configuration.env
+    pp all_variables
+  end
+
+
   namespace :deploy do
 
     # this ensures that the description (a.k.a. comment) for each task will be recorded
     Rake::TaskManager.record_task_metadata = true
 
+
+    desc 'If req.d files are not in shared, copy from current release then update linked_files list'
+    task :append_reqd_linked_files do
+
+      shared_path = deploy_path.join(fetch(:shared_directory, 'shared'))
+      current_release_path = deploy_path.join(fetch(:release_path, '.'))
+
+      on release_roles :all do
+        # If it doesn't already exist in the shared directory,
+        #   move the file from the release directory to the shared directory
+
+        required_linked_files.each do |reqd_file|
+          source = current_release_path.join(reqd_file)
+          destination = shared_path.join(reqd_file)
+
+          unless test "[ -f #{destination} ]"
+            if test "[ -f #{source} ]"
+              # ensure the directory exists on the destination so that we can move the file there
+              execute :mkdir, "-p", destination.parent
+              execute(:mv, source, destination)
+            end
+          end
+
+        end
+      end
+
+      # Can't set the linked_files for capistrano because if this is the very first
+      #   installation, the files won't exist.  And the capistrano task deploy:check:linked_files will fail.
+      # Now add the files so that that they can be linked by later tasks
+      append :linked_files, *required_linked_files
+
+    end
+
+
+    # ----------------------------
+
     namespace :check do
       desc 'Ensure public/map-marker files exist. (Needed for Google maps)'
-      task :main_mapmarker_files do
+      task :main_mapmarker_files_exist do
 
         on release_roles :all do |host|
-          target_markers_path = mapmarker_main_path
-          source_files = mapmarker_main_files
+          target_markers_path = mapmarkers_main_path
+          source_files = fetch(:map_marker_filenames, [])
 
           source_files.each do |marker_file|
             full_fn = target_markers_path.join(marker_file)
@@ -221,38 +216,61 @@ namespace :shf do
             end
           end
         end
-
       end
+
     end
 
 
-    desc 'Create sym links to public/map-markers files if needed'
-    task create_mapmarker_symlinks: ["deploy:set_rails_env", "check:main_mapmarker_files"] do
+    desc 'Create sym links to public/map-markers files. Always remove any existing links and recreate them'
+    task symlink_dirs_to_mapmarkers: ["deploy:set_rails_env", "shf:deploy:check:main_mapmarker_files_exist"] do
+
+
+      # ensure we're working with a Pathname vs. a String
+      # @return Pathname - constructed with the string representation of what was given
+      def make_path(str_or_path = '')
+        Pathname(str_or_path.to_s)
+      end
+
+
+      # @return Pathname with the map-markers directory appended
+      def append_mapmarkers_dir(given_dir)
+        make_path(given_dir).join(fetch(:map_marker_dir))
+      end
+
+
+      # Always recreate the link so that we ensure it is up to date (= '-f' option)
+      # If the link already exists, force an overwrite (-f)
+      # If a directory exists with the same name as the link, remove it (must use 'rm -r')
+      def recreate_symlinked_dir(orig_dir, symlinked_dir)
+        execute(:rm, "-r", symlinked_dir) if test " [ -d #{symlinked_dir} ] "
+        execute :ln, "-sTf", orig_dir, symlinked_dir
+      end
+
 
       on release_roles :all do |_host|
 
-        target_markers_path = mapmarker_main_path
-        source_files = mapmarker_main_files
+        # create locale dirs based on the mapmarkers_main_path
+        # add a link to the map-markers directory
+        # don't delete the locale dirs if they already exist; we'll need to add to them
+        fetch(:locale_prefixes).each do |locale|
+          parent_path_with_locale = mapmarkers_parent_path.join(locale)
+          execute :mkdir, "-p", parent_path_with_locale
+          recreate_symlinked_dir(mapmarkers_main_path, append_mapmarkers_dir(parent_path_with_locale))
+        end
 
-        #  Note that the links are RELATIVE paths.  This makes testing on a local dev machine easier.
-        mapmarker_linked_paths.each do |markerlinked_dir|
-          # create the dir and any intermediate dirs only if it doesn't exist
-          execute :mkdir, "-p", markerlinked_dir
-          # FileUtils.mkdir_p(markerlinked_dir)
+        # Dirs that need to have locales prepended and a link to map-markers in each
+        fetch(:map_marker_linked_dirs, []).each do |linked_dirname|
 
-          relative_target_path = target_markers_path.relative_path_from(markerlinked_dir)
+          # First: create the dir without any locale and put the a link to map-markers in it
+          linked_dir_path_no_locale = mapmarkers_parent_path.join(linked_dirname)
+          execute :mkdir, "-p", linked_dir_path_no_locale
+          recreate_symlinked_dir(mapmarkers_main_path, append_mapmarkers_dir(linked_dir_path_no_locale))
 
-          source_files.each do |source_fname|
-            linked_file = markerlinked_dir.join(source_fname)
-
-            unless test("[ -l #{linked_file} ]")
-              # unless File.symlink?(linked_file)
-              execute :rm, linked_file if test "[ -f #{linked_file} ]"
-              # File.delete(linked_file) if File.exist?(linked_file)
-
-              execute :ln, "-s", "#{relative_target_path}/#{source_fname}", linked_file
-              # File.symlink "#{relative_target_path}/#{source_fname}", "#{linked_file}"
-            end
+          # Second: create dirs with the locale prefixes and put the link to map-markers in each
+          fetch(:locale_prefixes).each do |locale|
+            linked_dir_path_w_locale = mapmarkers_parent_path.join(locale).join(linked_dirname)
+            execute :mkdir, "-p", linked_dir_path_w_locale
+            recreate_symlinked_dir(mapmarkers_main_path, append_mapmarkers_dir(linked_dir_path_w_locale))
           end
         end
 
@@ -277,32 +295,32 @@ namespace :shf do
     desc 'Restart application'
     task :restart do
       on roles(:app), in: :sequence, wait: 5 do
-        info 'Restarting...'
+        info 'Restarting Rails server...'
         execute :touch, release_path.join('tmp/restart.txt')
       end
     end
 
 
-    # Note: another way to accomplish this would be to put an entry in .gitattributes for every file to ignore.
-    # However, I don't like mixing deployment information into git files.  (That couples the two systems and mixes responsibilities.)
     desc 'Remove testing related files'
     task :remove_test_files do
 
       on release_roles :all do
 
+        # 'current' directory might not exist yet (e.g. for an initial deploy). So must use :release_path
+        current_release_path = deploy_path.join(fetch(:release_path, '.'))
+
         # Because gems for these are not deployed,
         # Rake cannot load these files,
         # which then causes problems when trying to run any rake tasks on the deployment server.
-        remove_files = ["#{current_path}/lib/tasks/ci.rake",
-                        "#{current_path}/lib/tasks/cucumber.rake",
-                        "#{current_path}/script/cucumber"].freeze
-
+        remove_files = [current_release_path.join("lib/tasks/ci.rake"),
+                        current_release_path.join("lib/tasks/cucumber.rake"),
+                        current_release_path.join("script/cucumber")].freeze
         remove_files.each { |remove_f| remove_file remove_f }
 
 
         # Remove testing directories since the gems for using them are not deployed.
-        remove_dirs = ["#{current_path}/spec",
-                       "#{current_path}/features"].freeze
+        remove_dirs = [current_release_path.join("spec"),
+                       current_release_path.join("features")].freeze
         remove_dirs.each { |remove_d| remove_dir remove_d }
 
       end
@@ -326,7 +344,7 @@ namespace :shf do
               #info task_invoking_info(calling_task.name, task_name_to_run)
               execute :rake, task_name_to_run
             else
-              puts "\n>> WARNING! No task named #{task_name_to_run}. #{info_if_missing}\n\n"
+              puts "\n>> WARNING! No task named #{task_name_to_run}. #{info_if_missing}\n\n" # TODO can this be 'warn' instead of 'puts' ?
             end
           end
         end
@@ -344,7 +362,7 @@ namespace :shf do
       if test("[ -f #{full_fn_path} ]") # if the file exists on the remote server
         execute %{rm -f #{full_fn_path} }
       else
-        warn "File doesn't exist, so it could not be removed: #{full_fn_path}" # log and puts
+        warn "File doesn't exist, so it could not be removed: #{full_fn_path}"
       end
     end
 
@@ -353,13 +371,13 @@ namespace :shf do
       if test("[ -d #{full_dir_path} ]") # if the directory exists on the remote server
         execute %{rm -r #{full_dir_path} }
       else
-        warn "Directory doesn't exist, so it could not be removed: #{full_dir_path}" # log and puts
+        warn "Directory doesn't exist, so it could not be removed: #{full_dir_path}"
       end
     end
 
 
     def task_is_defined?(task_name)
-      puts "( checking to see if #{task_name} is defined )"
+      puts "( Checking to see if task #{task_name} is defined. This calls the parser.)"
       result = %x{bundle exec rake --tasks #{task_name} }
       result.include?(task_name) ? true : false
     end
@@ -371,30 +389,21 @@ namespace :shf do
     run_task_from(this_task, 'sitemap:refresh', 'Unable to refresh the SITEMAPs (/public/sitemap.* ...)')
   end
 
+
+  desc 'celebrate success!'
+  task :hooray do
+    yay_words = ['HOORAY!', 'Excellent!', 'Whoopee!', 'YAY!', 'Jippie!', 'Eccellente!', 'Woo Hoo!', 'Fantasic!']
+    random_yay = yay_words.sample
+    puts "\n\n\n     #{random_yay}  The system deployed successfully. \n\n\n"
+  end
+
+
 end
 
 
-# ----------------------------------------------------
-# Task sequencing:
-# ----------------------------------------------------
-
-# Run the task :create_mapmarker_symlinks before the (capistrano defined) deploy:check:linked_files task is run
-#   so that the Mapmarker files and symlinks definitely exist.
-before "deploy:check:linked_files", "shf:deploy:create_mapmarker_symlinks"
-
-before "deploy:publishing", "shf:deploy:run_load_conditions"
-after "shf:deploy:run_load_conditions", "shf:deploy:run_one_time_tasks"
-
-# Have to wait until all files are copied and symlinked before trying to remove
-#   these files.  (They won't exist until then.)
-before "deploy:restart", "shf:deploy:remove_test_files"
-
-after "deploy:publishing", "deploy:restart"
-
-# Refresh the sitemaps
-after "deploy:restart", "shf:sitemap_refresh"
-
-
+# =========================================================
+# Rails tasks
+#
 # Run a rails console or a rails dbconsole
 # @url https://gist.github.com/toobulkeh/8214198
 #
@@ -425,9 +434,35 @@ namespace :rails do
   # ssh to the server
   def execute_interactively(command)
     server = fetch(:bundle_servers).first
-    user   = server.user
-    port   = server.port || 22
+    user = server.user
+    port = server.port || 22
 
     exec "ssh -l #{user} #{host} -p #{port} -t 'cd #{deploy_to}/current && #{command}'"
   end
 end
+
+
+# ----------------------------------------------------
+# Task sequencing:
+# ----------------------------------------------------
+
+before "deploy:symlink:linked_files", "shf:deploy:append_reqd_linked_files"
+
+after "deploy:symlink:linked_dirs", "shf:deploy:symlink_dirs_to_mapmarkers"
+
+# Have to wait until all files are copied and symlinked before trying to remove
+#   these files.  (They won't exist until then.)
+# They must be removed before deploy:assets:precompile is executed because
+#   that will cause all rake files to be loaded and if any testing .rake or .rb files are referenced,
+#   it will fail.
+before "deploy:assets:precompile", "shf:deploy:remove_test_files"
+
+before "deploy:publishing", "shf:deploy:run_load_conditions"
+after "shf:deploy:run_load_conditions", "shf:deploy:run_one_time_tasks"
+
+after "deploy:published", "shf:deploy:restart"
+
+# Refresh the sitemaps
+after "shf:deploy:restart", "shf:sitemap_refresh"
+
+after "deploy:finished", "shf:hooray"
