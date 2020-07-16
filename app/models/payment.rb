@@ -3,6 +3,7 @@ require 'observer'
 class Payment < ApplicationRecord
 
   include Observable
+  include UpdatedAtRange
 
   after_initialize :add_observers
   #  before_destroy :delete_observers  # TODO is this needed?
@@ -65,13 +66,6 @@ class Payment < ApplicationRecord
 
   def add_observers
     add_observer MembershipStatusUpdater.instance, :payment_made
-  end
-
-
-
-  # return all payments where updated_at: >= start date AND updated_at: <= end_date
-  def self.updated_in_date_range(start_date, end_date)
-    where( updated_at: start_date..end_date )
   end
 
 

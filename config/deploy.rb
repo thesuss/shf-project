@@ -20,7 +20,7 @@
 lock '~> 3.11'
 
 set :rbenv_type, :user
-set :rbenv_ruby, '2.5.1'
+set :rbenv_ruby, '2.6.6'
 
 set :application, 'shf'
 set :repo_url, ENV['SHF_GIT_REPO']

@@ -3,8 +3,6 @@ require 'aasm/rspec'
 
 require 'support/ae_aasm_matchers/ae_aasm_matchers'
 
-require 'shared_examples/scope_updated_in_date_range'
-
 
 #================================================================================
 # Shared examples:
@@ -215,12 +213,8 @@ RSpec.describe ShfApplication, type: :model do
 
       end
 
-
     end
 
-    describe 'updated_in_date_range(start_date, end_date)' do
-      it_behaves_like 'it_has_updated_in_date_range_scope', :shf_application
-    end
   end
 
 

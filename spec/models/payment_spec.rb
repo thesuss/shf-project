@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-require 'shared_examples/scope_updated_in_date_range'
-
 
 RSpec.describe Payment, type: :model do
 
@@ -96,10 +94,6 @@ RSpec.describe Payment, type: :model do
             .to contain_exactly(member_pymt1, member_pymt2, member_pymt3,
                                 brand_pymt1, brand_pymt2, brand_pymt3)
       end
-    end
-
-    describe 'updated_in_date_range(start_date, end_date)' do
-      it_behaves_like 'it_has_updated_in_date_range_scope', :payment
     end
 
 

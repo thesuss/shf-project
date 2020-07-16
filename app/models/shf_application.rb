@@ -7,6 +7,7 @@ class ShfApplication < ApplicationRecord
 
   include Observable
   include AASM
+  include UpdatedAtRange
 
 
   before_destroy :before_destroy_checks
@@ -116,11 +117,6 @@ class ShfApplication < ApplicationRecord
 
     open.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id))
 
-  end
-
-  # return all SHF applications where updated_at: >= start date AND updated_at: <= end_date
-  def self.updated_in_date_range(start_date, end_date)
-    where( updated_at: start_date..end_date )
   end
 
 
