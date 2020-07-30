@@ -143,7 +143,7 @@ RSpec.describe AlertLogger do
 
       subject.log_failure('this is a', error: Net::ProtocolError)
 
-      expect(File.read(logfilepath)).to include("Also see for possible info #{ApplicationMailer::LOG_FILE}")
+      expect(File.read(logfilepath)).to include("Also see for possible info #{ApplicationMailer.logfile_name}")
     end
 
 
