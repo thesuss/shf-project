@@ -13,7 +13,6 @@ require_relative 'shared_context/simple_rake_task_files_maker'
 require_relative 'shared_context/mock_rake_task'
 
 
-
 RSpec.describe OneTimeTasker::TasksFinder do
 
   include_context 'simple rake task files maker'

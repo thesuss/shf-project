@@ -17,7 +17,6 @@ RSpec.describe HBrandingFeeWillExpireAlert do
 
   let(:company) { create(:company) }
 
-
   let(:config) { { days: [1, 7, 15, 30] } }
   let(:timing) { HBrandingFeeWillExpireAlert::TIMING_BEFORE }
   let(:condition) { create(:condition, timing, config) }

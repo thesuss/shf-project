@@ -4,7 +4,6 @@ require 'timecop'
 
 require 'shared_context/stub_email_rendering'
 
-
 # Note that the described class is _not_ an ActiveRecord, so the database is not
 # automatically cleaned between examples.
 
@@ -82,7 +81,6 @@ RSpec.describe CompanyEmailAlert do
 
     let(:mock_log) { instance_double("ActivityLogger") }
 
-
     around(:each) do |example|
       Timecop.freeze(jan1)
       example.run
@@ -120,7 +118,6 @@ RSpec.describe CompanyEmailAlert do
         end
 
         expect(ActionMailer::Base.deliveries.size).to eq(c2_2_members.current_members.size)
-
       end
     end
 
