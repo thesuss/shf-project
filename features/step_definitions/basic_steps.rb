@@ -50,9 +50,12 @@ When /^I confirm popup$/ do
 end
 
 When /^I confirm popup with message t\("([^"]*)"\)$/ do |modal_text|
-  # requires poltergeist:
-  using_wait_time 3 do
-    page.driver.accept_modal(:confirm, { text: i18n_content("#{modal_text}") }) # will wait until it finds the text (or reaches Capybara max wait time)
+  if Capybara.current_driver == :poltergeist
+    using_wait_time 3 do
+      page.driver.accept_modal(:confirm, { text: i18n_content("#{modal_text}") }) # will wait until it finds the text (or reaches Capybara max wait time)
+    end
+  else
+    raise 'step not configured for current browser driver: cannot confirm a popup based on the message'
   end
 end
 

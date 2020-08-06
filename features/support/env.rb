@@ -4,7 +4,6 @@ require 'simplecov'
 require 'cucumber/rails'
 require 'cucumber/timecop'
 require 'cucumber/rspec/doubles'
-require 'capybara/poltergeist'
 require 'email_spec/cucumber'
 require 'webdrivers/chromedriver'
 
