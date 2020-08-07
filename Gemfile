@@ -89,6 +89,11 @@ gem 'whenever', require: false
 gem 'by_star'
 
 group :development, :test do
+  gem 'rubocop',             '=0.75.0', require: false
+  gem 'rubocop-rails',       '=2.5.2',  require: false
+  gem 'rubocop-rspec',       '=1.35.0', require: false
+  gem 'rubocop-performance', '=1.6.1', require: false
+
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
@@ -130,7 +135,6 @@ group :development do
   gem 'rb-readline'
 
   gem 'rubycritic'   # code quality analysis tools and reports
-  gem 'rubocop', require: false
   gem 'rack-mini-profiler', require: false
 end
 
@@ -147,7 +151,6 @@ group :test do
   gem 'vcr'      # to record and 'playback' (mock) http requests
 
   gem 'timecop'
-  gem 'rubocop-rspec'
 
   gem "show_me_the_cookies"
 end
