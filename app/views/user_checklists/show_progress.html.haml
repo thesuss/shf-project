@@ -1,15 +1,18 @@
+- content_for :javascript_for_view do
+  = javascript_include_tag 'user-checklists.js'
+
 -# The variables below are also used in the javascript
 :ruby
   checkbox_id = 'completed-checkbox'
+  complete_txt = t('.complete')
+
   is_completed_icon_id = 'fas-is-complete-icon'
-  inner_progress_bar_id = 'progress-bar'
-  percent_text_class = 'percent-text'
-  next_arrow_id = 'fas-next-arrow-icon'
   next_link_id = 'next-link'
   contact_us_footer_id = 'contact-us-footer'
 
   whiteout_class = 'whiteout'
   show_class = 'is-complete'
+
 
 .membership-guidelines
   - overall_progress = @overall_progress
@@ -49,9 +52,9 @@
 
                 = check_box_tag(checkbox_id, 'checked', @user_checklist.all_completed?,
                     { class: "fa-check-square",
-                      onchange:"toggleCompletedCheckbox(#{ @user.id }, #{ @user_checklist.id })" })
+                      onchange:"toggleCompletedCheckbox( #{ @user_checklist.id })" })
 
-                = label_tag checkbox_id, { onchange:"toggleCompletedCheckbox(#{ @user.id }, #{ @user_checklist.id })" } do
+                = label_tag checkbox_id, { onchange:"toggleCompletedCheckbox( #{ @user_checklist.id })" } do
                   = t('.read_and_agree_start')
                   %span.name= @user_checklist.name
                   = t('.read_and_agree_end')
@@ -60,7 +63,7 @@
               .row
                 .col
                   %p.contact-if-questions
-                    #contact-us-footer
+                    %div{ id: contact_us_footer_id }
                       = t('.contact_if_questions')
                       = mail_to(t('.email_display_name'), ENV['SHF_MEMBERSHIP_EMAIL'])
 
@@ -72,55 +75,52 @@
                       = link_to  user_user_checklist_progress_path(@user, next_sibling) do
                         = t('.next')
                         %span.next-arrow-icon.show-inline#next-arrow-icon
-                          = next_arrow_icon(html_options: { class: 'fa-lg', id: next_arrow_id })
+                          = next_arrow_icon(html_options: { class: 'fa-lg', id: 'fas-next-arrow-icon' })
 
 
 :javascript
-
-  const setCompleteUrl = "/anvandare/lista/set-all-completed/";
-  const setUncompleteUrl = "/anvandare/lista/set-all-uncompleted/";
+  "use strict";
 
   const checkboxId = "##{ checkbox_id }";
   const isCompleteIconId = "##{ is_completed_icon_id }";
-  const innerProgressBarId = "##{ inner_progress_bar_id }";
-  const percentTextClass = ".#{ percent_text_class }";
+
   const nextLinkId = "##{ next_link_id }";
   const contactUsFooterId = "##{ contact_us_footer_id }";
 
   const whiteoutClass = "#{ whiteout_class }";
   const showClass = "#{ show_class }";
 
-  const ALL_COMPLETE = 100;
+  const completeTxt = "#{ complete_txt }"
+
 
   window.onload = function(){
     updateBasedOnCompletedCheckbox();
   };
 
 
-  function toggleCompletedCheckbox(userId, checklistId) {
-      let checkbox = $(checkboxId);
-      let ajaxPostURL = (checkbox.prop("checked") ? setCompleteUrl : setUncompleteUrl);
+  function toggleCompletedCheckbox(checklistId) {
+      UserChecklists.postCheckboxChanged(checkboxId, checklistId, postCheckboxChangedSuccess);
+  }
 
-      $.post( ajaxPostURL + checklistId)
 
-        .done(function(responseData) {
-          if (Utility.httpErrorOccurred(responseData) === false) {
-            // success
-            updateBasedOnCompletedCheckbox();
-            let newPercentComplete = responseData.overall_percent_complete;
-            updateProgressBar(newPercentComplete);
-            if (newPercentComplete === ALL_COMPLETE) {
-              window.location.reload(true);
-            }
-          }
-        })
+  // This is called if postCheckboxChanged is successful
+  function postCheckboxChangedSuccess(responseData) {
 
-      .fail(function(responseData) { return failedRequest(responseData) });
+    if (Utility.httpErrorOccurred(responseData) === false) {
+        // success
+        updateBasedOnCompletedCheckbox();
+        let newPercentComplete = responseData.overall_percent_complete;
+        let progressBar = $(UserChecklists.PROGRESS_BAR_ID);
+        UserChecklists.updateProgressBar(newPercentComplete, progressBar, completeTxt);
+        if (newPercentComplete === UserChecklists.ALL_COMPLETE) {
+          window.location.reload(true);
+        }
+    }
   }
 
 
   function updateBasedOnCompletedCheckbox() {
-   let checkbox = $(checkboxId);
+    let checkbox = $(checkboxId);
     if (checkbox.prop("checked")) {
       showCompleteCheckIcon();
       hideContactUs();
@@ -131,16 +131,6 @@
       showContactUs();
       hideNextLink();
     }
-  }
-
-
-  function updateProgressBar(progressPercent = 0) {
-    let progressBar = $(innerProgressBarId);
-    let percentText = progressBar.find(percentTextClass);
-    let progressPercentString = progressPercent + "%";
-    percentText.text(progressPercentString + " #{ t('.complete') }");
-    progressBar.innerWidth(progressPercentString);
-    progressBar.attr('aria-valuenow', progressPercent);
   }
 
 

@@ -43,7 +43,7 @@ $guideline-list-left-padding: 2rem;
     display: none;
   }
 
-  .is-complete{
+  .is-complete {
     color: $is-complete-color;
   }
 
@@ -72,7 +72,6 @@ $guideline-list-left-padding: 2rem;
     .percent-text {
       color: $body-text;
       font-size: 1rem;
-      //font-weight: bolder;
     }
 
     .progress-bar {
@@ -154,6 +153,30 @@ $guideline-list-left-padding: 2rem;
       }
 
     }
+  }
+
+}
+
+
+.show {
+
+  .progress-bar.is-complete {
+    background-color: $is-complete-color;
+
+    .percent-text {
+      color: $white;
+    }
+  }
+
+  .progress-bar.none-complete {
+    .percent-text {
+      color: $body-text;
+    }
+  }
+
+  .date-completed {
+    font-size: smaller;
+    font-style: italic;
   }
 
 }

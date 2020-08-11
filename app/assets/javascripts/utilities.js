@@ -74,6 +74,25 @@ var Utility = {
     if (action_status === 200 || action_status === 'ok') { return false; }
 
     return true;
+  },
+
+
+  postUrl: function(postUrl, successCallback) {
+    $.post(postUrl)
+    .done(function (responseData) {
+      if (Utility.httpErrorOccurred(responseData) === false) {
+        successCallback(responseData);
+      }
+    })
+    .fail(function (responseData) {
+      return Utility.failedRequest(responseData)
+    });
+  },
+
+
+  failedRequest: function(responseData) {
+    alert(responseData.error_text);
+    return false;
   }
 
 };

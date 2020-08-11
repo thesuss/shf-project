@@ -39,7 +39,7 @@ RSpec.describe UserChecklistsHelper, type: :helper do
 
 
   it 'is_completed_checkbox(user_checklist)' do
-    expect(is_completed_checkbox(create(:user_checklist))).to match(/<input type="checkbox" name="completed-checkbox" id="completed-checkbox" value="checked" class="checkbox.completed-checkbox" data-remote="true" data-method="post" data-url="\/anvandare\/(\d+)\/lista\/(\d+)\/all_changed_by_completion_toggle\s*/)
+    expect(is_completed_checkbox(create(:user_checklist))).to match(/<input type="checkbox" name="completed-checkbox" id="completed-checkbox" value="checked" class="checkbox.completed-checkbox" data-remote="true" data-method="post" data-url="\/anvandare\/lista\/all_changed_by_completion_toggle\/(\d+)s*/)
   end
 
 

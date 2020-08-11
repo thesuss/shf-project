@@ -1,5 +1,11 @@
 class UserChecklistPolicy < ApplicationPolicy
 
+
+  def index?
+    user.admin?
+  end
+
+
   def new?
     not_a_visitor?
   end
@@ -11,21 +17,12 @@ class UserChecklistPolicy < ApplicationPolicy
 
 
   def show?
-    admin_or_owner?
+    user.admin?
   end
 
 
   def show_progress?
-    show?
-  end
-
-
-  def index?
-    # Authorized if an admin OR
-    #  the current user is getting their own checklists,
-    #  else authorization fails.
-    # @user is the pundit user ( = current_user).  @record is the user that we are getting the checklists for
-    not_a_visitor? && (@user.admin? || ( @user == @record ))
+    admin_or_owner?
   end
 
 
@@ -38,9 +35,9 @@ class UserChecklistPolicy < ApplicationPolicy
     update?
   end
 
-
+  # TODO  is this correct?  shouldn't it be admin only?  What happens when a User or Member is destroyed?/deleted?
   def destroy?
-    admin_or_owner?
+    user.admin_or_owner?
   end
 
 

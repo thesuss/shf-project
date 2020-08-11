@@ -82,7 +82,7 @@ module PathHelpers
 
       # User-ChecklistItems pages
       when 'my checklists', 'checklists'
-        path = user_user_checklists_path(user)
+        path = user_checklists_path(user)
 
       when 'first unchecked membership guideline'
         path = user_user_checklist_progress_path(user, UserChecklistManager.first_incomplete_membership_guideline_section_for(user))

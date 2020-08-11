@@ -28,7 +28,7 @@ Feature: User completes all, some, or none of the Membership Ethical Guidelines 
     # Have to wait so that all AJAX and db can complete before capybara tries to reload the page
     And I wait for 1 seconds
     # Have to reload the page to see the change since no jquery is running
-    And I reload the page
+#    And I reload the page
     Then I should see "67%"
     And I should see t("next")
 
@@ -94,4 +94,3 @@ Feature: User completes all, some, or none of the Membership Ethical Guidelines 
     When I click on t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
     Then I should see "0%"
     And I should see "Section 1" as the guideline name to agree to
-

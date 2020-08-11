@@ -16,14 +16,14 @@ class UserChecklistsController < ApplicationController
 
   def index
     @user = User.find(params[:user_id])
-    @user = current_user unless @user  # default to the current_user if couldn't find the User
+    @user = current_user unless @user # default to the current_user if couldn't find the User
 
     # Verify that the current user is authorized to access the checklists for @user:
     authorize(@user, nil, policy_class: UserChecklistPolicy)
 
     # Get all the checklists for the user in the path. Ex: If the current user is an admin,
     # then we want to be sure to see the checklists for a specific user, not for the admin.
-    found_lists = UserChecklist.where(user: @user)  #.includes(:master_checklist)
+    found_lists = UserChecklist.where(user: @user) #.includes(:master_checklist)
     @user_checklists = found_lists.blank? ? [] : found_lists
   end
 
@@ -49,33 +49,26 @@ class UserChecklistsController < ApplicationController
 
 
   # (XHR request)
-  # Toggle the date_completed for the checklist, then update all lists that
-  # need to be changed because of it.
+  # Toggle the date_completed for the checklist, then update all UserChecklists that
+  # need to be changed because of it. (Ex: this may make a parent complete or incomplete.)
   #
-  # Return data for all of the checklists that had to be changed:
-  #  the updated date_completed and percent complete.
+  # Return data for this changed UserChecklist: the updated date_completed and percent complete.
   #
   def all_changed_by_completion_toggle
     handle_xhr_request do
-      raise MissingUserChecklistParameterError, t('.missing-checklist-param-error') if params[:user_checklist_id].blank?
+      raise MissingUserChecklistParameterError, t('.missing-checklist-param-error') if params[:id].blank?
 
-      user_checklist_id = params[:user_checklist_id]
+      user_checklist_id = params[:id]
       user_checklist = UserChecklist.find(user_checklist_id)
       raise ActiveRecord::RecordNotFound, t('.not_found', id: user_checklist_id) if user_checklist.nil?
 
-      # toggle the date_completed and get the list of all those changed
-      checklists_changed = user_checklist.all_changed_by_completion_toggle
+      # toggle the date_completed and update any parents needed
+      user_checklist.all_changed_by_completion_toggle
 
-      changed_checklists.concat(checklists_changed.map do |checklist_changed|
-        # use just the Date, not the time
-        date_complete = checklist_changed.date_completed.nil? ? nil : checklist_changed.date_completed.to_date
-        { checklist_id: checklist_changed.id,
-          date_completed: date_complete,
-          overall_percent_complete: checklist_changed.root.percent_complete
-        }
-      end)
-
-      { changed_checklists: changed_checklists }
+      { checklist_id: user_checklist.id,
+        date_completed: user_checklist.date_completed,
+        overall_percent_complete: user_checklist.percent_complete
+      }
     end
   end
 
@@ -83,9 +76,10 @@ class UserChecklistsController < ApplicationController
   # Set the given UserChecklist to completed (date_completed = Time.zone.now) and
   # set all of its descendants to completed, too.
   #
-  # @return [Hash] - the id of the UserChecklist changed (the parent),
-  #                  the new date_completed value for it,
-  #                  and the new overall percent complete value (for the top-level ancestor of the user_checklist)
+  # @return Hash - info about the user checklist item that was changed
+  #      user_checklist_id: id of the user checklist item changed,
+  #      date_completed: Date of when the user checklist item was completed (blank if not complete),
+  #      overall_percent_complete: updated percent complete for the root checklist this one belongs to
   #
   def set_complete_including_kids
     handle_xhr_request do
@@ -94,6 +88,14 @@ class UserChecklistsController < ApplicationController
   end
 
 
+  # Set the given UserChecklist to uncompleted (date_completed = nil) and
+  # set all of its descendants to uncompleted, too.
+  #
+  # @return Hash - info about the user checklist item that was changed
+  #      user_checklist_id: id of the user checklist item changed,
+  #      date_completed: blank,
+  #      overall_percent_complete: updated percent complete for the root checklist this one belongs to
+  #
   def set_uncomplete_including_kids
     handle_xhr_request do
       set_uc_and_kids_date_completed(params, nil)
@@ -141,6 +143,14 @@ class UserChecklistsController < ApplicationController
   end
 
 
+  # Note this only returns information for the given UserChecklist that was changed.
+  #  This does not return any information about any children that might have been changed.
+  #
+  # @return Hash - info about the user checklist item that was changed
+  #      user_checklist_id: id of the user checklist item changed,
+  #      date_completed: Date of when the user checklist item was completed (blank if not complete),
+  #      overall_percent_complete: updated percent complete for the root checklist this one belongs to
+  #
   def set_uc_and_kids_date_completed(action_params, new_date_completed = Time.zone.now)
 
     raise MissingUserChecklistParameterError, t('.missing-checklist-param-error') if action_params[:id].blank?
@@ -155,9 +165,10 @@ class UserChecklistsController < ApplicationController
         user_checklist.set_uncomplete_including_children
       end
       new_percent_complete = user_checklist.root.percent_complete
+      date_str = user_checklist.date_completed.blank? ? '' : user_checklist.date_completed.to_time.to_date
 
       { user_checklist_id: user_checklist_id,
-        date_completed: user_checklist.date_completed,
+        date_completed: date_str,
         overall_percent_complete: new_percent_complete }
 
     else

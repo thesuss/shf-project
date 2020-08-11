@@ -1,9 +1,19 @@
-- progress_bar_class = 'progress-bar'
-- percent_text_class = 'percent-text'
+- content_for :javascript_for_view do
+  = javascript_include_tag 'user-checklists.js'
+
+-# The variables below are also used in the javascript.  They're here so
+  that the javascript looks for the same element names as are used to construct the view.
+:ruby
+  completed_checkbox = 'completed-checkbox'
+  complete_txt = t('.complete')
+  i18n_date_completed = t('checklist_common.date_completed')
+  date_completed = 'date-completed'
+  list_root_class = 'root'
+  checklist_item_prefix = 'li-id-'
+
 
 %header.entry-header
   %h1{ class: with_admin_css_class_if_needed(@current_user, ['entry-title']) }=  t('.title', name: @user.full_name)
-
 
 .entry-content
   #user-checklists
@@ -16,8 +26,8 @@
             ul_class_children: ['children', 'collapse', 'show'],
             ul_id_method: ul_id,
             li_class: ['checklist-item'],
-            li_class_top: ['root'],
-            li_id_method: li_id }) do | child_entry |
+            li_class_top: [list_root_class],
+            li_id_method: li_id(checklist_item_prefix) }) do | child_entry |
 
         - child_entry_li_id = li_id.call(child_entry)
         - disabled_setting = { }
@@ -28,29 +38,31 @@
 
           %i{ class:'expand-collapse-toggle fa fa-angle-down' ,'aria-controls': children_ul_id, 'aria-expanded': 'true', 'data-toggle': 'collapse', href: children_ul_id, role: 'button' }
 
-        = check_box_tag("completed-checkbox-#{ child_entry_li_id }", 'checked', child_entry.all_completed?, { class: "checkbox-date-completed",
-           onchange:"toggleCompletedCheckbox(#{ current_user.id }, #{ child_entry.id }, '#{ child_entry_li_id }')" }.merge(disabled_setting))
+        = check_box_tag("#{completed_checkbox}-#{ child_entry_li_id }", 'checked', child_entry.all_completed?, { class: "checkbox-date-completed",
+           onchange:"toggleCompletedCheckbox(#{ child_entry.id }, '#{ child_entry_li_id }')" }.merge(disabled_setting))
 
         %span.name{ class: list_entry_css_classes(child_entry) }
           = child_entry.name
 
-        %span.date-completed
+        %span{ class: date_completed }
           - if  child_entry.all_completed?
-            Date completed: #{ child_entry.date_completed.to_date }
+            = i18n_date_completed + ': ' +  child_entry.date_completed.to_date.to_s
 
         -# only show progress bar for the top level items
         - if child_entry.root?
           = render partial: 'shared/progress_bar', locals: {  percent_complete: child_entry.percent_complete }
 
 
-
 :javascript
+  "use strict";
 
-  // FIXME - DRY with show_progress javascript
+  const dateCompletedI18n = "#{i18n_date_completed}";
+  const completed_checkbox = "#{completed_checkbox}"
+  const dateCompletedClass = ".#{date_completed}";
+  const listRootClass = ".#{list_root_class}";
+  const listItemPrefix = "#{checklist_item_prefix}";
 
-  const progressBarClass = ".#{ progress_bar_class }";
-  const percentTextClass = ".#{ percent_text_class }";
-
+  const completeText = "#{complete_txt}"
 
   $(".expand-collapse-toggle").on("click",function(){
     $(this).toggleClass("fa-angle-down");
@@ -58,55 +70,26 @@
   });
 
 
-  function toggleCompletedCheckbox(userId, checklistId, elementId) {
-      let ajaxPostURL = "/en/anvandare/" + userId + "/lista/" + checklistId + "/all_changed_by_completion_toggle";
-      $.post( ajaxPostURL,  updateDateSuccessfulFor); // FIXME catch error and display as an alert
+  // @return the element for the checklist that shows the checklist with id = checklist_id
+  function checklistEle(checklistID) {
+    return $("#" + listItemPrefix + String(checklistID));
   }
 
 
-  // Loop through all items returned in the response and update their date completed display.
-  function updateDateSuccessfulFor(responseData) {
-    let changedChecklists = responseData.changed_checklists;
-
-    changedChecklists.forEach(function(checklist) {
-
-      let checklistLiID = ("#li-id-" + String(checklist['checklist_id']));
-      let checklistElement = $(checklistLiID);
-      let progressBar = checklistElement.closest(".root").find(progressBarClass);
-      let newPercentComplete = checklist['overall_percent_complete'];
-      let dateCompleted = checklistElement.find('.date-completed');
-
-      updateProgressBar(newPercentComplete, progressBar);
-
-      let checklistDateCompleted = checklist['date_completed'];
-      dateCompleted.text(dateCompletedText(checklistDateCompleted));
-      setCheckboxBasedOnDateCompleted(checklistElement, checklistDateCompleted)
-    }
-    );
-  }
-
-  // return the text to display for the date completed
-  function dateCompletedText(dateCompleted = null) {
-    if (dateCompleted == null ) {
-      return "";
-    }
-    else {
-      // FIXME i18n for date completed
-      return "Date completed: " +  dateCompleted;
-    }
+  function toggleCompletedCheckbox(checklistId, liElemId) {
+    let checkboxId = ("#" + completed_checkbox + "-" + liElemId);
+    UserChecklists.postCheckboxChanged(checkboxId, checklistId, postCheckboxChangedSuccess);
   }
 
 
-  function updateProgressBar(progressPercent = 0, progressBar = $(progressBarClass)) {
-    let percentText = progressBar.find(percentTextClass);
-    let progressPercentString = progressPercent + "%";
-    percentText.text(progressPercentString + " #{ t('.complete') }");
-    progressBar.innerWidth(progressPercentString);
-    progressBar.attr('aria-valuenow', progressPercent);
-  }
+  // This is called if postCheckboxChanged is successful
+  function postCheckboxChangedSuccess(responseData) {
 
+    let checklistElement = checklistEle(responseData.user_checklist_id)
+    let progressBar = checklistElement.closest(listRootClass).find(UserChecklists.PROGRESS_BAR_CLASS);
+    UserChecklists.updateProgressBarFromResponse(responseData, progressBar, completeText);
 
-  function setCheckboxBasedOnDateCompleted(element, dateCompleted) {
-    let checkBox = element.find('.checkbox-date-completed');
-    checkBox.checked = !!dateCompleted  // this turns null and empty Strings into false (a Boolean)
+    let dateCompleted = checklistElement.find(dateCompletedClass);
+    let checklistDateCompleted = responseData.date_completed;
+    dateCompleted.text( UserChecklists.dateCompletedText(checklistDateCompleted, dateCompletedI18n) );
   }

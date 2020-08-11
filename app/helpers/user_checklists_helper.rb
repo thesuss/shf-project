@@ -31,18 +31,19 @@ module UserChecklistsHelper
     checkbox_with_post('completed-checkbox',
                        'checked',
                        user_checklist.all_completed?,
-                       user_user_checklist_all_changed_by_completion_toggle_path(user_checklist.user, user_checklist), options)
+                       user_checklist_all_changed_by_completion_toggle_path(user_checklist), options)
   end
 
+
   # @return [Lambda] - lambda to use to generate the ul element id based on the user_checklist
-  def ul_id
-    lambda { |user_checklist| "ul-id-#{user_checklist.id}" }
+  def ul_id(prefix = 'ul-id-')
+    lambda { |user_checklist| "#{prefix}#{user_checklist.id}" }
   end
 
 
   # @return [Lambda] - lambda to use to generate the li element id based on the user_checklist
-  def li_id
-    lambda { |user_checklist| "li-id-#{user_checklist.id}" }
+  def li_id(prefix = 'li-id-')
+    lambda { |user_checklist| "#{prefix}#{user_checklist.id}" }
   end
 
 

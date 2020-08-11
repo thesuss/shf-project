@@ -174,7 +174,7 @@ And("I should{negate} see the checklist {capture_string} in the list of user che
 end
 
 
-And("I {action} the checkbox for the user checklist {capture_string}") do |check_or_uncheck, item_name|
+When("I {action} the checkbox for the user checklist {capture_string}") do |check_or_uncheck, item_name|
   checkbox_element = get_checkbox_element_for_list(item_name)
   case check_or_uncheck
     when 'check'
@@ -255,4 +255,10 @@ end
 And("I should{negate} see {capture_string} as the guideline name to agree to") do | negate, guideline_name |
   guideline =  page.find_by_id("guideline-name")
   expect(guideline).send (negate ? :not_to : :to), have_content(/#{guideline_name}/i)
+end
+
+And("I am on the page for checklist item {capture_string}") do | checklist_name |
+  checklist = UserChecklist.find_by(user: @user, name: checklist_name)
+  path = user_user_checklist_path(@user, checklist.id)
+  visit path_with_locale(path)
 end

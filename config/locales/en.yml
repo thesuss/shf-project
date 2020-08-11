@@ -137,7 +137,7 @@ en:
   checklist_common:
     done: &done Done
     complete: &complete Complete
-    date_completed: &date_completed Date Complete
+    date_completed: &date_completed Date Completed
 
 
  # Automatic and manual lookup for ActiveRecords:
@@ -412,10 +412,12 @@ en:
   shared:
     progress_bar:
       complete: *complete
+      progress_complete:  &progress_complete complete
 
   about_info:
     title: About this website
     version: version
+
 
   address_visibility:
     street_address: *street
@@ -1093,7 +1095,7 @@ en:
     if_you_have_qs_email_us: &if_you_have_qs_email_us "If you have any question, email us at "
 
     progress_bar:
-      complete: &progress_complete complete
+      complete: *progress_complete
 
     missing-checklist-param-error: &missing-checklist-param-error User Checklist missing parameter error!
     not_found:  &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
@@ -1108,6 +1110,9 @@ en:
       delete_confirm: "Are you sure you want to delete the checklist '%{name}' for user %{user_name}?"
       all_list_items: *user_checklists_all_items
       all_list_items_for_user: *user_checklists_all_items_for_user
+      date_completed: *date_completed
+      completed: *checklist_completed
+      complete: *progress_complete
 
     new:
       title: New User Checklist
