@@ -18,7 +18,7 @@ Example:
       insert a membership_fee_way_past_due_alert: entry into config/locales/sv.yml under mailers:member_mailer:
       insert a membership_fee_way_past_due_alert: entry into config/locales/en.yml under mailers:member_mailer:
       insert a hash entry into lib/tasks/conditions/load_conditions.rake for the alert that looks like this:
-          { alert_class_name: 'MembershipFeeWayPastDueAlert',
+          { class_name: 'MembershipFeeWayPastDueAlert',
             timing:     :before,
             config:     { days: std_reminder_before_schedule } },
 
@@ -60,7 +60,7 @@ Example:
       insert a membership_fee_way_past_due_alert: entry into config/locales/sv.yml under mailers:member_mailer
       insert a membership_fee_way_past_due_alert: entry into config/locales/en.yml under mailers:member_mailer
       insert a hash entry into lib/tasks/conditions/load_conditions.rake for the alert that looks like this:
-          { alert_class_name: 'MembershipFeeWayPastDueAlert',
+          { class_name: 'MembershipFeeWayPastDueAlert',
             timing:     :after,
             config:     { days: std_reminder_after_schedule } },
 

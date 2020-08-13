@@ -10,11 +10,8 @@
 #
 # @author FIXME: your name and email
 # @date <%= Date.current %>
-# @file <%= alert_class_name.underscore %>.rb
-#
 #--------------------------
-
-
+#
 # FIXME: if this alert needs to be sent to all members of a Company, it should be a subclass of CompanyEmailAlert and adjust as needed.
 class <%= alert_class_name %>  < UserEmailAlert
 
@@ -24,7 +21,7 @@ class <%= alert_class_name %>  < UserEmailAlert
 
     # FIXME: if this alert needs to be sent to all members of a company, arguments has should at least include company:
     #   if RequirementsForHBrandingFeeDue.requirements_met?({company: company})
-    if RequirementsFor<%= alert_class_name %>.requirements_met?({user: user})
+    if ReqsFor<%= alert_class_name %>.requirements_met?({user: user})
 
       # FIXME: the first argument should be the point in time you need to check (ex: user.membership_expire_date)
       day_to_check = self.class.days_today_is_away_from( FIXME_INSERT_ARGUMENT, timing)

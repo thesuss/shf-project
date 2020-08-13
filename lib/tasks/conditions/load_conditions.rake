@@ -36,10 +36,9 @@ namespace :shf do
     conditions_to_create = [
 
         # Send this alert once a week on Tuesday ( = weekday #2 as defined in the Date class)
-        { alert_class_name: 'MembersNeedPacketsAlert',
+        { class_name: 'MembersNeedPacketsAlert',
             timing:     :day_of_week,
             config:     { days_of_week: [2]} },
-
 
         # Once Repeating Task timing is implemented, the timing should be changed
         # to repeat every 14 days.
@@ -71,11 +70,9 @@ namespace :shf do
           timing:     :after,
           config:     { days: std_reminder_after_schedule } },
 
-
         { class_name: 'ShfAppNoUploadedFilesAlert',
           timing:     :after,
           config:     { days: [60, 30, 14, 9, 2] } },
-
 
 
         # days_to_keep - specifies number of (daily) backups to retain on production server

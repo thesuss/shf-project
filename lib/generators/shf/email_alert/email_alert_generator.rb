@@ -43,12 +43,12 @@ module Shf
       class_option :req_class,
                    type: :string,
                    desc: "Requirements class name.  A class will be created.\n" +
-                             '                                             #   Default class name = RequirementsFor<alert class name>'
+                             '                                             #   Default class name = ReqsFor<alert class name>'
 
       class_option :req_class_opposite,
                    type: :string,
                    desc: "Opposite Requirements class name. A class will be created.\n" +
-                             '                                             #   Default class name = RequirementsFor<alert class name>Not'
+                             '                                             #   Default class name = ReqsFor<alert class name>Not'
 
       class_option :timing,
                    type: :string,
@@ -140,7 +140,7 @@ module Shf
       #
 
       def requirements_class
-        options.fetch(:req_class, "RequirementsFor#{alert_class_name}")
+        options.fetch(:req_class, "ReqsFor#{alert_class_name}")
       end
 
 
@@ -301,7 +301,7 @@ module Shf
       def load_condition_entry
         "\n\n        # FIXME: Check the timing for this alert: should it be _before_ or _after_ ?\n" +
             "        # FIXME: check the config[:days] to see if the schedule is correct\n" +
-            "        { alert_class_name: '#{alert_class_name}',\n" +
+            "        { class_name: '#{alert_class_name}',\n" +
             "            timing:     :#{timing},\n" +
             "            config:     { days: std_reminder_#{timing}_schedule } }, \n\n"
       end
