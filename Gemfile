@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 gem 'dotenv-rails'
-gem 'rails', '5.2.3'
+gem 'rails', '5.2.4'
 gem 'bootsnap', require: false
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
@@ -107,14 +107,14 @@ group :development, :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rake'
-  gem 'coveralls', '>= 0.8.21', require: false
+  gem 'coveralls', '>= 0.8.23', require: false
   gem 'launchy'
   gem 'cucumber-timecop', require: false
 
   gem 'better_errors'
   gem 'binding_of_caller'  # needed to make better_errors work well
 
-  gem 'i18n-tasks', '~> 0.9.21'
+  gem 'i18n-tasks'
 
   gem 'spring-commands-rspec'
 end
@@ -134,7 +134,10 @@ group :development do
   gem 'bullet'
   gem 'rb-readline'
 
-  gem 'rubycritic'   # code quality analysis tools and reports
+  # gem 'rubycritic', '>= 4.4'   # code quality analysis tools and reports
+  # FIXME: rubycritic requires simplecov >= 0.17.0 but coveralls requires ~> 0.16.1 (which is any version < 0.17.0)
+  #    The coveralls gem is not being maintained.
+
   gem 'rack-mini-profiler', require: false
 end
 

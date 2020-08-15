@@ -139,12 +139,12 @@ Feature: Admin can search Shf Applications
     And I should see "Eriksson" before "Anderson"
 
 
-  @selenium
-  Scenario: Can sort by company number (Org Nr.) (TBD - how to ensure we are checking info in the body and not search lists?)
+#  @selenium
+#  Scenario: Can sort by company number (Org Nr.) (TBD - how to ensure we are checking info in the body and not search lists?)
 
 
-  @selenium
-  Scenario: Can sort by status: TBD - Ransacker will only search on db table columns.  So how to do this on I18n.translated entries?  OR - change data in db to svenska
+#  @selenium
+#  Scenario: Can sort by status: TBD - Ransacker will only search on db table columns.  So how to do this on I18n.translated entries?  OR - change data in db to svenska
 
 
   @selenium

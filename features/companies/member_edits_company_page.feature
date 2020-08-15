@@ -112,7 +112,7 @@ Feature: Member edits a company attribute
     Then I should see "1" address
 
 
-    Scenario: Member enters invalid facebook URL
+#    Scenario: Member enters invalid facebook URL
 
 
 

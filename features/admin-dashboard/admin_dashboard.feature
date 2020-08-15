@@ -167,12 +167,12 @@ Feature: Admin sees the dashboard with summary of important information
   #
 
 
-  @admin_dashboard
-  Scenario: Default timeframe displayed is 7 days
+#  @admin_dashboard
+#  Scenario: Default timeframe displayed is 7 days
 
 
-  @admin_dashboard
-  Scenario: Change the timeframe displayed
+#  @admin_dashboard
+#  Scenario: Change the timeframe displayed
   # when the timeframe option is changed:
   #  the number in the subtitle changes
   # the data is changed
