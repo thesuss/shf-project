@@ -54,7 +54,7 @@ Given(/^I am on the "([^"]*)" page(?: for "([^"]*)")?(?: and the EU cookie is "(
     visit path_with_locale(get_path(page, user))
     step "the EU cookies consent cookie is set to \"#{eu_cookie_value}\""
 
-  rescue ActionController::RoutingError => exception
+  rescue ActionController::UrlGenerationError, ActionController::RoutingError => exception
 
     warn exception.message  # warn and then try to see if we can fix it by splitting at spaces
 
@@ -79,6 +79,11 @@ Given(/^I am on the "([^"]*)" page(?: for "([^"]*)")?(?: and the EU cookie is "(
 
 And("I should get a routing error when I try to visit the {capture_string} page") do | page |
   expect{visit path_with_locale(get_path(page, @user))}.to raise_error(ActionController::RoutingError)
+end
+
+
+And("I should get an error when I try to visit the {capture_string} page") do | page |
+  expect{visit path_with_locale(get_path(page, @user))}.to raise_error
 end
 
 

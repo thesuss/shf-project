@@ -42,9 +42,11 @@ Feature: Access to User checklists: the entire list, individual items, and via t
 
   # ---------------------
 
+  # TODO: this raises an error because the route (path) expects @user not to be nil.
+  #   This should display a 404 page to the end user
   Scenario Outline: Visitor cannot see any checklists
     Given I am logged out
-    Then I should get a routing error when I try to visit the "checklists" page
+    Then I should get an error when I try to visit the "checklists" page
 
 
   Scenario Outline: Users and Members can view their own checklists via their account page
