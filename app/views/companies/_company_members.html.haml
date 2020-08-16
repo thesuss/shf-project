@@ -3,15 +3,15 @@
 - if applications.any?
   .row
     .col-12.company_member
-
-      %table.table.table-hover.company-members
-        %thead
-          %tr
-            %th.text-nowrap= t('companies.show.members')
-            %th= t('activerecord.models.business_category.other')
-
-        - applications.each do |application|
-          %tbody
-            %tr.member
-              %td= application.user.full_name
-              %td= business_categories_str(application)
+      .table-responsive-lg
+        %table.table.table-sm.table-hover.company-members
+          %thead
+            %tr
+              %th.text-nowrap= t('companies.show.members')
+              %th= t('activerecord.models.business_category.other')
+  
+          - applications.each do |application|
+            %tbody
+              %tr.member
+                %td= application.user.full_name
+                %td= business_categories_str(application)
