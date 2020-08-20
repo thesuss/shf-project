@@ -22,6 +22,12 @@ When "I click on{optional_string} {capture_string}{optional_string}" do |ordinal
   end
 end
 
+When "I want to create a new company" do
+  if Capybara.current_driver == (:selenium || :selenium_browser)
+    page.execute_script("$('.modal').removeClass('fade');")
+  end
+end
+
 When "I click on and accept{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
   page.driver.accept_modal(:confirm, wait: 4) do
     confirm_step = "I click on" + (ordinal ? "#{ordinal}" : '') +

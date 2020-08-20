@@ -810,6 +810,9 @@ sv:
     company:
       submit_button_label: Uppdatera status
 
+    company_create_modal:
+      company_number: Nytt företagsnummer
+
     company_name: Företagsnamn
     telephone_number: Telefonnummer
     operations_region: *region
