@@ -17,8 +17,6 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    authorize_user
-
     image_html = image_html('proof_of_membership', @app_configuration, @user)
     if params[:render_to] == 'jpg'
       download_image('proof_of_membership', 260, image_html)
