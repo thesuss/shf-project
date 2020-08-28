@@ -5,7 +5,7 @@ class MembershipLapsedAlert < UserEmailAlert
 
   def send_alert_this_day?(timing, config, user)
 
-    return false unless RequirementsForMembershipLapsed.requirements_met?({user: user})
+    return false unless RequirementsForMembershipLapsed.requirements_met?(user: user)
 
     day_to_check = self.class.days_today_is_away_from(user.membership_expire_date, timing)
 

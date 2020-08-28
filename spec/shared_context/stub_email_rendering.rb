@@ -1,4 +1,4 @@
-# Stub rendering emails. This saves a lot of time becuase it means that
+# Stub rendering emails. This saves a lot of time because it means that
 # emails will not be written to logs.
 
 

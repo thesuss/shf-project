@@ -1,27 +1,11 @@
 require 'rails_helper'
-require 'email_spec/rspec'
-
-require 'shared_context/stub_email_rendering'
-require 'shared_context/named_dates'
 
 
 RSpec.describe HBrandingFeeDueAlert do
 
-  include_context 'named dates'
-
-  subject  { described_class.instance }
+  subject { described_class.instance } # for readability
 
   let(:mock_log) { instance_double("ActivityLogger") }
-
-  let(:user) { create(:user, email: FFaker::InternetSE.disposable_email) }
-
-  let(:company) { create(:company) }
-
-
-  let(:config) { { days: [1, 7, 15, 30] } }
-  let(:timing) { HBrandingFeeDueAlert::TIMING_AFTER }
-  let(:condition) { create(:condition, timing, config) }
-
   before(:each) do
     allow(ActivityLogger).to receive(:new).and_return(mock_log)
     allow(mock_log).to receive(:info)
@@ -30,396 +14,226 @@ RSpec.describe HBrandingFeeDueAlert do
   end
 
 
-  # All examples assume today is 1 December, 2018
-  around(:each) do |example|
-    Timecop.freeze(dec_1)
-    example.run
-    Timecop.return
-  end
+  describe 'Unit tests' do
+
+    describe '.send_alert_this_day?(config, user)' do
+
+      let(:config) { { days: [1, 7, 15, 30] } }
+      let(:timing) { HBrandingFeeDueAlert::TIMING_AFTER }
+
+      let(:co_license_current) { instance_double("Company") }
+      let(:co_license_expired) { instance_double("Company") }
+
+      let(:most_recent_member_payment_start) { DateTime.new(2001, 6, 6) }
+      let(:expired_license_date) { DateTime.new(2001, 12, 31) }
 
 
-  describe '.send_alert_this_day?(config, user)' do
+      describe 'uses RequirementsForHBrandingFeeDue to see if any license fee is due' do
 
-    context 'false if h-branding fee has not expired (none is due)' do
+        it 'license fee is due' do
+          allow(subject).to receive(:send_on_day_number?).and_return(true)
+          allow(co_license_current).to receive(:branding_expire_date).and_return(expired_license_date)
+          allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+          allow(described_class).to receive(:days_today_is_away_from).and_return(1)
 
-      let(:paid_member) {
-        member = create(:member_with_membership_app)
-        create(:membership_fee_payment,
-               :successful,
-               user:        member,
-               start_date:  jan_1,
-               expire_date: User.expire_date_for_start_date(jan_1))
-        create(:h_branding_fee_payment,
-               :successful,
-               user:        member,
-               company:     member.companies.first,
-               start_date:  jan_1,
-               expire_date: User.expire_date_for_start_date(jan_1))
-        member
-      }
+          expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).with(company: co_license_current).and_return(true)
+          expect(subject.send_alert_this_day?(timing, config, co_license_current)).to be_truthy
+        end
 
-      let(:paid_member_co) { paid_member.companies.first }
+        it 'no license fee is due; returns false and does not check the days away from today' do
+          expect(subject).not_to receive(:send_on_day_number?)
+          expect(co_license_current).not_to receive(:branding_expire_date)
+          expect(co_license_current).not_to receive(:earliest_current_member_fee_paid)
+          expect(described_class).not_to receive(:days_today_is_away_from)
 
-      it 'false when the day is in the config list of days to send the alert' do
-        expect(subject.send_alert_this_day?(timing, config, paid_member_co)).to be_falsey
+          expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).with(company: co_license_current).and_return(false)
+          expect(subject.send_alert_this_day?(timing, config, co_license_current)).to be_falsey
+        end
+
       end
 
-      it 'false when the day  is not in the config list of days to send the alert' do
-        expect(subject.send_alert_this_day?(timing, { days: [999] }, paid_member_co)).to be_falsey
+
+      describe 'uses the company license payment as the basis for calculating the days from today' do
+
+        context 'company license payment term has expired' do
+
+          it 'uses the most recent payment with an expired term' do
+            allow(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).and_return(true)
+            allow(subject).to receive(:send_on_day_number?).and_return(true)
+
+            allow(co_license_expired).to receive(:branding_expire_date).and_return(expired_license_date)
+            allow(co_license_expired).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+
+            expect(described_class).to receive(:days_today_is_away_from).with(expired_license_date, anything).and_return(1)
+
+            subject.send_alert_this_day?(timing, config, co_license_expired)
+          end
+        end
+
+
+        it 'company license payment term has not expired' do
+          allow(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).and_return(true)
+          allow(subject).to receive(:send_on_day_number?).and_return(true)
+
+          allow(co_license_current).to receive(:branding_expire_date).and_return(nil)
+          allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+
+          expect(described_class).to receive(:days_today_is_away_from).with(most_recent_member_payment_start, anything).and_return(1)
+
+          subject.send_alert_this_day?(timing, config, co_license_current)
+        end
+
+        context 'no company license payment has ever been paid' do
+
+          it 'no current members; no license fee is due' do
+
+            co_no_members = instance_double("Company")
+            allow(co_no_members).to receive(:current_members).and_return([])
+            allow(co_no_members).to receive(:branding_license?).and_return(nil)
+
+            expect(co_no_members).not_to receive(:branding_expire_date)
+            expect(co_no_members).not_to receive(:earliest_current_member_fee_paid)
+            expect(subject).not_to receive(:send_on_day_number?)
+
+            expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).and_return(false)
+            expect(described_class).not_to receive(:days_today_is_away_from)
+
+            expect(subject.send_alert_this_day?(timing, config, co_no_members)).to be_falsey
+          end
+
+          it 'has current members' do
+            allow(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).and_return(true)
+            allow(subject).to receive(:send_on_day_number?).and_return(true)
+
+            allow(co_license_current).to receive(:branding_expire_date).and_return(nil)
+            allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+
+            expect(described_class).to receive(:days_today_is_away_from).with(most_recent_member_payment_start, anything).and_return(1)
+
+            subject.send_alert_this_day?(timing, config, co_license_current)
+          end
+        end
       end
 
     end
 
-    context 'h-branding fee is not paid' do
 
-      let(:paid_members_co) { create(:company, name: 'Co with paid members') }
-
-      let(:member_paid_dec_3) {
-        member = create(:member_with_membership_app, company_number: paid_members_co.company_number)
-        create(:membership_fee_payment,
-               :successful,
-               user:        member,
-               company:     paid_members_co,
-               start_date:  dec_3,
-               expire_date: User.expire_date_for_start_date(dec_3))
-        member
-      }
-
-      let(:member_paid_dec_5) {
-        member = create(:member_with_membership_app, company_number: paid_members_co.company_number)
-        create(:membership_fee_payment,
-               :successful,
-               user:        member,
-               company:     paid_members_co,
-               start_date:  dec_5,
-               expire_date: User.expire_date_for_start_date(dec_5))
-        member
-      }
-
-      let(:condition_config) {  { days: [1, 3, 363, 364] } }
-      # day 0 for member_paid_dec_3 = 3 Dec 2018
-      # day 1 for member_paid_dec_3 = 4 Dec 2018
-      # day 3 for member_paid_dec_3 = 6 Dec 2018
-      # day 363 for member_paid_dec_3 = 1 Dec 2019
-      # day 364 for member_paid_dec_3 = 2 Dec 2019 == the expiration date, so the membership has expired at the end of this day.
-
-      # day 363 for member_paid_dec_5 = 3 Dec 2019
-      # day 364 for member_paid_dec_5 = 4 Dec 2019 == the expiration date, so the membership has expired at the end of this day.
-
-      # Hint: you can do this in IRB to figure out dates:
-      #   require 'date'
-      #   dec_3 = Date.new(2018, 12, 3)
-      #   dec_5 = Date.new(2018, 12, 5)
-      #   dec_3 + 363
-      #    ==> Sun, 01 Dec 2019
-
-
-      context 'h-branding fee has never been paid' do
-
-        describe 'the h-branding fee due date changes based on current membership' do
-
-          it 'uses the oldest (first paid) membership fee payment of all of current members as day 0 ' do
-            paid_members_co
-            member_paid_dec_3
-            member_paid_dec_5
-
-            Timecop.freeze(Time.utc(2018, 12, 4)) do
-              # update membership status based on today's date
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-              expect(paid_members_co.current_members).to match_array [member_paid_dec_3, member_paid_dec_5]
-              expect(subject.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_truthy
-            end
-
-            Timecop.freeze(Time.utc(2018, 12, 6)) do
-              # update membership status based on today's date
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-              expect(paid_members_co.current_members).to match_array [member_paid_dec_3, member_paid_dec_5]
-              expect(subject.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_truthy
-            end
-
-            Timecop.freeze(Time.utc(2019, 12, 4)) do
-              # update membership status based on today's date
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-              expect(paid_members_co.current_members).to be_empty
-              expect(subject.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_falsey
-            end
-
-          end
-
-
-          it 'if the member with oldest paid membership lets thier membership expires, day 0 changes' do
-
-            Timecop.freeze(Time.utc(2019, 12, 3)) do
-              # update membership status based on today's date
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-              expect(paid_members_co.current_members).to match_array [member_paid_dec_5]
-              expect(subject.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_truthy
-            end
-
-            Timecop.freeze(Time.utc(2019, 12, 4)) do
-              # update membership status based on today's date
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-              MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-              expect(paid_members_co.current_members).to match_array []
-              expect(subject.send_alert_this_day?(timing, condition_config, paid_members_co)).to be_falsey
-            end
-          end
-
-        end # describe 'day 0 for the h-branding fee due date changes based on current membership'
-
-
-        context 'membership has not expired yet' do
-
-          let(:paid_member) {
-            member = create(:member_with_membership_app)
-            create(:membership_fee_payment,
-                   :successful,
-                   user:        member,
-                   start_date:  jan_1,
-                   expire_date: User.expire_date_for_start_date(jan_1))
-            member
-          }
-
-          let(:paid_member_co) { paid_member.companies.first }
-
-          it 'true when the day is in the config list of days to send the alert' do
-            Timecop.freeze(Time.utc(2018, 1, 16)) do
-              expect(subject.send_alert_this_day?(timing, config, paid_member_co)).to be_truthy
-            end
-          end
-
-          it 'false when the day is not in the config list of days to send the alert' do
-            Timecop.freeze(Time.utc(2018, 1, 17)) do
-              expect(subject.send_alert_this_day?(timing, config, paid_member_co)).to be_falsey
-            end
-          end
-
-        end # context 'membership has not expired yet'
-
-        context 'earliest membership expires on or after the given date to check' do
-
-          context 'membership expires 1 day after today (dec 1); expires dec 2' do
-
-            let(:paid_expires_tomorrow_member) {
-              shf_accepted_app = create(:shf_application, :accepted)
-
-              member = shf_accepted_app.user
-
-              create(:membership_fee_payment,
-                     :successful,
-                     user:        member,
-                     start_date:  lastyear_dec_3,
-                     expire_date: User.expire_date_for_start_date(lastyear_dec_3))
-              member
-            }
-
-            let(:paid_member_co) { paid_expires_tomorrow_member.companies.first }
-
-            it 'true if the day is in the config list of days to send the alert (= 1)' do
-              Timecop.freeze(Time.utc(2017, 12, 4)) do
-                expect(paid_expires_tomorrow_member.membership_expire_date).to eq dec_2
-                expect(subject.send_alert_this_day?(timing, { days: [1] }, paid_member_co)).to be_truthy
-              end
-            end
-
-            it 'false if the day is not in the config list of days to send the alert' do
-              expect(subject.send_alert_this_day?(timing, { days: [999] }, paid_member_co)).to be_falsey
-            end
-
-          end
-
-          context 'membership expires on the given date (dec 1), expired dec 1' do
-
-            let(:paid_expires_today_member) {
-              shf_accepted_app = create(:shf_application, :accepted)
-              member           = shf_accepted_app.user
-
-              create(:membership_fee_payment,
-                     :successful,
-                     user:        member,
-                     start_date:  lastyear_dec_2,
-                     expire_date: User.expire_date_for_start_date(lastyear_dec_2))
-              member
-            }
-
-            let(:paid_member_co) { paid_expires_today_member.companies.first }
-
-            it 'false even if the day is in the list of days to send it' do
-              expect(paid_expires_today_member.membership_expire_date).to eq dec_1
-              expect(subject.send_alert_this_day?(timing, { days: [0] }, paid_member_co)).to be_falsey
-            end
-
-          end
-
-        end # context 'membership expiration is on or after the given date'
-
-        context 'membership has expired' do
-
-          let(:paid_expired_member) {
-            shf_accepted_app = create(:shf_application, :accepted)
-            member           = shf_accepted_app.user
-            create(:membership_fee_payment,
-                   :successful,
-                   user:        member,
-                   start_date:  lastyear_nov_30,
-                   expire_date: User.expire_date_for_start_date(lastyear_nov_30))
-            member
-          }
-
-          let(:exp_member_co) { paid_expired_member.companies.first }
-
-          it 'false if the day is in the config list of days to send the alert' do
-            expect(subject.send_alert_this_day?(timing, config, exp_member_co)).to be_falsey
-          end
-
-          it 'false if the day is not in the config list of days to send the alert' do
-            expect(subject.send_alert_this_day?(timing, { days: [999] }, exp_member_co)).to be_falsey
-          end
-
-        end
-
-        context 'company has no current members: always false' do
-
-          let(:company) { create(:company) }
-
-          it 'false when the day is in the config list of days to send the alert' do
-            expect(subject.send_alert_this_day?(timing, config, company)).to be_falsey
-          end
-
-          it 'false when the day is not in the config list of days to send the alert' do
-            expect(subject.send_alert_this_day?(timing, { days: [999] }, company)).to be_falsey
-          end
-
-        end
-
-      end
-
-
-      context 'h-branding fee has been paid (but is expired)' do
-
-        context 'today is in the list of configuration days' do
-
-          it 'true if (today - last HBrand expire date) is in the config list of alert days ' do
-            paid_members_co
-            member_paid_dec_5
-
-            Timecop.freeze(lastyear_nov_30) do
-              create(:h_branding_fee_payment,
-                     :successful,
-                     user:        member_paid_dec_5,
-                     company:     paid_members_co,
-                     start_date:  lastyear_nov_30,
-                     expire_date: Company.expire_date_for_start_date(lastyear_nov_30))
-            end
-
-            expect(paid_members_co.branding_license?).to be_falsey
-            expect(paid_members_co.branding_expire_date).to eq nov_29
-
-            Timecop.freeze(Time.utc(2019, 12, 3)) do
-              expect(subject.send_alert_this_day?(timing, { days: [369] }, paid_members_co)).to be_truthy
-              expect(subject.send_alert_this_day?(timing, { days: [368] }, paid_members_co)).to be_falsey
-            end
-
-          end
-
-          it 'false if (today - last HBrand expire date ) is NOT in the config list of alert days ' do
-            paid_members_co
-            member_paid_dec_3
-
-            Timecop.freeze(lastyear_nov_30) do
-              create(:h_branding_fee_payment,
-                     :successful,
-                     user:        member_paid_dec_3,
-                     company:     paid_members_co,
-                     start_date:  lastyear_nov_30,
-                     expire_date: Company.expire_date_for_start_date(lastyear_nov_30))
-            end
-
-            expect(paid_members_co.branding_license?).to be_falsey
-
-            Timecop.freeze(Time.utc(2019, 12, 15)) do
-              expect(subject.send_alert_this_day?(timing, { days: [369] }, paid_members_co)).to be_falsey
-            end
-
-          end
-
-
-        end
-
-      end
+    it '.mailer_method' do
+      expect(subject.mailer_method).to eq :h_branding_fee_past_due
     end
 
-  end # describe '.send_alert_this_day?(config, user)'
 
-
-  it '.mailer_method' do
-    expect(subject.mailer_method).to eq :h_branding_fee_past_due
+    it 'mailer_args' do
+      mock_co = instance_double("Company", current_members: ['one', 2])
+      expect(subject.mailer_args(mock_co)).to match_array([mock_co, ['one', 2]])
+    end
   end
 
 
-  describe 'delivers emails to all current company members' do
+  describe 'Integration tests' do
+    let(:mock_member1) { instance_double("User", member: true) }
+    let(:mock_member2) { instance_double("User", member: true) }
 
-    include_context 'stub email rendering'
+    let(:mock_co1) { instance_double("Company") }
+    let(:mock_co2) { instance_double("Company") }
 
-
-    let(:paid_member1) {
-      member = create(:member_with_membership_app)
-      create(:membership_fee_payment,
-             :successful,
-             user:        member,
-             start_date:  jan_1,
-             expire_date: User.expire_date_for_start_date(jan_1))
-      member
-    }
-
-    let(:paid_member_co) { paid_member1.companies.first }
-
-    let(:paid_member2) {
-      member = create(:member_with_membership_app, company_number: paid_member_co.company_number)
-      create(:membership_fee_payment,
-             :successful,
-             user:        member,
-             start_date:  jan_1,
-             expire_date: User.expire_date_for_start_date(jan_1))
-      member
-    }
+    let(:earliest_member_fee_paid) { DateTime.new(2020, 12, 18) }
 
 
     before(:each) do
-      subject.create_alert_logger(mock_log)
+      allow(mock_co1).to receive(:current_members).and_return([mock_member1,
+                                                               mock_member2])
+      allow(mock_co1).to receive(:branding_expire_date).and_return(nil)
+
+      allow(mock_co2).to receive(:current_members).and_return([mock_member2])
+      allow(mock_co2).to receive(:branding_expire_date).and_return(nil)
+
+      allow(subject).to receive(:entities_to_check).and_return([mock_co1,
+                                                                mock_co2])
     end
 
+    describe 'delivers emails to all current company members' do
 
-    it 'emails sent to all members and logged' do
-      paid_member1
-      paid_member2
-      paid_member_co
+      context 'timing is after (after the fee is due) ' do
+        let(:timing_after) { described_class.timing_after }
 
-      expect(paid_member_co.current_members.size).to eq 2
+        context 'config days: [2, 10]' do
+          let(:config_10_2) { { days: [10, 2] } }
+          let(:condition) { build(:condition, :after, config: config_10_2) }
 
-      expect(mock_log).to receive(:info).with("HBrandingFeeDueAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
-      expect(mock_log).to receive(:info).with("HBrandingFeeDueAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+          context 'today is 2 days after the company licensing fee was due' do
+            let(:testing_today) { earliest_member_fee_paid + 2 }  # '+ 2' will match the '2' in config[:days]
 
-      Timecop.freeze(jan_1) do
-        paid_member_co.current_members.each do | member |
-          subject.send_email(paid_member_co, member, mock_log)
+            it 'sends email to members in all companies that are past due by 2 days' do
+
+              allow(mock_co1).to receive(:earliest_current_member_fee_paid)
+                                     .and_return(earliest_member_fee_paid)
+
+              allow(mock_co2).to receive(:earliest_current_member_fee_paid)
+                                     .and_return(earliest_member_fee_paid)
+
+
+              expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?)
+                                                            .with(company: mock_co1)
+                                                            .and_return(true)
+              expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?)
+                                                            .with(company: mock_co2)
+                                                            .and_return(true)
+
+              expect(subject).to receive(:send_email)
+                                     .with(mock_co1, mock_member1, anything)
+              expect(subject).to receive(:send_email)
+                                     .with(mock_co1, mock_member2, anything)
+
+
+              expect(subject).to receive(:send_email)
+                                     .with(mock_co2, mock_member2, anything)
+
+              travel_to testing_today do
+                subject.condition_response(condition, mock_log)
+              end
+            end
+          end
+
+          context 'today is 3 days after the company licensing fee was due' do
+            let(:testing_today) { earliest_member_fee_paid + 3 }  # '+ 3' will not match anything in config[:days]
+
+            it 'no email is sent' do
+              allow(mock_co1).to receive(:earliest_current_member_fee_paid)
+                                     .and_return(earliest_member_fee_paid)
+              allow(mock_co2).to receive(:earliest_current_member_fee_paid)
+                                     .and_return(earliest_member_fee_paid)
+
+              allow(subject).to receive(:entities_to_check).and_return([mock_co1,
+                                                                        mock_co2])
+
+              expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?)
+                                                            .with(company: mock_co1)
+                                                            .and_return(true)
+
+              expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?)
+                                                            .with(company: mock_co2)
+                                                            .and_return(true)
+
+              expect(subject).not_to receive(:send_email)
+                                         .with(mock_co1, mock_member1, anything)
+              expect(subject).not_to receive(:send_email)
+                                         .with(mock_co1, mock_member2, anything)
+
+
+              expect(subject).not_to receive(:send_email)
+                                         .with(mock_co2, mock_member2, anything)
+
+              travel_to testing_today do
+                subject.condition_response(condition, mock_log)
+              end
+            end
+          end
         end
+
       end
 
-      expect(ActionMailer::Base.deliveries.size).to eq 2
-      # expect(File.read(logfilepath)).to include("[info] HBrandingFeeDueAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
-      # expect(File.read(logfilepath)).to include("[info] HBrandingFeeDueAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
     end
-
   end
 
 end

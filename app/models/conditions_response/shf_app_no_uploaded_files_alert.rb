@@ -3,24 +3,21 @@
 #
 class ShfAppNoUploadedFilesAlert < UserEmailAlert
 
-  # these are the SHF application states where we might be waiting for uploaded files:
-  APP_STATES_WAITING_FOR_FILES = %w(new under_review waiting_for_applicant)
 
-
+  # FIXME -- all of these conditional checks need to be put into a Requirements... class
   def send_alert_this_day?(timing, config, user)
 
     return false unless user.has_shf_application?
 
     shf_app = user.shf_application
-
-    return false unless APP_STATES_WAITING_FOR_FILES.include? shf_app.state
+    return false unless shf_app.possibly_waiting_for_upload?
 
     if shf_app.uploaded_files.empty?
 
       # If the applicant has said they will email or (postal) mail the files,
       # don't send this alert.
 
-      if shf_app.file_delivery_method&.email? || shf_app.file_delivery_method&.mail?
+      if shf_app.upload_files_will_be_delivered_later?
         false
 
       else

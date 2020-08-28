@@ -34,4 +34,4 @@ class RequirementsForHBrandingFeeDue < AbstractRequirements
 
   end
 
-end # RequirementsForHBrandingFeeDue
+end
