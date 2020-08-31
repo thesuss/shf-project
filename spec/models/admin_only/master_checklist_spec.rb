@@ -59,8 +59,6 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
       expect(create(:master_checklist).change_with_completed_user_checklists?('notes')).to be_truthy
     end
 
-    puts "described_class: #{described_class}"
-
     describe 'these attributes can be changed' do
       attribs_can_be_changed.sort.each do |attrib_can_change|
         it "#{attrib_can_change}" do

@@ -372,4 +372,30 @@ RSpec.describe Payment, type: :model do
 
     end
   end
+
+
+  describe 'membership_payment?' do
+    it 'true if the payment is a membership payment' do
+      pay = build(:membership_fee_payment )
+      expect(pay.membership_payment?).to be_truthy
+    end
+
+    it 'false otherwise' do
+      pay = build(:h_branding_fee_payment )
+      expect(pay.membership_payment?).to be_falsey
+    end
+  end
+
+
+  describe 'branding_license_payment?' do
+    it 'true if the payment is a branding license payment' do
+      pay = build(:h_branding_fee_payment )
+      expect(pay.branding_license_payment?).to be_truthy
+    end
+
+    it 'false otherwise' do
+      pay = build(:membership_fee_payment )
+      expect(pay.branding_license_payment?).to be_falsey
+    end
+  end
 end

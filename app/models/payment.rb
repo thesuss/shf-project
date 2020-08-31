@@ -64,6 +64,15 @@ class Payment < ApplicationRecord
   scope PAYMENT_TYPE_BRANDING.to_sym, -> { where(payment_type: PAYMENT_TYPE_BRANDING) }
 
 
+  def self.membership_payment_type
+    PAYMENT_TYPE_MEMBER
+  end
+
+  def self.branding_license_payment_type
+    PAYMENT_TYPE_BRANDING
+  end
+
+
   def add_observers
     add_observer MembershipStatusUpdater.instance, :payment_made
   end
@@ -107,4 +116,22 @@ class Payment < ApplicationRecord
     update(notes: (notes.nil? ? deleted_note : "#{notes}#{NOTES_SEPARATOR}#{deleted_note}") )
   end
 
+
+  def membership_payment_type
+    self.class.membership_payment_type  # this could also be done with delegation
+  end
+
+
+  def branding_license_payment_type
+    self.class.branding_license_payment_type  # this could also be done with delegation
+  end
+
+
+  def membership_payment?
+    self.payment_type == membership_payment_type
+  end
+
+  def branding_license_payment?
+    self.payment_type == branding_license_payment_type
+  end
 end

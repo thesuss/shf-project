@@ -5,6 +5,7 @@
 # @desc Responsibility: Simple class that calculates how many days of a year a payment covered.
 #  It has a payment and a year, and can do the simple calculations.
 #
+# TODO this should be a Singleton
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2/20/20
@@ -19,7 +20,18 @@ class PaymentCoveringYear
   ROUND_PREC = 2
 
 
-  def initialize(payment: payment, year: year)
+  # This is currently defined in config/initializers/hips_service.rb TODO: Should be AppConfiguration value
+  def self.membership_fee_amount
+    SHF_MEMBER_FEE
+  end
+
+  # This is currently defined in config/initializers/hips_service.rb TODO: Should be AppConfiguration value
+  def self.branding_license_fee_amount
+    SHF_BRANDING_FEE
+  end
+
+
+  def initialize(payment: Payment.create, year: Time.zone.today.year)
     @payment = payment
     @year = year
   end
@@ -27,7 +39,7 @@ class PaymentCoveringYear
 
   # the amount is in 100s of SEK (so divide by 100)
   def payment_amount
-    (payment.payment_type == Payment::PAYMENT_TYPE_MEMBER ? SHF_MEMBER_FEE : SHF_BRANDING_FEE) / 100
+    (payment.payment_type == Payment::PAYMENT_TYPE_MEMBER ? self.class.membership_fee_amount : self.class.branding_license_fee_amount) / 100
   end
 
 
@@ -80,4 +92,5 @@ class PaymentCoveringYear
   def year_end
     year_start.end_of_year
   end
+
 end
