@@ -44,9 +44,9 @@ Feature: Member gets their customized SHF membership card (proof of membership)
     Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
 
   @time_adjust
-  Scenario: Member views proof-of-membership image
+  Scenario: Member views proof-of-membership html image
     Given I am logged in as "emma@mutts.se"
-    And I am on the "proof of membership image" page for "emma@mutts.se"
+    And I am on the "proof of membership html image" page for "emma@mutts.se"
     Then I should see t("users.proof_of_membership.proof_title")
     And I should see t("users.proof_of_membership.member_number")
     And I should see "1001"
@@ -58,7 +58,7 @@ Feature: Member gets their customized SHF membership card (proof of membership)
   @selenium
   Scenario: Expired Membership says 'Expired'
     Given I am logged in as "member-expired@mutts.se"
-    And I am on the "proof of membership image" page for "member-expired@mutts.se"
+    And I am on the "proof of membership html image" page for "member-expired@mutts.se"
     Then I should see t("users.proof_of_membership.proof_title")
     And I should not see t("users.proof_of_membership.member_number")
     And I should not see "999"

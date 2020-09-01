@@ -1,8 +1,15 @@
-Feature: Who can access a member's Proof of Membership download page
+Feature: Who can see a member's Proof of Membership image html page, or download the jpg
+
+  Anyone should be able to see a member's proof of membership html page
+  and
+  anyone should be able to download a member's proof of membership jpg image
 
 
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
+
+    # must have a SHF logo image that can be put into the proof of membership image
+    Given the App Configuration is not mocked and is seeded
 
     Given the following users exist
       | email                | admin | member | membership_number | first_name | last_name |
@@ -28,28 +35,46 @@ Feature: Who can access a member's Proof of Membership download page
       | member-lars@mutts.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
 
-  Scenario: An admin can see a member's proof of membership
+  Scenario: An admin can see a member's proof of membership image
     Given I am logged in as "admin@shf.se"
-    And I am on the "proof of membership image" page for "member-emma@mutts.se"
+    And I am on the "proof of membership html image" page for "member-emma@mutts.se"
     Then I should see t("users.proof_of_membership.proof_title")
     And I should see "1001"
-    When I am on the "proof of membership image" page for "member-lars@mutts.se"
+    And I should see "Emma Member"
+    When I am on the "proof of membership html image" page for "member-lars@mutts.se"
     Then I should see t("users.proof_of_membership.proof_title")
     And I should see "1002"
+    And I should see "Lars Member"
 
-  Scenario: A member can access their own proof of membership download page
+  Scenario: A member can see their own proof of membership html page
     Given I am logged in as "member-emma@mutts.se"
-    And I am on the "proof of membership image" page for "member-emma@mutts.se"
+    When I am on the "proof of membership html image" page for "member-emma@mutts.se"
     Then I should see t("users.proof_of_membership.proof_title")
+    And I should see "Emma Member"
     And I should see "1001"
 
-  Scenario: A member cannot access someone else's proof of membership download page
+  Scenario: A member can see another member's proof of membership html page
     Given I am logged in as "member-emma@mutts.se"
-    And I am on the "proof of membership image" page for "member-lars@mutts.se"
-    Then I should see a message telling me I am not allowed to see that page
+    When I am on the "proof of membership html image" page for "member-lars@mutts.se"
+    Then I should not see a message telling me I am not allowed to see that page
+    And I should see t("users.proof_of_membership.proof_title")
+    And I should see "Lars Member"
+    And I should see "1002"
 
-  Scenario: A visitor cannot access the proof of membership download image for a member
+  Scenario: A member can download another member's proof of membership jpg
+    Given I am logged in as "member-emma@mutts.se"
+    When I am on the "proof of membership jpg download" page for "member-lars@mutts.se"
+    Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
+
+  Scenario: A visitor can see a member's proof of membership html page
     Given I am logged out
-    And I am on the "proof of membership image" page for "member-lars@mutts.se"
-    Then I should see a message telling me I am not allowed to see that page
+    When I am on the "proof of membership html image" page for "member-lars@mutts.se"
+    Then I should not see a message telling me I am not allowed to see that page
+    And I should see t("users.proof_of_membership.proof_title")
+    And I should see "Lars Member"
+    And I should see "1002"
 
+  Scenario: A visitor can download a member's proof of membership jpg
+    Given I am logged out
+    When I am on the "proof of membership jpg download" page for "member-lars@mutts.se"
+    Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
