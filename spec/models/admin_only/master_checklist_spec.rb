@@ -41,6 +41,13 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
     it 'traits are valid' do
       expect(create(:master_checklist, :not_in_use)).to be_valid
     end
+
+    it 'subtype :membership_guidelines_master_checklist is valid' do
+      master_guidelines_list = create(:membership_guidelines_master_checklist)
+      expect(master_guidelines_list).to be_valid
+      expect(master_guidelines_list.master_checklist_type.name).to eq(AdminOnly::MasterChecklistType.membership_guidelines_type_name)
+      expect(AdminOnly::MasterChecklistType.membership_guidelines_type).not_to be_nil
+    end
   end
 
 

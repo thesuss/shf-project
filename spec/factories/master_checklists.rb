@@ -7,7 +7,7 @@ FactoryBot.define do
     list_position { 0 }
     is_in_use { true }
 
-    association :master_checklist_type
+    master_checklist_type
 
     trait :not_in_use do
       is_in_use { false }
@@ -37,10 +37,10 @@ FactoryBot.define do
 
 
     factory :membership_guidelines_master_checklist do
-      name { 'Membership Guideline Master' }
+      name { AdminOnly::MasterChecklist.name }
       displayed_text { 'Membership guidelines text displayed to a user.' }
       description { 'Membership Guideline Master description' }
-      association :master_checklist_type, factory: :membership_guidelines_master_checklist_type
+      master_checklist_type factory: :membership_guidelines_master_checklist_type
     end
 
   end

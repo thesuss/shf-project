@@ -34,9 +34,12 @@ module AdminOnly
 
     # TODO will later get this from AppConfiguration. Hardcoded for now
     def self.membership_guidelines_type
-      find_by(name: MEMBER_GUIDELINES_LIST_TYPE)
+      find_by(name: membership_guidelines_type_name)
     end
 
+    def self.membership_guidelines_type_name
+      MEMBER_GUIDELINES_LIST_TYPE
+    end
 
     # --------------------------------------------------------------------------
 

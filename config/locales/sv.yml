@@ -1695,6 +1695,7 @@ sv:
         message_text:
           message_intro: "Dessa medlemmar behöver välkomnas samt få medlemspaket:"
           membership start date: medlem sedan
+          categories: *business_categories
         error_sending: "FEL! Det blev ett fel när 'Members need packets' mailet skulle skickas"
 
 

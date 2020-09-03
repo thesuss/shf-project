@@ -10,7 +10,7 @@ FactoryBot.define do
 
 
     factory :membership_guidelines_master_checklist_type, class: 'AdminOnly::MasterChecklistType' do
-      name { 'Medlemsåtagande' }
+      name { AdminOnly::MasterChecklistType.membership_guidelines_type_name }
       description { 'Membership Guidelines master checklist type description' }
     end
 

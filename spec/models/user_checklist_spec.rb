@@ -28,6 +28,7 @@ RSpec.describe UserChecklist, type: :model do
 
     it 'arguments passed in are valid' do
       expect(build(:user_checklist, name: 'some name')).to be_valid
+      expect(build(:user_checklist, user: create(:user))).to be_valid
 
       parent_item = create(:user_checklist)
       expect(build(:user_checklist, parent: parent_item)).to be_valid
@@ -36,6 +37,11 @@ RSpec.describe UserChecklist, type: :model do
       expect(create(:user_checklist, num_completed_children: 2)).to be_valid
 
       expect(create(:user_checklist, parent: parent_item, num_children: 2, num_completed_children: 3)).to be_valid
+    end
+
+    it 'child factories are valid' do
+      expect(create(:membership_ethical_guidelines)).to be_valid
+      expect(create(:membership_ethical_guidelines, user: create(:user))).to be_valid
     end
   end
 
@@ -82,8 +88,7 @@ RSpec.describe UserChecklist, type: :model do
     end
 
     it '.not_completed_by_user' do
-      checklist_1 = create(:user_checklist)
-      user_1 = checklist_1.user
+      user_1 = create(:user_with_ethical_guidelines_checklist)
       2.times { create(:user_checklist, user: user_1) }
 
       create(:user_checklist, :completed, user: user_1)

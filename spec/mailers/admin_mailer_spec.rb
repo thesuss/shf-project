@@ -16,14 +16,14 @@ RSpec.describe AdminMailer, type: :mailer do
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
-  let!(:test_user) { create(:user, email: 'user@example.com') }
+  let(:test_user) { create(:user, email: 'user@example.com') }
+  let(:admin) { create(:user, email: 'admin@example.com', admin: true) }
 
 
   describe '#new_shf_application_received' do
 
     let(:new_app) { create(:shf_application, user: test_user) }
-    let(:admin) { create(:user, email: 'admin@example.com', admin: true) }
-    let(:email_sent) { AdminMailer.new_shf_application_received(new_app, admin) }
+    let!(:email_sent) { AdminMailer.new_shf_application_received(new_app, admin) }
 
     it_behaves_like 'a successfully created email',
                     I18n.t('mailers.admin_mailer.new_application_received.subject'),
@@ -110,8 +110,6 @@ RSpec.describe AdminMailer, type: :mailer do
 
     let(:members_5_mon_overdue) { [past_member1, past_member2, past_member3] }
 
-    let(:admin) { create(:user, email: 'admin@example.com', admin: true) }
-
     let(:num_months) { 5 }
     let(:email_sent) { AdminMailer.member_unpaid_over_x_months(admin, members_5_mon_overdue, num_months) }
 
@@ -188,7 +186,7 @@ RSpec.describe AdminMailer, type: :mailer do
     include_context 'create companies'
 
     before do
-      Timecop.freeze(jan_30)  # must do this so that we know if/when payments/terms expire, etc.
+      Timecop.freeze(jan_30) # must do this so that we know if/when payments/terms expire, etc.
     end
 
     after do
@@ -198,17 +196,17 @@ RSpec.describe AdminMailer, type: :mailer do
 
     FACEBOOK_FAUX_URL = 'https://example.com/Fake/Facebook/URL'
 
-    let(:i18nscope) { 'mailers.admin_mailer.new_membership_granted_co_hbrand_paid.message_text'}
+    let(:i18nscope) { 'mailers.admin_mailer.new_membership_granted_co_hbrand_paid.message_text' }
 
     let(:member_1co) do
-      member =   user_membership_expires_EOD_jan29
+      member = user_membership_expires_EOD_jan29
       member.first_name = 'Member_1co'
       member.membership_number = '1234567890'
       member.shf_application.business_categories << create(:business_category, name: 'Cat2')
       #member.shf_application.companies.each{|co| co.update(facebook_url: FACEBOOK_FAUX_URL) }
       member
     end
-    let(:email_sent) { AdminMailer.new_membership_granted_co_hbrand_paid(member_1co) }
+    let!(:email_sent) { AdminMailer.new_membership_granted_co_hbrand_paid(member_1co) }
 
 
     # User Full Name
@@ -218,6 +216,10 @@ RSpec.describe AdminMailer, type: :mailer do
     #
     #Categories applied for
     #(subcategories when added)
+
+    it_behaves_like 'the recipient is the membership chair' do
+      let(:email_created) { email_sent }
+    end
 
     describe 'for each new member listed, shows:' do
 
@@ -229,10 +231,6 @@ RSpec.describe AdminMailer, type: :mailer do
 
         it 'all categories' do
           expect(email_sent).to have_body_text("<p class='categories'><span class=\"label\">#{I18n.t('categories', scope: i18nscope) }</span>: <span class=\"value\">Business Category, Cat2</span></p>")
-        end
-
-        it 'subcategories for all categories' do
-          skip 'subcategories - when subcategories are implemented, ensure they are included in the list'
         end
 
         it 'no categories shows an empty string' do
@@ -269,20 +267,20 @@ RSpec.describe AdminMailer, type: :mailer do
 
         skip 'Need to uncomment these tests once the social icons PR is merged'
 
-      #  it 'exists' do
-      #    expect(email_sent).to have_body_text("<p class='company-facebook-url'><span class=\"label\">#{I18n.t('company_facebook_url', scope: i18nscope) }</span>: <span class=\"value\">#{FACEBOOK_FAUX_URL}</span></p>")
-      #  end
-      #
-      #  it 'nothing listed if none entered for the company' do
-      #    member_co_no_facebook = user_membership_expires_EOD_jan29
-      #    member_co_no_facebook.first_name = 'Member'
-      #    member_co_no_facebook.last_name = 'NoFacebookUrl'
-      #    member_co_no_facebook.shf_application.companies.each { |co| co.update(facebook_url: '') }
-      #
-      #    no_facebook_email_sent = AdminMailer.new_membership_granted_co_hbrand_paid(member_co_no_facebook)
-      #
-      #    expect(no_facebook_email_sent).not_to have_body_text("<p class='company-facebook-url'>")
-      #  end
+        #  it 'exists' do
+        #    expect(email_sent).to have_body_text("<p class='company-facebook-url'><span class=\"label\">#{I18n.t('company_facebook_url', scope: i18nscope) }</span>: <span class=\"value\">#{FACEBOOK_FAUX_URL}</span></p>")
+        #  end
+        #
+        #  it 'nothing listed if none entered for the company' do
+        #    member_co_no_facebook = user_membership_expires_EOD_jan29
+        #    member_co_no_facebook.first_name = 'Member'
+        #    member_co_no_facebook.last_name = 'NoFacebookUrl'
+        #    member_co_no_facebook.shf_application.companies.each { |co| co.update(facebook_url: '') }
+        #
+        #    no_facebook_email_sent = AdminMailer.new_membership_granted_co_hbrand_paid(member_co_no_facebook)
+        #
+        #    expect(no_facebook_email_sent).not_to have_body_text("<p class='company-facebook-url'>")
+        #  end
       end
 
       it 'main postal address shows as 1 string' do
@@ -317,6 +315,34 @@ RSpec.describe AdminMailer, type: :mailer do
                     I18n.t('mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject'),
                     ENV['SHF_MEMBERSHIP_EMAIL'],
                     '',
+                    I18n.t('mailers.admin_mailer.signoff') do
+      let(:email_created) { email_sent }
+    end
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
+  end
+
+
+  describe 'members_need_packets - is sent to membership email' do
+
+    let(:members_needing_packets) { [] }
+    let!(:email_sent) { described_class.members_need_packets(members_needing_packets) }
+
+    it_behaves_like 'the recipient is the membership chair' do
+      let(:email_created) { email_sent }
+    end
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('mailers.admin_mailer.members_need_packets.subject'),
+                    ENV['SHF_MEMBERSHIP_EMAIL'],
+                    'membership@example.org',
                     I18n.t('mailers.admin_mailer.signoff') do
       let(:email_created) { email_sent }
     end

@@ -80,6 +80,9 @@ class UserChecklist < ApplicationRecord
     where(master_checklist: master_checklist).uncompleted
   end
 
+  def self.top_level_for_current_membership_guidelines
+    where(master_checklist: AdminOnly::MasterChecklist.latest_membership_guideline_master)
+  end
 
   # --------------------------------------------------------------------------------------
 

@@ -111,14 +111,11 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
 
-
-
   def members_need_packets
-    admin = User.find_by(admin: true)
-
+    # get 3 members that have not had packets sent to them
     members_needing_packets = User.where(member: true, date_membership_packet_sent: nil).limit(3)
 
-    AdminMailer.members_need_packets(admin, members_needing_packets)
+    AdminMailer.members_need_packets(members_needing_packets)
   end
 
 

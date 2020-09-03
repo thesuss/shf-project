@@ -25,12 +25,12 @@ RSpec.describe MembersNeedPacketsAlert, type: :model do
   end
 
 
-  it '.mailer_args for an admin returns [admin, items_list]' do
+  it '.mailer_args for an admin returns [items_list]' do
     admin =  build(:admin)
     faux_user = 'Bob Cat'
     allow(subject).to receive(:items_list).and_return([faux_user])
     allow(subject).to receive(:gather_content_items).and_return([faux_user])
 
-    expect(subject.mailer_args(admin)).to match_array([admin, [faux_user]])
+    expect(subject.mailer_args(admin)).to match_array([[faux_user]])
   end
 end

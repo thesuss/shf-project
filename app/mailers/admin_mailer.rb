@@ -14,7 +14,6 @@ class AdminMailer < ApplicationMailer
     set_mail_info __method__, admin
 
     mail to: recipient_email, subject: t('new_application_received.subject', scope: I18N_SCOPE)
-
   end
 
 
@@ -34,11 +33,8 @@ class AdminMailer < ApplicationMailer
 
 
   def new_membership_granted_co_hbrand_paid(new_member)
-
-    # need to set these manually because we do not have a User object for the recipient, just an email address
     @action_name = __method__.to_s
-    @recipient_email =  ENV['SHF_MEMBERSHIP_EMAIL']
-    @greeting_name = @recipient_email
+    recipient_is_membership_chair
 
     @new_member = new_member
     @complete_branded_cos =  new_member.companies.select{|co| co.branding_license? && co.complete? }
@@ -48,14 +44,26 @@ class AdminMailer < ApplicationMailer
   end
 
 
+  # Need this so the mail view can access :html_postal_format_entire_address
   helper CompaniesHelper
 
-  def members_need_packets(admin, members_needing_packets)
-
-    set_mail_info __method__, admin
+  def members_need_packets(members_needing_packets)
+    @action_name = __method__.to_s
+    recipient_is_membership_chair
     @members_needing_packets = members_needing_packets
 
     mail to: recipient_email, subject: t('members_need_packets.subject', scope: I18N_SCOPE)
   end
 
+  # -------------------------------------------------------------------------
+
+  private
+
+  # Set the instance vars so that the email goes to the SHF Membership Chair
+  # Need to set these manually because we might not have a User object
+  # for the recipient, just an email address.
+  def recipient_is_membership_chair
+    @recipient_email =  ENV['SHF_MEMBERSHIP_EMAIL']
+    @greeting_name = @recipient_email
+  end
 end

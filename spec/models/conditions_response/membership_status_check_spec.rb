@@ -30,6 +30,7 @@ RSpec.describe MembershipStatusCheck, type: :model do
     it 'calls the status_updater for each user to revoke the membership if needed' do
       mock_status_updater = instance_double("MembershipStatusUpdater")
       allow(mock_status_updater).to receive(:payment_made)
+      allow(mock_status_updater).to receive(:shf_application_updated)
       allow(MembershipStatusUpdater).to receive(:instance).and_return(mock_status_updater)
 
       # instantiate these (from the shared-context/users file)

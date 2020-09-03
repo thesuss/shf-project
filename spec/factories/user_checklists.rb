@@ -1,11 +1,10 @@
 FactoryBot.define do
 
   factory :user_checklist do
-
-    name { 'UserChecklist name' }
+    sequence(:name) { |n| "UserChecklist #{n}" }
     description { nil }
-    association :user
-    association :master_checklist
+    user
+    master_checklist
     date_completed { nil }
     list_position { 0 }
 
@@ -13,8 +12,23 @@ FactoryBot.define do
     factory :membership_ethical_guidelines do
       name { 'Ethical Guidelines' }
       description { 'SHF ethical guidelines applicant must agree to' }
-      association :master_checklist, factory: :membership_guidelines_master_checklist
+
+      after(:create) do |ethical_checklist, evaluator|
+        if evaluator.master_checklist.present? && evaluator.master_checklist.name == AdminOnly::MasterChecklistType.membership_guidelines_type_name
+          ethical_checklist.master_checklist = evaluator.master_checklist
+        else
+          guidelines_master = AdminOnly::MasterChecklist.latest_membership_guideline_master
+          if guidelines_master.nil?
+            new_master_checklist = create(:membership_guidelines_master_checklist)
+            ethical_checklist.master_checklist = new_master_checklist
+          else
+            ethical_checklist.master_checklist = guidelines_master
+          end
+          ethical_checklist.save!
+        end
+      end
     end
+
 
     trait :completed do
       date_completed { Time.zone.now }
@@ -53,5 +67,4 @@ FactoryBot.define do
     end
 
   end
-
 end

@@ -299,60 +299,102 @@ RSpec.describe User, type: :model do
     end
 
 
-    describe 'current_members' do
-
-      # set today to January 1 for every example run
-      around(:each) do |example|
-        Timecop.freeze(jan_1)
-        example.run
-        Timecop.return
-      end
+    context 'with known user info' do
 
       let(:user_no_app) { create(:user) }
       let(:user_app_not_accepted) { create(:user_with_membership_app) }
 
-      let(:member_exp_jan1_today) { create(:member_with_expiration_date, expiration_date: jan_1) }
-      let(:member_current_exp_jan2) { create(:member_with_expiration_date, expiration_date: jan_2) }
-      let(:member_current_exp_jan3) { create(:member_with_expiration_date, expiration_date: jan_3) }
+      let(:member_exp_jan1_today) do
+        new_member = create(:member_with_expiration_date, expiration_date: jan_1)
+        new_member.most_recent_membership_payment.update(created_at: new_member.membership_start_date)
+        new_member
+      end
 
+      let(:member_current_exp_jan2) do
+        new_member = create(:member_with_expiration_date, expiration_date: jan_2)
+        new_member.most_recent_membership_payment.update(created_at: new_member.membership_start_date)
+        new_member
+      end
 
-      it 'all applications are accepted' do
+      let(:member_current_exp_jan3) do
+        new_member = create(:member_with_expiration_date, expiration_date: jan_3)
+        new_member.most_recent_membership_payment.update(created_at: new_member.membership_start_date)
+        new_member
+      end
+
+      before(:each) do
         user_no_app
         user_app_not_accepted
         member_exp_jan1_today
         member_current_exp_jan2
         member_current_exp_jan3
-        in_scope = User.current_members
+      end
+
+
+      it 'application_accepted' do
+        in_scope = described_class.application_accepted
         app_states = in_scope.map { |member| member.shf_application.state }.uniq
         expect(app_states).to match_array([ShfApplication::STATE_ACCEPTED.to_s])
       end
 
-      it 'all have a successful membership payment' do
-        user_no_app
-        user_app_not_accepted
-        member_exp_jan1_today
-        member_current_exp_jan2
-        member_current_exp_jan3
-        in_scope = User.current_members
-        payment_states = in_scope.map { |member| member.most_recent_membership_payment.status }.uniq
-        expect(payment_states).to match_array([Payment::SUCCESSFUL])
+
+      it 'membership_payment_current' do
+        travel_to(jan_1) do
+          in_scope = described_class.membership_payment_current
+          expires_dates = in_scope.map { |member| member.most_recent_membership_payment.expire_date }.uniq
+          payments_expire_today_or_before = expires_dates.select { |date| date <= Date.current }
+          payments_expire_after_today = expires_dates.select { |date| date > Date.current }
+
+          expect(payments_expire_today_or_before).to be_empty
+          expect(payments_expire_after_today).to match_array([jan_2, jan_3])
+        end
       end
 
-      it 'the membership payment expires after today (.future?)' do
-        user_no_app
-        user_app_not_accepted
-        member_exp_jan1_today
-        member_current_exp_jan2
-        member_current_exp_jan3
-        in_scope = User.current_members
-        expires_dates = in_scope.map { |member| member.most_recent_membership_payment.expire_date }.uniq
-        payments_expire_today_or_before = expires_dates.select { |date| date <= Date.current }
-        payments_expire_after_today = expires_dates.select { |date| date > Date.current }
 
-        expect(payments_expire_today_or_before).to be_empty
-        expect(payments_expire_after_today).to match_array([jan_2, jan_3])
+      it 'paid_on_or_after_guidelines_reqd' do
+        allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date)
+                                         .and_return(jan_1)
+
+        in_scope = described_class.paid_on_or_after_guidelines_reqd
+        expect(in_scope.count).to eq(2)
+        expect(in_scope.map(&:email)).to match_array([member_current_exp_jan2.email,
+                                                      member_current_exp_jan3.email])
       end
 
+      it 'agreed_to_membership_guidelines' do
+        allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date)
+                                         .and_return(jan_1)
+        in_scope = described_class.agreed_to_membership_guidelines
+        expect(in_scope.count).to eq(3)
+        expect(in_scope.map(&:email)).to match_array([member_exp_jan1_today.email,
+                                                      member_current_exp_jan2.email,
+                                                      member_current_exp_jan3.email])
+      end
+
+
+    end
+
+    describe 'current_members' do
+
+      it 'all applications are accepted' do
+        expect(described_class).to receive(:application_accepted).and_call_original
+        described_class.current_members
+      end
+
+      it 'membership payment must be current (not expired)' do
+        expect(described_class).to receive(:membership_payment_current).and_call_original
+        described_class.current_members
+      end
+
+      it 'membership payment was made after the membership guidelines were a requirement' do
+        expect(described_class).to receive(:paid_on_or_after_guidelines_reqd).and_call_original
+        described_class.current_members
+      end
+
+      it 'must have agreed to all of the current membership guidelines (if required)' do
+        expect(described_class).to receive(:agreed_to_membership_guidelines).and_call_original
+        described_class.current_members
+      end
     end
 
 
@@ -517,6 +559,7 @@ RSpec.describe User, type: :model do
         end
       end
     end
+
 
   end # Scopes
 
@@ -1219,9 +1262,7 @@ RSpec.describe User, type: :model do
           context 'has agreed to all membership guidelines' do
 
             let(:user_agreed_to_guidelines) do
-              u = create(:user)
-              create(:membership_guidelines_master_checklist)
-              AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(u)
+              u = create(:user_with_ethical_guidelines_checklist)
               UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
               u
             end

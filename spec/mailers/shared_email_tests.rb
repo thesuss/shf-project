@@ -178,3 +178,16 @@ RSpec.shared_examples 'it shows how to login and the page to upload files' do
     expect(email_created).to have_body_text(I18n.t('mailers.shf_application_mailer.will_see_app_button'))
   end
 end
+
+
+RSpec.shared_examples 'the recipient is the membership chair' do
+  let(:membership_email) { ENV['SHF_MEMBERSHIP_EMAIL'] }
+
+  it 'the recipient email is the membership chair email' do
+    expect(email_created).to be_delivered_to(membership_email)
+  end
+
+  it 'greeting is the email address' do
+    expect(email_created).to have_body_text( I18n.t('mailers.application_mailer.greeting', greeting_name: membership_email))
+  end
+end

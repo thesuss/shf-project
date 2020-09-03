@@ -465,48 +465,43 @@ RSpec.describe User, type: :model do
 
   describe 'record_deleted_payorinfo_in_payment_notes' do
 
+    let(:new_u) do
+      new_user = build(:user)
+      membership_payment = build(:membership_fee_payment)
+      hbranding_payment = build(:h_branding_fee_payment)
+      allow(new_user).to receive(:payments).and_return([membership_payment, hbranding_payment])
+      new_user
+    end
+
     describe 'defaults' do
 
-      it 'payor class: class of the payor' do
-        u = member_paid_up
-        payment1 = u.payments.first
-        expect(payment1).to receive(:note_payor_deleted).with(u.class, anything, anything)
+      let(:first_payment) { new_u.payments.first }
 
-        u.record_deleted_payorinfo_in_payment_notes
+      it 'payor class: class of the payor' do
+        expect(first_payment).to receive(:note_payor_deleted).with(new_u.class, anything, anything)
+        new_u.record_deleted_payorinfo_in_payment_notes
       end
 
       it 'email: email for the payor' do
-        u = member_paid_up
-        payment1 = u.payments.first
-        expect(payment1).to receive(:note_payor_deleted).with(anything, u.email, anything)
-
-        u.record_deleted_payorinfo_in_payment_notes
+        expect(first_payment).to receive(:note_payor_deleted).with(anything, new_u.email, anything)
+        new_u.record_deleted_payorinfo_in_payment_notes
       end
 
       it 'time_deleted: Time.zone.now' do
-        u = member_paid_up
-        payment1 = u.payments.first
         tz_now = Time.zone.now
-
         Timecop.freeze(tz_now) do
-          expect(payment1).to receive(:note_payor_deleted).with(anything, anything, tz_now)
-          u.record_deleted_payorinfo_in_payment_notes
+          expect(first_payment).to receive(:note_payor_deleted).with(anything, anything, tz_now)
+          new_u.record_deleted_payorinfo_in_payment_notes
         end
       end
     end
 
     it 'each payment records info in notes about this payor' do
-      u = build(:user)
+      new_u.payments.each do | payment |
+        expect(payment).to receive(:note_payor_deleted)
+      end
 
-      membership_payment = build(:membership_fee_payment)
-      hbranding_payment = build(:h_branding_fee_payment)
-
-      allow(u).to receive(:payments).and_return([membership_payment, hbranding_payment])
-
-      expect(membership_payment).to receive(:note_payor_deleted)
-      expect(hbranding_payment).to receive(:note_payor_deleted)
-
-      u.record_deleted_payorinfo_in_payment_notes
+      new_u.record_deleted_payorinfo_in_payment_notes
     end
 
   end
