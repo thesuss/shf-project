@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 gem 'dotenv-rails'
-gem 'rails', '5.2.4'
+gem 'rails', '5.2.4.4'
 gem 'bootsnap', require: false
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
