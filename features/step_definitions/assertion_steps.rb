@@ -131,7 +131,7 @@ end
 # Examples of what this will match:
 #  I should see 3 a_css_class rows
 #  I should see 1 some_css_class row
-Then(/^I should see (\d+) (.*?) rows?$/) do |n, css_class_name|
+Then("I should see {digits} {capture_string} rows") do |n, css_class_name|
   n = n.to_i
   expect(page).to have_selector(".#{css_class_name}", count: n)
   expect(page).not_to have_selector(".#{css_class_name}", count: n+1)
@@ -337,4 +337,13 @@ end
 
 Then "I should{negate} see an icon with CSS class {capture_string} that is linked to {capture_string}" do |negate, icon_css_class, linked_url|
   expect(page).send (negate ? :not_to : :to), have_xpath("//a[contains(@href, '#{linked_url}')]/i[contains(@class, '#{icon_css_class}')]")
+end
+
+Then "I should see the icon with CSS class {capture_string} for the row with {capture_string}" do |icon_css_class, row_text|
+  icon_xpath = "//i[contains(@class, '#{icon_css_class}')]"
+  expect(page).to have_xpath(icon_xpath)
+  icon = page.find(:xpath, icon_xpath)
+  tr = icon.find(:xpath, './ancestor::tr') # get the ancestor tr of the td
+  expect(tr).to have_text(row_text)
+
 end

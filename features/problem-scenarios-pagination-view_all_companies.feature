@@ -1,9 +1,14 @@
 Feature: Visitor sees all companies
 
-  2020-09-10:  Pagination scenarios have been moved to
-  problem-scenarios-pagination-view_all_companies.feature. These have been causing
-  intermittent failures in CI Semaphore tests.  See the note in that file for
-  more info.
+  2020-09-10:
+  These scenarios have problems: they often fail on  (CI) Semaphore.
+  Problems seem to be the timing of the DOM refresh/changes and the
+  different processes  used (e.g. capybara, rails).
+
+  We know these scenarios work in real life, but we still need to have
+  these scenarios working so that we are sure that they continue to
+  work and so that any other changes do not cause problems with them.
+
 
   As a visitor,
   so that I can find companies that can offer me services,
@@ -61,8 +66,6 @@ Feature: Visitor sees all companies
       | Company03 | 6613265393     | cmpy3@mail.com  | Stockholm    | Alingsås |
       | Company02 | 2120000142     | cmpy2@mail.com  | Västerbotten | Bromölla |
       | Company01 | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås |
-
-
 
 
     And the following company addresses exist:
@@ -167,92 +170,53 @@ Feature: Visitor sees all companies
       | b@mutts.com   | Company28    | accepted | Groomer    |
       | u29@mutts.com | Company29    | accepted | Groomer    |
 
-  @selenium @time_adjust
-  Scenario: Visitor sees all companies
-    Given the date is set to "2017-10-01"
-    Given I am Logged out
-    And I am on the "landing" page
-    Then I should see "Company02" in the list of companies
-    And I should not see "2120000142" in the list of companies
-    And I should see "Company01" in the list of companies
-    And I should not see "5560360793" in the list of companies
-    And I should not see t("companies.new_company")
 
-  @selenium @time_adjust
-  Scenario: Visitor sees multiple regions and kommuns for a company in the companies list
+  # Why does pagination for companies intermittently fail on CI Semaphore,
+  #  problems, but pagination for membership applications does not?
+  #  view_shf_applications-pagination.feature (and search for pagination in
+  #  other .feature files.
+  @selenium @time_adjust @skip_ci_test
+  Scenario: Pagination
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
+    And I hide the companies search form
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
     And I should see "Company02" in the list of companies
-    And I should see "Västerbotten" in the row for "Company02"
-    And I should see "Norrbotten" in the row for "Company02"
-    And I should see "Uppsala" in the row for "Company02"
-    And I should see "Bromölla" in the row for "Company02"
-    And I should see "Alvesta" in the row for "Company02"
-    And I should see "Årsta" in the row for "Company02"
-    And I should see "Kolbäck" in the row for "Company02"
-    And I wait for all ajax requests to complete
-
-  @time_adjust
-  Scenario: User sees all the companies
-    Given the date is set to "2017-10-01"
-    Given I am logged in as "u1@mutts.com"
-    And I am on the "landing" page
-    Then I should see t("companies.index.title")
-    And I should see "Company02" in the list of companies
     And I should not see "2120000142" in the list of companies
     And I should see "Company01" in the list of companies
     And I should not see "5560360793" in the list of companies
-    And I should not see t("companies.new_company")
+    And I should see "Company10" in the list of companies
+    And I should not see "3609340140" in the list of companies
+    And I should not see "Company11" in the list of companies
+    Then I click on t("will_paginate.next_label") link
+    And I should see "Company11" in the list of companies
+    And I should not see "Company10" in the list of companies
 
 
-  @selenium @time_adjust
-  Scenario: I18n translations
-    Given the date is set to "2017-10-01"
-    Given I am Logged out
-    And I set the locale to "sv"
-    And I am on the "landing" page
-    Then I hide the companies search form
-    And I should see "Verksamhetslän"
-    And I should see "Kategori"
-    And I should not see "Region"
-    And I should not see "Category"
-    Then I click on "change-lang-to-english"
-    And I set the locale to "en"
-    Then I hide the companies search form
-    And I wait 1 second
-    And I should see "Region"
-    And I should see "Category"
-    And I should not see "Verksamhetslän"
-    And I should not see "Kategori"
-
-  @selenium @time_adjust
-  Scenario: Companies lacking branding payment or members not shown
+  @selenium @time_adjust @skip_ci_test
+  Scenario: Pagination: Set number of items per page
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
     And I hide the companies search form
     And "items_count" should have "10" selected
-    Then I select "All" in select list "items_count"
-    And I should see "27" companies
+    And I should see "10" companies
+    # Ensure the list is sorted by name so we will see Company02
+    And I click on t("activerecord.attributes.company.name")
     And I should see "Company10" in the list of companies
-    And I should see "Company27" in the list of companies
-    And I should not see "Company28" in the list of companies
-    And I should not see "Company29" in the list of companies
-
-
-  @selenium @time_adjust
-  Scenario: Admin can see all companies even if lacking branding payment or members
-    Given the date is set to "2017-10-01"
-    And I am logged in as "admin@shf.se"
-    And I am on the "all companies" page
-    And "items_count" should have "10" selected
-    Then I select "All" in select list "items_count"
+    And I should not see "Company11" in the list of companies
+    And I should not see "Company26" in the list of companies
+    Then I select "25" in select list "items_count"
     And I wait for all ajax requests to complete
-    And I should see "29" companies
-    And I should see "Company10" in the list of companies
-    And I should see "Company27" in the list of companies
-    And I should see "Company28" in the list of companies
-    And I should see "Company29" in the list of companies
+    Then I should see "25" companies
+    And "items_count" should have "25" selected
+    And I should see "Company01" in the list of companies
+    And I should see "Company02" in the list of companies
+    And I should see "Company11" in the list of companies
+    And I should see "Company12" in the list of companies
+    And I should see "Company24" in the list of companies
+    And I should see "Company25" in the list of companies
+    And I should not see "Company26" in the list of companies
+    And I should not see "Company27" in the list of companies

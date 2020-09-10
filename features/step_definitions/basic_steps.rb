@@ -111,20 +111,24 @@ end
 
 
 When "I click the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
-  icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a/i[contains(@class, '#{icon_class}')]")
+  icon_element = find(:xpath, "//tr[contains(.,'#{row_content}')]/td//a//i[contains(@class, '#{icon_class}')]")
   icon_element.find(:xpath, './parent::a').click  # get the parent a of the icon)
 end
 
+# TODO: should this step ever be used?
 When "I click and accept the{optional_string} icon with CSS class {capture_string}" do |ordinal, icon_class|
   page.driver.accept_modal(:confirm, wait: 4) do
     step %{I click the #{ordinal} icon with CSS class "#{icon_class}"}
   end
 end
 
-When "I click the{optional_string} icon with CSS class {capture_string}" do |ordinal, icon_class|
+When "I click the {ordinal} icon with CSS class {capture_string}" do |ordinal, icon_class|
   index = ordinal ? [0, 1, 2, 3, 4].send(ordinal.lstrip) : 0
 
-  all("i.#{icon_class}")[index].click
+  icons = all("i.#{icon_class}")
+  # (all(...)) will not return an array if there is only one icon with that class
+  icons = [icons] unless icons.is_a? Array
+  icons[index].first.click  # click on the first result
 end
 
 
