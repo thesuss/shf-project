@@ -115,7 +115,7 @@ Feature: As an admin
     And I click on t("submit")
     Then I should see t("companies.create.success_with_dinkurs_problem")
     And I should see "Happy Mutts"
-    And I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid")
+    And I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_key")
 
   Scenario Outline: Admin creates company - when things go wrong
     Given I am logged in as "admin@shf.se"

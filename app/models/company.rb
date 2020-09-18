@@ -133,16 +133,21 @@ class Company < ApplicationRecord
   end
 
 
-  def validate_key_and_fetch_dinkurs_events(on_update: true)
+  def valid_key_and_fetch_dinkurs_events?(on_update: true)
     return true if on_update and !will_save_change_to_attribute?('dinkurs_company_id')
+
+    result = false
     fetch_dinkurs_events
-    true
+    return true
   rescue Dinkurs::Errors::InvalidKey
-    errors.add(:dinkurs_company_id, :invalid)
-    return false
+    errors.add(:dinkurs_company_id, :invalid_key)
+    return result
+  rescue Dinkurs::Errors::InvalidFormat
+    errors.add(:dinkurs_company_id, :invalid_format)
+    return result
   rescue URI::InvalidURIError
     errors.add(:dinkurs_company_id, :invalid_chars)
-    return false
+    return result
   end
 
 

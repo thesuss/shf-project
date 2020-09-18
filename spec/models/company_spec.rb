@@ -243,9 +243,9 @@ RSpec.describe Company, type: :model, focus: true do
   describe 'events update management' do
 
     around(:each) do |example|
-      Timecop.freeze(Time.zone.local(2018, 6, 1))
-      example.run
-      Timecop.return
+      travel_to(Time.zone.local(2018, 6, 1)) do
+        example.run
+      end
     end
 
     it '#events_start_date returns starting date for stored events' do
@@ -282,24 +282,38 @@ RSpec.describe Company, type: :model, focus: true do
       end
     end
 
-    context '#validate_key_and_fetch_dinkurs_events', :vcr do
-      it 'returns true if dinkurs key is unchanged' do
-        expect(company_3_addrs.validate_key_and_fetch_dinkurs_events).to eq true
+    context '#valid_key_and_fetch_dinkurs_events?', :vcr do
+      it 'returns true if dinkurs key is unchanged and never fetches events' do
+        expect(Dinkurs::EventsCreator).not_to receive(:new)
+        expect(company_3_addrs.valid_key_and_fetch_dinkurs_events?).to eq true
       end
 
       it 'returns true if events are fetched' do
         company_3_addrs.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
-        expect(company_3_addrs.validate_key_and_fetch_dinkurs_events).to eq true
+        allow_any_instance_of(Dinkurs::EventsCreator).to receive(:call).and_return({})
+        expect(company_3_addrs.valid_key_and_fetch_dinkurs_events?).to eq true
       end
 
       it 'adds model error and returns false if invalid dinkurs key' do
         company_3_addrs.dinkurs_company_id = 'xyz'
-        err                        = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid')
+        err = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_key')
 
-        result = company_3_addrs.validate_key_and_fetch_dinkurs_events
+        allow_any_instance_of(Dinkurs::EventsCreator).to receive(:call).and_raise(Dinkurs::Errors::InvalidKey)
+        result = company_3_addrs.valid_key_and_fetch_dinkurs_events?
 
         expect(result).to eq false
         expect(company_3_addrs.errors.full_messages.first).to match(/#{err}/)
+      end
+
+      it 'adds model error and returns false if invalid dinkurs format' do
+        company_3_addrs.dinkurs_company_id = 'xyz'
+        err = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_format')
+
+        allow_any_instance_of(Dinkurs::EventsCreator).to receive(:call).and_raise(Dinkurs::Errors::InvalidFormat)
+        result = company_3_addrs.valid_key_and_fetch_dinkurs_events?
+
+        expect(result).to eq false
+        expect(company_3_addrs.errors.full_messages.first).to include(err)
       end
     end
   end
@@ -328,7 +342,7 @@ RSpec.describe Company, type: :model, focus: true do
              expire_date:    payment_date_2017 + 365)
 
 
-      Timecop.freeze(Date.new(2019, 1, 1)) do
+      travel_to(Date.new(2019, 1, 1)) do
         expect(mem1_co.current_members).to be_empty
       end
     end
@@ -352,7 +366,7 @@ RSpec.describe Company, type: :model, focus: true do
              start_date:     Date.new(2018, 12, 1),
              expire_date:    Date.new(2018, 12, 1) + 365)
 
-      Timecop.freeze(Date.new(2019, 1, 1)) do
+      travel_to(Date.new(2019, 1, 1)) do
         expect(mem1_co.current_members).to match_array([mem1_exp])
       end
     end
@@ -492,9 +506,9 @@ RSpec.describe Company, type: :model, focus: true do
     describe '.self.next_branding_payment_dates' do
 
       around(:each) do |example|
-        Timecop.freeze(payment_date_2018)
-        example.run
-        Timecop.return
+        travel_to(payment_date_2018) do
+          example.run
+        end
       end
 
       it "returns today's date for first payment start date" do
@@ -522,16 +536,20 @@ RSpec.describe Company, type: :model, focus: true do
 
         it 'returns actual payment date for start date' do
           payment1_co1
-          Timecop.freeze(payment_date_2020)
-          expect(Company.next_branding_payment_dates(complete_co1.id)[0])
+          travel_back # travel back from the travel_to around each example
+          travel_to(payment_date_2020) do
+            expect(Company.next_branding_payment_dates(complete_co1.id)[0])
               .to eq payment_date_2020
+          end
         end
 
         it 'returns payment date + 1 year for expire date' do
           payment1_co1
-          Timecop.freeze(payment_date_2020)
-          expect(Company.next_branding_payment_dates(complete_co1.id)[1])
+          travel_back # travel back from the travel_to around each example
+          travel_to(payment_date_2020) do
+            expect(Company.next_branding_payment_dates(complete_co1.id)[1])
               .to eq payment_date_2020 + 1.year - 1.day
+          end
         end
       end
 
@@ -928,7 +946,7 @@ RSpec.describe Company, type: :model, focus: true do
           end
 
           it 'is false (never nil)' do
-            Timecop.freeze(2019, 1, 1) do
+            travel_to(Date.new(2019, 1, 1)) do
               payment_2017_10_1
               expect(past_payments_co.payments.size).to eq 1
               expect(past_payments_co.branding_license?).not_to be_nil
@@ -962,7 +980,7 @@ RSpec.describe Company, type: :model, focus: true do
         end
 
         it 'is true' do
-          Timecop.freeze( pretend_today ) do
+          travel_to( pretend_today ) do
             payment_2018_1_3
             expect(successful_payments_co.payments.size).to eq 1
             expect(successful_payments_co.branding_license?).to be_truthy
@@ -989,7 +1007,7 @@ RSpec.describe Company, type: :model, focus: true do
           end
 
           it "payment status #{payment_status}: is false (never nil)" do
-            Timecop.freeze( pretend_today ) do
+            travel_to( pretend_today ) do
               payment_2018_1_3
               expect(not_successful_payments_co.payments.size).to eq 1
               expect(not_successful_payments_co.branding_license?).not_to be_nil
@@ -1056,7 +1074,7 @@ RSpec.describe Company, type: :model, focus: true do
       member_dec_5_start_time = Time.utc(member_dec_5_start.year, member_dec_5_start.month, member_dec_5_start.day)
 
 
-      Timecop.freeze( day_before_member_dec_3_expiry_time ) do
+      travel_to( day_before_member_dec_3_expiry_time ) do
 
         # update membership status based on today's date
         MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
@@ -1067,7 +1085,7 @@ RSpec.describe Company, type: :model, focus: true do
       end
 
 
-      Timecop.freeze( member_dec_3_expiry_time) do
+      travel_to( member_dec_3_expiry_time) do
         # update membership status based on today's date
         MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
         MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)

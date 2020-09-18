@@ -159,7 +159,7 @@ class CompaniesController < ApplicationController
 
     unless request.xhr?
       if saved
-        if @company.validate_key_and_fetch_dinkurs_events(on_update: false)
+        if @company.valid_key_and_fetch_dinkurs_events?(on_update: false)
           redirect_to @company, notice: t('.success')
         else
           helpers.flash_message(:notice, t('.success_with_dinkurs_problem'))
@@ -194,7 +194,7 @@ class CompaniesController < ApplicationController
 
     if (company_valid = @company.valid?)
       # Will add model error if key is not blank and not valid:
-      dinkurs_key_ok = @company.validate_key_and_fetch_dinkurs_events
+      dinkurs_key_ok = @company.valid_key_and_fetch_dinkurs_events?
     else
       dinkurs_key_ok = true
     end
