@@ -4,6 +4,18 @@ module ShfApplicationsHelper
     policy(@shf_application).permitted_attributes_for_edit.include? :state
   end
 
+
+  def shf_app_state_translated(shf_app)
+    # Cannot use '.human_state' because it calls '.display_name',
+    # which is cached/memoized.
+    # If the locale is changed, then the .display_name is no longer accurate because it
+    #  is now the translation for the previous locale.
+    # Hence we have to call this every time.
+    #  (Another way might be to set up an observer on changing the locale.)
+    shf_app_aasm = shf_app.aasm
+    shf_app_aasm.state_object_for_name(shf_app_aasm.current_state).localized_name
+  end
+
   def business_categories_str(application)
     cats_str = ''
     application.business_categories.roots.order(:name).each do |category|

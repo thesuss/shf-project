@@ -34,7 +34,7 @@
 
     .row
       .col
-        .admin-note.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state} - #{@shf_application.updated_at.strftime('%F')}
+        .admin-note.app-status #{t('.app_status')}: #{shf_app_state_translated(@shf_application)} - #{@shf_application.updated_at.strftime('%F')}
         - unless @shf_application.accepted? || @shf_application.rejected?
           .admin-note.app-status= file_delivery_method_status(@shf_application)
 
