@@ -51,14 +51,14 @@ GEM
       activesupport (>= 3.0.0)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    ancestry (3.1.0)
+    ancestry (3.2.1)
       activerecord (>= 4.2.0)
     arel (9.0.0)
     ast (2.4.1)
     autoprefixer-rails (10.0.0.2)
       execjs
     aws-eventstream (1.1.0)
-    aws-partitions (1.373.0)
+    aws-partitions (1.374.0)
     aws-sdk-core (3.107.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
@@ -83,10 +83,10 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.4.8)
       msgpack (~> 1.0)
-    bootstrap (4.1.3)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.12.9, < 2)
-      sass (>= 3.5.2)
+    bootstrap (4.5.2)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     bootstrap-toggle-rails (2.2.1.0)
     bootstrap-will_paginate (1.0.0)
       will_paginate
@@ -195,7 +195,7 @@ GEM
       cucumber-messages (~> 12.2, >= 12.2.0)
     database_cleaner (1.8.5)
     debug_inspector (0.0.3)
-    devise (4.7.2)
+    devise (4.7.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -341,11 +341,11 @@ GEM
     parallel (1.19.2)
     parser (2.7.1.4)
       ast (~> 2.4.1)
-    pg (0.21.0)
+    pg (1.2.3)
     polyamorous (2.3.2)
       activerecord (>= 5.2.1)
     popper_js (1.14.7)
-    premailer (1.13.1)
+    premailer (1.14.2)
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
@@ -364,7 +364,8 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.13.0)
     public_suffix (4.0.6)
-    puma (3.12.6)
+    puma (5.0.0)
+      nio4r (~> 2.0)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     pundit-matchers (1.6.0)
@@ -413,7 +414,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    regexp_parser (1.7.1)
+    regexp_parser (1.8.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -464,19 +465,16 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.1.0)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -575,7 +573,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootsnap
-  bootstrap (~> 4.1.3)
+  bootstrap (~> 4)
   bootstrap-toggle-rails
   bootstrap-will_paginate
   bullet
@@ -627,12 +625,12 @@ DEPENDENCIES
   nokogiri
   orgnummer
   paperclip
-  pg (~> 0.18)
+  pg (~> 1.2)
   popper_js (~> 1.14.3)
   premailer-rails
   pry
   pry-byebug
-  puma (~> 3.0)
+  puma (~> 5.0)
   pundit
   pundit-matchers
   rack-mini-profiler

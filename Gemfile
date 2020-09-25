@@ -5,8 +5,8 @@ gem 'dotenv-rails'
 gem 'rails', '~> 5.2'
 gem 'bootsnap', require: false
 
-gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.0'
+gem 'pg', '~> 1.2'
+gem 'puma', '~> 5.0'
 gem 'sass-rails'
 
 gem 'uglifier', '>= 1.3.0'
@@ -14,19 +14,23 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 
-gem 'bcrypt', '~> 3.1' # , '~> 3.1.7'
+gem 'bcrypt', '~> 3.1'
+
+# Updating to sprockets 4 needs to be done carefully to ensure that
+#   assets are served correctly in PRODUCTION
+gem 'sprockets', '< 4.0'
 
 gem 'haml-rails'
 gem 'high_voltage', '~> 3.0'
 gem 'orgnummer'
 gem 'popper_js', '~> 1.14.3'
-gem 'bootstrap', '~> 4.1.3'
+gem 'bootstrap', '~> 4'
 gem 'font-awesome-sass', '~> 5.5'  # , '~> 5.5.0'
 gem 'bootstrap-toggle-rails'
 
 gem 'devise'
 gem 'pundit'
-gem "paperclip" #, "~> 6.0.0"
+gem "paperclip"
 
 gem 'routing-filter'   # for handling locale filters around routes
 
@@ -92,10 +96,6 @@ gem 'whenever', require: false
 
 # Query ActiveRecord by time (ex:  Payment.by_year(2019), Payment.between_times(Time.zone.now - 3.hours, Time.zone.now)) # all posts in last 3 hours
 gem 'by_star'
-
-# Updating to sprockets 4 needs to be done carefully to ensure that
-#   assets are served correctly in PRODUCTION
-gem 'sprockets', '< 4.0'
 
 
 group :development, :test do
