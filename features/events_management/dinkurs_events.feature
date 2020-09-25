@@ -12,10 +12,10 @@ Feature: Get events for a company from Dinkurs
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email            | admin | member |
-      | member@mutts.com |       | true   |
-      | visitor@mail.com |       |        |
-      | admin@shf.se     | true  |        |
+      | email            | admin | member |agreed_to_membership_guidelines |
+      | member@mutts.com |       | true   | true                           |
+      | visitor@mail.com |       |        |                                |
+      | admin@shf.se     | true  |        |                                |
 
     And the following regions exist:
       | name         |
