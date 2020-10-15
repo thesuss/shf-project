@@ -13,7 +13,8 @@
 
       = render partial: 'shf_application_fields',
                locals: { f: f, user: @shf_application.user,
-                         company_numbers:  @company_numbers }
+                         company_numbers:  @company_numbers,
+                         all_business_categories: @all_business_categories }
 
       = render 'application/required_fields'
 
