@@ -1005,7 +1005,9 @@ sv:
       use_guidelines: &use_guidelines riktlinjer
       download_image: &download_image Ladda ner bild
       image_dimensions_html: "Bildbredden är <span id = '%{width_id}'></span>pixlar och höjden är<span id = '%{height_id}'></span> pixlar."
-      use_this_image_link_html: "<span style='font-weight: bold'>Använd den här länken på en extern webbplats:</span>"
+      use_this_image_link_html: "<span style='font-weight: bold'>
+                                Använd den här länken på en extern webbplats
+                                (returnerar en JPG-bild):</span>"
 
       image_how_to_use_html: &image_how_to_use_html "Du kan ladda ner bilden, ta en
                              skärmdump eller länka till den från din webbplats

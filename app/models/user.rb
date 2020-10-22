@@ -8,6 +8,7 @@
 #
 class User < ApplicationRecord
   include PaymentUtility
+  include ImagesUtility
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -97,6 +98,33 @@ class User < ApplicationRecord
 
   # ----------------------------------
 
+  after_update :clear_proof_of_membership_jpg_cache,
+               if: Proc.new { saved_change_to_member_photo_file_name? ||
+                              saved_change_to_first_name? ||
+                              saved_change_to_last_name? ||
+                              saved_change_to_membership_number? }
+
+  def cache_key(type)
+    "user_#{id}_cache_#{type}"
+  end
+
+  def proof_of_membership_jpg
+    Rails.cache.read(cache_key('pom'))
+  end
+
+  def proof_of_membership_jpg=(image)
+    Rails.cache.write(cache_key('pom'), image)
+  end
+
+  def clear_proof_of_membership_jpg_cache
+    Rails.cache.delete(cache_key('pom'))
+  end
+
+  def self.clear_all_proof_of_membership_jpg_caches
+    all.each do |user|
+      user.clear_proof_of_membership_jpg_cache
+    end
+  end
 
   def updating_without_name_changes
     # Not a new record and not saving changes to either first or last name

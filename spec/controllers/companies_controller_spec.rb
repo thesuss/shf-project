@@ -15,6 +15,26 @@ RSpec.describe CompaniesController, type: :controller do
   let(:full_page_title) {  'site title | site name' }
 
 
+  context '#company_h_brand' do
+    let(:app_config) { create(:app_configuration) }
+    let(:company) { create(:company) }
+
+    it "returns JPG for params[:render_to] == 'jpg' request" do
+      get :company_h_brand, params: { id: company.id, render_to: 'jpg' }
+      expect(response.content_type).to eq 'image/jpg'
+    end
+
+    it "returns JPG for params[:format] == 'jpg' request" do
+      get :company_h_brand, params: { id: company.id, format: 'jpg' }
+      expect(response.content_type).to eq 'image/jpg'
+    end
+
+    it 'returns HTML otherwise' do
+      get :company_h_brand, params: { id: company.id }
+      expect(response.content_type).to eq 'text/html'
+    end
+  end
+
   describe '#index will fix_FB_changed_params' do
 
     it "does not change URL if there are no query ('q') parameters" do

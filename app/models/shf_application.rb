@@ -114,6 +114,16 @@ class ShfApplication < ApplicationRecord
     not_decided.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id))
   end
 
+  after_update  :clear_image_caches
+
+  def clear_image_caches    
+    user.clear_proof_of_membership_jpg_cache
+
+    companies.each do |company|
+      company.clear_h_brand_jpg_cache
+    end
+  end
+
 
   # --------------------------------------------------------------------------
 

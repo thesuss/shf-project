@@ -69,8 +69,32 @@ class Company < ApplicationRecord
     next_payment_dates(company_id, THIS_PAYMENT_TYPE)
   end
 
+  after_update :clear_h_brand_jpg_cache,
+               if: Proc.new { saved_change_to_name? }
 
-  # Note: If the rules/definition for a 'complete' company change, this scope
+  def cache_key(type)
+   "company_#{id}_cache_#{type}"
+  end
+
+  def h_brand_jpg
+   Rails.cache.read(cache_key('h_brand'))
+  end
+
+  def h_brand_jpg=(image)
+   Rails.cache.write(cache_key('h_brand'), image)
+  end
+
+  def clear_h_brand_jpg_cache
+   Rails.cache.delete(cache_key('h_brand'))
+  end
+
+  def self.clear_all_h_brand_jpg_caches
+    all.each do |company|
+      company.clear_h_brand_jpg_cache
+    end
+  end
+
+  # Note: If the rules/definition for a 'complete' company changes, this scope
   # must be changed in addition to the code in RequirementsForCoInfoComplete
   #
   # A company has a name (not nil, not an empty string)

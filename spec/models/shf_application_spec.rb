@@ -219,6 +219,47 @@ RSpec.describe ShfApplication, type: :model do
   end
 
 
+
+
+
+  context 'User proof_of_membership (POM) JPG and Company h-brand JPG cache management' do
+    let(:user) { create(:user) }
+    let(:company) { create(:company) }
+    let(:company2) { create(:company) }
+    let!(:application) do
+      create(:shf_application,
+             user: user,
+             companies: [company, company2])
+    end
+
+
+    describe 'after_update :clear_image_caches' do
+
+      before(:each) do
+        user.proof_of_membership_jpg = file_fixture('image.png')
+        company.h_brand_jpg = file_fixture('image.png')
+        company2.h_brand_jpg = file_fixture('image.png')
+      end
+
+      it "clears user POM cache and related-companies' h-brand caches" do
+        expect(application).to receive(:clear_image_caches).once.and_call_original
+        expect(user).to receive(:clear_proof_of_membership_jpg_cache).once.and_call_original
+        expect(company).to receive(:clear_h_brand_jpg_cache).once.and_call_original
+        expect(company2).to receive(:clear_h_brand_jpg_cache).once.and_call_original
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company2.h_brand_jpg).to_not be_nil
+
+        application.update_attributes(phone_number: '1234')
+
+        expect(user.proof_of_membership_jpg).to be_nil
+        expect(company.h_brand_jpg).to be_nil
+        expect(company2.h_brand_jpg).to be_nil
+      end
+    end
+  end
+
+
   describe "Uploaded Files" do
 
     let(:application_owner) { create(:user, email: 'user_1@random.com') }

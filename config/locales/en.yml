@@ -997,7 +997,7 @@ en:
 
       image_how_to_use_html: &image_how_to_use_html "You can download the image, take a screenshot,
         link to it from your website and use it in social media,
-        or print it have and show (ex. show it to a customer/client)."
+        or print it."
       image_use_guidelines_html: &image_use_guidelines_html Please note that your use of this image is subject to these %{use_guidelines_link}.
       use_guidelines: &use_guidelines guidelines
 
@@ -1009,8 +1009,8 @@ en:
                                pixels and the height is
                                <span id='%{height_id}'></span> pixels."
       use_this_image_link_html: "<span style='font-weight: bold'>
-                                  Use this link in an external website:
-                                  </span>"
+                                  Use this link in an external website
+                                  (will return a JPG image):</span>"
 
     proof_of_membership:
       proof_title: *proof_of_membership

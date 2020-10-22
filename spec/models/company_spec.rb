@@ -498,6 +498,72 @@ RSpec.describe Company, type: :model, focus: true do
   end
 
 
+  context 'h-brand JPG cache management' do
+    let(:company) { create(:company) }
+    let(:company2) { create(:company) }
+
+    before(:each) { Rails.cache.clear(company.cache_key('h_brand')) }
+
+    it { expect(company.cache_key('h_brand')).to eq "company_#{company.id}_cache_h_brand" }
+
+    describe '#h_brand_jpg' do
+      it 'returns nil if no cached image' do
+        expect(company.h_brand_jpg).to be_nil
+      end
+
+      it 'returns cached image if present' do
+        Rails.cache.write(company.cache_key('h_brand'), file_fixture('image.png'))
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to eq file_fixture('image.png')
+      end
+    end
+
+    describe '#h_brand_jpg=' do
+      it 'caches image' do
+        expect(company.h_brand_jpg).to be_nil
+        company.h_brand_jpg = file_fixture('image.png')
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to eq file_fixture('image.png')
+      end
+    end
+
+    describe '#clear_h_brand_jpg_cache' do
+      it 'clears cache' do
+        company.h_brand_jpg = file_fixture('image.png')
+        expect(company.h_brand_jpg).to_not be_nil
+        company.clear_h_brand_jpg_cache
+        expect(company.h_brand_jpg).to be_nil
+      end
+    end
+
+    describe '.clear_all_h_brand_jpg_caches' do
+      it 'clears image cache for all companies' do
+        company.h_brand_jpg = file_fixture('image.png')
+        company2.h_brand_jpg = file_fixture('image.png')
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company2.h_brand_jpg).to_not be_nil
+        Company.clear_all_h_brand_jpg_caches
+        expect(company.h_brand_jpg).to be_nil
+        expect(company2.h_brand_jpg).to be_nil
+      end
+    end
+
+    describe 'after_update :clear_h_brand_jpg_cache' do
+      it 'is called if name changes' do
+        expect(company).to receive(:clear_h_brand_jpg_cache).once
+        company.update_attributes(name: 'new_company_name')
+      end
+            it 'is not called if other attribute changes' do
+        expect(company).not_to receive(:clear_h_brand_jpg_cache)
+        company.update_attributes(phone_number: '1234',
+                                  email: 'this_company@mail.com',
+                                  website: 'nonesuch')
+      end
+    end
+  end
+
+
+
   describe 'destroy or nullify associated records when a Company is destroyed' do
 
     let(:user1) { create(:user) }
@@ -1016,13 +1082,13 @@ RSpec.describe Company, type: :model, focus: true do
     end
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
-        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/hbrand2')
+        url = 'http://localhost:3000/anvandare/1/company_h_brand'
+        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/short_url')
         expect(complete_co1.get_short_h_brand_url(url)).to eq(ShortenUrl.short(url))
         expect(complete_co1.short_h_brand_url).to eq(ShortenUrl.short(url))
       end
       it 'does not save anything if the result is nil and returns unshortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
+        url = 'http://localhost:3000/anvandare/1/company_h_brand'
         allow(ShortenUrl).to receive(:short).with(url).and_return(nil)
         expect(complete_co1.get_short_h_brand_url(url)).to eq(url)
         expect(complete_co1.short_h_brand_url).to eq(nil)
