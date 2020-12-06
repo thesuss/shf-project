@@ -200,9 +200,9 @@ sv:
         date_member_packet_sent: &date_member_packet_sent Paket skickat
 
       payment:
-        payment_type: Betalningstyp
-        status: Status
-        start_date: Startdatum
+        payment_type: &payment_type Betalningstyp
+        status: &payment_status Status
+        start_date: &start_date Startdatum
         expire_date: &expire_date Utgångsdatum
         notes: &notes Anteckningar
         created: *created
@@ -442,10 +442,16 @@ sv:
     no_pay_answer: 'Nej.'
     admin_cant_edit: "Medlemsstatus kan inte uppdateras. (Kanske har inga betalningar gjorts.)"
 
+
+  payor:
+    term_status:
+      admin_user_payments_title: *payments
+
+
   payment:
     payment_type:
-      member_fee: Medlemsavgift
-      branding_fee: H-märkesavgift
+      member_fee: &member_fee Medlemsavgift
+      branding_fee: &branding_fee H-märkesavgift
     status:
       paid: &paid Betald
       never_paid: &never_paid Aldrig betald
@@ -1094,6 +1100,16 @@ sv:
 
     error:
       error: Det uppstod ett fel vid hantering av din betalning
+
+    payments_list:
+      payment_date: Payment date
+      status: *payment_status
+      type: *payment_type
+      start_date: *start_date
+      end_date: *expire_date
+      notes: *notes
+      hips_id: HIPS id
+
 
   user_checklists:
     all_list_items: &user_checklists_all_items Tillbaka till medlemsåtagandet

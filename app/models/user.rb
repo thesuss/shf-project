@@ -78,7 +78,7 @@ class User < ApplicationRecord
 
   scope :agreed_to_membership_guidelines, -> { where(id: UserChecklist.top_level_for_current_membership_guidelines.completed.pluck(:user_id)) }
 
-  scope :current_members, -> { membership_payment_current.paid_on_or_after_guidelines_reqd.agreed_to_membership_guidelines.application_accepted }
+  scope :current_members, -> { application_accepted.membership_payment_current }
 
 
   # -----------------------------------

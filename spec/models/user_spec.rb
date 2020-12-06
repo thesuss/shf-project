@@ -4,7 +4,7 @@ require 'shared_context/unstub_paperclip_all_run_commands'
 require 'shared_context/users'
 require 'shared_context/named_dates'
 
-# TODO use the users already defined/created in the shared_context/users
+# TODO use the users already defined/created in the shared_context/users?
 
 # ================================================================================
 
@@ -386,15 +386,6 @@ RSpec.describe User, type: :model do
         described_class.current_members
       end
 
-      it 'membership payment was made after the membership guidelines were a requirement' do
-        expect(described_class).to receive(:paid_on_or_after_guidelines_reqd).and_call_original
-        described_class.current_members
-      end
-
-      it 'must have agreed to all of the current membership guidelines (if required)' do
-        expect(described_class).to receive(:agreed_to_membership_guidelines).and_call_original
-        described_class.current_members
-      end
     end
 
 

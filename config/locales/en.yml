@@ -202,9 +202,9 @@ en:
         date_member_packet_sent: &date_member_packet_sent Date Member Packet sent
 
       payment:
-        payment_type: Payment Type
-        status: Status
-        start_date: Start Date
+        payment_type: &payment_type Payment Type
+        status: &payment_status Status
+        start_date: &start_date Start Date
         expire_date: &expire_date Expire Date
         notes: &notes Notes
         created: *created
@@ -443,6 +443,11 @@ en:
     yes_pay_answer: 'Yes, make a payment'
     no_pay_answer: 'No. Nevermind. Do not make a payment'
     admin_cant_edit: Membership status can't be updated. (Perhaps no payments have been made.)
+
+
+  payor:
+    term_status:
+      admin_user_payments_title: *payments
 
 
   payment:
@@ -1085,6 +1090,16 @@ en:
 
     error:
       error: There was an error in processing your payment
+
+    payments_list:
+      payment_date: Payment date
+      type: *payment_type
+      status: *payment_status
+      start_date: *start_date
+      end_date: *expire_date
+      notes: *notes
+      hips_id: HIPS id
+
 
   company_locator:
     error:
