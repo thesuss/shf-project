@@ -8,7 +8,7 @@
       %li
         = link_to t('menus.nav.users.your_account'), user_path(current_user), class: 'nav-link'
 
-      = render partial: 'login_admin_items'
+      = render 'nav-menus/login_admin_items'
 
       %li
         = link_to t('devise.sessions.destroy.log_out'),

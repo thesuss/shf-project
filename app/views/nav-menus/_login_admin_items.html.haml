@@ -10,6 +10,9 @@
     = link_to t('menus.nav.admin.dashboard'), admin_only_dashboard_path, class: nav_link_class
 
   %li
+    = link_to t('menus.nav.admin.design_guide'), admin_only_designguide_path, class: nav_link_class
+
+  %li
     = link_to t('about') + '...', '#', class: nav_link_class, data: { toggle: 'modal', target: '#about-info-modal' }
 
 
