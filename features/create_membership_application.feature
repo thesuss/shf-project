@@ -84,7 +84,7 @@ Feature: Create a new membership application
 
     And I select "Groomer" Category
 
-    And I choose a file named "diploma.pdf" to upload
+    And I choose a file named "diploma.pdf" to upload for the application
 
     And I select files delivery radio button "upload_now"
 
@@ -244,7 +244,7 @@ Feature: Create a new membership application
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
       | <c_email>                          | <phone>                           |
 
-    And I choose a file named "diploma.pdf" to upload
+    And I choose a file named "diploma.pdf" to upload for the application
 
     And I select files delivery radio button "files_uploaded"
 

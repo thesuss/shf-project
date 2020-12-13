@@ -104,8 +104,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
   Scenario: Not a first-time member when membership granted. No email sent.
     Given the date is set to "2020-12-01"
     And I am logged in as "lars-member@lars.se"
-
-    And I am the page for company number "2120000142"
+    When I am the page for company number "2120000142"
     Then I should see "NewCompany"
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")

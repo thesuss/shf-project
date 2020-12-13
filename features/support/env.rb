@@ -117,8 +117,10 @@ end
 After { Warden.test_reset! }
 
 #
-# 'Global' methods available to all steps
+# 'Global' constants and methods available to all steps
 #
+
+UPLOADED_FILES_DIR = 'spec/fixtures/uploaded_files'.freeze
 
 def path_with_locale(visit_path)
   "/#{I18n.locale}#{visit_path}"
@@ -126,6 +128,18 @@ end
 
 def i18n_content(content, locale=I18n.locale)
   I18n.t(content, locale)
+end
+
+
+# If the file doesn't exist in the UPLOADED_FILES_DIR, raise an error
+def file_fixture_exists?(filename, step = '')
+  return true if File.exist?(Rails.root.join(UPLOADED_FILES_DIR, filename))
+
+  raise "ERROR in step: '#{step}'\n" +
+          "  The file #{filename}\n" +
+          "  must exist in #{UPLOADED_FILES_DIR}\n" +
+          "  but it doesn't. Either correct the file name to a file that does exist in that directory\n" +
+          "  or create a file and put it in that directory.\n"
 end
 
 

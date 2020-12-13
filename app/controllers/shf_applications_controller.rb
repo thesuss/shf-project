@@ -359,7 +359,10 @@ class ShfApplicationsController < ApplicationController
 
       uploaded_files['actual_files']&.each do |uploaded_file|
 
-        @uploaded_file = @shf_application.uploaded_files.create(actual_file: uploaded_file)
+        # An admin might be uploading a file for a users's application.
+        # The uploaded file should belong_to the user, not the admin.
+        @uploaded_file = @shf_application.uploaded_files.create(actual_file: uploaded_file,
+                                                                user: @shf_application.user)
 
         if @uploaded_file.valid?
           helpers.flash_message(:notice, t('shf_applications.uploads.file_was_uploaded',

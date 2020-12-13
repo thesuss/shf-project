@@ -20,6 +20,9 @@ class User < ApplicationRecord
   has_one :shf_application, dependent: :destroy
   accepts_nested_attributes_for :shf_application, update_only: true
 
+  has_many :uploaded_files
+  accepts_nested_attributes_for :uploaded_files, allow_destroy: true
+
   has_many :companies, through: :shf_application
 
   has_many :payments, dependent: :nullify
@@ -37,10 +40,7 @@ class User < ApplicationRecord
   validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/]
 
   validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
-
-
   validates :membership_number, uniqueness: true, allow_blank: true
-
 
   THIS_PAYMENT_TYPE = Payment::PAYMENT_TYPE_MEMBER
 
@@ -360,9 +360,10 @@ class User < ApplicationRecord
   def adjust_related_info_for_destroy
     remove_photo_from_filesystem
     record_deleted_payorinfo_in_payment_notes(self.class, email)
+    destroy_uploaded_files
   end
 
-
+  # ===============================================================================================
   private
 
 
@@ -375,6 +376,15 @@ class User < ApplicationRecord
   # remove the associated member photo from the file system by setting it to nil
   def remove_photo_from_filesystem
     member_photo = nil
+  end
+
+
+  def destroy_uploaded_files
+    uploaded_files.each do |uploaded_file|
+      uploaded_file.actual_file = nil
+      uploaded_file.destroy
+    end
+    save
   end
 
 end

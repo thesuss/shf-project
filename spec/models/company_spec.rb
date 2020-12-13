@@ -549,11 +549,13 @@ RSpec.describe Company, type: :model, focus: true do
     end
 
     describe 'after_update :clear_h_brand_jpg_cache' do
+
       it 'is called if name changes' do
         expect(company).to receive(:clear_h_brand_jpg_cache).once
         company.update_attributes(name: 'new_company_name')
       end
-            it 'is not called if other attribute changes' do
+
+      it 'is not called if other attribute changes' do
         expect(company).not_to receive(:clear_h_brand_jpg_cache)
         company.update_attributes(phone_number: '1234',
                                   email: 'this_company@mail.com',

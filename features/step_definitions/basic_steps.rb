@@ -44,11 +44,12 @@ end
 
 When /^I confirm popup$/ do
 
-  if Capybara.current_driver == :poltergeist
+  driver = Capybara.current_driver
+  if driver == :poltergeist
     using_wait_time 3 do
       page.driver.accept_modal(:confirm)
     end
-  elsif Capybara.current_driver == (:selenium || :selenium_browser)
+  elsif (driver == :selenium) || (driver == :selenium_browser)
     page.driver.browser.switch_to.alert.accept
   else
     raise 'step not configured for current browser driver'
