@@ -135,12 +135,6 @@ And(/^the following user checklists exist:$/) do |table|
 end
 
 
-
-And("the start date for the Membership Ethical Guidelines is {date}") do | req_start_date |
-  allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date).and_return(req_start_date)
-end
-
-
 And("I should{negate} see the checklist {capture_string} in the list of user checklists") do |negated, displayed_text|
   list_locator = "##{USERCHECKLISTS_ID}"
   if page.has_selector?(list_locator)

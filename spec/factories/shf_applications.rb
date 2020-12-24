@@ -12,6 +12,8 @@ FactoryBot.define do
 
     association :user
 
+    uploaded_files { [] }
+
     # This association is required.  Also, there should only be *one* instance
     # of each file-delivery method in the DB.  Create an instance only if none present.
     file_delivery_method { AdminOnly::FileDeliveryMethod.first ||

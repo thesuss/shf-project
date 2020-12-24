@@ -4,9 +4,6 @@ Feature:  SHF Member Guidelines checklist is created  when a user registers
   the SHF Member Guidelines checklist should be created for the user
   so the user can read and agree and check-off each item in the checklist.
 
-  Rule: The user can agree to the guidelines independent of whether or not they have submitted an application.
-
-
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
 

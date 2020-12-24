@@ -30,7 +30,7 @@ class RequirementsForMembership < AbstractRequirements
 
     user.has_approved_shf_application? &&
         membership_guidelines_checklist_done?(user) &&
-        user.membership_current?
+        user.membership_current?  # note that membership_current? is only about Payment
   end
 
 
@@ -39,7 +39,7 @@ class RequirementsForMembership < AbstractRequirements
   # else if the user does not have to have a completed Membership Guidelines checklist,
   #   return true (we assume it's fine)
   def self.membership_guidelines_checklist_done?(user)
-    UserChecklistManager.completed_membership_guidelines_if_reqd?(user)
+    UserChecklistManager.completed_membership_guidelines_checklist?(user)
   end
 
 end # RequirementsForMembership

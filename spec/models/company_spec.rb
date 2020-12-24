@@ -21,7 +21,8 @@ RSpec.describe Company, type: :model, focus: true do
 
     # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
     # if a ShfApplication is accepted.
-    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+    simple_guideline = create(:user_checklist, :completed, master_checklist: build(:membership_guidelines_master_checklist))
+    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(simple_guideline)
   end
 
 

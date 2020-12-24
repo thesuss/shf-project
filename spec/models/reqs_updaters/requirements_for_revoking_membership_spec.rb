@@ -5,7 +5,7 @@ require 'shared_context/users'
 RSpec.describe RequirementsForRevokingMembership, type: :model do
 
   include_context 'create users'
-  
+
   let(:subject) { RequirementsForRevokingMembership }
 
 
@@ -40,26 +40,4 @@ RSpec.describe RequirementsForRevokingMembership, type: :model do
     end
 
   end
-
-
-  describe '.satisfied?' do
-
-    it '.has_expected_arguments? is true and requirements_met? is true' do
-      expect(subject.satisfied?({ user: member_expired })).to be_truthy
-    end
-
-    it '.has_expected_arguments? is true and requirements_met? is false' do
-      expect(subject.satisfied?({ user: user })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is true' do
-      expect(subject.satisfied?({ not_user: member_paid_up })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is false' do
-      expect(subject.satisfied?({ not_user: user })).to be_falsey
-    end
-
-  end
-
 end

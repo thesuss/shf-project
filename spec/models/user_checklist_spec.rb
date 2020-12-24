@@ -5,7 +5,7 @@ RSpec.describe UserChecklist, type: :model do
   let(:all_complete_list) { create(:user_checklist, :completed, num_completed_children: 3) }
 
   let(:three_complete_two_uncomplete_list) {
-    checklist_3done_2unfinished = create(:user_checklist, :completed, num_completed_children: 2)
+    checklist_3done_2unfinished = create(:user_checklist, num_completed_children: 3)
     list_user = checklist_3done_2unfinished.user
 
     last_item = checklist_3done_2unfinished.children.last
@@ -37,11 +37,6 @@ RSpec.describe UserChecklist, type: :model do
       expect(create(:user_checklist, num_completed_children: 2)).to be_valid
 
       expect(create(:user_checklist, parent: parent_item, num_children: 2, num_completed_children: 3)).to be_valid
-    end
-
-    it 'child factories are valid' do
-      expect(create(:membership_ethical_guidelines)).to be_valid
-      expect(create(:membership_ethical_guidelines, user: create(:user))).to be_valid
     end
   end
 
@@ -175,14 +170,15 @@ RSpec.describe UserChecklist, type: :model do
     it 'returns a list of all items that are completed, including descendents, in order by list_position' do
       result = three_complete_two_uncomplete_list.all_that_are_completed
 
-      expect(result).to include(three_complete_two_uncomplete_list) # includes the root of the tree
+      expect(result).not_to include(three_complete_two_uncomplete_list) # root of the tree
       expect(result).to include(three_complete_two_uncomplete_list.children.first)
+      expect(result).to include(three_complete_two_uncomplete_list.children.second)
       expect(result).to include(three_complete_two_uncomplete_list.children.last)
       expect(result).not_to include(three_complete_two_uncomplete_list.children.last.children.first)
       expect(result).not_to include(three_complete_two_uncomplete_list.children.last.children.last)
 
       result_list_positions = result.map(&:list_position)
-      expect(result_list_positions).to match_array([0, 0, 1])
+      expect(result_list_positions).to match_array([0, 1, 2])
     end
   end
 
@@ -209,8 +205,8 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-  it 'size = completed items + uncompleted items' do
-    expect(three_complete_two_uncomplete_list.all_that_are_completed.size + three_complete_two_uncomplete_list.all_that_are_uncompleted.size).to eq(5)
+  it 'size = completed items + uncompleted items (uncompleted includes root)' do
+    expect(three_complete_two_uncomplete_list.all_that_are_completed.size + three_complete_two_uncomplete_list.all_that_are_uncompleted.size).to eq(6)
   end
 
   describe 'percent_complete' do

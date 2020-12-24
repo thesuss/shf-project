@@ -4,18 +4,36 @@ RSpec.describe AbstractRequirements, type: :model do
 
   let(:subject) { AbstractRequirements }
 
-  describe '.satisfied?(args = {})' do
+  describe '.satisfied?' do
 
-    it 'checks that the expected arguments are there' do
-      expect(subject).to receive(:has_expected_arguments?)
-      subject.satisfied?({})
+    it 'checks that the expected arguments are there and the requirements are met' do
+      expect(subject).to receive(:has_expected_arguments?).and_return(true)
+      expect(subject).to receive(:requirements_met?)
+      subject.satisfied?('blorf')
     end
 
-    it 'checks that the requirements are met if the arguments are there' do
+    it '.has_expected_arguments? is true and requirements_met? is true' do
       allow(subject).to receive(:has_expected_arguments?).and_return(true)
+      allow(subject).to receive(:requirements_met?).and_return(true)
+      expect(subject.satisfied?('blorf')).to be_truthy
+    end
 
-      expect(subject).to receive(:requirements_met?)
-      subject.satisfied?({})
+    it '.has_expected_arguments? is true and requirements_met? is false' do
+      allow(subject).to receive(:has_expected_arguments?).and_return(true)
+      allow(subject).to receive(:requirements_met?).and_return(false)
+      expect(subject.satisfied?('blorf')).to be_falsey
+    end
+
+    it '.has_expected_arguments? is false and requirements_met? is true' do
+      allow(subject).to receive(:has_expected_arguments?).and_return(false)
+      allow(subject).to receive(:requirements_met?).and_return(true)
+      expect(subject.satisfied?('blorf')).to be_falsey
+    end
+
+    it '.has_expected_arguments? is false and requirements_met? is false' do
+      allow(subject).to receive(:has_expected_arguments?).and_return(false)
+      allow(subject).to receive(:requirements_met?).and_return(false)
+      expect(subject.satisfied?('blorf')).to be_falsey
     end
   end
 

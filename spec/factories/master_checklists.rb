@@ -25,7 +25,10 @@ FactoryBot.define do
 
       # add child ListEntries if num_children: is given in the call to this factory
       evaluator.num_children.times do |child_num|
-        create(:master_checklist, parent: checklist_master, name: "child entry #{child_num}", list_position: child_num)
+        create(:master_checklist, parent: checklist_master,
+               master_checklist_type: checklist_master.master_checklist_type,
+               name: "child entry #{child_num}",
+               list_position: child_num)
       end
 
       # try to look  up the parent if a parent_name was given in the call to this factory
@@ -37,12 +40,11 @@ FactoryBot.define do
 
 
     factory :membership_guidelines_master_checklist do
-      name { AdminOnly::MasterChecklist.name }
+      name { AdminOnly::MasterChecklistType.membership_guidelines_type_name }
       displayed_text { 'Membership guidelines text displayed to a user.' }
       description { 'Membership Guideline Master description' }
       master_checklist_type factory: :membership_guidelines_master_checklist_type
     end
-
   end
 
 end

@@ -94,28 +94,4 @@ RSpec.describe RequirementsForMembershipLapsed, type: :model do
     end
 
   end
-
-
-  describe '.satisfied?' do
-
-    it '.has_expected_arguments? is true and requirements_met? is true' do
-      member_with_expired_payment
-      expect(subject.satisfied?({ user: member })).to be_truthy
-    end
-
-    it '.has_expected_arguments? is true and requirements_met? is false' do
-      expect(subject.satisfied?({ user: user })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is true' do
-      member_with_expired_payment
-      expect(subject.satisfied?({ not_user: member })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is false' do
-      expect(subject.satisfied?({ not_user: user })).to be_falsey
-    end
-
-  end
-
 end

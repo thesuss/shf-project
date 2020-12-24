@@ -986,6 +986,7 @@ en:
     delete_user: &delete_user "Delete %{user}"
 
     show:
+      hello: Hello
       edit_user_account: *edit_user_account
       membership_number: *membership_number
       is_an_admin: &is_an_admin Is an Admin

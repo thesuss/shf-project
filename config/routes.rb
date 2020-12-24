@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   filter :locale
 
-  devise_for :users
+  # Override Devise::RegistrationsController so that we can do some custom things.
+  devise_for :users, controllers: { registrations: 'registrations' }
 
   as :user do
 

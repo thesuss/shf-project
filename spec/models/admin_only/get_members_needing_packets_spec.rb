@@ -43,8 +43,8 @@ RSpec.describe AdminOnly::GetMembersNeedingPackets do
     end
 
     before(:each) do
-      # make this be true no matter what.  TODO: does actually this save any queries or anything?
-      allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?)
+      # make this be true no matter what.
+      allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?)
                                        .and_return(true)
     end
 

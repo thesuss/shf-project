@@ -994,6 +994,7 @@ sv:
     delete_user: &delete_user "Radera %{user}"
 
     show:
+      hello: Hej
       edit_user_account: *edit_user_account
       membership_number: *membership_number
       is_an_admin: &is_an_admin Är en admin

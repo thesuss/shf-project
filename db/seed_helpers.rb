@@ -29,10 +29,10 @@ module SeedHelper
   class SeedAdminENVError < StandardError
   end
 
-  attr_writer :regions, :kommuns, :business_categories, :address_factory
+  attr_reader :regions, :kommuns, :business_categories
+  attr_writer :address_factory
 
-  # ===========================================================================================
-
+  # =============================================================================================
 
   # Initialize the instance vars
   #
@@ -42,9 +42,7 @@ module SeedHelper
     @regions     = nil
     @kommuns     = nil
     @business_categories = nil
-
     @address_factory = AddressFactory.new(regions, kommuns)
-
   end
 
 
@@ -175,8 +173,9 @@ module SeedHelper
 
       start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
 
-      AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
-      UserChecklistManager.membership_guidelines_list_for(user).set_complete_including_children
+      # Create the Ethical Guidelines checklist. Have 85% complete it
+      guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
+      guidelines_list.set_complete_including_children(start_date) if FFaker::Random.rand(100) < 86
 
       MembershipStatusUpdater.instance.check_requirements_and_act({ user: user, send_email: false })
       #user.update_action(send_email: false)

@@ -117,27 +117,4 @@ RSpec.describe RequirementsForMemberUnpaidMoreThanXMonths, type: :model do
 
   end
 
-
-  describe '.satisfied?' do
-
-    it '.has_expected_arguments? is true and requirements_met? is true' do
-      member_payment_exp_over_5_months_ago
-      expect(subject.satisfied?({ user: member, num_months: 5 })).to be_truthy
-    end
-
-    it '.has_expected_arguments? is true and requirements_met? is false' do
-      expect(subject.satisfied?({ user: user, num_months: 5 })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is true' do
-      member_payment_exp_over_5_months_ago
-      expect(subject.satisfied?({ not_user: member, blorf: 'florb' })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is false' do
-      expect(subject.satisfied?({ not_user: user })).to be_falsey
-    end
-
-  end
-
 end

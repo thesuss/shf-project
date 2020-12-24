@@ -19,19 +19,8 @@ include SeedHelper
 SEEDING_LOG_FILE_NAME = LogfileNamer.name_for('db:seed') unless defined?(SEEDING_LOG_FILE_NAME)
 SEEDING_LOG_FACILITY = 'db:seed' unless defined?(SEEDING_LOG_FACILITY)
 
-ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Init') do |log|
-  unless ENV.has_key?('SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START')
-    ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START'] = UserChecklistManager.missing_membership_guidelines_reqd_start_date.to_s
 
-    log.warn("****************************************************************************")
-    log.warn("Using default for SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START: #{UserChecklistManager.missing_membership_guidelines_reqd_start_date}")
-    log.warn("If you don't want this you should define that in .env.development\n")
-    log.warn("****************************************************************************")
-  end
-end
-
-
-SEED_USERS = 100 unless defined?(SEED_USERS)
+SEED_USERS = 30 unless defined?(SEED_USERS)
 
 DEFAULT_PASSWORD = 'whatever' unless defined?(DEFAULT_PASSWORD)
 
@@ -123,19 +112,27 @@ begin
     # -----------------------------------------
     # Master and User checklists
 
-    Seeders::MasterChecklistTypesSeeder.seed
-    Seeders::MasterChecklistsSeeder.seed
+    ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Applications') do |log|
+      log.info('Creating Ethical guidelines checklists for each user...')
+
+      Seeders::MasterChecklistTypesSeeder.seed
+      Seeders::MasterChecklistsSeeder.seed
+
+      User.all.each do |user|
+        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user) unless user.admin?
+      end
+    end
+
 
     # -----------------------------------------
+    # Users (of all types:  users, applicants, members)
+
     users = {}
 
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Users') do |log|
 
-      SeedHelper::UsersFactory.seed_predefined_users
-
       number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
       log.info("Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])...")
-
       while users.length < number_of_users - 1 do
         email = FFaker::InternetSE.disposable_email
         first_name = FFaker::NameSE.first_name

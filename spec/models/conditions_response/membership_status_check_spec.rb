@@ -48,6 +48,9 @@ RSpec.describe MembershipStatusCheck, type: :model do
       status_updater = instance_double("MembershipStatusUpdater")
       allow(status_updater).to receive(:revoke_user_membership)
 
+      simple_guideline = create(:user_checklist, :completed, master_checklist: build(:membership_guidelines_master_checklist))
+      allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(simple_guideline)
+
       # instantiate these (from the shared-context/users file)
         user
         member_paid_up

@@ -1,16 +1,13 @@
 Feature: User completes all, some, or none of the Membership Ethical Guidelines checklist
 
+  Rule: The user can agree to the guidelines independent of whether or not they have submitted an application.
+
   Background:
-    Given the Membership Ethical Guidelines Master Checklist exists
+  Given the Membership Ethical Guidelines Master Checklist exists
 
-    # Default is that the Ethical guidelines are required.
-    # Some scenarios below test for when they are NOT required.
-    And the date is set to "2020-03-01"
-    And the start date for the Membership Ethical Guidelines is 2020-01-01
-
-    Given the following users exist:
-      | email                | admin | first_name | last_name |
-      | new_user@example.com |       | NewUser1   | Lastname  |
+  And the following users exist:
+    | email                | admin | first_name | last_name |
+    | new_user@example.com |       | NewUser1   | Lastname  |
 
 
   @selenium @javascript

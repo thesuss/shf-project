@@ -305,6 +305,14 @@ RSpec.describe User, type: :model do
       let(:user_no_app) { create(:user) }
       let(:user_app_not_accepted) { create(:user_with_membership_app) }
 
+      let(:user_app_guidelines_not_agreed) { create(:user_with_ethical_guidelines_checklist) }
+
+      let(:user_app_guidelines_agreed) do
+        u = create(:user_with_ethical_guidelines_checklist)
+        UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
+        u
+      end
+
       let(:member_exp_jan1_today) do
         new_member = create(:member_with_expiration_date, expiration_date: jan_1)
         new_member.most_recent_membership_payment.update(created_at: new_member.membership_start_date)
@@ -326,6 +334,7 @@ RSpec.describe User, type: :model do
       before(:each) do
         user_no_app
         user_app_not_accepted
+        user_app_guidelines_agreed
         member_exp_jan1_today
         member_current_exp_jan2
         member_current_exp_jan3
@@ -351,28 +360,14 @@ RSpec.describe User, type: :model do
         end
       end
 
-
-      it 'paid_on_or_after_guidelines_reqd' do
-        allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date)
-                                         .and_return(jan_1)
-
-        in_scope = described_class.paid_on_or_after_guidelines_reqd
-        expect(in_scope.count).to eq(2)
-        expect(in_scope.map(&:email)).to match_array([member_current_exp_jan2.email,
-                                                      member_current_exp_jan3.email])
-      end
-
       it 'agreed_to_membership_guidelines' do
-        allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date)
-                                         .and_return(jan_1)
         in_scope = described_class.agreed_to_membership_guidelines
-        expect(in_scope.count).to eq(3)
-        expect(in_scope.map(&:email)).to match_array([member_exp_jan1_today.email,
+        expect(in_scope.count).to eq(4)
+        expect(in_scope.map(&:email)).to match_array([user_app_guidelines_agreed.email,
+                                                      member_exp_jan1_today.email,
                                                       member_current_exp_jan2.email,
                                                       member_current_exp_jan3.email])
       end
-
-
     end
 
     describe 'current_members' do
@@ -1295,75 +1290,49 @@ RSpec.describe User, type: :model do
 
       describe 'not a member == is a user (is an applicant)' do
 
-        context 'does not have to agree to membership guidelines' do
+        context 'has not agreed to all membership guidelines' do
 
-          context 'has not agreed to all membership guidelines' do
+          describe 'false for an application in any state' do
 
-            it 'true if user has app in "accepted" state' do
-              allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(true)
+            ShfApplication.all_states.each do |app_state|
+              it "#{app_state} is false" do
+                allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(false)
 
-              expect(applicant_approved_no_payments.allowed_to_pay_member_fee?).to be_truthy
-            end
-
-            describe 'false for an application in any other state' do
-
-              ShfApplication.all_states.reject { |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
-                it "#{app_state} is false" do
-                  allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(false)
-
-                  app = create(:shf_application, state: app_state)
-                  expect(app.user.allowed_to_pay_member_fee?).to be_falsey
-                end
+                app = create(:shf_application, state: app_state)
+                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
               end
             end
           end
         end
 
+        context 'has agreed to all membership guidelines' do
 
-        context 'does have to agree to membership guidelines' do
-
-          context 'has agreed to all membership guidelines' do
-
-            let(:user_agreed_to_guidelines) do
-              u = create(:user_with_ethical_guidelines_checklist)
-              UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
-              u
-            end
-
-            it 'true if user has app in "accepted" state' do
-              allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(true)
-
-              create(:shf_application, :accepted, user: user_agreed_to_guidelines)
-              expect(user_agreed_to_guidelines.allowed_to_pay_member_fee?).to be_truthy
-            end
-
-            describe 'false for an application in any other state' do
-
-              ShfApplication.all_states.reject { |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
-                it "#{app_state} is false" do
-                  allow(UserChecklistManager).to receive(:completed_membership_guidelines_if_reqd?).and_return(true)
-
-                  app = create(:shf_application, state: app_state, user: user_agreed_to_guidelines)
-                  expect(app.user.allowed_to_pay_member_fee?).to be_falsey
-                end
-              end
-            end
+          let(:user_agreed_to_guidelines) do
+            u = create(:user_with_ethical_guidelines_checklist)
+            UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
+            u
           end
 
-          context 'has not agreed to all membership guidelines' do
+          it 'true if user has app in "accepted" state' do
+            allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(true)
 
-            describe 'false for all application states (even accepted)' do
-              ShfApplication.all_states.each do |app_state|
-                it "#{app_state} is false" do
-                  allow(UserChecklistManager).to receive(:must_complete_membership_guidelines_checklist?).and_return(true)
+            create(:shf_application, :accepted, user: user_agreed_to_guidelines)
+            expect(user_agreed_to_guidelines.allowed_to_pay_member_fee?).to be_truthy
+          end
 
-                  app = create(:shf_application, state: app_state)
-                  expect(app.user.allowed_to_pay_member_fee?).to be_falsey
-                end
+          describe 'false for an application in any other state' do
+
+            ShfApplication.all_states.reject { |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
+              it "#{app_state} is false" do
+                allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(true)
+
+                app = create(:shf_application, state: app_state, user: user_agreed_to_guidelines)
+                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
               end
             end
           end
         end
+
       end
 
     end

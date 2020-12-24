@@ -15,7 +15,7 @@ Feature: Applicant home (account) page - version 1.0
     # Default is that the Ethical guidelines are required.
     # Some scenarios below test for when they are NOT required.
     And the date is set to "2020-03-01"
-    And the start date for the Membership Ethical Guidelines is 2020-01-01
+
 
     And the following users exist:
       | email                              | password | admin | member | first_name               | last_name |
@@ -74,18 +74,6 @@ Feature: Applicant home (account) page - version 1.0
     And the link button t("users.show.pay_membership") should be disabled
 
 
-  Scenario: Agreement to Ethical Guidelines not required yet; no guidelines link is shown
-    Given I am on the "login" page
-    And the start date for the Membership Ethical Guidelines is 2021-06-06
-    When I fill in t("activerecord.attributes.user.email") with "registered-only@random.com"
-    And I fill in t("activerecord.attributes.user.password") with "password"
-    And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.sessions.signed_in")
-    And I should see t("users.show_for_applicant.apply_4_membership") link
-    And I should not see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
-    And the link button t("users.show.pay_membership") should be disabled
-
-
   Scenario: App has been submitted (not reviewed yet)
     Given I am on the "login" page
     When I fill in t("activerecord.attributes.user.email") with "submitted-app@random.com"
@@ -109,18 +97,6 @@ Feature: Applicant home (account) page - version 1.0
     And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
 
-
-  Scenario: App accepted; agreement to ethical guidelines not required yet
-    Given I am on the "login" page
-    And the start date for the Membership Ethical Guidelines is 2021-06-06
-    When I fill in t("activerecord.attributes.user.email") with "accepted-app@random.com"
-    And I fill in t("activerecord.attributes.user.password") with "password"
-    And I click on t("devise.sessions.new.log_in") button
-    Then I should see t("devise.sessions.signed_in")
-    And I should not see t("users.show_for_applicant.apply_4_membership") link
-    And I should see t("users.show_for_applicant.app_status_accepted")
-    And I should not see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
-    And the link button t("users.show.pay_membership") should not be disabled
 
 
   Scenario: App has been rejected

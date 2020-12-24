@@ -94,37 +94,4 @@ RSpec.describe RequirementsForMembershipNotLapsed, type: :model do
     end
 
   end
-
-
-  describe '.satisfied?' do
-
-    it '.has_expected_arguments? is true and requirements_met? is true' do
-
-      create(:membership_fee_payment,
-             :successful,
-             user:        member,
-             start_date:  feb1_2018,
-             expire_date: User.expire_date_for_start_date(feb1_2018))
-
-      Timecop.freeze(jun1_2018) do
-        expect(subject.satisfied?({ user: member })).to be_truthy
-      end
-    end
-
-    it '.has_expected_arguments? is true and requirements_met? is false' do
-      member_with_expired_payment
-      expect(subject.satisfied?({ user: member })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is true' do
-      member_with_expired_payment
-      expect(subject.satisfied?({ not_user: member })).to be_falsey
-    end
-
-    it '.has_expected_arguments? is false and requirements_met? is false' do
-      expect(subject.satisfied?({ not_user: user })).to be_falsey
-    end
-
-  end
-
 end

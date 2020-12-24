@@ -74,8 +74,6 @@ class User < ApplicationRecord
 
   scope :membership_payment_current, -> { joins(:payments).where("payments.status = '#{Payment::SUCCESSFUL}' AND payments.payment_type = ? AND  payments.expire_date > ?", Payment::PAYMENT_TYPE_MEMBER, Date.current) }
 
-  scope :paid_on_or_after_guidelines_reqd, -> { joins(:payments).where("payments.status = '#{Payment::SUCCESSFUL}' AND payments.payment_type = ? AND  payments.created_at >= ?", Payment::PAYMENT_TYPE_MEMBER, UserChecklistManager.membership_guidelines_reqd_start_date) }
-
   scope :agreed_to_membership_guidelines, -> { where(id: UserChecklist.top_level_for_current_membership_guidelines.completed.pluck(:user_id)) }
 
   scope :current_members, -> { application_accepted.membership_payment_current }
@@ -208,7 +206,7 @@ class User < ApplicationRecord
   # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
   def allowed_to_pay_member_fee?
     # FIXME: use membership_current? instead of member?
-    !admin? && (member? || (shf_application&.accepted? && UserChecklistManager.completed_membership_guidelines_if_reqd?(self)))
+    !admin? && (member? || (shf_application&.accepted? && UserChecklistManager.completed_membership_guidelines_checklist?(self)))
   end
 
 

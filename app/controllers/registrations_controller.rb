@@ -1,6 +1,6 @@
 # This is the Application's specific behavior for user registration actions
 #
-class Users::RegistrationsController < Devise::RegistrationsController
+class RegistrationsController < ::Devise::RegistrationsController
 
 
   # GET /resource/sign_up
@@ -40,11 +40,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # protected
 
 
-  # Signs in a user on sign up.
-  def sign_up(resource_name, resource)
-    super(resource_name, resource)
-
-    AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(resource)
+  # Signs in a user on sign up and creates the Ethical Guidelines checklist for the user
+  def sign_up(resource_name, signed_up_user)
+    super(resource_name, signed_up_user)
+    AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(signed_up_user)
   end
 
 

@@ -19,7 +19,8 @@ FactoryBot.define do
 
     factory :user_with_ethical_guidelines_checklist do
       after(:create) do |user, _evaluator|
-        create(:membership_ethical_guidelines, user: user)
+        create(:membership_guidelines_master_checklist ) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
+        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
       end
     end
 
@@ -75,8 +76,8 @@ FactoryBot.define do
       end
 
       after(:create) do | member, _evaluator|
-        create(:membership_ethical_guidelines, user: member)
-        UserChecklistManager.membership_guidelines_list_for(member).set_complete_including_children
+        create(:membership_guidelines_master_checklist ) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
+        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(member)
       end
     end
 
@@ -96,14 +97,14 @@ FactoryBot.define do
       end
 
       after(:create) do | member, evaluator |
-
         create(:shf_application, :accepted, user: member)
 
         create(:membership_fee_payment, user: member,
                start_date: evaluator.expiration_date - 364,
                expire_date: evaluator.expiration_date)
 
-        create(:membership_ethical_guidelines, user: member)
+        create(:membership_guidelines_master_checklist) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
+        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(member)
         UserChecklistManager.membership_guidelines_list_for(member).set_complete_including_children
       end
     end

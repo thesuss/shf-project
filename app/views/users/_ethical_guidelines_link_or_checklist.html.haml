@@ -10,7 +10,10 @@
       = t('.membership_guidelines')
       %sup= external_link_icon
 - else
-  - if UserChecklistManager.must_complete_membership_guidelines_checklist?(user)
-    - user_checklist = UserChecklistManager.first_incomplete_membership_guideline_section_for(user)
-    - if user_checklist
-      = link_to t('.agree_to_guidelines'), user_user_checklist_progress_path(user, user_checklist), class: 'btn btn-sm btn-primary'
+  - user_checklist = UserChecklistManager.find_or_create_membership_guidelines_list_for(user).root
+  - first_incomplete = UserChecklistManager.first_incomplete_membership_guideline_section_for(user)
+  = link_to t('.agree_to_guidelines'), user_user_checklist_progress_path(user, first_incomplete), class: 'btn btn-sm btn-primary'
+
+  - progress_percent = user_checklist.percent_complete
+  .completed-progress-bar
+    = render partial: 'shared/progress_bar', locals: {  percent_complete: progress_percent }
