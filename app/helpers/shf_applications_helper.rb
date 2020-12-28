@@ -8,7 +8,11 @@ module ShfApplicationsHelper
   def app_state_and_date(shf_app)
     return '' unless shf_app
 
-    displayed_date = shf_app.accepted? ? shf_app.when_approved : shf_app.updated_at
+    displayed_date = if shf_app.accepted?
+                       shf_app.when_approved.present? ? shf_app.when_approved : shf_app.updated_at
+                     else
+                       shf_app.updated_at
+                     end
     "#{shf_app_state_translated(shf_app)} - #{displayed_date.strftime('%F')}"
   end
 

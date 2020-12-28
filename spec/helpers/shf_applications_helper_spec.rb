@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ShfApplicationsHelper, type: :helper do
 
   describe '#states_selection_list gets the localized version of each state name each time it is requested' do
-    let(:application) { create(:shf_application) }
+    let(:application) { build(:shf_application) }
 
     it 'returns the list in the default I18n locale' do
       select_list = helper.states_selection_list
@@ -191,7 +191,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
   describe '#selected_reason_value' do
 
-    let(:member_app) { create(:shf_application) }
+    let(:member_app) { build(:shf_application) }
 
     it '@other_reason_value if there is something in custom reason text' do
       member_app.custom_reason_text = 'something'
@@ -300,7 +300,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
   describe '#file_delivery_method_status' do
 
     it 'shows "none" (with no date) if no delivery method has been specified' do
-      app = create(:shf_application, :legacy_application)
+      app = build(:shf_application, :legacy_application)
       fdm_msg = file_delivery_method_status(app)
 
       expect(fdm_msg).to match(/^#{I18n.t('shf_applications.show.files_delivery_method')}/)
@@ -325,7 +325,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     end
   end
 
-  context 'business categories string for views' do
+  describe 'business categories string for views' do
 
     let(:cat) do
       cat = create(:business_category)
@@ -356,6 +356,50 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
       it 'returns string with category and subcategory names' do
         expect(business_categories_str(app))
           .to eq "Business Category (#{t('including')}: cat1_subcat1, cat1_subcat2, cat1_subcat3)"
+      end
+    end
+  end
+
+
+  describe 'app_state_and_date' do
+    let(:faux_app_aasm) { double('AASM::InstanceBase',
+                                 state_object_for_name: double('AASM::Core::State', localized_name: 'accepted'),
+                                 current_state: :accepted ) }
+    let(:faux_app) { double('ShfApplication', :accepted? => false, when_approved: nil,
+                            updated_at: (Date.current + 1.day),
+                            aasm: faux_app_aasm)  }
+
+    it 'is blank if the app is nil' do
+      expect(helper.app_state_and_date(nil)).to be_blank
+    end
+
+    it "is the application state followed by the date (formatted with strftime('%F'))" do
+      expect(helper.app_state_and_date(faux_app)).to match(/.* - \d\d\d\d-\d\d-\d\d/)
+    end
+
+    context 'app is accepted' do
+      let(:approved_app) { faux_app }
+      before(:each) { allow(approved_app).to receive(:accepted?).and_return(true) }
+
+      it 'uses the when_approved date' do
+        allow(approved_app).to receive(:when_approved).and_return(Date.current)
+        expected_strftime = (Date.current).strftime('%F')
+        expect(helper.app_state_and_date(approved_app)).to eq "accepted - #{expected_strftime}"
+      end
+
+      context 'when_approved is blank' do
+        it 'uses the updated_at date' do
+          allow(approved_app).to receive(:when_approved).and_return(nil)
+          expected_strftime = (Date.current + 1.day).strftime('%F')
+          expect(helper.app_state_and_date(approved_app)).to eq "accepted - #{expected_strftime}"
+        end
+      end
+    end
+
+    context 'app not accepted' do
+      it 'uses the updated_at date' do
+        expected_strftime = (Date.current + 1).strftime('%F')
+        expect(helper.app_state_and_date(faux_app)).to match /.* - #{expected_strftime}/
       end
     end
   end
