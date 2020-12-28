@@ -53,7 +53,7 @@ RSpec.describe CompaniesHelper, type: :helper do
   end
 
 
-  describe '#location_and_markers_for' do
+  describe 'location_and_markers_for' do
 
     it 'empty list of companies' do
       expect(helper.location_and_markers_for([])).to eq([])
@@ -71,24 +71,19 @@ RSpec.describe CompaniesHelper, type: :helper do
     end
 
     it 'one company, two addresses' do
-      create(:address, addressable: company)
-      company.reload
+      second_addr = create(:address, addressable: company, latitude:  59.3251172, longitude: 18.0710935 )
+      company.addresses << second_addr
+
       markers = helper.location_and_markers_for([company])
       expect(markers.count).to eq 2
+      expect(markers.map{|m| m[:latitude]}).to match_array(company.addresses.map(&:latitude))
+      expect(markers.map{|m| m[:longitude]}).to match_array(company.addresses.map(&:longitude))
+      markers.each do |marker|
+        expect(marker[:text]).to include("#{link_to(company.name, company, target: '_blank')}")
+      end
 
-      expect(markers.first[:latitude]).to eq company.addresses[0].latitude
-      expect(markers.first[:longitude]).to eq company.addresses[0].longitude
-      expect(markers.first[:text]).
-        to eq(helper.html_marker_text(company, company.addresses[0]))
-      expect(markers.first[:text]).
-        to include("#{link_to(company.name, company, target: '_blank')}")
-
-      expect(markers.second[:latitude]).to eq company.addresses[1].latitude
-      expect(markers.second[:longitude]).to eq company.addresses[1].longitude
-      expect(markers.second[:text]).
-        to eq(helper.html_marker_text(company, company.addresses[1]))
-      expect(markers.second[:text]).
-        to include("#{link_to(company.name, company, target: '_blank')}")
+      helper_marker_texts = company.addresses.map{|addr| helper.html_marker_text(company, addr) }
+      expect(markers.map{|m| m[:text]}).to match_array(helper_marker_texts)
     end
 
     it 'just show company name with no link for it' do
