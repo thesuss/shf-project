@@ -5,18 +5,18 @@
     = stylesheet_link_tag 'proof-of-membership', media: 'all'
   %body
 
-    - render_to = :html unless local_assigns[:render_to]
+    - render_as = :html unless local_assigns[:render_as]
 
     .custom-context-menu#proof-of-membership
       - if app_config.shf_logo
-        = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_to),
+        = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_as),
                     class: 'shf-logo')
 
       %p.proof-banner= t('.proof_title').upcase
 
       .member-photo-div
         - if user.member_photo
-          = image_tag(paperclip_path_str(user.member_photo, :standard, render_to),
+          = image_tag(paperclip_path_str(user.member_photo, :standard, render_as),
                       class: 'member-photo')
 
       %p.member-info
@@ -41,7 +41,7 @@
           %br
           - if app_config.chair_signature
             = image_tag(paperclip_path_str(app_config.chair_signature,
-                                       :standard, render_to))
+                                       :standard, render_as))
           %br
           = t('.valid_thru', expire_date: user.membership_expire_date)
           %br
@@ -51,7 +51,7 @@
 
       %p.proof-footer= t('.footer')
 
-    - if render_to == :html && context == :internal
+    - if render_as == :html && context == 'internal'
       %div
         %br
         = t('users.show_member_images_row_cols.image_dimensions_html', width_id: 'pom-width',

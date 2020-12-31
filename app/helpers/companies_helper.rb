@@ -98,7 +98,7 @@ module CompaniesHelper
   end
 
   def company_h_brand_jpg_url(company)
-    company_h_brand_url(company) + '.jpg'
+    company_h_brand_url(company, format: :jpg)
   end
 
   def short_h_brand_url(company)

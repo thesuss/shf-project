@@ -326,6 +326,13 @@ Then(/^I should get a downloaded image with the filename "([^\"]*)"$/) do |filen
     .to eq 'image/jpg'
 end
 
+Then(/^I should see an inline image with the filename "([^\"]*)"$/) do |filename|
+  expect(page.driver.response_headers['Content-Disposition'])
+    .to include("inline; filename=\"#{filename}\"")
+  expect(page.driver.response_headers['Content-Type'])
+    .to eq 'image/jpg'
+end
+
 When "I cannot select {capture_string} in select list {capture_string}" do |option, list|
   expect(find_field(list).text.match(option)).to be_nil
 end

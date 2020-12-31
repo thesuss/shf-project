@@ -21,7 +21,9 @@
         %h3= t('.proof_of_membership')
         %p= t('.proof_of_membership_describe')
         = link_to(t('.download_image'),
-                                   proof_of_membership_path(user, render_to: :jpg),
+                                   proof_of_membership_path(user,
+                                                            format: :jpg,
+                                                            context: 'internal'),
                                    class: 'btn btn-sm btn-primary download_proof_of_membership')
         = link_to(t('.copy_image_url'), proof_of_membership_jpg_url(user), class: 'btn btn-sm btn-primary link_for_proof_of_membership copy-to-clipboard', "data-original-title" => t('.copied'))
         = link_to(t('.show_image'),
@@ -52,9 +54,10 @@
           %p= t('.company_h_brand_describe')
           = link_to(t('.download_image'),
                                      company_h_brand_path(company,
-                                                         render_to: :jpg),
+                                                          format: :jpg,
+                                                          context: 'internal'),
                                    class: 'btn btn-sm btn-primary download_h_mark')
-          = link_to(t('.copy_image_url'), company_h_brand_jpg_url(company), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
+          = link_to(t('.copy_image_url'), company_h_brand_url(company, format: :jpg), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
           = link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),

@@ -18,26 +18,20 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    # params[:render_to] is present for a request that will respond with
-    #   a JPG image for download.  The request expects an HTML response.
-    # params[:format] is present with a request that will respond with
-    #   a JPG image to be rendered inline in the client. (request URL has
-    #   suffix ".jpg", and expects a JPG image in response)
-    # Otherwise, the request expects HTML.
+    render_as = request.format.to_sym
 
-    if params[:render_to] == 'jpg' || params[:format] == 'jpg'
-      image = @user.proof_of_membership_jpg
+    if render_as == :jpg
+      jpg_image = @user.proof_of_membership_jpg
 
-      unless image
-        image = create_image('proof_of_membership', 260, @app_configuration, @user)
-        @user.proof_of_membership_jpg = image
+      unless jpg_image
+        jpg_image = create_image_jpg('proof_of_membership', 260, @app_configuration, @user)
+        @user.proof_of_membership_jpg = jpg_image
       end
 
-      download_image('proof_of_membership', image)
-
+      download_image('proof_of_membership', jpg_image, send_as(params[:context]))
     else
-      image_html = image_html('proof_of_membership', @app_configuration, @user,
-                              context: params[:context]&.to_sym)
+      image_html = image_html('proof_of_membership', @app_configuration,
+                              @user, render_as, params[:context])
       show_image(image_html)
     end
   end

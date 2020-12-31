@@ -7,10 +7,10 @@
   %body
 
     .custom-context-menu#company-h-brand
-      - render_to = :html unless local_assigns[:render_to]
+      - render_as = :html unless local_assigns[:render_as]
 
       - if app_config.h_brand_logo
-        = image_tag(paperclip_path_str(app_config.h_brand_logo, :standard, render_to),
+        = image_tag(paperclip_path_str(app_config.h_brand_logo, :standard, render_as),
                     class: 'h-brand-logo')
 
       .current-year
@@ -18,7 +18,7 @@
 
       - if app_config.sweden_dog_trainers
         = image_tag(paperclip_path_str(app_config.sweden_dog_trainers,
-                    :standard, render_to), class: 'sweden-dog-trainers')
+                    :standard, render_as), class: 'sweden-dog-trainers')
 
       %hr.company-info-separator
 
@@ -29,7 +29,7 @@
         %br
         = list_categories(company, ', ')
 
-    - if render_to == :html && context == :internal
+    - if render_as == :html && context == 'internal'
       %div
         %br
         = t('users.show_member_images_row_cols.image_dimensions_html', width_id: 'h-brand-width',

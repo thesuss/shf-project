@@ -19,14 +19,18 @@ RSpec.describe CompaniesController, type: :controller do
     let(:app_config) { create(:app_configuration) }
     let(:company) { create(:company) }
 
-    it "returns JPG for params[:render_to] == 'jpg' request" do
-      get :company_h_brand, params: { id: company.id, render_to: 'jpg' }
+    it "returns JPG image for params[:format] == 'jpg' request" do
+      get :company_h_brand, params: { id: company.id, format: 'jpg' }
+
       expect(response.content_type).to eq 'image/jpg'
+      expect(response.headers['Content-Disposition']).to match(/inline/)
     end
 
-    it "returns JPG for params[:format] == 'jpg' request" do
-      get :company_h_brand, params: { id: company.id, format: 'jpg' }
+    it "returns JPG for download, for params[:format] == 'jpg', params[:context] == 'internal' request" do
+      get :company_h_brand, params: { id: company.id, format: 'jpg', context: 'internal' }
+
       expect(response.content_type).to eq 'image/jpg'
+      expect(response.headers['Content-Disposition']).to match(/attachment/)
     end
 
     it 'returns HTML otherwise' do

@@ -51,7 +51,7 @@ module PathHelpers
       when 'proof of membership html image'
         path = proof_of_membership_path(user)
       when 'proof of membership jpg download'
-        path = proof_of_membership_path(user, render_to: 'jpg')
+        path = proof_of_membership_path(user, format: :jpg)
 
       # SHF application pages
       when 'new application', 'submit new membership application'

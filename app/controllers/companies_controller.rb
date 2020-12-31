@@ -100,26 +100,20 @@ class CompaniesController < ApplicationController
   end
 
   def company_h_brand
-    # params[:render_to] is present for a request that will respond with
-    #   a JPG image for download.  The request expects an HTML response.
-    # params[:format] is present with a request that will respond with
-    #   a JPG image to be rendered inline in the client. (request URL has
-    #   suffix ".jpg", and expects a JPG image in response)
-    # Otherwise, the request expects HTML.
+    render_as = request.format.to_sym
 
-    if params[:render_to] == 'jpg' || params[:format] == 'jpg'
-      image = @company.h_brand_jpg
+    if render_as == :jpg
+      jpg_image = @company.h_brand_jpg
 
-      unless image
-        image = create_image('company_h_brand', 300, @app_configuration, @company)
-        @company.h_brand_jpg = image
+      unless jpg_image
+        jpg_image = create_image_jpg('company_h_brand', 300, @app_configuration, @company)
+        @company.h_brand_jpg = jpg_image
       end
 
-      download_image('company_h_brand', image)
-
+      download_image('company_h_brand', jpg_image, send_as(params[:context]))
     else
-      image_html = image_html('company_h_brand', @app_configuration, @company,
-                              context: params[:context]&.to_sym)
+      image_html = image_html('company_h_brand', @app_configuration,
+                              @company, render_as, params[:context])
       show_image(image_html)
     end
   end

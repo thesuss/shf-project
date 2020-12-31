@@ -2,31 +2,34 @@ module ImagesUtility
 
   private
 
-  def download_image(type, image)
-    send_data(image, type: 'image/jpg', filename: "#{type}.jpg")
+  def send_as(context)
+    context == 'internal' ? 'attachment' : 'inline'
+  end
+
+  def download_image(type, jpg_image, send_as)
+    send_data(jpg_image, type: 'image/jpg', filename: "#{type}.jpg", disposition: send_as)
   end
 
   def show_image(image_html)
     render html: image_html.html_safe
   end
 
-  def create_image(type, width, app_config, object)
-    image_html = image_html(type, app_config, object, render_to: :jpg)
+  def create_image_jpg(type, width, app_config, object)
+    image_html = image_html(type, app_config, object,
+                            render_as: :jpg, context: 'internal')
     kit = build_kit(image_html, "#{type.tr('_', '-')}.css", width)
     kit.to_jpg
   end
 
-  def image_html(image_type, app_config, object,
-                 render_to: nil, context: nil)
-
+  def image_html(image_type, app_config, object, render_as, context=nil)
     object_sym = object.class.to_s.downcase.to_sym
 
     render_to_string(partial: image_type,
-                     formats: :html,
+                     formats: [:html],
                      locals: { app_config: app_config,
-                               render_to: render_to,
+                               render_as: render_as,
                                context: context,
-                               object_sym => object })
+                               object_sym => object})
   end
 
   def build_kit(image_html, image_css, width)
