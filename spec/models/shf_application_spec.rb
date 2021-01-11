@@ -678,7 +678,7 @@ RSpec.describe ShfApplication, type: :model do
   end
 
 
-  context 'Business Subcategories' do
+  describe 'Business Subcategories' do
 
     let(:parent) { create(:business_category, name: 'parent') }
     let(:unassociated_category) { create(:business_category) }

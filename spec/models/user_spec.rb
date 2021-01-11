@@ -4,8 +4,6 @@ require 'shared_context/unstub_paperclip_all_run_commands'
 require 'shared_context/users'
 require 'shared_context/named_dates'
 
-# TODO use the users already defined/created in the shared_context/users?
-
 # ================================================================================
 
 RSpec.describe User, type: :model do
@@ -18,8 +16,8 @@ RSpec.describe User, type: :model do
 
   before(:each) do
     allow_any_instance_of(Paperclip::Attachment).to receive(:post_process_file)
-                                                        .with(any_args)
-                                                        .and_call_original
+                                                      .with(any_args)
+                                                      .and_call_original
   end
 
   let(:user) { create(:user) }
@@ -99,7 +97,6 @@ RSpec.describe User, type: :model do
   end
   # --------
 
-
   describe 'Factory' do
     it 'has valid factories' do
       expect(build(:user)).to be_valid
@@ -132,8 +129,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_uniqueness_of :membership_number }
     it do
       is_expected.to validate_attachment_content_type(:member_photo)
-                         .allowing('image/png', 'image/jpeg')
-                         .rejecting('image/gif', 'image/bmp')
+                       .allowing('image/png', 'image/jpeg')
+                       .rejecting('image/gif', 'image/bmp')
     end
 
     describe 'validates file contents and file type' do
@@ -170,9 +167,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_attached_file(:member_photo) }
     it { is_expected.to have_many(:companies).through(:shf_application) }
     it { is_expected.to accept_nested_attributes_for(:shf_application)
-                            .allow_destroy(false).update_only(true) }
+                          .allow_destroy(false).update_only(true) }
   end
-
 
   describe 'Admin' do
     subject { create(:user, admin: true) }
@@ -181,14 +177,12 @@ RSpec.describe User, type: :model do
     it { is_expected.not_to be_member }
   end
 
-
   describe 'User' do
     subject { build(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
     it { is_expected.not_to be_member }
   end
-
 
   describe 'destroy or nullify associated records when user is destroyed' do
 
@@ -236,7 +230,6 @@ RSpec.describe User, type: :model do
         end
       end
 
-
       context 'h-branding (h-markt licensing) payments' do
 
         it 'user (id) is set to nil' do
@@ -256,7 +249,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe 'Scopes' do
 
     describe 'admins' do
@@ -274,7 +266,6 @@ RSpec.describe User, type: :model do
         expect(all_admins).not_to include user1
       end
     end
-
 
     describe 'members' do
 
@@ -298,7 +289,6 @@ RSpec.describe User, type: :model do
       end
 
     end
-
 
     context 'with known user info' do
 
@@ -340,13 +330,11 @@ RSpec.describe User, type: :model do
         member_current_exp_jan3
       end
 
-
       it 'application_accepted' do
         in_scope = described_class.application_accepted
         app_states = in_scope.map { |member| member.shf_application.state }.uniq
         expect(app_states).to match_array([ShfApplication::STATE_ACCEPTED.to_s])
       end
-
 
       it 'membership_payment_current' do
         travel_to(jan_1) do
@@ -384,7 +372,6 @@ RSpec.describe User, type: :model do
 
     end
 
-
     describe 'expiration dates' do
 
       # set today to January 1, 2019 for every example run
@@ -400,7 +387,6 @@ RSpec.describe User, type: :model do
 
       JUN_01 = JAN_01 + 151
 
-
       describe 'membership_expires_in_x_days' do
 
         it 'x = 1 day, 0 days, -1 days' do
@@ -410,7 +396,6 @@ RSpec.describe User, type: :model do
           create(:h_branding_fee_payment, :successful,
                  user: member_only_branding_fees_exp_jan02,
                  expire_date: JAN_02)
-
 
           # both branding fee and membership fee paid on Jan 2:
           both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
@@ -427,7 +412,6 @@ RSpec.describe User, type: :model do
           create(:member_with_expiration_date, expiration_date: JAN_01)
           create(:member_with_expiration_date, expiration_date: JAN_02)
           create(:member_with_expiration_date, expiration_date: JAN_02)
-
 
           membership_expires_in_1_day = User.membership_expires_in_x_days(1)
           expect(membership_expires_in_1_day.count).to eq 3
@@ -465,14 +449,12 @@ RSpec.describe User, type: :model do
                    expire_date: JUN_01)
           end
 
-
           expires_today = User.membership_expires_in_x_days(151)
           expect(expires_today.count).to eq 1
           expect(expires_today.pluck(:expire_date).uniq.first).to eq(JUN_01)
           expect(expires_today.pluck(:payment_type).uniq.first).to eq Payment::PAYMENT_TYPE_MEMBER
         end
       end
-
 
       describe 'company_hbrand_expires_in_x_days' do
 
@@ -483,7 +465,6 @@ RSpec.describe User, type: :model do
           create(:h_branding_fee_payment, :successful,
                  user: member_only_branding_fees_exp_jan02,
                  expire_date: JAN_02)
-
 
           # both branding fee and membership fee paid on Jan 2:
           both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
@@ -500,7 +481,6 @@ RSpec.describe User, type: :model do
           create(:member_with_expiration_date, expiration_date: JAN_01)
           create(:member_with_expiration_date, expiration_date: JAN_02)
           create(:member_with_expiration_date, expiration_date: JAN_02)
-
 
           membership_expires_in_1_day = User.membership_expires_in_x_days(1)
           expect(membership_expires_in_1_day.count).to eq 3
@@ -538,7 +518,6 @@ RSpec.describe User, type: :model do
                    expire_date: JUN_01)
           end
 
-
           brandingfees_expires_in_151d = User.company_hbrand_expires_in_x_days(151)
           expect(brandingfees_expires_in_151d.count).to eq 1
           expect(brandingfees_expires_in_151d.pluck(:expire_date).uniq.first).to eq(JUN_01)
@@ -547,9 +526,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-
   end # Scopes
-
 
   context 'proof-of-membership JPG cache management' do
     let(:user2) { create(:user) }
@@ -620,11 +597,10 @@ RSpec.describe User, type: :model do
       it 'is not called if other attribute changes' do
         expect(user).not_to receive(:clear_proof_of_membership_jpg_cache)
         user.update_attributes(email: 'new@mail.com',
-                                  date_membership_packet_sent: Date.current)
+                               date_membership_packet_sent: Date.current)
       end
     end
   end
-
 
   describe '#has_shf_application?' do
 
@@ -684,7 +660,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe '#member_fee_payment_due?' do
 
     describe 'is a member' do
@@ -711,7 +686,6 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
 
   describe '#member_or_admin?' do
 
@@ -774,7 +748,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe '#allowed_to_pay_hbrand_fee?' do
 
     it 'true if the admin' do
@@ -805,7 +778,6 @@ RSpec.describe User, type: :model do
 
     end
 
-
     describe 'not a member' do
 
       it 'false if no applications' do
@@ -830,7 +802,6 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
 
   describe '#has_approved_app_for_company?' do
 
@@ -881,7 +852,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-
     describe 'is a member' do
 
       it 'false if company number not in the approved app with 2 other companies' do
@@ -908,7 +878,6 @@ RSpec.describe User, type: :model do
 
   end
 
-
   describe '#has_app_for_company?' do
 
     describe 'not a member' do
@@ -932,7 +901,6 @@ RSpec.describe User, type: :model do
           end
         end
       end
-
 
       describe 'true if company not in application (with 2 other companies)' do
         let(:user_with_app) { create(:user, email: 'user-app-has-given-company@example.com') }
@@ -977,7 +945,6 @@ RSpec.describe User, type: :model do
 
   end
 
-
   describe '#has_app_for_company_number?' do
 
     describe 'not a member' do
@@ -1001,7 +968,6 @@ RSpec.describe User, type: :model do
           end
         end
       end
-
 
       describe 'true if company number not in application (with 2 other companies)' do
         let(:user_with_app) { create(:user, email: 'user-app-has-given-company@example.com') }
@@ -1046,11 +1012,9 @@ RSpec.describe User, type: :model do
 
   end
 
-
-  describe '#apps_for_company' do
-
+  describe 'apps_for_company' do
+    pending
   end
-
 
   describe '#apps_for_company_number' do
 
@@ -1078,7 +1042,6 @@ RSpec.describe User, type: :model do
       expect(user_with_app.apps_for_company_number(given_co_num).to_a).to match_array([app1])
     end
   end
-
 
   describe '#sort_apps_by_when_approved' do
 
@@ -1118,7 +1081,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe '#has_full_name?' do
 
     it 'true if both first and last name are present' do
@@ -1136,8 +1098,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-
-  context 'payment and membership period' do
+  describe 'payment and membership period' do
 
     describe '#membership_start_date' do
       it 'returns the start_date for latest completed payment' do
@@ -1147,7 +1108,6 @@ RSpec.describe User, type: :model do
         expect(user.membership_start_date).to eq member_payment2.start_date
       end
     end
-
 
     describe '#membership_expire_date' do
       it 'returns the expire_date for latest completed payment' do
@@ -1176,7 +1136,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-
     describe '.next_membership_payment_date' do
 
       around(:each) do |example|
@@ -1192,9 +1151,8 @@ RSpec.describe User, type: :model do
       it 'returns date-after-expiration for second payment start date' do
         member_payment1
         expect(User.next_membership_payment_date(user.id))
-            .to eq Time.zone.today + 1.year
+          .to eq Time.zone.today + 1.year
       end
-
 
       context 'if next payment occurs after prior payment expire date' do
 
@@ -1212,7 +1170,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-
     describe '.next_membership_payment_dates' do
 
       around(:each) do |example|
@@ -1228,20 +1185,20 @@ RSpec.describe User, type: :model do
       # FIXME it returns one year MINUS 1 DAY
       it 'returns one year later for first payment expire date' do
         expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Time.zone.today + 1.year - 1.day
+          .to eq Time.zone.today + 1.year - 1.day
       end
 
       it 'returns date-after-expiration for second payment start date' do
         member_payment1
         expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Time.zone.today + 1.year
+          .to eq Time.zone.today + 1.year
       end
 
       # FIXME returns one year MINUS 1 DAY
       it 'returns one year later for second payment expire date' do
         member_payment1
         expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Time.zone.today + 1.year + 1.year - 1.day
+          .to eq Time.zone.today + 1.year + 1.year - 1.day
       end
 
       context 'if next payment occurs after prior payment expire date' do
@@ -1277,67 +1234,82 @@ RSpec.describe User, type: :model do
   describe '#allowed_to_pay_member_fee?' do
 
     it 'false if the user is an admin' do
-      expect(create(:admin).allowed_to_pay_member_fee?).to be_falsey
+      expect(build(:admin).allowed_to_pay_member_fee?).to be_falsey
     end
 
     context 'not an admin' do
 
-      it 'true if is a member' do
-        user.member = true
-        user.save
-        expect(user.allowed_to_pay_member_fee?).to be_truthy
+      context 'membership_current? is true' do
+        before(:each) { }
+
+        it 'is the result of allowed_to_pay_renewal_fee?' do
+          member = build(:member_with_expiration_date, expiration_date: (Date.current - 2))
+          allow(member).to receive(:membership_current?).and_return(true)
+
+          expect(member).to receive(:allowed_to_pay_renewal_member_fee?)
+          member.allowed_to_pay_member_fee?
+        end
       end
 
-      describe 'not a member == is a user (is an applicant)' do
+      context 'membership_current? is false' do
+        before(:each) { allow(member).to receive(:membership_current?).and_return(false) }
 
-        context 'has not agreed to all membership guidelines' do
+        context 'membership_expired_in_grace_period? is true' do
 
-          describe 'false for an application in any state' do
+          it 'is the result of allowed_to_pay_renewal_fee?' do
+            member = build(:member_with_expiration_date, expiration_date: (Date.current - 2))
+            allow(member).to receive(:membership_expired_in_grace_period?)
+                                                     .and_return(true)
 
-            ShfApplication.all_states.each do |app_state|
-              it "#{app_state} is false" do
-                allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(false)
-
-                app = create(:shf_application, state: app_state)
-                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
-              end
-            end
+            expect(member).to receive(:allowed_to_pay_renewal_member_fee?)
+            member.allowed_to_pay_member_fee?
           end
         end
 
-        context 'has agreed to all membership guidelines' do
+        context 'membership_expired_in_grace_period? is false (not a member and not in the grace period)' do
 
-          let(:user_agreed_to_guidelines) do
-            u = create(:user_with_ethical_guidelines_checklist)
-            UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
-            u
-          end
+          it 'is the result of allowed_to_pay_new_membership_fee?' do
+            member = build(:member_with_expiration_date, expiration_date: (Date.current - 2))
+            allow(member).to receive(:membership_expired_in_grace_period?)
+                               .and_return(false)
 
-          it 'true if user has app in "accepted" state' do
-            allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(true)
-
-            create(:shf_application, :accepted, user: user_agreed_to_guidelines)
-            expect(user_agreed_to_guidelines.allowed_to_pay_member_fee?).to be_truthy
-          end
-
-          describe 'false for an application in any other state' do
-
-            ShfApplication.all_states.reject { |s| s == ShfApplication::STATE_ACCEPTED }.each do |app_state|
-              it "#{app_state} is false" do
-                allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(true)
-
-                app = create(:shf_application, state: app_state, user: user_agreed_to_guidelines)
-                expect(app.user.allowed_to_pay_member_fee?).to be_falsey
-              end
-            end
+            expect(member).to receive(:allowed_to_pay_new_membership_fee?)
+            member.allowed_to_pay_member_fee?
           end
         end
 
       end
+    end
 
+  end
+
+
+  describe 'allowed_to_pay_renewal_member_fee?' do
+    it 'false if user is an admin' do
+      expect(build(:admin).allowed_to_pay_renewal_member_fee?).to be_falsey
+    end
+
+    it 'returns the result of RequirementsForRenewal.requirements_excluding_payments_met?' do
+      u = build(:user)
+      expect(RequirementsForRenewal).to receive(:requirements_excluding_payments_met?)
+                                          .with(u)
+      u.allowed_to_pay_renewal_member_fee?
     end
   end
 
+
+  describe 'allowed_to_pay_new_membership_fee?' do
+    it 'false if user is an admin' do
+      expect(build(:admin).allowed_to_pay_new_membership_fee?).to be_falsey
+    end
+
+    it 'returns the result of RequirementsForMembership.requirements_excluding_payments_met?' do
+      u = build(:user)
+      expect(RequirementsForMembership).to receive(:requirements_excluding_payments_met?)
+                                             .with(u)
+      u.allowed_to_pay_new_membership_fee?
+    end
+  end
 
   describe 'membership_current? just checks membership payment status' do
 
@@ -1361,7 +1333,6 @@ RSpec.describe User, type: :model do
       end
 
     end
-
 
     context 'testing dates right before, on, and after expire_date' do
 
@@ -1407,13 +1378,11 @@ RSpec.describe User, type: :model do
 
   end
 
-
   describe 'membership_current_as_of? checks membership payment status as of a given date' do
 
     it 'is false if nil is the given date' do
       expect((create :user).membership_current_as_of?(nil)).to be_falsey
     end
-
 
     context 'membership payments have not expired yet' do
 
@@ -1433,7 +1402,6 @@ RSpec.describe User, type: :model do
       end
 
     end
-
 
     context 'testing dates right before, on, and after expire_date' do
 
@@ -1466,11 +1434,294 @@ RSpec.describe User, type: :model do
         expect(paid_expires_today_member.membership_expire_date).to eq dec_2
         expect(paid_expires_today_member.membership_current_as_of?(dec_3)).to be_falsey
       end
-
     end
-
   end
 
+  describe 'date_within_grace_period?' do
+    let(:u) { build(:user) }
+
+    it 'true if this date is less than (starting date + grace period)' do
+      this_date = Date.new(2020, 1, 10)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_truthy
+    end
+
+    it 'true if this date is the last day of the grace period (== starting date + grace period)' do
+      this_date = Date.new(2020, 1, 15)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_truthy
+    end
+
+    it 'false  if this date is after the grace period (> starting date + grace period)' do
+      this_date = Date.new(2020, 1, 20)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_falsey
+    end
+  end
+
+
+  describe '.membership_expired_grace_period' do
+
+    it 'gets the value from AppConfiguration' do
+      expect(AdminOnly::AppConfiguration.config_to_use).to receive(:membership_expired_grace_period).and_return(5)
+      described_class.membership_expired_grace_period
+    end
+
+    it 'returns a Duration' do
+      expect(described_class.membership_expired_grace_period).to be_a ActiveSupport::Duration
+    end
+  end
+
+  describe 'membership_expired_grace_period' do
+    it 'calls the class method' do
+      expect(described_class).to receive(:membership_expired_grace_period)
+      (build(:user)).membership_expired_grace_period
+    end
+  end
+
+  describe 'date_within_grace_period?' do
+    let(:u) { build(:user) }
+
+    it 'true if this date is less than (starting date + grace period)' do
+      this_date = Date.new(2020, 1, 10)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_truthy
+    end
+
+    it 'true if this date is the last day of the grace period (== starting date + grace period)' do
+      this_date = Date.new(2020, 1, 15)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_truthy
+    end
+
+    it 'false  if this date is after the grace period (> starting date + grace period)' do
+      this_date = Date.new(2020, 1, 20)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_falsey
+    end
+  end
+
+  describe 'membership_expired_in_grace_period?' do
+    let(:member) { build(:user) }
+    let(:grace_3_days) { ActiveSupport::Duration.days(3) }
+    let(:four_days_ago) { Time.zone.now - 4.days }
+    let(:three_days_ago) { Time.zone.now - 3.days }
+    let(:two_days_ago) { Time.zone.now - 2.days }
+
+    it 'default is to check based on Time.zone.now' do
+      allow(member).to receive(:membership_expired_grace_period).and_return(grace_3_days)
+      allow(member).to receive(:term_expired?).and_return(true)
+      allow(member).to receive(:membership_expire_date).and_return(two_days_ago)
+
+      expect(member.membership_expired_in_grace_period?).to be_truthy
+    end
+
+    it 'false if the given date is nil' do
+      expect(member.membership_expired_in_grace_period?(nil)).to be_falsey
+    end
+
+    it 'gets the grace period' do
+      allow(member).to receive(:term_expired?).and_return(true)
+      allow(member).to receive(:membership_expire_date).and_return(four_days_ago)
+
+      expect(User).to receive(:membership_expired_grace_period).and_return(grace_3_days)
+      member.membership_expired_in_grace_period?
+    end
+
+    it 'gets the expiration date (last day) of the membership term' do
+      allow(User).to receive(:membership_expired_grace_period).and_return(grace_3_days)
+      allow(member).to receive(:term_expired?).and_return(true)
+
+      expect(member).to receive(:membership_expire_date).and_return(four_days_ago)
+      member.membership_expired_in_grace_period?
+    end
+
+    it 'checks to see if the term has expired' do
+      allow(User).to receive(:membership_expired_grace_period).and_return(grace_3_days)
+      allow(member).to receive(:membership_expire_date).and_return(four_days_ago)
+
+      expect(member).to receive(:term_expired?).and_return(false)
+      member.membership_expired_in_grace_period?
+    end
+
+    it 'false if the membership has not expired' do
+      expect(member.membership_expired_in_grace_period?).to be_falsey
+    end
+
+    context 'membership term has expired' do
+      it 'checks if this date within the grace period, based on when the membership expired ' do
+        fake_date = Date.current
+        allow(User).to receive(:membership_expired_grace_period).and_return(grace_3_days)
+        allow(member).to receive(:membership_expire_date).and_return(four_days_ago)
+        allow(member).to receive(:term_expired?).and_return(true)
+
+        expect(member).to receive(:date_within_grace_period?)
+                            .with(fake_date, four_days_ago, grace_3_days)
+                            .and_return(false)
+        member.membership_expired_in_grace_period?(fake_date)
+      end
+    end
+  end
+
+  describe '.days_can_renew_early' do
+    it 'gets the payment_too_soon_days from the AppConfiguration' do
+      expect(AdminOnly::AppConfiguration.config_to_use).to receive(:payment_too_soon_days).and_return(1)
+      described_class.days_can_renew_early
+    end
+
+    it 'returns a Duration' do
+      allow(AdminOnly::AppConfiguration.config_to_use).to receive(:payment_too_soon_days).and_return(1)
+      expect(described_class.days_can_renew_early).to eq(ActiveSupport::Duration.days(1))
+    end
+  end
+
+  describe 'days_can_renew_early' do
+    it 'calls the class method' do
+      expect(described_class).to receive(:days_can_renew_early)
+      build(:user).days_can_renew_early
+    end
+  end
+
+  describe 'can_renew_today?' do
+    it 'calls can_renew_on? with the current date' do
+      u = build(:user)
+      expect(u).to receive(:can_renew_on?).with(Date.current)
+      u.can_renew_today?
+    end
+  end
+
+  describe 'can_renew_on?' do
+
+    shared_examples 'given date is on or before expiry' do
+      let(:on_or_before_user) { build(:user) }
+
+      it 'gets the number of days that it is too early to renew' do
+        date_is_expiry = Date.current
+        allow(on_or_before_user).to receive(:membership_expire_date)
+                                      .and_return(date_is_expiry)
+
+        expect(on_or_before_user).to receive(:days_can_renew_early)
+                                       .and_return(1)
+        on_or_before_user.can_renew_on?(date_is_expiry)
+      end
+
+      it 'always true if given date is the expiration date' do
+        date_is_expiry = Date.current
+        allow(on_or_before_user).to receive(:membership_expire_date)
+                                      .and_return(date_is_expiry)
+
+        allow(on_or_before_user).to receive(:days_can_renew_early)
+                                      .and_return(0)
+        expect(on_or_before_user.can_renew_on?(date_is_expiry)).to be_truthy
+      end
+
+      it 'true if given date == (expiry - days it is too early to renew)' do
+        date_is_start_of_can_renew = Date.current - 2
+        allow(on_or_before_user).to receive(:membership_expire_date)
+                                      .and_return(Date.current)
+
+        allow(on_or_before_user).to receive(:days_can_renew_early)
+                                      .and_return(2)
+        expect(on_or_before_user.can_renew_on?(date_is_start_of_can_renew)).to be_truthy
+      end
+
+      it 'true if given date > (expiry - days it is too early to renew)' do
+        date_is_after_can_renew = Date.current - 2
+        allow(on_or_before_user).to receive(:membership_expire_date)
+                                      .and_return(Date.current)
+
+        allow(on_or_before_user).to receive(:days_can_renew_early)
+                                      .and_return(3)
+        expect(on_or_before_user.can_renew_on?(date_is_after_can_renew)).to be_truthy
+      end
+
+      it 'false if the date is before (expiry - days it is too early to renew)' do
+        date_is_before_can_renew = Date.current - 5
+        allow(on_or_before_user).to receive(:membership_expire_date)
+                                      .and_return(Date.current)
+
+        expect(on_or_before_user).to receive(:days_can_renew_early)
+                                       .and_return(2)
+        on_or_before_user.can_renew_on?(date_is_before_can_renew)
+      end
+    end
+
+    it 'always false if membership expiration date is nil' do
+      u = build(:user)
+      allow(u).to receive(:membership_expire_date)
+                    .and_return(nil)
+      expect(u.can_renew_on?(Date.current)).to be_falsey
+    end
+    context 'given date before the membership expiration date' do
+      it_should_behave_like 'given date is on or before expiry'
+    end
+
+    context 'given date is on the expiration date' do
+      it_should_behave_like 'given date is on or before expiry'
+    end
+
+    context 'given date is after the membership expire date' do
+      it 'returns the value of whether the date is in the grace period' do
+        u = build(:user)
+        date_after_expiry = Date.current
+        allow(u).to receive(:membership_expire_date)
+                      .and_return(Date.current - 2)
+
+        expect(u).to receive(:membership_expired_in_grace_period?)
+                       .with(date_after_expiry)
+        u.can_renew_on?(date_after_expiry)
+      end
+    end
+  end
+
+  describe 'date_within_grace_period?' do
+    let(:u) { build(:user) }
+
+    it 'true if this date is less than (starting date + grace period)' do
+      this_date = Date.new(2020, 1, 10)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_truthy
+    end
+
+    it 'true if this date is the last day of the grace period (== starting date + grace period)' do
+      this_date = Date.new(2020, 1, 15)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_truthy
+    end
+
+    it 'false  if this date is after the grace period (> starting date + grace period)' do
+      this_date = Date.new(2020, 1, 20)
+      starting_date = Date.new(2020, 1, 1)
+      grace_period = ActiveSupport::Duration.days(15)
+      expect(u.date_within_grace_period?(this_date,
+                                         starting_date,
+                                         grace_period)).to be_falsey
+    end
+  end
 
   describe 'membership_app_and_payments_current?  checks both application and membership payment status' do
 
@@ -1506,7 +1757,6 @@ RSpec.describe User, type: :model do
         end # context 'today is dec 1'
 
       end
-
 
       context 'testing dates right before, on, and after expire_date' do
 
@@ -1580,7 +1830,6 @@ RSpec.describe User, type: :model do
 
     end #  context 'has an approved application'
 
-
     context 'does NOT have an approved application - is always FALSE' do
 
       context 'membership payments have not expired yet' do
@@ -1603,7 +1852,6 @@ RSpec.describe User, type: :model do
         end
 
       end
-
 
       context 'testing dates right before, on, and after expire_date' do
 
@@ -1651,13 +1899,11 @@ RSpec.describe User, type: :model do
 
   end
 
-
   describe 'membership_app_and_payments_current_as_of?  checks both application and membership payment status as of a given date' do
 
     it 'is false if nil is the given date' do
       expect((create :user).membership_app_and_payments_current_as_of?(nil)).to be_falsey
     end
-
 
     context 'has an approved application' do
 
@@ -1683,7 +1929,6 @@ RSpec.describe User, type: :model do
         end
 
       end # context 'membership payments have not expired yet'
-
 
       context 'testing dates right before, on, and after expire_date' do
 
@@ -1737,11 +1982,9 @@ RSpec.describe User, type: :model do
           end
         end
 
-
       end # context 'testing dates right before, on, and after expire_date'
 
     end # context 'has an approved application'
-
 
     context 'does NOT have an approved application: is always FALSE' do
 
@@ -1763,7 +2006,6 @@ RSpec.describe User, type: :model do
         end
 
       end # context 'membership payments have not expired yet'
-
 
       context 'testing dates right before, on, and after expire_date' do
 
@@ -1803,7 +2045,6 @@ RSpec.describe User, type: :model do
 
   end
 
-
   describe '#get_short_proof_of_membership_url' do
     context 'there is already a shortened url in the table' do
       it 'returns shortened url' do
@@ -1827,16 +2068,14 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe 'membership_guidelines_checklist_done?' do
 
     it 'asks the Requirement for Membership [the one place to implement that]' do
       expect(RequirementsForMembership).to receive(:membership_guidelines_checklist_done?)
-                                               .with(subject)
+                                             .with(subject)
       subject.membership_guidelines_checklist_done?
     end
   end
-
 
   describe '#membership_packet_sent?' do
 
@@ -1850,7 +2089,6 @@ RSpec.describe User, type: :model do
       expect(user_sent_package.membership_packet_sent?).to be_falsey
     end
   end
-
 
   describe '#toggle_membership_packet_status' do
 
@@ -1866,13 +2104,11 @@ RSpec.describe User, type: :model do
       expect(user_sent_package.date_membership_packet_sent).to eq frozen_time
     end
 
-
     it 'can set the date_sent' do
       set_date = Time.new(2020, 02, 02, 2, 2, 2)
       user_sent_package.toggle_membership_packet_status(set_date)
       expect(user_sent_package.date_membership_packet_sent).to eq set_date
     end
-
 
     it 'if it has been sent, now it is set to unsent' do
       user_sent_package.update(date_membership_packet_sent: Time.now)
@@ -1880,13 +2116,118 @@ RSpec.describe User, type: :model do
       expect(user_sent_package.date_membership_packet_sent).to be_nil
     end
 
-
     it 'if it has not been sent, it is set to sent' do
       user_sent_package.update(date_membership_packet_sent: nil)
       user_sent_package.toggle_membership_packet_status
       expect(user_sent_package.date_membership_packet_sent).not_to be_nil
     end
+  end
+
+  describe 'file_uploaded_on_or_after?' do
+    let(:yesterday) { Date.current - 1.day }
+    let(:tomorrow) { Date.current + 1.day }
+    let(:faux_file_today) { double('UploadedFile', created_at: Date.current) }
+    let(:faux_file_tomorrow) { double('UploadedFile', created_at: tomorrow) }
+    let(:faux_file_yesterday) { double('UploadedFile', created_at: yesterday) }
+    let(:faux_file_one_week_ago) { double('UploadedFile', created_at: Date.current - 7.days) }
+
+    it 'no uploads' do
+      expect(build(:user).file_uploaded_on_or_after?(tomorrow)).to be_falsey
+    end
+
+    it 'gets the last uploaded file, ordered by the method to get the most recent upload' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      expect(u).to receive(:most_recent_upload_method).and_call_original
+      expect(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+      u.file_uploaded_on_or_after?
+    end
+
+    it 'default given date is today' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+
+      expect(u.file_uploaded_on_or_after?).to be_truthy
+    end
+
+    it 'true if last upload was after the given date' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today, faux_file_tomorrow])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_tomorrow)
+
+      expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+    end
+
+    it 'true if last upload was on the given date' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+
+      expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+    end
+
+    it 'false if last upload was before the given date' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+
+      expect(u.file_uploaded_on_or_after?(Date.current)).to be_falsey
+    end
 
   end
 
+  describe 'file_uploaded_during_this_membership_term?' do
+    it 'gets the files uploaded on or after the membership start date' do
+      u = build(:user)
+      start_date = Date.current - 2
+      allow(u).to receive(:membership_start_date)
+                    .and_return(start_date)
+      expect(u).to receive(:file_uploaded_on_or_after?)
+                     .with(start_date)
+      u.file_uploaded_during_this_membership_term?
+    end
+  end
+
+  describe 'most_recent_uploaded_file' do
+    let(:yesterday) { Date.current - 1.day }
+    let(:tomorrow) { Date.current + 1.day }
+    let(:faux_file_today) { double('UploadedFile', created_at: Date.current) }
+    let(:faux_file_tomorrow) { double('UploadedFile', created_at: tomorrow) }
+    let(:faux_file_yesterday) { double('UploadedFile', created_at: yesterday) }
+    let(:faux_file_one_week_ago) { double('UploadedFile', created_at: Date.current - 7.days) }
+
+    it 'nil if there are no uploaded files' do
+      expect(build(:user).most_recent_uploaded_file).to be_nil
+    end
+
+    it 'returns the most recently created uploaded_file for the user' do
+      u = build(:user, uploaded_files: [])
+      file1 = create(:uploaded_file, :pdf, user: u)
+      file1.update(created_at: Time.zone.now)
+      file2 = create(:uploaded_file, :jpg, user: u)
+      file2.update(created_at: (Time.zone.now - 1.day))
+      u.uploaded_files << file1 << file2
+
+      expect(u).to receive(:uploaded_files).and_call_original
+      expect(u.most_recent_uploaded_file).to eq(file1)
+    end
+  end
+
+  describe '.most_recent_upload_method' do
+    it 'is the created_at date' do
+      expect(described_class.most_recent_upload_method).to eq(:created_at)
+    end
+  end
+
+  describe 'most_recent_upload_method' do
+    it 'calls the class method' do
+      expect(described_class).to receive(:most_recent_upload_method) #.and_call_original
+      subject.most_recent_upload_method
+    end
+  end
+
+  describe 'issue_membership_number' do
+    pending
+  end
 end
