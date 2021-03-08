@@ -8,9 +8,14 @@
   %header.entry-header
     = content_title(@company.name, user: current_user)
   .entry-content.container
+    - if current_user.admin?
+      .row.db-id
+        .col.db-id
+          = field_or_none 'db id', @company.id, tag_options: {class: 'db-id'}
+
     .row
       .col
-        - if @company.categories
+        - if @company.categories.any?
           .categories
             = render 'business_categories/as_list',
               categories: @company.business_categories.roots.distinct

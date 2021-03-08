@@ -3,6 +3,8 @@
     %table.table.table-hover.table-md
       %thead
         %tr
+          -# The .companies_pagination style is what triggers the Javascript to replace the #companies_list page content
+              @see app/assets/javascripts/companies.js
           %th
             = t('activerecord.models.business_category.one')
           %th
@@ -26,6 +28,10 @@
                         t('activerecord.attributes.company.company_number'), {},
                         { class: 'companies_pagination', remote: true })
             %th
+              = sort_link(search_params, :id,
+                        'db id', {},
+                        { class: 'db-id companies_pagination', remote: true })
+            %th
             %th
 
       %tbody
@@ -43,6 +49,7 @@
 
             - if current_user.admin?
               %td.company-number= company.company_number
+              %td.db-id= company.id
               %td.edit= link_to icon('fas', 'edit'), edit_company_path(company)
               %td.delete= link_to icon('fas', 'trash', class: 'delete'), company, method: :delete,
                               data: { :confirm => "#{t('confirm_are_you_sure')}" }
