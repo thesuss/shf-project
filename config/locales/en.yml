@@ -336,8 +336,8 @@ en:
 
 
     errors:
-      models:
 
+      models:
         uploaded_file:
           attributes:
             actual_file_file_size:
@@ -420,6 +420,9 @@ en:
         restrict_dependent_destroy:
           has_one: "Cannot delete record because a dependent %{record} exists"
           has_many: "Cannot delete record because dependent %{record} exist"
+        record_not_found:
+          header: "Could not find the %{entity_type}"
+          message: "So sorry. We could not find the %{entity_type} with id %{id}."
 
 
   shared:

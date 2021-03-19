@@ -967,4 +967,30 @@ RSpec.describe CompaniesController, type: :controller do
   end # describe 'ignore sort by business category'
 
 
+
+  describe 'show Company not found error page if company is not found (bad database id)' do
+
+    render_views
+
+    let(:bad_id) { '999999' }
+    let(:response_body) do
+      get :show, params: { "id" => bad_id }
+      response.body
+    end
+
+    it 'page title says Company not found' do
+      expect(response_body).to include(I18n.t('activerecord.errors.messages.record_not_found.header',
+                                              entity_type: I18n.t('activerecord.models.company.one')))
+    end
+
+    it 'page body says So sorry. The company with that id is not found' do
+      expect(response_body).to include(I18n.t('activerecord.errors.messages.record_not_found.message',
+                                              entity_type: I18n.t('activerecord.models.company.one'),
+                                              id: bad_id))
+    end
+
+    it 'there is a button back to the list of all Companies' do
+      expect(response_body).to include(I18n.t('companies.list_all_companies'))
+    end
+  end
 end

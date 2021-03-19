@@ -256,6 +256,15 @@ class CompaniesController < ApplicationController
   def set_company
     @company = Company.includes(:addresses).find(params[:id])
     geocode_if_needed @company
+
+  rescue ActiveRecord::RecordNotFound
+    id = params[:id]
+    Rails.logger.info("Company not found. id = #{id}")
+    render 'error_entity_not_found', locals: { entity_type_name: t('activerecord.models.company.one'),
+                                               id: id,
+                                               button_text: t('companies.list_all_companies'),
+                                               button_path: companies_path},
+           status: 404
   end
 
 

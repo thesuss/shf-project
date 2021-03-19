@@ -419,6 +419,9 @@ sv:
         restrict_dependent_destroy:
           has_one: Kan inte ta bort post då beroende %{record} finns
           has_many: Kan inte ta bort poster då beroende %{record} finns
+        record_not_found:
+          header: "%{entity_type} kunde inte hittas"
+          message: "Beklagar, vi kunde inte hitta %{entity_type} med id %{id}."
 
 
   shared:
