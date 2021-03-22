@@ -26,17 +26,20 @@ class CompaniesController < ApplicationController
 
     @search_params = Company.ransack(action_params)
     @search_params.sorts = ['updated_at desc'] if @search_params.sorts.empty?
-    @all_displayed_companies = @search_params.result(distinct: true)
+
+    # Cannot use DISTINCT because it will not work when ordering (sorting) by information_complete
+    #   It is not really needed due to the INNER joins with addresses, regions, kommuns
+    @all_displayed_companies = @search_params.result(distinct: false)
                                              .send(*scope_for_user)
                                              .includes(:business_categories)
                                              .includes(addresses: [:region, :kommun])
+                                             .joins(addresses: [:region, :kommun])
 
     # Must use a joins qualifier on the above statement
     # to get around a problem with DISTINCT queries used with ransack when also
     # the action params specify that _sorting_ needs to be done on a column
     # that belongs to an associated table.  (ex: "region" or "kommuns")
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
-    @all_displayed_companies = @all_displayed_companies.joins(addresses: [:region, :kommun])
 
     @all_mappable_companies = mappable_companies(@all_displayed_companies)
     @all_mappable_companies.each { |co| geocode_if_needed co }

@@ -139,6 +139,28 @@ class Company < ApplicationRecord
     where.not(dinkurs_company_id: [nil, '']).order(:id)
   end
 
+  # The .sort_by_information_complete...   methods (=scopes) are used by the Ransack gem to
+  #   do sorting. These methods are a way to do sorting using some value that is not an attribute or association
+  #   @see https://github.com/activerecord-hackery/ransack#ransacks-sort_link-helper-creates-table-headers-that-are-sortable-links
+
+  # This is a SQL case expression that returns a boolean named 'all_is_complete' based on whether the information for a company is complete.
+  # This can be used in a select statement
+  def self.is_complete_case_boolean
+    "case when companies.name <> '' AND addresses.addressable_type = 'Company' AND addresses.region_id IS NOT NULL then TRUE else FALSE END".freeze
+  end
+
+
+  def self.sort_by_information_complete(sort_direction = :asc)
+    joins(:addresses).order(Arel.sql("#{is_complete_case_boolean} #{sort_direction.to_s.upcase}"))
+  end
+
+  def self.sort_by_information_complete_asc
+    sort_by_information_complete(:asc)
+  end
+
+  def self.sort_by_information_complete_desc
+    sort_by_information_complete(:desc)
+  end
 
   # ===============================================================================================
 
