@@ -105,7 +105,7 @@ FactoryBot.define do
 
         create(:membership_guidelines_master_checklist) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
         AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(member)
-        UserChecklistManager.membership_guidelines_list_for(member).set_complete_including_children
+        UserChecklistManager.membership_guidelines_list_for(member)&.set_complete_including_children
       end
     end
 

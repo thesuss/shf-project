@@ -308,14 +308,19 @@ class User < ApplicationRecord
     member? && has_approved_app_for_company_number?(company_num)
   end
 
+  def companies_with_approved_app
+    companies.select { |co| has_approved_app_for_company?(co) }
+  end
+
   def has_approved_app_for_company?(company)
     has_approved_app_for_company_number?(company.company_number)
   end
 
   def has_approved_app_for_company_number?(company_num)
-    has_app_for_company_number?(company_num) && apps_for_company_number(company_num).first.accepted?
+   Company.find_by(company_number: company_num).accepted_applicants.include?(self)
   end
 
+  # FIXME this currently only checks the one ShfApplication that the user can have
   def has_app_for_company?(company)
     has_app_for_company_number?(company.company_number)
   end
@@ -325,6 +330,7 @@ class User < ApplicationRecord
   end
 
   # @return [Array] all shf_applications that contain the company, sorted by the application with the expire_date furthest in the future
+  # FIXME this currently only checks the one ShfApplication that the user can have
   def apps_for_company(company)
     apps_for_company_number(company.company_number)
   end
@@ -333,6 +339,7 @@ class User < ApplicationRecord
   #   Note that right now a User can have only 1 ShfApplication, but in the future
   #   if a User can have more than 1, we want to be sure they are sorted by expire_date with the
   #    expire_date in the future as the first one and the expire_date in the past as the last one
+  # FIXME this currently only checks the one ShfApplication that the user can have
   def apps_for_company_number(company_num)
     result = shf_application&.companies&.find_by(company_number: company_num)
     result.nil? ? [] : [shf_application].sort(&sort_apps_by_when_approved)

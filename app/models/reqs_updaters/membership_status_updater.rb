@@ -156,7 +156,7 @@ class MembershipStatusUpdater < AbstractUpdater
         if first_membership?(previous_membership_status, previous_membership_number)
 
           # only send if there are companies that are complete AND branding license payment is current = "good companies" is how they're referred to here
-          user_good_cos = user.shf_application&.companies&.select { |co| co.complete? && co.branding_license? }
+          user_good_cos = user.shf_application&.companies&.select { |co| co.information_complete? && co.branding_license? }
           has_good_cos = user_good_cos.nil? ? false : user_good_cos.count > 0
 
           AdminMailer.new_membership_granted_co_hbrand_paid(user).deliver if has_good_cos

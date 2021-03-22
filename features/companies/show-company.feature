@@ -90,7 +90,7 @@ Feature: Show company page - display different info depending on role
     # -----------------------------------
   Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out
-    And I am the page for company number "5560360793"
+    When I am the page for company number "5560360793"
     Then I should not see "5560360793"
     And I should see "Co.1 - Addr Visible to Street Address"
     And I should see "Groomer"
@@ -102,6 +102,7 @@ Feature: Show company page - display different info depending on role
     And I should see "310 40"
     And I should see "Harplinge"
     And I should see "http://www.example.com"
+
     When I am the page for company number "2120000142"
     Then I should not see "2120000142"
     And I should see "Company2"
@@ -116,9 +117,10 @@ Feature: Show company page - display different info depending on role
     And I should see "Harplinge"
     And I should see "http://www.example.com"
 
-  Scenario: Show company details to member of the company.
+
+  Scenario: Show company details to member of the company
     Given I am logged in as "member-1@addr-all-visible-1.com"
-    And I am the page for company number "5560360793"
+    When I am the page for company number "5560360793"
     Then I should not see "5560360793"
     And I should see "Co.1 - Addr Visible to Street Address"
     And I should see "Groomer"
@@ -129,6 +131,7 @@ Feature: Show company page - display different info depending on role
     And I should see "310 40"
     And I should see "Harplinge"
     And I should see "http://www.example.com"
+
 
   Scenario: Show company details to admin and do show the org nr.
     Given I am logged in as "admin@shf.se"
@@ -143,6 +146,7 @@ Feature: Show company page - display different info depending on role
     And I should see "310 40"
     And I should see "Harplinge"
     And I should see "http://www.example.com"
+
     When I am the page for company number "2120000142"
     Then I should see "2120000142"
     And I should see "Company2"
@@ -157,6 +161,7 @@ Feature: Show company page - display different info depending on role
     And I should see "Harplinge"
     And I should see "http://www.example.com"
 
+
   Scenario: Show company address to admin regardless of visibility setting
     Given I am logged in as "admin@shf.se"
     And I am the page for company number "6914762726"
@@ -165,6 +170,7 @@ Feature: Show company page - display different info depending on role
     And I should see "310 40"
     And I should see "Harplinge"
     And I should see "Alingsås"
+
 
   @time_adjust
   Scenario: Show company address to member regardless of visibility setting

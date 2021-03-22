@@ -28,7 +28,12 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def fetch_from_dinkurs?
-    user.admin? || is_in_company?(record.company)
+    user.admin? || is_in_company?(record.company) # TODO this is true only if the user's single ShfApplication is for the company AND the application is accepted
+    # FIXME will need to adjust this when implementing user has many ShfApplications
   end
 
+  def view_complete_status?
+    # FIXME will need to adjust this when implementing user has many ShfApplications; should have the user check this (currently, record = the company)
+    user.admin? || record&.accepted_applicants.include?(user)
+  end
 end

@@ -1,6 +1,6 @@
 require_relative File.join('..', 'services', 'address_exporter')
 
-
+# TODO data consistency check:  every company should have at least 1 application
 class Company < ApplicationRecord
   include PaymentUtility
 
@@ -69,24 +69,12 @@ class Company < ApplicationRecord
     next_payment_dates(company_id, THIS_PAYMENT_TYPE)
   end
 
+
   after_update :clear_h_brand_jpg_cache,
                if: Proc.new { saved_change_to_name? }
 
-  def cache_key(type)
-   "company_#{id}_cache_#{type}"
-  end
+  # -----------------------------------------------------------------------------------------------
 
-  def h_brand_jpg
-   Rails.cache.read(cache_key('h_brand'))
-  end
-
-  def h_brand_jpg=(image)
-   Rails.cache.write(cache_key('h_brand'), image)
-  end
-
-  def clear_h_brand_jpg_cache
-   Rails.cache.delete(cache_key('h_brand'))
-  end
 
   def self.clear_all_h_brand_jpg_caches
     all.each do |company|
@@ -102,10 +90,10 @@ class Company < ApplicationRecord
   # A company has an address
   #  AND
   #   that address has a region
-  def self.complete
+  def self.information_complete
     has_name.addresses_have_region
   end
-  singleton_class.alias_method :complete_information, :complete
+  singleton_class.alias_method :complete_information, :information_complete
 
 
   def self.not_complete
@@ -133,7 +121,7 @@ class Company < ApplicationRecord
 
   # Criteria limiting visibility of companies to non-admin users
   def self.searchable
-    complete.with_members.branding_licensed
+    information_complete.with_members.branding_licensed
   end
 
   singleton_class.alias_method :current_with_current_members, :searchable
@@ -152,26 +140,48 @@ class Company < ApplicationRecord
   end
 
 
+  # ===============================================================================================
+
+
   def searchable?
-    branding_license? && !current_members.empty?
+    branding_license? && !current_members.empty? # FIXME: current.members.any?
   end
   alias_method :current_with_current_members, :searchable?
 
 
-  def complete?
+  def information_complete?
     RequirementsForCoInfoComplete.requirements_met? company: self
   end
-  alias_method :complete_information?, :complete?
+  # alias_method :information_complete?, :complete?
 
   def missing_region?
     addresses.map(&:region).include?(nil)
   end
 
+  def missing_information
+    RequirementsForCoInfoComplete.missing_info company: self
+  end
 
+
+  # FIXME user Membership current?
   def approved_applications_from_members
     # Returns ActiveRecord Relation
     shf_applications.accepted.joins(:user)
       .order('users.last_name').where('users.member = ?', true)
+  end
+
+
+  # @return all members in the company whose memberships are current (paid, not expired)
+  def current_members
+    users.select(&:membership_current?)
+  end
+
+
+  # @return [Array[User]] - all users in the company with accepted applications
+  def accepted_applicants
+    return [] if shf_applications.empty?
+
+    shf_applications.select(&:accepted?).map(&:user)
   end
 
 
@@ -232,15 +242,19 @@ class Company < ApplicationRecord
   end
 
 
+  # FIXME only show if address visibility allows it
   def addresses_region_names
     addresses.joins(:region).select('regions.name').distinct.pluck('regions.name')
   end
 
 
+  # FIXME only show if address visibility allows it
   def kommuns_names
     addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
+
+  # FIXME only show if address visibility allows it
   def cities_names
     addresses.select(:city).distinct.pluck(:city)
   end
@@ -297,13 +311,6 @@ class Company < ApplicationRecord
     end
 
     true
-
-  end
-
-
-  # @return all members in the company whose membership are current (paid, not expired)
-  def current_members
-    users.select(&:membership_current?)
   end
 
 
@@ -338,7 +345,24 @@ class Company < ApplicationRecord
   end
 
 
-  # ========================================================================
+  def cache_key(type)
+    "company_#{id}_cache_#{type}"
+  end
+
+  def h_brand_jpg
+    Rails.cache.read(cache_key('h_brand'))
+  end
+
+  def h_brand_jpg=(image)
+    Rails.cache.write(cache_key('h_brand'), image)
+  end
+
+  def clear_h_brand_jpg_cache
+    Rails.cache.delete(cache_key('h_brand'))
+  end
+
+
+  # ===============================================================================================
 
 
   private

@@ -535,7 +535,7 @@ RSpec.describe User, type: :model do
 
     it { expect(user.cache_key('pom')).to eq "user_#{user.id}_cache_pom" }
 
-    describe '#proof_of_membership_jpg' do
+   describe 'proof_of_membership_jpg' do
       it 'returns nil if no cached image' do
         expect(user.proof_of_membership_jpg).to be_nil
       end
@@ -547,7 +547,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#proof_of_membership_jpg=' do
+   describe 'proof_of_membership_jpg=' do
       it 'caches image' do
         expect(user.proof_of_membership_jpg).to be_nil
         user.proof_of_membership_jpg = file_fixture('image.png')
@@ -556,7 +556,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#clear_proof_of_membership_jpg_cache' do
+   describe 'clear_proof_of_membership_jpg_cache' do
       it 'clears cache' do
         user.proof_of_membership_jpg = file_fixture('image.png')
         expect(user.proof_of_membership_jpg).to_not be_nil
@@ -602,7 +602,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#has_shf_application?' do
+ describe 'has_shf_application?' do
 
     describe 'user: no application' do
       subject { create(:user) }
@@ -632,7 +632,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe '#shf_application' do
+ describe 'shf_application' do
 
     describe 'user: no application' do
       subject { create(:user) }
@@ -660,7 +660,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#member_fee_payment_due?' do
+ describe 'member_fee_payment_due?' do
 
     describe 'is a member' do
 
@@ -687,7 +687,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#member_or_admin?' do
+ describe 'member_or_admin?' do
 
     it 'false for user: no application' do
       expect(create(:user).member_or_admin?).to be_falsey
@@ -710,7 +710,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#in_company_numbered?(company_num)' do
+ describe 'in_company_numbered?(company_num)' do
 
     default_co_number = '5562728336'
     describe 'not yet a member, so not in any full companies' do
@@ -748,7 +748,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#allowed_to_pay_hbrand_fee?' do
+ describe 'allowed_to_pay_hbrand_fee?' do
 
     it 'true if the admin' do
       admin = create(:admin)
@@ -803,7 +803,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#has_approved_app_for_company?' do
+ describe 'has_approved_app_for_company?' do
 
     describe 'not a member' do
 
@@ -878,7 +878,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe '#has_app_for_company?' do
+ describe 'has_app_for_company?' do
 
     describe 'not a member' do
 
@@ -945,7 +945,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe '#has_app_for_company_number?' do
+ describe 'has_app_for_company_number?' do
 
     describe 'not a member' do
 
@@ -1013,10 +1013,18 @@ RSpec.describe User, type: :model do
   end
 
   describe 'apps_for_company' do
-    pending
+    it "calls apps_for_company_number with the given company's company number" do
+      app1 = build(:shf_application, state: :new)
+      given_co = app1.companies.first
+      user_with_app = app1.user
+
+      expect(user_with_app).to receive(:apps_for_company_number)
+                                 .with(given_co.company_number)
+      user_with_app.apps_for_company(given_co)
+    end
   end
 
-  describe '#apps_for_company_number' do
+ describe 'apps_for_company_number' do
 
     it 'empty list if no application' do
       expect(build(:user).apps_for_company_number(given_co_num)).to be_empty
@@ -1043,7 +1051,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#sort_apps_by_when_approved' do
+ describe 'sort_apps_by_when_approved' do
 
     it 'apps are sorted by when_approved date, furthest in the future is first' do
       app_approved_jan1 = create(:shf_application, :accepted, when_approved: jan_1)
@@ -1057,7 +1065,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#admin?' do
+ describe 'admin?' do
     describe 'user: no application' do
       subject { create(:user) }
       it { expect(subject.admin?).to be_falsey }
@@ -1074,14 +1082,14 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#full_name' do
+ describe 'full_name' do
     let(:user) { build(:user, first_name: 'first', last_name: 'last') }
     context '@first_name=first @last_name=last' do
       it { expect(user.full_name).to eq('first last') }
     end
   end
 
-  describe '#has_full_name?' do
+ describe 'has_full_name?' do
 
     it 'true if both first and last name are present' do
       expect(build(:user, first_name: 'First', last_name: 'Last').has_full_name?).to be_truthy
@@ -1100,7 +1108,7 @@ RSpec.describe User, type: :model do
 
   describe 'payment and membership period' do
 
-    describe '#membership_start_date' do
+   describe 'membership_start_date' do
       it 'returns the start_date for latest completed payment' do
         member_payment1
         expect(user.membership_start_date).to eq member_payment1.start_date
@@ -1109,7 +1117,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#membership_expire_date' do
+   describe 'membership_expire_date' do
       it 'returns the expire_date for latest completed payment' do
         member_payment1
         expect(user.membership_expire_date).to eq member_payment1.expire_date
@@ -1118,7 +1126,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#membership_payment_notes' do
+   describe 'membership_payment_notes' do
       it 'returns notes for latest completed payment' do
         member_payment1
         expect(user.membership_payment_notes).to eq member_payment1.notes
@@ -1127,7 +1135,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#most_recent_membership_payment' do
+   describe 'most_recent_membership_payment' do
       it 'returns latest completed payment' do
         member_payment1
         expect(user.most_recent_membership_payment).to eq member_payment1
@@ -1231,7 +1239,7 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#allowed_to_pay_member_fee?' do
+ describe 'allowed_to_pay_member_fee?' do
 
     it 'false if the user is an admin' do
       expect(build(:admin).allowed_to_pay_member_fee?).to be_falsey
@@ -2045,7 +2053,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe '#get_short_proof_of_membership_url' do
+ describe 'get_short_proof_of_membership_url' do
     context 'there is already a shortened url in the table' do
       it 'returns shortened url' do
         expect(with_short_proof_of_membership_url.get_short_proof_of_membership_url('any_url')).to eq('http://www.tinyurl.com/proofofmembership')
@@ -2077,7 +2085,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#membership_packet_sent?' do
+ describe 'membership_packet_sent?' do
 
     it 'true if there is a date' do
       user_sent_package = create(:user, date_membership_packet_sent: Date.current)
@@ -2090,7 +2098,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#toggle_membership_packet_status' do
+ describe 'toggle_membership_packet_status' do
 
     let(:user_sent_package) { create(:user, date_membership_packet_sent: nil) }
 

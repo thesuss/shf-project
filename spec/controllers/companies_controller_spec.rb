@@ -170,15 +170,15 @@ RSpec.describe CompaniesController, type: :controller do
 
       get :index, params: no_query_params
 
-      all_visible_cos = @controller.view_assigns['all_visible_companies']
-      expect(all_visible_cos.map { |co| co.name }).to match_array(['Stockholms Hundforum',
+      all_mappable_cos = @controller.view_assigns['all_mappable_companies']
+      expect(all_mappable_cos.map { |co| co.name }).to match_array(['Stockholms Hundforum',
                                                                    'HundKurs',
                                                                    'Hundelska',
                                                                    'Hundens Hus'])
     end
 
 
-    # FIXME: what is this really testing?  if the scopes are correct,
+    # FIXME: what is this really testing?  if the scopes are correct, then this should be correct
     describe 'search for locations near coordinates' do
 
       it "near: {latitude: '59.3251172, longitude: 18.0710935}" do
@@ -194,7 +194,7 @@ RSpec.describe CompaniesController, type: :controller do
 
         get :index, params: near_coords_params
 
-        all_cos = @controller.view_assigns['all_companies']
+        all_cos = @controller.view_assigns['all_displayed_companies']
         expect((all_cos).map(&:name)).to match_array(['Stockholms Hundforum',
                                                       'Hundelska',
                                                       'Hundens Hus'])
@@ -212,12 +212,10 @@ RSpec.describe CompaniesController, type: :controller do
 
         get :index, params: near_coords_params
 
-        all_cos = @controller.view_assigns['all_companies']
+        all_cos = @controller.view_assigns['all_displayed_companies']
         expect((all_cos).map(&:name)).to match_array(['Stockholms Hundforum',
                                                       'Hundelska'])
       end
-
-
     end
 
 
@@ -233,7 +231,7 @@ RSpec.describe CompaniesController, type: :controller do
 
         get :index, params: near_stockholm_params
 
-        all_cos = @controller.view_assigns['all_companies']
+        all_cos = @controller.view_assigns['all_displayed_companies']
         expect((all_cos).map(&:name)).to match_array(['Stockholms Hundforum',
                                                       'Hundelska',
                                                       'Hundens Hus'])
@@ -249,7 +247,7 @@ RSpec.describe CompaniesController, type: :controller do
 
         get :index, params: near_stockholm_params
 
-        all_cos = @controller.view_assigns['all_companies']
+        all_cos = @controller.view_assigns['all_displayed_companies']
         expect((all_cos).map(&:name)).to match_array(['Stockholms Hundforum',
                                                       'Hundelska'])
       end
