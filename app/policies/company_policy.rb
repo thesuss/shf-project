@@ -1,8 +1,15 @@
 class CompanyPolicy < ApplicationPolicy
   include PoliciesHelper
 
+  # Admin can always see (show) any company
+  # A User in the company can see it
+  #
+  # If the company information is complete, then it can be shown to anyone,
+  #  else (if the information is not complete), it cannot be shown.
   def show?
-    true
+    return true if user.admin? || is_in_company?(record)
+
+    record.information_complete? ? true : false
   end
 
   def index?

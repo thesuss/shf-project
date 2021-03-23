@@ -8,7 +8,7 @@ class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy,
                                      :edit_payment, :fetch_from_dinkurs,
                                      :company_h_brand]
-  before_action :authorize_company, only: [:update, :show, :edit, :destroy]
+  before_action :authorize_company, only: [:update, :edit, :destroy]
   before_action :set_app_config, only: [:company_h_brand]
   before_action :allow_iframe_request, only: [:company_h_brand]
 
@@ -77,14 +77,25 @@ class CompaniesController < ApplicationController
 
 
   def show
-    setup_events_and_events_pagination
-    set_meta_tags_for_company(@company)
+    begin
+      authorize @company
+      setup_events_and_events_pagination
+      set_meta_tags_for_company(@company)
 
-    @applications = @company.shf_applications
-                            .includes(:user, :business_categories, :shfapplications_business_categories)
+      @applications = @company.shf_applications
+                              .includes(:user, :business_categories, :shfapplications_business_categories)
 
-    show_events_list if request.xhr?
+      show_events_list if request.xhr?
+
+    # If someone is not authorized to view a company, we don't want to let them know that it exists,
+    #   so we want to return a 404, vs. a "You are not authorized to see this" error.
+    #   This is especially important for bots.  We don't want them repeatedly trying to crawl the page.
+    #   TODO probably want to generalize this and make it available to all main classes
+    rescue Pundit::NotAuthorizedError
+      render_company_not_found
+    end
   end
+
 
   def company_h_brand
     render_as = request.format.to_sym
@@ -144,7 +155,6 @@ class CompaniesController < ApplicationController
 
     Ckeditor::Picture.images_category = 'company_' + @company.id.to_s
     Ckeditor::Picture.for_company_id = @company.id
-
   end
 
 
@@ -244,13 +254,7 @@ class CompaniesController < ApplicationController
     geocode_if_needed @company
 
   rescue ActiveRecord::RecordNotFound
-    id = params[:id]
-    Rails.logger.info("Company not found. id = #{id}")
-    render 'error_entity_not_found', locals: { entity_type_name: t('activerecord.models.company.one'),
-                                               id: id,
-                                               button_text: t('companies.list_all_companies'),
-                                               button_path: companies_path},
-           status: 404
+    render_company_not_found
   end
 
 
@@ -406,5 +410,16 @@ class CompaniesController < ApplicationController
   # @return [Hash | String] - the arguments to use in the .order  method
   def company_order
     {updated_at: :desc}
+  end
+
+
+  def render_company_not_found
+    id = params[:id]
+    Rails.logger.info("Company not found. id = #{id}")
+    render 'error_entity_not_found', locals: { entity_type_name: t('activerecord.models.company.one'),
+                                               id: id,
+                                               button_text: t('companies.list_all_companies'),
+                                               button_path: companies_path},
+           status: 404
   end
 end
