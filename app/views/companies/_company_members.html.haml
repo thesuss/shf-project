@@ -7,11 +7,21 @@
         %table.table.table-sm.table-hover.company-members
           %thead
             %tr
-              %th.text-nowrap= t('companies.show.members')
-              %th= t('activerecord.models.business_category.other')
-
+              %th.text-nowrap= t('.title')
+              %th= t('.business_categories')
+              - if current_user.admin?
+                %th= t('.is_member')
+                %th= t('.app status')
           - applications.each do |application|
+            - app_admin_only_css = application.accepted? ? '' : 'admin-only'
+
             %tbody
-              %tr.member
-                %td= application.user.full_name
+              %tr.member{ class: "#{app_admin_only_css}" }
+                - if current_user.admin?
+                  %td= link_to(application.user.full_name, application.user)
+                - else
+                  %td= application.user.full_name
                 %td= business_categories_str(application)
+                - if current_user.admin?
+                  %td.admin-only= yes_no_span(application.user.member)
+                  %td.admin-only= link_to(t("activerecord.attributes.shf_application.state/#{application.state}"), application)
