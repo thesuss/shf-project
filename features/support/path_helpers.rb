@@ -30,11 +30,6 @@ module PathHelpers
       when 'landing', 'home'
         path = root_path
 
-      # Instruction pages
-      when 'user instructions'
-        path = information_path
-      when 'member instructions'
-        path = information_path
 
       # User Profile: this is the devise registrations page
       when 'edit registration for a user', 'edit user profile', 'edit my user profile'

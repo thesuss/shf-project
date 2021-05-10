@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         get 'payments', to: 'dashboard#payments'
 
         resources :master_checklist_types
+        resources :memberships
       end
 
 
@@ -227,7 +228,6 @@ Rails.application.routes.draw do
          as: :company_address_delete
   # ----------------------------------------------------------
 
-  get 'information', to: 'shf_applications#information'
 
   root to: 'companies#index'
 
