@@ -93,7 +93,6 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          PGHOST: localhost
         run: |
           bundle exec bin/rails db:create db:migrate
           bundle exec bin/rails db:schema:dump
