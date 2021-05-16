@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: ashleyengelund/postgres-sv-se:postgres9-6-sv_se
+        image: postgres:9.6
         env:
           POSTGRES_USER: shf-project
           POSTGRES_DB: shf-project_test
