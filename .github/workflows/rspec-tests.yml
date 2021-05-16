@@ -93,7 +93,6 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: localhost
-          PGUSER: shf_project
         run: |
           bin/rails db:setup
 
