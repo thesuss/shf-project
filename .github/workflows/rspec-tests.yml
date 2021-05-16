@@ -2,6 +2,7 @@
 
 name: rspec
 on:
+  workflow_dispatch:
   push:
     branches:
       - sprint119-backups-aws-tagging-prefixes
