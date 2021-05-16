@@ -60,9 +60,18 @@ jobs:
       postgres:
         image: ashleyengelund/postgres-sv-se:postgres9-6-sv_se
         env:
+          POSTGRES_USER: shf-project
+          POSTGRES_DB: shf-project_test
           POSTGRES_PASSWORD: ""
-        ports: ["5432:5432"]
-
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -93,6 +102,9 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: shf-project
+        
         run: |
           bundle exec bin/rails db:create db:migrate
           bundle exec bin/rails db:schema:dump
