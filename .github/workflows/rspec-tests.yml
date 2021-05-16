@@ -11,48 +11,6 @@ on:
     branches:
       - sprint119-backups-aws-tagging-prefixes
 jobs:
-
-#  linters:
-#    name: Linters
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Setup Ruby and install gems
-#        uses: ruby/setup-ruby@v1
-#        with:
-#          bundler-cache: true
-#
-#      - name: Setup Node
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: 10.13.0
-#      - name: Find yarn cache location
-#        id: yarn-cache
-#        run: echo "::set-output name=dir::$(yarn cache dir)"
-#      - name: JS package cache
-#        uses: actions/cache@v1
-#        with:
-#          path: ${{ steps.yarn-cache.outputs.dir }}
-#          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#          restore-keys: |
-#            ${{ runner.os }}-yarn-
-#      - name: Install packages
-#        run: |
-#          yarn install --pure-lockfile
-#
-#      - name: Run linters
-#        run: |
-#          bin/rubocop --parallel
-#          bin/stylelint
-#          bin/prettier
-#          bin/eslint
-#      - name: Run security checks
-#        run: |
-#          bin/bundler-audit --update
-#          bin/brakeman -q -w2
-
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -60,9 +18,8 @@ jobs:
       postgres:
         image: postgres:9.6
         env:
-          POSTGRES_USER: shf-project
           POSTGRES_DB: shf-project_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: password
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
@@ -103,7 +60,6 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: localhost
-          PGUSER: shf-project
         
         run: |
           bundle exec bin/rails db:create db:migrate
