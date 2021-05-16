@@ -19,7 +19,7 @@ jobs:
         image: postgres:9.6
         env:
           POSTGRES_DB: shf-project_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: password
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
@@ -59,7 +59,7 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: password
           PGHOST: localhost
         
         run: |
