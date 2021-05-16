@@ -11,6 +11,7 @@ on:
     branches:
       - sprint119-backups-aws-tagging-prefixes
 jobs:
+
 #  linters:
 #    name: Linters
 #    runs-on: ubuntu-latest
@@ -94,7 +95,9 @@ jobs:
           RAILS_ENV: test
           PGHOST: localhost
         run: |
-          bin/rails db:setup
+          bundle exec bin/rails db:create db:migrate
+          bundle exec bin/rails db:schema:dump
+          bundle exec bin/rails db:test:prepare
 
       - name: Run tests
         run: bin/rspec
