@@ -5,7 +5,10 @@ on:
   push:
     branches:
       - sprint119-backups-aws-tagging-prefixes
-
+  pull_request:
+    types: [assigned, opened, edited, synchronize, reopened]
+    branches:
+      - sprint119-backups-aws-tagging-prefixes
 jobs:
 #  linters:
 #    name: Linters
