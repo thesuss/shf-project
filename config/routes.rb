@@ -160,8 +160,21 @@ Rails.application.routes.draw do
         get 'progress', to: 'user_checklists#show_progress'
       end
 
+
+      # ---------------------------------------------------
+      # Uploaded files
+
+      # Do these 2 routes manually so that we can add the optional parameter :from_acct_pg
+      # They must go before the resources :uploaded_files... statement below so that
+      #  /anvandare/:user_id/filer/ny is matched to the request before
+      #  /anvandare/:user_id/filer/:id  otherwise the router will think that :id = 'ny'
+      #
+      get 'filer/ny(/:from_acct_pg)', to: 'uploaded_files#new',
+          as: 'new_uploaded_file'
+      post 'filer/(/:from_acct_pg)', to: 'uploaded_files#create'
+
       # UploadedFile as a nested resource under User, with page '/filer' in the URI
-      resources :uploaded_files, path: 'filer'
+      resources :uploaded_files, path: 'filer', except: [:new, :create]
 
     end
 

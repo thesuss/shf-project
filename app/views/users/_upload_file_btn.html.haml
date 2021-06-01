@@ -5,5 +5,5 @@
 
 - upload_btn_title = user.uploaded_files.blank? ? t('users.uploaded_files_requirement.upload_file') : t('users.uploaded_files_requirement.upload_another')
 = link_to upload_btn_title,
-          new_user_uploaded_file_path(user_id: user.id),
+          user_new_uploaded_file_path(user_id: user.id, from_acct_pg: true),
           class: 'btn btn-sm btn-light new-uploaded-file-button'

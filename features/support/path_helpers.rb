@@ -95,7 +95,7 @@ module PathHelpers
 
       when 'upload a new file'
         u = user.nil? ? Visitor.new : user
-        path = new_user_uploaded_file_path(u)
+        path = user_new_uploaded_file_path(u)
 
 
       # ==================================================
