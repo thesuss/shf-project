@@ -30,6 +30,13 @@ namespace :shf do
     APP_DIR = File.join(ENV['SHF_APP_PATH'], 'current/')
     PUBLIC_DIR = File.join(APP_DIR, 'public')
 
+    # exclude File.join('**','development_paperclip_files', 'uploaded_files','*')
+    # Exclude all user uploaded files in the paperclip directory
+    # paperclip path (url) for the uploaded files =  Rails.application.config.paperclip_defaults[:url]
+    # Get the path up to the first ':' (':' are use for interpolation by paperclip; ':' signals a variable value to be used)
+    #  the path up to the first ':' will be the parent directory
+    paperclip_uploads_path_top = Rails.application.config.paperclip_defaults[:url].split(':').first
+    uploaded_files_exclude_path = "**#{File.join(paperclip_uploads_path_top, 'uploaded_files/')}*"
 
     # Add a Hash for each Condition to be created
     #
@@ -101,7 +108,8 @@ namespace :shf do
                             },
                             {name: 'app-public',
                              days_to_keep: DAYS_TO_KEEP_PUBLIC_FILES,
-                             files: [PUBLIC_DIR]
+                             files: [PUBLIC_DIR],
+                             excludes: [uploaded_files_exclude_path]
                             },
                             {name: 'config env secrets',
                             days_to_keep: DEFAULT_DAYS_TO_KEEP,

@@ -24,7 +24,7 @@ RSpec.describe Backup, type: :model do
     include_context 'expect tar file has entries'
 
     # Make the same directories as a Rails app under a temp dir and create
-    # at 1 file in each dir: blorf.txt
+    # at least 1 file in each dir: blorf.txt
     #
     # @return [String] - the temp dir path
     #
@@ -49,6 +49,23 @@ RSpec.describe Backup, type: :model do
       end
       File.open(File.join(faux_app_dir, '.env'), 'w') do |f|
         f.puts 'all your env belong to us'
+      end
+
+      # create subdirs in /public to represent uploaded paperclip files;
+      # dir structure similar to what exists in production as of 2021-04:
+      #   public/storage/paperclip_files/uploaded_files/000
+      public_dir = File.join(faux_app_dir, 'public')
+      storage_dir = File.join(public_dir, 'storage')
+      Dir.mkdir(storage_dir)
+      paperclip_dir = File.join(storage_dir, 'paperclip_files')
+      Dir.mkdir(paperclip_dir)
+      uploaded_files_dir = File.join(paperclip_dir, 'uploaded_files')
+      Dir.mkdir(uploaded_files_dir)
+      uploaded_files_subdir = File.join(uploaded_files_dir, '000')
+      Dir.mkdir(uploaded_files_subdir)
+
+      File.open(File.join(uploaded_files_subdir, 'blorf.txt'), 'w') do |f|
+        f.puts 'blorf!'
       end
 
       faux_app_dir
@@ -132,6 +149,9 @@ RSpec.describe Backup, type: :model do
 
 
     let(:backup_condition_all_dirs) do
+      paperclip_uploads_path_top = File.join('/storage', 'paperclip_files/')
+      uploaded_files_exclude_path = "**#{File.join(paperclip_uploads_path_top, 'uploaded_files/')}*"
+
       condition_info = { class_name: 'Backup',
                          timing: :every_day,
                          config: { days_to_keep: { db_backup: 5 },
@@ -149,7 +169,8 @@ RSpec.describe Backup, type: :model do
                                        },
                                        { name: 'app-public',
                                          days_to_keep: 3,
-                                         files: [File.join(@faux_app_dir, 'public')]
+                                         files: [File.join(@faux_app_dir, 'public')],
+                                         excludes: [uploaded_files_exclude_path]
                                        },
                                        { name: 'config env secrets',
                                          days_to_keep: 32,
@@ -294,8 +315,8 @@ RSpec.describe Backup, type: :model do
       config_basefn = 'config_env_secrets.tar'
       expected_config_basefn = File.join(@backup_dir, config_basefn)
 
-
       allow(described_class).to receive(:upload_file_to_s3)
+
 
       expect(described_class).to receive(:delete_excess_backup_files)
                                      .with("#{expected_logs_basefn}.*", 8)
@@ -319,7 +340,6 @@ RSpec.describe Backup, type: :model do
       timestamp = hourstamp
       run_backup_condition(backup_condition_all_dirs)
 
-
       # Expect the db backup file to be in the backup directory
       # (It's the only backup file that is _not_ a FileSet.)
       db_backup_ts_fn = "#{db_backup_basefn}.#{timestamp}"
@@ -328,14 +348,13 @@ RSpec.describe Backup, type: :model do
 
       # Expect the FileSet backup files to exist
       # and to have exactly what we specified in the configuration:
-
       logs_backup_ts_fn = "#{logs_basefn}.#{timestamp}"
       actual_log_backup_file = timestamped_file_in_dir(@backup_dir, logs_backup_ts_fn)
       expected_entries = [File.join(@faux_app_dir, 'log'), File.join(@faux_app_dir, 'log', 'blorf.txt')]
       expect_tar_has_these_entries(File.join(@backup_dir, actual_log_backup_file), expected_entries)
 
       code_backup_ts_fn = "#{code_basefn}.#{timestamp}"
-      expected_dirs = %w(app bin config db lib log node_modules  script vendor )
+      expected_dirs = %w(app bin config db lib log node_modules script vendor )
       actual_code_env_secrets_backup_file = timestamped_file_in_dir(@backup_dir, code_backup_ts_fn)
 
       expected_entries = expected_dirs.map do |dir|
@@ -352,7 +371,11 @@ RSpec.describe Backup, type: :model do
 
       public_backup_ts_fn = "#{public_basefn}.#{timestamp}"
       actual_app_public_backup_file = timestamped_file_in_dir(@backup_dir, public_backup_ts_fn)
-      expected_entries = [File.join(@faux_app_dir, 'public'), File.join(@faux_app_dir, 'public', 'blorf.txt')]
+      expected_entries = [File.join(@faux_app_dir, 'public'),
+                          File.join(@faux_app_dir, 'public', 'blorf.txt'),
+                          File.join(@faux_app_dir, 'public','storage'),
+                          File.join(@faux_app_dir, 'public','storage','paperclip_files'),
+                          File.join(@faux_app_dir, 'public','storage','paperclip_files','uploaded_files')]
       expect_tar_has_these_entries(File.join(@backup_dir, actual_app_public_backup_file), expected_entries)
 
       config_backup_ts_fn = "#{config_basefn}.#{timestamp}"
@@ -1017,8 +1040,7 @@ RSpec.describe Backup, type: :model do
         }
 
         expected_fsbm = ShfBackupMakers::FileSetBackupMaker.new(name: 'files starting with H',
-                                                                backup_sources: ['hund.rb', 'hammerhead.rb', 'hamster.rb'],
-                                                                excludes: [])
+                                                                backup_sources: ['hund.rb', 'hammerhead.rb', 'hamster.rb'])
         expect(described_class.new_fileset_backup_maker(fileset_config)).to eq_the_fileset_backup_maker expected_fsbm
       end
 
