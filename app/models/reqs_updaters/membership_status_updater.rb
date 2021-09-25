@@ -6,10 +6,6 @@ LOGMSG_CHECKLIST_COMPLETED = 'Checklist completed' unless defined? LOGMSG_CHECKL
 
 LOGMSG_USER_UPDATED = 'User updated' unless defined? LOGMSG_USER_UPDATED
 
-LOGMSG_MEMBERSHIP_GRANTED = 'Membership granted' unless defined? LOGMSG_MEMBERSHIP_GRANTED
-LOGMSG_MEMBERSHIP_RENEWED = 'Membership renewed' unless defined? LOGMSG_MEMBERSHIP_RENEWED
-LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked' unless defined? LOGMSG_MEMBERSHIP_REVOKED
-
 #--------------------------
 #
 # @class MembershipStatusUpdater
@@ -25,15 +21,16 @@ LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked' unless defined? LOGMSG_MEMBERSH
 # @date   12/21/17
 # @file membership_status_updater.rb
 #
+#
 # Only check to see if requirements have been satisfied for Renewal or Membership when:
-#   * a payment is made
-#   * a checklist is completed
+#   * a payment is made, or
+#   * a checklist is completed (e.g. 'Agree to all Ethical Guidelines' checklist)
 #
 # Otherwise each time the requirements for renewal or membership are checked (e.g. at login),
 # the payment and non-payment requirements will be satisfied and membership or renewal will be
 # incorrectly granted again.
 # In other words, the only time that we _should_ check to see if membership or renewal can be granted
-# is when a payment is made.
+# is when a payment is made or a checklist is completed (e.g. 'Agree to all Ethical Guidelines' checklist)
 #
 #
 # The Observer pattern is used to send notifications (methods) when something
@@ -47,19 +44,14 @@ LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked' unless defined? LOGMSG_MEMBERSH
 # logged.
 #
 #
-#   MembershipStatusUpdater has the responsibility of checking to see if the membership
-#   should be updated or revoked based on the current business rules.
+#   MembershipStatusUpdater has the responsibility of checking to see if the membership status
+#   should be changed (updated) based on the current business rules.
 #   Thus all of the business rules can be in just _one place_ (DRY).
 #   Only 1 class has the responsibility for enforcing them.  No other classes have to care about them.
 #
 #   Satisfies the "Open/Closed" principle in SOLID:  putting the business logic
 #   into 1 Observer class keeps it open to extension changes (just this class)
 #   but closed to having to modify lots of code when the requirements change
-#
-#   Business logic for when a Membership is granted or revoked is encapsulated into 1 class
-#   that others are _not_ coupled to.
-#   Ditto with logic about Membership terms - whether they have expired or not,
-#   how the ending (expire) date is changed, etc.
 #
 #--------------------------
 
@@ -69,7 +61,7 @@ class MembershipStatusUpdater
   SEND_EMAIL_DEFAULT = true
 
   # -----------------------------------------------------------------------------------
-  # Notifications received from observed classes:
+  # Notifications received from Notifying classes:
   # - - -
   # Could set up some more generalized meta-code to get information from notifications sent,
   # but this is simple to maintain because it is explicit.
@@ -96,9 +88,9 @@ class MembershipStatusUpdater
     update_membership_status(user, user, logmsg_user_updated, send_email: send_email)
   end
 
-
   # end of Notifications received from observed classes
   # -----------------------------------------------------------------------------------
+
 
   def check_grant_renew_and_status(given_user, notifier = nil, reason_update_happened = nil,
                                    send_email: send_email_default)
