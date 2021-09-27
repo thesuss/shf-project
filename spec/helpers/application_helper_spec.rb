@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
-  let(:user) { create(:user) }  # FIXME  why is this needed here?  It should be defined only in the tests that require it
 
   describe '#flash_class' do
 
@@ -173,7 +172,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'business_category  4' do
-      co = create(:business_category, id: 4)
+      co = build(:business_category, id: 4)
       expect(helper.unique_css_id(co)).to eq "businesscategory-4"
     end
 
@@ -227,10 +226,7 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe '#model_errors_helper' do
-
-    let(:good_ma) { FactoryBot.create(:shf_application) }
-
-    let(:user)    { FactoryBot.create(:user) }
+    let(:user)    { create(:user) }
 
     let(:errors_html_sv)  do
       I18n.locale = :sv
@@ -247,6 +243,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'returns nil if no errors' do
+      good_ma =  build_stubbed(:shf_application)
       expect(model_errors_helper(good_ma)).to be_nil
     end
 
@@ -269,6 +266,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(errors_html_en).to match(/Contact Email is invalid/)
     end
   end
+
 
   describe '#boolean_radio_buttons_collection' do
     let(:collection_sv)  do
@@ -405,7 +403,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe 'icon_link' do
     it 'returns the HTML for a link to the url with the FontAwesome (fa) icon name given, target = blank (open in a new window)' do
-      expect(helper.icon_link('http://example.com', 'facebook-square')).to eq "<a target=\"_blank\" href=\"http://example.com\"><i class=\"fab fa-facebook-square fa-2x\"></i></a>"
+      expect(helper.icon_link('http://example.com', 'facebook-square')).to eq '<a target="_blank" alt="" title="" href="http://example.com"><i class="fab fa-facebook-square fa-2x"></i></a>'
     end
 
     describe 'icon' do
@@ -426,7 +424,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     describe 'user is not an admin: always returns the list of CSS classes given' do
 
-      let(:not_admin) { create(:user) }
+      let(:not_admin) { build(:user) }
 
       it 'no list given' do
         expect(helper.with_admin_css_class_if_needed(not_admin)). to eq([])
@@ -444,7 +442,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     describe 'user is an admin' do
 
-      let(:admin) { create(:admin) }
+      let(:admin) { build(:admin) }
 
       it 'no list given' do
         expect(helper.with_admin_css_class_if_needed(admin)). to match_array([helper.admin_css_class])
@@ -553,6 +551,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '#user_name_for_display' do
     include ERB::Util # Required by the helper to work in RSpec context
+    let(:user) { build_stubbed(:user) }
+
     it 'returns an empty string if the user is nil' do
       expect(user_name_for_display(nil)).to eq ''
     end
@@ -574,17 +574,21 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'it returns an empty string for non-admin users' do
+      user = build_stubbed(:user)
       expect(show_if_user_is_admin(user, 'admin!')).to be_blank
     end
   end
 
   describe '#edit_profile_link' do
     it 'renders links to see and edit a user profile' do
+      user = build_stubbed(:user)
       expect(edit_profile_link(user, text: '---', title: '---')).to include('edit', 'profile')
     end
   end
 
   describe '#edit_account_link' do
+    let(:user) { build_stubbed(:user) }
+
     it 'renders links to see and edit a user profile' do
       expect(edit_account_link(user, text: '---', title: '---')).to include('edit', 'account')
     end
