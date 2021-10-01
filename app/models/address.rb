@@ -45,6 +45,8 @@ class Address < ApplicationRecord
   GEO_FIELDS = %w(street_address post_code city kommun_id
                   region_id visibility country).freeze
 
+  ADDR_JOINER = ', '
+
   after_validation :geocode_best_possible,
                    if: ->(obj) {
                           obj.new_record? ||
@@ -129,8 +131,6 @@ class Address < ApplicationRecord
     ary.delete_if { |f| f.blank? }
   end
 
-
-  ADDR_JOINER = ', '
 
   # @return [String] - the address elements, joined by ADDR_JOINER.
   #   Only include the visible address elements unless full_visibility == true
