@@ -3,6 +3,8 @@
 # This is important so that Members have to up update their qualifications
 # and get certificates/other proof ready to be uploaded.
 #
+# TODO: Seems to be a lot of overlap with MembershipExpireAlert. Clarify the difference or merge.
+#
 class MembershipWillExpireRenewalReqsAlert < UserEmailAlert
 
 

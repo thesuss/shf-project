@@ -1,6 +1,8 @@
 # This emails a member _before_ their membership expires to alert
 # them that it will be expiring.
 #
+# TODO: Seems to be a lot of overlap with MembershipWillExpireRenewalReqsAlert. Clarify the difference or merge.
+#
 class MembershipExpireAlert < UserEmailAlert
 
 
