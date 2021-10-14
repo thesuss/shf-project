@@ -2189,7 +2189,11 @@ en:
         administration:
           submenu_title: Administration
 
-
+  footer:
+    gdpr_and_privacy: "GDPR & Privacy Policy"
+    gdpr_and_privacy_url: gdpr-och-personuppgifter
+    purchase_terms: Terms of Purchase
+    purchase_terms_url: aterbetalningsvillkor
 
   #----------
   # ERRORS

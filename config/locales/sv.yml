@@ -2130,7 +2130,7 @@ sv:
           member_criteria: Medlemskriterier
           member_benefits: Medlemsförmåner
           quality_standards: Kvalitetskontroll
-          gdpr: "GDPR"
+          gdpr: GDPR
           knowledge_bank:
             submenu_title:  *knowledge_bank_text
             blogs: Bloggar
@@ -2190,6 +2190,13 @@ sv:
 
         administration:
           submenu_title: Administrering
+
+
+  footer:
+    gdpr_and_privacy: "GDPR & Integritetspolicy"
+    gdpr_and_privacy_url: gdpr-och-personuppgifter
+    purchase_terms: Köpvillkor
+    purchase_terms_url: aterbetalningsvillkor
 
 
   #----------

@@ -1,5 +1,6 @@
 World(PathHelpers)
 
+FOOTER_DIV = 'footer'
 
 # Generate the xpath text for an element that has a CSS class.
 # It can be the only clas or one of a list of classes.
@@ -117,6 +118,11 @@ end
 Then "I should{negate} see {capture_string} {digits} time(?:s) in the div with id {capture_string}" do |negate, expected_text, num_times, div_id|
   div = page.find(:id, div_id)
   expect(div).send (negate ? :not_to : :to), have_content(expected_text, count: num_times)
+end
+
+Then "I should{negate} see {capture_string} in the footer"  do |negate, expected_text|
+  # need to convert any &amp; in expected_text to an actual '&' (undo conversion that automatically happens)
+  step %{I should#{negate ? ' not': ''} see "#{(expected_text.gsub('&amp;', '&'))}" in the div with id "#{FOOTER_DIV}"}
 end
 
 Then(/^I should see "([^"]*)" applications$/) do |number|

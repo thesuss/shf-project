@@ -486,6 +486,7 @@ body {
 
 footer {
   font-size: smaller;
+  text-align: center;
 
   a {
     border-bottom: 0;
@@ -586,6 +587,8 @@ button:hover,
 .menu-toggle:hover,
 .sub-menu-toggle:focus,
 .sub-menu-toggle:hover,
+.footer a:focus,
+.footer a:hover,
 .site-footer a:focus,
 .site-footer a:hover {
   color: $shf-blue;
