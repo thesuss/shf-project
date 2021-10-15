@@ -81,6 +81,8 @@ class PaymentsController < ApplicationController
 
     klarna_order = handle_order_confirmation(klarna_id, payment_id)
 
+    current_user.reload
+
     account_page_link = helpers.link_to(t('menus.nav.users.your_account').downcase,
                                         user_path(params[:user_id]))
 
@@ -201,7 +203,7 @@ class PaymentsController < ApplicationController
     urls[:checkout] = payments_url(user_id: user_id, company_id: company_id,
                                    type: payment_type)
 
-    # NOTE: '{checkout.order.id}') should appear *verbatim* in the URLs.
+    # NOTE: '{checkout.order.id}' should appear *verbatim* in the URLs.
     urls[:confirmation] = payment_confirmation_url(id: payment_id,
                                                    user_id: user_id,
                                                    disable_language_change: true,

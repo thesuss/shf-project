@@ -27,4 +27,8 @@ class Visitor
   def id
     0
   end
+
+  def reload
+    self
+  end
 end

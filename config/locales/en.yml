@@ -1225,7 +1225,7 @@ en:
 
     confirmation:
       success_html: Payment successfully processed - thank you!
-                    (Return to your %{account_page_link})
+                    (Return to %{account_page_link})
 
 
     error:
