@@ -2111,34 +2111,32 @@ sv:
         association: Föreningen
         brochure: Broschyr
         board: Styrelse
-        our_policy: Vår Policy
+        membership: Medlemsåtagande
         board_statues: Stadgar
+        glossary: Ordlista
         history: Historik
+
         dog_owners:
           submenu_title: Hundägare
           about_us: &about_us Om oss
           h_label: H-märket
-          knowledge_bank: &knowledge_bank_text Kunskapsbank
-          are_you_interested: 'Är du inte nöjd?'
+          consumer_contact: Konsumentkontakt
           become_supporter: Bli stödmedlem
           being_dog_owners: Att vara hundägare
+
         entrepreneurs:
           submenu_title: Hundföretagare
           about_us: *about_us
           sign_up: Bli medlem
           be_h_labeled: Bli H-märkt
+          educational_reqs: Utbildningskrav
+          membership_commitment: Medlemsåtagande
+          ethical_guide: Etisk Guide - Lima
           member_criteria: Medlemskriterier
           member_benefits: Medlemsförmåner
           quality_standards: Kvalitetskontroll
           gdpr: GDPR
-          knowledge_bank:
-            submenu_title:  *knowledge_bank_text
-            blogs: Bloggar
-            books: Böcker
-            research: Forskning
-            pod: Pod
-            popular_science: Populärvetenskap
-            video: Video
+          to_become_a_dog_business: Att Bli Hundföretagare
         contact: Kontakt
         find_dog_businesses: Hitta hundföretagare
 

@@ -1,0 +1,3 @@
+- text = t('menus.nav.users.my_application')
+- shf_app_link =  policy(shf_app).update? ? edit_shf_application_path(shf_app) : shf_application_path(shf_app)
+= nav_menu_item_li(text: text, link: shf_app_link)

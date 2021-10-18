@@ -1,0 +1,9 @@
+.login-nav
+  %ul.navbar-nav.ml-auto
+    - if user_signed_in?
+      = render 'nav-menus/login_menu_logged_in_user'
+    - else
+      = nav_menu_item_li(text: t('devise.sessions.new.log_in'), link: new_user_session_path,
+        li_classes: ['login'])
+
+    = render 'select_language'

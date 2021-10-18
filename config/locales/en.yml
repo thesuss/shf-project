@@ -2108,34 +2108,33 @@ en:
         association: Association
         brochure: Brochure
         board: Board
-        our_policy: Our Policy
-        board_statues: Board Statues
+        membership: Membership
+        board_statues: Statues
+        glossary: Glossary
         history: History
+
         dog_owners:
           submenu_title: For Dog Owners
           about_us: &about_us About us
-          h_label: H Label
-          knowledge_bank: &knowledge_bank_text Knowledge bank
-          are_you_interested: 'Are you interested?'
+          h_label: The H-Mark
+          consumer_contact: Consumer information
           become_supporter: Become a Supporter
-          being_dog_owners: Being Dog Owners
+          being_dog_owners: Being a Dog Owner
+
         entrepreneurs:
-          submenu_title: Dog Company owners
+          submenu_title: For Dog Company owners
           about_us: *about_us
           sign_up: Become a Member
           be_h_labeled: Become H-labeled
+          educational_reqs: Educational Requirements
+          membership_commitment: Membership Commitment
+          ethical_guide: Ethics Guide
           member_criteria: Member Criteria
           member_benefits: Member Benefits
           quality_standards: Member Standards
-          gdpr: "GDPR"
-          knowledge_bank:
-            submenu_title:  *knowledge_bank_text
-            blogs: Blogs
-            books: Books
-            research: Research
-            pod: Podcasts
-            popular_science: Popular Science
-            video: Video
+          gdpr: GDPR
+          to_become_a_dog_business: To Become a Dog Company
+
         contact: Contact
         find_dog_businesses: Find Dog Company
 

@@ -70,7 +70,7 @@ Lint/NestedMethodDefinition:
 # Offense count: 7
 Lint/ParenthesesAsGroupedExpression:
   Exclude:
-    - 'app/helpers/navigation_helper.rb'
+    - 'app/helpers/site_urls_helper.rb'
     - 'features/step_definitions/assertion_steps.rb'
     - 'features/step_definitions/user_checklist_steps.rb'
     - 'spec/lib/fake_addresses/csv_fake_addresses_writer_spec.rb'

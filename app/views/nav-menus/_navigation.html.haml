@@ -1,39 +1,38 @@
 %nav.navbar.navbar-expand-md
   %a.logooo.navbar-brand{ :href => "https://hitta.sverigeshundforetagare.se" }
     %img{ :src => "https://media.sverigeshundforetagare.se/2016/12/cropped-16465585_1046630372149121_513430848809205760_n.jpg", :alt => "Sveriges Hundforetagare" }/
+
   %button.navbar-toggler{ "aria-controls" => "dropdown-menu", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#dropdown-menu", "data-toggle" => "collapse", :type => "button" }
     = t('menus.menu')
+
   .collapse.navbar-collapse#dropdown-menu
 
     - if user_signed_in?
+
       - if current_user.admin?
         %ul.navbar-nav.ml-auto#menu-menu-3
-          %li
-            = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
+          = render 'nav-menus/mainsite_home'
           = render 'nav-menus/member_pages'
-          = render 'nav-menus/admin'
+          = render 'nav-menus/admin_menus'
+
       - else
         %ul.navbar-nav.ml-auto#menu-menu-2
-          %li
-            = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
-          %li.dropdown
-            = link_to t('menus.nav.members.shf_companies'), root_path, class: 'nav-link'
+          = render 'nav-menus/mainsite_home'
+          = nav_menu_item_li(text: t('menus.nav.members.shf_companies'), link: root_path)
 
           - if current_user.member?
             = render 'nav-menus/member_pages'
             = render 'nav-menus/member_companies'
-            = render 'nav-menus/edit_my_application', shf_app: current_user.shf_application
+            = render 'nav-menus/view_or_edit_my_application', shf_app: current_user.shf_application
 
           - else
-            -# User is not a member nor admin
+            -# User is neither a member nor admin
             - if current_user.has_shf_application?
-              = render 'nav-menus/edit_my_application', shf_app: current_user.shf_application
+              = render 'nav-menus/view_or_edit_my_application', shf_app: current_user.shf_application
             - else
-              %li
-                = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path, class: 'nav-link'
+              = nav_menu_item_li(text: t('menus.nav.users.apply_for_membership'), link: new_shf_application_path)
 
     - else
-      -# Visitor navigation
       = render 'nav-menus/visitor'
 
-    = render 'nav-menus/login_nav'
+    = render 'nav-menus/login_menu'

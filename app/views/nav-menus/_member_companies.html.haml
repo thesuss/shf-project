@@ -1,10 +1,6 @@
 - if (company_count = current_user.companies.count) > 0
-  %li.dropdown
-    %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }
-      = t('my_company', count: company_count)
-
+  = nav_menu_dropdown_li(text: t('my_company', count: company_count), link: '#') do
     %ul.dropdown-menu
       - current_user.companies.each do |company|
-        %li
-          = link_to company.name.present? ? company.name : t('name_missing'),
-                    company_path(company), class: 'nav-link'
+        = nav_menu_item_li(text: company.name.present? ? company.name : t('name_missing'),
+           link: company_path(company))
