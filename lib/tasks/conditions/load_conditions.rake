@@ -53,13 +53,13 @@ namespace :shf do
           timing:     :day_of_month,
           config: {days: [1, 15]} },
 
-        # { class_name: 'MembershipExpireAlert',
-        #   timing:     :before,
-        #   config:     { days: [30, 14, 2] } },
+        { class_name: 'MembershipExpireAlert',
+          timing:     :before,
+          config:     { days: [30, 14, 2] } },
 
-        # { class_name: 'MembershipWillExpireRenewalReqsAlert',
-        #   timing:     :before,
-        #   config:     { days: [60] } },
+        { class_name: 'MembershipWillExpireRenewalReqsAlert',
+          timing:     :before,
+          config:     { days: [60] } },
 
 
         { class_name: 'MembershipLapsedAlert',
@@ -70,9 +70,9 @@ namespace :shf do
           timing:     :after,
           config:     { days: std_reminder_after_schedule } },
 
-        # { class_name: 'HBrandingFeeWillExpireAlert',
-        #   timing:     :before,
-        #   config:     { days: std_reminder_before_schedule } },
+        { class_name: 'HBrandingFeeWillExpireAlert',
+          timing:     :before,
+          config:     { days: std_reminder_before_schedule } },
 
         { class_name: 'HBrandingFeeDueAlert',
           timing:     :after,
