@@ -1,4 +1,12 @@
 namespace :shf do
+  desc 'delete all Conditions and then call load_conditions task'
+  task delete_and_reload_conditions: [:environment] do
+    connection = ActiveRecord::Base.connection
+    connection.exec_query("TRUNCATE TABLE \"conditions\" ")
+
+    Rake::Task['shf:load_conditions'].invoke
+  end
+
   desc 'load conditions to DB'
   task load_conditions: [:environment] do
 
@@ -47,36 +55,36 @@ namespace :shf do
             timing:     :day_of_week,
             config:     { days_of_week: [2]} },
 
-        # Once Repeating Task timing is implemented, the timing should be changed
-        # to repeat every 14 days.
-        { class_name: 'MemberUnpaidOver6MonthsAlert',
-          timing:     :day_of_month,
-          config: {days: [1, 15]} },
-
-        { class_name: 'MembershipExpireAlert',
-          timing:     :before,
-          config:     { days: [30, 14, 2] } },
-
-        { class_name: 'MembershipWillExpireRenewalReqsAlert',
-          timing:     :before,
-          config:     { days: [60] } },
-
-
-        { class_name: 'MembershipLapsedAlert',
-          timing:     :after,
-          config:     { days: std_reminder_after_schedule } },
-
-        { class_name: 'FirstMembershipFeeOwedAlert',
-          timing:     :after,
-          config:     { days: std_reminder_after_schedule } },
-
-        { class_name: 'HBrandingFeeWillExpireAlert',
-          timing:     :before,
-          config:     { days: std_reminder_before_schedule } },
-
-        { class_name: 'HBrandingFeeDueAlert',
-          timing:     :after,
-          config:     { days: std_reminder_after_schedule } },
+        # # Once Repeating Task timing is implemented, the timing should be changed
+        # # to repeat every 14 days.
+        # { class_name: 'MemberUnpaidOver6MonthsAlert',
+        #   timing:     :day_of_month,
+        #   config: {days: [1, 15]} },
+        #
+        # { class_name: 'MembershipExpireAlert',
+        #   timing:     :before,
+        #   config:     { days: [30, 14, 2] } },
+        #
+        # { class_name: 'MembershipWillExpireRenewalReqsAlert',
+        #   timing:     :before,
+        #   config:     { days: [60] } },
+        #
+        #
+        # { class_name: 'MembershipLapsedAlert',
+        #   timing:     :after,
+        #   config:     { days: std_reminder_after_schedule } },
+        #
+        # { class_name: 'FirstMembershipFeeOwedAlert',
+        #   timing:     :after,
+        #   config:     { days: std_reminder_after_schedule } },
+        #
+        # { class_name: 'HBrandingFeeWillExpireAlert',
+        #   timing:     :before,
+        #   config:     { days: std_reminder_before_schedule } },
+        #
+        # { class_name: 'HBrandingFeeDueAlert',
+        #   timing:     :after,
+        #   config:     { days: std_reminder_after_schedule } },
 
         { class_name: 'CompanyInfoIncompleteAlert',
           timing:     :after,
