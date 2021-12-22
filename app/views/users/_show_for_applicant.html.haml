@@ -31,9 +31,10 @@
           - else
             = link_to t('.apply_4_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
 
-        - find_or_create_checklist = user.former_member? ? :find_or_create_on_or_after_latest_membership_start : :find_or_create_membership_guidelines_list_for
         %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist.html.haml',
-          locals: { user: user, find_or_create_method: find_or_create_checklist }
+          locals: { user: user,
+            method_to_check_for_completed_guidelines: :completed_membership_guidelines_checklist?,
+            find_or_create_method: UserChecklistManager.find_or_create_guidelines_method(user.membership_status) }
 
         %li.step.pay-membership-fee
           - if user.allowed_to_pay_member_fee?

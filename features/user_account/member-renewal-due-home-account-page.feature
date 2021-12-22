@@ -83,7 +83,7 @@ Feature:  Member home (account) page when renewal is due or close to it
     When I am on the "user account" page
     Then I should see t("users.renewal.instructions")
     And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
-    And I should see t("users.uploaded_files_requirement.have_been_uploaded")
+    And I should see t("users.uploaded_files_requirement.current_member.have_been_uploaded")
     And I should see t("users.uploaded_files_requirement.upload_another")
     And the link button t("users.renewal.pay_membership") should be disabled
     And I should see t("users.renewal.pay_button_disabled_info")
@@ -107,7 +107,7 @@ Feature:  Member home (account) page when renewal is due or close to it
     When I am on the "user account" page
     Then I should see t("users.renewal.instructions")
     And I should see t("users.ethical_guidelines_link_or_checklist.membership_guidelines")
-    And I should see t("users.uploaded_files_requirement.have_been_uploaded")
+    And I should see t("users.uploaded_files_requirement.current_member.have_been_uploaded")
     And I should see t("users.uploaded_files_requirement.upload_another")
     And the link button t("users.show.pay_membership") should not be disabled
     And I should not see t("users.renewal.pay_button_disabled_info")
@@ -123,7 +123,7 @@ Feature:  Member home (account) page when renewal is due or close to it
     Then I should see t("users.renewal.title_renewal_overdue")
     And I should see t("users.renewal.renewal_overdue_warning")
     And I should see t("users.ethical_guidelines_link_or_checklist.membership_guidelines")
-    And I should see t("users.uploaded_files_requirement.have_been_uploaded")
+    And I should see t("users.uploaded_files_requirement.in_grace_period.have_been_uploaded")
     And I should see t("users.uploaded_files_requirement.upload_another")
     And the link button t("users.show.pay_membership") should not be disabled
     And I should not see t("users.renewal.pay_button_disabled_info")

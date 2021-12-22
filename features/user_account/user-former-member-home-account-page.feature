@@ -1,11 +1,8 @@
 Feature: Former Member home (account) page - version 1.0
 
   As a former member,
-  my account page needs provide me with the clear ways to complete each step needed for membership:
-  1. This will show my previous application (because we currently allow only 1 application per user)
-  2. I must agree to the ethical guidelines,
-  4. any other requirements
-  5. pay my membership fee once all other requirements are satisfied
+  So that I can apply again
+  I should be shown a message that I should contact the membership chairperson.
 
 
   Background:
@@ -58,24 +55,15 @@ Feature: Former Member home (account) page - version 1.0
 
 
     Given the date is set to "2021-07-07"
+    And the membership chair email is "membership-chair@shf.se"
 
   # ---------------------------------------------------------------------------------------------
 
-  Scenario: Former member sees greeting, name, welcome message, existing application, must agree to guidelines
+  Scenario: Former member sees welcome message, message to contact the membership chair
     Given I am logged in as "former-member@example.com"
     And I am on the "user account" page for "former-member@example.com"
-    Then I am not a current member
+    Then I am a former member
 
-    And I should see t("users.show.hello")
-    And I should see "Former Member"
-    And I should see t("users.show_for_applicant.welcome")
-    And I should see t("users.show_for_applicant.welcome_want_to_have_benefits")
-
-    And I should not see t("users.show_for_applicant.apply_4_membership") link
-
-    And I should see t("application")
-    And I should see t("users.show_for_applicant.app_status_accepted")
-
-    And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
-
-    And the link button t("users.show.pay_membership") should be disabled
+    And I should see t("users.show_for_former_member.title")
+    And I should see t("users.show_for_former_member.welcome")
+    And I should see t("users.show_for_former_member.contact_membership", membership_email: 'membership-chair@shf.se')

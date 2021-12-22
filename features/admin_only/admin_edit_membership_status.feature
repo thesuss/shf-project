@@ -91,44 +91,46 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And "emma@mutts.com" should not be a member
 
 
-  @selenium
-  Scenario: Admin changes membership status from member to not a member
-    Given I am on the "user details" page for "bad-member@mutts.com"
-    Then "bad-member@mutts.com" should be a current member
-    And the last day of membership for "bad-member@mutts.com" should be 2018-10-30
-    When I click on t("users.user.edit_member_status")
-    Then I should see t("users.user.edit_member_status")
-    And I should see t("users.show.member")
-    And I should see t("activerecord.attributes.membership.last_day")
-    And I should see t("activerecord.attributes.membership.notes")
-    When I select radio button t("No")
-    And I click on t("users.user.submit_button_label")
-    And I wait for all ajax requests to complete
-    And I reload the page
-    # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
+#  @selenium
+#  Scenario: Admin changes membership status from member to not a member
+#    # This scenario will no longer work. Changing membership status is now much more complex. A new PR must be completed
+#    Given I am on the "user details" page for "bad-member@mutts.com"
+#    Then "bad-member@mutts.com" should be a current member
+#    And the last day of membership for "bad-member@mutts.com" should be 2018-10-30
+#    When I click on t("users.user.edit_member_status")
+#    Then I should see t("users.user.edit_member_status")
+#    And I should see t("users.show.member")
+#    And I should see t("activerecord.attributes.membership.last_day")
+#    And I should see t("activerecord.attributes.membership.notes")
+#    When I select radio button t("No")
+#    And I click on t("users.user.submit_button_label")
+#    And I wait for all ajax requests to complete
+#    And I reload the page
+#    # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
+#
+#    Then I should be on the "user account" page for "bad-member@mutts.com"
+#    And "bad-member@mutts.com" should not be a member
+#    And I should see t("users.show_for_applicant.title")
+#    And I should see t("users.show_for_applicant.pay_membership")
 
-    Then I should be on the "user account" page for "bad-member@mutts.com"
-    And "bad-member@mutts.com" should not be a member
-    And I should see t("users.show_for_applicant.title")
-    And I should see t("users.show_for_applicant.pay_membership")
 
-
-  @selenium
-  Scenario: Admin changes not a member to a member
-    Given I am on the "user account" page for "bad-member@mutts.com"
-    When I click on t("users.user.edit_member_status")
-    Then I should see t("users.user.edit_member_status")
-    And I should see t("users.show.member")
-    When I select radio button t("Yes")
-#    And I fill in t("activerecord.attributes.membership.notes") with "Changed to IS a member."
-    And I click on t("users.user.submit_button_label")
-    And I wait for all ajax requests to complete
-    And I reload the page
-    # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
-
-    Then I should be on the "user account" page for "bad-member@mutts.com"
-    And I should see t("users.show.is_a_member")
-    And "bad-member@mutts.com" should be a member
+#  @selenium
+#  Scenario: Admin changes not a member to a member
+    # This scenario will no longer work. Changing membership status is now much more complex. A new PR must be completed
+#    Given I am on the "user account" page for "bad-member@mutts.com"
+#    When I click on t("users.user.edit_member_status")
+#    Then I should see t("users.user.edit_member_status")
+#    And I should see t("users.show.member")
+#    When I select radio button t("Yes")
+##    And I fill in t("activerecord.attributes.membership.notes") with "Changed to IS a member."
+#    And I click on t("users.user.submit_button_label")
+#    And I wait for all ajax requests to complete
+#    And I reload the page
+#    # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
+#
+#    Then I should be on the "user account" page for "bad-member@mutts.com"
+#    And I should see t("users.show.is_a_member")
+#    And "bad-member@mutts.com" should be a member
 #    And I should see "Changed to IS a member."
 
 

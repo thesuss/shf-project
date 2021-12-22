@@ -37,7 +37,7 @@ class UserChecklist < ApplicationRecord
 
 
 
-  # Membership Guidelines checklist (top level) for the given user
+  # Membership Guidelines checklists (top level) for the given user, ordered by when created
   def self.membership_guidelines_for_user(user)
     UserChecklist.top_level
         .where(master_checklist: AdminOnly::MasterChecklist.latest_membership_guideline_master)
@@ -84,11 +84,17 @@ class UserChecklist < ApplicationRecord
     where(master_checklist: AdminOnly::MasterChecklist.latest_membership_guideline_master)
   end
 
-  # Get the most recently completed top level guidelines for the user
-  def self.most_recent_completed_top_level_guideline(user)
+  # All top level guidelines completed by the user, ordered by the date completed
+  # @return [Array<UserChecklist>]
+  def self.completed_top_level_guidelines(user)
     UserChecklist.top_level_for_current_membership_guidelines
                  .completed_by_user(user)
-                 .order(:date_completed).last
+                 .order(:date_completed)
+  end
+
+  # Get the most recently completed top level guidelines for the user
+  def self.most_recent_completed_top_level_guideline(user)
+    completed_top_level_guidelines(user).last
   end
 
   # Get the top level guidelines created on or after the date for the user, ordered by created_at
@@ -101,7 +107,7 @@ class UserChecklist < ApplicationRecord
   # --------------------------------------------------------------------------------------
 
   # Add .includes to the query used to get all descendants to help avoid N+1 queries
-  def descendants depth_options = {}
+  def descendants(depth_options = {})
     super #.includes(:user)
   end
 
@@ -143,7 +149,8 @@ class UserChecklist < ApplicationRecord
 
 
   def descendants_completed?
-    descendants.inject(:true) { |is_completed, descendant| descendant.all_completed? && is_completed }
+    # descendants.inject(:true) { |is_completed, descendant| descendant.all_completed? && is_completed }
+    descendants.where(date_completed: nil).count == 0
   end
 
 

@@ -1,17 +1,22 @@
 # ===============================================================================================
-# @class User
+# User
 #
 # @responsibility  A user that can log in.  Knows membership _payment_ status,
-#  application status.
+#   application status.
+#
+#   - knows if a file was uploaded during the right timeframe based on membership status (this should be the responsibility of some other class)
+#
 #
 # 2021-02-19: First step towards refactoring: have existing methods call MembershipsManager methods
-#   (a kind of manual delegation).
-#   TODO: should any of the methods be delegated to the MembershipsManager?
+# (a kind of manual delegation).
+# @todo should any of the methods be delegated to the MembershipsManager?
 #   Next steps will be to call MembershipManager methods directly where needed.
 #
-# TODO: should 'expires_soon' be a membership status instead of just 'informational' ?
+# @todo should 'expires_soon' be a membership status instead of just 'informational' ?
 #
-# TODO: refactor proof of membership image stuff to separate class
+# @todo refactor proof of membership image stuff to separate class
+#
+# @todo this class has waaaay too many responsibilities
 #
 class User < ApplicationRecord
   include PaymentUtility
@@ -67,13 +72,13 @@ class User < ApplicationRecord
   scope :admins, -> { where(admin: true) }
   scope :not_admins, -> { where(admin: nil).or(User.where(admin: false)) }
 
-  # FIXME: replace this with the aasm provided scope :current_member
+  # @fixme replace this with the aasm provided scope :current_member
   scope :members, -> { where(member: true) }
 
   successful_payment_with_type_and_expire_date = "payments.status = '#{Payment::SUCCESSFUL}' AND" +
     " payments.payment_type = ? AND payments.expire_date = ?"
 
-  # FIXME: this should use the Membership(s) for the users
+  # @fixme this should use the Membership(s) for the users
   scope :membership_expires_in_x_days, -> (num_days) { includes(:payments)
                                                          .where(successful_payment_with_type_and_expire_date,
                                                                 Payment::PAYMENT_TYPE_MEMBER,
@@ -97,15 +102,15 @@ class User < ApplicationRecord
 
   # ===============================================================================================
 
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
   # The next membership payment date
-  # FIXME find all calls, replace with appropriate Membership... class
+  # @fixme find all calls, replace with appropriate Membership... class
   def self.next_membership_payment_date(user_id)
     next_membership_payment_dates(user_id).first
   end
 
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
-  # FIXME find all calls, replace with appropriate Membership... class
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @fixme find all calls, replace with appropriate Membership... class
   def self.next_membership_payment_dates(user_id)
     next_payment_dates(user_id, THIS_PAYMENT_TYPE)
   end
@@ -149,7 +154,7 @@ class User < ApplicationRecord
     #    date: <Date>
     #    send_email: [true | false]
     # to methods that are called
-    # @url https://github.com/aasm/aasm#callbacks
+    # @see https://github.com/aasm/aasm#callbacks
 
     event :start_membership do
       transitions from: [:not_a_member, :current_member, :former_member], to: :current_member, after: Proc.new {|*args| start_membership_on(*args) }
@@ -190,7 +195,7 @@ class User < ApplicationRecord
   end
 
 
-  # @return [nil | Membership] - the most recent membership (the current membership may have expired)
+  # @return [nil, Membership] the most recent membership (the current membership may have expired)
   def most_recent_membership
     memberships_manager.most_recent_membership(self)
   end
@@ -228,7 +233,7 @@ class User < ApplicationRecord
   # Make this a current member.
   # Do nothing if the user is already a current member.
   # If not a current member, start a membership
-  # TODO: Is this used?
+  # @todo Is this used?
   def make_current_member
     start_membership_on(date: Date.current) unless current_member?
   end
@@ -271,8 +276,8 @@ class User < ApplicationRecord
   end
   alias_method :membership_last_day, :membership_expire_date
 
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
-  # FIXME change calls to either payment_notes or current_membership.notes
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @fixme change calls to either payment_notes or current_membership.notes
   def membership_payment_notes
     payment_notes(THIS_PAYMENT_TYPE)
   end
@@ -283,11 +288,11 @@ class User < ApplicationRecord
   end
 
 
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
-  # FIXME - this is ONLY about the payments, not the membership status as a whole.
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @fixme - this is ONLY about the payments, not the membership status as a whole.
   #   so the name should be changed.  ex: membership_payments_current?  or membership_payment_term....
   def membership_current?
-    # TODO can use payment_term_expired?(THIS_PAYMENT_TYPE)
+    # @todo can use payment_term_expired?(THIS_PAYMENT_TYPE)
     !!membership_expire_date&.future? # using '!!' will turn a nil into false
   end
 
@@ -299,7 +304,7 @@ class User < ApplicationRecord
   end
 
 
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
   def payments_current_as_of?(this_date)
     return false if this_date.nil?
 
@@ -390,11 +395,20 @@ class User < ApplicationRecord
   # OR
   # 2. user is a member AND user is in the company
   #
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
   #
-  # @return [Boolean]
+  # @return [true,false]
   def allowed_to_pay_hbrand_fee?(company)
     admin? || in_company?(company) #|| has_approved_app_for_company?(company)
+  end
+
+  # Is this user allowed to do (check off/agree to) the membership guidelines?
+  #
+  # Ask the UserChecklistManager (this is a cheap,explicit version of delegating)
+  #
+  # @return [true,false]
+  def allowed_to_do_membership_guidelines?
+    UserChecklistManager.can_user_do_membership_guidelines?(self)
   end
 
   def member_fee_payment_due?
@@ -437,7 +451,7 @@ class User < ApplicationRecord
    Company.find_by(company_number: company_num).accepted_applicants.include?(self)
   end
 
-  # TODO this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
+  # @todo this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
   def has_app_for_company?(company)
     has_app_for_company_number?(company.company_number)
   end
@@ -447,7 +461,7 @@ class User < ApplicationRecord
   end
 
   # @return [Array] all shf_applications that contain the company, sorted by the application with the expire_date furthest in the future
-  # TODO this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
+  # @todo this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
   def apps_for_company(company)
     apps_for_company_number(company.company_number)
   end
@@ -456,7 +470,7 @@ class User < ApplicationRecord
   #   Note that right now a User can have only 1 ShfApplication, but in the future
   #   if a User can have more than 1, we want to be sure they are sorted by expire_date with the
   #    expire_date in the future as the first one and the expire_date in the past as the last one
-  # TODO this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
+  # @todo this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
   def apps_for_company_number(company_num)
     result = shf_application&.companies&.find_by(company_number: company_num)
     result.nil? ? [] : [shf_application].sort(&sort_apps_by_when_approved)
@@ -469,8 +483,10 @@ class User < ApplicationRecord
     SORT_BY_MOST_RECENT_APPROVED_DATE
   end
 
+  # Warning! This will _create guideline checklist entries if needed_
+  # @fixme rename so this is obvious. Use/create a different method to check with no side effects
   def membership_guidelines_checklist_done?
-    RequirementsForMembership.membership_guidelines_checklist_done?(self)
+    UserChecklistManager.completed_membership_guidelines_checklist?(self)
   end
 
   def full_name
@@ -506,39 +522,79 @@ class User < ApplicationRecord
   # If the old value was "true", now set it to false.
   # If the old value was "false", now make it true and set the date sent
   #
-  # @param date_sent [Time] - when the packet was sent. default = now
-  # @return [Boolean] - result of updating :date_membership_packet_sent
+  # @param date_sent [Time] when the packet was sent. default = now
+  # @return [true,false] result of updating :date_membership_packet_sent
   def toggle_membership_packet_status(date_sent = Time.zone.now)
     new_sent_time = membership_packet_sent? ? nil : date_sent
     update(date_membership_packet_sent: new_sent_time)
   end
 
 
-  # TODO this doesn't belong in User.  but not sure yet where it does belong.
-  # FIXME - what if someone is in the grace period? is logic correct?
-  def file_uploaded_during_this_membership_term?
-    return false unless current_member? || in_grace_period?
+  # Was a file uploaded during the right time frame (which is based on the membership_status)?
+  # If the user is a current_member, time frame is the current membership term (includes the first and last days)
+  # If the user is not (yet) a member, time frame is any time including today
+  # If the user is a member in the grace period, time frame is after the last day of the most recent membership
+  # If the user is a former member, time frame is after the last day of the most recent membership
+  # Else is false.
+  # @todo this doesn't belong in User.  but not sure yet where it does belong.
+  # @todo Since there is more and more logic (more business rules) that varies based on the membership_status,
+  #   it may be time to create subclasses/mixins (modules) for each membership_status
+  #
+  # @return [true,false]
+  def file_uploaded_during_right_time?
+    return false if uploaded_files.blank?
 
-    if current_member?
-      file_uploaded_on_or_after?(current_membership.first_day)
-    else
-      # is in_grace_period
-      file_uploaded_on_or_after?(most_recent_membership.first_day)  # FIXME is this correct?
+    case membership_status
+      when STATE_CURRENT_MEMBER
+        file_uploaded_during_this_membership_term?
+      when STATE_IN_GRACE_PERIOD, STATE_FORMER_MEMBER
+        file_uploaded_on_or_after?(membership_last_day + 1.day)
+      when STATE_NOT_A_MEMBER
+        !uploaded_files.blank?
+      else
+        false
     end
   end
 
+  # @todo this doesn't belong in User.  but not sure yet where it does belong.
+  # @return [true,false]
+  def file_uploaded_during_this_membership_term?
+    return false if uploaded_files.blank? || !current_member? || current_membership.nil?
 
-  def file_uploaded_on_or_after?(the_date = Date.current)
-    return false if uploaded_files.blank?
-
-    most_recent_uploaded_file.send(most_recent_upload_method) >= the_date
+    file_uploaded_on_or_after?(current_membership.first_day, end_date: current_membership.last_day)
   end
 
 
-  def files_uploaded_during_this_membership
-    return uploaded_files if uploaded_files.empty? || current_membership.nil?
+  # Was a file uploaded by the user on or after the given date AND on or before the given end date?
+  # If no end date is given, the default end date is today (Date.current)
+  # true iff the_date <= date any file was uploaded <= end_date
+  #
+  # @todo Rename method, since this can be a Date _range._  May most often just be given the date, though.
+  #
+  # @param the_date [Date]
+  # @param end_date [Date] optional) default value is Date.current
+  # @return [true,false]
+  def file_uploaded_on_or_after?(the_date = Date.current, end_date: Date.current)
+    return false if uploaded_files.blank?
 
-    uploaded_files.select{|file| file.updated_at >= current_membership.first_day}
+    most_recent_uploaded_file_date = most_recent_uploaded_file.send(most_recent_upload_method)
+    most_recent_uploaded_file_date >= the_date && most_recent_uploaded_file_date <= end_date
+  end
+
+
+  # list of the files uploaded during the current membership. empty list if none were uploaded or
+  # there is no current membership.
+  # (first day <= uploaded file creation date <= last day)
+  # Note that _ uploaded file creation date_ is whatever is returned by using the _most_recent_upload_ method
+  #
+  # @return [Array<UploadedFile>]
+  def files_uploaded_during_this_membership
+    return [] if uploaded_files.empty? || current_membership.nil?
+
+    uploaded_files.select do |file|
+      create_date = file.send(most_recent_upload_method)
+      current_membership.first_day <= create_date && create_date <= current_membership.last_day
+    end
   end
 
 
@@ -565,7 +621,7 @@ class User < ApplicationRecord
   # ===============================================================================================
   private
 
-  # TODO this should not be the responsibility of the User class. Need a MembershipManager class for this.
+  # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
   def get_next_membership_number
     self.class.connection.execute("SELECT nextval('membership_number_seq')").getvalue(0, 0).to_s
   end

@@ -1,27 +1,30 @@
 #--------------------------
 #
-# @class MembershipsManager
+# MembershipsManager
 #
-# @desc Responsibility: manage memberships for a User; respond to queries about Memberships
+# @responsibility Manage memberships for a User; respond to queries about Memberships
 #
-# TODO should the methods checking about a date be in the Membership class?
+# @todo should the methods checking about a date be in the Membership class?
+# @todo should this be renamed to MembershipsTermManager?  This is mostly about dates for the term
+# @todo move this to /services folder; it is all behavior and no data persistence
 #
 # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
 # @date   2/16/21
 #
 #--------------------------
-
-# TODO should this be renamed to MembershipsTermManager?  This is mostly about dates for the term
+#
 class MembershipsManager
 
+  # status that means the membership will expire soon
   EXPIRES_SOON_STATUS = :expires_soon
 
   # Informational statuses are those that are _not_ used when determining the next status
   # (membership statuses that are transitioned from/to). They are just helpful information
   # presented to admins, users, members.
-  #   TODO is there a better name for these?
+  #   @todo is there a better name for these?
   INFORMATIONAL_MEMBERSHIP_STATUSES = [EXPIRES_SOON_STATUS]
 
+  # method to use for ordering memberships so that we can get the most recent one (i.e. the last one should be the most recent membership)
   MOST_RECENT_MEMBERSHIP_METHOD = :last_day
 
   # =============================================================================================
@@ -36,6 +39,7 @@ class MembershipsManager
   end
 
 
+  # @return [Symbol] method to use for sorting/getting the most recent membership
   def self.most_recent_membership_method
     MOST_RECENT_MEMBERSHIP_METHOD
   end
@@ -62,7 +66,7 @@ class MembershipsManager
 
   # Create an ArchivedMembership for every Membership for the user
   #
-  # @return [True|False] - return false if any failed, else true if all succeeded
+  # @return [true, false] - return false if any failed, else true if all succeeded
   def self.create_archived_memberships_for(user)
     user.memberships.each do | membership |
       ArchivedMembership.create_from(membership)
@@ -71,13 +75,21 @@ class MembershipsManager
   end
 
 
-  def self.get_next_membership_number
-    # FIXME - implement here?  or call User method for now?
+  # @fixme implement here?  or call User method for now?
+  def self.get_next_membership_number; end
+
+
+  # Did the user pay for multiple Memberships in advance? Have they paid for a Membership beyond
+  # the current Memberships?
+  #
+  # @return [true,false]
+  def self.user_paid_in_advance?(user)
+    user.current_membership.present? &&
+      RequirementsForRenewal.payment_requirements_met?(user,
+                                                      user.current_membership.last_day + 1.day)
   end
 
-
-  # @return [nil | Membership] - nil if no Memberships,
-  # else the one with the latest last day
+  # @return [nil, Membership] nil if no Memberships, else the one with the latest last day
   def self.most_recent_membership(user)
     memberships = user.memberships
     return nil if memberships.empty?
@@ -85,13 +97,60 @@ class MembershipsManager
     memberships.order(most_recent_membership_method)&.last
   end
 
+  # @return [nil, Membership] the membership that covers Date.current
+  #   (is on or after first_day of the membership and on or before the last day of the membership)
+  def self.current_membership(user)
+    membership_on(user, Date.current)
+  end
+
+  # @return [nil, Membership] oldest Membership for the user where first_day <= this_date <= last_day
+  #   return nil if no membership for the user exists with that condition
+  def self.membership_on(user, this_date = Date.current)
+    return nil if this_date.nil? || user.nil?
+
+    Membership.for_user_covering_date(user, this_date)&.first
+  end
+
+
+  # @todo Unsure if this responsibility belongs here - since it has to do with a _membership_
+  # or in the UserChecklistManager since it has to do with _member guidelines checklist._
+  #
+  # If the date agreed to was before the date when the Memberships were fully implemented,
+  # the date is valid (= true)
+  #
+  # Else
+  #  Membership guidelines can be agreed to during the valid time for renewing or, if the membership
+  #  is not a renewal, they can be agreed to on or before the first day of the membership.
+  #  (You have to agree to the guidelines before you can pay for a membership and create (instantiate) one.)
+  #
+  #
+  # @param membership [Membership]
+  # @param date [Date] the date to validate
+  # @return [true,false] is the given date valid for when the user could have agreed to the membership guidelines?
+  #   If no, then even if they agreed to them on that date, they don't count as completed; they need to agree again.
+  def self.valid_membership_guidelines_agreement_date?(membership, date)
+    return true if date < UserChecklistManager.membership_guidelines_required_date
+
+    if  date <= membership.first_day
+      previous_membership = membership_on(membership.user, membership.first_day - 1.day)
+      if previous_membership.present?
+        date >= previous_membership.last_day - days_can_renew_early
+      else
+        true
+      end
+    else
+      false
+    end
+  end
+
   # ---------------------------------------------------------------------------------
 
+  # @return [nil, Membership] call the class method of the same name
   def most_recent_membership(user)
     self.class.most_recent_membership(user)
   end
 
-
+  # @return [Symbol] call the class method of the same name
   def most_recent_membership_method
     self.class.most_recent_membership_method
   end
@@ -99,6 +158,7 @@ class MembershipsManager
 
   # Does a user have a membership that has not expired as of the given date
   # Note this does not determine if payments were made, requirements were met, etc.
+  # @return [true, false]
   def has_membership_on?(user, this_date)
     return false if this_date.nil?
 
@@ -106,17 +166,14 @@ class MembershipsManager
   end
 
 
-  # @return [nil | Membership] - oldest Membership for the user where
-  #   first_day <= this_date <= last_day
-  #   return nil if no membership for the user exists with that condition
+  # @return [nil, Membership] call class method of the same name
   def membership_on(user, this_date = Date.current)
-    return nil if this_date.nil? || user.nil?
-
-    Membership.for_user_covering_date(user, this_date)&.first
+    self.class.membership_on(user, this_date)
   end
 
 
   # The membership term has expired, but are they still within a 'grace period'?
+  # @return [true, false]
   def membership_in_grace_period?(user,
                                   this_date = Date.current,
                                   membership: most_recent_membership(user))
@@ -125,7 +182,11 @@ class MembershipsManager
     date_in_grace_period?(this_date, last_day: membership.last_day)
   end
 
-
+  # Is the given date within a grace period for a time period starting with _last_day_ and a duration of _grace_period_?
+  # @param [Date] this_date The given date to check
+  # @param [Date] last_day The start of the time period (e.g. the last day of a Membership)
+  # @param [Integer] grace_days The duration of the grace period, in days
+  # @return [true, false]
   def date_in_grace_period?(this_date = Date.current,
                             last_day: Date.current,
                             grace_days: grace_period)
@@ -133,7 +194,12 @@ class MembershipsManager
       this_date <= (last_day + grace_days)
   end
 
-
+  # Is the given date after the end of the grace period for the user's membership?
+  #
+  # @param [Object] user The user that owns the membership
+  # @param [Date] this_date The given date to check. (default = Date.current)
+  # @param [Membership, nil] membership The membership to check (default is the user's most_recent_membership)
+  # @return [true, false]
   def date_after_grace_period_end?(user,
                                    this_date = Date.current,
                                    membership: most_recent_membership(user))
@@ -143,12 +209,14 @@ class MembershipsManager
   end
 
 
-  # @return [Integer]
+  # @return [Integer] call the class method of the same name
   def grace_period
     self.class.grace_period
   end
 
 
+  # Is today a valid renewal date for the user?
+  # @return [true, false]
   def today_is_valid_renewal_date?(user)
     valid_renewal_date?(user, Date.current)
   end
@@ -158,6 +226,7 @@ class MembershipsManager
   # This just checks the membership status and dates about renewal,
   #   not any requirements for renewing a membership.
   #
+  # @return [true, false]
   def valid_renewal_date?(user, this_date = Date.current)
     return false unless user.in_grace_period? || has_membership_on?(user, this_date)
 
@@ -170,26 +239,34 @@ class MembershipsManager
   end
 
 
+  # The first day of the user's most recent Membership.  return nil if there is no most recent Membership
+  # @return [nil, Date]
   def most_recent_membership_first_day(user)
     most_recent_membership(user)&.first_day
   end
 
-
+  # The last day of the user's most recent Membership.  return nil if there is no most recent Membership
+  # @return [nil, Date]
   def most_recent_membership_last_day(user)
     most_recent_membership(user)&.last_day
   end
 
 
-  # @return [Integer]
+  # @return [Duration] calls the class method of the same name
   def days_can_renew_early
     self.class.days_can_renew_early
   end
 
+
   # Is the Membership expiring soon?
   #  true if the user is a member
   #     AND today is on or after the (last day - the expiring soon amount)
+  #
+  # @param [User] user the User that owns the membership
+  # @param [Membership, nil] membership The membership to check. default is the user's most recent membership
+  # @return [true, false]
   def expires_soon?(user, membership = most_recent_membership(user))
-    user.current_member? && !!membership && ((membership.last_day - self.class.is_expiring_soon_amount) <= Date.current)
+    user.current_member? && membership.present? && ((membership.last_day - self.class.is_expiring_soon_amount) <= Date.current)
   end
 
 end

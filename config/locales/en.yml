@@ -1085,9 +1085,9 @@ en:
       no_membership_number: (no membership number)
 
     show_for_applicant:
-        title: "Steps to SHF Membership:"
+        title: &show_for_applicant_title "Steps to SHF Membership:"
         welcome: "Welcome to Sveriges Hundföretagare!"
-        welcome_want_to_have_benefits: "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
+        welcome_want_to_have_benefits: &show_for_applicant_want_to_have_benefits "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
 
         apply_4_membership: *apply_for_membership
         my_application: &my_application My Application
@@ -1101,6 +1101,12 @@ en:
         pay_membership: *pay_membership
         when_can_pay:  &when_can_pay Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
 
+    show_for_former_member:
+      title: *show_for_applicant_title
+      welcome: "Welcome back to Sveriges Hundföretagare!"
+      welcome_want_to_have_benefits: *show_for_applicant_want_to_have_benefits
+      contact_membership: "Please contact the membership chair to apply again: email %{membership_email}"
+
 
     renewal:
       title_time_to_renew: "It's time to renew!"
@@ -1113,13 +1119,19 @@ en:
 
 
     ethical_guidelines_link_or_checklist:
+      in_grace_period:
+        must_agree_again: Your membership has expired so you must agree to the guidelines again.
       agree_to_guidelines: Agree to All Membership Guidelines
-      agreed_to: Agreed to
+      agreed_to: "Agreed to on %{date}."
       membership_guidelines: All Membership Guidelines
 
     uploaded_files_requirement:
-      have_been_uploaded: Files have been uploaded during your membership term
       need_to_upload: You need to upload at least 1 file to show that you have continued your professional education and still meet SHF membership requirements.
+      current_member:
+        have_been_uploaded: Files have been uploaded during your membership term
+      in_grace_period:
+        must_upload_again: Your membership has expired so you must upload your files again.
+        have_been_uploaded: Files have been uploaded since your membership ended.
       upload_file: *upload_new_file
       upload_another: Upload another file
 

@@ -86,6 +86,12 @@ RSpec.describe User, type: :model do
            expire_date: expire_date)
   end
 
+  let(:faux_file_today) { double('UploadedFile', created_at: today) }
+  let(:faux_file_tomorrow) { double('UploadedFile', created_at: tomorrow) }
+  let(:faux_file_yesterday) { double('UploadedFile', created_at: yesterday) }
+  let(:faux_file_one_week_ago) { double('UploadedFile', created_at: one_week_ago) }
+
+
   # --------
   # These are used to test if a user belongs to a company and if a user has an application with a company
   given_co_num = '5562728336'
@@ -337,7 +343,7 @@ RSpec.describe User, type: :model do
 
       let!(:user_app_guidelines_agreed) do
         u = create(:user_with_ethical_guidelines_checklist)
-        UserChecklistManager.membership_guidelines_list_for(u).set_complete_including_children
+        UserChecklistManager.most_recent_membership_guidelines_list_for(u).set_complete_including_children
         u
       end
 
@@ -1499,6 +1505,17 @@ RSpec.describe User, type: :model do
   end
 
 
+  describe 'allowed_to_do_membership_guidelines?' do
+
+    it 'asks UserChecklistManager' do
+      u = build(:user)
+      expect(UserChecklistManager).to receive(:can_user_do_membership_guidelines?)
+                                        .with(u)
+      u.allowed_to_do_membership_guidelines?
+    end
+  end
+
+
   # describe 'membership_status' do
   #
   #   it 'default date = Date.current' do
@@ -1832,9 +1849,9 @@ RSpec.describe User, type: :model do
 
   describe 'membership_guidelines_checklist_done?' do
 
-    it 'asks the Requirement for Membership [the one place to implement that]' do
-      expect(RequirementsForMembership).to receive(:membership_guidelines_checklist_done?)
-                                             .with(subject)
+    it 'calls UserChecklistManager to see if the user has completed the Ethical guidelines checklist' do
+      expect(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?)
+                                        .with(subject)
       subject.membership_guidelines_checklist_done?
     end
   end
@@ -1901,69 +1918,120 @@ RSpec.describe User, type: :model do
   end
 
 
+  describe 'file_uploaded_during_right_time?' do
+
+    it 'false if no uploaded files' do
+      expect((build(:user)).file_uploaded_during_right_time?).to be_falsey
+    end
+
+    context 'has uploaded files' do
+      let(:u) do
+        this_user = build(:user)
+        allow(this_user).to receive(:uploaded_files).and_return([faux_file_today])
+        this_user
+      end
+
+      context 'current member' do
+        it 'calls file_uploaded_during_this_membership_term?' do
+          allow(u).to receive(:membership_status).and_return(User::STATE_CURRENT_MEMBER)
+
+          expect(u).to receive(:file_uploaded_during_this_membership_term?)
+          u.file_uploaded_during_right_time?
+        end
+      end
+
+      context 'in the grace period' do
+        it 'calls file_uploaded_on_or_after? with the day after the last day of the most recent membership' do
+          allow(u).to receive(:membership_status).and_return(User::STATE_IN_GRACE_PERIOD)
+          allow(u).to receive(:membership_last_day).and_return(yesterday)
+
+          expect(u).to receive(:file_uploaded_on_or_after?)
+                         .with(today)
+          u.file_uploaded_during_right_time?
+        end
+      end
+
+      context 'former member' do
+        it 'calls file_uploaded_on_or_after? with the day after the last day of the most recent membership' do
+          allow(u).to receive(:membership_status).and_return(User::STATE_FORMER_MEMBER)
+          allow(u).to receive(:membership_last_day).and_return(yesterday)
+
+          expect(u).to receive(:file_uploaded_on_or_after?)
+                         .with(today)
+          u.file_uploaded_during_right_time?
+        end
+      end
+
+      context 'not a member' do
+        it 'true if there are any uploaded files' do
+          allow(u).to receive(:membership_status).and_return(User::STATE_NOT_A_MEMBER)
+
+          expect(u).to receive(:uploaded_files)
+          expect(u.file_uploaded_during_right_time?).to be_truthy
+        end
+      end
+
+      context 'membership status is some other state' do
+        (User.membership_statuses + ['blorf'] - [User::STATE_CURRENT_MEMBER, User::STATE_IN_GRACE_PERIOD,
+                                     User::STATE_FORMER_MEMBER, User::STATE_NOT_A_MEMBER]).each do |state|
+          it "false for #{state}" do
+            allow(u).to receive(:membership_status).and_return(state)
+            expect(u.file_uploaded_during_right_time?).to be_falsey
+          end
+        end
+      end
+    end
+  end
+
+
   describe 'file_uploaded_during_this_membership_term?' do
     let(:u) { build(:user) }
-    let(:mock_membership) { double(Membership) }
 
-    it 'false if the user is not a current member AND is not in the renewal grace period' do
-      allow(u).to receive(:current_member?).and_return(false)
-      allow(u).to receive(:in_grace_period?).and_return(false)
+    it 'false if no files were uploaded' do
       expect(u.file_uploaded_during_this_membership_term?).to be_falsey
     end
 
-    context 'is in the renewal grace period' do
-      before(:each) do
-        allow(u).to receive(:in_grace_period?).and_return(true)
-      end
+    context 'files were uploaded' do
 
-      it 'checks using the first day of the most recent membership term' do
-        mock_memberships_manager = double(MembershipsManager)
-        allow(u).to receive(:memberships_manager).and_return(mock_memberships_manager)
-        allow(mock_memberships_manager).to receive(:most_recent_membership)
-                                             .with(u)
-                                             .and_return(mock_membership)
-        allow(mock_membership).to receive(:first_day).and_return(Date.current - 1.year)
+      context 'is a current member' do
+        it 'calls file_uploaded_on_or_after? with current membership first day and last day' do
+          membership_first_day = one_week_ago
+          membership_last_day = today
+          mock_membership = double(Membership)
+          allow(mock_membership).to receive(:first_day).and_return(membership_first_day)
+          allow(mock_membership).to receive(:last_day).and_return(membership_last_day)
+          m = build(:member)
+          allow(m).to receive(:current_membership).and_return(mock_membership)
+          allow(m).to receive(:current_member?).and_return(true)
+          allow(m).to receive(:uploaded_files)
+                             .and_return([faux_file_today, faux_file_yesterday,
+                                          faux_file_tomorrow, faux_file_one_week_ago])
 
-        expect(u).to receive(:file_uploaded_on_or_after?)
-                       .with(Date.current - 1.year).and_return(true)
-        expect(u.file_uploaded_during_this_membership_term?).to be_truthy
+          expect(m).to receive(:file_uploaded_on_or_after?)
+                         .with(membership_first_day, end_date: membership_last_day)
+          m.file_uploaded_during_this_membership_term?
+        end
       end
     end
 
-    context 'is a current member' do
-      before(:each) do
-        allow(u).to receive(:current_member?).and_return(true)
-        allow(u).to receive(:current_membership).and_return(mock_membership)
-      end
-
-      it 'returns result of file_uploaded_on_or_after? for the current membership first day' do
-        allow(mock_membership).to receive(:first_day).and_return(Date.current - 1)
-
-        expect(u).to receive(:file_uploaded_on_or_after?)
-                       .with(Date.current - 1).and_return(true)
-        expect(u.file_uploaded_during_this_membership_term?).to be_truthy
-      end
-
+    it 'false if the user is not a current member' do
+      allow(u).to receive(:uploaded_files)
+                    .and_return([faux_file_yesterday])
+      allow(u).to receive(:current_member?).and_return(false)
+      expect(u.file_uploaded_during_this_membership_term?).to be_falsey
     end
   end
 
 
   describe 'file_uploaded_on_or_after?' do
-    let(:yesterday) { Date.current - 1.day }
-    let(:tomorrow) { Date.current + 1.day }
-    let(:faux_file_today) { double('UploadedFile', created_at: Date.current) }
-    let(:faux_file_tomorrow) { double('UploadedFile', created_at: tomorrow) }
-    let(:faux_file_yesterday) { double('UploadedFile', created_at: yesterday) }
-    let(:faux_file_one_week_ago) { double('UploadedFile', created_at: Date.current - 7.days) }
 
-    it 'no uploads' do
+    it 'false if no uploads' do
       expect(build(:user).file_uploaded_on_or_after?(tomorrow)).to be_falsey
     end
 
     it 'gets the last uploaded file, ordered by the method to get the most recent upload' do
       u = build(:user)
       allow(u).to receive(:uploaded_files).and_return([faux_file_today])
-      expect(u).to receive(:most_recent_upload_method).and_call_original
       expect(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
       u.file_uploaded_on_or_after?
     end
@@ -1976,28 +2044,66 @@ RSpec.describe User, type: :model do
       expect(u.file_uploaded_on_or_after?).to be_truthy
     end
 
-    it 'true if last upload was after the given date' do
+    it 'default end date is today' do
       u = build(:user)
-      allow(u).to receive(:uploaded_files).and_return([faux_file_today, faux_file_tomorrow])
-      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_tomorrow)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
 
-      expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+      expect(u.file_uploaded_on_or_after?).to be_truthy
     end
 
-    it 'true if last upload was on the given date' do
-      u = build(:user)
-      allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
-      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+    context 'last upload was on the given date' do
 
-      expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+      it 'false if upload was after the end date' do
+        u = build(:user)
+        allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+
+        expect(u.file_uploaded_on_or_after?).to be_truthy
+      end
+
+      it 'true if upload was on the end date' do
+        u = build(:user)
+        allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+
+        expect(u.file_uploaded_on_or_after?(today, end_date: today)).to be_truthy
+      end
+
+      it 'true if upload was before the end date' do
+        u = build(:user)
+        allow(u).to receive(:uploaded_files).and_return([faux_file_yesterday])
+        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+
+        expect(u.file_uploaded_on_or_after?(one_week_ago, end_date: today)).to be_truthy
+      end
     end
 
-    it 'false if last upload was before the given date' do
-      u = build(:user)
-      allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
-      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+    context 'last upload was on or before today' do
 
-      expect(u.file_uploaded_on_or_after?(Date.current)).to be_falsey
+      it 'true if last upload was after the given date' do
+        u = build(:user)
+        allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+
+        expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+      end
+
+      it 'true if last upload was on the given date' do
+        u = build(:user)
+        allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
+        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+
+        expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+      end
+
+      it 'false if last upload was before the given date' do
+        u = build(:user)
+        allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
+        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+
+        expect(u.file_uploaded_on_or_after?(Date.current)).to be_falsey
+      end
     end
   end
 
@@ -2005,21 +2111,50 @@ RSpec.describe User, type: :model do
   describe 'files_uploaded_during_this_membership' do
 
     it 'empty list if no files uploaded' do
+      membership_first_day = one_week_ago
+      membership_last_day = today
+      mock_membership = double(Membership)
+      allow(mock_membership).to receive(:first_day).and_return(membership_first_day)
+      allow(mock_membership).to receive(:last_day).and_return(membership_last_day)
+      m = build(:member)
+      allow(m).to receive(:current_membership).and_return(mock_membership)
+      allow(m).to receive(:current_member?).and_return(true)
+      allow(m).to receive(:uploaded_files).and_return([])
+
+      expect(m.files_uploaded_during_this_membership).to be_empty
+    end
+
+    it 'empty list if there is no current membership' do
       expect(build(:user).files_uploaded_during_this_membership).to be_empty
     end
 
-    it 'only files uploaded on or after the first day of the current term' do
+    context 'has a current membership and files were uploaded' do
+
+      it 'empty list if has only files created after the last day of the current membership' do
+        member = create(:member, last_day: one_week_ago)
+        uploaded_file1 = member.uploaded_files.first
+        uploaded_file1.update(created_at: yesterday)
+        uploaded_file2 = create(:uploaded_file, :png, user: member)
+        uploaded_file2.update(created_at: today)
+
+        expect(member.files_uploaded_during_this_membership.to_a).to be_empty
+      end
+
+      it 'only files created on or after the first day of the current term AND on or before the last day', focus:true do
+      # @fixme
       member = create(:member)
       current_first_day = member.current_membership.first_day
       create(:membership, user: member, first_day: current_first_day - 30.days, last_day: current_first_day - 1.day)
       uploaded_file1 = member.uploaded_files.first
       uploaded_file2 = create(:uploaded_file, :png, user: member)
-      uploaded_file2.update(updated_at: current_first_day)
+      uploaded_file2.update(created_at: current_first_day)
 
       uploaded_past_membership = create(:uploaded_file, :jpg, user: member)
-      uploaded_past_membership.update(updated_at: current_first_day - 1.day)
+      uploaded_past_membership.update(created_at: current_first_day - 1.day)
 
       expect(member.files_uploaded_during_this_membership.to_a).to match_array([uploaded_file1, uploaded_file2])
+    end
+
     end
   end
 

@@ -1,6 +1,8 @@
 require 'rails_helper'
+require 'shared_context/named_dates'
 
 RSpec.describe AbstractReqsForMembership, type: :model do
+  include_context 'named dates'
 
   before(:each) do
     # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
@@ -10,8 +12,7 @@ RSpec.describe AbstractReqsForMembership, type: :model do
 
   let(:subject) { AbstractReqsForMembership }
   let(:user) { build(:user) }
-  let(:yesterday) { Date.current - 1.day }
-  let(:jan_1) { Date.new(2017, 1, 1) }
+
 
   describe '.has_expected_arguments?' do
 
@@ -80,9 +81,8 @@ RSpec.describe AbstractReqsForMembership, type: :model do
   end
 
   describe '.membership_guidelines_checklist_done?' do
-    it 'calls UserChecklistManager to see if the user has completed the Ethical guidelines checklist' do
-      expect(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?)
-                                        .with(user)
+    it 'asks the user if membership_guidelines_checklist_done?' do
+      expect(user).to receive(:membership_guidelines_checklist_done?)
       subject.membership_guidelines_checklist_done?(user)
     end
   end

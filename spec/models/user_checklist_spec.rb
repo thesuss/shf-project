@@ -187,16 +187,23 @@ RSpec.describe UserChecklist, type: :model do
   end
 
   describe 'all_completed?' do
+
+    it 'checks if all descendants_completed? ' do
+      all_complete_list = create(:user_checklist, :completed, num_completed_children: 1)
+      expect(all_complete_list).to receive(:descendants_completed?)
+      all_complete_list.all_completed?
+    end
+
     it 'false if self is not completed' do
       expect(build(:user_checklist).all_completed?).to be_falsey
     end
 
-    it 'true if self and all children are complete' do
+    it 'true if self and all descendants are complete' do
       all_complete_list = create(:user_checklist, :completed, num_completed_children: 3)
       expect(all_complete_list.all_completed?).to be_truthy
     end
 
-    it 'false if 1 or more children are not complete' do
+    it 'false if 1 or more descendants are not complete' do
       expect(three_complete_two_uncomplete_list.all_completed?).to be_falsey
     end
   end

@@ -5,7 +5,7 @@ require 'shared_context/companies'
 require_relative File.join('..', '..', 'app', 'services', 'address_exporter')
 
 
-RSpec.describe Company, type: :model, focus: true do
+RSpec.describe Company, type: :model do
 
   include_context 'create companies'
 
@@ -349,7 +349,7 @@ RSpec.describe Company, type: :model, focus: true do
 
       context 'has members in good standing (current)' do
 
-        it 'returns all companies that have members that are in good standing (current)', focus: true do
+        it 'returns all companies that have members that are in good standing (current)' do
           member1 = FactoryBot.create(:user_with_membership_app)
           co1 = member1.shf_application.companies.first
 

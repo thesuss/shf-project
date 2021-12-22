@@ -1,13 +1,16 @@
 :ruby
   # This partial expects these locals:
   #  user - the user the membership guidelines checklist belongs to
-  #  find_or_create_method - method used to find or create the membership guidelines checklist
+  #  method_to_check_for_completed_guidelines - UserChecklistManager class method used to check if the guidelines were completed
+  #    defaults to :completed_membership_guidelines_checklist?
+  #  find_or_create_method - UserChecklistManager class  method used to find or create the membership guidelines checklist
   #    defaults to :find_or_create_membership_guidelines_list_for
+- guidelines_complete_method =  local_assigns.fetch(:method_to_check_for_completed_guidelines, :completed_membership_guidelines_checklist?)
 - find_or_create = local_assigns.fetch(:find_or_create_method, :find_or_create_membership_guidelines_list_for)
-- if UserChecklistManager.completed_membership_guidelines_checklist?(user)
+- if UserChecklistManager.send(guidelines_complete_method, user)
   %p
     = complete_check_icon(html_options: {class: 'is-complete'})
-    = t('users.ethical_guidelines_link_or_checklist.agreed_to', date: UserChecklistManager.membership_guidelines_list_for(user)&.date_completed.to_date.to_s) + ' '
+    = t('users.ethical_guidelines_link_or_checklist.agreed_to', date: UserChecklist.most_recent_completed_top_level_guideline(user)&.date_completed.to_date.to_s) + ' '
     = link_to  'https://sverigeshundforetagare.se/medlemsatagande/', target: '_blank' do
       = t('users.ethical_guidelines_link_or_checklist.membership_guidelines')
       %sup= external_link_icon
@@ -20,3 +23,5 @@
   - progress_percent = user_checklist.percent_complete
   .completed-progress-bar
     = render partial: 'shared/progress_bar', locals: {  percent_complete: progress_percent }
+
+  %p= t('users.ethical_guidelines_link_or_checklist.in_grace_period.must_agree_again') if user.in_grace_period?

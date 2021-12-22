@@ -261,8 +261,6 @@ module SeedHelpers
                                            MEMBERSHIP_APP_UPLOADED_FNAME,
                                            term_first_day - 1)
 
-        # FIXME: make the application acceptance date = the term first day
-
         # Make payments
         member.payments << new_membership_payment(member, term_first_day, term_last_day)
         member.companies.first.payments << new_hmarkt_payment(member, term_first_day, term_last_day)
@@ -338,7 +336,7 @@ module SeedHelpers
 
     # Create the Ethical Guidelines checklist and complete it
     def make_completed_membership_guidelines_for(user, completion_date)
-      guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
+      guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list(user)
       guidelines_list.set_complete_including_children(completion_date)
       # set created_at date to the completion_date because UserChecklistManager checks it
       guidelines_list.update(created_at: completion_date)

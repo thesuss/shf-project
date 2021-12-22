@@ -10,6 +10,11 @@ RSpec.shared_context 'named dates' do
 
   THIS_YEAR = 2018 unless defined?(THIS_YEAR)
 
+  let(:today) { Date.current }
+  let(:yesterday) { today - 1.day }
+  let(:tomorrow) { today + 1.day }
+  let(:one_week_ago) { today - 7.days }
+
   let(:jan_1) { Time.zone.local(2018, 1, 1) }
   let(:jan_2) { Time.zone.local(2018, 1, 2) }
   let(:jan_3) { Time.zone.local(2018, 1, 3) }

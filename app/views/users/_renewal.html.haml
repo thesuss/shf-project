@@ -20,9 +20,12 @@
         %ol.steps
 
           %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist',
-            locals: { user: user, find_or_create_method: :find_or_create_on_or_after_latest_membership_start }
+            locals: { user: user,
+              method_to_check_for_completed_guidelines: :completed_membership_guidelines_checklist_for_renewal?,
+              find_or_create_method: UserChecklistManager.find_or_create_guidelines_method(user.membership_status, is_renewal: true) }
 
-          %li.step.upload-qualification-file= render partial: 'uploaded_files_requirement.html.haml', locals: { user: user }
+          %li.step.upload-qualification-file= render partial: 'uploaded_files_requirement.html.haml',
+            locals: { user: user, docs_uploaded: RequirementsForRenewal.docs_uploaded?(user) }
 
           %li.step.pay-membership-fee
             - if current_user.allowed_to_pay_renewal_member_fee?

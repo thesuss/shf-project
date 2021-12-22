@@ -18,8 +18,8 @@ Feature: A member is returned to their account page after uploading a file from 
       | admin@shf.se            | true  |                   |        |                   |            |           |
 
     And the following users have agreed to the Membership Ethical Guidelines:
-      | email                   |
-      | emma-member@example.com |
+      | email                   | date agreed to |
+      | emma-member@example.com | 2021-01-1      |
 
     And the following regions exist:
       | name      |

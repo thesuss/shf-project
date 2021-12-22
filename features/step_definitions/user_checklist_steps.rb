@@ -220,7 +220,7 @@ end
 # Set all of the Membership Guidelines user checklists to completed for the current user
 # Create the Membership Guidelines user checklist(s) for the user if needed
 And ("I have agreed to all of the Membership Guidelines") do
-  user_guidelines = UserChecklistManager.find_or_create_membership_guidelines_list_for(@user)
+  user_guidelines = UserChecklistManager.find_or_create_membership_guidelines_list(@user)
   user_guidelines.set_complete_including_children(Date.current)
 end
 
@@ -233,4 +233,9 @@ And("I am on the page for checklist item {capture_string}") do | checklist_name 
   checklist = UserChecklist.find_by(user: @user, name: checklist_name)
   path = user_user_checklist_path(@user, checklist.id)
   visit path_with_locale(path)
+end
+
+And("the date membership guidelines were required is {date}") do | requirement_date |
+  allow(UserChecklistManager).to receive(:membership_guidelines_required_date)
+                                   .and_return(requirement_date)
 end

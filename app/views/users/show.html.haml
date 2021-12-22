@@ -5,15 +5,19 @@
     edit_account_icon = edit_account_link(@user, text: edit_icon, title: t('.edit_user_account', name: username), show_if: current_user.admin?)
     edit_profile_icon = edit_profile_link(@user, title: t('.edit_user_profile', name: username), show_if: current_user.admin?)
     title             = t('.hello') + ' ' + username + ' ' + admin_user_text + ' ' + edit_account_icon + ' ' + edit_profile_icon
+
+    partial_for_membership_status = case @user.membership_status.to_sym
+      when User::STATE_CURRENT_MEMBER, User::STATE_IN_GRACE_PERIOD
+        'show_for_member'
+      when  User::STATE_FORMER_MEMBER then 'show_for_former_member'
+      else 'show_for_applicant'
+    end
+
+
   = content_title(title, user: current_user)
 
 .entry-content.container
-  - if @user.current_member? || @user.in_grace_period?
-    = render partial: 'show_for_member',
-             locals: { user: @user,
-                       current_user: @current_user,
-                       app_config: @app_configuration }
-  - else
-    = render partial: 'show_for_applicant',
-             locals: { user: @user,
-                       current_user: @current_user }
+  = render partial: partial_for_membership_status,
+           locals: { user: @user,
+                     current_user: @current_user,
+                     app_config: @app_configuration }

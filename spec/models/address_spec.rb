@@ -894,7 +894,7 @@ RSpec.describe Address, type: :model do
                 end
               end
 
-              context 'geocodes event if a non-geo attribute was changed', focus: true do
+              context 'geocodes event if a non-geo attribute was changed' do
 
                 it 'mail' do
                   addr_no_longitude.longitude = nil

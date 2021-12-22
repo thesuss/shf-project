@@ -89,7 +89,7 @@ module ApplicationHelper
     if url.blank? || icon.nil?
       nil
     else
-      link_to icon('fab', icon, {class: 'fa-2x'}), url, {target: '_blank', alt: alt, title: title} 
+      link_to icon('fab', icon, {class: 'fa-2x'}), url, {target: '_blank', alt: alt, title: title}
     end
   end
 
@@ -434,5 +434,10 @@ module ApplicationHelper
     end
 
     translated_parts.to_sentence
+  end
+
+  # @return [String] email address for the SHF membership chairperson
+  def membership_chair_email
+    ENV['SHF_MEMBERSHIP_EMAIL']
   end
 end

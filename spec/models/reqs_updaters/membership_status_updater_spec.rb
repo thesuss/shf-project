@@ -322,7 +322,9 @@ RSpec.describe MembershipStatusUpdater, type: :model do
 
     describe 'does nothing if not a current member, not a former member, not in the grace period, or not a member' do
       # the nonsense status 'blorf' is here to ensure we run this test with at least 1 status
-      other_membership_statuses = User.membership_statuses - [:not_a_member, :former_member, :current_member, :in_grace_period] + [:blorf]
+      other_membership_statuses = User.membership_statuses -
+        [User::STATE_CURRENT_MEMBER, User::STATE_IN_GRACE_PERIOD,
+         User::STATE_FORMER_MEMBER, User::STATE_NOT_A_MEMBER] + [:blorf]
       other_membership_statuses.each do |other_status|
         it "status = #{other_status}" do
           given_user = build(:user, membership_status: other_status)
@@ -349,7 +351,9 @@ RSpec.describe MembershipStatusUpdater, type: :model do
 
     context 'does nothing if user is not a current member or in the renewal grace period' do
       # the nonsense status 'blorf' is here to ensure we run this test with at least 1 status
-      other_membership_statuses = User.membership_statuses - [ :current_member, :in_grace_period] + [:blorf]
+      other_membership_statuses = User.membership_statuses -
+        [User::STATE_CURRENT_MEMBER, User::STATE_IN_GRACE_PERIOD] + [:blorf]
+
       other_membership_statuses.each do |other_status|
         it "status = #{other_status}" do
           given_user = build(:user, membership_status: other_status)

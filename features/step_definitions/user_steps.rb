@@ -2,7 +2,7 @@
 
 def user_agrees_to_membership_guidelines(user, agreed_date = Date.current)
   begin
-    user_guidelines = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
+    user_guidelines = UserChecklistManager.find_or_create_membership_guidelines_list(user)
     user_guidelines.set_complete_including_children(agreed_date)
     # Also set the created_at date to agreed_date because the logic in UserChecklistManager.completed_membership_guidelines_checklist?
     #   depends on it
@@ -58,6 +58,9 @@ And("the following users have agreed to the Membership Ethical Guidelines:") do 
   end
 end
 
+And("I agree to all Membership Ethical Guidelines on {date}") do |agreed_date|
+  user_agrees_to_membership_guidelines(@user, agreed_date)
+end
 
 Given(/^I am logged in as "([^"]*)"$/) do |email|
   @user = User.find_by(email: email)

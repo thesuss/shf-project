@@ -85,7 +85,8 @@ Feature: Membership status updated due to payments or expiration
     Given the date is set to "2019-01-01"
     And I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
-    And I am not a member
+    And I uploaded a file named "diploma.pdf" today
+    And I have agreed to all of the Membership Guidelines
     When I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should be a current member
@@ -99,7 +100,6 @@ Feature: Membership status updated due to payments or expiration
     Given the date is set to "2018-12-31"
     And I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
-    And I am not a member
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     Then I am on the "user account" page
@@ -113,7 +113,8 @@ Feature: Membership status updated due to payments or expiration
     Given the date is set to "2019-01-01"
     And I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
-    And I am in the grace period
+    And I uploaded a file named "diploma.pdf" today
+    And I have agreed to all of the Membership Guidelines
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     Then I am on the "user account" page
@@ -123,12 +124,13 @@ Feature: Membership status updated due to payments or expiration
 
 
   @time_adjust
-  Scenario: Cannot pay membership fee after grace period (is now a former member)
-    Given the date is set to "2021-01-01"
+  Scenario: Former member should see a note to contact the membership chairperson
+    Given the date is set to "2025-01-01"
     And I am logged in as "bob-former-member@snarkybarky.com"
-    And I am on the "user account" page for "bob-former-member@snarkybarky.com"
-    And I am not a member
-    Then the link button t("users.show.pay_membership") should be disabled
+    And I am a former member
+    When I am on the "user account" page for "bob-former-member@snarkybarky.com"
+    Then I should see t("users.show_for_former_member.welcome")
+    And I should not see t("users.show.pay_membership")
 
 
   # H-BRANDING (LICENSE) PAYMENT
@@ -139,6 +141,3 @@ Feature: Membership status updated due to payments or expiration
 
 
   # APPLICATION STATE
-
-
-  # CODE OF CONDUCT (TBD)

@@ -68,7 +68,7 @@ FactoryBot.define do
     #   and create a membership payment for the member
     # Can specify the first_day or last_day of the membership
     #
-    #   ex:  create(:member_with_expiration_date, expiration_date: Date.new(2018, 6, 24))
+    #   ex:  create(:member, expiration_date: Date.new(2018, 6, 24))
     factory :member do
       member { true }
 
@@ -87,10 +87,10 @@ FactoryBot.define do
                     company_number: evaluator.company_number,
                     contact_email: evaluator.contact_email)
 
-        if evaluator.first_day.nil?
-          # in case expiration_date was used. TODO switch these all to use first_day and last_day
-          given_last_day = !!evaluator.last_day ? evaluator.last_day : evaluator.expiration_date
+        # in case expiration_date was used. @todo switch these all to use first_day and last_day
+        given_last_day = !!evaluator.last_day ? evaluator.last_day : evaluator.expiration_date
 
+        if evaluator.first_day.nil?
           if given_last_day.nil?
             actual_first_day = Date.current
             actual_last_day = Membership.last_day_from_first(actual_first_day)
@@ -100,13 +100,14 @@ FactoryBot.define do
           end
         else
           actual_first_day = evaluator.first_day
-          actual_last_day = Membership.last_day_from_first(actual_first_day)
+          actual_last_day = given_last_day.nil? ? Membership.last_day_from_first(actual_first_day) : given_last_day
         end
 
         Membership.create(user: member,
                           first_day: actual_first_day,
                           last_day: actual_last_day)
-        member.membership_status = 'current_member' if MembershipsManager.new.has_membership_on?(member, Date.current)
+        member.membership_status = User::STATE_CURRENT_MEMBER if MembershipsManager.new.has_membership_on?(member, Date.current)
+
         create(:membership_fee_payment, user: member,
                start_date: actual_first_day,
                expire_date: actual_last_day)
@@ -114,12 +115,14 @@ FactoryBot.define do
         create(:membership_guidelines_master_checklist ) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
         AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(member)
 
-        # must use the '&' below in case the membership_guidelines_list_for method is stubbed
-        UserChecklistManager.membership_guidelines_list_for(member)&.set_complete_including_children
+        # must use the '&' below in case the most_recent_membership_guidelines_list_for method is stubbed
+        # must be completed on or before the first day of membership
+        UserChecklistManager.most_recent_membership_guidelines_list_for(member)&.set_complete_including_children(actual_first_day)
 
         # uploaded files
         if evaluator.has_uploaded_docs
           uploaded_file = create(:uploaded_file, :txt, user: member)
+          uploaded_file.update(created_at: actual_first_day) # must have uploaded with the application (= on or before first day of membershp)
           member.uploaded_files << uploaded_file
         end
 

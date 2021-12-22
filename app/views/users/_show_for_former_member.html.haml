@@ -1,0 +1,21 @@
+- content_for :stylesheet_for_view do
+  = stylesheet_link_tag 'progress-bar', media: 'all'
+
+.row
+  .col
+    .welcome-message
+      %p= t('.welcome_want_to_have_benefits')
+      %p
+        %b= t('.welcome')
+      %hr
+.row
+  .col
+    .next-steps
+      %h4= t('.title')
+
+      %p= t('.contact_membership', membership_email: membership_chair_email)
+
+
+.row
+  .col
+    = render partial: 'show_info_for_admin_only', locals: { current_user: current_user, user: user }

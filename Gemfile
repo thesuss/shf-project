@@ -102,6 +102,9 @@ gem 'by_star'
 # This is used by capybara, webmock, and more.  It is listed here only so we can specify the version that addresses a security vulnerability. (see entry in Github advisory db: https://github.com/advisories/GHSA-jxhc-q857-3j6g)
 gem 'addressable', '>= 2.8.0'
 
+# Use this even in production to help examine data in the production system
+gem 'awesome_print', require: false
+
 
 group :development, :test do
   gem 'rubocop',             '=0.75.0', require: false

@@ -33,6 +33,7 @@ Feature: Admin is able to check or uncheck items on a user checklist
     And I am on the "checklists" page for "applicant@random.com"
     Then the checkbox for the user checklist "Guideline 2.1" should not be checked
     When I check the checkbox for the user checklist "Guideline 2.1"
+    And I wait for all ajax requests to complete
     Then the checkbox for the user checklist "Guideline 2.1" should be checked
     And I should see the date completed as 2020-03-01 for the user checklist "Guideline 2.1"
 
