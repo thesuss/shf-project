@@ -207,6 +207,38 @@ RSpec.describe RequirementsForRenewal, type: :model do
     end
 
 
+    describe '.docs_uploaded_for_renewal' do
+
+      context 'is current member' do
+        it 'calls files_uploaded_during_this_membership for the current member' do
+          expect(current_member).to receive(:files_uploaded_during_this_membership)
+                                      .and_return(true)
+          subject.docs_uploaded_for_renewal(current_member)
+        end
+      end
+
+      context 'membership status is in the grace period' do
+        it 'calls files_uploaded_on_or_after(1 day after the last day of the most recent membership) for the current member' do
+          last_day_of_most_recent = member_in_grace_pd.most_recent_membership.last_day
+          expect(member_in_grace_pd).to receive(:files_uploaded_on_or_after)
+                                          .with(last_day_of_most_recent + 1.day)
+          subject.docs_uploaded_for_renewal(member_in_grace_pd)
+        end
+      end
+
+      context 'all other membership statuses' do
+        describe 'always returns an empty list' do
+          STATUSES_NOT_CURRENT_OR_GRACE_PD.each do |status|
+            it "membership status: #{status}" do
+              user = build(:user, membership_status: status)
+              expect(subject.docs_uploaded_for_renewal(user)).to be_empty
+            end
+          end
+        end
+      end
+    end
+
+
     describe '.agreed_to_membership_terms?' do
       it "calls UserChecklistManager.completed_membership_guidelines_checklist_for_renewal? with the user" do
         u = build(:user)

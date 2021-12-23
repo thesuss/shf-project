@@ -62,6 +62,22 @@ class RequirementsForRenewal < AbstractReqsForMembership
     end
   end
 
+  # Get the list of documents that have been uploaded for renewal.
+  # Return an empty list if none have been uploaded.
+  # @todo This is a smell: having to check the status yet again.  Should be subclasses or modules/mixins
+  #
+  # @return [Array<UploadedFile>]
+  def self.docs_uploaded_for_renewal(user)
+    case user.membership_status.to_sym
+      when User::STATE_CURRENT_MEMBER
+        user.files_uploaded_during_this_membership
+      when User::STATE_IN_GRACE_PERIOD
+        user.files_uploaded_on_or_after(user.most_recent_membership.last_day + 1.day)
+      else
+        []
+    end
+
+  end
 
   # A current member must have agreed to the membership terms since this term begin
   # EXCEPT for the very first membership: they may have agreed to the terms before we implemented

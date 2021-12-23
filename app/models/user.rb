@@ -561,24 +561,53 @@ class User < ApplicationRecord
   def file_uploaded_during_this_membership_term?
     return false if uploaded_files.blank? || !current_member? || current_membership.nil?
 
-    file_uploaded_on_or_after?(current_membership.first_day, end_date: current_membership.last_day)
+    file_uploaded_in_range?(first_day: current_membership.first_day, last_day: current_membership.last_day)
   end
+
+
 
 
   # Was a file uploaded by the user on or after the given date AND on or before the given end date?
   # If no end date is given, the default end date is today (Date.current)
   # true iff the_date <= date any file was uploaded <= end_date
   #
-  # @todo Rename method, since this can be a Date _range._  May most often just be given the date, though.
-  #
-  # @param the_date [Date]
-  # @param end_date [Date] optional) default value is Date.current
+  # @param the_date [Date, Time, DateTime]
+  # @param end_date [Date, Time, DateTime] optional) default value is the_date
   # @return [true,false]
-  def file_uploaded_on_or_after?(the_date = Date.current, end_date: Date.current)
+  def file_uploaded_on_or_after?(the_date = Date.current)
     return false if uploaded_files.blank?
 
     most_recent_uploaded_file_date = most_recent_uploaded_file.send(most_recent_upload_method)
-    most_recent_uploaded_file_date >= the_date && most_recent_uploaded_file_date <= end_date
+    # ensure we are comparing Dates (a Timestamp with the same date is considered > a Date)
+    most_recent_uploaded_file_date >= the_date.to_date
+  end
+
+
+  # Was a file uploaded by the user on or after the start date AND on or before the given end date? (inclusive)
+  # true iff the_date <= date any file was uploaded <= end_date
+  #
+  #
+  # @param first_day [Date, Time, DateTime] The first (starting) day
+  # @param last_date [Date, Time, DateTime] The last (ending) day
+  #
+  # @raise [ArgumentError] if either of first_day or last_day is blank
+  # @raise [ArgumentError] if last_day > first_day
+  #
+  # @return [true,false]
+  def file_uploaded_in_range?(first_day:, last_day:)
+    if first_day.blank? || last_day.blank?
+      raise ArgumentError, "Both first_day and last_day must be a Date; neither can be blank. first_day: #{first_day}, last_day: #{last_day}"
+    end
+
+    if last_day < first_day
+      raise ArgumentError, "last_day cannot be before (<) first_day:  first_day: #{first_day}, last_day: #{last_day}"
+    end
+
+    return false if uploaded_files.blank?
+
+    most_recent_uploaded_file_date = most_recent_uploaded_file.send(most_recent_upload_method)
+    # ensure we are comparing Dates (a Timestamp with the same date is considered > a Date)
+    most_recent_uploaded_file_date >= first_day.to_date && most_recent_uploaded_file_date.to_date <= last_day.to_date
   end
 
 
@@ -589,11 +618,29 @@ class User < ApplicationRecord
   #
   # @return [Array<UploadedFile>]
   def files_uploaded_during_this_membership
-    return [] if uploaded_files.empty? || current_membership.nil?
+    return [] if uploaded_files.empty? || current_membership.blank?
 
-    uploaded_files.select do |file|
-      create_date = file.send(most_recent_upload_method)
-      current_membership.first_day <= create_date && create_date <= current_membership.last_day
+    membership = current_membership
+    first_day = membership.first_day.to_date
+    last_day = membership.last_day.to_date
+    selected_uploaded_files(uploaded_files) do |file|
+      create_date = file.send(most_recent_upload_method).to_date
+      first_day <= create_date && create_date <= last_day
+    end
+  end
+
+  # @param [Date, DateTime, Time] the_date The starting date for all the uploaded files (on or after this date)
+  #
+  # @return [Array<UploadedFile>]
+  def files_uploaded_on_or_after(the_date = Date.current)
+    return [] if uploaded_files.empty?
+
+    # ensure we are comparing Dates (a Timestamp with the same date is considered > a Date)
+    first_day = the_date.to_date
+
+    selected_uploaded_files(uploaded_files) do |file|
+      create_date = file.send(most_recent_upload_method).to_date
+      first_day <= create_date
     end
   end
 
@@ -620,6 +667,16 @@ class User < ApplicationRecord
 
   # ===============================================================================================
   private
+
+
+  # @return [Array<UploadedFile>] list of all uploaded files that satisfy the given block.
+  #   Is an empty Array if no block is given.
+  def selected_uploaded_files(files = [], &block)
+    return [] unless block.present?
+
+    files.select(&block)
+  end
+
 
   # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
   def get_next_membership_number

@@ -137,6 +137,7 @@ Feature: Member renews their membership
     When I am on the "user account" page
     And I reload the page
     Then I should see t("users.uploaded_files_requirement.in_grace_period.have_been_uploaded")
+    And I should see "biff-image.png" in the list of uploaded files required for renewal
     And the link button t("users.show.pay_membership") should not be disabled
 
     When I click on t("users.show.pay_membership")
@@ -176,6 +177,8 @@ Feature: Member renews their membership
 
     When I am on the "user account" page
     Then I should see t("users.renewal.title_time_to_renew")
+    And I should see "biff-image.png" in the list of uploaded files required for renewal
+
     And the link button t("users.show.pay_membership") should not be disabled
     When I click on t("users.show.pay_membership")
     And I complete the membership payment
@@ -211,7 +214,9 @@ Feature: Member renews their membership
     Then I should see t("uploaded_files.create.success", file_name: 'biff-image.png')
 
     When I am on the "user account" page
-    Then the link button t("users.show.pay_membership") should not be disabled
+    Then I should see "biff-image.png" in the list of uploaded files required for renewal
+
+    And the link button t("users.show.pay_membership") should not be disabled
 
     When I click on t("users.show.pay_membership")
     And I complete the membership payment
@@ -236,6 +241,7 @@ Feature: Member renews their membership
     Then I should see t("users.renewal.title_time_to_renew")
     And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And I should see t(""users.uploaded_files_requirement.current_member.have_been_uploaded")
+    And I should see "biff-image.png" in the list of uploaded files required for renewal
 
     # Agree to the guidelines
     Given I agree to all Membership Ethical Guidelines on 2020-12-06
@@ -264,6 +270,8 @@ Feature: Member renews their membership
     Then I should see t("users.renewal.title_time_to_renew")
     And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And I should see t(""users.uploaded_files_requirement.current_member.have_been_uploaded")
+    And I should see "image.png" in the list of uploaded files required for renewal
+
 
     When I agree to all Membership Ethical Guidelines on 2020-12-06
     And I am on the "user account" page

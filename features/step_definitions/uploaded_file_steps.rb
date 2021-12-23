@@ -50,3 +50,7 @@ And "I should{negate} see {capture_string} in the list of uploaded files" do |ne
   step %{I should#{negated ? ' not' : ''} see "#{expected_string}" in the div with id "uploaded-files-list"}
 end
 
+
+And "I should{negate} see {capture_string} in the list of uploaded files required for renewal" do |negated, expected_string|
+  step %{I should#{negated ? ' not' : ''} see "#{expected_string}" 1 time in the div with class "required-uploaded-files"}
+end

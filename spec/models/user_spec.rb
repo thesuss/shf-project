@@ -1994,7 +1994,7 @@ RSpec.describe User, type: :model do
     context 'files were uploaded' do
 
       context 'is a current member' do
-        it 'calls file_uploaded_on_or_after? with current membership first day and last day' do
+        it 'calls file_uploaded_in_range? with current membership first day and last day' do
           membership_first_day = one_week_ago
           membership_last_day = today
           mock_membership = double(Membership)
@@ -2007,8 +2007,8 @@ RSpec.describe User, type: :model do
                              .and_return([faux_file_today, faux_file_yesterday,
                                           faux_file_tomorrow, faux_file_one_week_ago])
 
-          expect(m).to receive(:file_uploaded_on_or_after?)
-                         .with(membership_first_day, end_date: membership_last_day)
+          expect(m).to receive(:file_uploaded_in_range?)
+                         .with(first_day: membership_first_day, last_day: membership_last_day)
           m.file_uploaded_during_this_membership_term?
         end
       end
@@ -2036,7 +2036,7 @@ RSpec.describe User, type: :model do
       u.file_uploaded_on_or_after?
     end
 
-    it 'default given date is today' do
+    it 'default given date is Date.current' do
       u = build(:user)
       allow(u).to receive(:uploaded_files).and_return([faux_file_today])
       allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
@@ -2044,65 +2044,104 @@ RSpec.describe User, type: :model do
       expect(u.file_uploaded_on_or_after?).to be_truthy
     end
 
-    it 'default end date is today' do
+    it 'converts everything to a Date (because a Timestamp of a date is > a Date of the same date)' do
       u = build(:user)
       allow(u).to receive(:uploaded_files).and_return([faux_file_today])
       allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
 
-      expect(u.file_uploaded_on_or_after?).to be_truthy
+      expect(u.file_uploaded_on_or_after?(Time.zone.now)).to be_truthy
+      expect(u.file_uploaded_on_or_after?(Time.zone.now + 25.hours)).to be_falsey
     end
 
-    context 'last upload was on the given date' do
+    it 'true if last upload was after the given date' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
 
-      it 'false if upload was after the end date' do
-        u = build(:user)
-        allow(u).to receive(:uploaded_files).and_return([faux_file_today])
-        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
-
-        expect(u.file_uploaded_on_or_after?).to be_truthy
-      end
-
-      it 'true if upload was on the end date' do
-        u = build(:user)
-        allow(u).to receive(:uploaded_files).and_return([faux_file_today])
-        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
-
-        expect(u.file_uploaded_on_or_after?(today, end_date: today)).to be_truthy
-      end
-
-      it 'true if upload was before the end date' do
-        u = build(:user)
-        allow(u).to receive(:uploaded_files).and_return([faux_file_yesterday])
-        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
-
-        expect(u.file_uploaded_on_or_after?(one_week_ago, end_date: today)).to be_truthy
-      end
+      expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
     end
 
-    context 'last upload was on or before today' do
+    it 'true if last upload was on the given date' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
 
-      it 'true if last upload was after the given date' do
-        u = build(:user)
-        allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+    end
+
+    it 'false if last upload was before the given date' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+
+      expect(u.file_uploaded_on_or_after?(Date.current)).to be_falsey
+    end
+
+  end
+
+
+  describe 'file_uploaded_in_range?' do
+
+    it 'raises ArgumentError if first_day is blank' do
+      expect{ build(:user).file_uploaded_in_range?(first_day: nil, last_day: Date.current) }.to raise_error(ArgumentError, /Both first_day and last_day must be a Date; neither can be blank./)
+    end
+
+    it 'raises ArgumentError if last_day is blank' do
+      expect{ build(:user).file_uploaded_in_range?(first_day: Date.current, last_day: nil) }.to raise_error(ArgumentError, /Both first_day and last_day must be a Date; neither can be blank/)
+    end
+
+    it 'raises ArgumentError if last_day is before (<) first_day' do
+      expect{ build(:user).file_uploaded_in_range?(first_day: Date.current, last_day: (Date.current - 1.day)) }.to raise_error(ArgumentError, /last_day cannot be before \(<\) first_day/)
+    end
+
+
+    it 'false if no file uploads' do
+      expect(build(:user).file_uploaded_in_range?(first_day: Date.current, last_day: Date.current)).to be_falsey
+    end
+
+    it 'gets the last uploaded file, ordered by the method to get the most recent upload' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      expect(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+      u.file_uploaded_in_range?(first_day: Date.current, last_day: Date.current)
+    end
+
+    it 'converts everything to a Date (because a Timestamp of a date is > a Date of the same date)' do
+      u = build(:user)
+      allow(u).to receive(:uploaded_files).and_return([faux_file_today])
+      allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
+
+      expect(u.file_uploaded_in_range?(first_day: Time.zone.now, last_day: (Time.zone.now + 26.hours))).to be_truthy
+    end
+
+    context 'there are uploaded files for the user' do
+      let(:u) { build(:user) }
+      before(:each) do
+        allow(u).to receive(:uploaded_files).and_return([faux_file_today, faux_file_yesterday])
         allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_today)
-
-        expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
       end
 
-      it 'true if last upload was on the given date' do
-        u = build(:user)
-        allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
-        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
-
-        expect(u.file_uploaded_on_or_after?(yesterday)).to be_truthy
+      it 'false if most recent upload was before the first_day' do
+        expect(u.file_uploaded_in_range?(first_day: tomorrow, last_day: tomorrow )).to be_falsey
       end
 
-      it 'false if last upload was before the given date' do
-        u = build(:user)
-        allow(u).to receive(:uploaded_files).and_return([faux_file_one_week_ago, faux_file_yesterday])
-        allow(u).to receive(:most_recent_uploaded_file).and_return(faux_file_yesterday)
+      it 'true if the most recent upload was on the first day' do
+        expect(u.file_uploaded_in_range?(first_day: today, last_day: today )).to be_truthy
+      end
 
-        expect(u.file_uploaded_on_or_after?(Date.current)).to be_falsey
+      context 'most recent upload was after the first_day' do
+
+        it 'true if last upload was before the last day' do
+          expect(u.file_uploaded_in_range?(first_day: yesterday, last_day: tomorrow + 1.day)).to be_truthy
+        end
+
+        it 'true if last upload was on the last day' do
+          expect(u.file_uploaded_in_range?(first_day: yesterday, last_day: today)).to be_truthy
+        end
+
+        it 'false if last upload was after the last day' do
+          expect(u.file_uploaded_in_range?(first_day: yesterday, last_day: yesterday)).to be_falsey
+        end
       end
     end
   end
@@ -2140,8 +2179,7 @@ RSpec.describe User, type: :model do
         expect(member.files_uploaded_during_this_membership.to_a).to be_empty
       end
 
-      it 'only files created on or after the first day of the current term AND on or before the last day', focus:true do
-      # @fixme
+      it 'only files created on or after the first day of the current term AND on or before the last day' do
       member = create(:member)
       current_first_day = member.current_membership.first_day
       create(:membership, user: member, first_day: current_first_day - 30.days, last_day: current_first_day - 1.day)
@@ -2155,6 +2193,34 @@ RSpec.describe User, type: :model do
       expect(member.files_uploaded_during_this_membership.to_a).to match_array([uploaded_file1, uploaded_file2])
     end
 
+    end
+  end
+
+  describe 'files_uploaded_on_or_after' do
+    it 'empty list if there are no uploaded files' do
+      expect(build(:user).files_uploaded_on_or_after(Date.current)).to be_empty
+    end
+
+    context 'there are uploaded files' do
+      let(:u) { build(:user) }
+      let(:yesterday) { Date.current - 1.day }
+      let(:today) { Date.current }
+      let(:tomorrow) { Date.current + 1.day }
+      let(:file_yesterday) { double(UploadedFile, User.most_recent_upload_method => yesterday, description: 'yesterday') }
+      let(:file_today) { double(UploadedFile, User.most_recent_upload_method => today, description: 'today') }
+      let(:file_tomorrow) { double(UploadedFile, User.most_recent_upload_method => tomorrow, description: 'tomorrow') }
+
+      before(:each) {  allow(u).to receive(:uploaded_files).and_return([file_yesterday, file_today, file_tomorrow]) }
+
+      it 'returns files on or after the given date' do
+        expect(u.files_uploaded_on_or_after(yesterday).map(&:description)).to match_array(['yesterday','today', 'tomorrow'])
+        expect(u.files_uploaded_on_or_after(today).map(&:description)).to match_array(['today', 'tomorrow'])
+        expect(u.files_uploaded_on_or_after(tomorrow).map(&:description)).to match_array(['tomorrow'])
+      end
+
+      it 'converts everything to a Date (because a Timestamp of a date is > a Date of the same date)' do
+        expect(u.files_uploaded_on_or_after(Time.zone.now).map(&:description)).to  match_array(['today', 'tomorrow'])
+      end
     end
   end
 

@@ -3,7 +3,7 @@ World(PathHelpers)
 FOOTER_DIV = 'footer'
 
 # Generate the xpath text for an element that has a CSS class.
-# It can be the only clas or one of a list of classes.
+# It can be the only class or one of a list of classes.
 def xpath_for_element_with_class(class_name)
   "contains(concat(' ',normalize-space(@class),' '),' #{class_name} ')"
   # must include spaces around the class name, otherwise it will find elements with class names that include that as a substring
@@ -115,8 +115,14 @@ Then "I should{negate} see {capture_string} in the div with id {capture_string}"
   expect(div).send (negate ? :not_to : :to), have_content(expected_text)
 end
 
-Then "I should{negate} see {capture_string} {digits} time(?:s) in the div with id {capture_string}" do |negate, expected_text, num_times, div_id|
+Then "I should{negate} see {capture_string} {digits} time(s) in the div with id {capture_string}" do |negate, expected_text, num_times, div_id|
   div = page.find(:id, div_id)
+  expect(div).send (negate ? :not_to : :to), have_content(expected_text, count: num_times)
+end
+
+Then "I should{negate} see {capture_string} {digits} time(s) in the div with class {capture_string}" do |negate, expected_text, num_times, div_class|
+  # div = page.find(:xpath, class: [div_class])
+  div = page.find(:xpath,".//*[#{xpath_for_element_with_class('upload-qualification-file')}]")
   expect(div).send (negate ? :not_to : :to), have_content(expected_text, count: num_times)
 end
 
