@@ -104,7 +104,7 @@ class UserChecklistManager
     return false unless current_member.current_member?
 
     if UserChecklist.not_completed_by_user(current_member).empty? && !UserChecklist.completed_by_user(current_member).empty?
-      most_recent_agreed_to_guideline_date = UserChecklist.most_recent_completed_top_level_guideline(current_member).date_completed
+      most_recent_agreed_to_guideline_date = UserChecklist.most_recent_completed_top_level_guideline(current_member).date_completed.to_date
       if most_recent_agreed_to_guideline_date < membership_guidelines_required_date
         true
       else
@@ -239,7 +239,7 @@ class UserChecklistManager
   def self.find_or_create_after_latest_membership_last_day(user)
     latest_membership_end = MembershipsManager.most_recent_membership(user)&.last_day
     after_date = latest_membership_end.nil? ? nil : (latest_membership_end + 1.day)
-    find_or_create_on_or_after(user, after_date) # a nil date is meaningful
+    find_or_create_on_or_after(user, after_date&.to_date) # a nil date is meaningful
   end
 
 
@@ -375,7 +375,7 @@ class UserChecklistManager
     return false unless latest_membership_start
 
     most_recent_completed = UserChecklist.most_recent_completed_top_level_guideline(user)
-    (!!most_recent_completed && most_recent_completed.date_completed >= latest_membership_start)
+    (!!most_recent_completed && most_recent_completed.date_completed.to_date >= latest_membership_start.to_date)
   end
 
   def self.membership_guidelines_required_date

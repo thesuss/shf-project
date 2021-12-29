@@ -996,6 +996,26 @@ RSpec.describe UserChecklistManager do
                                     .and_return(most_recent_checklist)
         end
 
+        describe 'converts all Times to Dates' do
+          it 'can handle comparing the Time of a UserChecklist most recently completed with a Date for the latest membership start date' do
+            allow(latest_membership).to receive(:first_day).and_return(yesterday)
+            allow(most_recent_checklist).to receive(:date_completed).and_return(Time.now - 1.day)
+            expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
+          end
+
+          it 'can handle comparing the Date of a UserChecklist most recently completed with a Time for the latest membership start date' do
+            allow(latest_membership).to receive(:first_day).and_return(Time.now - 1.day)
+            allow(most_recent_checklist).to receive(:date_completed).and_return(yesterday)
+            expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
+          end
+
+          it 'converts both Times to dates (Time of a UserChecklist most recently completed, and Time for the latest membership start date)' do
+            allow(latest_membership).to receive(:first_day).and_return(Time.now - 1.day)
+            allow(most_recent_checklist).to receive(:date_completed).and_return(Time.now - 1.day)
+            expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
+          end
+        end
+
         it 'gets the date the most recently completed checklist was completed' do
           expect(most_recent_checklist).to receive(:date_completed).and_return(yesterday)
           described_class.checklist_done_on_or_after_latest_membership_start?(u)

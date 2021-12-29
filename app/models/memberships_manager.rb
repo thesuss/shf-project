@@ -86,7 +86,7 @@ class MembershipsManager
   def self.user_paid_in_advance?(user)
     user.current_membership.present? &&
       RequirementsForRenewal.payment_requirements_met?(user,
-                                                      user.current_membership.last_day + 1.day)
+                                                      user.current_membership.last_day.to_date + 1.day)
   end
 
   # @return [nil, Membership] nil if no Memberships, else the one with the latest last day
@@ -108,7 +108,7 @@ class MembershipsManager
   def self.membership_on(user, this_date = Date.current)
     return nil if this_date.nil? || user.nil?
 
-    Membership.for_user_covering_date(user, this_date)&.first
+    Membership.for_user_covering_date(user, this_date.to_date)&.first
   end
 
 
@@ -129,12 +129,14 @@ class MembershipsManager
   # @return [true,false] is the given date valid for when the user could have agreed to the membership guidelines?
   #   If no, then even if they agreed to them on that date, they don't count as completed; they need to agree again.
   def self.valid_membership_guidelines_agreement_date?(membership, date)
-    return true if date < UserChecklistManager.membership_guidelines_required_date
+    date_as_date = date.to_date # ensure we are comparing Dates (vs. Date and Times)
 
-    if  date <= membership.first_day
-      previous_membership = membership_on(membership.user, membership.first_day - 1.day)
+    return true if date_as_date < UserChecklistManager.membership_guidelines_required_date.to_date
+
+    if  date_as_date <= membership.first_day.to_date
+      previous_membership =  membership.user.memberships.reject{|m| m == membership}.sort_by(&:last_day).last
       if previous_membership.present?
-        date >= previous_membership.last_day - days_can_renew_early
+        date_as_date >= previous_membership.last_day.to_date - days_can_renew_early
       else
         true
       end
@@ -162,13 +164,13 @@ class MembershipsManager
   def has_membership_on?(user, this_date)
     return false if this_date.nil?
 
-    Membership.for_user_covering_date(user, this_date).exists?
+    Membership.for_user_covering_date(user, this_date.to_date).exists?
   end
 
 
   # @return [nil, Membership] call class method of the same name
   def membership_on(user, this_date = Date.current)
-    self.class.membership_on(user, this_date)
+    self.class.membership_on(user, this_date.to_date)
   end
 
 
@@ -179,7 +181,7 @@ class MembershipsManager
                                   membership: most_recent_membership(user))
     return false if membership.nil?
 
-    date_in_grace_period?(this_date, last_day: membership.last_day)
+    date_in_grace_period?(this_date.to_date, last_day: membership.last_day.to_date)
   end
 
   # Is the given date within a grace period for a time period starting with _last_day_ and a duration of _grace_period_?
@@ -190,8 +192,8 @@ class MembershipsManager
   def date_in_grace_period?(this_date = Date.current,
                             last_day: Date.current,
                             grace_days: grace_period)
-      this_date > last_day &&
-      this_date <= (last_day + grace_days)
+      this_date.to_date > last_day.to_date &&
+      this_date.to_date <= (last_day.to_date + grace_days)
   end
 
   # Is the given date after the end of the grace period for the user's membership?
@@ -205,7 +207,7 @@ class MembershipsManager
                                    membership: most_recent_membership(user))
     return false if membership.nil?
 
-    this_date > (membership.last_day + grace_period)
+    this_date.to_date > (membership.last_day.to_date + grace_period)
   end
 
 
@@ -230,11 +232,12 @@ class MembershipsManager
   def valid_renewal_date?(user, this_date = Date.current)
     return false unless user.in_grace_period? || has_membership_on?(user, this_date)
 
-    last_day = most_recent_membership_last_day(user)
-    if this_date <= last_day
-      this_date >= (last_day - days_can_renew_early)
+    this_date_as_date = this_date.to_date  # ensure we are comparing Dates (vs. Date and Times)
+    last_day = most_recent_membership_last_day(user).to_date
+    if this_date_as_date <= last_day
+      this_date_as_date >= (last_day - days_can_renew_early)
     else
-      membership_in_grace_period?(user, this_date)
+      membership_in_grace_period?(user, this_date_as_date)
     end
   end
 
@@ -242,13 +245,13 @@ class MembershipsManager
   # The first day of the user's most recent Membership.  return nil if there is no most recent Membership
   # @return [nil, Date]
   def most_recent_membership_first_day(user)
-    most_recent_membership(user)&.first_day
+    most_recent_membership(user)&.first_day&.to_date
   end
 
   # The last day of the user's most recent Membership.  return nil if there is no most recent Membership
   # @return [nil, Date]
   def most_recent_membership_last_day(user)
-    most_recent_membership(user)&.last_day
+    most_recent_membership(user)&.last_day&.to_date
   end
 
 
@@ -266,7 +269,7 @@ class MembershipsManager
   # @param [Membership, nil] membership The membership to check. default is the user's most recent membership
   # @return [true, false]
   def expires_soon?(user, membership = most_recent_membership(user))
-    user.current_member? && membership.present? && ((membership.last_day - self.class.is_expiring_soon_amount) <= Date.current)
+    user.current_member? && membership.present? && ((membership.last_day.to_date - self.class.is_expiring_soon_amount) <= Date.current)
   end
 
 end

@@ -377,31 +377,115 @@ namespace :shf do
   end
 
 
-def filename_from_args(args, log)
-  args.fetch(:filename) do |_key|
-    error_message = 'No filename given. You must specify a file name.'
-    log.error(error_message)
-    raise "ERROR: #{error_message}"
-  end
-end
-
-
-# Create one org num: "rake shf:orgnum"
-# Create 5 org nums: "rake shf:orgnum[5]"
-
-desc "Create one or more unused Swedish Organization Numbers (aka 'company numbers' in SHF)"
-task :orgnum, [:how_many] => :environment do |_task_name, args|
-
-  how_many = args.with_defaults(how_many: 1)[:how_many].to_i
-
-  puts "\n#{how_many} available Org (Company) #{'Number'.pluralize(how_many)}: \n\n"
-
-  how_many.times do
-    puts create_one_unused_org_number
+  def filename_from_args(args, log)
+    args.fetch(:filename) do |_key|
+      error_message = 'No filename given. You must specify a file name.'
+      log.error(error_message)
+      raise "ERROR: #{error_message}"
+    end
   end
 
-  puts "\n"
-end
+
+  # Create one org num: "rake shf:orgnum"
+  # Create 5 org nums: "rake shf:orgnum[5]"
+
+  desc "Create one or more unused Swedish Organization Numbers (aka 'company numbers' in SHF)"
+  task :orgnum, [:how_many] => :environment do |_task_name, args|
+
+    how_many = args.with_defaults(how_many: 1)[:how_many].to_i
+
+    puts "\n#{how_many} available Org (Company) #{'Number'.pluralize(how_many)}: \n\n"
+
+    how_many.times do
+      puts create_one_unused_org_number
+    end
+
+    puts "\n"
+  end
+
+
+  desc 'show who cannot renew on the given RENEWAL_DATE (String) and why. ex: bundle exec rails shf:show_who_cannot_renew["2021-12-01"] (default is Date.current if no date given) '
+  task :show_renewal_status_on, [:renewal_date] => :environment do |_task_name, args|
+
+    require 'awesome_print'
+
+    args = args.with_defaults(renewal_date: Date.current.to_s)
+
+    check_renewal_date = validate_date_arg(args[:renewal_date], 'renewal_date=')
+
+
+    # Return a list of members that can renew. This is  User.current_member + User.in_grace_period
+    # sort by the :id
+    def members_to_renew
+      (User.current_member + User.in_grace_period).sort_by(&:id)
+    end
+
+    # See if each member in the given list can renew on the given date and put the result into a list.
+    # Return a list of results for all of the given members
+    def can_renew_results(members_to_renew, renewal_date = Date.current)
+      renewal_results = []
+      (members_to_renew).each do |u|
+        req_result = RequirementsForRenewal.requirements_excluding_payments_met?(u, renewal_date)
+        renewal_results << {
+          user_id: u.id,
+          result: req_result,
+          failure_reason: RequirementsForRenewal.failed_requirements
+        }
+      end
+      renewal_results
+    end
+
+    # show a compact summary of the renewal results (text format)
+    def renewal_results_summary(renewal_results = [])
+      summary = ''
+      renewal_results.each do |result|
+        output =  "User [#{result[:user_id]}] #{result[:result] }"
+        unless  result[:result]
+          output << ':  ' + result[:failure_reason].map{|reason| reason[:string] }.join('; ')
+        end
+        summary << output + "\n"
+      end
+      summary
+    end
+
+
+    puts " Checking all users to see if they can renew on #{check_renewal_date}..."
+
+    can_renew_today = (User.current_member + User.in_grace_period ).select { |u| u.valid_date_for_renewal?(check_renewal_date) }
+    can_renew_today.count
+
+    reqs_for_renewal_results = []
+    (can_renew_today).sort_by{|u| u.id}.each do |u|
+      req_result = RequirementsForRenewal.requirements_excluding_payments_met?(u, check_renewal_date)
+      reqs_for_renewal_results << {
+        user_id: u.id,
+        most_recent_membership_first_day: u.most_recent_membership&.first_day,
+        most_recent_membership_last_day: u.most_recent_membership&.last_day,
+        result: req_result,
+        failure_reason: RequirementsForRenewal.failed_requirements
+      }
+    end
+
+
+    # show summary of results as CSV :
+    summary ="user_id,can renew on #{check_renewal_date}?,most recent membership First Day, Last Day, failure reason(s)\n"
+    reqs_for_renewal_results.each do |result|
+      output =  "#{result[:user_id]},#{result[:result]},#{result[:most_recent_membership_first_day]},#{result[:most_recent_membership_last_day]}"
+      unless  result[:result]
+        output << ',"' + result[:failure_reason].map{|reason| reason[:string] }.join('; ') + '"'
+      end
+      summary << output + "\n"
+    end
+
+    puts '========================================================='
+    puts "number of Users = #{User.count}"
+    puts "eligible to renew on #{check_renewal_date}: #{can_renew_today.count}  (not eligible = #{User.count - can_renew_today.count})"
+    puts "can renew: #{reqs_for_renewal_results.select{|results| results[:result]}.count}"
+    puts "cannot renew: #{reqs_for_renewal_results.reject{|results| results[:result]}.count}"
+
+    puts "\nSummary in CSV form:\n"
+    puts summary
+  end
 
 
   namespace :seed do
@@ -423,141 +507,147 @@ end
     end
   end
 
-# -------------------------------------------------
+  # -------------------------------------------------
 
-def create_one_unused_org_number
-  org_number = nil
+  def create_one_unused_org_number
+    org_number = nil
 
-  100.times do
-    org_number = OrgNummersGenerator.generate_one
+    100.times do
+      org_number = OrgNummersGenerator.generate_one
 
-    # stop if number is available (not used)
-    break if !Company.find_by_company_number(org_number)
+      # stop if number is available (not used)
+      break if !Company.find_by_company_number(org_number)
+    end
+
+    org_number
   end
 
-  org_number
-end
 
-
-def database_exists?
-  ActiveRecord::Base.connection
-  rescue ActiveRecord::NoDatabaseError
-    false
-  else
-    true
-end
-
-
-def import_a_member_app_csv(row, log)
-
-  log.record('info', "Importing row: #{row.inspect}")
-
-  # log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
-
-  if (user = User.find_by(email: row[:email]))
-    puts_already_exists 'User', row[:email]
-  else
-    user = User.create!(email: row[:email], password: DEFAULT_PASSWORD)
-    puts_created 'User', row[:email]
+  def database_exists?
+    ActiveRecord::Base.connection
+    rescue ActiveRecord::NoDatabaseError
+      false
+    else
+      true
   end
 
-  company = find_or_create_company(row[:company_number], user.email,
-                                   name:         row[:company_name],
-                                   street:       row[:street],
-                                   post_code:    row[:post_code],
-                                   city:         row[:city],
-                                   region:       row[:region],
-                                   phone_number: row[:phone_number],
-                                   website:      row[:website])
 
-  if (membership = ShfApplication.find_by(user: user.id))
-    puts_already_exists('Membership application', " org number: #{row[:company_number]}")
-  else
-    membership = ShfApplication.create!(company_number:    row[:company_number],
-                                        first_name:        row[:first_name],
-                                        last_name:         row[:last_name],
-                                        contact_email:     user.email,
-                                        state:             ACCEPTED_STATE,
-                                        membership_number: row[:membership_number],
-                                        user:              user,
-                                        company:           company
-    )
+  def import_a_member_app_csv(row, log)
 
-    puts_created('Membership application', " org number: #{row[:company_number]}")
+    log.record('info', "Importing row: #{row.inspect}")
+
+    # log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
+
+    if (user = User.find_by(email: row[:email]))
+      puts_already_exists 'User', row[:email]
+    else
+      user = User.create!(email: row[:email], password: DEFAULT_PASSWORD)
+      puts_created 'User', row[:email]
+    end
+
+    company = find_or_create_company(row[:company_number], user.email,
+                                     name:         row[:company_name],
+                                     street:       row[:street],
+                                     post_code:    row[:post_code],
+                                     city:         row[:city],
+                                     region:       row[:region],
+                                     phone_number: row[:phone_number],
+                                     website:      row[:website])
+
+    if (membership = ShfApplication.find_by(user: user.id))
+      puts_already_exists('Membership application', " org number: #{row[:company_number]}")
+    else
+      membership = ShfApplication.create!(company_number:    row[:company_number],
+                                          first_name:        row[:first_name],
+                                          last_name:         row[:last_name],
+                                          contact_email:     user.email,
+                                          state:             ACCEPTED_STATE,
+                                          membership_number: row[:membership_number],
+                                          user:              user,
+                                          company:           company
+      )
+
+      puts_created('Membership application', " org number: #{row[:company_number]}")
+
+    end
+
+    membership = find_or_create_category(row[:category1], membership) unless row[:category1].nil?
+    membership = find_or_create_category(row[:category2], membership) unless row[:category2].nil?
+    membership.save!
+
+    if membership.accepted?
+      membership.company = company
+      user.save!
+    end
 
   end
 
-  membership = find_or_create_category(row[:category1], membership) unless row[:category1].nil?
-  membership = find_or_create_category(row[:category2], membership) unless row[:category2].nil?
-  membership.save!
 
-  if membership.accepted?
-    membership.company = company
-    user.save!
+  def find_or_create_category(category_name, membership)
+    category = BusinessCategory.find_by_name(category_name)
+    if category
+      puts_already_exists 'Category', "#{category_name}"
+    else
+      category = BusinessCategory.create!(name: category_name)
+      puts_created 'Category', "#{category_name}"
+    end
+    membership.business_categories << category
+    membership
   end
 
-end
 
-
-def find_or_create_category(category_name, membership)
-  category = BusinessCategory.find_by_name(category_name)
-  if category
-    puts_already_exists 'Category', "#{category_name}"
-  else
-    category = BusinessCategory.create!(name: category_name)
-    puts_created 'Category', "#{category_name}"
-  end
-  membership.business_categories << category
-  membership
-end
-
-
-def find_or_create_company(company_num, email,
-                           name:,
-                           street:,
-                           post_code:,
-                           city:,
-                           region:,
-                           phone_number:,
-                           website:)
-
-  company = Company.find_by_company_number(company_num)
-  if company
-    puts_already_exists 'Company', "#{company_num}"
-  else
-    region = Region.find_by name: region
-    Company.create!(company_number: company_num,
-                    email:          email,
-                    name:           name,
-                    phone_number:   phone_number,
-                    website:        website)
+  def find_or_create_company(company_num, email,
+                             name:,
+                             street:,
+                             post_code:,
+                             city:,
+                             region:,
+                             phone_number:,
+                             website:)
 
     company = Company.find_by_company_number(company_num)
+    if company
+      puts_already_exists 'Company', "#{company_num}"
+    else
+      region = Region.find_by name: region
+      Company.create!(company_number: company_num,
+                      email:          email,
+                      name:           name,
+                      phone_number:   phone_number,
+                      website:        website)
 
-    company.addresses << Address.new(street_address: street,
-                                     post_code:      post_code,
-                                     city:           city,
-                                     region:         region)
+      company = Company.find_by_company_number(company_num)
 
-    puts_created 'Company', company.company_number
+      company.addresses << Address.new(street_address: street,
+                                       post_code:      post_code,
+                                       city:           city,
+                                       region:         region)
+
+      puts_created 'Company', company.company_number
+    end
+    company
   end
-  company
-end
 
 
-def puts_created(item_type, item_name)
-  puts " #{item_type} created and saved: #{item_name}"
-end
+  def puts_created(item_type, item_name)
+    puts " #{item_type} created and saved: #{item_name}"
+  end
 
 
-def puts_already_exists(item_type, item_name)
-  puts " #{item_type} already exists: #{item_name}"
-end
+  def puts_already_exists(item_type, item_name)
+    puts " #{item_type} already exists: #{item_name}"
+  end
 
 
-def puts_error_creating(item_type, item_name)
-  puts " ERROR: Could not create #{item_type} #{item_name}.  Skipped"
-end
+  def puts_error_creating(item_type, item_name)
+    puts " ERROR: Could not create #{item_type} #{item_name}.  Skipped"
+  end
 
 
+  def validate_date_arg(date_arg, prefix_str = '')
+    Date.iso8601(date_arg)
+  rescue ArgumentError => error
+    log error, "#{prefix_str}'#{date_arg}' is invalid. Must be YYYY-MM-DD Ex: 2021-02-03 (Date.iso8601 valid format)"
+    raise error
+  end
 end

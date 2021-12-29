@@ -21,26 +21,26 @@ class Membership < ApplicationRecord
   #   ordered by the last_day.  "active" means the first day was on or before the given date
   #   AND the last_day was on or after the given date.
   def self.covering_date(date = Date.current)
-    where('first_day <= ?', date)
-      .where('last_day >= ?', date)
+    where('first_day <= ?', date.to_date)
+      .where('last_day >= ?', date.to_date)
       .order(last_day: :asc, id: :asc)
   end
 
 
   def self.for_user_covering_date(user, date = Date.current)
-    where(user: user).covering_date(date)
+    where(user: user).covering_date(date.to_date)
   end
 
 
   def self.starting_on_or_after(first_day = Date.current)
-    where('first_day >= ?', first_day)
+    where('first_day >= ?', first_day.to_date)
   end
 
 
   # @return [ActiveRecord::Relation] - a list of any memberships for the user
   #   that started on or after the first_day
   def self.for_user_starting_on_or_after(user, first_day = Date.current)
-    where(user: user).starting_on_or_after(first_day)
+    where(user: user).starting_on_or_after(first_day.to_date)
   end
 
   # @return [ActiveSupport::Duration] - the membership term length as a Duration
@@ -51,18 +51,18 @@ class Membership < ApplicationRecord
 
   def self.first_day_from_last(last_day = Date.current)
     # last_day - term_length + 1.day
-    other_day_from(last_day, -1)
+    other_day_from(last_day.to_date, -1)
   end
 
 
   def self.last_day_from_first(first_day = Date.current)
     # first_day + term_length - 1.day
-    other_day_from(first_day, 1)
+    other_day_from(first_day.to_date, 1)
   end
 
 
   def self.other_day_from(date, multiplier = 1)
-    date + (multiplier * (term_length - 1.day))
+    date.to_date + (multiplier * (term_length - 1.day))
   end
 
 
@@ -74,7 +74,7 @@ class Membership < ApplicationRecord
 
 
   def set_first_day_and_last(first_day: Date.current, last_day: (self.class.other_day_from(first_day)))
-    update(first_day: first_day, last_day: last_day)
+    update(first_day: first_day.to_date, last_day: last_day.to_date)
   end
 
 
@@ -88,6 +88,6 @@ class Membership < ApplicationRecord
   # @return [ActiveRecord::Relation] - a list of any memberships for the user
   #   that started on or after the (starting date - time_period)
   def any_membership_within(time_period = FIRST_MEMBERSHIP_TIMELIMIT, starting_date: Date.current)
-    self.class.for_user_starting_on_or_after(user, starting_date - time_period)
+    self.class.for_user_starting_on_or_after(user, starting_date.to_date - time_period)
   end
 end
