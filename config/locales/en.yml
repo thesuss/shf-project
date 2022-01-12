@@ -197,6 +197,8 @@ en:
         filename: &filename File name
         file_size: &file_size File size
         description: &description  Description
+        actual_file: &uploaded_file Uploaded File
+        actual_file_file_size: &uploaded_file_size Upload File
 
       user:
         first_name: &first_name First name
@@ -361,9 +363,9 @@ en:
         uploaded_file:
           attributes:
             actual_file_file_size:
-              file_too_large: &file_size_too_large 'The uploaded file is too big.'
+              file_too_large: &file_size_too_large 'is too big.'
             actual_file:
-              file_too_large: &file_too_large 'The uploaded file size must be smaller than %{max}. (Your file is %{value} bytes.)'
+              file_too_large: &file_too_large 'size must be smaller than %{max}. (Your file is %{value} bytes.)'
             actual_file_file_content_type:
               invalid_type: &file_content_type_forbidden Sorry, this is not a file type you can upload.
 

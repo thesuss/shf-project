@@ -12,7 +12,9 @@
          id: 'upload-button',
          class: 'form-control-file custom-file-input',
          accept: @allowed_file_types_list
-        = f.label :actual_file, t('.upload_button_title'), class: 'custom-file-label d-inline text-truncate'
+        = f.label :actual_file, t('.upload_button_title'),
+                  id: 'upload-file-label',
+                  class: 'custom-file-label d-inline text-truncate'
 
     .form-group
       = f.label :description, t('.description')
@@ -33,5 +35,5 @@
   // Assumes you're using Bootstrap custom file select
   $('body').on('change', '.custom-file-input', function() {
     var fileName = $(this).val().split('\\').pop();
-    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    $('#upload-file-label').addClass("selected").html(fileName);
   });

@@ -196,6 +196,8 @@ sv:
         filename: &filename Filnamn
         file_size: &file_size Filstorlek
         description: &description  Beskrivning
+        actual_file: &uploaded_file Uppladdad fil
+        actual_file_file_size: &uploaded_file_size Uppladdad fil
 
       user:
         first_name: &first_name Förnamn
@@ -362,9 +364,9 @@ sv:
         uploaded_file:
           attributes:
             actual_file_file_size:
-              file_too_large: &file_size_too_large 'Filen är för stor för att laddas upp.'
+              file_too_large: &file_size_too_large 'är för stor.'
             actual_file:
-              file_too_large: &file_too_large 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
+              file_too_large: &file_too_large 'storleken måste vara mindre än %{max}. (Din fil är %{value} byte.'
             actual_file_file_content_type:
               invalid_type: &file_content_type_forbidden Tyvärr kan du inte ladda upp denna filtypen.
 

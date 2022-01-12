@@ -10,12 +10,12 @@ RSpec.describe UploadedFile, type: :model do
 
   describe 'Factory' do
     it 'has valid factories' do
-      expect(build(:uploaded_file)).to be_valid
-      expect(build(:uploaded_file, user:(build(:user)))).to be_valid
-      expect(build(:uploaded_file, user:(build(:user)), shf_application:(build(:shf_application)))).to be_valid
-      expect(build(:uploaded_file_for_application)).to be_valid
-      expect(build(:uploaded_file_for_application, shf_application: (build(:shf_application)))).to be_valid
-      expect(build(:uploaded_file_for_application, user: build(:user))).to be_valid
+      expect(build(:uploaded_file, :png)).to be_valid
+      expect(build(:uploaded_file, :png, user:(build(:user)))).to be_valid
+      expect(build(:uploaded_file, :png, user:(build(:user)), shf_application:(build(:shf_application)))).to be_valid
+      expect(build(:uploaded_file_for_application, :png)).to be_valid
+      expect(build(:uploaded_file_for_application, :png, shf_application: (build(:shf_application)))).to be_valid
+      expect(build(:uploaded_file_for_application, :png, user: build(:user))).to be_valid
     end
 
     describe "accepted content types" do
@@ -77,6 +77,11 @@ RSpec.describe UploadedFile, type: :model do
     it { should validate_attachment_content_type(:actual_file)
                     .allowing(UploadedFile::ALLOWED_FILE_TYPES.values)
                     .rejecting('bin', 'exe') }
+
+    it { should validate_presence_of(:actual_file) }
+
+    it { should validate_attachment_size(:actual_file).
+                less_than(UploadedFile::MAX_FILE_SIZE_MB.megabytes) }
   end
 
   describe 'Associations' do
@@ -92,9 +97,9 @@ RSpec.describe UploadedFile, type: :model do
       user_AB = create(:user, first_name: 'A', last_name: 'B')
       user_ZZ = create(:user, first_name: 'Z', last_name: 'Z')
 
-      upload_ZZ = create(:uploaded_file, user: user_ZZ)
-      upload_AA = create(:uploaded_file, user: user_AA)
-      upload_AB = create(:uploaded_file, user: user_AB)
+      upload_ZZ = create(:uploaded_file, :jpg, user: user_ZZ)
+      upload_AA = create(:uploaded_file, :jpg, user: user_AA)
+      upload_AB = create(:uploaded_file, :jpg, user: user_AB)
 
       expect(described_class.sort_by_user_full_name).to eq([upload_AA, upload_AB, upload_ZZ])
     end

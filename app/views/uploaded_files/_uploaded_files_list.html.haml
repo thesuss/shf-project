@@ -1,6 +1,6 @@
 -# must do this because Rails 5.x is inconsistent about using locals v. local_assigns, especially with .js files
 - search_parameters = local_assigns.fetch(:search_params, nil)
-- uploaded_fs = local_assigns.fetch(:uploaded_files, [])
+- uploaded_fs = local_assigns.fetch(:uploaded_files, []).reject{|f| f.actual_file_file_size.nil?}
 #uploaded-files
   .table-responsive
     %table.table.table-hover.table-sm

@@ -72,3 +72,10 @@ Feature: Member uploads files not associated with a shf application
     And I should not see t("uploaded_files.create.success", file_name: 'biff-image.png')
     When I am on the "my uploaded files" page
     Then I should not see "tred.exe"
+
+  Scenario: Member tries to save without specifying upload file
+    When I am on the "upload a new file" page
+    And I click on t("save")
+    Then I should see t("model_errors.one")
+    Then I should see t("activerecord.attributes.uploaded_file.actual_file")
+    And I should not see t("uploaded_files.create.success", file_name: 'biff-image.png')
