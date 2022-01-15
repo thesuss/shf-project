@@ -2158,7 +2158,7 @@ sv:
         my_application: *my_application
         apply_for_membership: Ansök om medlemsskap
         your_account: Ditt konto
-        uploaded_files:  Ditt uppladdade filer
+        uploaded_files:  Dina uppladdade filer
 
       members:
         shf_companies: SHF-företag
