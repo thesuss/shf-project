@@ -796,7 +796,7 @@ en:
       confirm_delete: &upload_confirm_delete 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: *file_content_type_forbidden
       file_too_large: &file_too_large_5MB The file must be smaller than 5 MB
-      please_upload_again: Please upload your files again.
+      please_upload_again: Please upload your file(s)
       will_review_after_received: &review_after_recevied_files "Once we have received your files, we will review your application."
 
     update_the_status: Update the status
