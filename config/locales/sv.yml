@@ -803,7 +803,7 @@ sv:
       confirm_delete: &upload_confirm_delete 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: *file_content_type_forbidden
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
-      please_upload_again: Var god ladda upp dina filer igen.
+      please_upload_again: Var god ladda upp dina filer 
       will_review_after_received: &review_after_recevied_files "Vi kommer att handlägga din ansökan när vi har fått alla filer."
 
     update_the_status: Uppdatera status
@@ -875,10 +875,10 @@ sv:
       dinkurs_fetching: Hämtar händelser ... vänligen vänta
       dinkurs_key: *dinkurs_company_key
       pay_branding_fee: &pay_branding_fee Betala H-märkespremie
-      info_is_complete: Din företagssida är synlig.
-      info_is_not_complete: Din företagssida är inte synlig.
+      info_is_complete: Din företagssida är komplett ifylld.
+      info_is_not_complete: Din företagssida är inte komplett ifylld och därmed inte synlig.
       info_is_not_complete_explanation: Din företagssida är bara synlig när all markerad information är angiven.
-      this_info_missing: "This information is missing:"
+      this_info_missing: "Denna information saknas:"
       complete: *complete
 
     company_members:
@@ -1130,18 +1130,18 @@ sv:
 
     ethical_guidelines_link_or_checklist:
       in_grace_period:
-        must_agree_again: Your membership has expired so you must agree to the guidelines again.
+        must_agree_again: Ditt medlemskap har gått ut så du måste skriva under vårt medlemsåtagande igen.
       agree_to_guidelines: Skriv under medlemsåtagandet
       agreed_to: "Skrivit under %{date}."
       membership_guidelines: Alla medlemsåtaganden
 
     uploaded_files_requirement:
-      need_to_upload: Du behöver ladda upp underlag som visar att du har genomfört fortbildning under året och därmed uppfyller de krav som ställs på en medlem i Sveriges Hundföretagare.
+      need_to_upload: Ett medlemskap i Sveriges Hundföretagare kräver årlig fortbildning. Ladda upp ett dokument som visar vad du deltagit vid och lyssnat på senaste året, med ungefärlig nedlagd tid.
       current_member:
         have_been_uploaded: Underlag har laddats upp under medlemsperioden
       in_grace_period:
-        must_upload_again: Your membership has expired so you must upload your files again.
-        have_been_uploaded: Files have been uploaded since your membership ended.
+        must_upload_again: Ladda upp fil(er) nedan.
+        have_been_uploaded: Filer som har laddats upp sedan ditt medlemskap tog slut.
       upload_file: *upload_new_file
       upload_another: *uploaded_file_other
 
@@ -2158,7 +2158,7 @@ sv:
         my_application: *my_application
         apply_for_membership: Ansök om medlemsskap
         your_account: Ditt konto
-        uploaded_files:  Ditt uppladdade filer
+        uploaded_files:  Dina uppladdade filer
 
       members:
         shf_companies: SHF-företag
