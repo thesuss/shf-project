@@ -60,6 +60,7 @@ en:
   administrator: administrator
 
   unknown: unknown
+  no_file_uploaded: &no_file_uploaded No file uploaded
 
   # Date and Times
   time_ago: '%{amount_of_time} ago'
@@ -514,6 +515,7 @@ en:
       title: &uploaded_files_index_title All of your uploaded files
       admin_title: &uploaded_files_admin_index_title All uploaded files
       cannot_edit_or_delete_reason: You cannot edit or delete a file if it is part of an application being reviewed, approved, or rejected.
+      no_file_uploaded: *no_file_uploaded
 
     show:
       title: &uploaded_file_show_title "Uploaded File: %{file_name}"
@@ -538,6 +540,7 @@ en:
       info: "You can only edit the description.  If you want to change the name or file uploaded, you'll need to delete this and upload a file."
       submit: *submit
       index_title: *uploaded_files_index_title
+      no_file_uploaded: *no_file_uploaded
 
     update:
       success: "%{file_name} was updated."

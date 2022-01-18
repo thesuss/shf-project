@@ -112,6 +112,6 @@ class UploadedFile < ApplicationRecord
   end
 
   def icon
-    actual_file ? FILE_TYPE_ICONS[actual_file.content_type.to_sym]  : UNKNOWN_FILE_ICON
+    actual_file.file? ? FILE_TYPE_ICONS[actual_file.content_type.to_sym]  : UNKNOWN_FILE_ICON
   end
 end

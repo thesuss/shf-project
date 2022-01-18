@@ -1,6 +1,6 @@
 -# must do this because Rails 5.x is inconsistent about using locals v. local_assigns, especially with .js files
 - search_parameters = local_assigns.fetch(:search_params, nil)
-- uploaded_fs = local_assigns.fetch(:uploaded_files, []).reject{|f| f.actual_file_file_size.nil?}
+- uploaded_fs = local_assigns.fetch(:uploaded_files, []) #.reject{|f| f.actual_file_file_size.nil?}
 #uploaded-files
   .table-responsive
     %table.table.table-hover.table-sm
@@ -24,16 +24,41 @@
 
       %tbody.uploaded-files
         - uploaded_fs.each do |uploaded_file|
+
+          - file_exists = uploaded_file.actual_file.file?
+
           %tr.uploaded_file
             - if current_user.admin?
               %td.owner= link_to uploaded_file.user.full_name, uploaded_file.user
-            %td.file_name= link_to uploaded_file.actual_file_file_name, user_uploaded_file_path(current_user, uploaded_file)
+
+            %td.file_name
+              = link_to_if(file_exists,
+                           uploaded_file.actual_file_file_name,
+                           user_uploaded_file_path(current_user,
+                           uploaded_file))
+
             %td.description= uploaded_file.description
             %td.application= link_to(app_state_and_date(uploaded_file.shf_application), uploaded_file.shf_application) if uploaded_file.shf_application
-            %td.file-size= (uploaded_file.actual_file_file_size / 1024.0).round(1)
+
+            %td.file-size
+              - if file_exists
+                = (uploaded_file.actual_file_file_size / 1024.0).round(1)
+
             %td.updated-at= uploaded_file.updated_at.strftime("%Y-%m-%d %H:%M:%S")
-            %td.view= link_to external_link_icon, uploaded_file.actual_file.url, target: "_blank", id: "uploaded-file-link-#{uploaded_file.id}", class: "uploaded-file-link"
-            %td.edit= link_to edit_icon, edit_user_uploaded_file_path(current_user, uploaded_file) if policy(uploaded_file).edit?
+            %td.view
+              - if file_exists
+                = link_to(external_link_icon,
+                          uploaded_file.actual_file.url,
+                          target: "_blank",
+                          id: "uploaded-file-link-#{uploaded_file.id}",
+                          class: "uploaded-file-link")
+              - else
+                = question_icon(html_options: { 'data-toggle': 'tooltip',
+                                                 title: t('no_file_uploaded'),
+                                                 class: 'align-middle' })
+
+            %td.edit
+              = link_to edit_icon, edit_user_uploaded_file_path(current_user, uploaded_file) if policy(uploaded_file).edit?
 
             %td.delete{ class: "delete-uploaded-file-#{uploaded_file.id}" }
               = link_to(destroy_icon(html_options: { class: 'text-danger' }),

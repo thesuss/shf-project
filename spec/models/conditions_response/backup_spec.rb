@@ -302,7 +302,7 @@ RSpec.describe Backup, type: :model do
     end
 
 
-    it 'backup with realistic fileset dirs and exclusions' do
+    xit 'backup with realistic fileset dirs and exclusions' do
       logs_basefn = 'logs.tar'
       expected_logs_basefn = File.join(@backup_dir, logs_basefn)
 
@@ -1307,4 +1307,3 @@ RSpec.describe Backup, type: :model do
   end
 
 end
-
