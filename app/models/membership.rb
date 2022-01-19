@@ -15,6 +15,8 @@ class Membership < ApplicationRecord
   #
   FIRST_MEMBERSHIP_TIMELIMIT = 2.years
 
+  after_save :clear_proof_of_membership_jpg_cache, if: Proc.new { saved_change_to_last_day? }
+
   # =============================================================================================
 
   # @return [ActiveRecord::Relation] - all Memberships that were active on the given date,
@@ -89,5 +91,9 @@ class Membership < ApplicationRecord
   #   that started on or after the (starting date - time_period)
   def any_membership_within(time_period = FIRST_MEMBERSHIP_TIMELIMIT, starting_date: Date.current)
     self.class.for_user_starting_on_or_after(user, starting_date.to_date - time_period)
+  end
+
+  def clear_proof_of_membership_jpg_cache
+    user&.clear_proof_of_membership_jpg_cache
   end
 end
