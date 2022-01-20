@@ -160,6 +160,10 @@ class MembershipStatusUpdater
           user.make_former_member!(send_email: send_email)
           log.info(user.membership_changed_info)
         end
+        if user.membership_current?
+          user.restore_membership!(send_email: send_email)
+          log.info(user.membership_changed_info)
+        end
       end
     end
   end

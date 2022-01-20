@@ -108,6 +108,11 @@ class UsersController < ApplicationController
         if last_day_param != current_membership.last_day
           admin_change_note << change_membership_last_day_and_note(current_membership, last_day_param)
         end
+      elsif @user.in_grace_period?
+        current_membership = @user.most_recent_membership
+        if last_day_param != current_membership.last_day
+          admin_change_note << change_membership_last_day_and_note(current_membership, last_day_param)
+        end
       end
     end
     admin_change_note = "| #{t('memberships.auto_added_notes.changed_by_admin', changed_timestamp: Time.zone.now)}: #{admin_change_note} |" unless admin_change_note.blank?
@@ -224,4 +229,5 @@ class UsersController < ApplicationController
     MembershipStatusUpdater.instance.user_updated(membership.user)
     note
   end
+
 end

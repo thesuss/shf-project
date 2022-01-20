@@ -1312,6 +1312,17 @@ RSpec.describe User, type: :model do
   end
 
 
+  describe 'restore_from_grace_period' do
+    it 'calls Memberships::RestoreIndiviualMemberActions for the user' do
+      given_user = build(:user)
+      expect(Memberships::RestoreIndividualMemberActions).to receive(:for_user)
+                                                                .with(given_user,
+                                                                      send_email: true)
+      given_user.restore_from_grace_period
+    end
+  end
+
+
   describe 'become_former_member' do
     it 'calls Memberships::BecomeFormerIndividualMemberActions for the user and the first_day' do
       given_user = build(:user)

@@ -10,10 +10,11 @@ Feature: Admin edits membership status, dates, notes (membership info)
 
     Given the following users exist:
       | email                     | admin | membership_status | member | membership_number |
-      | emma@mutts.com            |       | current_member    |true   | 1001              |
-      | bad-member@mutts.com      |       | current_member    |true   |                   |
-      | never-paid-user@mutts.com |       | not_a_member      |false  |                   |
-      | admin@shf.se              | true  |                   |false  |                   |
+      | emma@mutts.com            |       | current_member    | true   | 1001              |
+      | bad-member@mutts.com      |       | current_member    | true   |                   |
+      | never-paid-user@mutts.com |       | not_a_member      | false  |                   |
+      | admin@shf.se              | true  |                   | false  |                   |
+      | grace-member@mutts.com    |       | in_grace_period   | false  |                   |
 
     Given the following business categories exist
       | name  | description                     |
@@ -21,25 +22,29 @@ Feature: Admin edits membership status, dates, notes (membership info)
       | rehab | physical rehabilitation         |
 
     Given the following applications exist:
-      | user_email           | company_number | categories   | state    |
-      | emma@mutts.com       | 5562252998     | rehab, groom | accepted |
-      | bad-member@mutts.com | 5562252998     | rehab, groom | accepted |
+      | user_email             | company_number | categories   | state    |
+      | emma@mutts.com         | 5562252998     | rehab, groom | accepted |
+      | bad-member@mutts.com   | 5562252998     | rehab, groom | accepted |
+      | grace-member@mutts.com | 5562252998     | rehab, groom | accepted |
 
     Given the following users have agreed to the Membership Ethical Guidelines:
       | email                     |
       | emma@mutts.com            |
       | bad-member@mutts.com      |
       | never-paid-user@mutts.com |
+      | grace-member@mutts.com    |
 
     Given the following payments exist
-      | user_email           | start_date | expire_date | payment_type | status | hips_id |
-      | emma@mutts.com       | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
-      | bad-member@mutts.com | 2017-10-31 | 2018-10-30  | member_fee   | betald | none    |
+      | user_email             | start_date | expire_date | payment_type | status | hips_id |
+      | emma@mutts.com         | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | bad-member@mutts.com   | 2017-10-31 | 2018-10-30  | member_fee   | betald | none    |
+      | grace-member@mutts.com | 2016-11-1  | 2017-10-31  | member_fee   | betald | none    |
 
     And the following memberships exist:
-      | email                | first_day  | last_day   |
-      | emma@mutts.com       | 2017-10-1  | 2017-12-31 |
-      | bad-member@mutts.com | 2017-10-31 | 2018-10-30 |
+      | email                  | first_day  | last_day   |
+      | emma@mutts.com         | 2017-10-1  | 2017-12-31 |
+      | bad-member@mutts.com   | 2017-10-31 | 2018-10-30 |
+      | grace-member@mutts.com | 2016-11-1  | 2017-10-31 |
 
 
     Given the date is set to "2017-11-01"
@@ -89,6 +94,26 @@ Feature: Admin edits membership status, dates, notes (membership info)
     # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
     Then the last day of membership for "emma@mutts.com" should be 2017-09-01
     And "emma@mutts.com" should not be a member
+
+
+  @selenium
+  Scenario: Admin changes lastday for user in grace period (not a member) to a member
+    Given I am on the "user details" page for "grace-member@mutts.com"
+    Then "grace-member@mutts.com" should be in the grace period
+    And the last day of membership for "grace-member@mutts.com" should be 2017-10-31
+    When I click on t("users.user.edit_member_status")
+    Then I should see t("users.user.edit_member_status")
+    When I select "2018" in select list "membership[last_day(1i)]"
+    And I select "september" in select list "membership[last_day(2i)]"
+    And I select "1" in select list "membership[last_day(3i)]"
+    And I click on t("users.user.submit_button_label")
+    And I wait for all ajax requests to complete
+    And I reload the page
+    # ^^ should not have to do this - check later after upgrades. (DOM/page partial _is_ updated in real life, but not with capybara)
+    Then I should be on the "user account" page for "grace-member@mutts.com"
+    And the last day of membership for "grace-member@mutts.com" should be 2018-09-01
+    And I should see t("users.show.is_a_member")
+    And "grace-member@mutts.com" should be a member
 
 
 #  @selenium

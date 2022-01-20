@@ -32,6 +32,7 @@ ActionController::Base.allow_rescue = false
 Capybara.server = :puma # Ensure puma is used
 # Capybara.server = :puma, { Silent: true } # To clean up your test output
 
+Capybara.default_max_wait_time = 15
 
 begin
   DatabaseCleaner.strategy = :truncation

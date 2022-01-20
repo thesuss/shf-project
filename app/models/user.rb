@@ -171,6 +171,10 @@ class User < ApplicationRecord
     event :make_former_member do
       transitions from: :in_grace_period, to: :former_member, after: Proc.new {|*args| become_former_member(*args) }
     end
+
+    event :restore_membership do
+      transitions from: :in_grace_period, to: :current_member, after: Proc.new {|*args| restore_from_grace_period(*args) }
+    end
   end
 
   # This can be used to write info to logs
@@ -256,6 +260,10 @@ class User < ApplicationRecord
 
   def become_former_member(date: Date.current, send_email: true)
     Memberships::BecomeFormerIndividualMemberActions.for_user(self, first_day: date, send_email: send_email)
+  end
+
+  def restore_from_grace_period(send_email: true)
+    Memberships::RestoreIndividualMemberActions.for_user(self, send_email: send_email)
   end
 
 
