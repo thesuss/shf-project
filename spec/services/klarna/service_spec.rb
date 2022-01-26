@@ -98,6 +98,8 @@ describe Klarna::Service do
   end
 
   describe '.capture_order', vcr: { record: :once } do
-    include_examples 'Invalid Request Data', :capture_order, nil, SHF_MEMBER_FEE
+    include_examples 'Invalid Request Data', :capture_order,
+                                             Klarna::Errors::CaptureOrder,
+                                             SHF_MEMBER_FEE
   end
 end
