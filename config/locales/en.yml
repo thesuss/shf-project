@@ -218,6 +218,8 @@ en:
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
         member: &member Member
         date_member_packet_sent: &date_member_packet_sent Date Member Packet sent
+        member_photo: Member photo
+        member_photo_file_name: Member photo file name
 
       payment:
         payment_type: &payment_type Payment Type
@@ -387,6 +389,8 @@ en:
               confirmation: doesn't match with the password entered.
             member_photo:
               spoofed_media_type: *spoofed_media
+            member_photo_file_name:
+              invalid: "is invalid! (NOTE: special characters (Å, Ä, Ö) cannot be used in the filename)"
 
         app_configuration:
           attributes:

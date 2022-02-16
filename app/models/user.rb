@@ -59,7 +59,8 @@ class User < ApplicationRecord
 
   validates_attachment_content_type :member_photo,
                                     content_type: /\Aimage\/.*(jpg|jpeg|png)\z/
-  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/]
+
+  validates_attachment_file_name :member_photo, matches: /^[a-zA-Z0-9_-]+(\.png|\.jpe?g)\z/i
 
   validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
   validates :membership_number, uniqueness: true, allow_blank: true

@@ -217,6 +217,8 @@ sv:
         reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
         member: &member Medlem
         date_member_packet_sent: &date_member_packet_sent Paket skickat
+        member_photo: Medlemsbild
+        member_photo_file_name: Namn på medlemfotofil
 
       payment:
         payment_type: &payment_type Betalningstyp
@@ -387,6 +389,9 @@ sv:
               confirmation: stämmer inte med det angivna lösenordet.
             member_photo:
               spoofed_media_type: *spoofed_media
+            member_photo_file_name:
+              invalid: "är ogiltig! (OBS: specialtecken (Å, Ä, Ö) kan
+                       inte användas i filnamnet)"
 
         app_configuration:
           attributes:
@@ -806,7 +811,7 @@ sv:
       confirm_delete: &upload_confirm_delete 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: *file_content_type_forbidden
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
-      please_upload_again: Var god ladda upp dina filer 
+      please_upload_again: Var god ladda upp dina filer
       will_review_after_received: &review_after_recevied_files "Vi kommer att handlägga din ansökan när vi har fått alla filer."
 
     update_the_status: Uppdatera status

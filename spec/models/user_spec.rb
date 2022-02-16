@@ -207,12 +207,13 @@ RSpec.describe User, type: :model do
                        .rejecting('image/gif', 'image/bmp')
     end
 
-    describe 'validates file contents and file type' do
+    describe 'validates file contents, file type and file name' do
       let(:file_root) { "#{Rails.root}/spec/fixtures/member_photos/" }
       let(:txt_file) { File.new(file_root + 'text_file.jpg') }
       let(:gif_file) { File.new(file_root + 'gif_file.jpg') }
       let(:ico_file) { File.new(file_root + 'ico_file.png') }
       let(:xyz_file) { File.new(file_root + 'member_with_dog.xyz') }
+      let(:invalid_filename) { File.new(file_root + 'å_member_with_ä_dög.png') }
 
       it 'rejects if content not jpeg or png' do
 
@@ -228,6 +229,11 @@ RSpec.describe User, type: :model do
 
       it 'rejects if content OK but file type wrong' do
         user_with_member_photo.member_photo = xyz_file
+        expect(user_with_member_photo).not_to be_valid
+      end
+
+      it 'rejects if content OK but file name contains invalid chars' do
+        user_with_member_photo.member_photo = invalid_filename
         expect(user_with_member_photo).not_to be_valid
       end
     end
