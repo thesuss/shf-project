@@ -62,6 +62,8 @@ class User < ApplicationRecord
 
   validates_attachment_file_name :member_photo, matches: /^[a-zA-Z0-9_-]+(\.png|\.jpe?g)\z/i
 
+  after_validation :cleanup_paperclip_error_messages
+
   validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
   validates :membership_number, uniqueness: true, allow_blank: true
   validates :email, email: true
@@ -703,6 +705,12 @@ class User < ApplicationRecord
       uploaded_file.destroy
     end
     save
+  end
+
+  def cleanup_paperclip_error_messages
+    # Remove base-attribute error message(s) to avoid duplicate error messages
+    # https://github.com/thoughtbot/paperclip/pull/1554
+    errors.delete(:member_photo)
   end
 
 end
