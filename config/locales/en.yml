@@ -389,6 +389,8 @@ en:
               confirmation: doesn't match with the password entered.
             member_photo:
               spoofed_media_type: *spoofed_media
+            member_photo_content_type:
+              invalid: *spoofed_media
             member_photo_file_name:
               invalid: "is invalid! (NOTE: special characters (Å, Ä, Ö) cannot be used in the filename)"
 

@@ -107,7 +107,7 @@ Feature: Admins, Members, and Users edit their own User Profile
     And I choose a "user_member_photo" file named "text_file.jpg" to upload
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
-    Then I should see t("activerecord.errors.models.user.attributes.member_photo.spoofed_media_type")
+    Then I should see t("activerecord.errors.models.user.attributes.member_photo_content_type.invalid")
 
 
   Scenario: Member edits contact email in profile

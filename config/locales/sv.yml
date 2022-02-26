@@ -389,6 +389,8 @@ sv:
               confirmation: stämmer inte med det angivna lösenordet.
             member_photo:
               spoofed_media_type: *spoofed_media
+            member_photo_content_type:
+              invalid: *spoofed_media
             member_photo_file_name:
               invalid: "är ogiltig! (OBS: specialtecken (Å, Ä, Ö) kan
                        inte användas i filnamnet)"

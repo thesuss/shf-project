@@ -243,7 +243,8 @@ RSpec.describe UserChecklistManager do
 
             it 'true if most recent agreed to date was within the window for the current membership' do
               current_membership = create(:membership, user: current_member,
-                                          first_day: agreed_after_cutoff_date_1.date_completed)
+                                          first_day: agreed_after_cutoff_date_1.date_completed,
+                                          last_day: Date.current + 1.day)
 
               allow(UserChecklist).to receive(:most_recent_completed_top_level_guideline)
                                         .with(current_member)
@@ -261,7 +262,8 @@ RSpec.describe UserChecklistManager do
 
             it 'false most recent agreed to date is not within window for agreeing ' do
               current_membership = create(:membership, user: current_member,
-                                          first_day: (agreed_after_cutoff_date_1.date_completed - 1.day))
+                                          first_day: (agreed_after_cutoff_date_1.date_completed - 1.day),
+                                          last_day: Date.current + 1.day)
               allow(MembershipsManager).to receive(:most_recent_membership)
                                              .with(current_member)
                                              .and_return(current_membership)
