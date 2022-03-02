@@ -32,6 +32,7 @@ class PaymentsController < ApplicationController
     @payment = Payment.create!(payment_type: payment_type,
                                user_id: user_id,
                                company_id: company_id,
+                               amount: item_price,
                                status: Payment.order_to_payment_status(nil),
                                payment_processor: Payment.payment_processor_klarna,
                                start_date: start_date,

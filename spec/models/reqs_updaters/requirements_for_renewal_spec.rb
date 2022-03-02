@@ -155,7 +155,9 @@ RSpec.describe RequirementsForRenewal, type: :model do
 
       it "is 'membership_id: first_day - last_day'" do
         faux_membership = create(:membership, user: user)
-        expect(described_class.short_membership_str(faux_membership)).to match(/\[(\d)+\] 2021-02-16 - 2022-02-17/)
+        first_day = faux_membership.first_day.strftime('%Y-%m-%d') 
+        last_day = faux_membership.last_day.strftime('%Y-%m-%d') 
+        expect(described_class.short_membership_str(faux_membership)).to match(/\[(\d)+\] #{first_day} - #{last_day}/)
       end
     end
 

@@ -1265,7 +1265,7 @@ sv:
       error: Det uppstod ett fel vid hantering av din betalning
 
     payments_list:
-      payment_date: Payment date
+      payment_date: &payment_date Payment date
       status: *payment_status
       for: för
       type: *payment_type
@@ -1273,6 +1273,7 @@ sv:
       end_date: *expire_date
       notes: *notes
       hips_id: HIPS id
+      order_number: &order_number Ordernummer
 
 
   user_checklists:
@@ -2053,6 +2054,23 @@ sv:
           company-incomplete: Ofullständig information om företag
           company-license-expired: H-märkespremien har löpt ut eller är obetald
 
+    payment_mailer:
+      payment_made:
+        confirmation: &confirmation Bekräftelse på betald %{product}
+        subject: *confirmation
+        thank_you_for_paying: 'Tack för din inbetalning – Ditt %{product_with_name} är betalt.'
+        membership: medlemskap
+        h_brand: H-märkespremie
+        h_brand_with_name: H-märkespremie för företaget %{company}
+        order_number: *order_number
+        membership_number: *membership_number
+        company_number: *company_number
+        payment_date: *payment_date
+        payment_processor: Betalmetod
+        product: Produkt
+        price: Pris    
+        no_vat: Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.
+        questions: Om du har några frågor kring din betalning eller ditt medlemskap, kontakta oss på 
 
   devise:
     min_length: '(minst %{minimum_length} tecken)'

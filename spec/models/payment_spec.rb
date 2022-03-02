@@ -58,6 +58,7 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to have_db_column :hips_id }
     it { is_expected.to have_db_column :klarna_id }
     it { is_expected.to have_db_column :payment_processor }
+    it { is_expected.to have_db_column :amount }
   end
 
   describe 'Associations' do
@@ -310,6 +311,13 @@ RSpec.describe Payment, type: :model do
         member_pymt2.successfully_completed
       end
 
+      it 'notifies PaymentAlerter (observer)' do
+        payment_alerter_dbl = double("payment_alerter")
+        expect(PaymentAlerter).to receive(:instance) { payment_alerter_dbl }
+        expect(payment_alerter_dbl).to receive :payment_made
+        member_pymt2.successfully_completed
+      end
+
     end
 
     context 'branding fee' do
@@ -318,6 +326,13 @@ RSpec.describe Payment, type: :model do
         membership_updater_dbl = double("membership_updater")
         expect(MembershipStatusUpdater).to receive(:instance) { membership_updater_dbl }
         expect(membership_updater_dbl).to receive :payment_made
+        brand_pymt2.successfully_completed
+      end
+
+      it 'notifies PaymentAlerter (observer)' do
+        payment_alerter_dbl = double("payment_alerter")
+        expect(PaymentAlerter).to receive(:instance) { payment_alerter_dbl }
+        expect(payment_alerter_dbl).to receive :payment_made
         brand_pymt2.successfully_completed
       end
 

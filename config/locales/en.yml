@@ -1255,7 +1255,7 @@ en:
       error: There was an error in processing your payment
 
     payments_list:
-      payment_date: Payment date
+      payment_date: &payment_date Payment date
       type: *payment_type
       for: for
       status: *payment_status
@@ -1263,6 +1263,7 @@ en:
       end_date: *expire_date
       notes: *notes
       hips_id: HIPS id
+      order_number: &order_number Order number
 
 
   company_locator:
@@ -2048,8 +2049,24 @@ en:
           company-incomplete: Incomplete info for company
           company-license-expired: H-Markt license has expired
 
-
-
+    payment_mailer:
+      payment_made:
+        confirmation: &confirmation Confirmation of %{product} payment
+        subject: *confirmation
+        thank_you_for_paying: 'Thank you for paying: your %{product_with_name} is now paid.'
+        membership: membership
+        h_brand: H-brand
+        h_brand_with_name: H-brand for company "%{company}"
+        order_number: *order_number
+        membership_number: *membership_number
+        company_number: *company_number
+        payment_date: *payment_date
+        payment_processor: Payment processor
+        product: Product
+        price: Price    
+        no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.     
+        questions: If you have any questions regarding the payment or your membership, contact us at 
+        
   devise:
     min_length: '(at least %{minimum_length} characters)'
 

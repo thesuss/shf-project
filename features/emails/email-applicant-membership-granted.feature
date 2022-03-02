@@ -55,7 +55,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     Then I am on the "user account" page
     And I should see "2018-12-31"
     And I should be a member
-    Then "member@mutts.se" should receive an email
+    Then "member@mutts.se" should receive 2 emails
     And I am logged in as "member@mutts.se"
     And I open the email
     And I should see t("mailers.member_mailer.membership_granted.subject") in the email subject

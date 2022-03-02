@@ -866,7 +866,8 @@ CREATE TABLE public.payments (
     expire_date date,
     notes text,
     payment_processor character varying,
-    klarna_id character varying
+    klarna_id character varying,
+    amount integer
 );
 
 
@@ -2086,6 +2087,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210220032402'),
 ('20210403094711'),
 ('20210403095355'),
-('20210404015347');
+('20210404015347'),
+('20220216092946');
 
 

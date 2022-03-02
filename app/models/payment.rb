@@ -113,6 +113,7 @@ class Payment < ApplicationRecord
   def add_observers
     add_observer MembershipStatusUpdater.instance, :payment_made
     add_observer AdminAlerter.instance, :payment_made
+    add_observer PaymentAlerter.instance, :payment_made
   end
 
 

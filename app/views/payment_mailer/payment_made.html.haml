@@ -1,0 +1,55 @@
+:ruby
+  message_scope = 'mailers.payment_mailer.payment_made'
+  bold_style = 'font-weight: bold;'
+  company_number_style = @ismembership ? 'display: none;' : ''
+  membership_number_style = @ismembership ? '' : 'display: none;'
+
+%p{ style: "#{bold_style}" }
+  = t('confirmation', scope: message_scope, product: @product)
+
+%p
+  = t('thank_you_for_paying', scope: message_scope, product_with_name: @product_with_name)
+
+
+%div{ style: "margin-left: 10pt; margin-bottom: 14pt;" }
+  :ruby
+    table_style = 'border: 1pt solid lightblue;'
+    cell_padding = 'padding: 4px;'
+    tbody_style = 'vertical-align: top;'
+  %table.table.table-sm.companies{ style: "#{table_style}" }
+    %tbody{ style: "#{tbody_style}" }
+      %tr.row
+        %td.col.order_number_name{ style: "#{cell_padding}" }= t('order_number', scope: message_scope)
+        %td.col.order_number_value{ style: "#{cell_padding}" }= @order_number
+      %tr.row{ style: "#{membership_number_style}" }
+        %td.col.member_number_name{ style: "#{cell_padding}" }= t('membership_number', scope: message_scope)
+        %td.col.member_number_value{ style: "#{cell_padding}" }= @membership_number
+      %tr.row{ style: "#{company_number_style}" }
+        %td.col.company_number_name{ style: "#{cell_padding}" "{}" }= t('company_number', scope: message_scope)
+        %td.col.company_number_value{ style: "#{cell_padding}" }= @company_number
+      %tr.row
+        %td.col.payment_date_name{ style: "#{cell_padding}" }= t('payment_date', scope: message_scope)
+        %td.col.payment_date_value{ style: "#{cell_padding}" }= @payment_date
+      %tr.row
+        %td.col.payment_processor_name{ style: "#{cell_padding}" }= t('payment_processor', scope: message_scope)
+        %td.col.payment_processor_value{ style: "#{cell_padding}" }= 'Klarna'
+      %tr.row
+        %td.col.product_name{ style: "#{cell_padding}" }= t('product', scope: message_scope)
+        %td.col.product_value{ style: "#{cell_padding}" }= @product_with_name
+      %tr.row
+        %td.col.price_name{ style: "#{cell_padding}" }= t('price', scope: message_scope)
+        %td.col.price_value{ style: "#{cell_padding}" }= @payment_amount
+
+%p
+  = t('no_vat', scope: message_scope)
+
+%p
+  Sveriges Hundföretagare
+  %br
+  Organisation Number: 873202-2705
+  %br
+  ℅ Sandra Tigerlind, Stengårdsholma 128 Gustavsdal, 382 72 Orrefors
+
+%p
+  = t('questions', scope: message_scope)
+  = link_to 'medlem@sverigeshundforetagare.se', 'mailto:medlem@sverigeshundforetagare.se'
