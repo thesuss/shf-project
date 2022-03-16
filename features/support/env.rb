@@ -72,7 +72,7 @@ Warden.test_mode!
 World Warden::Test::Helpers
 
 Capybara.register_driver :selenium do |app|
-  options = Selenium::WebDriver::Chrome::Options.new(args: ['headless'])
+  options = Selenium::WebDriver::Chrome::Options.new(args: ['headless', 'no-sandbox', 'disable-dev-shm-usage'])
   Capybara::Selenium::Driver.new(
       app,
       browser: :chrome,
