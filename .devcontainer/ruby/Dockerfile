@@ -76,4 +76,7 @@ RUN apt-get install -y xfonts-base \
     && dpkg -i wkhtmltox_0.12.6-1.buster_amd64.deb \
     && cp /usr/local/bin/wkhtmltoimage /usr/local/bundle/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64
 
+# Install semaphore CLI (for convenience)
+RUN curl https://storage.googleapis.com/sem-cli-releases/get.sh | bash
+
 RUN mkdir -p /workspaces/shf-project/tmp && echo "export TMPDIR=/workspaces/shf-project/tmp" >> /root/.bashrc
