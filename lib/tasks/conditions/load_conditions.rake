@@ -11,7 +11,7 @@ namespace :shf do
   task load_conditions: [:environment] do
 
     # Schedules for when alerts are sent:
-    std_reminder_after_schedule = [2, 9, 14, 30, 60]
+    std_reminder_after_schedule = [2, 9, 14, 30, 60, 150]
     std_reminder_before_schedule = [60, 30, 14, 2]
 
     # See the ConditionResponder class for defintions of the different possible
