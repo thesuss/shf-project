@@ -1,0 +1,16 @@
+%header.entry-header
+  = content_title(t('.title'), user: current_user)
+.entry-content
+  = render partial: 'search_form',
+           locals: { search_params: @q,
+                     language: @locale,
+                     filter_ignore_membership: @filter_ignore_membership,
+                     filter_are_members: @filter_are_members,
+                     filter_are_not_members: @filter_are_not_members }
+  .row
+    .col
+      - if @users.empty?
+        %strong
+          = t('.no_search_results')
+      - else
+        = render partial: 'users_list', locals: { q: @q, users: @users, items_count: @items_count }

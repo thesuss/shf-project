@@ -1,0 +1,47 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+
+title General Flow for Email alerts\n activity diagram\n
+
+start
+
+#LightCyan:entities_to_check;
+-> entities;
+
+note right
+  <b>Each class returns a collection of the entities to be checked.</b>
+  This might be User.all when sending alerts to users
+   (e.g. about memberships).
+  This might be Company.all when sending alerts to company members
+   (e.g. about H-Brand fee payment).
+end note
+
+#LightCyan:process_entities;
+
+while (entities.each do | entity |) is (\nentity)
+  #LightCyan:take_action(entity, log);
+
+  note right
+    <b>Each class defines what to do in "take_action".</b>
+    The default action is to send an email (send_email)
+     (if one should be sent today).
+    But something more complicated could be defined.
+  end note
+
+  if (send_alert_this_day?) then (\ntrue)
+    #LightCyan:send_email(entity, log);
+  else (false)
+  endif
+
+  :<i>next entity in entities.each</i> |
+endwhile
+
+
+:finished processing all entities;
+stop
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

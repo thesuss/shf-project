@@ -1,0 +1,33 @@
+.modal.fade#edit-branding-modal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+
+      = form_for company, url: edit_payment_company_path(company),
+                 method: :put, remote: true,
+                 html: { id: 'brandingStatusForm' } do |f|
+
+        .modal-header
+          %h4.modal-title.text-center
+            = t('companies.show.edit_branding_status')
+          %button.close{ type: 'button', data: { dismiss: 'modal' } }
+            %span{ 'aria-hidden' => 'true' } &times;
+
+        .modal-body
+          .container-fluid
+            = fields_for :payment, company.most_recent_branding_payment do |pf|
+              %label #{t('activerecord.attributes.payment.expire_date')}:
+              = pf.date_select(:expire_date,
+                               { start_year: Time.current.year,
+                                 end_year: Time.current.year + 2},
+                               { class: 'form-control select-box form-control-sm' })
+              %hr
+              = pf.label :notes,
+                         "#{t('activerecord.attributes.payment.notes')}:"
+              = pf.text_area :notes, class: 'form-control'
+
+        .modal-footer
+          = f.submit t('companies.company.submit_button_label'), class: "btn btn-primary form-control",
+                     id: 'editBrandingStatusSubmit'
+
+          %button{ type: 'button', class: 'btn btn-outline-secondary', data: { dismiss: 'modal' } }
+            = t('cancel')

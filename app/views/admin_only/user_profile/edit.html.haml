@@ -1,0 +1,18 @@
+= render partial: 'user_profiles/edit', locals: { user: @user, current_user: @current_user, form_submit_url: admin_only_user_profile_update_path(@user) }
+
+.text-center
+  %hr
+  .row
+    .col
+      = render partial: 'become_user_button', locals: {user: @user}
+
+  %hr
+  .row
+    .col
+      - delete_user = t('.delete_this_user', user: @user.full_name)
+      = link_to delete_user,
+                user_path(@user), method: :delete,
+                title: delete_user,
+                class: 'btn btn-sm btn-danger',
+                :data => { :confirm => delete_user + '?' }
+

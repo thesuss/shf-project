@@ -1,0 +1,57 @@
+-# This partial expects the following locals:
+-#
+-#   title - title to display
+-#   payor_display_method - method to send to a payor to get a string for displaying that payor
+-#     ex:  :name  (for a company),  :full_name  (for a User)
+-#
+-#   num_total - total number of payors
+-#   num_paid - the number of recent  payments
+-#
+-#   are_paid_text - text displayed next to  num_paid  ex: 'H-branding-fees are paid'
+-#   total_number_text - text displayed next to num_total  ex: 'companies in the system'
+-#   have_not_paid_text - text displayed next to the number that have not paid  ex: 'companies have not paid'
+-#
+-#   those_not_paid_list_title - the string to display at the top of the list of those not paid
+-#     ex:  'View the companies that have not paid'
+-#
+-#   those_not_paid - a list of those payors that have not paid but need to
+-#
+
+-# ensure we have resonable values:
+:ruby
+  displayed_title = title.blank? ? '' : title
+  payor_display_method = payor_display_method.nil? ? :to_s : payor_display_method
+  are_paid_str = are_paid_text.blank? ? 'have paid' : are_paid_text
+  total_number_str = total_number_text.blank? ? 'total in the system' : total_number_text
+  have_not_paid_str = have_not_paid_text.blank? ? 'have not paid' : have_not_paid_text
+  total_num = num_total <= 0 ? 1 : num_total
+  total_num_paid = num_paid.nil? ? 0 : num_paid
+
+.payors-payment-status
+
+  %h3.section-title= displayed_title
+
+  - percent = (total_num_paid.fdiv(total_num)) * 100
+
+  .progress
+    .progress-bar{ progress_bar_html_styles(percent) }
+      #{percent.to_i}% of all #{are_paid_str}
+
+  .totals
+    %p= styled_total(num_paid, are_paid_str)
+    %p= styled_total(num_total, total_number_str)
+    %p= styled_total(those_not_paid.count, have_not_paid_str)
+
+  .those-not-paid
+    %p
+      %a.btn.btn-success{ 'aria-controls': 'list-unpaid', 'aria-expanded': 'false', 'data-toggle': 'collapse', href: '#list-unpaid', role: 'button' }
+        = those_not_paid_list_title
+
+    .collapse.list-unpaid#list-unpaid
+      .card.card-body
+        - those_not_paid.each do | not_paid |
+          = link_to not_paid, target: '_blank' do
+            %span.unpaid-payor
+              = not_paid.send(payor_display_method)
+              = external_link_icon
+

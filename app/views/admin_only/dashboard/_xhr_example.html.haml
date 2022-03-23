@@ -1,0 +1,92 @@
+- submit_example_class = 'submit-xhr-example'
+
+.xhr-example
+  %h2.section-title This is the handle_xhr_request example.
+  %p.intro
+    Click a button to send an xhr request to the controller to see how the
+    %span.code
+      %span.method-name handle_xhr_request
+    method works.
+
+  .entry-content
+
+    .example
+      .row
+        .col-6
+          = form_tag({ controller: 'dashboard', action: 'update_timeframe' },
+            { method: 'put', class: submit_example_class }) do
+            .actions
+              = submit_tag 'Not an XHR request',
+               class: 'btn btn-secondary mb-2 form-control bad-request'
+
+      .row
+        .col
+          %p Send a request that is not an XHR request.
+          %p The javascript Utility will catch the response error raised and display the raw JSON. (This will be handled better in a later PR.)
+
+    .example
+      .row
+        .col-6
+          = form_tag({ controller: 'dashboard', action: 'update_timeframe' },
+            { remote: true,
+              method: 'put',
+              class: submit_example_class }) do
+
+            .actions
+              = submit_tag 'Missing a parameter', class: 'btn btn-secondary mb-2 form-control bad-request'
+      .row
+        .col
+          %p
+            Send a valid request (XHR) that is missing a parameter.
+            The javascript on this page will evaluate the data returned (it checks the value of
+            %span.code.method-name status
+            ) and shows the error in an alert.
+
+    .example
+      .row
+        .col
+          = form_tag({ controller: 'dashboard', action: 'update_timeframe',
+              params: {data_gatherer: {timeframe: '1 week ago'}} },
+              method: :put,
+              remote: true,
+              class: submit_example_class) do
+
+            .actions
+              = submit_tag 'Send a successful request that returns good data', class: 'btn btn-primary mb-2 form-control'
+
+      .row
+        .col
+          %p Send a valid request (XHR) that has the right parameters and does not raise any errors.
+          %p
+            The javascript on this page will evaluate the data returned (it checks the value of
+            %span.code.method-name status
+            ) and shows results in an alert.
+
+:javascript
+
+  const submitExClass = '.' + '#{submit_example_class}';
+
+  $('body').on('ajax:complete', submitExClass, function (e, response) {
+
+    if (Utility.handleError(e, response) === false) {
+
+      // Got a valid response from the server.
+      // Now we can check the data returned:
+      let responseData = response.responseJSON;
+
+      if (responseData.status === 200) {
+        alert("TaDa! It worked! Now we can do something interesting with the data returned:" +
+          "\n timeframe: " + responseData.timeframe +
+          "\n data: " + responseData.data +
+          "\n other_data: " + responseData.other_data);
+      }
+      else {
+        alert("responseData:\n status: " + responseData.status +
+          "\n statusText: " + responseData.statusText +
+          "\n errorText: " + responseData.errorText);
+      }
+    }
+
+  });
+
+

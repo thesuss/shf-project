@@ -1,0 +1,6 @@
+- if (company_count = current_user.companies.count) > 0
+  = nav_menu_dropdown_li(text: t('my_company', count: company_count), link: '#') do
+    %ul.dropdown-menu
+      - current_user.companies.each do |company|
+        = nav_menu_item_li(text: company.name.present? ? company.name : t('name_missing'),
+           link: company_path(company))

@@ -1,0 +1,287 @@
+:css
+
+  #color-palette h4.dguide-section {
+    margin-top: 2rem;
+  }
+
+
+  .color-ex-cell {
+    text-align: center;
+    vertical-align: top;
+    border-top: #ced4da solid 1pt;
+    border-bottom: #ced4da solid 1pt;
+  }
+
+  p.color-ex {
+    font-size: smaller;
+    text-align: center;
+    line-height: 1.1em;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  button.color-ex {
+    border-radius: 0;
+    border: none;
+    height: 27px;
+    width: 44px;
+    margin: 0.5rem 0.5rem 0.2rem 0.5rem ;
+    padding-bottom: 0;
+  }
+
+
+%table.color-examples
+  %tr
+    // text
+    %td.color-ex-cell
+      = color_ex('body text','#333')
+
+  %tr
+    %td.color-ex-cell
+      = color_ex('primary', '#003a78')
+    %td.color-ex-cell
+      = color_ex('secondary', '#6e644b')
+    %td.color-ex-cell
+      = color_ex('light', '#dad9cd')
+    %td.color-ex-cell
+      = color_ex('info', '#5692ce')
+    %td.color-ex-cell
+      = color_ex('success', '#7ca059')
+
+  // grays
+  %tr
+    %td.color-ex-cell
+      = color_ex('$toggler-hide-color', '#1a1a1a')
+    %td.color-ex-cell
+      = color_ex('pagination $dark-gray-text', '#6c757d')
+    %td.color-ex-cell
+      = color_ex('$categories-gray', '#aaa')
+    %td.color-ex-cell
+      = color_ex('.text-nicelabel $label-gray', '#a7a7a7')
+    %td.color-ex-cell
+      = color_ex('$menu-light-gray', '#ddd')
+    %td.color-ex-cell
+      = color_ex('pagination $med-gray-border', '#dee2e6')
+    %td.color-ex-cell
+      = color_ex('$menu-very-light-gray', '#eee')
+    %td.color-ex-cell
+      = color_ex('$toggler-border-bottom', '#e1e1e1')
+
+  // blues
+  %tr
+    %td.color-ex-cell
+      = color_ex('$primary', '#003a78')
+    %td.color-ex-cell
+      = color_ex('info', '#5692ce')
+    %td.color-ex-cell
+      = color_ex('$border-light-blue', '#8eadce')
+    %td.color-ex-cell
+      = color_ex('$pastel-blue-background', 'rgba(86,146,206,0.2)')
+
+  // browns
+  %tr
+    %td.color-ex-cell
+      = color_ex('$link-dark-brown', '#232525')
+    %td.color-ex-cell
+      = color_ex('$menu-link-very-dark-brown', '#404040')
+    %td.color-ex-cell
+      = color_ex('secondary', '#6e644b')
+    %td.color-ex-cell
+      = color_ex('page bottom $shf-main-brown', '#85795b')
+    %td.color-ex-cell
+      = color_ex('$body-background', '#f7f7f2')
+    %td.color-ex-cell
+      = color_ex('menu dropdown background $light-taupe', '#f7f7f7')
+
+  // reds
+  %tr
+    %td.color-ex-cell
+      = color_ex('$warn-red-text', '#c51f1b')
+    %td.color-ex-cell
+      = color_ex('no-red', '#ffdede')
+
+  // greens
+  %tr
+    %td.color-ex-cell
+      = color_ex('success', '#7ca059')
+    %td.color-ex-cell
+      = color_ex('yes-green', '#d8efc2')
+
+  // yellow
+  %tr
+    %td.color-ex-cell
+      = color_ex('maybe-yellow', '#ffe7a8')
+
+
+%h4.dguide-section Colors used in  application-mailer.scss
+
+%table.color-examples
+  %tr
+    %td.color-ex-cell
+      = color_ex('$mailer-footer-color', '#6aa6ed')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-sent-to-color', '#606060')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-background-light-gray', '#f7f7f2')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-border-light-gray', '#e5e5e5')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-gray-text', '#656565')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-border-lighter-gray', '#eaeaea')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-dark-gray', '#222222')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-warning-yellow', '#ffff00')
+
+    %td.color-ex-cell
+      = color_ex('$mailer-no-files-uploaded-warn', '#ff0000')
+
+
+%h4.dguide-section Colors used in  companies.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$btn-hover-color', '#7EDD8B')
+
+    %td.color-ex-cell
+      = color_ex('$slider-checked', '#2196f3')
+
+    %td.color-ex-cell
+      = color_ex('$slider-background-color', '#f4f4f8')
+
+    %td.color-ex-cell
+      = color_ex('$slider-before-background-color', '#ffffff')
+
+    %td.color-ex-cell
+      = color_ex('$dinkurs-fixed-table-border', '#bfbfbf')
+
+
+%h4.dguide-section Colors used in  company-h-brand.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$co-hbrand-background', '#e4e3df')
+
+    %td.color-ex-cell
+      = color_ex('$co-hbrand-info-separator', '#b9b9b5')
+
+
+%h4.dguide-section Colors used in  dashboard.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$total-color', '#1b3e70')
+
+    %td.color-ex-cell
+      = color_ex('$not-working-color', '#ff0000')
+
+
+%h4.dguide-section Colors used in  maps.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$border-color', '#fff')
+
+    %td.color-ex-cell
+      = color_ex('$gray-shadow', '#b1b1b1')
+
+
+%h4.dguide-section Colors used in  member-app-waiting-reason.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$reason-border-color', '#ff7f50')
+
+
+%h4.dguide-section Colors used in  pagination.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$paginate-background', '#003a78')
+
+    %td.color-ex-cell
+      = color_ex('$paginate-li-a-border', '#eee')
+    $paginate-li-a-focus-shadow: rgba(0, 123, 255, 0.25);
+    $paginate-li-a-hover: $black;
+
+    %td.color-ex-cell
+      = color_ex('$paginate-li-a-hover-background', '#e9ecef')
+
+
+%h4.dguide-section Colors used in  proof-of-membership:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$pom-banner-background', '#7a7866')
+
+    %td.color-ex-cell
+      = color_ex('$pom-footer-background', '#1b3e70')
+
+
+%h4.dguide-section Colors used in  shf-application:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$no-files-warn-color', '#ff0000')
+
+    %td.color-ex-cell
+      = color_ex('$btn-background', '#ffffff')
+
+    %td.color-ex-cell
+      = color_ex('$btn-choose-files-text', '#ffffff')
+
+    %td.color-ex-cell
+      = color_ex('$border-med-blue', 'rgb(86, 146, 206)')
+
+    %td.color-ex-cell
+      = color_ex('$border-med-blue-a-light', 'rgba(86, 146, 206, 0.2)')
+
+    %td.color-ex-cell
+      = color_ex('$files-table-background', '#ffffff')
+
+    %td.color-ex-cell
+      = color_ex('$app-state-border-blue', 'rgb(142, 173, 206)')
+
+%h4.dguide-section Colors used in  shf-documents.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$shf-docs-table-not-striped-background', '#ffffff')
+
+    %td.color-ex-cell
+      = color_ex('$shf-docs-table-striped-background', '#fafafa')
+
+
+%h4.dguide-section Colors used in  users.scss:
+
+%table.color-examples
+  %tr
+
+    %td.color-ex-cell
+      = color_ex('$is-admin-color', '#ff0000')

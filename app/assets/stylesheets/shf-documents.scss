@@ -1,0 +1,46 @@
+// TODO:  Is this file used??
+
+@import "shf-custom-colors";
+
+.shf_documents.index {
+
+  .entry-content {
+
+    padding: 30px;
+
+    table#shf-documents {
+
+      thead {
+
+        background: $shf-docs-table-not-striped-background;
+        border-bottom: solid 1pt;
+
+        th {
+          padding-bottom: 0;
+        }
+
+      }
+
+      //  striped, but don't stripe the table header row:
+      tr:nth-child(even) {
+        background-color: $shf-docs-table-striped-background;
+      }
+
+      tr:nth-child(odd) {
+        background-color: $shf-docs-table-not-striped-background;
+      }
+
+      th,
+      td {
+        padding-left: 0;
+      }
+
+      td.title {
+        font-weight: bold;
+      }
+
+    }
+
+  }
+
+}

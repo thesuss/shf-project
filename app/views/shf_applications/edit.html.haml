@@ -1,0 +1,25 @@
+%div{ :id => "#{unique_css_id(@shf_application)}", class: "#{item_view_class(@shf_application, controller.action_name)}" }
+
+  %header.entry-header
+    = content_title(t('.title'), user: current_user)
+  .entry-content
+    .instructions= t('shf_applications.new.instructions_html')
+
+    = render partial: 'membership_number', locals: { user: @shf_application.user }
+
+    = form_for @shf_application do |f|
+
+      != model_errors_helper(@shf_application)
+
+      = render partial: 'shf_application_fields',
+               locals: { f: f, user: @shf_application.user,
+                         company_numbers:  @company_numbers,
+                         all_business_categories: @all_business_categories }
+
+      = render 'application/required_fields'
+
+      %p.submit-button-explain.strong.field-instruction= t('.submit_button_explain')
+      = f.submit t('.submit_button_label'), disabled: true, class: 'btn btn-primary mb-2 form-control app-submit'
+
+
+= render partial: 'companies/company_create_modal', locals: { company: @new_company }

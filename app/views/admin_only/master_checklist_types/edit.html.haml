@@ -1,0 +1,10 @@
+%header.entry-header
+  = content_title(t('.title', name: @admin_only_master_checklist_type.name), user: current_user)
+
+.entry-content
+  = render 'form'
+
+  %hr
+  .text-center
+    = link_to t('.view_master_checklist_type', name: @admin_only_master_checklist_type.name), admin_only_master_checklist_type_path(@admin_only_master_checklist_type), class: 'btn btn-sm btn-light'
+    = link_to t('.all_master_checklist_types'), admin_only_master_checklist_types_path, class: 'btn btn-sm btn-light'

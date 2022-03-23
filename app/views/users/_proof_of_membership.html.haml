@@ -1,0 +1,72 @@
+%html
+  -# NOTE: this does not use the application layout, so the stylesheet link tag must explicitly be in the head section
+  %head
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans:400,700'
+    = stylesheet_link_tag 'proof-of-membership', media: 'all'
+  %body
+
+    - render_as = :html unless local_assigns[:render_as]
+
+    .custom-context-menu#proof-of-membership
+      - if app_config.shf_logo
+        = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_as),
+                    class: 'shf-logo')
+
+      %p.proof-banner= t('.proof_title').upcase
+
+      .member-photo-div
+        - if user.member_photo
+          = image_tag(paperclip_path_str(user.member_photo, :standard, render_as),
+                      class: 'member-photo')
+
+      %p.member-info
+        %span.member-name
+          = user.full_name
+        %br
+        - if user.membership_current? # FIXME should this just display if it's not blank?
+          = succeed ':' do
+            = t('.member_number')
+
+          %span.membership-number
+            #{user.membership_number}
+          %br
+
+          #{list_app_categories(user.shf_application)}
+
+          %br
+          %span.issued-by
+            = succeed ':' do
+              = t('.issued_by')
+
+          %br
+          - if app_config.chair_signature
+            = image_tag(paperclip_path_str(app_config.chair_signature,
+                                       :standard, render_as))
+          %br
+          = t('.valid_thru', expire_date: user.membership_expire_date)
+          %br
+          -# Kategorier: #{list_app_categories(user.shf_application)}
+        - else
+          = t('.expired')
+
+      %p.proof-footer= t('.footer')
+
+    - if render_as == :html && context == 'internal'
+      %div
+        %br
+        = t('users.show_member_images_row_cols.image_dimensions_html', width_id: 'pom-width',
+            height_id: 'pom-height')
+        %br
+        %br
+        = t('users.show_member_images_row_cols.use_this_image_link_html')
+        = short_proof_of_membership_url(user)
+
+      :javascript
+        window.onload = function(){
+          var image = document.getElementById('proof-of-membership');
+
+          if (image !== undefined) {
+            document.getElementById('pom-width').textContent = image.offsetWidth;
+            document.getElementById('pom-height').textContent = image.offsetHeight;
+          }
+        };

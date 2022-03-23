@@ -1,0 +1,2456 @@
+---
+sv:
+
+  title: 'Medlemmar i Sveriges Hundföretagare'
+
+  SHF_name: &SHF_name Sveriges Hundföretagare
+
+  dog: hund
+
+  home: Hem
+  about: Om
+  more: Mer
+
+  show_in_english: Visa webbplatsen på engelska
+  show_in_swedish: Visa webbplatsen på svenska
+  cannot_change_language: "Kan inte ändra språket just nu. (Finns det fel att fixa?)"
+  unsaved_changes_on_page: 'Ej sparade ändringar! Vill du lämna sidan?'
+
+  password: &password Lösenord
+
+  is_required_field: Indikerar ett obligatoriskt fält
+
+  user: användare
+
+  view: &view Visa
+  edit: &edit Redigera
+  manage: &manage Hantera
+  update: &update Uppdatera
+  submit: &submit Skicka
+  delete: &delete Radera
+  remove: &remove Ta bort
+  cancel: &cancel Ångra
+  upload: &upload Ladda upp
+  send: &send Skicka
+  new: &new Nytt
+  change: &change Byt
+  save: &save Spara
+  back: &back Tillbaks
+  search: &search Sök
+  close: Stäng
+  lastupdated: &last_updated Senast uppdaterad
+
+  next: &next Nästa
+  previous: &previous Föregående
+
+  'yes': &yes Ja
+  'no': &no Nej
+  'Yes': *yes
+  'No': *no
+
+
+  application: &application Ansökan
+  user_activity: Användaraktivitet
+  none: Ingen eller Inget
+  none_t: &none_t Inget
+  none_plur: &none_plur Inga
+  none_n: &none_n Ingen
+  name_missing: Namn Saknas
+  including: inklusive
+  administrator: administratör
+
+  unknown: okänd
+  no_file_uploaded: &no_file_uploaded Ingen fil uppladdad
+
+  # Date and Time
+  time_ago: '%{amount_of_time} sedan'
+  day: dag
+  days: dagar
+  month: månad
+  months: månader
+  year: år
+  years: år
+
+  confirm_are_you_sure: &are_you_sure_confirm Är du säker?
+
+  hello: Hallå, %{name}
+
+  shf_home_url: &shf_home_url https://www.sverigeshundforetagare.se
+  shf_medlemssystem_url: &shf_medlemssystem_url https://hitta.sverigeshundforetagare.se
+  shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
+  shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
+  shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
+  shf_short_url: &shf_short_url sverigeshundforetagare.se
+
+  login_page: login sida
+
+  info:
+    logged_in_as_admin: Du är inloggad som admin
+    under_construction: Sidan är under uppbyggnad, mer information och funktioner kommer att komma efterhand.
+
+  membership: &membership medlemskap
+
+  apply_for_membership: &apply_for_membership "Ansök om medlemskap"
+
+  theme_copyright: "© 2017 Tema av Theme Feeder. Alla rättigheter förbehållna."
+
+  name: &name Namn
+  org_nr: &org_nr Org nr.
+
+  complete: &complete komplett
+
+  accordion_label:
+    company_search_form:
+      hide: &hide_search Dölj Sökfunktionen
+      show: &show_search Visa Sökfunktionen
+    application_search_form_toggler:
+      hide: *hide_search
+      show: *show_search
+
+  toggle:
+    application_search_form:
+      hide: *hide_search
+      show: *show_search
+    set_new_password_form:
+      hide: "Dölj 'Byt lösenord' info"
+      show: "Ändra användarens lösenord"
+
+  will_paginate:
+    previous_label: "« Föregående"
+    next_label: "Nästa »"
+    page_gap: "&hellip;"
+
+  items_per_page_tooltip: 'Välj antal objekt per sida'
+
+  ckeditor:
+      page_title: 'Filer'
+      confirm_delete: 'Radera fil?'
+      buttons:
+        cancel: *cancel
+        upload: *upload
+        delete: *delete
+        next: 'Nästa'
+
+  model_errors:
+    one: Vänligen åtgärda det här felet
+    other: Vänligen åtgärda dessa %{count} fel
+    spoofed_media_type: &spoofed_media filnamn (typ) matchar inte filinnehållet.
+                        Vänligen använd en annan bildfil.
+
+  my_company:
+    one: Mitt företag
+    other: Mina företag
+
+  checklist_common:
+    done: &done Done
+    complete: *complete
+    date_completed: &date_completed Datum Slutfört
+
+
+  # Automatisk och manuell sökning för Active Records
+  activerecord:
+    models:
+      shf_application:
+        one: "Medlemskap Ansökan"
+        other: "Medlemskap Ansökningar"
+
+      business_category:
+        one: &business_category Kategori
+        other: &business_categories Kategorier
+
+      company:
+        one: &company_one Företag
+        other: &companies Företag
+
+      shf_document:
+        one: Dokument
+        other: Dokument
+
+      payment:
+        one: Betalning
+        other: &payments Betalningar
+
+      user:
+        one: Användaren
+        other: Användare
+
+      task_attempt:
+        one: Task Attempt
+        other: Task Attempts
+
+      uploaded_file:
+        one: &uploaded_file_one Uppladdad fil
+        other: &uploaded_file_other Uppladdade filer
+
+      master_checklist:
+        one: Master Checklist Item
+        other: Master Checklist Items
+
+      master_checklist_type:
+        one: Master Checklist Type
+        other: Master Checklist Types
+
+
+    attributes:
+
+      uploaded_file:
+        filename: &filename Filnamn
+        file_size: &file_size Filstorlek
+        description: &description  Beskrivning
+        actual_file: &uploaded_file Uppladdad fil
+        actual_file_file_size: &uploaded_file_size Uppladdad fil
+
+      user:
+        first_name: &first_name Förnamn
+        last_name: &last_name Efternamn
+        email: &email E-post för inloggning
+        password: *password
+        password_confirmation: &password_confirmation Lösenordsbekräftelse
+        current_password: Nuvarande lösenord
+        membership_number: &membership_number Medlemsnummer
+        created: &created Skapad
+        current_sign_in_at: &user_current_signed_in_time Inloggad
+        current_sign_in_ip: &user_current_ip Inloggad med IP
+        last_login: &user_last_login Senast inloggad
+        last_login_ip: &user_last_login_ip Senast inloggad med IP
+        sign_in_count: &sign_in_count Inloggningar
+        reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
+        member: &member Medlem
+        date_member_packet_sent: &date_member_packet_sent Paket skickat
+        member_photo: Medlemsbild
+        member_photo_file_name: Namn på medlemfotofil
+
+      payment:
+        payment_type: &payment_type Betalningstyp
+        status: &payment_status Status
+        start_date: &start_date Startdatum
+        expire_date: &expire_date Utgångsdatum
+        notes: &notes Anteckningar
+        created: *created
+        last_updated: *last_updated
+
+      shf_application:
+        company_number: &company_number Organisationsnummer
+        first_name: *first_name
+        last_name: *last_name
+        contact_email: &contact_email Kontakt e-post
+        state: &state Status
+        phone_number: Telefonnummer
+        uploaded_files:
+          one: *uploaded_file_one
+          other: *uploaded_file_other
+        state/new: &status_new Ny
+        state/under_review: &status_under_review Behandlas
+        state/waiting_for_applicant: &status_waiting_for_applicant Avvaktar sökande
+        state/ready_for_review: &status_ready_for_review Redo för granskning
+        state/accepted: &status_accepted Godkänd
+        state/rejected: &status_rejected Avböjd
+        state/being_destroyed: &status_being_destroyed Förstört
+        companies: Företag
+        business_categories: Företagstjänster
+        file_delivery_method: Filleveransmetod
+
+      member:
+        true: Medlem
+        false: Ej medlem
+
+
+      address:
+        street: &street Gata
+        post_code: &post_code Post nr.
+        city: &city Ort
+        kommun: &kommun Kommun
+        region: &region Verksamhetslän
+        region_short: &region_short Län
+        country: Land
+        mail: Post
+
+      company:
+        company_number: *org_nr
+        name: *name
+        phone_number: &company_phone Tel
+        email: E-post
+        website: &company_website Web
+        facebook_url: Facebook
+        instagram_url: Instagram
+        youtube_url: Youtube
+        org_nr: *org_nr
+        post_code: *post_code
+        city: *city
+        kommun: *kommun
+        region: *region
+        region_short: *region_short
+        dinkurs_key: &dinkurs_company_key Dinkurs Företag Key
+        dinkurs_company_id: Dinkurs företagsnyckel
+
+      business_category:
+        name: &business_category_name  Namn
+        description: *description
+        subcategory: &subcategory Underkategori
+        subcategories: Underkategorier
+
+      shf_document:
+        title: &title Titel
+        description: *description
+        uploader: &uploader Uppladdad av
+        actual_file_content_type: Uppladdad filtyp
+        actual_file: *uploaded_file_one
+
+
+      member_app_waiting_reason:
+        name_sv: "Namn (svenska)"
+        name_en: "Namn (engelska)"
+        description_sv: "Beskrivning (svenska)"
+        description_en: "Beskrivning (engelska)"
+        is_custom: "Annan anledning"
+
+      task_attempt:
+        task_name: Task namn
+        task_source: Task source
+        was_successful: was successful
+        attempted_on: attempted on
+
+
+      app_configuration:
+        site_name: &site_name Site name
+        site_meta_title: &site_meta_title Site meta title
+        site_meta_description: &site_meta_description Site meta description
+        site_meta_keywords: &site_meta_keywords Site meta keywords
+        site_meta_image: &site_meta_image Site meta image
+        og_type: &site_og_type OG type
+        twitter_card_type: &site_twitter_card_type Twitter card type
+        facebook_app_id: &site_facebook_app_id Facebook Application ID
+        payment_too_soon_days: &payment_too_soon_days Number of days before term last day that a member can pay to renew (cannot pay before this)
+        membership_expired_grace_period: &membership_expired_grace_period 'Amount of time a member can pay without penalty after their membership expires'
+        membership_expiring_soon_days: &membership_expiring_soon_days Number of days before membership last day to start warning membership will end soon
+
+      user_checklist:
+        name: *name
+        description: *description
+        complete: *done
+        date_complete: *date_completed
+        completed: &checklist_completed Avslutad
+        not_completed: &checklist_not_completed Ännu inte slutförd
+
+      master_checklist:
+        name: *name
+        is_in_use: &master_checklist_in_use Is Used
+        is_no_longer_used: &no_longer_used No longer in use
+        is_in_use_changed_at: &master_checklist_in_use_changed_at Is use changed
+        displayed_text: &displayed_text Name displayed to users
+        description: *description
+        list_position: Position in list
+        ancestry: Parent lists
+        notes: &master_checklist_admin_notes Notes (admin only)
+        list_type: Type
+
+      master_checklist_type:
+        name: *name
+        description: *description
+
+      membership:
+        first_day: Startdatum
+        last_day: &membership_last_day Slutdatum
+        member_number: *membership_number
+        notes: Anteckningar
+        status:
+          current_member: Aktiv medlem
+          expires_soon: Går ut snart
+          in_grace_period: Gått ut (fortfarande möjlighet att förnya)
+          former_member: Före detta medlem
+          not_a_member: Inte medlem
+
+
+    errors:
+      models:
+
+        uploaded_file:
+          attributes:
+            actual_file_file_size:
+              file_too_large: &file_size_too_large 'är för stor.'
+            actual_file:
+              file_too_large: &file_too_large 'storleken måste vara mindre än %{max}. (Din fil är %{value} byte.'
+            actual_file_file_content_type:
+              invalid_type: &file_content_type_forbidden Tyvärr kan du inte ladda upp denna filtypen.
+
+        company:
+          attributes:
+            company_number:
+              taken: Detta företag (org nr) finns redan i systemet.
+            dinkurs_company_id:
+              invalid_key: erkänns inte som en företagsnyckel av Dinkurs
+              invalid_format: Dinkurs informationen är ogiltig (formatet är dåligt eller okänt).
+              invalid_chars: innehåller ogiltiga tecken (tecken som Å, Ä, Ö är inte tillåtna)
+            company_has_active_memberships: "Företaget har aktiva (godkända) medlemskap."
+
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: stämmer inte med det angivna lösenordet.
+            member_photo:
+              spoofed_media_type: *spoofed_media
+            member_photo_content_type:
+              invalid: *spoofed_media
+            member_photo_file_name:
+              invalid: "är ogiltig! (OBS: specialtecken (Å, Ä, Ö) kan
+                       inte användas i filnamnet)"
+
+        app_configuration:
+          attributes:
+            chair_signature:
+              spoofed_media_type: *spoofed_media
+            shf_logo:
+              spoofed_media_type: *spoofed_media
+            h_brand_logo:
+              spoofed_media_type: *spoofed_media
+            sweden_dog_trainers:
+              spoofed_media_type: *spoofed_media
+
+        shf_document:
+          attributes:
+            actual_file_file_size:
+              file_too_large: *file_size_too_large
+            actual_file:
+              file_too_large: *file_too_large
+
+        shf_application:
+          attributes:
+            companies:
+              blank: '- Ange ett befintligt företagsnummer (eller skapa ett nytt företag)'
+              invalid: "- %{value} är inte ett svenskt organisationsnummer"
+              not_found: 'med organisationsnummer %{value} inte hittat.
+                          Klicka på knappen "Nytt företag" för att skapa företaget
+                          och försök sedan skicka din ansökan igen.'
+            company_number:
+              invalid: " är inte ett svenskt organisationsnummer"
+
+        condition:
+          attributes:
+            timing:
+              invalid: måste vara en symbol
+
+        task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} must be true or false (a Boolean)"
+
+        successful_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "kan bara vara sant (värdet var %{value})"
+
+        failed_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "kan bara vara falskt (värdet var %{value})"
+
+
+      messages:
+        record_invalid: 'Ett fel uppstod: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Kan inte ta bort post då beroende %{record} finns
+          has_many: Kan inte ta bort poster då beroende %{record} finns
+        record_not_found:
+          header: "%{entity_type} kunde inte hittas"
+          message: "Beklagar, vi kunde inte hitta %{entity_type} med id %{id}."
+
+
+  shared:
+    progress_bar:
+      complete: *complete
+      progress_complete:  &progress_complete klar
+
+  about_info:
+    title: Om denna webbplats
+    version: version
+
+  address_visibility:
+    street_address: *street
+    post_code: *post_code
+    city: *city
+    kommun: *kommun
+    none: *none_n
+
+
+  payors:
+    status: Status
+    no_payment_due_now: &no_payment_due_now Ingen betalning behöver göras nu.
+    due: Betalning behöver göras.
+    past_due: Betalning är förfallen!
+    due_by: Betalning behöver göras före %{due_date}.
+    too_early: *no_payment_due_now
+    term_paid_through: &term_paid_through Betald till och med
+    you_are_paid_until: Du har betalt till och med
+    you_dont_owe_until_then: "Du är inte skyldig en betalning förrän:"
+    paying_now_extends_until: "Att göra en %{fee_name_payment} nu kommer att förlänga din %{term_name} till %{extended_end_date}."
+    do_you_want_to_pay_now: Vill du verkligen göra en betalning nu?
+    yes_pay_answer: 'Ja, gör en betalning'
+    no_pay_answer: 'Nej.'
+    admin_cant_edit: "Medlemsstatus kan inte uppdateras. (Kanske har inga betalningar gjorts.)"
+
+
+  payor:
+    term_status:
+      admin_user_payments_title: *payments
+
+
+  payment:
+    payment_type:
+      member_fee: &member_fee Medlemsavgift
+      branding_fee: &branding_fee H-märkesavgift
+    status:
+      paid: &paid Betald
+      never_paid: &never_paid Aldrig betald
+    processor_status: Processor Status
+    status_from_payment_processor:
+      skapad: skapad
+      avvaktan: avvaktan
+      betald: betald
+      utgånget: utgånget
+      väntar_på_betalning: "Väntar på betalning"
+    term_start_date: startdatum
+    term_expiry_date: slutdatum
+    no_payment_due_now: *no_payment_due_now
+
+  company_locator:
+    error:
+      search_name_blank: 'Ange en plats (det kan inte vara tomt).'
+      search_distance_negative: 'Avståndet kan inte vara negativt'
+      latitude_blank: "Latitude cannot be blank."
+      longitude_blank: "Longitude cannot be blank."
+
+
+  # ----------------------------------------
+  # Automatisk och manuell sökning för views:
+
+  uploaded_files:
+
+    index:
+      title: &uploaded_files_index_title All of your uploaded files
+      admin_title: &uploaded_files_admin_index_title All uploaded files
+      cannot_edit_or_delete_reason: You cannot edit or delete a file if it is part of an application being reviewed, approved, or rejected.
+      no_file_uploaded: *no_file_uploaded
+
+    show:
+      title: &uploaded_file_show_title "Uppladdad fil: %{file_name}"
+      description: *description
+
+    new:
+      title: &upload_new_file Ladda upp
+      description: *description
+      submit: *submit
+      index_title: *uploaded_files_index_title
+      upload_allowed_file_types: &upload_allowed_types 'Tillåtna filtyper:'
+      upload_button_title: "Välj en fil ..."
+
+    create:
+      success: "%{file_name} was uploaded successfully."
+      error: There was a problem saving the file.
+      invalid_upload_type: *file_content_type_forbidden
+
+    edit:
+      title: "Edit the uploaded file: %{file_name}"
+      description: *description
+      info: "You can only edit the description.  If you want to change the name or file uploaded, you'll need to delete this and upload a file."
+      submit: *submit
+      index_title: *uploaded_files_index_title
+      no_file_uploaded: *no_file_uploaded
+
+    update:
+      success: "%{file_name} was updated."
+      error: One or more problems prevented the uploaded file from being updated.
+
+    destroy:
+      success: "Uploaded file %{file_name} was successfully deleted."
+      error: "There was a problem deleting %{file_name}.  It was not deleted."
+
+    uploaded_files_list:
+      owner: Ägare
+      file_name: *filename
+      description: *description
+      file_size: *file_size
+      updated_at: *last_updated
+      associated_with_application: *application
+
+    show_action_buttons:
+      show_title: *uploaded_file_show_title
+      index_title: *uploaded_files_index_title
+      admin_index_title: *uploaded_files_admin_index_title
+      delete: "Radera %{file_name}"
+
+    small_table_files_list:
+      associated_with_application: *application
+      date_uploaded: Uppladdad
+      description: *description
+      file_name: filnamn
+
+  shf_applications:
+    new:
+      title: Ansök om medlemskap
+      instructions_html: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier. <strong>Utan detta kan vi inte hantera din ansökan.</strong>'
+
+      section_title_about_you: &about_you Om dig
+
+      submit: *submit
+      company_number: *company_number
+      phone_number: &phone_number Telefonnummer
+      first_name: *first_name
+      last_name: *last_name
+      enter_company_number: Ange ditt företagsnummer (eller skapa ett nytt
+                             företag om det inte finns i systemet)
+      contact_email: *contact_email
+
+      can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
+      application_dog_category: &application_dog_category "Ansöker som:"
+      clue_selected_categories: &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
+
+      upload_files_section:  Underlag för att styrka min ansökan
+      upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
+      upload_files: 'Ladda upp filer från datorn (VIKTIGT)'
+      upload_allowed_file_types: *upload_allowed_types
+      upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
+      upload_button: "Välj dina filer..."
+      will_be_uploaded: 'Dessa filer kommer att laddas upp när du skickar in din ansökan:'
+      upload_multiple_files: ctrl-tangenten (Windows) eller command/cmd på (Mac) för att välja flera.
+      submit_button_label: *submit
+      need_to_enter_name_html: Du måste ha angett ditt för- och efternamn
+                          för att skapa en medlemsansökan. %{edit_profile}.
+      file_delivery_selection: 'Var god välj hur du ska leverera de filer som behövs för din ansökan:'
+      submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
+      where_to_mail_files: Vi kommer att maila dig adressen
+      email_files_subject: Mina applikationsfiler
+
+    rendering:
+      success: Aktion utfördes framgångsrikt
+
+    create:
+      success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
+      error: Ett eller flera problem hindrade din ansökan från att skickas.
+      success_with_file_problem: Din ansökan har skapats. Observera felmeddelanden angående filer
+      success_with_app_files_missing: "!! Din ansökan har sparats, men den saknar nödvändiga filer !!"
+      upload_file_or_select_method: &upload_files Var god ladda upp filer eller välj en annan leveransmetod
+      remember_to_deliver_files: &chosen_method Kom ihåg att leverera filer via den valda leveransmetoden
+
+    edit:
+      title: Redigera ansökan om medlemskap
+      is_ready_for_review: Redo för granskning
+      submit_button_label: *save
+      submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
+
+    update:
+      success: Ansökan har uppdaterats.
+      error: Ett eller flera problem hindrade din ansökan från att sparas.
+      enter_member_number: Var god granska medlemsnummer och spara.
+      success_with_app_files_missing: "!! Din ansökan laddades upp men den saknar filer !!"
+      upload_file_or_select_method: *upload_files
+      remember_to_deliver_files: *chosen_method
+
+    show:
+      title: Ansökan från %{user_full_name}
+      first_name: *first_name
+      last_name: *last_name
+      phone_number: *phone_number
+      company_number: *company_number
+      contact_email: *contact_email
+      app_status: Ansökans status
+      change_status: Ändra status
+      membership_number: *membership_number
+      with_categories: Ansöker som
+      delete: *delete
+      confirm_are_you_sure: *are_you_sure_confirm
+      ready_for_review_instructions: "När du är redo för att vi ska hantera din ansökan igen, kryssa i rutan nedan. När du trycker på knappen Skicka och kryssrutan är markerad, vet vi att vi måste se över den igen. \nDu kan göra ändringar utan att kryssa i rutan. Du kan om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du skickar in den för granskning."
+      files_delivery_method: Du har valt att leverera filer via
+      method_chosen_when: (vald %{date})
+
+    business_category_display_row:
+      category_no_subcategories_html: Den här kategorin har inga
+              underkategorier ännu. Du kan be %{mailto_admin} att lägga till
+              en eller flera underkategorier.
+      subcategories_for: Underkategorier för %{category_name}
+
+    business_category_edit_row:
+      add_remove_subcategories: Lägg till / ta bort underkategorier
+
+    index:
+      title: Alla inkomna ansökningar
+      name: Namn
+      membership_number: Nr.
+      org_nr: *org_nr
+      manage: *manage
+      state: *state
+      no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
+      files: Filer
+
+    information:
+      title: Om ansökan och medlemskap
+      member:
+        title: Välkommen
+        using_the_logo: &membership_logo_use Det är viktigt att vi alla följer vår grafiska profil,
+                        att loggan nyttjas på ett enhetligt sätt och inga egna
+                        versioner skapas av dig som är medlem. Detta för att
+                        skapa igenkänning, tydlighet gentemot kund. Och skydda
+                        oss mot förfalskningar av H-märket.
+        upload_this_image: &put_membership_logo_on_your_website 'Vi önskar att du lägger upp nedanstående bild på din
+                          hemsida. Samt länkar denna bild till: "https://www.sverigeshundforetagare.se"'
+        using_the_h_mark: &h_mark_use 'Vi önskar även att du pryder din hemsida med H-märket.
+                          För att visa att ni är just H-märkta med allt vad det innebär.
+                          H-märkningsbilden används för detta ändamål och länkad till: "https://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
+        ffs: Du hittar ditt h-märke och ditt behörighetsbevis under ditt konto.
+      waiting_for_approval:
+        title: Hej, kul att du vill bli medlem
+        in_process: Vi håller på att hantera din ansökan.
+        look_over: Se gärna över den och säkerställ att laddat upp filer och fyllt i kategorier.
+        too_slow: Tycker du det tar alldeles för lång tid, och din ansökan är komplett, skriv en rad till
+
+      check_payment_status:
+        approved: Du är godkänd och nu är det dags att betala dina avgifter.
+        pay_m_here: 'Ditt medlemskap betalas på denna sida:'
+        approved_since_before: Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
+        m_expires: 'Ditt medlemskap är betalt till:'
+        h_expires_html: 'Din H-branding avgift-betalning för företaget <b>%{company}</b> utgått:'
+        pay_h_here_html: 'Din H-branding avgift för företaget <b>%{company}</b> måste betalas:'
+
+      user:
+        title: Hej, kul att du är intresserad
+        how_to_apply: "För att skicka in din medlemsansökan klickar du på länken
+                      nedan och fyller i alla nödvändiga uppgifter. Glöm inte
+                      markera vilken eller vilka kategorier du vill ansöka
+                      om medlemskap i."
+        once_it_is_submitted: "När din ansökan är inskickad hamnar den hos oss
+                      för behandling, detta tar en stund, så var inte orolig
+                      om du inte hör något från oss genast."
+        when_we_decide: "När din ansökan sedan är godkänd får du ett mail med
+                        betalningsinformation från systemet. När du betalt får
+                        du ett nytt mail med information om hur du skapar din
+                        sökbara företagssida."
+
+    shf_application_min_info_as_table:
+      view_application: Visa ansökningar
+      org_nr: *org_nr
+      company_name: *name
+
+    shf_application_fields:
+      company_numbers_tooltip: Du kan ange flera företagsnummer, åtskilda av
+                               ett kommatecken eller tomma mellanslag
+
+    start_review:
+      success: Granskningen har påbörjats.
+      error: Det fanns ett problem med att påbörja granskning för denna ansökan.
+
+    accept:
+      success: Medlemsansökan har godkänts.
+      error: Det uppstod ett fel vid godkännande av medlemskap.
+
+    reject:
+      success: Medlemsansökan har avslagits.
+      error: Det uppstod ett fel vid avslag av medlemskap.
+
+    need_info:
+      reason_title: Anledning
+      other_reason_label: "Annan anledning"
+      select_a_reason: "Välj en anledning..."
+
+      success: 'Ansökan har markerats som: "Behöver kompletteras". (Skicka e-post till den sökande.)'
+      error: 'Det uppstod ett fel när systemet försökte sätta status: "Behöver kompletteras".'
+
+
+    cancel_need_info:
+      success: Ansökan har ändrats och behöver ej längre kompletteras av sökande.
+      error: 'Det uppstod ett fel när systemet försökte ångra status: "Behöver kompletteras".'
+
+    need_payment:
+      success: 'Ansökan har markerats som: "Behöver betalning". (Skicka e-post till den sökande.)'
+      error: 'Det uppstod ett fel när systemet försökte sätta status: "Behöver betalning".'
+
+    received_payment:
+      success: Medlemsansökan har godkänts.
+      error: Det uppstod ett fel vid godkännande av medlemskap.
+
+    cancel_need_payment:
+      success: Ansökan har ändrats och behöver ej längre betalas av sökande.
+      error: 'Det uppstod ett fel när systemet försökte ångra status: "Behöver betalning".'
+
+    is_ready_for_review:
+      success: Din ansökan har lämnats in för omgranskning.
+      error: Det uppstod ett fel när du försöker att skicka in din ansökan för omgranskning.
+
+    state:
+      new: *status_new
+      under_review: *status_under_review
+      waiting_for_applicant: *status_waiting_for_applicant
+      ready_for_review: *status_ready_for_review
+      accepted: *status_accepted
+      rejected: *status_rejected
+      being_destroyed: *status_being_destroyed
+
+    new_status: *status_new
+    accept_btn: Godkänn
+    accepted: *status_accepted
+    reject_btn: Avböj
+    rejected: *status_rejected
+    under_review: *status_under_review
+    pending_completion: &status_pending_completion Väntar på sökande
+    ask_applicant_for_info_btn: Behöver kompletteras
+    cancel_waiting_for_applicant_btn: Ångra Behöver kompletteras
+    waiting_for_applicant: *status_waiting_for_applicant
+    applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
+    ask_applicant_for_payment_btn: Behöver betalning
+    ready_for_review: *status_ready_for_review
+    start_review_btn: Påbörja granskning
+
+    awaiting_payment: Avvaktar betalning
+
+    all_shf_applications: Alla ansökningar
+    edit_shf_application: Redigera ansökan
+    view_shf_application: Visa ansökan
+    list_all_shf_applications: Lista alla ansökningar
+
+    uploads:
+      no_files: Inga filer är uppladdade för denna ansökan.
+      files_uploaded: 'Uppladdade filer för denna ansökan:'
+      filename: *filename
+      file_was_uploaded: &file_was_uploaded 'Filen laddades upp: %{filename}'
+      confirm_delete: &upload_confirm_delete 'Är du säker på att du vill radera %{filename}?'
+      invalid_upload_type: *file_content_type_forbidden
+      file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
+      please_upload_again: Var god ladda upp dina filer
+      will_review_after_received: &review_after_recevied_files "Vi kommer att handlägga din ansökan när vi har fått alla filer."
+
+    update_the_status: Uppdatera status
+    application_deleted: Ansökan raderad.
+
+
+
+  file_uploads:
+    no_files: Inga filer är uppladdade.
+    files_uploaded: 'Uppladdade filer för denna ansökan:'
+    filename: *filename
+    file_was_uploaded: *file_was_uploaded
+    confirm_delete: *upload_confirm_delete
+    invalid_upload_type: *file_content_type_forbidden
+    file_too_large: *file_too_large_5MB
+
+
+
+  companies:
+    new:
+      title: Nytt företag
+    create:
+      error: Ett eller flera problem hindrade företaget från att skapas.
+      success: Företaget har skapats.
+      create_submit: Skapa företag
+      success_with_dinkurs_problem: FÖRETAGET SKAPADES, MEN VAR VÄNLIG NOTERA
+                                    MEDDELANDEN (ER) NEDANFÖR
+    update:
+      error: Ett problem förhindrade uppdatering av företaget.
+      success: Företaget har uppdaterats.
+
+    edit:
+      title: 'Redigera företag: %{company_name}'
+      social_media_links: Sociala Medielänkar
+
+    show:
+      company_number: *org_nr
+      name: *name
+      phone_number: *company_phone
+      email: &company_email Företagets e-postadress
+      address: &address Adress
+      main_address: Huvudadress
+      other_addresses: Andra adresser
+      mailing_address: &post_address Post
+      street: *street
+      post_code: *post_code
+      city: *city
+      kommun: *kommun
+      region: *region
+      website: Företagets webbplats
+      org_nr: *org_nr
+      delete: Radera företaget
+      confirm_are_you_sure: *are_you_sure_confirm
+      add_address: 'Lägg till adress'
+      click_to_edit: 'klicka för att redigera'
+      hbrand_status_paid: Får använda H-märkesbilden. (H-märkespremie betald)
+      hbrand_status_not_paid: Får inte använda H-märkesbilden. (H-märkespremie ej betald)
+      edit_branding_status: Redigera Status
+      term_paid_through: *term_paid_through
+      no_payment_due_now: *no_payment_due_now
+      hbrand_term_payment: H-märkespremiebetalning
+      hbrand_fee: H-märkespremie
+      hbrand_term: H-märkespremieperiod
+      payment_tooltip: Betald avgift förlänger H-märkningen i ett år.
+      branding_fee_expire_date_tooltip: &branding_fee_expire_date_tooltip Efter detta datum går perioden för din H-märkning ut.
+      term_expire_date_tooltip: *branding_fee_expire_date_tooltip
+      members: Företagsmedlemmar
+      dinkurs_fetch_events: Hämta Dinkurs Events
+      dinkurs_fetching: Hämtar händelser ... vänligen vänta
+      dinkurs_key: *dinkurs_company_key
+      pay_branding_fee: &pay_branding_fee Betala H-märkespremie
+      info_is_complete: Din företagssida är komplett ifylld.
+      info_is_not_complete: Din företagssida är inte komplett ifylld och därmed inte synlig.
+      info_is_not_complete_explanation: Din företagssida är bara synlig när all markerad information är angiven.
+      this_info_missing: "Denna information saknas:"
+      complete: *complete
+
+    company_members:
+      title: &co_members Företagsmedlemmar
+      business_categories: *business_categories
+      is_member: *member
+      app_status: *state
+
+    company_applicants:
+      title: &co_applicants Företagssökande
+      business_categories: *business_categories
+      is_member: *member
+      app_status: *state
+
+    index:
+      title:  Hitta H-märkt företag
+      admin_title: Redigera medlemsföretag
+      category: *business_category
+      name: *name
+      company_number: *org_nr
+      region_land: *region_short
+      complete: *complete
+      h_companies_listed_below: Nedan listas anslutna företag.
+      how_to_search: Sök efter företag genom att använda sökfunktionen.
+      confirm_are_you_sure: *are_you_sure_confirm
+      no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
+      delete: *delete
+
+    destroy:
+      success: Företaget raderat.
+      error: Ett problem hindrade företaget från att raderas.
+
+    form:
+      region_tooltip: Välj "Sverige" om företaget är verksamt i
+       flera län, eller "Online" om det (i huvudsak) finns på nätet
+      visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
+      org_nr_tooltip: Endast siffror (ej bindestreck)
+      dinkurs_show_tooltip: Växla den här knappen till på (till höger)
+                            för att visa kommande dinkurs händelser på din företagsida.
+      dinkurs_id_tooltip: Om du har ett Dinkurs.se konto och vill visa
+                          företagshändelser här, ange Dinkurs.se företagsnyckel.
+                          (Du kan lämna den tom om du inte har ett Dinkurs.se konto.)
+      social_url_ex: "Ex: %{example_url}"
+      facebook_url: URL till din Facebook-sida
+      facebook_url_ex_path: "YourFacebookName"
+      bad_url_must_start_with: 'Ogiltig url. Det måste börja med %{url_start}/ och ange din sida'
+      instagram_url: URL till din Instagram-sida
+      instagram_url_ex_path: "YourInstagramName"
+      youtube_url: URL till din YouTube-sida
+      youtube_url_ex_path: "YourChannel"
+
+    company:
+      submit_button_label: Uppdatera status
+
+    company_create_modal:
+      company_number: Nytt företagsnummer
+
+    company_name: Företagsnamn
+    telephone_number: Telefonnummer
+    operations_region: *region
+    website_include_http: Företagets webbplats
+    description: Beskrivning av företaget
+    address_visibility: Synlighet
+    show_dinkurs_events: Visa Dinkurs Händelser
+
+    all_companies: Alla företag
+    edit_company: Redigera detta företag
+    view_company: Visa företagssida
+    list_all_companies: Lista alla företag
+    new_company: Skapa nytt företag
+
+  addresses:
+    edit:
+      title: 'Redigera adress för: %{company_name}'
+      delete: 'Ta bort den här adressen'
+      delete_confirm: Är du säker på att du vill radera den här adressen?
+      cannot_delete_address: (Företagets mailadress - kan inte raderas)
+      delete_address_tooltip: Om du vill radera den här adressen anger du en
+                              annan adress som företagets mailadress.
+    update:
+      error: Det gick inte att uppdatera adressen.
+      success: Adressen uppdaterades.
+    new:
+      title: 'Ny adress för: %{company_name}'
+    create:
+      error: Ett eller flera problem hindrade adressen från att skapas.
+      success: Adressen skapades framgångsrikt.
+      success_sole_address: "Adressen skapades med framgång
+                            (och är standardadressen för företaget)."
+    destroy:
+      success: Adressen raderad.
+      error: Det gick inte att ta bort adressen.
+
+  events:
+    show:
+      name: Företagshändelser
+      start_date: Startdatum
+      location: Plats
+      fee: Pris
+      no_events: (Inga planerade händelser)
+    show_not: (Visning av Dinkurs-händelser på den här sidan har inaktiverats.
+              Redigera företaget för att aktivera visning av händelser.)
+
+  business_categories:
+
+    index:
+      title: &business_category Företagstyp
+      name: *business_category_name
+      description: *description
+      view: *view
+      edit: *edit
+      delete: *remove
+      delete_confirm: *are_you_sure_confirm
+      add_subcategory: Lägg till underkategori
+      add_category: Lägg till Kategori
+      edit_subcategory: Redigera underkategori
+      edit_category: Redigera kategori
+
+    show:
+      title: Hundföretag av typen
+      description: *description
+      no_one_applied_category: &category_no_one_applied Ingen har ansökt om medlemsskap i denna kategori ännu.
+
+    new:
+      title: Ny företagstyp (kategori)
+      description: *description
+      no_one_applied_category: *category_no_one_applied
+
+
+    create:
+      success: Kategori skapad.
+
+    edit:
+      title: 'Redigerar: %{category_name}'
+      submit_button_label: *save
+      name: *name
+
+    update:
+      success: Kategori uppdaterad.
+
+    destroy:
+      success: Kategori raderad.
+
+    form:
+      save: *save
+
+    form_collection_checkboxes:
+      title: *application_dog_category
+      clue_selected_categories: *clue_selected_categories
+
+    new_business_category: Skapa ny företagstyp (kategori)
+    new_business_subcategory: Ny underkategori
+    all_business_categories: Alla kategorier
+
+  users:
+    edit_user_account: &edit_user_account Redigera kontot för %{name}
+    membership_status: Medlemsstatus
+
+    index:
+      title: Alla Användare
+      no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
+
+    delete_user: &delete_user "Radera %{user}"
+
+    show:
+      hello: Hej
+      edit_user_account: *edit_user_account
+      membership_number: *membership_number
+      is_an_admin: &is_an_admin Är en admin
+
+      'yes': *yes
+      'no': *no
+      reset_password: Byt lösenord
+      confirm_reset_password: "Är du säker? Detta skriver över nuvarande lösenord för denna användare!\n (Om du inte har noterat lösenordet, välj Avbryt.)"
+      new_password: Nytt lösenord
+      re_enter_new_password: Skriv in lösenordet igen
+      please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
+      submit_new_password: Spara det nya lösenordet
+      member: *member
+      membership_status: &membership_status Medlemsstatus
+      not_a_member: &not_a_member Är inte medlem
+      is_a_member: &is_a_member Är medlem
+      term_paid_through: *term_paid_through
+      no_payment_due_now: *no_payment_due_now
+      membership_fee_payment: betalning av medlemskap
+      membership_fee: medlemskapsavgift
+      membership_term: medlemperiod
+      membership_term_last_day: *membership_last_day
+      payment_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
+      membership_expire_date_tooltip: &membership_expire_date_tooltip Efter detta datum går perioden för ditt medlemskap ut.
+      term_expire_date_tooltip: *membership_expire_date_tooltip
+
+      edit_member_status: &edit_member_status Redigera medlemsstatus
+      pay_membership: &pay_membership Betala medlemsavgift
+      edit_user_profile: &edit_user_profile Information om användaren %{name}
+
+    show_login_email_row_cols:
+        email: *email
+
+    show_info_for_admin_only:
+      admin_user_info_title: &admin_user_info_title Användare Info
+      created: *created
+      reset_password_sent_at: *user_reset_password_sent_at
+      password_never_reset: &password_never_reset Användaren har aldrig återställt lösenordet.
+      user_has_never_signed_in: har aldrig loggat in.
+      last_login: *user_last_login
+      last_login_ip: *user_last_login_ip
+      logged_in_count: *sign_in_count
+      current_sign_in_at: *user_current_signed_in_time
+      current_sign_in_ip: *user_current_ip
+      member_packet: &member_packet pkt
+      sent: skickat
+      not_sent: inte skickat
+
+    show_for_member:
+      membership_number: *membership_number
+      no_membership_number: (inget medlemsnummer)
+
+    show_for_applicant:
+      title: &show_for_applicant_title "Steg mot medlemskap:"
+      welcome: Välkommen till Sveriges Hundföretagare!
+      welcome_want_to_have_benefits: &show_for_applicant_want_to_have_benefits "Vill du finnas med i ett sammanhang som innebär en bekräftelse på att dina meriter, engagemang och hundkunskaper räknas?"
+      submit_application: Fyll i och skicka in din ansökan.
+      my_application: &my_application Min ansökan
+      apply_4_membership: *apply_for_membership
+      app_status_new: "Tack för att du skickat in din ansökan. Den kommer att handläggas."
+      app_status_under_review: "Tack för att du har skickat in din ansökan, vi bearbetar den."
+      app_status_waiting_for_applicant: "Tack för att du har skickat in din ansökan, vi bearbetar den."
+      app_status_ready_for_review: "Tack för att du uppdaterat din ansökan. Vi handlägger den så snart vi kan."
+      app_status_accepted: Din ansökan är godkänd och klar.
+      app_status_rejected: Din ansökan är avböjd.
+      pay_membership: *pay_membership
+      when_can_pay: &when_can_pay När din ansökan är godkänd och du har skrivit under medlemsåtagandet (kryssat i alla rutor) kan du betala.
+
+    show_for_former_member:
+      title: *show_for_applicant_title
+      welcome: "Welcome back to Sveriges Hundföretagare!"
+      welcome_want_to_have_benefits: *show_for_applicant_want_to_have_benefits
+      contact_membership: "Please contact the membership chair to apply again: email %{membership_email}"
+
+    renewal:
+      title_time_to_renew: "Det är dags att förnya ditt medlemskap!"
+      title_renewal_overdue: Ditt betaldatum har passerat.
+      renewal_overdue_warning: "Du kan fortfarande förnya ditt medlemskap utan att ansöka på nytt genom att följa stegen nedan."
+      instructions: "Nedan följer de steg du behöver göra för att fortsätta vara medlem:"
+      steps_to_renew: "Steg för att förnya ditt medlemskap:"
+      pay_membership: *pay_membership
+      pay_button_disabled_info: När du har slutfört stegen ovan kan du betala ditt medlemskap.
+
+    ethical_guidelines_link_or_checklist:
+      in_grace_period:
+        must_agree_again: Ditt medlemskap har gått ut så du måste skriva under vårt medlemsåtagande igen.
+      agree_to_guidelines: Skriv under medlemsåtagandet
+      agreed_to: "Skrivit under %{date}."
+      membership_guidelines: Alla medlemsåtaganden
+
+    uploaded_files_requirement:
+      need_to_upload: Ett medlemskap i Sveriges Hundföretagare kräver årlig fortbildning. Ladda upp ett dokument som visar vad du deltagit vid och lyssnat på senaste året, med ungefärlig nedlagd tid.
+      current_member:
+        have_been_uploaded: Underlag har laddats upp under medlemsperioden
+      in_grace_period:
+        must_upload_again: Ladda upp fil(er) nedan.
+        have_been_uploaded: Filer som har laddats upp sedan ditt medlemskap tog slut.
+      upload_file: *upload_new_file
+      upload_another: *uploaded_file_other
+
+    show_member_images_row_cols:
+      email: *email
+      proof_of_membership: &proof_of_membership Behörighetsbevis
+      using_membership_logo: *membership_logo_use
+      put_membership_logo_on_site: *put_membership_logo_on_your_website
+      proof_of_membership_describe: &proof_of_membership_describe Detta är ditt behörighetsbevis.
+      proof_of_membership_photo_needed: &proof_of_membership_photo_needed 'Om du saknar profilbild (ser "Photo
+                                           Unavailable"), ladda upp en bild av dig själv (utan hund) här '
+      company_h_brand: &company_h_brand Företaget H-märke för %{company}
+      using_h_mark: *h_mark_use
+      company_h_brand_describe: &company_h_brand_describe Detta är ditt företags H-märke.
+
+      use_guidelines: &use_guidelines riktlinjer
+      download_image: &download_image Ladda ner bild
+      image_dimensions_html: "Bildbredden är <span id = '%{width_id}'></span>pixlar och höjden är<span id = '%{height_id}'></span> pixlar."
+      use_this_image_link_html: "<span style='font-weight: bold'>
+                                Använd den här länken på en extern webbplats
+                                (returnerar en JPG-bild):</span>"
+
+      image_how_to_use_html: &image_how_to_use_html "Du kan ladda ner bilden, ta en
+                             skärmdump eller länka till den från din webbplats
+                             och använda den i sociala medier
+                             eller skriva ut för att använda i ett fysiskt
+                             sammanhang, till exempel att visa en kund."
+      image_use_guidelines_html: &image_use_guidelines_html "Observera att din användning av denna bild är föremål
+                                 för dessa %{use_guidelines_link}."
+
+      show_image: &show_image Visa bild
+      copy_image_url: &copy_image_url Kopiera bildadress
+      copied:  &copied Kopierat
+
+    show_uploaded_files_section_row_cols:
+      title: Uppladdade filer
+
+    proof_of_membership:
+      proof_title: *proof_of_membership
+      member_number: Medlemsnr.
+      issued_by: Utfärdat av
+      valid_thru: Giltigt till %{expire_date}
+      expired: Medlemskapet löpte ut
+      footer: *shf_short_url
+
+    update:
+      passwords_dont_match: De två lösenord du angivit matchar inte.
+      success: Användarens information uppdaterad.
+      error: Ett problem hindrade användarinformationen från att uppdateras.
+      member_photo:
+        reason: Detta foto används på ditt medlemsbevis.
+        format: Din fotofil ska vara i "PNG", "JPG" eller "JPEG" -format,
+                och av passfototyp (det vill säga ansiktsbild med neutral bagrund)
+                för bästa resultat.
+        upload: Klicka på "Välj fil" för att ladda upp ditt foto.
+        replace: Ditt foto kan bytas ut genom att helt enkelt välja en annan fil.
+                 Klicka på "Välj fil" för att göra det.
+
+    search_form:
+      membership_number: &membership_number_short Nr.
+      profile_email: Profil e-post
+      search: Sök
+      are_members: Är medlemmar
+      are_not_members: Är inte medlemmar
+      all_users: Alla användare
+
+    user:
+      # is this entry used anywhere?  (the entry in .show above is, and follows rails convention)
+      user_has_never_signed_in: &user_has_never_signed_in har aldrig loggat in.
+      'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
+      'no': *no
+      edit_member_status: *edit_member_status
+      submit_button_label: Uppdatera status
+      edit_user_account: *edit_user_account
+      edit_user_profile: *edit_user_profile
+
+    users_list:
+      membership_number: *membership_number_short
+      first_name: *first_name
+      last_name: *last_name
+      email: *email
+      created: *created
+      last_login: *user_last_login
+      logged_in_count: *sign_in_count
+      member: Medlem
+      application: *application
+      applications_tooltip: Användaren har en öppen ansökan
+      expire_date: *expire_date
+      member_packet: *member_packet
+      edit_profile: Edit Profile
+      edit_account: (Edit Acct.)
+
+    destroy:
+      success: Användaren raderades framgångsrikt.
+
+  user_profiles:
+    edit:
+      edit_user_account: *edit_user_account
+
+  payments:
+    create:
+      page_title: &page_title '%{payment_type} betalning av: %{user_name}'
+      title: *page_title
+      something_wrong: 'Något gick fel - kontakta systemadministratören på %{admin_email}'
+
+    confirmation:
+      success_html: Betalning framgångsrikt genomförd - tack!
+                    (Återgå till %{account_page_link})
+
+    error:
+      error: Det uppstod ett fel vid hantering av din betalning
+
+    payments_list:
+      payment_date: &payment_date Payment date
+      status: *payment_status
+      for: för
+      type: *payment_type
+      start_date: *start_date
+      end_date: *expire_date
+      notes: *notes
+      hips_id: HIPS id
+      order_number: &order_number Ordernummer
+
+
+  user_checklists:
+    all_list_items: &user_checklists_all_items Tillbaka till medlemsåtagandet
+    all_list_items_for_user: &user_checklists_all_items_for_user Tillbaka till alla listor för %{name}
+
+    if_you_have_qs_email_us: &if_you_have_qs_email_us "Om du har några frågor om dessa, maila oss till "
+
+    progress_bar:
+      complete: *progress_complete
+
+    missing-checklist-param-error: &missing-checklist-param-error User Checklist missing parameter error!
+    not_found: &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
+
+    index:
+      title: Checklists for %{name}
+      complete: *progress_complete
+
+    show:
+      title: "Checklist %{name}"
+      description: *description
+      delete_confirm: "Are you sure you want to delete the checklist '%{name}' for user %{user_name}?"
+      all_list_items: *user_checklists_all_items
+      all_list_items_for_user: *user_checklists_all_items_for_user
+      date_completed: *date_completed
+      completed: *checklist_completed
+      complete: *progress_complete
+
+    all_changed_by_completion_toggle:
+      missing-checklist-param-error: *missing-checklist-param-error
+      not_found: *user_checklist_not_found
+
+    new:
+      title: Medlemsåtagande
+
+    membership_guidelines_completed:
+      agreed_to_all_terms: Jag har läst och godkänt alla medlemsåtaganden.
+      i_commit_to: "Som medlem i Sveriges Hundföretagare åtar jag mig att:"
+      all_complete_percent: "100% komplett"
+      back_to_my_profile: Tillbaka till mitt konto
+
+    show_progress:
+      read_and_agree: "Som medlem i Sveriges Hundföretagare förbinder du dig att följa vissa riktlinjer, kallade medlemsåtaganden. Här nedan följer Medlemsåtagandet uppdelat per rubrik. Du behöver kryssa för varje rubrik, och på så sätt verifiera att du läst, förstått, och avser att följa dessa riktlinjer."
+      i_commit_to: Som medlem i Sveriges Hundföretagare förbinder jag mig
+      scroll_down_to_read_all: Scrolla ner för att läsa alla åtaganden och för att se knappen för att gå vidare.
+      read_and_agree_start: ""
+      read_and_agree_end: Jag har läst och förstått dessa riktlinjer.
+      contact_if_questions: *if_you_have_qs_email_us
+      email_display_name: Ordförande
+
+      next: *next
+      previous: *previous
+      complete: *progress_complete
+
+    set_uc_and_kids_date_completed:
+      not_found: *user_checklist_not_found
+      missing-checklist-param-error: *missing-checklist-param-error
+
+
+  memberships:
+    auto_added_notes:
+      changed_by_admin: "Ändrad av admin %{changed_timestamp}"
+      started_on: "Medlemskap startat den %{first_day}."
+      ended_on: "Medlemskap slutdatum ändrat till %{new_last_day} och avslutades. Föregående slutdatum var %{original_last_day}."
+      last_day_changed: "Slutdatum för medlemskap ändrat från %{original_last_day} till %{new_last_day}."
+
+
+  admin:
+    index:
+      export: Exportera ansökningar som CSV
+
+    all_applications_received: Alla inkomna ansökningar
+
+    export_ansokan_csv:
+      success: &export_success Exporten lyckades. Du hittar filen bland din webbläsares nedladdade filer.
+      error: &export_error Ett problem uppstod med exporten.
+      date_state_changed: Date State changed
+      member_fee_paid: M fee paid
+      member_fee_expires: M Expires
+      branding_fee_paid: H-brand paid
+      branding_fee_expires: H Expires
+      paid: *paid
+      never_paid: *never_paid
+      fee_payment_url: "Betalas som inloggad via: https://hitta.sverigeshundforetagare.se%{payment_url}"
+
+    export_payments_csv:
+      success: *export_success
+      error: *export_error
+
+    export_payments_covering_year_csv:
+      success: *export_success
+      error: *export_error
+
+
+
+  shf_documents:
+
+    new_shf_document: &new_shf_document Nytt dokument
+    new_shf_minutes:  &new_shf_minutes Lägg till dokument
+    edit_shf_document: Redigera info om dokument
+    view_shf_document: Information om dokument
+    all_shf_documents: Alla uppladdade dokument
+    all_shf_minutes: Alla uppladdade dokument
+
+    invalid_upload_type: *file_content_type_forbidden
+    file_too_large: *file_too_large_5MB
+
+    contents_access_error: 'Det uppstod ett fel att komma åt filen: %{message}'
+
+    index:
+      page_title: 'Dokument'
+      instructions: 'Här hittar du filer som kan vara bra att ha. Klicka på titeln på ett dokument för att visa det. Beroende på dina webbläsarinställningar kan det öppnas i ett nytt fönster eller så laddas det ner.'
+      title: *title
+      description: *description
+      delete_confirm: 'Är du säker på att du vill radera %{document_title}?'
+      view_details: Visa detaljer
+
+    show:
+      page_title: 'Information om: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: &uploaded_by Uppladdad av
+      uploaded_on: &uploaded_on Datum
+      filename: 'Filnamn:'
+      delete_confirm: 'Är du säker på att du vill radera %{document_title}?'
+
+    new:
+      page_title: *new_shf_minutes
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+
+    create:
+      success: 'Filen laddades upp: %{document_title}'
+      error: 'Det fanns ett problem att ladda upp %{document_title}'
+
+    edit:
+      page_title: 'Redigera uppladdat dokument: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+      upload_the_document: Ladda upp dokument
+
+    update:
+      success: '%{document_title} uppdaterades utan problem.'
+      error: 'Det fanns ett problem att uppdatera dokumentet.'
+
+    destroy:
+      success: '%{document_title} togs bort.'
+
+    minutes_and_static_pages:
+      member_pages: &member_pages Medlemssidor
+      shf_meeting_minutes: &member_pages_board_meetings Dokument
+
+    contents_show:
+      edit_member_page: Redigera sida
+
+    contents_edit:
+      page_title: 'Redigera medlemssida: %{document_title}'
+
+    contents_form:
+      member_page_title: Titel
+      member_page_contents: Innehåll
+
+    contents_update:
+      success: '%{document_title} uppdaterades utan problem.'
+
+
+  admin_only:
+    member_app_waiting_reasons:
+      index:
+        title: "Anledningar till varför vi avvaktar information"
+
+      new:
+        title: "Ny anledning"
+
+      create:
+        success: "Anledning skapades"
+        error: "Det var ett problem att spara anledningen."
+
+      show:
+        title: "Avvaktar information på grund av: %{name_sv} (%{name_en})"
+
+      edit:
+        title: "Redigerar: %{name_sv} (%{name_en})"
+        submit_button_label: *save
+
+
+      update:
+        success: "Anledning uppdaterad."
+        error: "Det gick inte att uppdatera anledningen."
+
+      destroy:
+        success: "Anledning borttagen."
+        error: "Det gick inte att ta bort anledningen."
+
+
+      new_member_app_waiting_reason: &new_app_waiting_reason "Ny orsak"
+      all_member_app_waiting_reasons:  &all_app_waiting_reasons "Alla orsaker"
+      view_member_app_waiting_reason: "Visa anledning"
+      edit_member_app_waiting_reason: "Redigera anledning"
+      list_all_member_app_waiting_reasons: "Lista alla anledningar"
+
+      other_custom_reason: "Annat (skriv in anledningen)"
+      other_custom_reason_desc: ""
+
+      delete_confirm: "Är du säker på att du vill radera anledningen: %{name_sv} (%{name_en})?"
+
+    app_configuration:
+      image_show:
+        missing: &missing Saknas!
+      edit:
+        title:  &application_configuration Programkonfiguration
+        chair_signature: &chair_signature_title Ordförandens underskrift
+        shf_logo: &shf_logo_title Organisationslogotyp
+        h_brand_logo: &h_branding_logo_title H-märkt Logo
+        sweden_dog_trainers: &sweden_dog_trainers_logo_title Sveriges Hundtrainer
+        admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+        site_name: *site_name
+        site_meta_title: *site_meta_title
+        site_meta_description: *site_meta_description
+        site_meta_keywords: *site_meta_keywords
+        site_meta_image: *site_meta_image
+        og_type: *site_og_type
+        twitter_card_type: *site_twitter_card_type
+        facebook_app_id: *site_facebook_app_id
+        missing: *missing
+        durations:
+          title: &membership_durations Membership durations
+          membership_term_duration: &membership_term_duration Membership Term Length
+          membership_expired_grace_period_duration_title: &membership_expired_grace_period_duration_title Grace Period
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: &payment_too_soon_days_title Payment window
+        payment_too_soon_days: *payment_too_soon_days
+        membership_expiring_soon_days_title: &membership_expiring_soon_days_title Term ends soon window
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
+        membership_guideline_list: &membership_guideline_list Membership Guideline List
+        membership_guideline_list_tooltip: &membership_guideline_list_tooltip Choose a top level list that will be used as the Membership Guidelines list. (Only top level lists that are in use are shown.)
+        required_field: &required_field obligatoriskt fält
+
+      show:
+        title: *application_configuration
+        chair_signature: *chair_signature_title
+        shf_logo: *shf_logo_title
+        h_brand_logo: *h_branding_logo_title
+        sweden_dog_trainers: *sweden_dog_trainers_logo_title
+        admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+        site_name: *site_name
+        site_meta_title: *site_meta_title
+        site_meta_description: *site_meta_description
+        site_meta_keywords: *site_meta_keywords
+        site_meta_image: *site_meta_image
+        og_type: *site_og_type
+        twitter_card_type: *site_twitter_card_type
+        facebook_app_id: *site_facebook_app_id
+        missing: *missing
+        durations:
+          title: *membership_durations
+          membership_term_duration: *membership_term_duration
+          membership_expired_grace_period_duration_title: *membership_expired_grace_period_duration_title
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: *payment_too_soon_days_title
+        payment_too_soon_days: *payment_too_soon_days
+        membership_expiring_soon_days_title: *membership_expiring_soon_days_title
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
+        membership_guideline_list: *membership_guideline_list
+        required_field: *required_field
+
+      show_timing:
+        missing: *missing
+
+      update:
+        success: Programdata uppdaterades framgångsrikt
+        error: Det gick inte att uppdatera konfigurationsdata
+
+    dashboard:
+      title: ADMIN DASHBOARD
+
+      members: &members Företagsmedlemmar
+      companies: *companies
+
+      payments:
+        export_all_payments: &dash_export_all_payments Export all payments
+        export_payments_year: &dash_export_payments_year Export payments covering year
+        export_payments_year_explain: Payments that cover any of the days in the year.
+
+      tabs:
+        current:
+          tab-title: Nuvarande
+          title: "Current Items of Note:"
+          open_apps_no_files: "Open Applications with no files uploaded"
+          app_approved_no_payment: "Applications approved but no membership payment yet"
+          companies_no_branding_payment: "companies Branding license fee not yet paid"
+          companies_incomplete: "companies with information not yet complete"
+          current_members: *members
+          current_companies: *companies
+
+        activity:
+          tab-title: Aktivitet
+          title: "Activity in the past %{recent_num_days} days:"
+          payments: *payments
+          member_fee_payments: "%{number_payments} medlemskap betalningar"
+          branding_fee_payments: "%{number_payments} H-Branding betalningar"
+
+        applications:
+          tab-title: &applications Ansökningar
+          title: *applications
+
+        users:
+          tab-title: &users Användare
+          title: *users
+
+        members:
+          tab-title: *members
+          title: *members
+          total_members: *members
+
+        payments:
+          tab-title: &payments "Betalningar"
+          title: *payments
+          export_all_payments: Export all payments
+          export_payments_year: Export payments covering year
+
+        payments_membership:
+          tab-title: &payments_membership "Betalningar: medlemskap"
+          title: *payments_membership
+
+        payments_h_branding:
+          tab-title: &payments_h_branding "Betalningar: H-Branding"
+          title: *payments_h_branding
+
+    user_profile:
+      edit:
+        title: 'Redigera profil: %{user}'
+        become_this_user: &become_this_user Bli den här användaren
+        delete_this_user: *delete_user
+      update:
+        success: Användarprofil uppdaterad framgångsrikt
+        error: Ett eller flera problem hindrade profilen från att uppdateras.
+      become:
+        have_become: "Du fungerar nu som användare %{user_name} (id: %{user_id}). Logga ut och logga sedan in som administratör om du behöver administrera igen."
+      become_user_button:
+        become_this_user: *become_this_user
+
+    user_account:
+      edit:
+        is_an_admin: *is_an_admin
+        edit_user_profile: *edit_user_profile
+        email: *email
+        membership_number: *membership_number
+        admin_user_info_title: *admin_user_info_title
+        created: *created
+
+        current_sign_in_at: *user_current_signed_in_time
+        current_sign_in_ip: *user_current_ip
+        user_has_never_signed_in: *user_has_never_signed_in
+        last_login: *user_last_login
+        last_login_ip: *user_last_login_ip
+        logged_in_count: *sign_in_count
+        reset_password_sent_at: *user_reset_password_sent_at
+        password_never_reset: *password_never_reset
+
+        proof_of_membership: *proof_of_membership
+        proof_of_membership_describe: *proof_of_membership_describe
+        proof_of_membership_photo_needed: *proof_of_membership_photo_needed
+        company_h_brand: *company_h_brand
+        company_h_brand_describe: *company_h_brand_describe
+
+        image_how_to_use_html: *image_how_to_use_html
+        image_use_guidelines_html: *image_use_guidelines_html
+        use_guidelines: *use_guidelines
+
+        download_image: *download_image
+        show_image: *show_image
+        copy_image_url: *copy_image_url
+        copied: *copied
+
+
+      update:
+        success: Användarens information uppdaterad.
+        error: Ett problem hindrade användarinformationen från att uppdateras.
+
+      update_membership_status_all_modal:
+        title: "Confirm: Update membership status for all"
+        body: Do you really want to update the membership status for all users?  This will take a few minutes. Note that no emails will be sent.
+        confirm_do_updates: Yes, update all
+
+      update_membership_status_all:
+        reason_update_happened: Admin Ran Update All M.Statuses
+        success: Membership status for all members was updated. You can check the MembershipStatusUpdater log for the results.
+        error: There was a problem updating membership status for all users.  Please review the logs for details.
+
+
+    master_checklists:
+      new_item: &new_master_list_item New Master List Item
+      archived_items: &master_checklist_archived_items "Items that are no longer in use (archived)"
+
+      action_buttons:
+        view_list_item: View List Item
+        edit_list_item: Edit List Item
+        mark_no_longer_used_clone: "Mark as no longer used and create a clone"
+        all_list_items: &all_master_list_items All Master List items
+
+      delete_button_if_applicable:
+        delete: "Delete %{name}"
+        delete_confirm: &master_checklist_delete_confirm "Are you sure you want to delete the master checklist item %{name}?"
+        set_to_not_used: "Set to 'No Longer Used' (In use: cannot delete)"
+
+      errors:
+        master_checklist_id_not_found: &master_checklist_id_not_found "Master Checklist item with id %{id} was not found"
+        cannot_change_has_completed: &master_checklist_error_cant_change_has_completed (sv) Cannot change "%{attributes}" of '%{name}' because there are completed User checklists based on it.
+        cannot_change_user_visible: (sv) Cannot change the master checklist info that users see because there are User checklists based on it.
+
+      form:
+        name: *name
+        list_type: &master_checklist_list_type Listtyp
+        is_in_use: *master_checklist_in_use
+        is_no_longer_used: *no_longer_used
+        is_no_longer_used_as_of: "as of %{date}"
+        is_in_use_changed_at: *master_checklist_in_use_changed_at
+        displayed_text: *displayed_text
+        description: &master_checklist_description Description displayed to users
+        parent_list: &parent_list Parent list
+        list_position: &list_position Position in list
+        notes: *master_checklist_admin_notes
+        top_level_list: &top_level_list (This is a top level list.)
+        child_items: &child_items Items
+        leave_blank_adds_to_end: "Leave the position (order) blank to add this to the end of the list."
+
+      new:
+        title: New Master Checklist Item
+        name: *name
+        displayed_text: *displayed_text
+        description: *master_checklist_description
+        list_position: *list_position
+        all_list_items: *all_master_list_items
+      create:
+        error: "There was a problem creating and saving the master checklist item %{name}."
+        success: "%{name} was created and saved."
+      edit:
+        title: "Editing %{name}"
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+
+      update:
+        error_cant_change_has_completed: *master_checklist_error_cant_change_has_completed
+        error:  "There was a problem updating the master checklist item %{name}."
+        success: "The master checklist item %{name} was updated."
+      index:
+        title: &master_checklist_index_title Master Checklists
+        name: *name
+        displayed_text: &master_checklist_index_displayed_text Displayed as
+        displayed_description: Displayed Description
+        in_parent_col: in list
+        pos_in_list: &pos_in_list "pos. in list"
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        new_item: *new_master_list_item
+        archived_items: *master_checklist_archived_items
+
+      index_as_table:
+        title: *master_checklist_index_title
+        delete_confirm: *master_checklist_delete_confirm
+        displayed_text: *master_checklist_index_displayed_text
+        name: *name
+        new_item: *new_master_list_item
+      show:
+        title: "Master Checklist Item"
+        is_in_use: *master_checklist_in_use
+        is_no_longer_used: *no_longer_used
+        is_no_longer_used_as_of: "as of %{date}"
+        is_in_use_changed_at: *master_checklist_in_use_changed_at
+        displayed_text: *displayed_text
+        description: *master_checklist_description
+        list_position: *list_position
+        notes: *master_checklist_admin_notes
+        parent_list: *parent_list
+        top_level_list: *top_level_list
+        child_items: *child_items
+        new_child_in_list: New Item in this list
+        new_child_makes_this_a_list: New Child item (makes this a list)
+        list_type: *master_checklist_list_type
+        subtitle_list_type_start: "Detta är en "
+        subtitle_list_type_end: " lista."
+        archived_items: *master_checklist_archived_items
+
+      destroy:
+        error: "There was a problem deleting the master checklist item '%{name}'. It was not deleted."
+        success: "'%{name}' was deleted."
+
+      max_list_position:
+        not_found: *master_checklist_id_not_found
+
+      set_to_no_longer_used:
+        not_found: *master_checklist_id_not_found
+        error: "There was a problem setting '%{name}' to no longer in use."
+        success: "'%{name}' is now set to no longer in use."
+
+      no_more_major_changes_note_if_needed:
+        no_more_changes_allowed: There are User Checklists based on this, so no more major changes are allowed.
+        can_clone: "If you need to make changes, you can clone this one, which will set it to 'no longer in use', and then edit the new (cloned) one."
+
+      toggle_in_use:
+        not_found: *master_checklist_id_not_found
+        cannot_change_has_completed: (sv) Cannot change the master checklist because there are completed User checklists based on it.
+        cannot_change_user_visible: (sv) Cannot change the master checklist info that users see because there are User checklists based on it.
+
+      status_numbers_row:
+        status: Status
+
+      completed_numbers_span:
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+
+      non_nested_table:
+        name: *name
+        displayed_text: *displayed_text
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        pos_in_list: *pos_in_list
+
+      next_one_based_list_position:
+        not_found: *master_checklist_id_not_found
+
+
+    master_checklist_types:
+
+      new_master_checklist_type: &new_master_checklist_type "New Master Checklist Type"
+      edit_master_checklist_type: &edit_master_checklist_type "Edit Master Checklist Type '%{name}'"
+      all_master_checklist_types: &all_master_checklist_types "All Master Checklist Types"
+      delete_confirm_master_checklist_type: &delete_confirm_master_checklist_type "Delete master checklist type '%{name}'?"
+      view_master_checklist_type: &view_master_checklist_type "View '%{name}'"
+
+      index:
+        title: All Master Checklist Types
+        name: *name
+        description: *description
+        new_master_checklist_type: *new_master_checklist_type
+        delete_confirm: *delete_confirm_master_checklist_type
+
+      show:
+        name: *name
+        description: *description
+        all_master_checklist_types: *all_master_checklist_types
+        edit_master_checklist_type: *edit_master_checklist_type
+
+      new:
+        title: *new_master_checklist_type
+        name: *name
+        description: *description
+        all_master_checklist_types: *all_master_checklist_types
+
+      edit:
+        title: "Editting: %{name}"
+        name: *name
+        description: *description
+        view_master_checklist_type: *view_master_checklist_type
+        all_master_checklist_types: *all_master_checklist_types
+
+      form:
+        name: *name
+        description: *description
+
+      create:
+        error: "There was a problem creating and saving the master checklist type %{name}."
+        success: "%{name} was created and saved."
+
+      update:
+        error: "There was a problem updating the master checklist type %{name}."
+        success: "%{name} was updated."
+
+      destroy:
+        error: "There was a problem deleting the master checklist type '%{name}'. It was not deleted."
+        success: "'%{name}' was deleted."
+
+
+  mailers:
+    login_here: "Klicka här för att gå till inloggningssidan."
+    your_login_email_is: "Din e-post för att logga in är: "
+    log_in: &log_in Logga in
+    renewal_reqs: &renewal_requirements "Du kan förnya ditt medlemskap genom att skriva under medlemsåtagandet, ladda upp dokumentation på fortbildning samt betala medlemsavgiften."
+    how_to_pay_membership: "Så här betalar du medlemsavgiften:"
+    pay_membership_step: "När du är inloggad hittar du betalknappen på ditt konto."
+    here_is_acct_page: "Här är en länk till ditt konto: "
+
+    how_to_pay_hmarkt: "Så här betalar du H-märkespremien:"
+    pay_hmarkt_step: "När du är inloggad ser du när din H-märkningspremie går ut och hur du betalar på din företagssida."
+    here_is_co_page: "Här är länken där du kan redigera ditt företag: "
+    find_co_in_my_cos: Du hittar sidan för ditt företag genom att gå till menyn "Mina företag" och klicka på det företag du vill se.
+    h_brand_exp_shown: "Du ser när din H-märkningspremie går ut på din företagssida."
+
+    how_to_edit_companies:
+      title: "Hur du redigerar ditt/dina företag:"
+      go_to_my_cos_menu: Väl inloggad, leta upp "Mina företag" och klicka där.
+      see_click_co_name: Du kommer att se alla företag du tillhör, listade efter namn. Klicka på det företagsnamn du vill redigera.
+      view_then_edit: Du kommer då att se information om företaget. Längst ner ser du en knapp för att redigera företaget. Klicka på den.
+      cos_you_can_edit: "Detta är de företag du kan redigera:"
+
+    how_to_upload_files: "Hur du laddar upp filer:"
+    upload_files_step1: "Logga in. Gå till sidan som visar alla dina uppladdade filer genom att klicka på '%{login_menu_title}."
+    upload_files_step2: Klicka på menyalternativet "% {uploaded_files_menu_item}". Det tar dig till sidan med alla dina uppladdade filer. Du kan även ladda upp nya filer där.
+    upload_files_step3: (Dina uppladdade filer listas också på din kontosida-.)
+
+
+    application_mailer:
+      greeting: &email_greeting "Hej %{greeting_name}"
+
+      email_us: "Om du har några frågor eller förslag, maila oss på "
+
+      signoff: "Med vänliga hälsningar,"
+      signature: &medlemsansvarig Medlemsansvarig
+      signature_url: "https://sverigeshundforetagare.se"
+
+      footer:
+        text:
+          shf_name: *SHF_name
+          shf_motto: KOMPETENS – GLÄDJE – OMTANKE
+          email_sent_to: Det här mailet skickades till %{email_sent_to}
+          why_you_are_receiving: Du får detta e-postmeddelande eftersom du är intresserad av medlemsskap i Sveriges Hundföretagare eller för att du redan är medlem.
+
+
+    admin_mailer:
+      signoff: Tack
+
+      new_application_received:
+        subject: Ny ansökan i systemet
+        message_text:
+          new_app_arrived: "En ny ansökan har inkommit som du borde kika på. "
+          from: Från
+          view_app_here: "Du kan se medlemskapsansökan här: "
+          must_be_logged_in: &must_be_logged_in_as_admin "(Du måste vara inloggad som en administratör för att se det.)"
+
+      member_unpaid_over_x_months:
+        subject: "Members unpaid for more than %{num_months} months"
+        message_text:
+          these_are_unpaid: "These members are unpaid. Their membership fee was due over %{num_months} months ago:"
+          full_name: Namn
+
+        error_sending:  FIXME - need text to display if there is a problem sending this email
+
+
+      new_membership_granted_co_hbrand_paid:
+        subject: Ny medlem att välkomna och skicka paket till
+        message_text:
+          this_is_member: "Den här personen har betalat och är nu medlem. Välkomna dem och skicka medlemspaket, din smarta varelse!"
+          member_number: *membership_number
+          categories: *business_categories
+          company: *company_one
+          company_website: *company_website
+          company_facebook_url: Facebook
+          company_postal_address: *post_address
+
+          must_be_logged_in: *must_be_logged_in_as_admin
+
+      members_need_packets:
+        subject: Medlemmar som behöver välkomnas
+        message_text:
+          message_intro: "Dessa medlemmar behöver välkomnas samt få medlemspaket:"
+          membership start date: medlem sedan
+          categories: *business_categories
+        error_sending: "FEL! Det blev ett fel när 'Members need packets' mailet skulle skickas"
+
+
+    shf_application_mailer:
+      will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."
+
+      acknowledge_received:
+        subject: Din ansökan till Sveriges Hundföretagare är mottagen
+        message_text: "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
+        your_submitted_info: "Här är vad du har laddat upp:"
+        review_after_recevied_files: *review_after_recevied_files
+        upload_choice_intro: "Ditt val för att tillhandahålla underlag: "
+        need_to_upload: "Du måste ladda upp dina filer. Här är hur:"
+        can_upload_more: "Du kan ladda upp fler filer. Här är hur:"
+        error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
+
+      app_approved:
+        subject: Din ansökan till Sveriges Hundföretagare är godkänd.
+        message_text:
+          app_approved_and_next: "Din ansökan har nu blivit godkänd. Nu behöver du betala medlemsavgift:"
+          step_1_login_to_website: Logga in på webbplatsen
+          step_1_with_your_email: " med: %{login_email}"
+          step_2_pay: "Det gör du via: "
+          h_branding_not_paid: "När detta är gjort behöver du göra färdigt din företagssida och betala din H-märkesavgift. Mer information om hur du gör det kommer i ett mail efter att du betalt din medlemsavgift."
+          thanks:  "Tack för att du vill vara medlem och bidrar till ett kvalitetssäkrat hundsverige."
+          error_sending: *shf_email_error
+
+
+    member_mailer:
+      member_account_link: "%{account_link} (Du kan behöva logga in först innan länken fungerar. Your login is %{login_email}.)"
+      login_to_fix: För att åtgärda ovanstående behöver du logga in.
+
+      app_no_uploaded_files:
+        subject: Din ansökan till Sveriges Hundföretagare saknar underlag
+        message_text: "Detta är en automatisk påminnelse från systemet som meddelar att din ansökan saknar uppladdade filer. Filerna behövs för att vi ska kunna handlägga din ansökan. Här är hur:"
+        thanks:  "Tack för att du vill vara medlem."
+        error_sending: *shf_email_error
+
+      membership_granted:
+        subject: &subject_welcome "Välkommen som medlem i Sveriges Hundföretagare"
+        greeting: *email_greeting
+        message_text:
+          welcome:  *subject_welcome
+          youre_active: "Du har nu aktiverats som medlem i systemet. Du kan logga in och hantera din profil och bygga upp din företagssida."
+          can_edit_co_pay: "När du är inloggad kan du redigera din företagssida (glöm inte lägga till adress) och betala din H-märkesavgift här: "
+          access_fb_group: "Som medlem (med betald H-märkespremie) får du även tillgång till vår slutna Facebookgrupp: "
+          and_member_pages: "samt dolda sidor i vårt medlemssystem: "
+
+      membership_will_expire:
+        subject: Ditt medlemskap löper ut snart
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Observera att din nuvarande medlemsperiod löper ut den "
+          extend_membership: "Du kan förlänga ditt medlemskap i ytterligare 12 månader genom att betala medlemsavgiften."
+          renewal_reqs: *renewal_requirements
+
+      membership_will_expire_renewal_reqs_reminder:
+        subject: Ditt medlemskap löper ut snart
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Observera att din nuvarande medlemsperiod löper ut den "
+          renewal_reqs: *renewal_requirements
+
+      h_branding_fee_will_expire:
+        subject: Det är snart dags att betala din H-märkningspremie
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Observera att din nuvarande H-märkningspremie löper ut den "
+          how_to_pay_fee:  &pay_hbrand_be_mapped  Betala den ett år till via länken nedan. Detta gör att du fortsätter synas på kartan och fortsätter ha ett H-märkt företag.
+          company_link_login_msg: "När du är inloggad ser du när din H-märkningspremie går ut och hur du betalar på din företagssida:"
+
+      h_branding_fee_past_due:
+        subject: Ditt företags H-märkespremie är obetald.
+        greeting: *email_greeting
+        message_text:
+          fee_is_unpaid: Observera att ditt företags H-märkespremie inte är betald.
+          how_to_pay_fee: *pay_hbrand_be_mapped
+          company_link_login_msg: " (Du kan behöva logga in först innan du ser knappen för att betala)."
+
+      co_info_incomplete:
+        subject: Var god färdigställ din företagssida
+        greeting: *email_greeting
+        message_text:
+          complete_the_info: "Du behöver färdigställa informationen om %{co_identifier}. Om du inte gör det syns du inte i sökningar. Saknar du adress syns du heller inte på kartan."
+          company_needs_name: "företag: %{co_number}"
+          what_is_missing: "Här är vad som saknas:"
+          co_name_missing: "Företagsnamn"
+          co_region_missing: "Postadress"
+          please_complete: "Vänligen lägg till ovanstående information så att företagsinformationen är klar."
+          company_link_login_msg: "Här är länken där du kan redigera ditt företag: "
+
+      membership_lapsed:
+        subject: "Ditt medlemskap har löpt ut"
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Ditt medlemsskap gick ut <span class='date-warning'> %{expire_date}.</span>"
+          renew_membership: Du kan förnya ditt medlemskap och fortsätta dra nytta av medlemsfördelarna genom att logga in och betala.
+          renewal_reqs: *renewal_requirements
+          pay_on_acct_page: &pay_on_acct_page "Du betalar via "
+
+      first_membership_fee_owed:
+        subject: "Godkänd, men missat att betala?"
+        greeting: *email_greeting
+        message_text: "Du har blivit godkänd för att bli medlem, men du måste betala medlemsavgift för att kunna dra nytta av de förmåner, erbjudande och rabatter som ingår i medlemskapet. Du kan enkelt betala genom att följa stegen nedan."
+
+      membership_renewed:
+        subject:  &subject_welcome "Tack för att du förnya ditt Sveriges Hundföretagare-medlemskap"
+        greeting: *email_greeting
+        message_text:
+          awesome: "Toppen!"
+          renewed_last_day: "Du har nu förnyat ditt medlemskap. Den sista dagen för ditt medlemskap är nu "
+          companies_you_belong_to: "Här är det eller de företag du tillhör:"
+          thanks: Tack för att du är med ännu ett år.
+          company-incomplete: Ofullständig information om företag
+          company-license-expired: H-märkespremien har löpt ut eller är obetald
+
+    payment_mailer:
+      payment_made:
+        confirmation: &confirmation Bekräftelse på betald %{product}
+        subject: *confirmation
+        thank_you_for_paying: 'Tack för din inbetalning – Ditt %{product_with_name} är betalt.'
+        membership: medlemskap
+        h_brand: H-märkespremie
+        h_brand_with_name: H-märkespremie för företaget %{company}
+        order_number: *order_number
+        membership_number: *membership_number
+        company_number: *company_number
+        payment_date: *payment_date
+        payment_processor: Betalmetod
+        product: Produkt
+        price: Pris    
+        no_vat: Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.
+        questions: Om du har några frågor kring din betalning eller ditt medlemskap, kontakta oss på 
+
+  devise:
+    min_length: '(minst %{minimum_length} tecken)'
+
+    registrations:
+      new:
+        title: Skapa användare
+        create_account: Skapa konto
+        forgot_password: Glömt lösenord
+        confirm_password: &confirm_password Bekräfta nytt lösenord
+        submit_button_label: Skapa användare
+        success: Ett nytt konto har skapats
+      edit:
+        my_profile_title: &my_profile_title Redigera din profil
+        title: *my_profile_title
+        edit_profile_for_title: 'Redigera profil: %{user}'
+        unconfirmed_email_for: 'Obekräftad mailadress för: %{unconfirmed_email}'
+        leave_blank_if_no_change: lämna tomt om du inte vill byta
+        confirm_password: *confirm_password
+        current_password: Nuvarande lösenord
+        required_to_save_changes: (behövs för att spara ändringar)
+        submit_button_label: *update
+        delete_your_account: Radera ditt konto
+        unregister: Avregistrera dig
+        confirm_are_you_sure: Är du säker på att du vill radera ditt konto?
+        back: *back
+        success: Ditt konto har uppdaterats
+        password_header: Byt lösenord
+        new_password: Nytt lösenord
+        info_header: Redigera namn och e-post
+        password_confirmation: *password_confirmation
+        member_photo:
+          pic_header: Redigera profilbild
+
+    sessions:
+      new:
+        log_in: *log_in
+        title: *log_in
+        remember_me: Kom ihåg mig
+        submit_button_label: *log_in
+      destroy:
+        log_out: Logga ut
+    passwords:
+      new:
+        title: Glömt lösenordet
+        submit_button_label: Skicka återställningsinstruktioner
+      edit:
+        title: &change_password Byt lösenord
+        new_password: Nytt lösenord
+        confirm_password: *confirm_password
+        submit_button_label: *change_password
+    confirmations:
+      new:
+        do_you_need_instructions: &need_instructions Fick du inga instruktioner?
+    unlocks:
+      new:
+        do_you_need_instructions: *need_instructions
+    omniauths:
+      new:
+        log_in_with: Logga in med
+
+
+  #----------
+  # MENUS
+  #  This section will mostly parallel the structure of the actual menus.
+  #  For submenus:  create a key that represents the submenu, and then the
+  #   the first (sub-) entry under that key should be the text displayed for
+  #   that submenu. Use the key 'submenu_title:'  (This organization is a little different than the actual
+  #   menus; it has the extra key and the title for the submenu is under
+  #   the key for the section.)
+  menus:
+    skip_to_content: Gå direkt till innehållet
+    menu: Meny
+    nav:
+      shf_main_site: &shf_main_site SHF-sajten
+      home: &home Hem
+
+      visitor:
+        home: *home
+        association: Föreningen
+        brochure: Broschyr
+        board: Styrelse
+        membership: Medlemsåtagande
+        board_statues: Stadgar
+        glossary: Ordlista
+        history: Historik
+
+        dog_owners:
+          submenu_title: Hundägare
+          about_us: &about_us Om oss
+          h_label: H-märket
+          consumer_contact: Konsumentkontakt
+          become_supporter: Bli stödmedlem
+          being_dog_owners: Att vara hundägare
+
+        entrepreneurs:
+          submenu_title: Hundföretagare
+          about_us: *about_us
+          sign_up: Bli medlem
+          be_h_labeled: Bli H-märkt
+          educational_reqs: Utbildningskrav
+          membership_commitment: Medlemsåtagande
+          ethical_guide: Etisk Guide - Lima
+          member_criteria: Medlemskriterier
+          member_benefits: Medlemsförmåner
+          quality_standards: Kvalitetskontroll
+          gdpr: GDPR
+          to_become_a_dog_business: Att Bli Hundföretagare
+        contact: Kontakt
+        find_dog_businesses: Hitta hundföretagare
+
+      users:
+        my_application: *my_application
+        apply_for_membership: Ansök om medlemsskap
+        your_account: Ditt konto
+        uploaded_files:  Dina uppladdade filer
+
+      members:
+        shf_companies: SHF-företag
+        member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
+        manage_company:
+          view_company: Visa företagssida
+          edit_company: Redigera företag
+        my_application: *my_application
+        pay_membership: *pay_membership
+
+      company:
+        pay_branding_fee: *pay_branding_fee
+
+      admin:
+        shf_main_site: *shf_main_site
+        member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
+        manage_applications: Hantera ansökningar
+        app_configuration: Appkonfiguration
+        master_checklists: Master Checklists
+        dashboard: Dashboard
+        design_guide: Design Guide
+        all_uploaded_files: All Uploaded Files
+        update_all_membership_status:  Update Membership Status...
+
+        categories:
+          submenu_title: Kategorier
+          manage_categories: Hantera kategorier
+          new_category: Ny kategori
+        companies:
+          submenu_title: Företag
+          manage_companies: Hantera företag
+          new_company: Nytt företag
+        applications:
+          submenu_title: Ansökningar
+          manage_applications: Hantera ansökningar
+          waiting_reasons: "Anledning för avvaktan"
+        users:
+          list_users: Användare
+
+        administration:
+          submenu_title: Administrering
+
+
+  footer:
+    gdpr_and_privacy: "GDPR & Integritetspolicy"
+    gdpr_and_privacy_url: gdpr-och-personuppgifter
+    purchase_terms: Köpvillkor
+    purchase_terms_url: aterbetalningsvillkor
+
+
+  #----------
+  # ERRORS
+  errors:
+    not_permitted: Du har inte behörighet att komma åt den sidan.
+    try_login: Logga in först och försök igen med den sidan.
+    format: "%{attribute} %{message}"
+    bad_search_params: "Förlåt. Vi kunde inte söka efter %{search_item} med dessa kriterier. Var god försök igen."
+    something_wrong: 'Något gick fel - vänligen ladda om sidan och försök igen.'
+    messages:
+      accepted: måste accepteras
+      blank: måste anges
+      present: får inte anges
+      confirmation: De två lösenord du angivit matchar inte.
+      empty: får ej vara tom
+      equal_to: måste vara samma som
+      even: måste vara jämnt
+      exclusion: är reserverat
+      greater_than: måste vara större än %{count}
+      greater_than_or_equal_to: måste vara större än eller lika med %{count}
+      inclusion: finns inte i listan
+      invalid: har fel format
+      less_than: måste vara mindre än %{count}
+      less_than_or_equal_to: måste vara mindre än eller lika med %{count}
+      model_invalid: "Validering lyckades inte: %{errors}"
+      not_a_number: är inte ett nummer
+      not_an_integer: måste vara ett heltal
+      odd: måste vara udda
+      required: måste existera
+      taken: används redan
+      too_long:
+        one: är för lång (max är ett tecken)
+        other: är för lång (maximum är %{count} tecken)
+      too_short:
+        one: är för kort (minimum är ett tecken)
+        other: är för kort (minimum är %{count} tecken)
+      wrong_length:
+        one: är fel längd (ska vara ett tecken)
+        other: har fel längd (ska vara %{count} tecken)
+      other_than: måste vara annat än %{count}
+    template:
+      body: 'Det var problem med följande fält:'
+      header:
+        one: Ett fel förhindrade %{model} från att sparas
+        other: "%{count} fel förhindrade %{model} från att sparas"
+
+  helpers:
+    select:
+      prompt: Välj
+    submit:
+      create: Skapa %{model}
+      submit: Spara %{model}
+      update: Ändra %{model}
+
+
+  support:
+    array:
+      last_word_connector: " och "
+      two_words_connector: " och "
+      words_connector: ", "
+
+  number:
+    currency:
+      format:
+        delimiter: ''
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: kr
+    format:
+      delimiter: ''
+      precision: 2
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Miljard
+          million: Miljon
+          quadrillion: Biljard
+          thousand: Tusen
+          trillion: Biljon
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+
+  date:
+    abbr_day_names:
+    - sön
+    - mån
+    - tis
+    - ons
+    - tor
+    - fre
+    - lör
+    abbr_month_names:
+    - jan
+    - feb
+    - mar
+    - apr
+    - maj
+    - jun
+    - jul
+    - aug
+    - sep
+    - okt
+    - nov
+    - dec
+    day_names:
+    - söndag
+    - måndag
+    - tisdag
+    - onsdag
+    - torsdag
+    - fredag
+    - lördag
+    formats:
+      default: "%Y-%m-%d"
+      long: "%e %B %Y"
+      short: "%e %b"
+    month_names:
+    - januari
+    - februari
+    - mars
+    - april
+    - maj
+    - juni
+    - juli
+    - augusti
+    - september
+    - oktober
+    - november
+    - december
+    order:
+    - :day
+    - :month
+    - :year
+
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: ungefär en timme
+        other: ungefär %{count} timmar
+      about_x_months:
+        one: ungefär en månad
+        other: ungefär %{count} månader
+      about_x_years:
+        one: ungefär ett år
+        other: ungefär %{count} år
+      almost_x_years:
+        one: nästan ett år
+        other: nästan %{count} år
+      half_a_minute: en halv minut
+      less_than_x_minutes:
+        one: mindre än en minut
+        other: mindre än %{count} minuter
+      less_than_x_seconds:
+        one: mindre än en sekund
+        other: mindre än %{count} sekunder
+      over_x_years:
+        one: mer än ett år
+        other: mer än %{count} år
+      x_days:
+        one: en dag
+        other: "%{count} dagar"
+      x_minutes:
+        one: en minut
+        other: "%{count} minuter"
+      x_months:
+        one: en månad
+        other: "%{count} månader"
+      x_years:
+        one: ett år
+        other: "%{count} år"
+      x_seconds:
+        one: en sekund
+        other: "%{count} sekunder"
+    prompts:
+      day: dag
+      hour: timme
+      minute: minut
+      month: månad
+      second: sekund
+      year: år
+
+  time:
+    am: ''
+    formats:
+      default: "%a, %e %b %Y %H:%M:%S %z"
+      long: "%e %B %Y %H:%M"
+      short: "%e %b %H:%M"
+    pm: ''

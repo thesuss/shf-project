@@ -1,0 +1,266 @@
+@import "shf-custom-colors";
+@import "payor";
+
+.field-label {
+  font-weight: bold;
+}
+
+@mixin form-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.new-company {
+  @include form-flex;
+}
+
+.edit-company {
+  @include form-flex;
+
+  .main-address {
+    font-size: larger;
+    font-weight: bold;
+    margin-top: 2rem;
+  }
+}
+
+th .complete-status {
+  font-size: smaller;
+}
+
+.row {
+  .complete-status {
+    padding-bottom: 2%;
+  }
+
+  .db-id {
+    margin-top: 1%;
+  }
+
+  .header {
+    margin-bottom: 1%;
+  }
+}
+
+.not-complete {
+  background-color: $no-background-red;
+}
+
+
+.company {
+
+  margin-bottom: 0;
+  padding-top: 1rem;
+
+  .entry-title {
+    font-weight: bold;
+  }
+
+  p {
+    margin-bottom: 0.8em;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: normal;
+  }
+
+  .complete-status {
+    .alert {
+      margin-top: 0;
+
+      .alert-heading {
+        font-weight: bold;
+      }
+
+    }
+  }
+
+  .post-category {
+    .post-categories {
+      display: inline-block;
+      list-style: none;
+      margin: 0;
+    }
+  }
+
+  .address {
+    margin-bottom: 1em;
+    margin-top: 2em;
+
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+
+  .item-nav-buttons {
+    margin-top: 3em;
+  }
+
+  .hide-search-form {
+    color: black;
+    text-transform: none;
+
+    &:hover {
+      color: $btn-hover-color;
+    }
+  }
+
+  .dinkurs-fetch-button {
+    margin-bottom: 2px;
+    margin-right: 0;
+    margin-top: 2px;
+    padding-bottom: 3px;
+    padding-left: 8px;
+    padding-right: 5px;
+    padding-top: 3px;
+  }
+
+  .fixed-table-with-border {
+    border-color: $dinkurs-fixed-table-border;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 20px;
+    table-layout: fixed;
+  }
+
+  .col-width-40pc {
+    width: 40%;
+  }
+
+  .col-width-35pc {
+    width: 35%;
+  }
+
+  .col-width-15pc {
+    width: 15%;
+  }
+
+  .col-width-10pc {
+    width: 10%;
+  }
+
+  .search-instructions {
+    margin-bottom: 20px; // same as Bootstrap panel margin-bottom
+  }
+
+  .map-marker {
+
+    p {
+      margin-bottom: 0.5rem;
+    }
+
+    .name {
+      font-size: larger;
+      font-weight: bold;
+    }
+
+    .categories {
+      font-style: italic;
+    }
+  }
+
+  .social-media {
+
+    a {
+      border-bottom: 0;
+    }
+
+    i {
+      margin-right: 15px;
+
+      &:hover {
+        filter: saturate(5);
+      }
+    }
+
+  }
+
+  .admin-only {
+    .company-applicants-list {
+      font-size: smaller;
+    }
+  }
+}
+
+
+#map {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+// The switch is the box around the slider
+.switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+
+  // Hide default HTML checkbox
+  input {
+    display: none;
+  }
+}
+
+// The slider
+.slider {
+  background-color: $slider-background-color;
+  bottom: 0;
+  cursor: pointer;
+  height: 45px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+
+  &::before {
+    background-color: $slider-before-background-color;
+    bottom: 4px;
+    content: "";
+    height: 37px;
+    left: 4px;
+    position: absolute;
+    transition: 0.4s;
+    width: 26px;
+  }
+
+  input:checked + & {
+    background-color: $slider-checked;
+  }
+
+  input:focus + & {
+    box-shadow: 0 0 1px $slider-checked;
+  }
+
+  input:checked + &::before {
+    transform: translateX(26px);
+  }
+}
+
+.dinkurs-company-id,
+.dinkurs-company-show {
+  width: 50%;
+}
+
+.dinkurs-company-show {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+label,
+.glyphicon {
+  flex: 1, 1, 100%;
+}
+
+.dinkurs-show-not {
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.url-example {
+  font-size: smaller;
+}

@@ -1,0 +1,717 @@
+@import 'shf-custom-colors';
+
+// TODO Some of these should these be put into their respective model stylesheets or if it's general, into custom ?
+// FIXME: clarify what goes here and what goes in style.scss
+
+#about-info-modal {
+
+  .modal-footer {
+    justify-content: center;
+  }
+
+  .modal-body {
+    font-size: smaller;
+  }
+
+  .version {
+    font-weight: bold;
+  }
+}
+
+#admin-change-status-buttons input {
+  margin-left: 1em;
+  text-transform: none;
+}
+
+#application-status {
+  border: 1pt solid $border-light-blue;
+  margin-left: 1rem;
+  padding-left: 1rem;
+}
+
+#application-status .row {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+#company-pay-modal p, #company-pay-modal pre {
+margin-bottom:0;
+}
+
+
+#companies_list {
+  margin-top: 30px;
+}
+
+#company-number-entry {
+  display: inline-block;
+  width: 30%;
+}
+
+#supporting-files {
+  margin-bottom: 1em;
+}
+
+#supporting-files .files {
+  background: $pastel-blue-background;
+  border: 1px solid $shf-blue;
+  padding-bottom: 20px;
+}
+
+#supporting-files .upload-more-note {
+  margin-top: 1em;
+}
+
+#supporting-files table {
+  min-width: 80%;
+}
+
+#supporting-files table th {
+  border-bottom: 0;
+  font-weight: 700;
+}
+
+#supporting-files table th,
+#supporting-files table td {
+  margin: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+#supporting-files table tr:nth-child(odd),
+#supporting-files table tr:nth-child(even) {
+  background-color: $white;
+}
+
+.admin-note {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 87%;
+}
+
+.alert {
+  margin: 1rem auto;
+  max-width: 1160px;
+}
+
+.app-section .answers .new-company-link {
+  display: inline-block;
+  margin-left: 30px;
+  margin-top: -6px;
+  vertical-align: middle;
+}
+
+.app-section h2 {
+  border-top: 3pt solid $pastel-blue-background;
+  font-weight: 700;
+  margin-top: .9em;
+  padding-top: .7em;
+}
+
+// the shf-application stylesheet doesn't seem to be used right now (it should be used; it should be put into the list in application.scss).  Until it is, these styles are here so they will be used
+.shf-applications-minimal-info {
+  .org-and-name {
+    font-size: smaller;
+    font-weight: normal;
+  }
+}
+
+
+.btco-menu .active a:focus,
+.btco-menu li a:focus,
+.navbar > .show > a:focus {
+  background: transparent;
+  outline: 0;
+}
+
+a.btn.disabled, {
+  border-color: $lightgray;
+  color: $gray;
+}
+
+.btco-menu li > a {
+  color: $black;
+  padding: 10px 15px;
+}
+
+.btn-file {
+  border: 0;
+  color: $white;
+  font-size: 1.1em;
+  line-height: 2em;
+  margin-bottom: 1em;
+  margin-left: 1em;
+  overflow: hidden;
+  position: relative;
+}
+
+.btn-file input[type=file] {
+  background: $white;
+  cursor: inherit;
+  display: block;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+
+.company p {
+  margin-bottom: .8em;
+}
+
+.company td {
+  white-space: nowrap;
+
+  &.name {
+    white-space: normal;
+  }
+}
+
+.company-members td {
+  white-space: normal;
+}
+
+.company-story img {
+max-width:100%;
+height:auto!important;
+}
+
+.company_search {
+  padding-bottom: 30px;
+}
+
+.company_search label {
+  margin: 0;
+}
+
+.dropdown-menu {
+  background-color: $white;
+  border-radius: 0;
+  border-top: 1px solid $menu-light-gray;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu .dropdown-menu {
+  background-color: $light-taupe;
+  border: 0;
+  border-radius: 0;
+  margin-top: 0;
+  width: 100%;
+}
+
+.dropdown-menu .show > .dropdown-toggle::after {
+  transform: rotate(-90deg);
+}
+
+.dropdown-menu a,
+nav.navbar .dropdown-menu li a {
+  border: 1px solid $menu-very-light-gray;
+  border-top: 0;
+  padding: 15px;
+  position: relative;
+}
+
+.entry-content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 860px;
+}
+
+.field-instruction {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.form-check-label {
+margin: 5px 0 0 0;
+}
+
+.files-to-upload-title {
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.hide-toggler {
+  border-bottom: 2px $toggler-border-bottom;
+}
+
+.hide-toggler a:link,
+.hide-toggler a:active {
+  color: $toggler-hide-color;
+}
+
+.hide-toggler > a {
+  display: block;
+  position: relative;
+  border-top: 0;
+}
+
+.hide-toggler > a:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f078'; /* fa-chevron-down */
+  position: absolute;
+  right: 0;
+}
+
+.hide-toggler > a[aria-expanded='true']:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f077'; /* fa-chevron-up */
+}
+
+.infotext p {
+  margin-bottom: 1rem; // margin: 0.5rem 0 0.5rem 0;
+}
+
+.login {
+  margin: auto 1px;
+  vertical-align: middle;
+}
+
+.logooo {
+  text-align: center;
+  width: 300px;
+}
+
+.main {
+  background: $white;
+  border-bottom: 19px solid $shf-main-brown;
+  border-top: 3px solid $shf-blue;
+  margin: 40px auto;
+  padding: 0 10px 6%;
+}
+
+.navbar {
+  padding: 9px 40px;
+}
+
+.navbar-brand img {
+  max-height: 70px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: $menu-link-very-dark-brown;
+}
+
+.no-files-uploaded-warn {
+  color: $warn-red-text;
+  font-family: 'Crimson Text', serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+  padding: 20px;
+}
+
+.no-files-uploaded-warn:before {
+  content: '\f071';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+.no-padding {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.panel-title {
+  font-size: 1.2rem;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: normal;
+}
+
+.post-categories {
+  margin: 0 auto 2%;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  max-width: 860px;
+  padding-inline-start: 0;
+}
+
+.post-categories li {
+  display: inline-block;
+  font-size: larger;
+  font-weight: bold;
+  list-style: none;
+}
+
+.post-categories li:after,
+.post-categories:before {
+  color: $categories-gray;
+  content: ' - ';
+}
+
+.required:after {
+  color: red;
+  content: '*';
+  padding-left: 0.2rem;
+}
+
+.s-column {
+  bottom: 4px;
+  position: absolute;
+}
+
+
+.search-form {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.show.shfapplication #uploaded-files .files-uploaded-list-title,
+.update.shfapplication #uploaded-files .files-uploaded-list-title,
+.company .field-label {
+  font-weight: 700;
+}
+
+.table {
+margin-top:20px;
+}
+
+
+.table th {
+  border-top:none;
+  padding: .15rem .75rem;
+}
+
+.table-sm th {
+  padding: 0.3rem;
+}
+
+.text-nicelabel {
+  display: none !important;
+}
+
+.text-nicelabel + label {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-border-radius: 5px;
+  -webkit-user-select: none;
+  background-color: $shf-blue;
+  border-radius: 5px;
+  color: $white;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0;
+  overflow: hidden;
+  padding: 10px 20px 10px 10px;
+  position: relative;
+  transition: all .2s;
+}
+
+.text-nicelabel + label > span.nicelabel-unchecked,
+.text-nicelabel + label > span.nicelabel-checked {
+  display: inline-block;
+  line-height: 16px;
+  margin-left: 7px;
+  vertical-align: bottom;
+}
+
+.text-nicelabel + label > span.nicelabel-unchecked-image,
+.text-nicelabel + label > span.nicelabel-checked-image {
+  -moz-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  -webkit-transition: all .2s linear;
+  background-position: left center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 16px;
+  transition: all .2s linear;
+  vertical-align: bottom;
+  width: 16px;
+}
+
+.text-nicelabel:not(:checked) + label {
+  background-color: $menu-light-gray;
+  color: $label-gray;
+}
+
+.text-nicelabel:not(:checked) + label > span.nicelabel-checked-image,
+.text-nicelabel:not(:checked) + label > span.nicelabel-checked,
+.text-nicelabel:checked + label > span.nicelabel-unchecked-image,
+.text-nicelabel:checked + label > span.nicelabel-unchecked {
+  display: none;
+}
+
+.text-nicelabel[disabled] + label {
+  opacity: .5;
+}
+
+.text_checkbox {
+  float: left;
+  margin-left: 20px;
+}
+
+.toggle-handle {
+  background: $white;
+}
+
+.upload-button-pre {
+  margin-bottom: 0;
+}
+
+a {
+  border-bottom: 1px solid $link-dark-brown;
+  color: $link-dark-brown;
+  text-decoration: none;
+}
+
+a:focus,
+a:hover,
+.home.front-page .widget a:focus,
+.home.front-page .widget a:hover,
+.pagination a:focus,
+.pagination a:hover {
+  border-color: $shf-blue;
+}
+
+a:hover {
+  color: $shf-blue;
+  text-decoration: none;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  background-color: $body-background;
+  color: $body-text;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  margin: 0;
+}
+
+footer {
+  font-size: smaller;
+  text-align: center;
+
+  a {
+    border-bottom: 0;
+  }
+
+  .social {
+    display: inline-flex;
+
+    i {
+      padding-right: 0.5rem;
+    }
+
+  }
+}
+
+h1 {
+  color: $link-dark-brown;
+  font-family: 'Crimson Text', serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -1px !important;
+  line-height: 45px;
+  margin: 50px auto 2%;
+  max-width: 860px;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $link-dark-brown;
+  font-family: 'Crimson Text', serif;
+  letter-spacing: -1px !important;
+}
+
+label {
+margin-bottom: 0;
+margin-top: .5rem;
+}
+
+
+.address label {margin: 0;}
+
+nav.navbar {
+  background-color: $white;
+  box-shadow: $nav-navbar-shadow 0 0 4px 0;
+  font-family: 'Open Sans', serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 11px;
+  min-height: 70px;
+}
+
+nav.navbar .current-menu-item > a {
+  color: $link-dark-brown;
+  font-weight: 600;
+}
+
+nav.navbar a {
+  border-bottom-width: 0;
+  color: $link-dark-brown;
+  display: block;
+  font-family: 'Open Sans', serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: .5px;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+nav.navbar a img,
+.navbar-brand,
+nav.navbar a.navbar-brand,
+.nav-link {
+  padding: 0;
+}
+
+nav.navbar a:hover,
+a:focus,
+a:hover,
+button:hover,
+.content .entry-title a:hover,
+.content .entry-title a:focus,
+.footer-widgets a:focus,
+.footer-widgets a:hover,
+.front-page .front-page-3 a:focus,
+.front-page .front-page-3 a:hover,
+.front-page .front-page-2 ul.checkmark li:before,
+.genesis-nav-menu .current-menu-item > a,
+.genesis-nav-menu a:focus,
+.genesis-nav-menu a:hover,
+.genesis-responsive-menu .genesis-nav-menu a:focus,
+.genesis-responsive-menu .genesis-nav-menu a:hover,
+.menu-toggle:focus,
+.menu-toggle:hover,
+.sub-menu-toggle:focus,
+.sub-menu-toggle:hover,
+.footer a:focus,
+.footer a:hover,
+.site-footer a:focus,
+.site-footer a:hover {
+  color: $shf-blue;
+}
+
+button:focus {
+  color: $white;
+}
+
+p {
+  margin-bottom: .5rem;
+  margin-top: 0;
+}
+
+table {
+  font-size: .9em;
+}
+
+input.checklist-checkbox {
+  height: 20px;
+  width: 20px;
+}
+
+input.checklist-checkbox-small {
+  height: 14px;
+  width: 14px;
+}
+
+form {
+  .error {
+    color: $warn-red;
+  }
+
+  label {
+    &.error {
+      font-weight: bold;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .entry-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 9900px) and (min-width: 1256px) {
+  .main {
+    max-width: 1160px;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-expand-md .navbar-nav .dropdown-menu {
+    margin-top: 10px;
+    position: absolute;
+  }
+
+  .navbar-expand-md .navbar-nav .dropdown-menu .dropdown-menu {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .dropdown-menu a,
+  nav.navbar .dropdown-menu li a {
+    border: 0;
+  }
+}
+
+@media (max-width: 990px) {
+  #companies_list {
+    margin-top: 0;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .app-section .answers .new-company-link {
+    display: block;
+    margin-left: 0;
+    margin-top: 3px;
+    vertical-align: default;
+  }
+
+  .dropdown-menu {
+    border: 0;
+    clear: both;
+    display: none;
+    margin: 0;
+    opacity: 1;
+    padding-left: 15px;
+    position: static;
+    width: 100%;
+  }
+
+  .navbar-brand {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .navbar-nav a {
+    border: 0;
+    margin-bottom: 1px;
+    padding: 16px 0 16px 10px;
+    width: 100%;
+  }
+
+  .navbar-toggler {
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 0;
+    padding: 10px 30px;
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+  }
+}
+
+@media (max-width: 576px) {
+  .s-column {
+    margin: 10px 0;
+    position: relative;
+  }
+}

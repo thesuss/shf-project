@@ -1,0 +1,36 @@
+version: v1.0
+name: SHF Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: 'Testblock'
+    task:      
+      env_vars:
+        - name: SHF_HIPS_URL
+          value: "https://api.hips.com/v1/"
+        - name: SHF_AWS_S3_BACKUP_TOP_PREFIX
+          value: "this/is/the/top/prefix"
+      secrets:
+        - name: shf-secrets
+      jobs:
+        - name: Tests
+          commands:
+            - checkout
+            - docker build - -t postgres:se < /home/semaphore/shf-project/.semaphore/Dockerfile
+            - docker run --rm --net host -d -e POSTGRES_PASSWORD=semaphore --name postgres -v /var/run/postgresql:/var/run/postgresql postgres:se
+            - wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
+            - sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
+            - sem-service start postgres 11 --username=postgres --password=
+            - sem-version ruby 2.6.6
+            - cache restore
+            - gem install bundler:2.2.21
+            - bundle install
+            - cp /usr/local/bin/wkhtmltoimage /home/semaphore/.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64            
+            - cache store
+            - bundle exec rake db:create db:migrate
+            - bundle exec rake db:test:prepare
+            - bundle exec rspec
+            - bundle exec cucumber --tags '(@dinkurs_fetch or @dinkurs_invalid_key) and not @skip_ci_test' 
+            - bundle exec cucumber --tags 'not @dinkurs_fetch and not @dinkurs_invalid_key and not @skip_ci_test'

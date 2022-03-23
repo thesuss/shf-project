@@ -1,0 +1,8 @@
+{
+    "remote.autoForwardPorts": false,
+
+    "cucumberautocomplete.steps": [
+        "features/step_definitions/*.rb"
+    ],
+    "cucumberautocomplete.strictGherkinCompletion": true
+}

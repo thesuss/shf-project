@@ -1,0 +1,140 @@
+-# TODO DRY with show view
+:ruby
+  checklist_master = locals.fetch(:master_checklist, nil)
+  all_allowable_parents = locals.fetch(:all_allowable_parents, [])
+  max_list_position_zerobased = locals.fetch(:max_list_position_zerobased, 0)
+  cannot_edit = checklist_master.no_more_major_changes?
+
+= form_for checklist_master, html: { class: "#{ locals.fetch(:class_name, '') }" }   do |f|
+
+  != model_errors_helper(checklist_master)
+
+  - unless checklist_master.is_in_use
+    %p.not-in-use
+      = t('.is_no_longer_used')
+      = t('.is_no_longer_used_as_of', date: checklist_master.is_in_use_changed_at)
+
+
+  .row
+    .col.name
+      .form-group
+        = f.label :name, t('.name'), class: 'required'
+        = f.text_field :name,  class: 'form-control'
+
+  .row
+    .col
+      .form-group
+        .list-type
+          = f.label :master_checklist_type_id, "#{ t('.list_type') }"
+          = f.collection_select :master_checklist_type_id, AdminOnly::MasterChecklistType.all, :id, :name, { }, { class: 'form-control' }
+
+  .row.mt-2.users-see-this
+    .col
+      %h4 Users see:
+
+      .what-users-see
+
+        .row
+          .col.displayed-text.displayed-to-users
+            - if cannot_edit
+              %p.displayed-text
+                %span.label= "#{ t('.displayed_text') }: "
+                %span.value.displayed-to-users= checklist_master.displayed_text
+            - else
+              .form-group
+                = f.label :displayed_text, t('.displayed_text'), class: 'required'
+                = f.text_field :displayed_text,  class: 'form-control displayed-to-users'
+
+        .row
+          .col.description.displayed-to-users
+            - if cannot_edit
+              %p.description
+                %span.label= "#{ t('.description') }: "
+                %span.value.displayed-to-users= checklist_master.description
+            - else
+              .form-group
+                = f.label :description, t('.description')
+                = f.text_field :description,  class: 'form-control displayed-to-users'
+
+  .row
+    .col.parent-list
+      - if cannot_edit
+        %p.parent
+          %span.label= "#{ t('.parent_list') }: "
+          %span.value= checklist_master.parent.name
+      - else
+        .form-group
+          = f.label :parent, t('.parent_list')
+          = f.collection_select :parent_id, all_allowable_parents, :id,
+           :display_name_with_depth, { include_blank: true },
+            { id: 'master-list-item-parent-id',
+            onchange:"getMaxListPosition()" }
+
+  .row
+    .col.list-position
+      - if cannot_edit
+        %p.list-position
+          %span.label= "#{ t('.list_position') }: "
+          %span.value= checklist_master.list_position
+      - else
+        .form-group
+          -# order in list is ZERO based in the db.  Add 1 to the checklist_master.list_position here so it makes sense to normal humans.
+          - max_position = max_list_position_zerobased + 1
+          = f.label :list_position, t('.list_position')
+          = number_field_tag 'admin_only_master_checklist[list_position]', checklist_master.list_position + 1,
+           min: 1, max: max_position, step: 1, id: 'master-list-position'
+
+        .col
+          %p= t('.leave_blank_adds_to_end')
+
+  .row
+    .col
+      .form-group
+        = f.label :notes, t('.notes')
+        = f.text_field :notes,  class: 'form-control'
+
+
+  .actions.form-group
+    = f.submit t('submit'), class: 'btn btn-primary mb-2 form-control'
+
+
+:javascript
+
+  SUCCESS = 200;
+
+  PARENT_ELEMENT_ID = "master-list-item-parent-id";
+  NEXT_POSITION_URL = "/admin/master-checklists/next-onebased-list-position";
+
+  window.onload = function(){
+    // checklist_master.list_position is ZERO BASED so we need to add 1
+    if (!#{ cannot_edit }) { updateListPositionMax(#{ max_list_position_zerobased + 1 }); }
+  };
+
+
+  // update the list_position field whenever the parent is changed
+  $("#" + PARENT_ELEMENT_ID).on('change',getMaxListPosition() );
+
+  function getMaxListPosition() {
+    if (!#{ cannot_edit }) {
+      let selectedParentId = document.getElementById(PARENT_ELEMENT_ID).value;
+      $.get( NEXT_POSITION_URL, { id: selectedParentId })
+        .done(function(responseData) {
+          if (responseData.status !== SUCCESS) { return failedRequest(responseData) }
+          else { updateListPositionMax(responseData.max_position + 1); }  // max_position in the db is ZERO based, so we need to add 1
+        })
+      .fail(function(responseData) { return failedRequest(responseData) });
+    }
+  }
+
+
+  function failedRequest(responseData) {
+   alert(responseData.error_text);
+          // revertInUseCheckbox();
+          return false;
+  }
+
+  // update the options in the List Position selection based on the current parent list selected
+  function updateListPositionMax(maxValue = 1) {
+    let listPositionInput = document.getElementById('master-list-position');
+    listPositionInput.setAttribute('max', maxValue.toString());
+  }

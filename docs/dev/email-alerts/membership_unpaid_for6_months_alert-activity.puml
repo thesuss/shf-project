@@ -1,0 +1,66 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+skinparam note {
+  FontStyle normal
+  FontSize 16
+  FontColor Navy
+}
+
+title Membership has been unpaid for 6 months alert\n activity diagram\n
+
+floating note
+ This first creates an entities_list (all users with membership that has been unpaid for 6 months)
+ and then, if we should send_alert_this_day? email is sent to all admin recipients.
+end note
+
+start
+
+#lightCyan:entities_to_check (Users.not_admins);
+
+#lightCyan:process_entities;
+note right
+  (light cyan = inherits from AdminEmailAlert parent class)
+end note
+
+
+
+  while (entities.each do | user |) is (\nuser)
+    #lightCyan:take_action(user, log);
+
+    :add_entity_to_list?(entity));
+    if (\nRequirementsForMemberUnpaidForXMonths.requirements_met?\n({ user: user, num_months: NUM_MONTHS })\n) then (\ntrue)
+      #lightCyan:entities_list.append(entity);
+    else (false)
+    endif
+
+  :next entity |
+  endwhile
+
+
+if (! entities_list.empty?) then (\ntrue)
+  #lightCyan:send_alert_this_day?;
+
+  if (self.class.timing_matches_today?(timing, config)) then (\ntrue)
+    if (timing_is_every_day?(timing) || \ntoday_is_timing_day_of_month?(timing, config)) then (\ntrue)
+
+      while (recipients.each do | admin |)
+        #lightCyan:send_email(admin, log, [entities_list]);
+        :next_recipient |
+      endwhile
+
+    else (false)
+    endif
+
+  else (false)
+  endif
+
+
+else (false)
+endif
+
+stop
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

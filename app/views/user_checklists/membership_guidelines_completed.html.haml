@@ -1,0 +1,30 @@
+.membership-guidelines
+  - overall_progress = @overall_progress
+
+  = render partial: 'checklist_header', locals: { user: @current_user, user_checklist: @user_checklist.root }
+
+  .entry-content.container
+    .user-checklist.membership-guidelines-completed
+      = render partial: 'user_checklists/checklist_top_desc', locals: {user_checklist: @user_checklist}
+
+      .completed-progress-bar
+        = render partial: 'shared/progress_bar', locals: {  percent_complete: overall_progress }
+
+      .row
+        .col
+          -# Can't make the card a shared partial because the other view that uses this card needs to update the progress bar.
+          -# This is an excellent use case for using Vue or React (to take advantage of components automatically reacting to change)
+          .card
+            .card-body
+              %h3.card-title= t('.i_commit_to')
+
+              = render partial: 'checklist_tree_as_list', locals: { user_checklist: @user_checklist.root }
+
+            .card-footer
+              .row.justify-content-center
+                %h4
+                  %span.is-complete.show-inline#all-complete-icon
+                    = complete_check_icon(html_options: { class: 'fa-fw', id: 'fas-all-complete-icon' })
+                  = t('.agreed_to_all_terms')
+              .row.justify-content-center
+                %p= link_to t('.back_to_my_profile'), user_path(@user), class: 'btn btn-sm btn-primary'

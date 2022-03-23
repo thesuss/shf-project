@@ -1,0 +1,49 @@
+-# Local vars -
+  shf_application: a member's SHF application
+  business_category: the BusinessCategory instance
+  subcategories: subcategories currently assigned to shf_application
+  language: language identifier
+
+%tr.business_category.category-edit-row{ id: "subcategories-edit-row-#{business_category.id}" }
+
+  %td{ colspan: 3 }
+
+    = form_for shf_application, remote: true,
+               url: business_subcategories_shf_application_path(shf_application,
+                                business_category_id: business_category.id),
+               method: :put,
+               html: { class: 'edit-category-form' } do |f|
+
+      %table.table.border.border-dark
+        %thead
+          %tr
+            %th.center-text{ colspan: 4 }= t('.add_remove_subcategories')
+
+        %tbody
+          %tr
+
+            %td.name= business_category.name
+
+            %td
+              - opts = options_from_collection_for_select(business_category.children.order(:name),
+                                                          :id, :name,
+                                                          subcategories.map(&:id))
+
+              = select_tag :subcategories, opts,
+                         { include_blank: false,
+                           multiple: true, size: 5, style: 'width: 100%;',
+                           class: 'form-control subcategories_field',
+                           id: "subcategories-for-category-#{business_category.id}",
+                           data: { language: language } }
+
+            %td.border-right.border-dark
+              .float-right
+                = f.submit t('save'), class: 'btn btn-success btn-sm float-right'
+                %br
+                %br
+                = link_to t('cancel'),
+                          get_display_row_business_category_shf_application_path(shf_application,
+                                                      business_category_id: business_category.id),
+                          remote: true,
+                          class: 'edit-subcategories-cancel-button btn btn-danger btn-sm mt-1',
+                          id: "cancel-subcategories-edit-#{business_category.id}"

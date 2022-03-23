@@ -1,0 +1,141 @@
+@import 'shf-custom-colors';
+
+.app_configuration {
+
+  .section {
+    margin-bottom: 2em;
+    margin-left: 1em;
+  }
+
+  .field-label {
+    font-weight: bold;
+  }
+
+  .description {
+    font-size: smaller;
+    font-weight: normal;
+    margin-top: -0.5rem;
+  }
+
+  .empty-warning {
+    color: $missing-info-color;
+    font-weight: bold;
+  }
+
+  .membership-expired-grace-period,
+  .membership-term-duration {
+    .duration {
+      margin-left: 2rem;
+    }
+  }
+
+  .duration {
+    .field-label {
+      font-weight: normal;
+      margin-right: 1.5rem;
+    }
+  }
+
+  .durations-timings {
+    .number {
+      margin-right: 0.5rem;
+      text-align: right;
+    }
+  }
+
+  .card {
+    margin: 3px;
+
+    .image {
+
+      a {
+        border: 0;
+      }
+
+      .card-header {
+        font-weight: bold;
+      }
+
+      .card-header.required {
+        background-color: $shf-blue;
+        color: white;
+      }
+
+      .card-body {
+        img {
+          border: 1pt solid $light;
+          width: 100%;
+        }
+      }
+
+      .missing {
+        .card-header {
+          color: $missing-info-color; // can use this to show that an image is not in the database (perhaps it's being read from the app/assets)
+        }
+
+        .card-header.required {
+          background-color: $missing-info-color;
+          color: white;
+        }
+      }
+
+
+    }
+
+  }
+
+  .field.upload-image {
+
+    margin-top: 1rem;
+
+    input {
+      border: 1pt solid $light;
+      font-size: smaller;
+    }
+  }
+
+}
+
+.app_configuration.edit {
+
+  .card {
+    margin-top: 2rem;
+  }
+
+  .description {
+    margin-top: 0;
+  }
+
+  .form-check {
+    line-height: 1em;
+  }
+
+  .form-row {
+    margin-top: 1rem;
+  }
+
+  .field-label {
+    margin-right: 0.5rem;
+  }
+
+
+
+  .durations-timings {
+
+    .form-control {
+      padding: 0.25rem;
+    }
+
+    .number {
+      margin-right: 0.5rem;
+    }
+
+    .timing-days {
+      input {
+        text-align: right;
+        width: 4rem;
+      }
+    }
+
+  }
+}

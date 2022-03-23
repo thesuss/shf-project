@@ -1,0 +1,70 @@
+@import "shf-custom-colors";
+
+$pagination-li-radius: 0.2rem;
+
+
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+}
+
+.pagination .active {
+  z-index: 1;
+  color: #fff;
+  background-color: $paginate-background;
+  border-color: $paginate-background;
+}
+
+.pagination .active a {
+  color: $white;
+}
+
+.pagination .disabled a {
+  color: grey;
+}
+
+.pagination .disabled:hover {
+  color: grey;
+  background-color: $white;
+}
+
+.pagination li a {
+  position: relative;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid $paginate-li-a-border;
+  font-size: .875rem;
+  line-height: 1.5;
+  padding: .25rem .5rem;
+}
+
+.pagination li a:focus {
+  z-index: 2;
+  outline: 0;
+  box-shadow: 0 0 0 $pagination-li-radius $paginate-li-a-focus-shadow;
+}
+
+.pagination li a:hover {
+  z-index: 2;
+  text-decoration: none;
+  color:$paginate-li-a-hover;
+  background-color: $paginate-li-a-hover-background;
+  border-color: $paginate-li-a-border;
+}
+
+.pagination li a:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
+.pagination li:first-child a {
+  margin-left: 0;
+  border-top-left-radius: $pagination-li-radius;
+  border-bottom-left-radius: $pagination-li-radius;
+}
+
+.pagination li:last-child a {
+  border-top-right-radius: $pagination-li-radius;
+  border-bottom-right-radius: $pagination-li-radius;
+}

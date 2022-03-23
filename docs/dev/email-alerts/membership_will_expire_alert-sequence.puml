@@ -1,0 +1,77 @@
+@startuml
+
+!include plantuml-ae-style.iuml
+
+title Membership will expire alert sequence:\nparent classes and entities\n
+
+
+
+participant MembershipExpireAlert order 3  #lime
+
+participant EmailAlert order 1 #lightcyan
+
+participant "Entity (User)" as Entity order 4 #LemonChiffon
+
+participant UserEmailAlert order 2 #PaleTurquoise
+
+participant "MembershipExpireAlert class" as MembershipExpireAlertClass order 5 #paleGreen
+
+
+participant "EmailAlert class" as EmailAlertClass order 6 #PaleTurquoise
+
+
+
+activate EmailAlertClass #PaleTurquoise
+
+MembershipExpireAlertClass -> EmailAlertClass: <b>condition_response(condition, log)</b>
+
+activate EmailAlert #lightcyan
+EmailAlertClass -> EmailAlert: condition_response(condition, log)
+
+EmailAlert -> EmailAlertClass: get_config(condition)
+EmailAlertClass -> EmailAlert: config
+EmailAlert -> EmailAlertClass: get_timing(condition)
+EmailAlertClass -> EmailAlert: timing
+deactivate EmailAlertClass
+
+
+activate UserEmailAlert #PaleTurquoise
+EmailAlert -> UserEmailAlert: entities_to_check
+UserEmailAlert -> EmailAlert: User.all
+deactivate UserEmailAlert
+
+EmailAlert -> EmailAlert: process_entities(entities_to_check, log)
+
+
+group entities.each do | entity |
+  EmailAlert -> EmailAlert: take_action(entity, log)
+
+  activate MembershipExpireAlert #paleGreen
+  EmailAlert -> MembershipExpireAlert: send_alert_this_day?(timing, config, entity)
+
+  activate Entity #LemonChiffon
+  MembershipExpireAlert -> Entity: user.membership_current?
+  Entity -> MembershipExpireAlert:
+  deactivate Entity
+
+  activate MembershipExpireAlertClass  #paleGreen
+  MembershipExpireAlert -> MembershipExpireAlertClass: days_today_is_away_from(user.membership_expire_date, timing)
+  MembershipExpireAlertClass -> MembershipExpireAlert: day_to_check
+  deactivate MembershipExpireAlertClass
+
+  MembershipExpireAlert -> EmailAlert: send_on_day_number?(day_to_check, config)
+
+  deactivate MembershipExpireAlert
+
+  group if the alert should be sent today
+    EmailAlert -> EmailAlert: send_email(entity, log)
+
+  end group
+
+end group
+
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

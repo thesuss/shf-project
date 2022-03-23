@@ -1,0 +1,53 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+skinparam PartitionFontSize 11
+skinparam PartitionFontStyle italic
+skinparam PartitionFontColor saddlebrown
+
+title H-Branding Fee will expire alert\n activity diagram\n
+
+start
+
+:entities_to_check (Companies.all);
+
+:process_entities;
+
+while (entities.each do | entity |) is (\nthere is another company in entities)
+  :take_action(company, log);
+
+  :send_alert_this_day?;
+
+
+  if (send_alert_this_day?(@timing, @config, company) then
+
+    if (\nRequirementsForHBrandingFeeWillExpire.requirements_met?\n({ company: company})\n) then
+
+      if ( send_on_day_number?(day_to_check, config)) then (true)
+
+        while (company_recipients.each do | member|)
+          :send_email(company,member, log);
+
+        endwhile
+      else (\nfalse)
+      endif
+    else (\nfalse)
+    endif
+
+  else (\nfalse)
+  endif
+
+
+
+  :next_company
+  <i>next company in entities.each</i>;
+endwhile (no more entities to process)
+
+
+:finished processing all entities;
+stop
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

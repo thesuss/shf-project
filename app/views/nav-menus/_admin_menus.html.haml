@@ -1,0 +1,13 @@
+= nav_menu_dropdown_li(text: t('menus.nav.admin.applications.submenu_title'), link: '#') do
+  %ul.dropdown-menu
+    = nav_menu_item_li(text: t('menus.nav.admin.manage_applications'), link: shf_applications_path)
+    = nav_menu_item_li(text: t('menus.nav.admin.applications.waiting_reasons'), link: admin_only_member_app_waiting_reasons_path)
+
+= nav_menu_dropdown_li(text: t('menus.nav.admin.companies.submenu_title'), link: '#') do
+  %ul.dropdown-menu
+    = nav_menu_item_li(text: t('menus.nav.admin.companies.manage_companies'), link: companies_path)
+    = nav_menu_item_li(text: t('menus.nav.admin.companies.new_company'), link: new_company_path)
+
+
+= nav_menu_item_li(text: t('menus.nav.admin.categories.submenu_title'), link: business_categories_path)
+= nav_menu_item_li(text: t('menus.nav.admin.users.list_users'), link: users_path)

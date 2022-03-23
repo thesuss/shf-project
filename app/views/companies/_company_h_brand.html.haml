@@ -1,0 +1,50 @@
+%html
+  -# NOTE: this does not use the application layout, so the stylesheet link tag must explicitly be in the head section
+  %head
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans:400,700'
+    = stylesheet_link_tag 'company-h-brand', media: 'all'
+
+  %body
+
+    .custom-context-menu#company-h-brand
+      - render_as = :html unless local_assigns[:render_as]
+
+      - if app_config.h_brand_logo
+        = image_tag(paperclip_path_str(app_config.h_brand_logo, :standard, render_as),
+                    class: 'h-brand-logo')
+
+      .current-year
+        = Time.zone.now.year
+
+      - if app_config.sweden_dog_trainers
+        = image_tag(paperclip_path_str(app_config.sweden_dog_trainers,
+                    :standard, render_as), class: 'sweden-dog-trainers')
+
+      %hr.company-info-separator
+
+      %p.company-info
+
+        %span.company-name
+          = company.name
+        %br
+        = list_categories(company, ', ')
+
+    - if render_as == :html && context == 'internal'
+      %div
+        %br
+        = t('users.show_member_images_row_cols.image_dimensions_html', width_id: 'h-brand-width',
+            height_id: 'h-brand-height')
+        %br
+        %br
+        = t('users.show_member_images_row_cols.use_this_image_link_html')
+        = short_h_brand_url(company)
+
+      :javascript
+        window.onload = function(){
+          var image = document.getElementById('company-h-brand');
+
+          if (image !== undefined) {
+            document.getElementById('h-brand-width').textContent = image.offsetWidth;
+            document.getElementById('h-brand-height').textContent = image.offsetHeight;
+          }
+        };

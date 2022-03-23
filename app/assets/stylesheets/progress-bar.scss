@@ -1,0 +1,29 @@
+// Include in this stylesheet when displaying a progress bar.
+// Ex:
+// - content_for :stylesheet_for_view do
+//  = stylesheet_link_tag 'progress-bar', media: 'all'
+
+@import "shf-custom-colors";
+
+.progress {
+
+  height: 1.5rem;
+  margin-bottom: .5rem;
+  margin-top: .5rem;
+  overflow: visible;
+
+  .percent-text {
+    color: $body-text;
+  }
+
+  .progress-bar {
+    background-color: $progress-bar-background-color;
+    overflow: visible;
+  }
+
+  .progress-bar.is-complete {
+    background-color: $progress-bar-complete_color;
+    overflow: visible;
+  }
+
+}

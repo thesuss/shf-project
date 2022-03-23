@@ -1,0 +1,45 @@
+-# FIXME: This is really a modal for editting a Membership.
+-# TODO:  Add first_day.  Disable first, last days if the membership is set to not a member (member == false)
+.modal#edit-status-modal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+
+      = form_for user, url: edit_status_user_path(user),
+                 method: :put, remote: true,
+                 html: { id: 'user-status-form' } do |f|
+        .modal-header
+          %h4.modal-title.text-center
+            = t('users.user.edit_member_status')
+          %button.close{ type: 'button', data: { dismiss: 'modal' } }
+            %span{ 'aria-hidden' => 'true' } &times;
+
+        .modal-body
+          .container-fluid
+            %label
+              #{t('users.show.member')}?
+            %br
+            = f.collection_radio_buttons(:member,
+                                             boolean_radio_buttons_collection,
+                                             :first, :second, {}) do |rb|
+
+              = rb.label(class: 'form-check form-check-inline') do
+                = rb.radio_button + ' ' + rb.text  + ' '
+
+            %hr
+            = fields_for :membership, user.current_membership do |current_membership|
+              %label #{t('activerecord.attributes.membership.last_day')}:
+              = current_membership.date_select(:last_day,
+                               { start_year: Time.current.year,
+                                 end_year: Time.current.year + 2},
+                               { class: 'form-control select-box form-control-sm' })
+              %hr
+              = current_membership.label :notes,
+                         "#{t('activerecord.attributes.membership.notes')}:"
+              = current_membership.text_area :notes, class: 'form-control'
+
+        .modal-footer
+          = f.submit t('users.user.submit_button_label'), class: "btn btn-primary form-control",
+                     id: 'edit-user-status-submit'
+
+          %button{ type: 'button', class: 'btn btn-outline-secondary', data: { dismiss: 'modal' } }
+            = t('cancel')

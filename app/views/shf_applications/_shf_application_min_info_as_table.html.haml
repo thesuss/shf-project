@@ -1,0 +1,38 @@
+-# Display a minimal amount of information for a ShfApplication as a table row
+-#
+-# This partial expects the following local(s):
+-#   application - the application that is being displayed as a table row
+-#
+%table.table.table-hover.table-sm.table-md-responsive.shf-applications-minimal-info
+  %thead
+    %tr
+      %th
+        = t('activerecord.attributes.shf_application.contact_email')
+      %th
+        = t('activerecord.attributes.shf_application.state')
+      %th
+        = t('activerecord.models.company.one')
+        %span.org-and-name=  ' (' + t('.org_nr') + ', ' + t('.company_name') + ')'
+      %th
+
+  %tbody
+    %tr.shf-application-minimal-info
+      - if application.nil?
+        %td ---
+      - else
+        %td.contact-email= mail_to(application.contact_email, application.contact_email, title: "mail_to: #{application.contact_email}")
+        %td.state
+          - i18n_state = t("shf_applications.state.#{application.state}")
+          - style_for_state =  (application.accepted? ? 'yes' : 'maybe')
+          = link_to i18n_state, application, title: t('.view_application'), class: style_for_state
+
+        - if application.companies.any?
+          %td.company
+            %table.companies.table-borderless
+              - application.companies.each do | app_company |
+                %tr.company{class: (app_company.information_complete? ? '' : 'not-complete') }
+                  %td.company-number= link_to(app_company.company_number, company_path(app_company))
+                  %td.company-name= link_to(app_company.name, company_path(app_company))
+        - else
+          %td.company-number
+          %td.company-name

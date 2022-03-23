@@ -1,0 +1,71 @@
+---
+# YAML Seed data for the SHF project
+# YAML Data for class: Seeders::FileDeliveryMethodsSeeder
+# Date written: 2020-01-16 13:38:47 -0800
+# ----------------------
+- id: 1
+  name: upload_now
+  description_sv: Ladda upp nu
+  description_en: Upload now
+  default_option: true
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &1 2020-01-16 17:10:54.094841000 Z
+    zone: &2 !ruby/object:ActiveSupport::TimeZone
+      name: Etc/UTC
+    time: *1
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &3 2020-01-16 17:10:54.094841000 Z
+    zone: *2
+    time: *3
+- id: 2
+  name: upload_later
+  description_sv: Ladda upp senare
+  description_en: Upload later
+  default_option: false
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &4 2020-01-16 17:10:54.103912000 Z
+    zone: *2
+    time: *4
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &5 2020-01-16 17:10:54.103912000 Z
+    zone: *2
+    time: *5
+- id: 3
+  name: email
+  description_sv: Skicka via e-post
+  description_en: Send via email
+  default_option: false
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &6 2020-01-16 17:10:54.112060000 Z
+    zone: *2
+    time: *6
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &7 2020-01-16 17:10:54.112060000 Z
+    zone: *2
+    time: *7
+- id: 4
+  name: mail
+  description_sv: Skicka via vanlig post
+  description_en: Send via regular mail
+  default_option: false
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &8 2020-01-16 17:10:54.115279000 Z
+    zone: *2
+    time: *8
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &9 2020-01-16 17:10:54.115279000 Z
+    zone: *2
+    time: *9
+- id: 5
+  name: files_uploaded
+  description_sv: Alla filer är uppladdade
+  description_en: All files are uploaded
+  default_option: false
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &10 2020-01-16 17:10:54.118157000 Z
+    zone: *2
+    time: *10
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &11 2020-01-16 17:10:54.118157000 Z
+    zone: *2
+    time: *11

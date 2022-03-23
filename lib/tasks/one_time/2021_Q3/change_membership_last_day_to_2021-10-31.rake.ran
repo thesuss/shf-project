@@ -1,0 +1,74 @@
+require 'active_support/logger'
+
+namespace :shf do
+
+  namespace :one_time do
+
+    def memberships_to_change(time_range)
+      Membership.where(last_day: time_range).distinct.order(:last_day)
+    end
+
+
+    def change_membership_last_day_and_notes(membership, new_last_day, task_name)
+      changed_by_task_str = "Changed by rake task #{task_name} on #{Time.now} : "
+      last_day_changed_str = "Membership last_day changed to #{new_last_day.iso8601}. Original last_day was #{membership.last_day.iso8601}."
+
+      new_note = membership.notes.to_s + ' | ' +
+         changed_by_task_str + last_day_changed_str
+      membership.update!(last_day: new_last_day)
+      membership.update!(notes: new_note)
+      membership
+    end
+
+
+    desc "change Memberships last_day to 2021-Oct-31 for members and companies with last_date 2021-01-01 to 2021-10-30"
+    task change_memberships_last_date_to_2021_10_31: [:environment] do |this_task|
+      task_name_end = this_task.to_s.split(':').last # the task name without the namespace(s)
+
+      new_last_day = Date.new(2021, 10, 31)
+      min_last_day = Date.new(2021, 01, 01)
+      max_last_day = Date.new(2021, 10, 30)
+
+      log_msg_starter = "Change Membership last_days and Company branding license last_days to #{new_last_day.iso8601}"
+
+      time_range = min_last_day..max_last_day
+
+      ActivityLogger.open(LogfileNamer.name_for("SHF-one-time-task-#{task_name_end}"), 'OneTimeRakeTask', task_name_end) do |log|
+        log.info(log_msg_starter)
+        begin
+          num_memberships_changed = 0
+          memberships_in_range  = memberships_to_change(time_range)
+          memberships_in_range.each do |membership|
+            unless membership.user_id.blank?
+              change_membership_last_day_and_notes(membership, new_last_day, this_task.to_s)
+
+              # 2021-09-19: Had to manually fix up memberships because I blorfed them up.
+              # I used the following to fix up those that were changed to former_members mistakenly and in_grace_period:
+              #
+              # former_member_not_expired = User.former_member.select{|m| m.membership_expire_date > Date.current }
+              # former_member_not_expired.each{ |m| m.update(member: true, membership_status: 'current_member') }
+              # in_grace_not_expired = User.in_grace_period.select{|m| m.membership_expire_date > Date.current }
+              # in_grace_not_expired.each{ |m| m.update(member: true, membership_status: 'current_member') }
+
+
+              MembershipStatusUpdater.instance.update_membership_status(membership.user,
+                                                                        membership.user,
+                                                                        'SHF Extended membership',
+                                                                        send_email: false)
+              num_memberships_changed += 1
+             end
+          end
+          log.info(" #{num_memberships_changed} Memberships updated")
+
+        rescue => error
+          error_message = ">> ERROR! Could not change membership last_day: #{error.message}\n #{error.backtrace.join("\n")}"
+          log.error error_message
+          raise error, error_message
+        end
+
+        log.info("\n#{log_msg_starter} successful and complete.")
+      end
+    end
+  end
+
+end

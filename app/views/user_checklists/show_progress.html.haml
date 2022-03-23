@@ -1,0 +1,159 @@
+- content_for :javascript_for_view do
+  = javascript_include_tag 'user-checklists.js'
+
+-# The variables below are also used in the javascript
+:ruby
+  checkbox_id = 'completed-checkbox'
+  complete_txt = t('.complete')
+
+  is_completed_icon_id = 'fas-is-complete-icon'
+  next_link_id = 'next-link'
+  contact_us_footer_id = 'contact-us-footer'
+
+  whiteout_class = 'whiteout'
+  show_class = 'is-complete'
+
+
+.membership-guidelines
+  - overall_progress = @overall_progress
+
+  = render partial: 'checklist_header', locals: { user: @current_user, user_checklist: @checklist_root }
+
+  .entry-content.container
+    .user-checklist
+      = render partial: 'user_checklists/checklist_top_desc', locals: {user_checklist: @user_checklist}
+
+      = render partial: 'shared/progress_bar', locals: {  percent_complete: overall_progress }
+
+      %p.instructions= t('.read_and_agree')
+
+      .row
+        .col
+          -# Can't make the card a partial because we need to update the progress bar.
+          -# This is an excellent use case for using Vue or React (to take advantage of components automatically reacting to change)
+          .card
+            .card-body
+
+              %h4.card-title#guideline-name
+                %span.is-complete.show-inline#is-complete-icon
+
+                  -# The 'fa-fw' class is essential: That font awesome class sets a fixed width no matter what icon is shown.
+                  -# It keeps the content to the right of the icon from 'jumping over' when there is no icon to display.
+                  = complete_check_icon(html_options: { class: "fa-fw #{ whiteout_class }", id: is_completed_icon_id })
+
+                = @user_checklist.name
+
+              .agree-to-sub-guidelines
+                %p.i-commit-to= t('.i_commit_to')
+
+                = render partial: 'checklist_tree_as_list', locals: { user_checklist: @user_checklist }
+
+                %p.have-read-confirmation
+
+                = check_box_tag(checkbox_id, 'checked', @user_checklist.all_completed?,
+                    { class: "fa-check-square",
+                      onchange:"toggleCompletedCheckbox( #{ @user_checklist.id })" })
+
+                = label_tag checkbox_id, { onchange:"toggleCompletedCheckbox( #{ @user_checklist.id })" } do
+                  = t('.read_and_agree_start')
+                  %span.name= @user_checklist.name
+                  = t('.read_and_agree_end')
+
+            .card-footer
+              .row
+                .col
+                  %p.contact-if-questions
+                    %div{ id: contact_us_footer_id }
+                      = t('.contact_if_questions')
+                      = mail_to(t('.email_display_name'), ENV['SHF_MEMBERSHIP_EMAIL'])
+
+                  - next_sibling = @user_checklist.next_sibling
+                  - if next_sibling
+                    -# Start with this not displayed; javascript below will display it via onchange
+                    -# Could use a class to change the display to none vs. setting it explicitly here. (Be careful to ensure that the DOM is set/updated correctly, especially for tests.)
+                    .next{ id: next_link_id, style: 'display: none;' }
+                      = link_to  user_user_checklist_progress_path(@user, next_sibling) do
+                        = t('.next')
+                        %span.next-arrow-icon.show-inline#next-arrow-icon
+                          = next_arrow_icon(html_options: { class: 'fa-lg', id: 'fas-next-arrow-icon' })
+
+
+:javascript
+  "use strict";
+
+  const checkboxId = "##{ checkbox_id }";
+  const isCompleteIconId = "##{ is_completed_icon_id }";
+
+  const nextLinkId = "##{ next_link_id }";
+  const contactUsFooterId = "##{ contact_us_footer_id }";
+
+  const whiteoutClass = "#{ whiteout_class }";
+  const showClass = "#{ show_class }";
+
+  const completeTxt = "#{ complete_txt }"
+
+
+  window.onload = function(){
+    updateBasedOnCompletedCheckbox();
+  };
+
+
+  function toggleCompletedCheckbox(checklistId) {
+      UserChecklists.postCheckboxChanged(checkboxId, checklistId, postCheckboxChangedSuccess);
+  }
+
+
+  // This is called if postCheckboxChanged is successful
+  function postCheckboxChangedSuccess(responseData) {
+
+    if (Utility.httpErrorOccurred(responseData) === false) {
+        // success
+        updateBasedOnCompletedCheckbox();
+        let newPercentComplete = responseData.overall_percent_complete;
+        let progressBar = $(UserChecklists.PROGRESS_BAR_ID);
+        UserChecklists.updateProgressBar(newPercentComplete, progressBar, completeTxt);
+        if (newPercentComplete === UserChecklists.ALL_COMPLETE) {
+          window.location.reload(true);
+        }
+    }
+  }
+
+
+  function updateBasedOnCompletedCheckbox() {
+    let checkbox = $(checkboxId);
+    if (checkbox.prop("checked")) {
+      showCompleteCheckIcon();
+      hideContactUs();
+      showNextLink();
+    }
+    else {
+      hideCompleteCheckIcon();
+      showContactUs();
+      hideNextLink();
+    }
+  }
+
+
+  function showContactUs() {
+    $(contactUsFooterId).toggle(true);
+  }
+
+  function hideContactUs() {
+    $(contactUsFooterId).toggle(false);
+  }
+
+  function showNextLink() {
+    $(nextLinkId).toggle(true);
+  }
+
+  function hideNextLink() {
+    $(nextLinkId).toggle(false);
+  }
+
+  function hideCompleteCheckIcon() {
+    $(isCompleteIconId).toggleClass(showClass, false).toggleClass(whiteoutClass, true);
+  }
+
+  function showCompleteCheckIcon() {
+    $(isCompleteIconId).toggleClass(showClass, true).toggleClass(whiteoutClass, false);
+  }

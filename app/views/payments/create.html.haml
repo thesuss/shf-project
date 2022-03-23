@@ -1,0 +1,7 @@
+%header.entry-header
+  - payment_type = t("payment.payment_type.#{@payment.payment_type}")
+  = content_title(t('.title', payment_type: payment_type, user_name: @payment.user.full_name))
+  .post-title-divider
+    %hr
+
+= @html_snippet.html_safe

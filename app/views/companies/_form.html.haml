@@ -1,0 +1,132 @@
+-# jQuery validate plugin:
+- content_for :javascript_for_view do
+  = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js'
+
+:ruby
+  protocol_https = "https:"
+  facebook_host = "facebook.com"
+  instagram_host = "instagram.com"
+  youtube_host = "youtube.com"
+
+  facebook_url_start = protocol_https + "//" + facebook_host
+  instagram_url_start = protocol_https + "//" + instagram_host
+  youtube_url_start = protocol_https + "//" + youtube_host
+
+
+= form_for @company, html: { class: "#{class_name}" } do |f|
+
+  != model_errors_helper(@company)
+  .container
+    .row
+      .col.form-group
+        = f.label :name, t('companies.company_name'), class: 'required'
+        = f.text_field :name,  class: 'form-control'
+      .col.form-group
+        = f.label :company_number, t('companies.show.company_number'), class: 'required'
+        = fas_tooltip(t('.org_nr_tooltip'))
+        = f.number_field :company_number,  class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :phone_number, t('companies.telephone_number')
+        = f.text_field :phone_number,  class: 'form-control'
+      .col.form-group
+        = f.label :email, t('companies.show.email'), class: 'required'
+        = f.email_field :email,  class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :website, t('companies.website_include_http')
+        = f.url_field :website,  class: 'form-control'
+      .col.form-group.dinkurs-company-id
+        = f.label :dinkurs_company_id, t('companies.show.dinkurs_key')
+        = fas_tooltip(t('.dinkurs_id_tooltip'))
+        = f.text_field :dinkurs_company_id,  class: 'form-control'
+      .col.form-group.dinkurs-company-show
+        .form-check
+          = f.label :show_dinkurs_events, t('companies.show_dinkurs_events'), class: 'form-check-label'
+          = fas_tooltip(t('.dinkurs_show_tooltip'))
+          = f.check_box :show_dinkurs_events, { class: 'form-check-input toggle', data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger'} }, "true", "false"
+
+    %p
+    %strong= t('companies.edit.social_media_links')
+    %hr
+    .row
+      .col.form-group
+        = f.label :facebook_url, t('.facebook_url')
+        = f.url_field :facebook_url,  class: 'form-control'
+        .url-example= t('.social_url_ex', example_url: "#{facebook_url_start}/#{t('.facebook_url_ex_path')}")
+      .col.form-group
+        = f.label :instagram_url, t('.instagram_url')
+        = f.url_field :instagram_url,  class: 'form-control'
+        .url-example= t('.social_url_ex', example_url: "#{instagram_url_start}/#{t('.instagram_url_ex_path')}")
+      .col.form-group
+        = f.label :youtube_url, t('.youtube_url')
+        = f.url_field :youtube_url,  class: 'form-control'
+        .url-example= t('.social_url_ex', example_url: "#{youtube_url_start}/#{t('.youtube_url_ex_path')}")
+
+    .row
+      .col.form-group
+        = f.label :description, t('companies.description')
+        = f.cktext_area :description,  class: 'form-control'
+
+    = f.submit t('submit'), class: 'btn btn-primary mb-2 form-control'
+
+:javascript
+  "use strict";
+  $(document).on('ready page:change', function() {
+    $('input[type="checkbox"].toggle').bootstrapToggle(); // assumes the checkboxes have the class "toggle"
+  });
+
+  const ProtocolHTTPS = "#{protocol_https}";
+  const FacebookHost = "#{facebook_host}";
+  const InstagramHost = "#{instagram_host}";
+  const YouTubeHost = "#{youtube_host}";
+
+  const FacebookURLError = '#{ I18n.t('companies.form.bad_url_must_start_with', url_start: facebook_url_start) }';
+  const InstagramURLError = '#{ I18n.t('companies.form.bad_url_must_start_with', url_start: instagram_url_start) }';
+  const YouTubeURLError = '#{ I18n.t('companies.form.bad_url_must_start_with', url_start: youtube_url_start) }';
+
+
+  // ensure that the url has the expected host and that the pathname is not empty
+  function urlHasHostAndSomePath(urlString = "", expectedHost = FacebookHost) {
+    let urlObj = new URL(urlString);
+    let path = urlObj.pathname.replace("/", "").trim(); // replace the first '/' with ''
+    return (urlObj.protocol === ProtocolHTTPS && urlObj.hostname === expectedHost && path.length != 0);
+  }
+
+  // Add a custom validator method that calls the urlHasHostAndSomePath function, with a name and error message
+  function addCustomValidator(validatorInfo) {
+     jQuery.validator.addMethod(validatorInfo.name, function(value, element){
+      let isValidURL = $.validator.methods.url.call(this, value, element);
+      return (isValidURL ? urlHasHostAndSomePath(value, validatorInfo.expectedHost) : false);
+    }, validatorInfo.errorMsg);
+  }
+
+  // Add custom validation methods to the jQuery validator plugin  https://jqueryvalidation.org/
+  [
+    {name: "facebookURL", expectedHost: FacebookHost, errorMsg: FacebookURLError},
+    {name: "instagramURL", expectedHost: InstagramHost, errorMsg: InstagramURLError},
+    {name: "youtubeURL", expectedHost: YouTubeHost, errorMsg: YouTubeURLError}
+  ].forEach(addCustomValidator);
+
+
+  let form_id = "#" + $('form').attr('id');
+  // validate() method used by the jQuery-validation plugin https://jqueryvalidation.org/
+  $(form_id).validate({
+    rules: {
+      "company[facebook_url]": {
+        facebookURL: true
+      },
+      "company[instagram_url]": {
+        instagramURL: true
+      },
+      "company[youtube_url]": {
+        youtubeURL: true
+      }
+    },
+    messages: {
+      "company[facebook_url]": FacebookURLError,
+      "company[instagram_url]": InstagramURLError,
+      "company[youtube_url]": YouTubeURLError
+    },
+    errorLabelContainer: ".validation-error"
+  });

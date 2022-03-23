@@ -1,0 +1,2450 @@
+---
+en:
+
+  title: "SWEDEN'S ETHICAL DOG COMPANIES"
+
+  SHF_name: &SHF_name "Swedish Dog Industry Association"
+
+  dog: dog
+
+  home: Home
+  about: About
+  more: More
+
+  show_in_english: Show the site in English
+  show_in_swedish: Show the site in Swedish
+  cannot_change_language: "Cannot change the language at this time. (Are there errors to fix?)"
+  unsaved_changes_on_page: 'Unsaved changes! Do you want to leave the page?'
+
+  password: &password Password
+
+  next: &next Next
+  previous: &previous Previous
+
+  is_required_field: Indicates a required field
+
+  user: &user user
+
+  view: &view View
+  edit: &edit Edit
+  manage: &manage Manage
+  update: &update Update
+  submit: &submit Submit
+  delete: &delete Delete
+  remove: &remove Remove
+  cancel: &cancel Cancel
+  upload: &upload Upload
+  send: &send Send
+  new: &new New
+  change: &change Change
+  save: &save Save
+  back: &back Back
+  search: &search Search
+  close: Close
+  lastupdated: &last_updated Last Updated
+
+  'yes': &yes 'Yes'
+  'no': &no 'No'
+  'Yes': *yes
+  'No': *no
+
+
+  application: &application Application
+  user_activity: User Activity
+  none: &none None
+  none_t: *none
+  none_plur: *none
+  none_n: *none
+  name_missing: Name Missing
+  including: including
+  administrator: administrator
+
+  unknown: unknown
+  no_file_uploaded: &no_file_uploaded No file uploaded
+
+  # Date and Times
+  time_ago: '%{amount_of_time} ago'
+  day: day
+  days: days
+  month: month
+  months: months
+  year: year
+  years: years
+
+  confirm_are_you_sure: &are_you_sure_confirm Are you sure?
+
+  hello: 'Hello, %{name}'
+
+  shf_home_url: &shf_home_url https://www.sverigeshundforetagare.se
+  shf_medlemssystem_url: &shf_medlemssystem_url https://hitta.sverigeshundforetagare.se
+  shf_facebook_url: &shf_facebook_url https://www.facebook.com/sverigeshundforetagare
+  shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
+  shf_instagram_url: &shf_instagram_url https://instagram.com/sverigeshundforetagare
+  shf_short_url: &shf_short_url sverigeshundforetagare.se
+
+  login_page: login page
+
+
+  info:
+    logged_in_as_admin: You are logged in as an admin.
+    under_construction: This page is under construction.  More information and features are coming.
+
+  membership: &membership membership
+
+  apply_for_membership: &apply_for_membership "Apply for membership"
+
+  theme_copyright: "© 2017 Theme by Theme Feeder. All Rights Reserved."
+
+  name: &name Name
+  org_nr: &org_nr Org no.
+
+  complete: &complete complete
+
+  accordion_label:
+    company_search_form:
+      hide: &hide_search Hide search form
+      show: &show_search Show search form
+    application_search_form_toggler:
+      hide: *hide_search
+      show: *show_search
+
+  toggle:
+    application_search_form:
+      hide: *hide_search
+      show: *show_search
+    set_new_password_form:
+      hide: "Hide the Change Password info"
+      show: "Change the User's Password"
+
+  will_paginate:
+      previous_label: "« Previous"
+      next_label: "Next »"
+      page_gap: "&hellip;"
+
+  items_per_page_tooltip: 'Select number of items per page'
+
+  ckeditor:
+    page_title: 'CKEditor Files Manager'
+    confirm_delete: 'Delete file?'
+    buttons:
+      cancel: *cancel
+      upload: *upload
+      delete: *delete
+      next: 'Next'
+
+  model_errors:
+    one: Please fix this error
+    other: Please fix these %{count} errors
+    spoofed_media_type: &spoofed_media file name (type) does not match the file
+                        content.  Please use another photo file.
+
+  my_company:
+    one: My Company
+    other: My Companies
+
+  checklist_common:
+    done: &done Done
+    complete: *complete
+    date_completed: &date_completed Date Completed
+
+
+ # Automatic and manual lookup for ActiveRecords:
+  activerecord:
+    models:
+      shf_application:
+        one: Membership Application
+        other: Membership Applications
+
+      business_category:
+        one: &business_category Category
+        other: &business_categories Categories
+
+      company:
+        one: &company_one Company
+        other: &companies Companies
+
+      shf_document:
+        one: Document
+        other: Documents
+
+      payment:
+        one: Payment
+        other: &payments Payments
+
+      user:
+        one: User
+        other: Users
+
+      task_attempt:
+        one: Task Attempt
+        other: Task Attempts
+
+      uploaded_file:
+        one: &uploaded_file_one Uploaded File
+        other: &uploaded_file_other Uploaded Files
+
+      master_checklist:
+        one: Master Checklist Item
+        other: Master Checklist Items
+
+      master_checklist_type:
+        one: Master Checklist Type
+        other: Master Checklist Types
+
+
+    attributes:
+
+      uploaded_file:
+        filename: &filename File name
+        file_size: &file_size File size
+        description: &description  Description
+        actual_file: &uploaded_file Uploaded File
+        actual_file_file_size: &uploaded_file_size Upload File
+
+      user:
+        first_name: &first_name First name
+        last_name: &last_name Last name
+        email: &email Login Email
+        password: *password
+        password_confirmation: &password_confirmation Password confirmation
+        current_password: Current password
+        membership_number: &membership_number Membership number
+        created: &created Created
+        current_sign_in_at: &user_current_signed_in_time Currently signed in at
+        current_sign_in_ip: &user_current_ip Currently signed in from IP address
+        last_login: &user_last_login Last login
+        last_login_ip: &user_last_login_ip Last logged in from IP address
+        sign_in_count: &sign_in_count Logins
+        reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
+        member: &member Member
+        date_member_packet_sent: &date_member_packet_sent Date Member Packet sent
+        member_photo: Member photo
+        member_photo_file_name: Member photo file name
+
+      payment:
+        payment_type: &payment_type Payment Type
+        status: &payment_status Status
+        start_date: &start_date Start Date
+        expire_date: &expire_date Expire Date
+        notes: &notes Notes
+        created: *created
+        last_updated: *last_updated
+
+      shf_application:
+        company_number: &company_number "Company number"
+        first_name: *first_name
+        last_name: *last_name
+        contact_email: &contact_email Contact Email
+        state: &state Status
+        phone_number: Phone number
+        uploaded_files:
+          one: *uploaded_file_one
+          other: *uploaded_file_other
+        state/new: &status_new New
+        state/under_review: &status_under_review Under review
+        state/waiting_for_applicant: &status_waiting_for_applicant  Waiting for Applicant
+        state/ready_for_review: &status_ready_for_review Ready for review
+        state/accepted: &status_accepted Approved
+        state/rejected: &status_rejected Rejected
+        state/being_destroyed: &status_being_destroyed Being Destroyed
+        companies: Company
+        business_categories: Business Services
+        file_delivery_method: File Delivery Method
+
+      member:
+        true: Member
+        false: Not member
+
+
+      address:
+        street: &street Street
+        post_code: &post_code Post code
+        city: &city City
+        kommun: &kommun Municipality
+        region: &region Region
+        region_short: &region_short Län
+        country: country
+        mail: Mail
+
+      company:
+        company_number: *org_nr
+        name: *name
+        phone_number: Phone Number
+        email: Company email
+        post_code: *post_code
+        city: *city
+        kommun: *kommun
+        region: *region
+        region_short: *region_short
+        website: &company_website Website
+        facebook_url: Facebook page URL
+        instagram_url: Instagram URL
+        youtube_url: Youtube channel
+        org_nr: *org_nr
+        dinkurs_key: &dinkurs_company_key Dinkurs Company key
+        dinkurs_company_id: Dinkurs company key
+
+
+      business_category:
+        name: &business_category_name  Name
+        description: *description
+        subcategory: &subcategory Subcategory
+        subcategories: Subcategories
+
+      shf_document:
+        title: &title Title
+        description: *description
+        uploader: &uploader Uploader
+        actual_file_content_type: Uploaded file type
+        actual_file: *uploaded_file_one
+
+      member_app_waiting_reason:
+        name_sv: "Name (Swedish)"
+        name_en: "Name (English)"
+        description_sv: "Description (Swedish)"
+        description_en: "Description (English)"
+        is_custom: "Custom reason"
+
+      app_configuration:
+        site_name: &site_name Site name
+        site_meta_title: &site_meta_title Site meta title
+        site_meta_description: &site_meta_description Site meta description
+        site_meta_keywords: &site_meta_keywords Site meta keywords
+        site_meta_image: &site_meta_image Site meta image
+        og_type: &site_og_type OG type
+        twitter_card_type: &site_twitter_card_type Twitter card type
+        facebook_app_id: &site_facebook_app_id Facebook Application ID
+        payment_too_soon_days: &payment_too_soon_days Number of days before term last day that a member can pay to renew (cannot pay before this)
+        membership_expired_grace_period: &membership_expired_grace_period 'Number of days a member can pay without penalty after their membership expires'
+        membership_expiring_soon_days: &membership_expiring_soon_days Number of days before membership last day to start warning membership will end soon
+
+      task_attempt:
+        task_name: Task name
+        task_source: Task source
+        was_successful: Was successful
+        attempted_on: Attempted on
+
+      user_checklist:
+        name: *name
+        description: *description
+        complete: *done
+        date_complete: *date_completed
+        completed: &checklist_completed Completed
+        not_completed: &checklist_not_completed Not Completed
+
+      master_checklist:
+        name: *name
+        is_in_use: &master_checklist_in_use Is Used
+        is_no_longer_used: &no_longer_used No longer in use
+        is_in_use_changed_at: &master_checklist_in_use_changed_at Is use changed
+        displayed_text: &displayed_text Name displayed to users
+        description: *description
+        list_position: Position in list
+        ancestry: Parent lists
+        notes: &master_checklist_admin_notes Notes (admin only)
+        list_type: Type
+
+      master_checklist_type:
+        name: *name
+        description: *description
+
+      membership:
+        first_day: First day
+        last_day: &membership_last_day Last day
+        member_number: *membership_number
+        notes: Notes
+        status:
+          current_member: Current
+          expires_soon: Expires Soon
+          in_grace_period: Renewal Overdue (In Grace Period)
+          former_member: Former Member
+          not_a_member: Not a Member
+
+    errors:
+
+      models:
+        uploaded_file:
+          attributes:
+            actual_file_file_size:
+              file_too_large: &file_size_too_large 'is too big.'
+            actual_file:
+              file_too_large: &file_too_large 'size must be smaller than %{max}. (Your file is %{value} bytes.)'
+            actual_file_file_content_type:
+              invalid_type: &file_content_type_forbidden Sorry, this is not a file type you can upload.
+
+
+        company:
+          attributes:
+            company_number:
+              taken: This company (organization number) already exists in the system.
+            dinkurs_company_id:
+              invalid_key: is not recognized as a company key by Dinkurs
+              invalid_format: Dinkurs information is invalid (format is bad or unknown).
+              invalid_chars: contains invalid characters (characters such as Å, Ä, Ö are not allowed)
+            company_has_active_memberships: "The company has active (accepted) membership applications."
+
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: doesn't match with the password entered.
+            member_photo:
+              spoofed_media_type: *spoofed_media
+            member_photo_content_type:
+              invalid: *spoofed_media
+            member_photo_file_name:
+              invalid: "is invalid! (NOTE: special characters (Å, Ä, Ö) cannot be used in the filename)"
+
+        app_configuration:
+          attributes:
+            chair_signature:
+              spoofed_media_type: *spoofed_media
+            shf_logo:
+              spoofed_media_type: *spoofed_media
+            h_brand_logo:
+              spoofed_media_type: *spoofed_media
+            sweden_dog_trainers:
+              spoofed_media_type: *spoofed_media
+
+        shf_document:
+          attributes:
+            actual_file_file_size:
+              file_too_large: *file_size_too_large
+            actual_file:
+              file_too_large: *file_too_large
+
+        shf_application:
+          attributes:
+            companies:
+              blank: '- Specify an existing company number (or create new company)'
+              invalid: "- %{value} is not a valid Swedish company number"
+              not_found: 'with number %{value} not found.
+                          Click the “New company” button to create the company,
+                          then try to send your application again.'
+            company_number:
+              invalid: " is not a valid Swedish company number"
+
+        condition:
+          attributes:
+            timing:
+              invalid: must be a symbol
+
+        task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} must be true or false (a Boolean)"
+
+        successful_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} can only be true"
+
+        failed_task_attempt:
+          attributes:
+            was_successful:
+              invalid: "- %{value} can only be false"
+
+
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Cannot delete record because a dependent %{record} exists"
+          has_many: "Cannot delete record because dependent %{record} exist"
+        record_not_found:
+          header: "Could not find the %{entity_type}"
+          message: "So sorry. We could not find the %{entity_type} with id %{id}."
+
+
+  shared:
+    progress_bar:
+      complete: *complete
+      progress_complete:  &progress_complete complete
+
+  about_info:
+    title: About this website
+    version: version
+
+
+  address_visibility:
+    street_address: *street
+    post_code: *post_code
+    city: *city
+    kommun: *kommun
+    none: *none
+
+
+  payors:
+    status: Status
+    no_payment_due_now: &no_payment_due_now No payment is due now.
+    due: Payment is due now.
+    past_due: Payment is past due!
+    due_by: Payment is due by %{due_date}.
+    too_early: *no_payment_due_now
+    term_paid_through: &term_paid_through Paid through
+    you_are_paid_until: You are already paid until
+    you_dont_owe_until_then: You do not owe a payment until then.
+    paying_now_extends_until: "Making a %{fee_name_payment} now will extend your %{term_name} to %{extended_end_date}."
+    do_you_want_to_pay_now: Do you really want to make a payment now?
+    yes_pay_answer: 'Yes, make a payment'
+    no_pay_answer: 'No. Nevermind. Do not make a payment'
+    admin_cant_edit: Membership status can't be updated. (Perhaps no payments have been made.)
+
+
+  payor:
+    term_status:
+      admin_user_payments_title: *payments
+
+
+  payment:
+    payment_type:
+      member_fee: Member Fee
+      branding_fee: Branding Fee
+    status:
+      paid: &paid Paid
+      never_paid: &never_paid Never Paid
+    processor_status: Processor Status
+    status_from_payment_processor:
+      skapad: created
+      avvaktan: pending
+      betald: successful
+      utgånget: expired
+      väntar_på_betalning: awaiting payments
+    term_start_date: Term Start Date
+    term_expiry_date: Term Expiry Date
+    no_payment_due_now: *no_payment_due_now
+
+
+  # =====================================
+  # Automatic and manual lookup for views:
+
+  uploaded_files:
+    index:
+      title: &uploaded_files_index_title All of your uploaded files
+      admin_title: &uploaded_files_admin_index_title All uploaded files
+      cannot_edit_or_delete_reason: You cannot edit or delete a file if it is part of an application being reviewed, approved, or rejected.
+      no_file_uploaded: *no_file_uploaded
+
+    show:
+      title: &uploaded_file_show_title "Uploaded File: %{file_name}"
+      description: *description
+
+    new:
+      title: &upload_new_file Upload a file
+      description: *description
+      submit: *submit
+      index_title: *uploaded_files_index_title
+      upload_allowed_file_types: &upload_allowed_types 'Allowed file types:'
+      upload_button_title: "Choose a file to upload..."
+
+    create:
+      success: "%{file_name} was uploaded successfully."
+      error: The was a problem saving the file.
+      invalid_upload_type: *file_content_type_forbidden
+
+    edit:
+      title: "Edit the uploaded file: %{file_name}"
+      description: *description
+      info: "You can only edit the description.  If you want to change the name or file uploaded, you'll need to delete this and upload a file."
+      submit: *submit
+      index_title: *uploaded_files_index_title
+      no_file_uploaded: *no_file_uploaded
+
+    update:
+      success: "%{file_name} was updated."
+      error: One or more problems prevented the uploaded file from being updated.
+
+    destroy:
+      success: "Uploaded file %{file_name} was successfully deleted."
+      error: "There was a problem deleting %{file_name}.  It was not deleted."
+
+    uploaded_files_list:
+      owner: Owner
+      file_name: *filename
+      description: *description
+      file_size: *file_size
+      updated_at: *last_updated
+      associated_with_application: *application
+
+    show_action_buttons:
+      show_title: *uploaded_file_show_title
+      index_title: *uploaded_files_index_title
+      admin_index_title: *uploaded_files_admin_index_title
+      delete: "Radera %{file_name}"
+
+    small_table_files_list:
+      associated_with_application: "Application"
+      date_uploaded: "Uploaded"
+      description: *description
+      file_name: file name
+
+  shf_applications:
+    new:
+      title: Apply for a Membership
+      instructions_html: 'To process your application, we need information about you and in which category you are applying as well as documents proving your skills in this/those categories. <strong>Without this we cannot review your application.</strong>'
+
+      section_title_about_you: &about_you About You
+
+      submit: *submit
+      first_name: *first_name
+      last_name: *last_name
+      phone_number: Phone number
+      company_number: *company_number
+      enter_company_number: Enter your company number (or create a new company
+                             if not yet in the system)
+      contact_email: *contact_email
+
+      can_be_same_email: Can be the same that you logged in with, but need not be.
+      application_dog_category: &application_dog_category "Services You Provide"
+      clue_selected_categories: &clue_selected_categories "Blue box = selected categories"
+
+      upload_files_section: Documents to support your application (certifications, etc.)
+      upload_files_instructions: 'The documents are very important for us to assess your application. We use them to authenticate your skills and education. This ensures that our membership standards remain high, which in turn means that the public know that the Swedish dog business is professional and reliable.'
+      upload_files: 'Upload files from your computer:'
+      upload_allowed_file_types: *upload_allowed_types
+      upload_more_files: 'You can upload more files. After you submit your application, you may still edit the application and upload more files.'
+      upload_button: "Choose files to upload..."
+      will_be_uploaded: 'These files will be uploaded when you submit your application:'
+      upload_multiple_files: To upload multiple files at once hold down the
+                             control key (Windows) or command key (Mac).
+      submit_button_label: *submit
+      need_to_enter_name_html: You must have your first and last name defined
+                          in order to create a membership application.
+                          %{edit_profile}.
+      file_delivery_selection: 'Please select how you will deliver the files needed for your application:'
+      submit_button_explain: Select a file delivery option to enable Submit
+      where_to_mail_files: We will email you the address
+      email_files_subject: My Application Files
+
+    rendering:
+      success: Action performed successfully
+
+    create:
+      success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
+      error: The was a problem creating and submitting your application.
+      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) WITH FILE UPLOAD
+      success_with_app_files_missing: YOUR APPLICATION WAS CREATED, BUT REQUIRED FILES ARE MISSING
+      upload_file_or_select_method: &upload_files Please upload files or select another delivery method
+      remember_to_deliver_files: &chosen_method Please remember to deliver files via the chosen delivery method
+
+    edit:
+      title: Edit Membership Application
+      is_ready_for_review: Is Ready for Review
+      submit_button_label: *save
+      submit_button_explain: Select a file delivery option to enable Save
+
+    update:
+      success: The application was updated.
+      error: One or more problems prevented your application from being updated.
+      enter_member_number: Please review the member number and save.
+      success_with_app_files_missing: YOUR APPLICATION WAS UPDATED, BUT REQUIRED FILES ARE MISSING
+      upload_file_or_select_method: *upload_files
+      remember_to_deliver_files: *chosen_method
+
+    show:
+      title: Application from %{user_full_name}
+      first_name: *first_name
+      last_name: *last_name
+      phone_number: Phone number
+      company_number: *company_number
+      contact_email: *contact_email
+      app_status: Application status
+      change_status: Change the status
+      membership_number: *membership_number
+      with_categories: Categories
+      delete: *delete
+      confirm_are_you_sure: *are_you_sure_confirm
+      ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
+      files_delivery_method: Chosen files delivery method
+      method_chosen_when: (chosen %{date})
+
+    business_category_display_row:
+      category_no_subcategories_html: This business category does not have any
+        subcategories yet.  You can request the %{mailto_admin} to assign
+        one or more subcategories.
+      subcategories_for: Subcategories for %{category_name}
+
+    business_category_edit_row:
+      add_remove_subcategories: Add/Remove Subcategories
+
+    index:
+      title: All incoming applications
+      name: Name
+      membership_number: No.
+      org_nr: *org_nr
+      state: *state
+      manage: *manage
+      no_search_results: No records matched your search criteria.
+      files: Files
+
+    information:
+      title: About Application and Membership
+      member:
+        title: Welcome
+        using_the_logo: &membership_logo_use "It is important that we all follow our graphic identity,
+                         that the logo is used in a uniform manner,
+                          that you do not create your own version.
+                          This is to promote recognition and clarity among customers.
+                         This also guards against counterfeits of the H mark."
+        upload_this_image: &put_membership_logo_on_your_website "We'd like you to put the image below on your website
+                            and link this image to: https://www.sverigeshundforetagare.se"
+        using_the_h_mark: &h_mark_use "We'd also like you to put the H-mark on your homepage.
+                        This shows that you have achieved the H-mark and so
+                        provide more value. Link the H-mark image to: https://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"
+        ffs: You find the image in your account.
+
+      user:
+        title: "Hey -- we're glad you're interested!"
+        how_to_apply: "To submit your membership application, go to
+                       the link below and fill in all the necessary details,
+                        including the categories that apply to you."
+        once_it_is_submitted: "Once your application is submitted, we will review it.
+                        This takes a while, so do not worry if you do not hear from us for a bit."
+        when_we_decide: "We'll send you an email with our decision.
+                        If your application is approved, we'll give you a link
+                        so you can describe and list your business here."
+
+      waiting_for_approval:
+        title: Hello, happy to have you join us.
+        in_process: We are processing your application.
+        look_over: Please look it over and make sure you have uploaded files and selected categories.
+        too_slow: If it takes us wayyy too long, send us an email to
+
+      check_payment_status:
+        approved: You are approved and it is time to pay your membership fees
+        pay_m_here: 'Pay your membership on this page:'
+        approved_since_before: You are approved since earlier but have one or more unpaid fees.
+        m_expires: 'Your membership-payment expired:'
+        h_expires_html: 'Your H-branding fee-payment for company <b>%{company}</b> expired:'
+        pay_h_here_html: 'Your H-branding fee for company <b>%{company}</b> needs to be paid:'
+
+    shf_application_min_info_as_table:
+      view_application: View application
+      org_nr: *org_nr
+      company_name: *name
+
+    shf_application_fields:
+      company_numbers_tooltip: You can enter multiple company numbers, separated by
+                               a comma or blank spaces
+
+    start_review:
+      success: The review has been started.
+      error: There was a problem starting the review for this application.
+
+    accept:
+      success: The membership has been approved.
+      error: There was an error when trying to approve the membership.
+
+    reject:
+      success: The application has been rejected.
+      error: There was an error when trying to reject the application.
+
+    need_info:
+      reason_title: Reason
+      other_reason_label: "other reason:"
+      select_a_reason: "Select a reason..."
+
+      success: 'The application has been marked as needing info. (Send email to the applicant.)'
+      error: "There was an error when trying to set the application to 'needing information.'"
+
+
+    cancel_need_info:
+      success: The application has been changed to no longer needing information from the applicant.
+      error: "There was an error when trying to set the application to 'no longer needing information from the applicant.'"
+
+    need_payment:
+      success: 'The application has been marked as waiting for payment. (Send email to the applicant.)'
+      error: "There was an error when trying to set the application to 'waiting for payment.'"
+
+    received_payment:
+      success: The membership has been approved.
+      error: There was an error when trying to approve the membership.
+
+    cancel_need_payment:
+      success: The application has been changed to no longer needing payment from the applicant.
+      error: "There was an error when trying to set the application to 'no longer needing payment from the applicant.'"
+
+    is_ready_for_review:
+      success: Your application has been submitted for another review.
+      error: There was an error when trying to submit your application for another review.
+
+    state:
+      new: *status_new
+      under_review: *status_under_review
+      waiting_for_applicant: *status_waiting_for_applicant
+      ready_for_review: *status_ready_for_review
+      accepted: *status_accepted
+      rejected: *status_rejected
+      being_destroyed: *status_being_destroyed
+
+    new_status: *status_new
+    accept_btn: Accept
+    accepted: *status_accepted
+    reject_btn: Reject
+    rejected: *status_rejected
+    under_review: *status_under_review
+    pending_completion: &pending_completion Pending completion
+    ask_applicant_for_info_btn: Ask Applicant for Info
+    cancel_waiting_for_applicant_btn: Cancel Waiting for Applicant Info
+    waiting_for_applicant: *status_waiting_for_applicant
+    applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
+    ask_applicant_for_payment_btn: Ask Applicant for Payment
+    ready_for_review: *status_ready_for_review
+    start_review_btn: Start Reviewing
+
+    awaiting_payment: Awaiting payment
+
+    all_shf_applications: All applications
+    edit_shf_application: Edit application
+    view_shf_application: View application
+    list_all_shf_applications: List all applications
+
+    uploads:
+      no_files: You have not uploaded any files for this application.
+      files_uploaded: 'Files uploaded for this application:'
+      filename: *filename
+      file_was_uploaded: &file_was_uploaded 'This file was uploaded: %{filename}'
+      confirm_delete: &upload_confirm_delete 'Are you sure you want to delete %{filename}?'
+      invalid_upload_type: *file_content_type_forbidden
+      file_too_large: &file_too_large_5MB The file must be smaller than 5 MB
+      please_upload_again: Please upload your file(s)
+      will_review_after_received: &review_after_recevied_files "Once we have received your files, we will review your application."
+
+    update_the_status: Update the status
+    application_deleted: Application deleted.
+
+
+
+  file_uploads:
+    no_files: No files have been uploaded.
+    files_uploaded: 'Files uploaded:'
+    filename: *filename
+    file_was_uploaded: *file_was_uploaded
+    confirm_delete: *upload_confirm_delete
+    invalid_upload_type: *file_content_type_forbidden
+    file_too_large: *file_too_large_5MB
+
+
+
+
+  companies:
+    new:
+      title: New company
+    create:
+      error: One or more problems prevented the company from being created.
+      success: The company was created successfully.
+      create_submit: Create Company
+      success_with_dinkurs_problem: THE COMPANY WAS CREATED, BUT PLEASE NOTE PROBLEM(S) BELOW
+    edit:
+      title: 'Editing: %{company_name}'
+      social_media_links: Social Media Links
+    update:
+      error: There was a problem updating the company.
+      success: The company was updated.
+    show:
+      company_number: *company_number
+      name: *name
+      phone_number: Phone Number
+      email: Company email
+      main_address: Main Address
+      other_addresses: Other Addresses
+      address: Address
+      mailing_address: &post_address Mail
+      street: *street
+      post_code: *post_code
+      city: *city
+      kommun: *kommun
+      region: *region
+      website: Company website
+      org_nr: *org_nr
+      delete: "Delete company"
+      confirm_are_you_sure: *are_you_sure_confirm
+      add_address: 'Add address'
+      click_to_edit: 'click to edit'
+      hbrand_status_paid: Can use the H-Brand image. (License fee is paid)
+      hbrand_status_not_paid: Cannot use the H-Brand image. (License fee is not paid)
+      term_paid_through: *term_paid_through
+      no_payment_due_now: *no_payment_due_now
+      hbrand_term_payment: H-Brand license fee payment
+      hbrand_fee: H-Brand license fee
+      hbrand_term: H-Brand license term
+      edit_branding_status: Edit Branding Status
+      payment_tooltip: Paying the H-Branding fee will extend the branding license for one year.
+      branding_fee_expire_date_tooltip: &branding_fee_expire_date_tooltip Branding license expires after this date
+      term_expire_date_tooltip : *branding_fee_expire_date_tooltip
+      members: Company Members
+      dinkurs_fetch_events: Get Dinkurs Events
+      dinkurs_fetching: Fetching events ... please wait
+      dinkurs_key: *dinkurs_company_key
+      pay_branding_fee: &pay_branding_fee Pay H-Branding Fee
+      info_is_complete: Company information is complete
+      info_is_not_complete: Company information is not complete
+      info_is_not_complete_explanation: This company will not appear on the website until all required information is complete.
+      this_info_missing: "This information is missing:"
+      complete: *complete
+
+    company_members:
+      title: &co_members Company Members
+      business_categories: *business_categories
+      is_member: *member
+      app_status: *state
+
+    company_applicants:
+      title: &co_applicants Company Applicants
+      business_categories: *business_categories
+      is_member: *member
+      app_status: *state
+
+    index:
+      title: Find H-labeled companies
+      admin_title: Edit member companies
+      name: *name
+      company_number: *org_nr
+      category: Category
+      region_land: *region
+      complete: *complete
+      h_companies_listed_below: Member companies are listed below.
+      how_to_search: Search for companies using the search form.
+      confirm_are_you_sure: *are_you_sure_confirm
+      no_search_results: No records matched your search criteria.
+      delete: *delete
+
+    destroy:
+      success: Company deleted.
+      error: Could not delete the company.
+
+    form:
+      region_tooltip: Choose "Sweden" if the company operates
+        in several counties, or "Online" if it operates mostly (or solely) online.
+      visibility_tooltip: Level of detail as seen by visitor (including maps).
+        Set to 'None' for no address visibility.
+      org_nr_tooltip: Numbers only (no hyphens)
+      dinkurs_show_tooltip: Set this switch to on (toggle to the right) to show
+                            upcoming Dinkurs events on your company page.
+      dinkurs_id_tooltip: If you have a Dinkurs.se account and want to also show
+                          the company events here, enter the Dinkurs.se company key.
+                          (You can leave it blank if you don't have a Dinkurs.se account.)
+      social_url_ex: "Ex: %{example_url}"
+      facebook_url: URL for your Facebook page
+      facebook_url_ex_path: "YourFacebookName"
+      bad_url_must_start_with: 'Invalid url. It must start with %{url_start}/ and specify your page'
+      instagram_url: URL for your Instagram page
+      instagram_url_ex_path: "YourInstagramName"
+      youtube_url: URL for your YouTube page
+      youtube_url_ex_path: "YourChannel"
+
+    company:
+      submit_button_label: Update Status
+
+    company_create_modal:
+      company_number: New company number
+
+    company_name: Company name
+    telephone_number: Phone number
+    operations_region: County of operations
+    website_include_http: Company website
+    description: Customized Company Description
+    address_visibility: Visibility
+    show_dinkurs_events: Show Dinkurs Events
+
+    all_companies: All companies
+    edit_company: Edit company
+    view_company: View company
+    list_all_companies: List all companies
+    new_company: Create new company
+
+  addresses:
+    edit:
+      title: 'Editing Address for: %{company_name}'
+      delete: 'Delete this address'
+      delete_confirm: Are you sure you want to delete this address?
+      cannot_delete_address: (Company mail address - cannot be deleted)
+      delete_address_tooltip: If you want to delete this address, specify
+                              another address as the company mail address.
+    update:
+      error: There was a problem updating the address.
+      success: The address was updated.
+    new:
+      title: 'New Address for: %{company_name}'
+    create:
+      error: One or more problems prevented the address from being created.
+      success: The address was created successfully.
+      success_sole_address: "The address was created successfully
+                            (and is the default mailing address for the company)."
+    destroy:
+      success: Address deleted.
+      error: Could not delete the address.
+
+  events:
+    show:
+      name: Company Events
+      start_date: Start Date
+      location: Location
+      fee: Fee
+      no_events: (No Scheduled Events)
+    show_not: (Showing Dinkurs events on this page has been disabled.  Edit the company to enable that.)
+
+  business_categories:
+
+    index:
+      title: Company Categories
+      name: *business_category_name
+      description: *description
+      view: *view
+      edit: *edit
+      delete: *remove
+      delete_confirm: *are_you_sure_confirm
+      add_subcategory: Add Subcategory
+      add_category: Add Category
+      edit_subcategory: Edit Subcategory
+      edit_category: Edit Category
+
+    show:
+      title: Business category (type of dog-related service)
+      description: *description
+      no_one_applied_category: &category_no_one_applied No one has applied for membership in this category yet.
+
+    new:
+      title: New business category
+      description: *description
+      no_one_applied_category: *category_no_one_applied
+
+    create:
+      success: Category created.
+
+    edit:
+      title: 'Edit: %{category_name}'
+      submit_button_label: *save
+      name: *name
+
+    update:
+      success: Category updated.
+
+    destroy:
+      success: Category deleted.
+
+    form:
+      save: *save
+
+    form_collection_checkboxes:
+      title: *application_dog_category
+      clue_selected_categories: *clue_selected_categories
+
+    new_business_category: New business category
+    new_business_subcategory: New subcategory
+    all_business_categories: All categories
+
+  users:
+    edit_user_account: &edit_user_account "Edit the account for %{name}"
+    membership_status: Membership status
+
+    index:
+      title: All Users
+      no_search_results: No records matched your search criteria.
+
+    delete_user: &delete_user "Delete %{user}"
+
+    show:
+      hello: Hello
+      edit_user_account: *edit_user_account
+      membership_number: *membership_number
+      is_an_admin: &is_an_admin Is an Admin
+
+      'yes': *yes
+      'no': *no
+      reset_password: Change the Password
+      confirm_reset_password: "Are you sure?\rThis will overwrite the current password for this user!\r(If you have not recorded the password yet, choose Cancel.)"
+      new_password: New Password
+      re_enter_new_password: Re-Enter the Password
+      please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
+      submit_new_password: Save the New Password
+      member: *member
+      membership_status: &membership_status Membership Status
+      not_a_member: &not_a_member Not a member
+      is_a_member: &is_a_member Member in good standing
+      term_paid_through: *term_paid_through
+      no_payment_due_now: *no_payment_due_now
+      membership_fee_payment: membership payment
+      membership_fee: membership fee
+      membership_term: membership term
+      membership_term_last_day: *membership_last_day
+      payment_tooltip: Paying the membership fee will extend your membership for one year.
+      membership_expire_date_tooltip: &membership_expire_date_tooltip Membership expires after this date
+      term_expire_date_tooltip : *membership_expire_date_tooltip
+      edit_member_status: &edit_member_status Edit Member Status
+      pay_membership: &pay_membership Pay Membership Fee
+      edit_user_profile: &edit_user_profile Edit the profile for %{name}
+
+    show_login_email_row_cols:
+      email: *email
+
+    show_info_for_admin_only:
+      admin_user_info_title: &admin_user_info_title Användare Info
+      created: *created
+      reset_password_sent_at: *user_reset_password_sent_at
+      password_never_reset: &password_never_reset Password has never been reset by the user.
+      user_has_never_signed_in: &user_has_never_signed_in has never logged in.
+      last_login: *user_last_login
+      last_login_ip: *user_last_login_ip
+      logged_in_count: *sign_in_count
+      current_sign_in_at: *user_current_signed_in_time
+      current_sign_in_ip: *user_current_ip
+      member_packet: &member_packet pkt
+      sent: sent
+      not_sent: not sent
+
+    show_for_member:
+      membership_number: *membership_number
+      no_membership_number: (no membership number)
+
+    show_for_applicant:
+        title: &show_for_applicant_title "Steps to SHF Membership:"
+        welcome: "Welcome to Sveriges Hundföretagare!"
+        welcome_want_to_have_benefits: &show_for_applicant_want_to_have_benefits "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
+
+        apply_4_membership: *apply_for_membership
+        my_application: &my_application My Application
+        submit_application: Fill out and submit your application.
+        app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
+        app_status_under_review: "Thanks for submitting your application. We're reviewing it. You'll get an email letting you know the status."
+        app_status_waiting_for_applicant: We are waiting for information from you.
+        app_status_ready_for_review: "Thanks for submitting your application and information. We'll start reviewing it soon. You can always email us with questions."
+        app_status_accepted: Your application has been accepted.
+        app_status_rejected: Your application has been denied.
+        pay_membership: *pay_membership
+        when_can_pay:  &when_can_pay Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
+
+    show_for_former_member:
+      title: *show_for_applicant_title
+      welcome: "Welcome back to Sveriges Hundföretagare!"
+      welcome_want_to_have_benefits: *show_for_applicant_want_to_have_benefits
+      contact_membership: "Please contact the membership chair to apply again: email %{membership_email}"
+
+
+    renewal:
+      title_time_to_renew: "It's time to renew!"
+      title_renewal_overdue: "You are overdue to renew."
+      renewal_overdue_warning: "Your membership has lapsed! But you can still renew without resubmitting a new application. Just follow the steps below."
+      instructions: "You need to renew your membership! Here are the steps you must complete so you can keep enjoying the benefits of SHF membership:"
+      steps_to_renew: "Steps to renew your membership:"
+      pay_button_disabled_info: "Once you have completed the steps above, you can make your payment."
+      pay_membership: *pay_membership
+
+
+    ethical_guidelines_link_or_checklist:
+      in_grace_period:
+        must_agree_again: Your membership has expired so you must agree to the guidelines again.
+      agree_to_guidelines: Agree to All Membership Guidelines
+      agreed_to: "Agreed to on %{date}."
+      membership_guidelines: All Membership Guidelines
+
+    uploaded_files_requirement:
+      need_to_upload: You need to upload at least 1 file to show that you have continued your professional education and still meet SHF membership requirements.
+      current_member:
+        have_been_uploaded: Files have been uploaded during your membership term
+      in_grace_period:
+        must_upload_again: Your membership has expired so you must upload your files again.
+        have_been_uploaded: Files have been uploaded since your membership ended.
+      upload_file: *upload_new_file
+      upload_another: Upload another file
+
+    show_member_images_row_cols:
+      email: *email
+      proof_of_membership: &proof_of_membership Proof of Membership
+      using_membership_logo: *membership_logo_use
+      put_membership_logo_on_site: *put_membership_logo_on_your_website
+      proof_of_membership_describe: &proof_of_membership_describe This image is your proof of membership in SHF.
+      proof_of_membership_photo_needed: &proof_of_membership_photo_needed 'If you see "Photo Unavailable" then please
+                                           upload a photo of yourself here: '
+      company_h_brand: &company_h_brand Company H-Brand for %{company}
+      using_h_mark: *h_mark_use
+      company_h_brand_describe: &company_h_brand_describe This image is your company's H-Brand.
+
+      image_how_to_use_html: &image_how_to_use_html "You can download the image, take a screenshot,
+        link to it from your website and use it in social media,
+        or print it."
+      image_use_guidelines_html: &image_use_guidelines_html Please note that your use of this image is subject to these %{use_guidelines_link}.
+      use_guidelines: &use_guidelines guidelines
+
+      show_image: &show_image Show image
+      download_image: &download_image Download Image
+      copy_image_url: &copy_image_url Copy image link
+      copied: &copied Copied
+      image_dimensions_html: "The image width is <span id='%{width_id}'></span>
+                               pixels and the height is
+                               <span id='%{height_id}'></span> pixels."
+      use_this_image_link_html: "<span style='font-weight: bold'>
+                                  Use this link in an external website
+                                  (will return a JPG image):</span>"
+
+    show_uploaded_files_section_row_cols:
+      title: Uploaded Files
+
+    proof_of_membership:
+      proof_title: *proof_of_membership
+      member_number: Medlemsnr.
+      issued_by: Utfärdat av
+      valid_thru: Giltigt till %{expire_date}
+      expired: Medlemskapet löpte ut
+      footer: *shf_short_url
+
+    update:
+      passwords_dont_match: "The two passwords entered don't match."
+      success: The user was updated.
+      error: A problem kept the user from being updated.
+      member_photo:
+        reason: Your photo will be used in your digital "proof of membership".
+        format: Your photo file should be in "PNG", "JPG" or "JPEG" format, and be
+                approximately the size of a passport photo (or a bit larger)
+                for best results. (This is flexible, however, as we will resize
+                the photo as needed.)
+        upload: Please upload a photo of yourself. Click "Choose File" to do so.
+        replace: Your photo file can be changed by simply selecting another
+                 file. Click "Choose File" to do so.
+
+    search_form:
+      membership_number: &membership_number_short No.
+      profile_email: 'Profile Email'
+      search: 'Search'
+      are_members: 'Are members'
+      are_not_members: 'Are not members'
+      all_users: 'All users'
+
+    user:
+      user_has_never_signed_in: &user_has_never_signed_in has never logged in.
+      'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
+      'no': *no
+      edit_member_status: *edit_member_status
+      submit_button_label: Update Status
+      edit_user_account: *edit_user_account
+      edit_user_profile: *edit_user_profile
+
+    users_list:
+      membership_number: *membership_number_short
+      first_name: *first_name
+      last_name: *last_name
+      email: *email
+      created: *created
+      last_login: *user_last_login
+      logged_in_count: *sign_in_count
+      member: Member
+      application: *application
+      applications_tooltip: User has an open application
+      expire_date: *expire_date
+      member_packet: *member_packet
+      edit_profile: Edit Profile
+      edit_account: (Edit Acct.)
+
+    destroy:
+      success: User deleted successfully.
+
+  user_profiles:
+    edit:
+      edit_user_account: *edit_user_account
+
+  payments:
+    create:
+      page_title: &page_title '%{payment_type} Payment by: %{user_name}'
+      title: *page_title
+      something_wrong: 'Something went wrong - contact the system administrator at %{admin_email}'
+
+    confirmation:
+      success_html: Payment successfully processed - thank you!
+                    (Return to %{account_page_link})
+
+
+    error:
+      error: There was an error in processing your payment
+
+    payments_list:
+      payment_date: &payment_date Payment date
+      type: *payment_type
+      for: for
+      status: *payment_status
+      start_date: *start_date
+      end_date: *expire_date
+      notes: *notes
+      hips_id: HIPS id
+      order_number: &order_number Order number
+
+
+  company_locator:
+    error:
+      search_name_blank: 'Please enter a place name (it cannot be blank).'
+      search_distance_negative: 'Distance cannot be negative'
+      latitude_blank: "Latitude cannot be blank."
+      longitude_blank: "Longitude cannot be blank."
+
+  user_checklists:
+    all_list_items: &user_checklists_all_items Back to all of my checklists
+    all_list_items_for_user: &user_checklists_all_items_for_user Back to all user checklists for %{name}
+    if_you_have_qs_email_us: &if_you_have_qs_email_us "If you have any question, email us at "
+
+    progress_bar:
+      complete: *progress_complete
+
+    missing-checklist-param-error: &missing-checklist-param-error User Checklist missing parameter error!
+    not_found:  &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
+
+    index:
+      title: Checklists for %{name}
+      complete: *progress_complete
+
+    show:
+      title: "Checklist %{name}"
+      description: *description
+      delete_confirm: "Are you sure you want to delete the checklist '%{name}' for user %{user_name}?"
+      all_list_items: *user_checklists_all_items
+      all_list_items_for_user: *user_checklists_all_items_for_user
+      date_completed: *date_completed
+      completed: *checklist_completed
+      complete: *progress_complete
+
+    new:
+      title: New User Checklist
+
+    all_changed_by_completion_toggle:
+      missing-checklist-param-error: *missing-checklist-param-error
+      not_found:  *user_checklist_not_found
+
+    show_progress:
+      read_and_agree: As a member of the Swedish Dog Company, you undertake to follow certain guidelines, called membership commitments. Below is the Member Commitment broken down by heading. You need to tick each heading, and thus verify that you have read, understood, and intend to follow these guidelines.
+      i_commit_to: As a member of the Swedish Dog Company I commit to
+      scroll_down_to_read_all: Scroll down to read all items and see the button to go to the next group.
+      read_and_agree_start: ""
+      read_and_agree_end: I have read and understood these guidelines.
+      contact_if_questions: *if_you_have_qs_email_us
+      email_display_name: Membership Chair
+
+      next: *next
+      previous: *previous
+      complete: *progress_complete
+
+    membership_guidelines_completed:
+      agreed_to_all_terms: I have agreed to all membership terms.
+      i_commit_to: "As a member of Sveriges Hundföretagare, I commit myself to:"
+      all_complete_percent: "100% complete"
+      back_to_my_profile: Back to my User Profile
+
+    set_uc_and_kids_date_completed:
+      not_found: *user_checklist_not_found
+      missing-checklist-param-error: *missing-checklist-param-error
+
+
+  memberships:
+
+    auto_added_notes:
+      changed_by_admin: "Changed by Admin %{changed_timestamp}"
+      started_on: "Membership started on %{first_day}."
+      ended_on: "Membership last day changed to %{new_last_day} and ended. Original last day was %{original_last_day}."
+      last_day_changed: "Membership last day changed from %{original_last_day} to %{new_last_day}."
+
+
+  admin:
+    index:
+      export: Export all applications to a CSV file
+
+    all_applications_received: All applications received
+
+    export_ansokan_csv:
+      success: &export_success Export successful. Check your browser downloads for the file.
+      error: &export_error There was a problem with the export.
+      date_state_changed: Date State changed
+      member_fee_paid: M fee paid
+      member_fee_expires: M Expires
+      branding_fee_paid: H-brand paid
+      branding_fee_expires: H Expires
+      paid: *paid
+      never_paid: *never_paid
+      fee_payment_url: "Log in and pay here: https://hitta.sverigeshundforetagare.se%{payment_url}"
+
+    export_payments_csv:
+      success: *export_success
+      error: *export_error
+
+    export_payments_covering_year_csv:
+      success: *export_success
+      error: *export_error
+
+
+
+  shf_documents:
+
+    new_shf_document: &new_shf_document New Document
+    new_shf_minutes:  &new_shf_minutes Add Document
+    edit_shf_document: Edit the document details
+    view_shf_document: View the document details
+    all_shf_documents: All Documents
+    all_shf_minutes: All Documents
+
+    invalid_upload_type: *file_content_type_forbidden
+    file_too_large: *file_too_large_5MB
+
+    contents_access_error: 'There was an error accessing the file: %{message}'
+
+    index:
+      page_title: 'Documents'
+      instructions: 'These are "good to have" documents.  Click on the title of a document to view it.  Depending on your browser settings, it might open in a new window or it might download.'
+      title: *title
+      description: *description
+      delete_confirm: 'Are you sure you want to delete %{document_title}?'
+      view_details: View details
+
+    show:
+      page_title: 'Document: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: &uploaded_by Uploaded by
+      uploaded_on: &uploaded_on Uploaded on
+      filename: 'File:'
+      delete_confirm: 'Are you sure you want to delete %{document_title}?'
+
+    new:
+      page_title: *new_shf_minutes
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+
+    create:
+      success: '%{document_title} was uploaded successfully.'
+      error: 'There was a problem uploading %{document_title}'
+
+    edit:
+      page_title: 'Edit Details for Document: %{document_title}'
+      title: *title
+      description: *description
+      uploaded_by: *uploaded_by
+      uploaded_on: *uploaded_on
+      upload_the_document: Upload the document
+
+    update:
+      success: '%{document_title} was updated successfully.'
+      error: 'There was a problem updating %{document_title}'
+
+    destroy:
+      success: '%{document_title} deleted.'
+
+    minutes_and_static_pages:
+      member_pages: &member_pages Member pages
+      shf_meeting_minutes: &member_pages_board_meetings Documents
+
+    contents_show:
+      edit_member_page: Edit page
+
+    contents_edit:
+      page_title: 'Edit Member Page: %{document_title}'
+
+    contents_form:
+      member_page_title: Member Page Title
+      member_page_contents: Member Page Contents
+
+    contents_update:
+      success: '%{document_title} was updated successfully.'
+
+
+  admin_only:
+    member_app_waiting_reasons:
+      index:
+        title: "Reasons Why We're Waiting for Information"
+
+      new:
+        title: "New Waiting for Information Reason"
+
+      create:
+        success: "The new reason was created successfully."
+        error: "There was a problem creating the new reason."
+
+      show:
+        title: "Waiting for Information Reason:  %{name_sv} (%{name_en})"
+
+      edit:
+        title:  'Edit: %{name_sv} (%{name_en})'
+        submit_button_label: *save
+
+      update:
+        success: "The reason was updated successfully."
+        error: "There was a problem updating the reason."
+
+      destroy:
+        success: "The reason was deleted successfully."
+        error: "There was a problem deleting the reason."
+
+      new_member_app_waiting_reason: &new_app_waiting_reason "New Waiting for Information Reason"
+      all_member_app_waiting_reasons: &all_app_waiting_reasons "All Waiting for Information Reasons"
+      view_member_app_waiting_reason:  "View the Waiting for Information Reason"
+      edit_member_app_waiting_reason: "Edit the Waiting for Information Reason"
+      list_all_member_app_waiting_reasons: "List all Waiting for Information Reasons"
+
+      other_custom_reason: "Other (enter the reason)"
+      other_custom_reason_desc: ""
+
+      delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
+
+    app_configuration:
+      image_show:
+        missing: &missing Missing!
+      edit:
+        title: &application_configuration Application Configuration
+        chair_signature: &chair_signature_title Chairperson Signature
+        shf_logo: &shf_logo_title Organization Logo
+        h_brand_logo: &h_branding_logo_title H-Branding Logo
+        sweden_dog_trainers: &sweden_dog_trainers_logo_title Sweden Dog Trainers
+        admin_email_new_apps_enabled: &admin_email_new_apps_enabled Send emails to Admin when new app received
+        site_name: *site_name
+        site_meta_title: *site_meta_title
+        site_meta_description: *site_meta_description
+        site_meta_keywords: *site_meta_keywords
+        site_meta_image: *site_meta_image
+        og_type: *site_og_type
+        twitter_card_type: *site_twitter_card_type
+        facebook_app_id: *site_facebook_app_id
+        missing: *missing
+        durations:
+          title: &membership_durations Membership durations
+          membership_term_duration: &membership_term_duration Membership Term length
+          membership_expired_grace_period_duration_title: &membership_expired_grace_period_duration_title Grace Period
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: &payment_too_soon_days_title Payment window
+        payment_too_soon_days: *payment_too_soon_days
+        membership_expiring_soon_days_title: &membership_expiring_soon_days_title Term ends soon window
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
+        membership_guideline_list: &membership_guideline_list Membership Guideline List
+        membership_guideline_list_tooltip: &membership_guideline_list_tooltip Choose a top level list that will be used as the Membership Guidelines list. (Only top level lists that are in use are shown.)
+
+        required_field: &required_field required field
+
+      show:
+        title: *application_configuration
+        chair_signature: *chair_signature_title
+        shf_logo: *shf_logo_title
+        h_brand_logo: *h_branding_logo_title
+        sweden_dog_trainers: *sweden_dog_trainers_logo_title
+        admin_email_new_apps_enabled: *admin_email_new_apps_enabled
+        site_name: *site_name
+        site_meta_title: *site_meta_title
+        site_meta_description: *site_meta_description
+        site_meta_keywords: *site_meta_keywords
+        site_meta_image: *site_meta_image
+        og_type: *site_og_type
+        twitter_card_type: *site_twitter_card_type
+        facebook_app_id: *site_facebook_app_id
+        missing: *missing
+        durations:
+          title: *membership_durations
+          membership_term_duration: *membership_term_duration
+          membership_expired_grace_period_duration_title: *membership_expired_grace_period_duration_title
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: *payment_too_soon_days_title
+        payment_too_soon_days: *payment_too_soon_days
+        membership_expiring_soon_days_title: *membership_expiring_soon_days_title
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
+        membership_guideline_list: *membership_guideline_list
+        required_field: *required_field
+
+      show_timing:
+        missing: *missing
+
+      update:
+        success: Application configuration was updated successfully
+        error: There was a problem with updating configuration data
+
+    dashboard:
+      title: ADMIN DASHBOARD
+
+      members: &members Företagsmedlemmar
+      companies: *companies
+
+      payments:
+        export_all_payments: &dash_export_all_payments Export all payments
+        export_payments_year: &dash_export_payments_year Export payments covering year
+        export_payments_year_explain: Payments that cover any of the days in the year.
+
+
+      tabs:
+        current:
+          tab-title: Current
+          title: "Current Items of Note:"
+          open_apps_no_files: "Open Applications with no files uploaded"
+          app_approved_no_payment: "Applications approved but no membership payment yet"
+          companies_no_branding_payment: "companies Branding license fee not yet paid"
+          companies_incomplete: "companies with information not yet complete"
+          current_members: *members
+          current_companies: *companies
+
+        activity:
+          tab-title: Activity
+          title: "Activity in the past %{recent_num_days} days:"
+          payments: *payments
+          member_fee_payments: "%{number_payments} member fee payments"
+          branding_fee_payments: "%{number_payments} branding fee payments"
+
+        applications:
+          tab-title: &applications Applications
+          title: *applications
+
+        users:
+          tab-title: &users Users
+          title: *users
+
+        members:
+          tab-title: *members
+          title: *members
+          total_members: *members
+
+        payments:
+          tab-title: &payments "Payments"
+          title: *payments
+          export_all_payments: Export all payments
+          export_payments_year: Export payments covering year
+
+        payments_membership:
+          tab-title: &payments_membership "Payments: Membership"
+          title: *payments_membership
+
+        payments_h_branding:
+          tab-title: &payments_h_branding "Payments: H-Branding"
+          title: *payments_h_branding
+
+    user_profile:
+      edit:
+        title: 'Edit profile: %{user}'
+        become_this_user: &become_this_user Become this User
+        delete_this_user: *delete_user
+      update:
+        success: User profile updated successfully
+        error: One or more problems prevented the profile from being updated.
+      become:
+        have_become: "You are now acting as user %{user_name} (id: %{user_id}). Log out then log back in as the admin if you need to administrate again."
+      become_user_button:
+        become_this_user: *become_this_user
+
+    user_account:
+      edit:
+        is_an_admin: *is_an_admin
+        edit_user_profile: *edit_user_profile
+        email: *email
+        membership_number: *membership_number
+        admin_user_info_title: *admin_user_info_title
+        created: *created
+
+        user_has_never_signed_in: *user_has_never_signed_in
+        current_sign_in_at: *user_current_signed_in_time
+        current_sign_in_ip: *user_current_ip
+        last_login: *user_last_login
+        last_login_ip: *user_last_login_ip
+        logged_in_count: *sign_in_count
+        reset_password_sent_at: *user_reset_password_sent_at
+        password_never_reset: *password_never_reset
+
+        proof_of_membership: *proof_of_membership
+        proof_of_membership_describe: *proof_of_membership_describe
+        proof_of_membership_photo_needed: *proof_of_membership_photo_needed
+        company_h_brand: *company_h_brand
+        company_h_brand_describe: *company_h_brand_describe
+        image_how_to_use_html: *image_how_to_use_html
+        image_use_guidelines_html: *image_use_guidelines_html
+        use_guidelines: *use_guidelines
+        download_image: *download_image
+        show_image: *show_image
+        copy_image_url: *copy_image_url
+        copied: *copied
+
+      update:
+        error: A problem kept the user account from being updated.
+        success: The user account was updated.
+
+      update_membership_status_all_modal:
+        title: "Confirm: Update membership status for all"
+        body: "Do you really want to update the membership status for all users?  This will take a few minutes. Note that no emails will be sent."
+        confirm_do_updates: Yes, update all
+
+      update_membership_status_all:
+        reason_update_happened: Admin Ran Update All M.Statuses
+        success: Membership status for all members was updated. You can check the MembershipStatusUpdater log for the results.
+        error: There was a problem updating membership status for all users.  Please review the logs for details.
+
+
+    master_checklists:
+      new_item: &new_master_list_item New Master List Item
+      archived_items: &master_checklist_archived_items "Items that are no longer in use (archived)"
+
+      action_buttons:
+        view_list_item: View List Item
+        edit_list_item: Edit List Item
+        mark_no_longer_used_clone: "Mark as no longer used and create a clone"
+        all_list_items: &all_master_list_items All Master List items
+
+      delete_button_if_applicable:
+        delete: "Delete %{name}"
+        delete_confirm: &master_checklist_delete_confirm "Are you sure you want to delete the master checklist item %{name}?"
+        set_to_not_used: "Set to 'No Longer Used' (In use: cannot delete)"
+
+      errors:
+        master_checklist_id_not_found: &master_checklist_id_not_found "Master Checklist item with id %{id} was not found"
+        cannot_change_has_completed: &master_checklist_error_cant_change_has_completed Cannot change "%{attributes}" of '%{name}' because there are completed User checklists based on it.
+        cannot_change_user_visible: Cannot change the master checklist info that users see because there are User checklists based on it.
+
+      form:
+        name: *name
+        list_type: &master_checklist_list_type List type
+        is_in_use: *master_checklist_in_use
+        is_no_longer_used: *no_longer_used
+        is_no_longer_used_as_of: "as of %{date}"
+        is_in_use_changed_at: *master_checklist_in_use_changed_at
+        displayed_text: *displayed_text
+        description: &master_checklist_description Description displayed to users
+        parent_list: &parent_list Parent list
+        list_position: &list_position Position in list
+        notes: *master_checklist_admin_notes
+        top_level_list: &top_level_list (This is a top level list.)
+        child_items: &child_items Items
+        leave_blank_adds_to_end: "Leave the position (order) blank to add this to the end of the list."
+
+      new:
+        title: New Master Checklist Item
+        name: *name
+        displayed_text: *displayed_text
+        description: *master_checklist_description
+        list_position: *list_position
+        all_list_items: *all_master_list_items
+
+      create:
+        error: "There was a problem creating and saving the master checklist item %{name}."
+        success: "%{name} was created and saved."
+      edit:
+        title: "Editing %{name}"
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+
+      update:
+        error_cant_change_has_completed: *master_checklist_error_cant_change_has_completed
+        error:  "There was a problem updating the master checklist item %{name}."
+        success: "The master list item %{name} was updated."
+      index:
+        title: &master_checklist_index_title Master Checklists
+        name: *name
+        displayed_text: &master_checklist_index_displayed_text Displayed as
+        displayed_description: Displayed Description
+        pos_in_list: &pos_in_list "pos. in list"
+        in_parent_col: in list
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        new_item: *new_master_list_item
+        archived_items: *master_checklist_archived_items
+
+      index_as_table:
+        title: *master_checklist_index_title
+        delete_confirm: *master_checklist_delete_confirm
+        displayed_text: *master_checklist_index_displayed_text
+        name: *name
+        new_item: *new_master_list_item
+      show:
+        title: "Master Checklist Item"
+        is_in_use: *master_checklist_in_use
+        is_no_longer_used: *no_longer_used
+        is_no_longer_used_as_of: "as of %{date}"
+        is_in_use_changed_at: *master_checklist_in_use_changed_at
+        displayed_text: *displayed_text
+        description: *master_checklist_description
+        list_position: *list_position
+        notes: *master_checklist_admin_notes
+        parent_list: *parent_list
+        top_level_list: *top_level_list
+        child_items: *child_items
+        new_child_in_list: New Item in this list
+        new_child_makes_this_a_list: New Child item (makes this a list)
+        list_type: *master_checklist_list_type
+        subtitle_list_type_start: "This is a "
+        subtitle_list_type_end: " list."
+        archived_items: *master_checklist_archived_items
+
+      destroy:
+        error: "There was a problem deleting the master checklist item '%{name}'. It was not deleted."
+        success: "'%{name}' was deleted."
+
+      max_list_position:
+        not_found: *master_checklist_id_not_found
+
+      set_to_no_longer_used:
+        not_found: *master_checklist_id_not_found
+        error: "There was a problem setting '%{name}' to no longer in use."
+        success: "'%{name}' is now set to no longer in use."
+
+      no_more_major_changes_note_if_needed:
+        no_more_changes_allowed: There are User Checklists based on this, so no more major changes are allowed.
+        can_clone: "If you need to make changes, you can clone this one, which will set it to 'no longer in use', and then edit the new (cloned) one."
+
+      toggle_in_use:
+        not_found: *master_checklist_id_not_found
+        cannot_change_has_completed: Cannot change the master checklist because there are completed User checklists based on it.
+        cannot_change_user_visible: Cannot change the master checklist that users see because there are User checklists based on it.
+
+      status_numbers_row:
+        status: Status
+
+      completed_numbers_span:
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+
+      non_nested_table:
+        name: *name
+        displayed_text: *displayed_text
+        completed: *checklist_completed
+        not_completed: *checklist_not_completed
+        pos_in_list: *pos_in_list
+
+      next_one_based_list_position:
+        not_found: *master_checklist_id_not_found
+
+    master_checklist_types:
+
+      new_master_checklist_type: &new_master_checklist_type "New Master Checklist Type"
+      edit_master_checklist_type: &edit_master_checklist_type "Edit Master Checklist Type '%{name}'"
+      all_master_checklist_types: &all_master_checklist_types "All Master Checklist Types"
+      delete_confirm_master_checklist_type: &delete_confirm_master_checklist_type "Delete master checklist type '%{name}'?"
+      view_master_checklist_type: &view_master_checklist_type "View '%{name}'"
+
+      index:
+        title: All Master Checklist Types
+        name: *name
+        description: *description
+        new_master_checklist_type: *new_master_checklist_type
+        delete_confirm: *delete_confirm_master_checklist_type
+
+      show:
+        name: *name
+        description: *description
+        all_master_checklist_types: *all_master_checklist_types
+        edit_master_checklist_type: *edit_master_checklist_type
+
+      new:
+        title: *new_master_checklist_type
+        name: *name
+        description: *description
+        all_master_checklist_types: *all_master_checklist_types
+
+      edit:
+        title: "Editting: %{name}"
+        name: *name
+        description: *description
+        view_master_checklist_type: *view_master_checklist_type
+        all_master_checklist_types: *all_master_checklist_types
+
+      form:
+        name: *name
+        description: *description
+
+      create:
+        error: "There was a problem creating and saving the master checklist type %{name}."
+        success: "%{name} was created and saved."
+
+      update:
+        error: "There was a problem updating the master checklist type %{name}."
+        success: "%{name} was updated."
+
+      destroy:
+        error: "There was a problem deleting the master checklist type '%{name}'. It was not deleted."
+        success: "'%{name}' was deleted."
+
+
+  mailers:
+    login_here: "Click here to go to the login page."
+    your_login_email_is: "Your login email is "
+    log_in: &log_in Log in
+    renewal_reqs: &renewal_requirements "You can renew your membership by signing the membership commitment, uploading documentation on continuing education and paying the membership fee."
+    how_to_pay_membership: "How to Pay Your Membership Fee:"
+    pay_membership_step: "Log in, then go to your account page to pay."
+    here_is_acct_page: "Here is your account page: "
+
+    how_to_pay_hmarkt: "How to Pay the H-Markt License Fee:"
+    pay_hmarkt_step: &co_pay_after_loggedin "Once you are logged in, go to the company page where you will see the button to pay."
+    here_is_co_page: "Here is the company page: "
+    find_co_in_my_cos: You will find the page for a company by going to the 'My Companies' menu and clicking on the company you want to see.
+    h_brand_exp_shown: "The H-markt license expiration date will be on the company page."
+
+    how_to_edit_companies:
+      title: "How to Edit Your Company(-ies):"
+      go_to_my_cos_menu: "Once you are logged in, go to the 'My Companies' menu at the top and click on it."
+      see_click_co_name: You will see all of the companies you belong to, listed by name.  Click on the Company name you want to edit.
+      view_then_edit: You will then see the information about the company. At the bottom you will see a button to edit the company. Click it to edit the company.
+      cos_you_can_edit: "These are the companies you can edit:"
+
+    how_to_upload_files: "How to Upload Files:"
+    upload_files_step1: "Log in. Go the page that shows all of your uploaded files by (1) going to your login menu. Your login menu is at the far right and says '%{login_menu_title}'."
+    upload_files_step2: Click on the menu item labelled '%{uploaded_files_menu_item}'. That takes you to the page with all of your uploaded files. You can upload files there.
+    upload_files_step3: (Your uploaded files are also listed on your account page.)
+
+    application_mailer:
+      greeting: &email_greeting "Hello %{greeting_name}"
+
+      email_us: "If you have any questions or suggestions, email us at "
+
+      signoff: "Best Regards,"
+      signature: &medlemsansvarig Membership Committee
+      signature_url: "https://sverigeshundforetagare.se"
+
+      footer:
+        text:
+          shf_name: *SHF_name
+          shf_motto: KOMPETENS – GLÄDJE – OMTANKE
+          email_sent_to: This email was sent to %{email_sent_to}
+          why_you_are_receiving: You are receiving this email because you are interested in a membership to SVERIGES HUNDFÖRETAGARE or you are a member.
+
+
+    admin_mailer:
+      signoff: Thanks
+
+      new_application_received:
+        subject: A new Member Application has been received
+
+        message_text:
+          new_app_arrived: "A new membership application has been submitted that you should look at: "
+          from: From
+          view_app_here: "You can view the membership application here: "
+          must_be_logged_in: &must_be_logged_in_as_admin "(You must be logged in as the administrator to view it.)"
+
+      member_unpaid_over_x_months:
+        subject: Members unpaid for more than %{num_months} months
+        message_text:
+          these_are_unpaid: "These members are unpaid. Their membership fee was due %{num_months} months ago:"
+          full_name: Name
+
+        error_sending:  FIXME - need text to display if there is a problem sending this email
+
+
+      new_membership_granted_co_hbrand_paid:
+        subject: New Member to welcome and send packet to
+        message_text:
+          this_is_member: "This person has paid and is now a member. Welcome them and send member package, you clever creature!"
+          member_number: *membership_number
+          categories: *business_categories
+          company: *company_one
+          company_website: *company_website
+          company_facebook_url: Facebook
+          company_postal_address: *post_address
+
+          must_be_logged_in: *must_be_logged_in_as_admin
+
+      members_need_packets:
+        subject: Members need packets sent
+        message_text:
+          message_intro: "These members need membership packets sent to them:"
+          membership start date: membership start
+          categories: *business_categories
+        error_sending:  "ERROR! There was a problem sending the 'Members need packets' alert email"
+
+
+
+    shf_application_mailer:
+      will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."
+
+      acknowledge_received:
+        subject: Your application to Sveriges Hundföretagare has been received
+        message_text: "Your application has been received.  We are all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
+        your_submitted_info: "As a reminder, here is what you submitted:"
+        review_after_recevied_files: *review_after_recevied_files
+        upload_choice_intro: "Your choice for providing files: "
+        need_to_upload: "You need to upload your files. Here's how:"
+        can_upload_more: "You can upload more files. Here's how:"
+        error_sending: &shf_email_error "There was a problem sending email to you at {%email} about your application."
+
+      app_approved:
+        subject: Your application to Sveriges Hundföretagare is approved
+        message_text:
+          app_approved_and_next: "Your application is now approved. What is left before you are registered as a member in the system is to pay your membership fee:"
+          step_1_login_to_website: Log in to the website
+          step_1_with_your_email: " with your email: %{login_email}"
+          step_2_pay: "Then pay at this page: "
+          h_branding_not_paid: "When this is done you will need to finish your company page and pay your H-branding fee. More information about how to do that will come after you paid your membership fee."
+          thanks: "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
+          error_sending: *shf_email_error
+
+
+    member_mailer:
+      member_account_link: "%{account_link} (You may need to login first before the link works. Your login is %{login_email}.)"
+      login_to_fix: To fix the above, you must log in.
+
+      app_no_uploaded_files:
+        subject: Please upload qualification files to your Sveriges Hundföretagare application
+        message_text: "This is a reminder that you need upload files for your SHF application so that it can be reviewed. Here's how: "
+        thanks: "Thanks for wanting to be a member."
+        error_sending: *shf_email_error
+
+      membership_granted:
+        subject: &subject_welcome "Welcome to SHF! You are now a member"
+        greeting: *email_greeting
+        message_text:
+          welcome:  *subject_welcome
+          youre_active: "You have been activated as a member in the system. You can login and manage your profile and build your business page."
+          can_edit_co_pay: "When you are signed in, you can edit your business page and pay your branding license fee here: "
+          access_fb_group: "As a member, you will also have access to our closed Facebook group: "
+          and_member_pages: "as well as hidden pages in our member system: "
+
+      membership_will_expire:
+        subject: Your membership will expire soon
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Please note that your current membership period will expire on "
+          extend_membership: "You can extend your membership for another 12 months by paying the membership fee."
+          renewal_reqs: *renewal_requirements
+
+      membership_will_expire_renewal_reqs_reminder:
+        subject: Your membership will expire soon
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Please note that your current membership period will expire on "
+          renewal_reqs: *renewal_requirements
+
+      h_branding_fee_will_expire:
+        subject: The H-Branding fee for your company will be due soon
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Please note that your current H-branding fee period will expire on "
+          how_to_pay_fee: &pay_hbrand_be_mapped You can extend your H-branding for another 12 months by paying the fee. This makes you visible on the map.
+          company_link_login_msg: &co_pay_after_loggedin "Once you are logged in, go to the company page where you will see the button to pay.  Here is the company page:"
+
+      h_branding_fee_past_due:
+          subject: The H-Branding fee for your company is unpaid/past due
+          greeting: *email_greeting
+          message_text:
+            fee_is_unpaid: Please note that your current H-branding fee is unpaid.
+            how_to_pay_fee: *pay_hbrand_be_mapped
+            company_link_login_msg: *co_pay_after_loggedin
+
+      membership_lapsed:
+        subject: "Your SHF membership has expired"
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
+          renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
+          pay_on_acct_page: &pay_on_acct_page "Go to your account page to pay:"
+          renewal_reqs: *renewal_requirements
+
+      co_info_incomplete:
+        subject: Please complete the company information
+        greeting: *email_greeting
+        message_text:
+          complete_the_info: "You need to complete the info for %{co_identifier}. If you don't it won't show up on the map or in Google searches."
+          company_needs_name: "company number %{co_number}"
+          what_is_missing: "Here is what's missing:"
+          co_name_missing: "company name"
+          co_region_missing: "company address"
+          please_complete: "Please add the above information so the company information is complete."
+          company_link_login_msg: "Here's the link to the company so you can edit it: "
+
+      first_membership_fee_owed:
+        subject: "Approved, but haven't paid yet?"
+        greeting: *email_greeting
+        message_text: "You have been approved to become a member, but you must pay a membership fee in order to take advantage of the benefits, offers and discounts included in the membership. You can easily pay by following the steps below."
+
+      membership_renewed:
+        subject: &subject_welcome "Thanks for renewing your SHF membership!"
+        greeting: *email_greeting
+        message_text:
+          awesome: "Awesome!"
+          renewed_last_day: "You have now renewed your membership. The last day of your membership is now "
+          companies_you_belong_to: "As a reminder, here are the companies you belong to:"
+          thanks: Thanks for joining us for another year.
+          company-incomplete: Incomplete info for company
+          company-license-expired: H-Markt license has expired
+
+    payment_mailer:
+      payment_made:
+        confirmation: &confirmation Confirmation of %{product} payment
+        subject: *confirmation
+        thank_you_for_paying: 'Thank you for paying: your %{product_with_name} is now paid.'
+        membership: membership
+        h_brand: H-brand
+        h_brand_with_name: H-brand for company "%{company}"
+        order_number: *order_number
+        membership_number: *membership_number
+        company_number: *company_number
+        payment_date: *payment_date
+        payment_processor: Payment processor
+        product: Product
+        price: Price    
+        no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.     
+        questions: If you have any questions regarding the payment or your membership, contact us at 
+        
+  devise:
+    min_length: '(at least %{minimum_length} characters)'
+
+    registrations:
+      new:
+        title: Create your login information
+        create_account: Create account
+        confirm_password: &confirm_password Confirm password
+        forgot_password: Forgot password
+        submit_button_label: Sign up
+        success: You have signed up successfully
+      edit:
+        my_profile_title: &my_profile_title Edit your profile
+        title: *my_profile_title
+        edit_profile_for_title: 'Edit profile: %{user}'
+        unconfirmed_email_for: 'Unconfirmed email address for: %{unconfirmed_email}'
+        confirm_password: *confirm_password
+        current_password: Current password
+        required_to_save_changes: (required to save changes)
+        leave_blank_if_no_change: "leave blank if there's no change"
+        submit_button_label: *update
+        delete_your_account: Delete your account
+        unregister: Unregister
+        confirm_are_you_sure: Are you sure you want to DELETE your account?
+        back: *back
+        success: Your account has been updated successfully
+        password_header: Change password
+        new_password: New password
+        info_header: Edit name and e-mail
+        password_confirmation: *password_confirmation
+        member_photo:
+          pic_header: Edit your picture
+
+    sessions:
+      new:
+        log_in: *log_in
+        title: *log_in
+        remember_me: Remember me
+        submit_button_label: *log_in
+      destroy:
+        log_out: Log out
+    passwords:
+      new:
+        title: Forgot your password
+        submit_button_label: Send the reset instructions
+      edit:
+        title: Change your password
+        new_password: New password
+        confirm_password: Confirm your password
+        submit_button_label: Change Your Password
+    confirmations:
+      new:
+        do_you_need_instructions: &need_instructions Do you need instructions?
+    unlocks:
+      new:
+        do_you_need_instructions: *need_instructions
+    omniauths:
+      new:
+        log_in_with: Log in with
+
+
+  #----------
+  # MENUS
+  #  This section will mostly parallel the structure of the actual menus.
+  #  For submenus:  create a key that represents the submenu, and then the
+  #   the first (sub-) entry under that key should be the text displayed for
+  #   that submenu. Use the key 'submenu_title:'  (This organization is a little different than the actual
+  #   menus; it has the extra key and the title for the submenu is under
+  #   the key for the section.)
+  menus:
+    skip_to_content: Skip to content
+    menu: Menu
+    nav:
+      shf_main_site: &shf_main_site SHF main site
+      home: &home Home
+
+      visitor:
+        home: *home
+        association: Association
+        brochure: Brochure
+        board: Board
+        membership: Membership
+        board_statues: Statues
+        glossary: Glossary
+        history: History
+
+        dog_owners:
+          submenu_title: For Dog Owners
+          about_us: &about_us About us
+          h_label: The H-Mark
+          consumer_contact: Consumer information
+          become_supporter: Become a Supporter
+          being_dog_owners: Being a Dog Owner
+
+        entrepreneurs:
+          submenu_title: For Dog Company owners
+          about_us: *about_us
+          sign_up: Become a Member
+          be_h_labeled: Become H-labeled
+          educational_reqs: Educational Requirements
+          membership_commitment: Membership Commitment
+          ethical_guide: Ethics Guide
+          member_criteria: Member Criteria
+          member_benefits: Member Benefits
+          quality_standards: Member Standards
+          gdpr: GDPR
+          to_become_a_dog_business: To Become a Dog Company
+
+        contact: Contact
+        find_dog_businesses: Find Dog Company
+
+      users:
+        my_application: *my_application
+        apply_for_membership: Apply for Membership
+        your_account: Your account
+        uploaded_files: Your uploaded files
+
+      members:
+        shf_companies: SHF Companies
+        member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
+        manage_company:
+          view_company: View Company
+          edit_company: Edit My Company
+        my_application: *my_application
+        pay_membership: *pay_membership
+
+      company:
+        pay_branding_fee: *pay_branding_fee
+
+      admin:
+        shf_main_site: *shf_main_site
+        member_pages: *member_pages
+        shf_meeting_minutes: *member_pages_board_meetings
+        manage_applications: Manage Applications
+        app_configuration: App Configuration
+        design_guide: Design Guide
+        master_checklists: Master Checklists
+        dashboard: Dashboard
+        all_uploaded_files: All Uploaded Files
+        update_all_membership_status:  Update Membership Status...
+
+
+        categories:
+          submenu_title: Categories
+          manage_categories: Manage Categories
+          new_category: New Category
+        companies:
+          submenu_title: Companies
+          manage_companies: Manage Companies
+          new_company: New Company
+        applications:
+          submenu_title: Applications
+          manage_applications: Manage Applications
+          waiting_reasons: Waiting Reasons
+        users:
+          list_users: Users
+
+        administration:
+          submenu_title: Administration
+
+  footer:
+    gdpr_and_privacy: "GDPR & Privacy Policy"
+    gdpr_and_privacy_url: gdpr-och-personuppgifter
+    purchase_terms: Terms of Purchase
+    purchase_terms_url: aterbetalningsvillkor
+
+  #----------
+  # ERRORS
+  errors:
+    not_permitted: You are not authorized to access that page.
+    try_login: Login first and then retry accessing that page.
+    bad_search_params: "Sorry.  We could not search for %{search_item} with those critera.  Please try again."
+    something_wrong: 'Something went wrong - please reload page and try again.'
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      blank: cannot be blank
+      present: must be blank
+      confirmation: does not match %{attribute}
+      empty: cannot be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      model_invalid: "Validation failed: %{errors}"
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      required: must exist
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+      other_than: must be other than %{count}
+    template:
+      body: 'There were problems with the following fields:'
+      header:
+        one: 1 error kept this %{model} from being saved
+        other: "%{count} errors prohibited this %{model} from being saved"
+
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
+
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: "%{count} days"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 month
+        other: "%{count} months"
+      x_years:
+        one: 1 year
+        other: "%{count} years"
+      x_seconds:
+        one: 1 second
+        other: "%{count} seconds"
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm

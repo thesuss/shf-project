@@ -1,0 +1,42 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+title General Flow for UserEmail alerts\n activity diagram\n
+
+start
+
+note right
+UserEmailAlert uses (inherits) the default behaviors (methods) in EmailAlert.
+It only needs to redefine a few things; it has few differences.
+end note
+
+#PaleTurquoise:entities_to_check;
+-> users;
+note right
+ UserEmailAlert returns all Users as the entities to check
+end note
+
+#LightCyan:process_entities;
+note right
+  (light cyan = inherits from EmailAlert parent class)
+end note
+
+while (entities.each do | entity |) is (\nuser)
+  #LightCyan:take_action(user, log);
+
+  if (send_alert_this_day?) then (\ntrue)
+    #LightCyan:send_email(user, log);
+  else (false)
+  endif
+
+  :<i>next user in entities.each</i> |
+endwhile
+
+
+:finished processing all entities;
+stop
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

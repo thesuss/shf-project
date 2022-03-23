@@ -1,0 +1,72 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+title General Flow for AdminEmail alerts\n activity diagram\n
+
+start
+
+
+note right
+AdminEmailAlert needs to loop through all entities
+and instead of sending email to each one,
+<b>it builds a list of all entities that satisfy some Requirement.</b>
+Then it sends email out to all admins, giving them that list of entites.
+
+It uses the EmailAlert methods that deal with sending mails out.
+(This is an indication that the methods that deal with sending mails out
+should be refactored out into a separate class.)
+end note
+
+partition "create entities list" {
+
+  #PaleTurquoise:entities_to_check ;
+  -> entities;
+
+  #PaleTurquoise:process_entities;
+
+
+  while (entities.each do | user |) is (\nentity)
+      #PaleTurquoise:take_action(user, log);
+
+      if (add_entity_to_list?(entity)) then (\ntrue)
+        #PaleTurquoise:entities_list.append(entity);
+      else (false)
+      endif
+
+     :<i>next entity in entities.each</i> |
+  endwhile (no more entities to process)
+
+}
+
+partition "send alerts to admins" {
+
+#PaleTurquoise:send alerts to admins;
+
+note right
+ <i>Should the send_alert_this_day? check be done <b>first</b>
+  so that nothing happens unless an alert needs to go out today?</i>
+end note
+
+if (send_alert_this_day?) then (\ntrue)
+
+  while (recipients.each do | admin |) is (\nadmin)
+        #lightCyan:send_email(admin, log, [entities_list]);
+        note right
+          (light cyan = inherits from EmailAlert parent class)
+        end note
+
+        :next_admin_recipient |
+  endwhile (no more admins to send to)
+
+else (false)
+endif
+
+
+}
+
+stop
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

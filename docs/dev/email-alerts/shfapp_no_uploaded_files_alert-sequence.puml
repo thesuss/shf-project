@@ -1,0 +1,80 @@
+@startuml
+
+!include plantuml-ae-style.iuml
+
+title ShfApp No Files Uploaded alert sequence:\nparent classes and entities\n
+
+
+
+participant ShfAppNoUploadedFilesAlert order 3  #lime
+
+participant EmailAlert order 1 #lightcyan
+
+participant "Entity (User)" as Entity order 4 #LemonChiffon
+
+participant UserEmailAlert order 2 #PaleTurquoise
+
+participant "ShfAppNoUploadedFilesAlert class" as ShfAppNoUploadedFilesAlertClass order 5 #paleGreen
+
+
+participant "EmailAlert class" as EmailAlertClass order 6 #PaleTurquoise
+
+
+
+activate EmailAlertClass #PaleTurquoise
+
+ShfAppNoUploadedFilesAlertClass -> EmailAlertClass: <b>condition_response(condition, log)</b>
+
+activate EmailAlert #lightcyan
+EmailAlertClass -> EmailAlert: condition_response(condition, log)
+
+EmailAlert -> EmailAlertClass: get_config(condition)
+EmailAlertClass -> EmailAlert: config
+EmailAlert -> EmailAlertClass: get_timing(condition)
+EmailAlertClass -> EmailAlert: timing
+deactivate EmailAlertClass
+
+
+activate UserEmailAlert #PaleTurquoise
+EmailAlert -> UserEmailAlert: entities_to_check
+UserEmailAlert -> EmailAlert: User.all
+deactivate UserEmailAlert
+
+EmailAlert -> EmailAlert: process_entities(entities_to_check, log)
+
+
+group entities.each do | entity |
+  EmailAlert -> EmailAlert: take_action(entity, log)
+
+  activate ShfAppNoUploadedFilesAlert #paleGreen
+  EmailAlert -> ShfAppNoUploadedFilesAlert: send_alert_this_day?(timing, config, entity)
+
+  activate Entity #LemonChiffon
+  ShfAppNoUploadedFilesAlert -> Entity: user.has_shf_application?
+  Entity -> ShfAppNoUploadedFilesAlert:
+  deactivate Entity
+
+  group if shf_app.uploaded_files.empty? AND upload method is not (email or mail)
+   activate ShfAppNoUploadedFilesAlertClass  #paleGreen
+      ShfAppNoUploadedFilesAlert  -> ShfAppNoUploadedFilesAlertClass: days_today_is_away_from(shf_app.updated_at.to_date, timing)
+      ShfAppNoUploadedFilesAlertClass -> ShfAppNoUploadedFilesAlert: day_to_check
+      deactivate ShfAppNoUploadedFilesAlertClass
+
+      ShfAppNoUploadedFilesAlert -> EmailAlert: send_on_day_number?(day_to_check, config)
+
+      deactivate ShfAppNoUploadedFilesAlert
+
+      group if the alert should be sent today
+        EmailAlert -> EmailAlert: send_email(entity, log)
+      end group
+
+  end group
+
+
+end group
+
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml

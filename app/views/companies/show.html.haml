@@ -1,0 +1,132 @@
+- content_for :head_content do
+  = Adapters::CompanyToSchemaLocalBusiness.new(@company, url: company_url(@company)).as_target.to_ld_json.html_safe
+
+
+%div{ id: "#{unique_css_id(@company)}",
+      class: "#{item_view_class(@company, controller.action_name)}" }
+
+  - if policy(@company).view_complete_status?
+    - complete_status_css = @company.information_complete? ? 'complete' : 'not-complete'
+
+  %header.entry-header
+    .row.header
+      .col.header{class: complete_status_css}
+        = content_title(company_display_name(@company), user: current_user, classes: [complete_status_css])
+
+  .entry-content.container
+
+    - if policy(@company).view_complete_status?
+      .row.complete-status
+        - if @company.information_complete?
+          .col
+            %p.info-is-complete-text=t('.info_is_complete')
+        - else
+          .col
+            .alert.alert-danger{ role: 'alert' }
+              %p.alert-heading.info-is-not-complete-text=t('.info_is_not_complete')
+              %p= t('.this_info_missing')
+              %ul.missing-info
+                - @company.missing_information.each do |missing_info|
+                  %li=missing_info
+
+              %p.info-is-not-complete-explanation=t('.info_is_not_complete_explanation')
+
+    - if current_user.admin?
+      .row.db-id.admin-only
+        .col.db-id
+          = field_or_none 'db id', @company.id, tag_options: {class: 'db-id'}
+
+    .row
+      .col
+        - if @company.categories.any?
+          .categories
+            = render 'business_categories/as_list',
+              categories: @company.business_categories.roots.distinct
+        - if payment_visible_for_user?(current_user, @company)
+          %hr
+            .branding-license
+              %h3.section-title= t('.hbrand_fee')
+              .section
+                = render partial: 'branding_term_status', locals: { company: @company }
+          %hr
+
+    .row
+      .col.company-story
+        != @company.description
+      %hr
+
+    .row
+      .col-md-5
+        = field_or_none t('.name'),@company.name, tag_options: {class: 'hidden', id: 'location-text'}
+
+        - if current_user.admin?
+          = field_or_none t('.org_nr'), @company.company_number, tag_options: {class: 'company-number'}
+
+        = field_or_none t('.phone_number'), @company.phone_number, tag_options: {class: 'phone-number'}
+
+        = field_or_none t('.email'), mail_to(@company.email), tag_options: {class: 'email'}
+
+        = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
+
+        .social-media
+          = icon_link(@company.facebook_url, 'facebook', 'Facebook URL', @company.facebook_url)
+          = icon_link(@company.instagram_url, 'instagram', 'Instagram URL', @company.instagram_url)
+          = icon_link(@company.youtube_url, 'youtube-square', 'Facebook URL', @company.youtube_url)
+
+
+      .col-md-7
+        - if @company.any_visible_addresses?
+          = render partial: 'map_companies',
+                   locals: { markers: location_and_markers_for([@company],
+                   link_name: false )}
+
+    - user_can_edit = policy(@company).update?
+
+    = render 'company_members', company: @company, applications: @applications
+    = render 'company_applicants', company: @company, applications: @applications if current_user.admin?
+
+    = render 'company_addresses', company: @company, user_can_edit: user_can_edit
+
+    - if user_can_edit
+
+      = link_to "#{t('.add_address')}",
+                new_company_address_path(@company),
+                class: 'btn btn-info btn-sm ml-2 add-company-address'
+
+
+    .row
+      .col
+        - if ! @company.dinkurs_company_id.blank? && ! @company.show_dinkurs_events && user_can_edit
+
+          .dinkurs-show-not
+            = t('events.show_not')
+
+        - elsif @company.show_dinkurs_events && ! @company.dinkurs_company_id.blank?
+
+          - if user_can_edit
+
+            = button_to "#{t('.dinkurs_fetch_events')}",
+                        fetch_from_dinkurs_company_path(@company),
+                        remote: true,
+                        class: 'btn btn-info btn-sm dinkurs-fetch-button float-right',
+                        form_class: 'dinkurs-fetch-events',
+                        data: { disable_with: "#{t('.dinkurs_fetching')}" }
+
+          = render 'events/teaser_list', events: @events, company: @company,
+                                         items_count: @items_count
+
+
+    %hr
+    .row
+      .col.d-flex.justify-content-center
+        - if user_can_edit
+          = link_to "#{t('companies.edit_company')}",
+                    edit_company_path(@company),
+                    class: 'btn btn-light btn-sm edit-company mr-3'
+
+        - if current_user.admin?
+          = link_to "#{t('.delete')}", @company, method: :delete,
+                    class:'btn btn-danger btn-sm delete-company',
+                    data: { confirm: "#{t('.confirm_are_you_sure')}" }
+
+= render('edit_branding_modal', company: @company) if current_user.admin?

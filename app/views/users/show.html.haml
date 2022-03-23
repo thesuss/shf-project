@@ -1,0 +1,23 @@
+%header.entry-header
+  :ruby
+    username          = user_name_for_display(@user)
+    admin_user_text   = show_if_user_is_admin(@user, t('.is_an_admin'))
+    edit_account_icon = edit_account_link(@user, text: edit_icon, title: t('.edit_user_account', name: username), show_if: current_user.admin?)
+    edit_profile_icon = edit_profile_link(@user, title: t('.edit_user_profile', name: username), show_if: current_user.admin?)
+    title             = t('.hello') + ' ' + username + ' ' + admin_user_text + ' ' + edit_account_icon + ' ' + edit_profile_icon
+
+    partial_for_membership_status = case @user.membership_status.to_sym
+      when User::STATE_CURRENT_MEMBER, User::STATE_IN_GRACE_PERIOD
+        'show_for_member'
+      when  User::STATE_FORMER_MEMBER then 'show_for_former_member'
+      else 'show_for_applicant'
+    end
+
+
+  = content_title(title, user: current_user)
+
+.entry-content.container
+  = render partial: partial_for_membership_status,
+           locals: { user: @user,
+                     current_user: @current_user,
+                     app_config: @app_configuration }

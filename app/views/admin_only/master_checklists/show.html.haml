@@ -1,0 +1,182 @@
+-# TODO DRY with edit view
+- not_in_use_class = @master_checklist.is_in_use ? '' : 'not-in-use'
+- no_more_changes_class = @master_checklist.no_more_major_changes? ? 'no-more-major-changes' : ''
+
+%header.entry-header
+  = content_title(@master_checklist.name, user: current_user, id: 'h1', classes: [ '#{not_in_use_class}' ])
+  - if @master_checklist.root?
+    .entry-content
+      .row.mt-2
+        .col.list-type
+          %h3.list-type
+            = t('.subtitle_list_type_start')
+            = link_to @master_checklist.master_checklist_type.name, @master_checklist.master_checklist_type
+            = t('.subtitle_list_type_end')
+
+
+.entry-content.container{ class: "#{ no_more_changes_class }" }
+
+  .master-checklist-item
+
+    = render partial: 'no_more_major_changes_note_if_needed', locals: { master_checklist: @master_checklist }
+
+    = render partial: 'status_numbers_row', locals: { master_checklist: @master_checklist }
+
+    - unless @master_checklist.is_in_use
+      %p.not-in-use
+        = t('.is_no_longer_used')
+        = t('.is_no_longer_used_as_of', date: @master_checklist.is_in_use_changed_at)
+
+
+    .row.mt-2
+      .col
+        %h5.parent-title
+          = t('.parent_list') + ':'
+          - if @master_checklist.ancestors?
+            = link_to @master_checklist.parent.name, admin_only_master_checklist_path(@master_checklist.parent), class: list_entry_css_classes(@master_checklist.parent)
+          - else
+            %span.note-top-level-list= t('.top_level_list')
+      .col
+        = t('.list_position')  + ':'
+        = @master_checklist.list_position + 1
+
+
+    .row.mt-2.users-see-this
+      .col
+        %h4= t('.displayed_text')
+
+        .what-users-see
+          %p.displayed-text.displayed-to-users=  @master_checklist.displayed_text
+          %p.description.displayed-to-users= @master_checklist.description
+
+    %hr
+
+
+    -# Only the descendants in use are shown
+    - if @master_checklist.children?
+      %h5.children-title.label= t('.child_items') + ':'
+      = arranged_tree_as_list(@master_checklist.descendants_in_use.arrange,
+                              { sort_by: [:list_position],
+                                list_type: :ol,
+                                ul_class: ['child-entries'],
+                                li_class: ['child-entry'] }) do | child_entry |
+        = link_to  child_entry.name,
+                   admin_only_master_checklist_path(child_entry),
+                   class: list_entry_css_classes(child_entry)
+        = render partial: 'completed_numbers_span', locals: { master_checklist: child_entry }
+
+    - if @master_checklist.can_add_child?
+      - new_button_text = @master_checklist.children? ? t('.new_child_in_list') : t('.new_child_makes_this_a_list')
+      = link_to new_button_text, new_admin_only_master_checklist_path(parent: @master_checklist), class: 'btn btn-sm btn-secondary'
+
+    %hr
+    .row.mt-2.notes.admin-only
+      .col
+        %p
+          #{ t('.notes') }:
+          = @master_checklist.notes
+
+    - unless @no_longer_in_use.empty?
+      %h5= t('.archived_items')
+      = render partial: 'admin_only/master_checklists/non_nested_table', locals: { no_longer_in_use: @no_longer_in_use }
+
+  = render partial: 'action_buttons', locals: { master_checklist: @master_checklist, show_view_button: false }
+
+
+:javascript
+
+  const SUCCESS = 200;
+
+  const IsInUseElementID = "is-in-use-checkbox";
+  const IsInUseDateChangedClass = "is-in-use-changed-at";
+
+  const NotInUseStyle = "not-in-use";
+  const ToggleIsInUsePostURL = "/admin/master-checklists/toggle-in-use";
+
+
+  window.onload = function(){
+    updateBasedOnIsInUse();
+  };
+
+
+  function toggleIsInUseCheckbox() {
+    $.post( ToggleIsInUsePostURL, { id: #{ @master_checklist.id } })
+      .done(function(responseData) {
+
+        if (responseData.status !== SUCCESS ) { return failedRequest(responseData) }
+
+        let isInUse = responseData.is_in_use;
+        let dateChanged = responseData.is_in_use_changed_at;
+        // console.log('isInUse: ' + isInUse + 'dateChanged: ' + dateChanged);
+        updateBasedOnIsInUse();
+      })
+     .fail(function(responseData) { return failedRequest(responseData) });
+  }
+
+
+  function failedRequest(responseData) {
+   alert(responseData.error_text);
+          // revertInUseCheckbox();
+          return false;
+  }
+
+
+
+  function updateIsInUseAndDate(responseData) {
+    if (Utility.handleError(e, responseData) === false) {
+      updateBasedOnIsInUse();
+    }
+  }
+
+
+  function updateBasedOnIsInUse() {
+    let isInUse = #{ @master_checklist.is_in_use };
+    let heading = document.getElementById('h1');
+
+    if (isInUse) {
+      removeNotInUseClass(heading);
+    }
+    else {
+      addNotInUseClass(heading);
+    }
+  }
+
+
+  function updateBasedOnIsInUseCheckbox() {
+    let isInUse = document.getElementById(IsInUseElementID);
+
+    let isInUseChangedAtElement = document.getElementsByClassName(IsInUseDateChangedClass)[0];
+    let heading = document.getElementById('h1');
+
+    if (isInUse.checked) {
+      isInUseChangedAtElement.style.display = "none";
+      removeNotInUseClass(heading);
+    }
+    else {
+      isInUseChangedAtElement.style.display = "block";
+      addNotInUseClass(heading);
+    }
+  }
+
+
+  function revertInUseCheckbox() {
+    let checkbox = document.getElementById(IsInUseElementID);
+     checkbox.checked = !checkbox.checked;
+     updateBasedOnIsInUseCheckbox();
+  }
+
+
+  function addNotInUseClass(element) {
+    // required to support IE 9 (it does not support .classlist)
+    let arr = element.className.split(" ");
+    if (arr.indexOf(NotInUseStyle) === -1) {
+      element.className += " " + NotInUseStyle;
+    }
+  }
+
+  function removeNotInUseClass(element) {
+    //element.classList.remove(NotInUseStyle);  // will work for > IE9
+
+    // required to support IE9:
+    element.className = element.className.replace(/\bnot-in-use\b/g, "");
+  }

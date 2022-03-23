@@ -1,0 +1,12 @@
+.shf-document.new#shf-document-new
+
+  %header.entry-header
+    = content_title(t('.page_title'), user: current_user)
+
+  .entry-content
+
+    = render 'form'
+
+  %hr
+  .text-center
+    = link_to "#{t('shf_documents.all_shf_minutes')}", shf_documents_path, class: 'btn btn-light btn-sm btn-shf-documents-all'

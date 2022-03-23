@@ -1,0 +1,26 @@
+- provide :signoff do
+  = render 'admin_mailer/signoff'
+
+- message_scope = 'mailers.admin_mailer.member_unpaid_over_x_months.message_text'
+
+= render layout: 'layouts/mail_to_admin' do
+
+  %p= t('these_are_unpaid',  scope: message_scope, num_months: @num_months)
+
+  - inherit_border_padleft = "border: inherit; padding-left: inherit;"
+
+  %table.unpaid_members{ style:"border: 1pt solid lightgray; padding-left: 0.5rem; font-size: inherit" }
+    %thead{ style: "text-align:left;" + inherit_border_padleft }
+      %tr{ style: inherit_border_padleft }
+        %th{ style: inherit_border_padleft }= t('full_name', scope: message_scope) 
+        %th{ style: inherit_border_padleft }= t('activerecord.attributes.user.membership_number')
+        %th{ style: inherit_border_padleft }= t('activerecord.attributes.payment.expire_date')
+        %th{ style: inherit_border_padleft }= t('activerecord.attributes.company.website')
+
+    %tbody{ style: inherit_border_padleft }
+      - @members_unpaid.each do | unpaid_member |
+        %tr.unpaid_member{ style: inherit_border_padleft }
+          %td.full_name{ style: inherit_border_padleft }= unpaid_member.full_name
+          %td.membership_number{ style: inherit_border_padleft }= unpaid_member.membership_number
+          %td.membership_number{ style: inherit_border_padleft }= unpaid_member.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
+          %td.websites{ style: inherit_border_padleft }= unpaid_member.companies.map(&:website).join(' ')

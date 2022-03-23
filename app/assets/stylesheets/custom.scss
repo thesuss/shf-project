@@ -1,0 +1,159 @@
+@import "shf-custom-colors";
+
+// FIXME: clarify what goes here and what goes in style.scss
+
+.expire-date-background,
+.membership-status-background,
+.yes,
+.Yes,
+.no,
+.No,
+.maybe,
+.Maybe {
+  padding: 3px 8px;
+}
+
+.yes,
+.Yes {
+  background-color: $yes-background-green;
+}
+
+.maybe,
+.Maybe {
+  background-color: $maybe-background-yellow;
+}
+
+.no,
+.No {
+  background-color: $no-background-red;
+}
+
+// font-awesome icons
+.fa-edit {
+  color: $shf-blue;
+  vertical-align: middle;
+}
+
+.fa-eye {
+  vertical-align: middle;
+}
+
+.fa-trash-alt {
+  vertical-align: middle;
+}
+
+.edit a,
+.delete a,
+.view a {
+  border-bottom: 0;
+}
+
+.col-width-60pc {
+  width: 0%;
+}
+
+.col-width-40pc {
+  width: 40%;
+}
+
+.col-width-35pc {
+  width: 35%;
+}
+
+.col-width-25pc {
+  width: 25%;
+}
+
+.col-width-15pc {
+  width: 15%;
+}
+
+.col-width-10pc {
+  width: 10%;
+}
+
+.col-width-5pc {
+  width: 5%;
+}
+
+.center-text {
+  text-align: center;
+}
+
+// ======================================
+// ICONS
+
+// ------------------------------
+// FontAwesome social media icons
+
+.fa-facebook {
+  color: $social-media-facebook-blue;
+}
+
+.fa-instagram {
+  color: $social-media-instagram-gray;
+}
+
+.fa-youtube-square {
+  color: $social-media-youtube-red;
+}
+// ------------------------------
+
+
+.disabled-icon {
+  color: $disabled-icon-gray;
+  cursor: not-allowed;
+}
+// ======================================
+
+.grayed-btn-colors {
+  background-color: $grayed-button-background;
+  border-color: $grayed-button-background;
+  color: $grayed-button-text;
+}
+
+.modal-content {
+  p {
+    line-height: 1.5em;
+  }
+}
+
+
+.section {
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
+.section-title {
+  margin-top: 1em;
+}
+
+.admin-only {
+  background-color: $admin-only-background;
+}
+
+
+.tbd-note {
+  color: magenta;
+  font-family: 'Courier New', monospace;
+  font-size: smaller;
+  font-style: italic;
+  line-height: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+
+table {
+  .db-id {
+    font-size: smaller;
+  }
+}
+
+.col {
+  .db-id {
+    font-size: smaller;
+    line-height: 1em;
+  }
+}
+

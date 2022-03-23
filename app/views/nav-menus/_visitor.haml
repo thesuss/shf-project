@@ -1,0 +1,11 @@
+%ul.navbar-nav.ml-auto#menu-menu-1
+  = nav_menu_item_li(text: t('menus.nav.home'), link: https_shf_main_site_home_url)
+
+  = render 'nav-menus/mainsite_association_menu'
+  = render 'nav-menus/mainsite_for_company_owners_menu'
+  = render 'nav-menus/mainsite_for_dog_owners_menu'
+
+  = nav_menu_item_li(text: t('menus.nav.visitor.contact'), link: https_shf_main_site_contact_url)
+
+  = nav_menu_item_li(text: t('menus.nav.visitor.find_dog_businesses'), link: root_path,
+    li_classes: ['current-menu-item'])

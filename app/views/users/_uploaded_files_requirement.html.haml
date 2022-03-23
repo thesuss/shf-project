@@ -1,0 +1,29 @@
+:ruby
+  # This partial expects these locals:
+  #
+  #  user - the user the membership guidelines checklist belongs to
+  #  docs_uploaded [Boolean] - have the documents been loaded within the right timeframe? (default is false)
+  #
+  # if files have been uploaded within the right timeframe (based on the membership status)
+  #   list files
+  # else
+  #   requirement instruction: Upload 1 or more files to show you have continued your education in your areas
+  #
+  #  button to upload files
+
+  docs_were_uploaded =  local_assigns.fetch(:docs_uploaded, false)
+- if docs_were_uploaded
+  - upload_btn_title = t('users.uploaded_files_requirement.upload_another')
+  %p.done= complete_check_icon(html_options: {class: 'is-complete'}) + t("users.uploaded_files_requirement.#{user.membership_status}.have_been_uploaded")
+  .row.justify-content-center.uploaded-files
+    .col-11.required-uploaded-files
+      = render partial: 'uploaded_files/small_table_files_list', locals: { uploaded_files: RequirementsForRenewal.docs_uploaded_for_renewal(user) }
+
+- else
+  - upload_btn_title = t('users.uploaded_files_requirement.upload_file')
+  %p= t('users.uploaded_files_requirement.need_to_upload')
+  %p= t('users.uploaded_files_requirement.in_grace_period.must_upload_again') if user.in_grace_period?
+
+.row.justify-content-center
+  .col-4
+    = render partial: 'upload_file_btn', locals: { user: user, text: upload_btn_title }

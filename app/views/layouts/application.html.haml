@@ -1,0 +1,82 @@
+!!!
+%html{html_attrs(@locale), 'xml.lang': "#{@locale}"}
+  %head
+    = favicon_link_tag 'favicon.ico'
+    = favicon_link_tag 'apple-touch-icon-120x120.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '120x120'
+    = favicon_link_tag 'apple-touch-icon-152x152.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '152x152'
+    = favicon_link_tag 'apple-touch-icon-167x167.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '167x167'
+    = favicon_link_tag 'apple-touch-icon-180x180.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180'
+
+    %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes', name: 'viewport' }/
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
+
+    -#
+      Display meta tags here. "reverse: true" will put the page title before the site title
+      as recommended by https://moz.com/learn/seo/title-tag
+    = display_meta_tags(meta_tags_for_url_path(controller.request.base_url, controller.request.fullpath).merge(reverse: true))
+
+    -#
+      tags that tell search engines where to find pages in other languages
+      see (https://support.google.com/webmasters/answer/189077)
+    = tag('link', rel: 'alternate', hreflang: 'x-default', href: @hreflang_default_url)
+    = tag('link', rel: 'alternate', hreflang: 'sv', href: @hreflang_sv_url)
+    = tag('link', rel: 'alternate', hreflang: 'en', href: @hreflang_en_url)
+
+    = csrf_meta_tags
+
+    = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css'
+    = stylesheet_link_tag 'application', media: 'all'
+    = yield :stylesheet_for_view  # stylesheet markup specificc for a view
+
+    = javascript_include_tag 'application'
+    = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.full.min.js'
+    = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/sv.js'
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=" + |
+                             "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
+                             "&region=SE" |
+    = javascript_include_tag 'https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js'
+
+    = yield :javascript_for_view  # javascript markup specific to a view
+
+    = yield :head_content  # head content specific to a view
+
+    - if Rails.env.test?
+      -#
+        Disable jQuery animations in the test environment to
+        increase speed of the test suite and fix intermittent integration test failures.
+
+        Without this, we were seeing frequent intermittent test failures with
+        jquery functions that involve animations, especially with show() and hide().
+        @see https://github.com/guidance-guarantee-programme/pension_guidance/pull/610
+
+      :javascript
+        $.fx.off = true;
+
+      :css
+        .modal.fade .modal-dialog {
+          transition: inherit;
+          -webkit-transition: inherit;
+          }
+
+
+  %body{ class: "#{controller_name} #{action_name} page page-template page-template-page-sidebar-none" }
+    // This embedded script sets the locale for I18n on the client side.
+    // It needs to be in the body since only the body will be re-rendered
+    // by default when turbolinks is enabled.
+    %script{ type: 'text/javascript' }
+      I18n.defaultLocale = "#{I18n.default_locale}";
+      I18n.locale = "#{I18n.locale}";
+
+    = render 'top'
+
+    = render 'flash'
+    .main{ role: 'main' }
+      = yield
+
+      = render 'cookies_eu/consent_banner', link: 'https://sverigeshundforetagare.se/cookies/', target: '_blank'
+
+      - if current_user.admin?
+        = render 'admin_only/about_modal'
+        = render 'admin_only/user_account/update_membership_status_all_modal'
+
+    = render 'bottom'

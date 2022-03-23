@@ -1,0 +1,5 @@
+.row.mt-2
+  .col.numbers
+    %h5.completion-status
+      = t('.status').capitalize
+      = render partial: 'completed_numbers_span', locals: { master_checklist: master_checklist }

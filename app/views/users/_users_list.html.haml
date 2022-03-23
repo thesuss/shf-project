@@ -1,0 +1,28 @@
+#users_list
+  .row.justify-content-end
+    .col-10
+      = membership_status_legend
+
+  .table-responsive
+    %table.table.table-hover.table-sm.users
+      %thead
+        %tr
+          %th= sort_link(q, :padded_membership_number, t('users.users_list.membership_number'), {}, { class: 'users_pagination', remote: true } )
+          %th= sort_link(q, :email, "#{t('.email')}", { default_order: { email: :asc } }, { class: 'users_pagination', remote: true} )
+          %th= sort_link(q, :created_at, t('.created'), {}, { class: 'users_pagination', remote: true })
+          %th= sort_link(q, :sign_in_count, t('.logged_in_count'), {}, { class: 'users_pagination', remote: true } )
+          %th
+            = t('.application')
+            = fas_tooltip(t('.applications_tooltip'))
+          %th= sort_link(q, :date_membership_packet_sent, t('users.users_list.member_packet'), {}, { class: 'users_pagination member-packet', remote: true } )
+          %th= sort_link(q, :member, t('.member'), {}, { class: 'users_pagination', remote: true })
+          %th.expire-date= t('.expire_date')
+          %th
+      %tbody.panel-body
+        = render partial: 'user', collection: users
+
+  = render partial: 'application/paginate_footer',
+           locals: { entities: @users,
+                     paginate_class: 'users_pagination',
+                     items_count: items_count,
+                     url: users_path }

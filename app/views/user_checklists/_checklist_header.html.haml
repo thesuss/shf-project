@@ -1,0 +1,6 @@
+-# This partial expects these locals:
+  current_user [User] - the current user; used to determine what CSS classes to apply
+  user_checklist [UserChecklist] - the checklist that will be displayed in the header
+
+%header.entry-header
+  = content_title(user_checklist.name, user: current_user)

@@ -1,0 +1,13 @@
+-# this partial expects locals named
+  app_config
+  image_title
+
+= render 'image_show', app_config: app_config, image_title: image_title
+
+.card-footer
+  - if app_config.send(image_title)
+    %strong
+      = app_config.send("#{image_title}_file_name")
+
+  .field.upload-image
+    = f.file_field image_title.to_sym, accept: 'image/png, image/jpeg'

@@ -1,0 +1,15 @@
+-# This partial shows the text explaining how to pay the membership fee,
+-# and the link to log in (with a reminder about the email to use).
+-#
+-# The partial expects these locals:
+-#   user - the user (User object) this will be sent to. This is used for the email and for
+-#          the user_url )
+-#
+%p.how-to-pay{ style: 'font-weight: bold;' }= t('mailers.how_to_pay_membership')
+
+%ol
+  %li.step-1.pay-membership
+    = I18n.t('mailers.pay_membership_step')
+    %br
+    = I18n.t('mailers.here_is_acct_page')
+    = link_to( user_url(user), user_url(user), target: '_blank')

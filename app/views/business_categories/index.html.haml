@@ -1,0 +1,29 @@
+%header.entry-header
+  = content_title(t('.title'), user: current_user)
+.entry-content
+  .table-responsive
+    %table.table.table-hover.table-sm#business_categories
+      = render 'cat_table_head', parent_category: true
+
+      %tbody
+        - @business_categories.roots.each do |business_category|
+
+          = render 'category_display_row',
+                   business_category: business_category,
+                   context: 'category',
+                   parent_cat_id: nil
+
+          - if business_category.children?
+
+            = render 'subcategories_display_row',
+                     business_category: business_category
+
+  %hr
+    .text-center
+      = link_to t('business_categories.new.title'),
+                new_business_category_path,
+                remote: true,
+                class: 'btn btn-sm btn-light new-category-button'
+
+:javascript
+  $(document).ready(categories.init);

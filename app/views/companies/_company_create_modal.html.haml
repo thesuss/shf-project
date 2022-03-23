@@ -1,0 +1,46 @@
+.modal.fade#company-create-modal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+      = form_for company, url: companies_path,
+                 method: :post, remote: true,
+                 html: { id: 'companyCreateForm' } do |f|
+
+        .modal-header
+          %h4.modal-title.text-center
+            = t('companies.new.title')
+          %button.close{ type: 'button', data: { dismiss: 'modal' } }
+            %span{ 'aria-hidden' => 'true' } &times;
+
+        .modal-body
+          .container-fluid
+
+            #company-create-errors
+              != model_errors_helper(company)
+
+            .form-group
+              .row
+                .col
+
+                  = f.label :company_number, "#{t('.company_number')}",
+                            class: 'required', for: 'company-number-in-modal'
+                  = fas_tooltip(t('companies.form.org_nr_tooltip'))
+
+                .col
+                  = f.number_field :company_number, class: 'form-control', size: 10,
+                                   id: 'company-number-in-modal'
+              %hr
+              .row
+                .col
+
+                  = f.label :email, "#{t('companies.show.email')}", class: 'required'
+
+                .col
+
+                  = f.email_field :email, class: 'form-control', size: 30
+
+        .modal-footer
+          = f.submit t('companies.create.create_submit'), class: "btn btn-primary form-control",
+                     id: 'companyCreateSubmit'
+
+          %button{ type: 'button', class: 'btn btn-outline-secondary', data: { dismiss: 'modal' } }
+            = t('cancel')

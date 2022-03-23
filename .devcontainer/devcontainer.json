@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/ruby-2-rails-5
+{
+	"name": "SHF",
+	"dockerFile": "./ruby/Dockerfile",
+
+	"mounts":[
+		"type=volume,src=shfdata,dst=/var/postgres/data"
+	],
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"castwide.solargraph",
+		"misogi.ruby-rubocop",
+		"rebornix.ruby",
+		"gitkraken.gitkraken-authentication",
+		"eamodio.gitlens",
+		"DavidAnson.vscode-markdownlint",
+		"github.vscode-pull-request-github",
+		"aki77.haml-lint",
+		"alexkrechik.cucumberautocomplete",
+		"ckolkman.vscode-postgres",
+		"tomoki1207.pdf",
+	],
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [5432, 3000],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postStartCommand": "su -c '/usr/lib/postgresql/11/bin/pg_ctl -D /var/postgres/data -l /var/log/postgres/logfile start' postgres && bundle install",
+
+}

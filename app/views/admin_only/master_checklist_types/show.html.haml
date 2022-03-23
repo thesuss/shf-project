@@ -1,0 +1,25 @@
+%header.entry-header
+  = content_title(@admin_only_master_checklist_type.name, user: current_user)
+
+.entry-content.container-fluid
+
+  .row
+    .col.name
+      = field_or_none(t('.name'),
+      @admin_only_master_checklist_type.name, tag_options: {class: 'name'})
+
+  .row
+    .col.name
+      = field_or_none(t('.description'),
+      @admin_only_master_checklist_type.description, tag_options: {class: 'description'})
+
+
+  .row
+    .col
+      = render partial: 'admin_only/master_checklists/non_nested_table', locals: {no_longer_in_use: @admin_only_master_checklist_type.top_level_master_checklists }
+
+
+  %hr
+  .text-center
+    = link_to t('.edit_master_checklist_type', name: @admin_only_master_checklist_type.name), edit_admin_only_master_checklist_type_path(@admin_only_master_checklist_type), class:'btn btn-light btn-sm'
+    = link_to t('.all_master_checklist_types'), admin_only_master_checklist_types_path,  class: 'btn btn-light btn-sm'

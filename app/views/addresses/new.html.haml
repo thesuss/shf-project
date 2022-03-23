@@ -1,0 +1,9 @@
+%header.entry-header
+  = content_title(t('.title', company_name: @company.name), user: current_user)
+.entry-content
+  = render partial: 'form',
+           locals: { address: @address, method: :post,
+                     url: company_addresses_path(@company.id) }
+  %hr
+  .text-center
+    = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'

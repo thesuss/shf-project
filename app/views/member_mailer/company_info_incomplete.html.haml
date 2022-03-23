@@ -1,0 +1,28 @@
+- provide :signoff do
+  = render 'application_mailer/signoff'
+
+- message_scope = 'mailers.member_mailer.co_info_incomplete'
+
+- co_name_display = @company.name.blank? ? t('message_text.company_needs_name', scope: message_scope, co_number: @company.company_number) : @company.name
+
+= render layout: 'layouts/mail_from_membership' do
+
+  %p
+    = t('message_text.complete_the_info', scope: message_scope, co_identifier: co_name_display)
+
+  - missing_info = []
+  - missing_info << t('message_text.co_name_missing', scope: message_scope) if @company.name.blank?
+  - missing_info << t('message_text.co_region_missing', scope: message_scope) if @company.missing_region?
+
+  %p= t('message_text.what_is_missing', scope: message_scope)
+  %ul.missing_info
+    - missing_info.each do | missing |
+      %li.missing= missing
+
+  %p= t('message_text.please_complete', scope: message_scope)
+
+  %p= render 'mailers_shared/login_here_with_email', email: @recipient_email
+
+  %p
+    = t('message_text.company_link_login_msg', scope: message_scope)
+    = link_to(co_name_display,  company_url(@company), target: '_blank')

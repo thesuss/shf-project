@@ -1,0 +1,74 @@
+%header.entry-header
+  = content_title(t('.title'), user: current_user)
+
+.entry-content
+  - name_length = 90
+  - display_text_length = 80
+
+  %table.table-hover#master-list-items
+    %col.name-start
+    %col.name-end
+    -#%col.parent-list
+    %col.list-position
+    %col.delete
+    %thead
+      %tr
+        %th
+          %table.item-info-3lines
+            %col.name-start
+            %col.name-end
+            -#%col.parent-list
+            %col.list-position
+            %col.delete
+            %tr.line1
+              %td.name{ colspan: "2" }= t('.name')
+              -#%td.parent-list= t('.in_parent_col')
+              -#%td.parent-list
+              %td.list-position #
+              %td.delete
+            %tr.line2
+              %td.col1-spacer
+              %td.small-title.displayed-text{ width: "80%" }= t('.displayed_text')
+              %td.col1-spacer
+            -#%tr.line3
+            -#  %td.col1-spacer
+            -#  %td.description= t('.displayed_description')
+            -#  %td.col1-spacer
+
+    %tbody
+      - @master_checklists.each do |checklist_master|
+        %tr.master-list-item
+          %td
+            %table.item-info-3lines
+              %col.name-start
+              %col.name-end
+              -#%col.parent-list
+              %col.list-position
+              %col.delete
+              %tr.line1
+                %td.name{ colspan: "2", class: list_entry_css_classes(checklist_master) }
+                  = link_to checklist_master.display_name_with_depth(prefix: '  -').truncate(name_length, separator: ' '), checklist_master
+                  -#%span.expand-collapse-arrow
+                  -#  %a.btn{ 'aria-controls': children_ul_id, 'aria-expanded': 'true', 'data-toggle': 'collapse', href: children_ul_id, role: 'button' }
+                  -#    &nbsp;&#9650;
+                -#%td.parent-list= master_checklist.ancestors? ? (link_to master_checklist.parent.name, master_checklist.parent): '-'
+                -#%td.parent-list
+                %td.list-position= checklist_master.list_position
+                %td.delete= link_to icon('fas', 'trash', class: 'delete'), checklist_master, method: :delete, data: { confirm: t('.delete_confirm', name: checklist_master.name) }
+
+              %tr.line2
+                %td.col1-spacer
+                %td.displayed-text{ width: "80%" }= link_to checklist_master.displayed_text.truncate(display_text_length, separator: ' '), checklist_master
+                -#%td
+                %td.col1-spacer
+
+              -# %tr.line3
+              -#   %td.col1-spacer
+              -#   %td.description= link_to master_checklist.description.truncate(description_length, separator: ' '), master_checklist
+              -#   %td
+              -#   %td.col1-spacer
+
+
+  %br
+
+  = link_to t('.new_item'), new_admin_only_master_checklist_path, class: 'btn btn-primary'

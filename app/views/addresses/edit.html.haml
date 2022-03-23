@@ -1,0 +1,18 @@
+%header.entry-header
+  = content_title(t('.title', company_name: @company.name), user: current_user)
+
+.entry-content
+  = render partial: 'form',
+           locals: { address: @address, method: :put,
+                     url: company_address_path(@company.id, @address.id) }
+  %hr
+  .text-center
+    = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
+    - if @address.mail
+      = t('.cannot_delete_address')
+      = fas_tooltip(t('.delete_address_tooltip'))
+    - unless @address.mail
+      = link_to "#{t('.delete')}", company_address_delete_path(@company, @address),
+                method: :delete,
+                data: { confirm: "#{t('.delete_confirm')}" },
+                class: 'btn btn-sm btn-danger'

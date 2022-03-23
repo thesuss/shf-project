@@ -1,0 +1,95 @@
+- content_for :javascript_for_view do
+  = javascript_include_tag 'user-checklists.js'
+
+-# The variables below are also used in the javascript.  They're here so
+  that the javascript looks for the same element names as are used to construct the view.
+:ruby
+  completed_checkbox = 'completed-checkbox'
+  complete_txt = t('.complete')
+  i18n_date_completed = t('checklist_common.date_completed')
+  date_completed = 'date-completed'
+  list_root_class = 'root'
+  checklist_item_prefix = 'li-id-'
+
+
+%header.entry-header
+  = content_title(t('.title', name: @user.full_name), user: @current_user)
+
+.entry-content
+  #user-checklists
+    - unless @user_checklists.empty?
+      = arranged_tree_as_list(@user_checklists.arrange,
+           { sort_by: [:list_position],
+           list_type: 'ol',
+            ul_class: ['checklist'],
+            ul_class_top: ['top'],
+            ul_class_children: ['children', 'collapse', 'show'],
+            ul_id_method: ul_id,
+            li_class: ['checklist-item'],
+            li_class_top: [list_root_class],
+            li_id_method: li_id(checklist_item_prefix) }) do | child_entry |
+
+        - child_entry_li_id = li_id.call(child_entry)
+        - disabled_setting = { }
+
+        - if child_entry.has_children?
+          - children_ul_id = "##{ ul_id.call(child_entry) }"
+          - disabled_setting = { disabled: true }
+
+          %i{ class:'expand-collapse-toggle fa fa-angle-down' ,'aria-controls': children_ul_id, 'aria-expanded': 'true', 'data-toggle': 'collapse', href: children_ul_id, role: 'button' }
+
+        = check_box_tag("#{completed_checkbox}-#{ child_entry_li_id }", 'checked', child_entry.all_completed?, { class: "checkbox-date-completed",
+           onchange:"toggleCompletedCheckbox(#{ child_entry.id }, '#{ child_entry_li_id }')" }.merge(disabled_setting))
+
+        %span.name{ class: list_entry_css_classes(child_entry) }
+          = child_entry.name
+
+        %span{ class: date_completed }
+          - if  child_entry.all_completed?
+            = i18n_date_completed + ': ' +  child_entry.date_completed.to_date.to_s
+
+        -# only show progress bar for the top level items
+        - if child_entry.root?
+          = render partial: 'shared/progress_bar', locals: {  percent_complete: child_entry.percent_complete }
+
+
+:javascript
+  "use strict";
+
+  const dateCompletedI18n = "#{i18n_date_completed}";
+  const completed_checkbox = "#{completed_checkbox}"
+  const dateCompletedClass = ".#{date_completed}";
+  const listRootClass = ".#{list_root_class}";
+  const listItemPrefix = "#{checklist_item_prefix}";
+
+  const completeText = "#{complete_txt}"
+
+  $(".expand-collapse-toggle").on("click",function(){
+    $(this).toggleClass("fa-angle-down");
+    $(this).toggleClass("fa-angle-up");
+  });
+
+
+  // @return the element for the checklist that shows the checklist with id = checklist_id
+  function checklistEle(checklistID) {
+    return $("#" + listItemPrefix + String(checklistID));
+  }
+
+
+  function toggleCompletedCheckbox(checklistId, liElemId) {
+    let checkboxId = ("#" + completed_checkbox + "-" + liElemId);
+    UserChecklists.postCheckboxChanged(checkboxId, checklistId, postCheckboxChangedSuccess);
+  }
+
+
+  // This is called if postCheckboxChanged is successful
+  function postCheckboxChangedSuccess(responseData) {
+
+    let checklistElement = checklistEle(responseData.user_checklist_id)
+    let progressBar = checklistElement.closest(listRootClass).find(UserChecklists.PROGRESS_BAR_CLASS);
+    UserChecklists.updateProgressBarFromResponse(responseData, progressBar, completeText);
+
+    let dateCompleted = checklistElement.find(dateCompletedClass);
+    let checklistDateCompleted = responseData.date_completed;
+    dateCompleted.text( UserChecklists.dateCompletedText(checklistDateCompleted, dateCompletedI18n) );
+  }

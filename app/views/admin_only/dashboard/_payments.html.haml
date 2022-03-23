@@ -1,0 +1,62 @@
+-# This partial expects the following locals:
+-#
+-#   title - title to display
+-#   ransack_payments_q - the Ransack search (used for sorting table headers)
+-#   payments - list of Payments to display
+
+-# ensure we have reasonable values:
+
+- displayed_title = title.blank? ? '' : title
+
+.payments
+
+  %h3.section-title= displayed_title
+
+  .row
+    .col
+      = button_to t('.export_all_payments'), admin_export_payments_csv_url, {class: 'btn btn-light export-payments'}
+
+
+  = form_tag(admin_export_payments_covering_year_csv_url, { method: 'put', class: '' }) do
+    .row
+      .col-2
+        = number_field_tag 'year', 2019, class: 'form-control'
+      .col-6
+        .actions
+          = submit_tag t('.export_payments_year'), {class: 'btn btn-secondary mb-2 form-control',
+            data: { disable_with: false } }
+
+      .col-3.instructions
+        = label_tag 'year', t('.export_payments_year_explain')
+
+
+
+  #payments_list
+    %table.table.table-hover
+      %thead
+        %tr
+          %th.user-full-name User
+          %th.user-email email
+          %th.amount SEK
+          %th.company-name Company name
+          %th.company-number Org nr
+          %th.type Type
+          %th.term-start-date= sort_link(payments_search, :start_date, 'Term Start Date', { default_order: { start_date: :asc } },{ class: 'payments_sort', remote: true } )
+          %th.term-end-date= sort_link(payments_search, :expire_date, 'Term End Date', {}, { class: 'payments_sort', remote: true } )
+          %th.created-at= sort_link(payments_search, :created_at, 'Date created', {},{ class: 'payments_sort', remote: true } )
+          %th.status HIPS Status
+          %th.hips-id HIPS id
+
+      %tbody.panel-body
+        = render partial: 'payment', collection: payments
+
+
+:javascript
+  $(function() {
+    "use strict";
+
+    $("body").on("ajax:success", ".payments_sort", function(e, data) {
+      $("#payments_list").html(data);
+    });
+
+  });

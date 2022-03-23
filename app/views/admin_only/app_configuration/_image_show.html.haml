@@ -1,0 +1,17 @@
+-# this partial expects locals named
+  app_config
+  image_title
+
+- image_is_missing = !app_config.send(image_title).present?
+- displayed_title_class = image_is_missing ? 'missing' : ''
+.image
+  %div{id: image_title, class: "#{displayed_title_class}"}
+    - image_required_class = (presence_required?(app_config, image_title) ? ' required' : '')
+    .card-header{class: "#{image_required_class}" }= t("admin_only.app_configuration.edit.#{image_title}")
+    .card-body
+      - if image_is_missing
+        = t('.missing')
+      - else
+        = link_to(image_tag(app_config.send(image_title).url, alt: image_title),
+          app_config.send(image_title).url,
+          target: '_blank')

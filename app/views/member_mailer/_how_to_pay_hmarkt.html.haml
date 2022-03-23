@@ -1,0 +1,11 @@
+:ruby
+  # This partial shows the text explaining how to pay the H-Markt licensing fee,
+  # the link to log in (with a reminder about the email to use), and a link
+  # to the company that needs the H-markt paid (that's the page where it's paid).
+  #
+  # The partial expects these locals:
+  #   email - the email address for logging in
+  #   company - the company (object); used for displaying the name and the url
+  #
+= render 'mailers_shared/how_to_instruction', title: t('mailers.how_to_pay_hmarkt'),
+  steps_li_html: render('how_to_pay_hmarkt_steps', email: email, company: company)

@@ -1,0 +1,111 @@
+-#  Bootstrap 4 Card for a Membership Guideline that has sub-guidelines (UserChecklist)
+  This partial expects these locals:
+
+  user_checklist [UserChecklist] - a checklist
+  user - the user this UserChecklist is for
+  overall_percent_complete - the initial percent complete for the progress bar.
+
+.card
+  .card-body
+
+    %h4.card-title
+      %span.is-complete-icon.show-inline.fa-fw#is-complete-icon= complete_check_icon
+      = user_checklist.name
+
+    - if user_checklist.children?
+      = arranged_tree_as_list(user_checklist.children.arrange,
+             { sort_by: [:list_position],
+             list_type: 'ul',
+              ul_class: ['checklist-items' ],
+              ul_id_method: ul_id,
+              li_class: ['checklist-item'],
+              li_id_method: li_id }) do | child_entry |
+
+        - child_entry_li_id = li_id.call(child_entry)
+        %span.name{ class: list_entry_css_classes(child_entry) }
+          = child_entry.name
+
+
+      %p.have-read-confirmation
+        = check_box_tag("completed-checkbox", 'checked', user_checklist.all_completed?,
+          { class: "checkbox-date-completed",
+            onchange:"toggleCompletedCheckbox(#{ user.id }, #{ user_checklist.id })" })
+        I have read and agree to all of the
+        %span.name= user_checklist.name
+        terms.
+
+  .card-footer
+    .row
+      - prev_sibling = user_checklist.previous_sibling
+      - if prev_sibling
+        .col.text-left= link_to 'Prev.',  user_user_checklist_progress_path(user, prev_sibling)
+      - next_sibling = user_checklist.next_sibling
+      - if next_sibling
+        .col.text-right= link_to 'Next.', user_user_checklist_progress_path(user, next_sibling)
+
+
+:javascript
+
+  const setCompleteUrl = "/anvandare/lista/set-all-completed/";
+  const setUncompleteUrl = "/anvandare/lista/set-all-uncompleted/";
+
+  const checkboxId = "completed-checkbox";
+  const isCompleteIconId = "is-complete-icon";
+
+
+  window.onload = function(){
+    updateBasedOnCompletedCheckbox();
+  };
+
+
+  function toggleCompletedCheckbox(userId, checklistId) {
+      let checkbox = getCheckboxElement();
+      let ajaxPostURL = (checkbox.checked ? setCompleteUrl : setUncompleteUrl);
+      $.post( ajaxPostURL + checklistId, updateDateSuccessfulFor); // FIXME catch error and display as an alert
+  }
+
+
+  function updateDateSuccessfulFor(responseData) {
+
+    updateBasedOnCompletedCheckbox();
+
+    // FIXME update overall percent complete
+    let changedChecklistId = responseData.user_checklist_id;
+    let newPercentComplete = responseData.overall_percent_complete;
+    console.log('id = ' + changedChecklistId + '  new percent complete: ' + newPercentComplete);
+  }
+
+
+  function updateBasedOnCompletedCheckbox() {
+   let checkbox = getCheckboxElement();
+    if (checkbox.checked) {
+      showCompleteCheckIcon();
+    }
+    else {
+      hideCompleteCheckIcon();
+    }
+  }
+
+
+  function hideCompleteCheckIcon() {
+    let checkCompleteIcon = getCheckedCompleteIconElement();
+    checkCompleteIcon.classList.remove('show-inline');
+    checkCompleteIcon.classList.add('hide');
+  }
+
+
+  function showCompleteCheckIcon() {
+    let checkCompleteIcon = getCheckedCompleteIconElement();
+    checkCompleteIcon.classList.remove('hide');
+    checkCompleteIcon.classList.add('show-inline');
+  }
+
+
+  function getCheckboxElement() {
+    return document.getElementById(checkboxId);
+  }
+
+  function getCheckedCompleteIconElement() {
+    return document.getElementById(isCompleteIconId);
+  }
+

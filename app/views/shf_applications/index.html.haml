@@ -1,0 +1,26 @@
+%header.entry-header
+  = content_title(t('.title'), user: current_user)
+.entry-content
+  .row
+    .col-6
+      = render 'application/accordion_showhide_toggle',
+        toggler_id: 'application_search_form_toggler', search_form_id: 'toggled_search_form'
+
+    .col-4.offset-2
+      = render partial: 'administration_panel' if @current_user.admin?
+
+
+  .clearfix
+
+  .panel-collapse.collapse.show#toggled_search_form{ 'aria-labelledby' => 'toggle-heading', role: 'tabpanel' }
+    .panel-body
+      = render partial: 'search_form',
+               locals: { search_params: @search_params, language: @locale }
+
+
+  - if @shf_applications.empty?
+    %strong
+      #{t('.no_search_results')}
+  - else
+    #shf_applications_list
+      = render partial: 'shf_applications_list'

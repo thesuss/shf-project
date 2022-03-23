@@ -1,0 +1,27 @@
+%header.entry-header
+  = content_title(t('.title') + @business_category.name, user: current_user)
+.entry-content
+  - unless @business_category.description.nil?
+    %p
+      %b #{t('.description')}:
+      = @business_category.description
+  - if @business_category.companies.empty?
+    %p= t('.no_one_applied_category')
+  - else
+    .table-responsive
+      %table.table.table-hover.table-sm
+        %thead
+          %tr
+            %th= t('companies.index.name')
+            %th= t('companies.index.region_land')
+            - if current_user.admin?
+              %th= t('companies.index.company_number')
+              %th
+        %tbody
+          - @companies.each do | company |
+            %tr.company
+              %td= link_to company.name, company
+              %td= safe_join(company.addresses_region_names, tag.br)
+              - if current_user.admin?
+                %td= company.company_number
+                %td= link_to t('edit'), edit_company_path(company)

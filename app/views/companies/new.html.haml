@@ -1,0 +1,6 @@
+%header.entry-header
+  = content_title(t('.title'), user: current_user)
+.entry-content
+  = render 'form', class_name: 'new-company'
+  .text-center
+    = link_to "#{t('companies.all_companies')}", companies_path, class: 'btn btn-sm btn-light'

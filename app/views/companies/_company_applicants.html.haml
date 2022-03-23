@@ -1,0 +1,33 @@
+-# only the admin should see this
+
+- if current_user.admin?
+  - applications = company.shf_applications - company.approved_applications_from_members # FIXME
+
+  - if applications.any?
+    .company-applicants
+      .admin-only
+        .row
+          .col-12
+            %h3.section-title= t('activerecord.models.shf_application.other')
+            .section
+              .row
+                .col-12
+                  .company-applicants-list
+                    .table-responsive
+                      %table.table.table-sm.table-hover
+                        %thead
+                          %tr
+                            %th.text-nowrap= t('.title')
+                            %th.business-categories= t('.business_categories')
+                            %th.is-member= t('.is_member')
+                            %th.app-status= t('.app status')
+                            %th.app-updated= t('lastupdated')
+
+                        - applications.each do |application|
+                          %tbody
+                            %tr.applicant
+                              %td.business-categories= link_to(application.user.full_name, application.user)
+                              %td.is-member= business_categories_str(application)
+                              %td.app-status= yes_no_span(application.user.member)
+                              %td.app-state= link_to(t("activerecord.attributes.shf_application.state/#{application.state}"), application)
+                              %td.app-updated= application.updated_at

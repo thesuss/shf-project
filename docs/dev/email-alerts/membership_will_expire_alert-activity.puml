@@ -1,0 +1,38 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+title Membership will expire alert\n activity diagram\n
+
+start
+
+:entities_to_check;
+
+:process_entities;
+
+while (entities.each do | entity |) is (\nthere is another entity to process)
+  :take_action(user, log);
+
+  :send_alert_this_day?;
+
+  if (user.membership_current?) then (true)
+    if ( send_on_day_number?(day_to_check, config)) then (true)
+
+      :send_email(user, log);
+    else (false)
+    endif
+
+  else (false)
+  endif
+
+  :next_user
+  <i>next user in entities.each</i>;
+endwhile (no more entities)
+
+
+:finished processing all entities;
+stop
+
+
+
+footer \nAshley Engelund (weedySeaDragon @ github) last updated: 23 April 2019
+@enduml
