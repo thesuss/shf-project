@@ -4,6 +4,8 @@ sv:
   title: 'Medlemmar i Sveriges Hundföretagare'
 
   SHF_name: &SHF_name Sveriges Hundföretagare
+  SHF_address: &SHF_address "c/o Hanna Matsson, Sjövägen 15, 84134 Ånge"
+  SHF_orgnumber: &SHF_orgnumber "Organisationsnummer: 873202-2705"
 
   dog: hund
 
@@ -2071,6 +2073,9 @@ sv:
         price: Pris    
         no_vat: Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.
         questions: Om du har några frågor kring din betalning eller ditt medlemskap, kontakta oss på 
+        shf_name: *SHF_name
+        shf_address: *SHF_address
+        shf_orgnumber: *SHF_orgnumber
 
   devise:
     min_length: '(minst %{minimum_length} tecken)'

@@ -4,6 +4,8 @@ en:
   title: "SWEDEN'S ETHICAL DOG COMPANIES"
 
   SHF_name: &SHF_name "Swedish Dog Industry Association"
+  SHF_address: &SHF_address "c/o Hanna Matsson, Sjövägen 15, 84134 Ånge"
+  SHF_orgnumber: &SHF_orgnumber "Organisation Number: 873202-2705"
 
   dog: dog
 
@@ -2065,7 +2067,10 @@ en:
         product: Product
         price: Price    
         no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.     
-        questions: If you have any questions regarding the payment or your membership, contact us at 
+        questions: If you have any questions regarding the payment or your membership, contact us at
+        shf_name: *SHF_name
+        shf_address: *SHF_address
+        shf_orgnumber: *SHF_orgnumber
         
   devise:
     min_length: '(at least %{minimum_length} characters)'
