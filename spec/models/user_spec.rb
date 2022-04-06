@@ -201,40 +201,59 @@ RSpec.describe User, type: :model do
                             ).for(:email)
     end
 
-    it do
-      is_expected.to validate_attachment_content_type(:member_photo)
-                       .allowing('image/png', 'image/jpeg')
-                       .rejecting('image/gif', 'image/bmp')
-    end
-
-    describe 'validates file contents, file type and file name' do
+    describe 'member photo attachment' do
       let(:file_root) { "#{Rails.root}/spec/fixtures/member_photos/" }
-      let(:txt_file) { File.new(file_root + 'text_file.jpg') }
-      let(:gif_file) { File.new(file_root + 'gif_file.jpg') }
-      let(:ico_file) { File.new(file_root + 'ico_file.png') }
-      let(:xyz_file) { File.new(file_root + 'member_with_dog.xyz') }
-      let(:invalid_filename) { File.new(file_root + 'å_member_with_ä_dög.png') }
 
-      it 'rejects if content not jpeg or png' do
+      describe 'file type' do
+        it do
+          is_expected.to validate_attachment_content_type(:member_photo)
+                           .allowing('image/png', 'image/jpeg')
+                           .rejecting('image/gif', 'image/bmp')
+        end
 
-        user_with_member_photo.member_photo = txt_file
-        expect(user_with_member_photo).not_to be_valid
-
-        user_with_member_photo.member_photo = gif_file
-        expect(user_with_member_photo).not_to be_valid
-
-        user_with_member_photo.member_photo = ico_file
-        expect(user_with_member_photo).not_to be_valid
+        it 'rejects if file type something other than jpeg, jpg, png' do
+          xyz_file = File.new(file_root + 'member_with_dog.xyz')
+          user_with_member_photo.member_photo = xyz_file
+          expect(user_with_member_photo).not_to be_valid
+        end
       end
 
-      it 'rejects if content OK but file type wrong' do
-        user_with_member_photo.member_photo = xyz_file
-        expect(user_with_member_photo).not_to be_valid
+      describe 'file contents' do
+
+        it 'rejects if content not jpeg or png' do
+          user_with_member_photo.member_photo = File.new(file_root + 'text_file.jpg')
+          expect(user_with_member_photo).not_to be_valid
+
+          user_with_member_photo.member_photo = File.new(file_root + 'gif_file.jpg')
+          expect(user_with_member_photo).not_to be_valid
+
+          user_with_member_photo.member_photo = File.new(file_root + 'ico_file.png')
+          expect(user_with_member_photo).not_to be_valid
+        end
       end
 
-      it 'rejects if content OK but file name contains invalid chars' do
-        user_with_member_photo.member_photo = invalid_filename
-        expect(user_with_member_photo).not_to be_valid
+      describe 'file name' do
+        it 'cannot contain äÄōŌåÅ' do
+          invalid_filename = File.new(file_root + 'å_member_with_ä_dög.png')
+          user_with_member_photo.member_photo = invalid_filename
+          expect(user_with_member_photo).not_to be_valid
+        end
+
+        it 'only punctuation allowed are - and _' do
+          dots_filename = File.new(file_root + "2015-10-10_11.32.12.jpg")
+          parens_filename = File.new(file_root + "2015-10-10_11(2).jpg")
+          [dots_filename, parens_filename].each do |bad_fn|
+            user_with_member_photo.member_photo = bad_fn
+            expect(user_with_member_photo).not_to be_valid
+          end
+        end
+
+        describe 'must match regexp  /^[a-zA-Z0-9_-]+(\.png|\.jpe?g)\z/i' do
+          it 'no dots (.) within the filename' do
+
+          end
+        end
+
       end
     end
   end

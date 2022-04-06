@@ -394,8 +394,7 @@ sv:
             member_photo_content_type:
               invalid: *spoofed_media
             member_photo_file_name:
-              invalid: "är ogiltig! (OBS: specialtecken (Å, Ä, Ö) kan
-                       inte användas i filnamnet)"
+              invalid: "är ogiltig! OBS: specialtecken (Åå, Ää, Öö) kan inte användas i filnamnet. Only -_ punctuation characters are allowed."
 
         app_configuration:
           attributes:
@@ -2070,9 +2069,9 @@ sv:
         payment_date: *payment_date
         payment_processor: Betalmetod
         product: Produkt
-        price: Pris    
+        price: Pris
         no_vat: Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.
-        questions: Om du har några frågor kring din betalning eller ditt medlemskap, kontakta oss på 
+        questions: Om du har några frågor kring din betalning eller ditt medlemskap, kontakta oss på
         shf_name: *SHF_name
         shf_address: *SHF_address
         shf_orgnumber: *SHF_orgnumber

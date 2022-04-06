@@ -394,7 +394,7 @@ en:
             member_photo_content_type:
               invalid: *spoofed_media
             member_photo_file_name:
-              invalid: "is invalid! (NOTE: special characters (Å, Ä, Ö) cannot be used in the filename)"
+              invalid: "is invalid! These characters are not allowed: (Åå, Ää, Öö). Only -_ punctuation characters are allowed."
 
         app_configuration:
           attributes:
@@ -2065,13 +2065,13 @@ en:
         payment_date: *payment_date
         payment_processor: Payment processor
         product: Product
-        price: Price    
-        no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.     
+        price: Price
+        no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.
         questions: If you have any questions regarding the payment or your membership, contact us at
         shf_name: *SHF_name
         shf_address: *SHF_address
         shf_orgnumber: *SHF_orgnumber
-        
+
   devise:
     min_length: '(at least %{minimum_length} characters)'
 

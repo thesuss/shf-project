@@ -121,6 +121,16 @@ Feature: Admins, Members, and Users edit their own User Profile
     And the t("activerecord.attributes.shf_application.contact_email") field should be set to "changed@random.com"
 
 
+  Scenario: SAD PATH Member uploads profile picture with invalid filename
+    Given the date is set to "2017-10-01"
+    Given I am logged in as "member@random.com"
+    And I am on the "edit my user profile" page
+    And I choose a "user_member_photo" file named "husky-ÄËÖäëö_puppy.jpg" to upload
+    And I fill in t("devise.registrations.edit.current_password") with "password"
+    And I click on t("devise.registrations.edit.submit_button_label") button
+    Then I should see t("activerecord.errors.models.user.attributes.member_photo_file_name.invalid")
+
+
   # -----------------------------------------------
   # USER edits their own profile
 
