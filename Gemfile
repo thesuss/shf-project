@@ -2,11 +2,11 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 gem 'dotenv-rails'
-gem 'rails', '~> 5.2.6'
+gem 'rails', '~> 5.2.7'
 gem 'bootsnap', require: false
 
 gem 'pg', '~> 1.2'
-gem 'puma', '~> 5.5'
+gem 'puma', '>= 5.6.4'
 gem 'sass-rails'
 
 gem 'uglifier', '>= 1.3.0'
@@ -61,7 +61,7 @@ gem 'sanitize'
 
 gem 'mailgun-ruby'
 gem 'premailer-rails'  # converts css to inline; required for html emails to look ok
-gem 'nokogiri'         # must explicity require this gem for premailer-rails
+gem 'nokogiri', '>= 1.13.2'   # must explicitly require this gem for premailer-rails
 
 gem 'httparty'
 gem 'jwt'
