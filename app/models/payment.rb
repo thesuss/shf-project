@@ -65,8 +65,8 @@ class Payment < ApplicationRecord
   PENDING = ORDER_PAYMENT_STATUS['checkout_incomplete']
   SUCCESSFUL = ORDER_PAYMENT_STATUS['checkout_complete']
 
-  # PENDING = ORDER_PAYMENT_STATUS['pending']
-  # SUCCESSFUL = ORDER_PAYMENT_STATUS['successful']
+  HIPS_PENDING = ORDER_PAYMENT_STATUS['pending']
+  HIPS_SUCCESSFUL = ORDER_PAYMENT_STATUS['successful']
   EXPIRED = ORDER_PAYMENT_STATUS['expired']
   AWAITING_PAYMENTS = ORDER_PAYMENT_STATUS['awaiting_payments']
 
@@ -89,9 +89,6 @@ class Payment < ApplicationRecord
   after_update :clear_proof_of_membership_image_cache,
                if: Proc.new { saved_change_to_expire_date? }
 
-  def clear_proof_of_membership_image_cache
-    user.clear_proof_of_membership_jpg_cache
-  end
 
   def self.membership_payment_type
     PAYMENT_TYPE_MEMBER
@@ -105,15 +102,13 @@ class Payment < ApplicationRecord
     PAYMENT_PROCESSOR_KLARNA
   end
 
-  def self.payment_currency
-    PAYMENT_CURRENCY
+  # keep for older data, including seeding older data
+  def self.payment_processor_hips
+    PAYMENT_PROCESSOR_HIPS
   end
 
-
-  def add_observers
-    add_observer MembershipStatusUpdater.instance, :payment_made
-    add_observer AdminAlerter.instance, :payment_made
-    add_observer PaymentAlerter.instance, :payment_made
+  def self.payment_currency
+    PAYMENT_CURRENCY
   end
 
 
@@ -137,6 +132,52 @@ class Payment < ApplicationRecord
         or(by_year(year, field: :expire_date)).
         or(before(year_start, field: :start_date).after(year_end, field: :expire_date)).distinct
   end
+
+
+  def self.status_successful
+    SUCCESSFUL
+  end
+
+  def self.status_pending
+    PENDING
+  end
+
+  def self.status_incomplete
+    status_pending
+  end
+
+  def self.status_expired
+    EXPIRED
+  end
+
+  def self.status_awaiting_payments
+    AWAITING_PAYMENTS
+  end
+
+  def self.status_hips_pending
+    HIPS_PENDING
+  end
+
+  def self.status_hips_successful
+    HIPS_SUCCESSFUL
+  end
+
+  def self.status_unknown
+    UNKNOWN_ORDER_STATUS
+  end
+  # ---------------------------------------------------------------------------------------------
+
+  def clear_proof_of_membership_image_cache
+    user.clear_proof_of_membership_jpg_cache
+  end
+
+
+  def add_observers
+    add_observer MembershipStatusUpdater.instance, :payment_made
+    add_observer AdminAlerter.instance, :payment_made
+    add_observer PaymentAlerter.instance, :payment_made
+  end
+
 
   # The transaction was successful.  The transaction might depend on an external system (e.g. Klarna).
   # This method is called so we can do whatever it is we need to do

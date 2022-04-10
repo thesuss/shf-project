@@ -125,7 +125,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
 
     shared_examples 'it creates new addresses min max times with csv file' do |num_users, a_email, a_pwd, min_times, max_times, csv_filename|
 
-      it "seed #{num_users}, calls Geocode.search at least #{min_times} and at most #{max_times} times" do
+      it "seed #{num_users}, calls :create_a_new_address at least #{min_times} and at most #{max_times} times" do
 
         RSpec::Mocks.with_temporary_scope do
           DatabaseCleaner.strategy = :transaction
@@ -154,7 +154,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
           end
 
           expect_any_instance_of(SeedHelpers::AddressFactory).to receive(:create_a_new_address)
-                                                                   .at_most(max_times).times if max_times > 0
+                                                                   .at_most(max_times).times  if max_times > 0
 
           SHFProject::Application.load_tasks
           SHFProject::Application.load_seed
@@ -195,7 +195,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     end
 
     context 'not enough addresses are in the CSV file; create the remaining ones needed' do
-      it_behaves_like 'it creates new addresses min max times with csv file', 16, admin_email, admin_pwd, 3, 5, FAKE_ADDRESSES_CSV_FILENAME
+      it_behaves_like 'it creates new addresses min max times with csv file', 18, admin_email, admin_pwd, 3, 5, FAKE_ADDRESSES_CSV_FILENAME
     end
 
 

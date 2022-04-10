@@ -51,7 +51,6 @@ module SeedHelpers
 
     # --------------------------------------------------------------------------------------------
 
-
     def self.term_length_to_days
       Membership.term_length.to_i / 1.day.to_i
     end
@@ -61,13 +60,17 @@ module SeedHelpers
       MembershipsManager.grace_period.to_i / 1.day.to_i
     end
 
-    # --------------------------------------------------------------------------------------------
+    def self.default_payment_processor
+       Payment.payment_processor_klarna
+    end
 
+    # --------------------------------------------------------------------------------------------
 
     def initialize(static_data = SeedHelpers::StaticDataFactory.new, log = nil)
       @static_data = static_data
       @log = log
       @shf_application_factory = ::SeedHelpers::ShfApplicationFactory.new(static_data, log)
+      @payments_factory = ::SeedHelpers::PaymentsFactory.new(static_data, log)
     end
 
 
@@ -94,27 +97,28 @@ module SeedHelpers
 
       # users with no application (or zero if we are creating fewer than 3 total)
       users_with_no_application = num_users < 3 ? 0 : [1, (PERCENT_REGISTERED_USERS * num_users).round].max
-      make_random_new_registered_user(users_with_no_application)
+      make_random_new_registered_users(users_with_no_application)
 
       users_with_application = num_users - users_with_no_application
       return if users_with_application == 0
 
       num_current_members = (users_with_application * PERCENT_CURRENT_MEMBERS).round
-      make_random_current_member(num_current_members)
+      make_random_current_members(num_current_members)
       num_former_members = (users_with_application * PERCENT_FORMER_MEMBERS).round
-      make_random_former_member(num_former_members)
+      make_random_former_members(num_former_members)
       num_in_grace_pd = (users_with_application * PERCENT_IN_GRACE_PD).round
-      make_random_in_grace_period(num_in_grace_pd)
+      make_random_in_grace_period_members(num_in_grace_pd)
 
       # the rest should be applicants, the application status chosen at random (excluding 'accepted')
       num_applicants = users_with_application - num_current_members -
         num_former_members - num_in_grace_pd
-      make_random_applicant(num_applicants) unless num_applicants == 0
+      make_random_applicants(num_applicants) unless num_applicants == 0
     end
 
 
     # New users are those that have signed up, but not submitted any application or done anything else.
     #   (They have not agreed to any Ethical Guidelines, etc.)
+    # @return [Array<User>] The users created.
     def make_predefined_new_registered_users
       make_predefined_with(lastname: NEWUSER_LNAME, number: PREDEFINED_NUM_NEWUSERS)
     end
@@ -127,33 +131,55 @@ module SeedHelpers
     #
     # ShfApplications and Companies are created for the applicants
     # Make PREDEFINED_NUM_APPLICANTS_EACH_APP_STATE applicants for each application state
+    # @return [Array<User>] The applicants created.
     def make_predefined_applicants
+      new_applicants = []
       app_states_except_being_destroyed = ShfApplication.aasm.states.map(&:name) - [:being_destroyed]
       app_states_except_being_destroyed.each do |application_state|
         app_state_i18n = ShfApplication.human_attribute_name("state.#{application_state}")
-        make_predefined_with(lastname: APPLICANT_LNAME,
-                             firstname: app_state_i18n.capitalize,
-                             number: PREDEFINED_NUM_APPLICANTS_EACH_APP_STATE) do |applicant|
+        new_applicants.concat(make_predefined_with(lastname: APPLICANT_LNAME,
+                                                   firstname: app_state_i18n.capitalize,
+                                                   number: PREDEFINED_NUM_APPLICANTS_EACH_APP_STATE)) do |applicant|
           @shf_application_factory.make_n_save_app(applicant, application_state)
         end
       end
+      new_applicants
     end
 
 
     # Current members are those that have met all of the requirements for membership and have
-    #   paid.  Some percentage have paid in advance (for more than 1 membership term).
+    # paid.  Some percentage have paid in advance (for more than 1 membership term).
     # ShfApplications and Companies are created for the members.
+    # @return [Array<User>] The members created.
     def make_predefined_current_members
-      make_member_paid_through(Date.current + 1.day)
-      make_member_paid_through(Date.current + 1.month)
+      make_members_paid_through(Date.current + 1.day)
+      make_members_paid_through(Date.current + 1.month)
 
       earliest_renew_days = MembershipsManager.days_can_renew_early
-      make_member_paid_through(Date.current + earliest_renew_days)
-      make_member_paid_through(Date.current + earliest_renew_days + 1)
-      make_member_paid_through(Date.current + earliest_renew_days - 1)
+      make_members_paid_through(Date.current + earliest_renew_days)
+      make_members_paid_through(Date.current + earliest_renew_days + 1)
 
-      make_member_paid_through(Date.current + 6.months)
-      make_member_paid_through(Date.current + 2.years - 1.day, term_first_day: Date.current)
+      can_renew_term_first_day = Date.current + earliest_renew_days - 1
+      renew_minus_1_members = make_members_paid_through(can_renew_term_first_day, number: 3)
+
+      # add past memberships and payments to this member
+      renew_minus_1_member_last = renew_minus_1_members.last
+      create_past_memberships_for(renew_minus_1_member_last, 4)
+      renew_minus_1_member_last.update(email: "has-past-#{renew_minus_1_member_last.email}")
+
+      pd_thru_6_months_members = make_members_paid_through(Date.current + 6.months)
+      # add past memberships and payments to this member, including pending payments
+      last_pd_thru_6_months_member = pd_thru_6_months_members.last
+      create_past_memberships_for(last_pd_thru_6_months_member, 6)
+      oldest_membership = last_pd_thru_6_months_member.memberships.sort_by(&:first_day).first
+      3.times{ @payments_factory.new_klarna_pending_membership_payment(last_pd_thru_6_months_member,
+                                                                       oldest_membership.first_day,
+                                                                       oldest_membership.last_day) }
+
+      last_pd_thru_6_months_member.update(email: "has-past-pending-#{last_pd_thru_6_months_member.email}")
+
+
+      make_members_paid_through(Date.current + 2.years - 1.day, term_first_day: Date.current)
     end
 
 
@@ -162,108 +188,124 @@ module SeedHelpers
     # membership term. Ex: If the requirement for renewing membership includes "must upload at least
     # 1 file" they may or may not have done that.  The requirements for renewing membership are
     # separate from payments.
+    # @return [Array<User>] The members created.
     def make_predefined_in_grace_period_members
       grace_pd_first_day = Date.current - MembershipsManager.grace_period + 1.day
       firstname_start = 'GracePeriod-since'
-      make_member_paid_through(grace_pd_first_day, lastname: GRACEPERIODMEMBER_LNAME,
-                               firstname_prefix: firstname_start)
-      make_member_paid_through(grace_pd_first_day + 1.month, lastname: GRACEPERIODMEMBER_LNAME,
-                               firstname_prefix: firstname_start)
-      make_member_paid_through(Date.today - 1.day, lastname: GRACEPERIODMEMBER_LNAME,
-                               firstname_prefix: firstname_start)
+      make_members_paid_through(grace_pd_first_day, lastname: GRACEPERIODMEMBER_LNAME,
+                                firstname_prefix: firstname_start)
+      make_members_paid_through(grace_pd_first_day + 1.month, lastname: GRACEPERIODMEMBER_LNAME,
+                                firstname_prefix: firstname_start)
+      make_members_paid_through(Date.today - 1.day, lastname: GRACEPERIODMEMBER_LNAME,
+                                firstname_prefix: firstname_start)
     end
 
 
     # Former members are those whose last payment date has past AND they are past the 'grace period'
     #   as well.
+    # @return [Array<User>] The members created.
     def make_predefined_former_members
       most_recent_last_day = Date.current - MembershipsManager.grace_period
-      make_member_paid_through(most_recent_last_day - 1.day,
-                               lastname: FORMERMEMBER_LNAME,
-                               firstname_prefix: FORMERMEMBER_FNAME_PREFIX)
-      make_member_paid_through(most_recent_last_day - 2.days,
-                               lastname: FORMERMEMBER_LNAME,
-                               firstname_prefix: FORMERMEMBER_FNAME_PREFIX)
+      make_members_paid_through(most_recent_last_day - 1.day,
+                                lastname: FORMERMEMBER_LNAME,
+                                firstname_prefix: FORMERMEMBER_FNAME_PREFIX)
+      make_members_paid_through(most_recent_last_day - 2.days,
+                                lastname: FORMERMEMBER_LNAME,
+                                firstname_prefix: FORMERMEMBER_FNAME_PREFIX)
     end
 
 
-    def make_random_new_registered_user(num_users = 1)
+    # @return [Array<User>] The members created.
+    def make_random_new_registered_users(num_users = 1)
       return if num_users == 0
 
       make_predefined_with(lastname: name_with_random(NEWUSER_LNAME), number: num_users)
     end
 
 
-    def make_random_applicant(num_applicants = 1)
-      return if num_applicants == 0
+    # @return [Array<User>] The applicants created.
+    def make_random_applicants(num_applicants = 1)
+      return [] if num_applicants == 0
 
+      new_applicants = []
       num_applicants.times do
-        make_predefined_with(firstname: FFaker::NameSE.first_name,
-                             lastname: name_with_random(APPLICANT_LNAME)) do |applicant|
+        new_applicants.concat(make_predefined_with(firstname: FFaker::NameSE.first_name,
+                                                   lastname: name_with_random(APPLICANT_LNAME))) do |applicant|
           @shf_application_factory.make_n_save_app(applicant, random_application_not_accepted_state)
         end
       end
+      new_applicants
     end
 
 
-    def make_random_current_member(num_members = 1)
-      return if num_members == 0
+    # @return [Array<User>] The members created.
+    def make_random_current_members(num_members = 1)
+      return [] if num_members == 0
 
+      new_members = []
       term_length_days = self.class.term_length_to_days
       num_members.times do |i|
         days_left_in_term = Random.rand(0..(term_length_days - 1))
         # days_left_in_term = Random.rand(0..([term_length_days - 1, 0].max))
-        make_member_paid_through(Date.current + days_left_in_term.day,
-                                 firstname_prefix: "#{MEMBER_FNAME_PREFIX}#{i}",
-                                 lastname: name_with_random(MEMBER_LNAME))
+        new_members.concat(make_members_paid_through(Date.current + days_left_in_term.day,
+                                                     firstname_prefix: "#{MEMBER_FNAME_PREFIX}#{i}",
+                                                     lastname: name_with_random(MEMBER_LNAME)))
       end
+      new_members
     end
 
 
-    def make_random_in_grace_period(num_grace_pds = 1)
-      return if num_grace_pds == 0
+    # @return [Array<User>] The members created.
+    def make_random_in_grace_period_members(num_grace_pds = 1)
+      return [] if num_grace_pds == 0
 
+      new_members = []
       grace_pd_days = self.class.grace_period_to_days
       num_grace_pds.times do |i|
         last_day = Date.current - Random.rand(1..([grace_pd_days - 1, 1].max))
-        make_member_paid_through(last_day,
-                                 firstname_prefix: "#{GRACEPERIODMEMEBER_FNAME_PREFIX}#{i}",
-                                 lastname: name_with_random(GRACEPERIODMEMBER_LNAME))
+        new_members.concat(make_members_paid_through(last_day,
+                                                     firstname_prefix: "#{GRACEPERIODMEMEBER_FNAME_PREFIX}#{i}",
+                                                     lastname: name_with_random(GRACEPERIODMEMBER_LNAME)))
       end
+      new_members
     end
 
 
-    def make_random_former_member(num_former_members = 1)
-      return if num_former_members == 0
+    # @return [Array<User>] The members created.
+    def make_random_former_members(num_former_members = 1)
+      return [] if num_former_members == 0
 
+      new_members = []
       num_former_members.times do |i|
         last_day = Date.current - MembershipsManager.grace_period - (Random.rand(1..700))
-        make_member_paid_through(last_day,
-                                 firstname_prefix: "#{FORMERMEMBER_FNAME_PREFIX}#{i}",
-                                 lastname: name_with_random(FORMERMEMBER_LNAME))
+        new_members.concat(make_members_paid_through(last_day,
+                                                     firstname_prefix: "#{FORMERMEMBER_FNAME_PREFIX}#{i}",
+                                                     lastname: name_with_random(FORMERMEMBER_LNAME)))
       end
+      new_members
     end
 
 
-    def make_member_paid_through(term_last_day, lastname: MEMBER_LNAME,
-                                 number: 1,
-                                 firstname_prefix: PAID_THRU_FNAME,
-                                 term_first_day: nil,
-                                 membership_status: :current_member)
+    # @return [Array<User>] The new members created.
+    def make_members_paid_through(term_last_day, lastname: MEMBER_LNAME,
+                                  number: 1,
+                                  firstname_prefix: PAID_THRU_FNAME,
+                                  term_first_day: nil,
+                                  membership_status: :current_member)
       make_predefined_with(lastname: lastname, number: number, firstname: "#{firstname_prefix}-#{term_last_day.iso8601}") do |member|
         term_first_day = term_first_day.nil? ? Membership.first_day_from_last(term_last_day) : term_first_day
 
         @shf_application_factory.make_n_save_app(member, MA_ACCEPTED_STATE, acceptance_date: term_first_day)
         member.reload
 
-        make_completed_membership_guidelines_for(member, term_first_day - 1)
         upload_membership_application_file(member, member.shf_application,
                                            MEMBERSHIP_APP_UPLOADED_FNAME,
                                            term_first_day - 1)
 
+        make_completed_membership_guidelines_for(member, term_first_day - 1)
         # Make payments
-        member.payments << new_membership_payment(member, term_first_day, term_last_day)
-        member.companies.first.payments << new_hmarkt_payment(member, term_first_day, term_last_day)
+        member.payments << @payments_factory.new_klarna_membership_payment(member, term_first_day, term_last_day)
+        member.companies.first.payments << @payments_factory.new_klarna_hmarkt_payment(member, term_first_day, term_last_day)
 
         if member.current_membership
           member.most_recent_membership&.update(first_day: term_first_day, last_day: term_last_day)
@@ -274,17 +316,64 @@ module SeedHelpers
         member.reload
 
         MembershipStatusUpdater.instance.update_membership_status(member, send_email: false)
+        member
       end
     end
 
 
+    # @return [Array<User>] The users created.
     def make_predefined_with(lastname: 'Someone', number: 1, firstname: nil)
       return if number == 0
-
+      new_users = []
       number.times do |i|
         user = new_user(lastname, number: i, firstname: firstname)
         yield(user) if block_given?
+        new_users << user
       end
+      new_users
+    end
+
+
+    # Create past memberships (and the requirements) for the user.
+    # Make the payments for the last (oldest) use the HIPS payment processor
+    # @return [User] The user that memberships were created for
+    def create_past_memberships_for(user, num_memberships = 1)
+      oldest_first_day = user.memberships.sort_by(&:first_day).first.first_day.to_date
+      new_first_day = oldest_first_day - Membership.term_length
+      num_memberships.times do |i|
+        payment_processor = ((i == num_memberships - 1) ? Payment.payment_processor_hips : self.class.default_payment_processor)
+        create_membership_and_requirements_for(user, term_first_day: new_first_day, payment_processor: payment_processor)
+        new_first_day = new_first_day - Membership.term_length
+      end
+      user
+    end
+
+
+    # Create all the things needed for a membership (payments, etc), create the new membership,
+    # add the things to the user and return the user.
+    # Note: This _does NOT update the membership status for the user._ The calling method can do it if appropriate.
+    #
+    # @return User
+    def create_membership_and_requirements_for(user, term_first_day: Date.current,
+                                               payment_processor: Payment.payment_processor_klarna)
+      make_completed_membership_guidelines_for(user, term_first_day)
+
+      if payment_processor == Payment.payment_processor_klarna
+        new_membership_payment_method = :new_klarna_membership_payment
+        new_hmarkt_payment_method = :new_klarna_hmarkt_payment
+      else
+        new_membership_payment_method = :new_hips_membership_payment
+        new_hmarkt_payment_method = :new_hips_hmarkt_payment
+      end
+
+      term_last_day = Membership.last_day_from_first(term_first_day)
+      user.payments << @payments_factory.send(new_membership_payment_method, user, term_first_day, term_last_day)
+      user.companies.first.payments << @payments_factory.send(new_hmarkt_payment_method, user, term_first_day, term_last_day)
+
+      user.memberships << Membership.create!(user: user, first_day: term_first_day, last_day: term_last_day)
+
+      user.reload
+      user
     end
 
 
@@ -355,30 +444,10 @@ module SeedHelpers
         membership_app.uploaded_files << uploaded_file
 
         uploaded_file.update(actual_file_updated_at: file_created_at,
-          created_at: file_created_at, updated_at: file_created_at)
+                             created_at: file_created_at, updated_at: file_created_at)
       end
     end
 
-
-    def new_membership_payment(user, term_first_day, term_last_day)
-      Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                     user_id: user.id,
-                     hips_id: 'none',
-                     status: Payment::SUCCESSFUL,
-                     start_date: term_first_day,
-                     expire_date: term_last_day)
-    end
-
-
-    def new_hmarkt_payment(user, term_first_day, term_last_day)
-      Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
-                     user_id: user.id,
-                     company_id: user.companies.first.id,
-                     hips_id: 'none',
-                     status: Payment::SUCCESSFUL,
-                     start_date: term_first_day,
-                     expire_date: term_last_day)
-    end
 
   end
 
