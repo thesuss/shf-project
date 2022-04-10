@@ -819,7 +819,7 @@ RSpec.describe UserChecklistManager do
       user = create(:user, first_name: 'User', last_name: 'With-Checklists')
 
       # make 2 and expect the most recently created one to be returned
-      travel_to(Time.now - 2.days) do
+      travel_to(Time.zone.now - 2.days) do
         create(:user_checklist, :completed, user: user, name: 'older list')
       end
 
@@ -1001,19 +1001,19 @@ RSpec.describe UserChecklistManager do
         describe 'converts all Times to Dates' do
           it 'can handle comparing the Time of a UserChecklist most recently completed with a Date for the latest membership start date' do
             allow(latest_membership).to receive(:first_day).and_return(yesterday)
-            allow(most_recent_checklist).to receive(:date_completed).and_return(Time.now - 1.day)
+            allow(most_recent_checklist).to receive(:date_completed).and_return(Time.zone.now - 1.day)
             expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
           end
 
           it 'can handle comparing the Date of a UserChecklist most recently completed with a Time for the latest membership start date' do
-            allow(latest_membership).to receive(:first_day).and_return(Time.now - 1.day)
+            allow(latest_membership).to receive(:first_day).and_return(Time.zone.now - 1.day)
             allow(most_recent_checklist).to receive(:date_completed).and_return(yesterday)
             expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
           end
 
           it 'converts both Times to dates (Time of a UserChecklist most recently completed, and Time for the latest membership start date)' do
-            allow(latest_membership).to receive(:first_day).and_return(Time.now - 1.day)
-            allow(most_recent_checklist).to receive(:date_completed).and_return(Time.now - 1.day)
+            allow(latest_membership).to receive(:first_day).and_return(Time.zone.now - 1.day)
+            allow(most_recent_checklist).to receive(:date_completed).and_return(Time.zone.now - 1.day)
             expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
           end
         end
