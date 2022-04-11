@@ -4,33 +4,72 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+global_job_config:
+  # Set env vars for all jobs in the pipeline
+  env_vars:
+    - name: SHF_HIPS_URL
+      value: "https://api.hips.com/v1/"
+    - name: SHF_AWS_S3_BACKUP_TOP_PREFIX
+      value: "this/is/the/top/prefix"
+  # Connect secrets to all jobs in the pipeline
+  secrets:
+    - name: shf-secrets
 blocks:
-  - name: 'Testblock'
-    task:      
+  - name: Set up Environment
+    # Set up the environment used.  At the end, store it in the cache so it can be
+    # use in other blocks and future workflows.  @see https://docs.semaphoreci.com/examples/rails-continuous-integration/
+    task:
       env_vars:
         - name: SHF_HIPS_URL
           value: "https://api.hips.com/v1/"
         - name: SHF_AWS_S3_BACKUP_TOP_PREFIX
           value: "this/is/the/top/prefix"
-      secrets:
-        - name: shf-secrets
       jobs:
-        - name: Tests
+        - name: Create cache with Bundle install, local files
           commands:
             - checkout
-            - docker build - -t postgres:se < /home/semaphore/shf-project/.semaphore/Dockerfile
-            - docker run --rm --net host -d -e POSTGRES_PASSWORD=semaphore --name postgres -v /var/run/postgresql:/var/run/postgresql postgres:se
             - wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
             - sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
-            - sem-service start postgres 11 --username=postgres --password=
             - sem-version ruby 2.6.6
             - cache restore
             - gem install bundler:2.2.21
+            - bundle config set path 'vendor/bundle'
             - bundle install
-            - cp /usr/local/bin/wkhtmltoimage /home/semaphore/.rbenv/versions/2.6.6/lib/ruby/gems/2.6.0/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64            
+            - cp /usr/local/bin/wkhtmltoimage vendor/bundle/ruby/2.6.0/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64
             - cache store
-            - bundle exec rake db:create db:migrate
-            - bundle exec rake db:test:prepare
+
+  - name: 'Tests'
+    # This block runs three jobs in parallel and they both share common
+    # setup steps. We can group them in a prologue.
+    # See https://docs.semaphoreci.com/reference/pipeline-yaml-reference/#prologue
+    task:
+      prologue:
+        # These commands are common to all of the jobs in this task. They will be run before each of the jobs.
+        commands:
+          - checkout
+          - cache restore
+          - docker build - -t postgres:se < /home/semaphore/shf-project/.semaphore/Dockerfile
+          - docker run --rm --net host -d -e POSTGRES_PASSWORD=semaphore --name postgres -v /var/run/postgresql:/var/run/postgresql postgres:se
+          # Start Postgres database service.
+          # See https://docs.semaphoreci.com/reference/toolbox-reference/#sem-service
+          - sem-service start postgres 11 --username=postgres --password=
+          - sem-version ruby 2.6.6
+
+          - gem install bundler:2.2.21  # this is not in the project Gemfile
+          # Bundler requires 'install' to run even though cache has been restored.
+          # Installation will not actually run and command and will finish quickly if the cache has been hit:
+          - bundle config set path 'vendor/bundle'
+          - bundle install
+
+          - bundle exec rake db:create db:migrate
+          - bundle exec rake db:test:prepare
+      jobs:
+        - name: RSpec tests
+          commands:
             - bundle exec rspec
-            - bundle exec cucumber --tags '(@dinkurs_fetch or @dinkurs_invalid_key) and not @skip_ci_test' 
+        - name: Cucumber Dinkurs tests
+          commands:
+            - bundle exec cucumber --tags '(@dinkurs_fetch or @dinkurs_invalid_key) and not @skip_ci_test'
+        - name: Cucumber (not Dinkurs features)
+          commands:
             - bundle exec cucumber --tags 'not @dinkurs_fetch and not @dinkurs_invalid_key and not @skip_ci_test'
