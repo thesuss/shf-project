@@ -23,7 +23,11 @@ class Payment < ApplicationRecord
   belongs_to :company, optional: true # used for branding_fee; the target for the H-Markt license, a.k.a. "branding fee"
 
   validates_presence_of :user, :payment_type, :status, :start_date, :expire_date
-  validates_presence_of :klarna_id, on: :update
+
+  # This validation is called only on :update or update! because the payment processing needs to be able to
+  #  create a Payment without the klarna_id.  The klarna_id is returned from the Klarna payment processor.
+  validates_presence_of :klarna_id, on: [:update, :update!]
+
 
   PAYMENT_TYPE_MEMBER   = 'member_fee'
   PAYMENT_TYPE_BRANDING = 'branding_fee'
