@@ -1,4 +1,4 @@
-# Tag hooks
+# Tag hooks 
 
 Before('@selenium') do
   # Use this hook for running headless tests using Chrome
