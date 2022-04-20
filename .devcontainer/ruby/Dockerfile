@@ -49,8 +49,8 @@ RUN sed -i 's/^# *\(sv_SE.UTF-8\)/\1/' /etc/locale.gen \
     && sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && locale-gen
 
-ARG REPO=RobertCram
-ARG BRANCH=arm-compatibility
+ARG REPO=AgileVentures
+ARG BRANCH=develop
 
 # Invalidates the cache when branch changes
 ADD https://api.github.com/repos/$REPO/shf-project/git/refs/heads/$BRANCH version.json
