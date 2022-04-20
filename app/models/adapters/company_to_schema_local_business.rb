@@ -40,20 +40,17 @@ module Adapters
 
 
     def set_target_attributes(target)
-
       target.name        = @adaptee.name
       target.description = @adaptee.description
       target.url         = @target_url
       target.email       = @adaptee.email
       target.telephone   = @adaptee.phone_number
       target.image       = company_h_markt_url(@adaptee) # TODO this needs to be a permanent image and URL
-
       target               = AddressesIntoSchemaLocalBusiness.set_address_properties(@adaptee.addresses,
                                                                                      @adaptee.main_address,
                                                                                      target)
       target.knowsLanguage = 'sv-SE'
-      target.knowsAbout    = BusinessCatsIntoKnowsString.knows_str(@adaptee.business_categories)
-
+      target.knowsAbout = adapt_business_categories(@adaptee)
       target
     end
 
@@ -63,7 +60,15 @@ module Adapters
       "#{I18n.t('shf_medlemssystem_url')}/hundforetag/#{company.id}/company_h_brand"
     end
 
+    # --------------------------------------------------------------------------------------------
 
+    private
+
+    def adapt_business_categories(adaptee)
+      return nil if adaptee.business_categories.empty?
+
+      adaptee.business_categories.map { |category| "#{I18n.t('dog').capitalize} #{category.name}" }
+    end
   end
 
 end

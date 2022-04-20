@@ -36,7 +36,7 @@ class CompanyMetaInfoAdapter
 
 
   def keywords
-    if @company.business_categories.blank?
+    if @company.categories_names.compact.join('').blank?
       AdminOnly::AppConfiguration.config_to_use.site_meta_keywords
     else
       @company.business_categories.map(&:name).join(', ')

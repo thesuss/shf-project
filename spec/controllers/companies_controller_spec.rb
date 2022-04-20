@@ -461,6 +461,8 @@ RSpec.describe CompaniesController, type: :controller do
 
   describe '#show meta data (renders view)' do
 
+    let(:mock_co_meta_info_adapter) { instance_double(CompanyMetaInfoAdapter, { title: 'company name', description: 'company description', keywords: 'Business Category1, Category2', og: { title: 'company name', description: 'company description'} }) }
+
     let(:co_html_in_desc) { create(:company, description: "<h1>HundCo</h1>   <p>The best <b>HundCo</b> \n there is!  </p>\n\n &nbsp;  \n") }
     let(:clean_desc_co_html_in_desc) { "HundCo The best HundCo there is!" }
 
@@ -543,13 +545,18 @@ RSpec.describe CompaniesController, type: :controller do
 
 
       it 'keywords are only the business categories for the company' do
+        allow(complete_co1).to receive(:categories_names).and_return(['Business Category1', 'Category2'])
+        allow(CompanyMetaInfoAdapter).to receive(:new).and_return(mock_co_meta_info_adapter)
 
-        expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_keywords).once
+        expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_keywords).and_call_original
 
-        meta_content = complete_co1.business_categories.map(&:name).join(', ')
         show_co1_response_body
 
-        expect(show_co1_response_body).to match(meta_tag_with_content('keywords', meta_content))
+        tag_content_regexp = /<meta name="keywords" content="([^"]+)">/
+        expect(show_co1_response_body).to match(tag_content_regexp)
+        match = show_co1_response_body.match(tag_content_regexp)
+        cat_names_in_array = match[1].split(', ')
+        expect(complete_co1.categories_names).to match_array(cat_names_in_array)
       end
 
 
