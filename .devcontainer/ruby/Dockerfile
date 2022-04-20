@@ -1,44 +1,31 @@
-FROM ruby:2.6.6
+FROM debian:buster
 
-RUN apt-get update \ 
-    && apt-get install -y locales locales-all \
-    && apt-get install -y postgresql-client \
-    && apt-get install -y chromium \
-    && apt-get install -y libxml2 \
-    && apt-get install -y libxml2-dev \ 
-    && apt-get install -y libxslt1-dev \ 
-    && apt-get install -y nodejs \ 
-    && apt-get install -y file
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Install latest version of Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt-get install -y ./google-chrome-stable_current_amd64.deb \
-    && rm ./google-chrome-stable_current_amd64.deb
+# Install ruby dependencies
+RUN apt update \  
+    # && apt install -y dialog \  
+    && apt install -y git wget curl \
+    && apt install -y libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
 
-RUN gem install bundler:2.2.21 \
-    && gem install solargraph \
-    && gem install haml-lint
+# Install ruby
+RUN wget http://ftp.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.gz \
+    && tar -xzvf ruby-2.6.6.tar.gz \
+    && cd ruby-2.6.6/ \
+    && ./configure \
+    && make install
 
-RUN apt-get install -y imagemagick
+# Install chromium and chromium driver    
+RUN apt install -y chromium chromium-driver
 
-# Ensure gems are cached and only get updated when they change. This will
-# drastically increase build times when your gems do not change.
-
-ARG BRANCH=develop
-
-# Invalidates the cache when branch changes
-RUN curl -o version.json https://api.github.com/repos/AgileVentures/shf-project/git/refs/heads/$BRANCH
-
-# Clones latest version of the branch
-RUN mkdir /workspaces && cd /workspaces && git clone --branch $BRANCH https://github.com/AgileVentures/shf-project.git shf-project
-
-RUN cd /workspaces/shf-project && bundle install 
+# Install imagemagick
+RUN apt install -y imagemagick
 
 ARG USERNAME=postgres
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-# Create a postgres user
+# Create a non-root user
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     #
@@ -48,35 +35,50 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-RUN apt-get install -y postgresql
+# Install postgresql 11
+RUN apt install -y postgresql \
+    && apt install -y libpq-dev
 
 RUN mkdir -p /var/postgres/data \
     && mkdir -p /var/log/postgres \
     && chown postgres /var/postgres/data \
     && chown postgres /var/log/postgres
 
-COPY createdb.sh /
-RUN chmod +rwx createdb.sh
+# Install Swedish and American locale
+RUN sed -i 's/^# *\(sv_SE.UTF-8\)/\1/' /etc/locale.gen \
+    && sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+    && locale-gen
 
-USER postgres
+ARG REPO=RobertCram
+ARG BRANCH=arm-compatibility
 
-ENV LANG="sv_SE.UTF-8"
+# Invalidates the cache when branch changes
+ADD https://api.github.com/repos/$REPO/shf-project/git/refs/heads/$BRANCH version.json
 
-RUN ./createdb.sh
-    
-ENV LANG="C.UTF-8"
+# Clones latest version of the branch
+RUN mkdir /workspaces && cd /workspaces && git clone --branch $BRANCH https://github.com/$REPO/shf-project.git shf-project
 
-USER root
+# Install bundler and gems
+RUN gem install bundler:2.2.21
+WORKDIR /workspaces/shf-project
+
+USER $USERNAME
+RUN sudo chown -R $(whoami):$(whoami) /workspaces
+
+RUN gem install solargraph --user-install
+
+RUN ([ "$(uname -m)" = "aarch64" ] \
+    && bundle config set force_ruby_platform true) || exit 0
+
+RUN bundle config set path "/home/$USERNAME/.gem"
+
+RUN bundle install
 
 # Install latest wkhtmltox to get around this issue: https://github.com/pallymore/wkhtmltopdf-binary-edge/issues/15
-RUN apt-get install -y xfonts-base \
-    && apt-get install -y xfonts-75dpi \
-    && apt --fix-broken install \
-    && wget "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb" \
-    && dpkg -i wkhtmltox_0.12.6-1.buster_amd64.deb \
-    && cp /usr/local/bin/wkhtmltoimage /usr/local/bundle/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64
+USER root
+RUN apt install -y wkhtmltopdf \
+    && cp /usr/bin/wkhtmltoimage /home/$USERNAME/.gem/ruby/2.6.0/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64
 
-# Install semaphore CLI (for convenience)
-RUN curl https://storage.googleapis.com/sem-cli-releases/get.sh | bash
-
-RUN mkdir -p /workspaces/shf-project/tmp && echo "export TMPDIR=/workspaces/shf-project/tmp" >> /root/.bashrc
+# Create empty db if it doesn't exist
+USER $USERNAME
+RUN if [ ! "$(ls -A /var/postgres/data)" ]; then LANG=sv_SE.UTF-8 /usr/lib/postgresql/11/bin/initdb /var/postgres/data; fi 

@@ -5,7 +5,7 @@
 	"dockerFile": "./ruby/Dockerfile",
 
 	"mounts":[
-		"type=volume,src=shfdata,dst=/var/postgres/data"
+		"type=volume,src=shfdata11,dst=/var/postgres/data"
 	],
 
 	// Set *default* container specific settings.json values on container create.
@@ -32,6 +32,7 @@
 	"forwardPorts": [5432, 3000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postStartCommand": "su -c '/usr/lib/postgresql/11/bin/pg_ctl -D /var/postgres/data -l /var/log/postgres/logfile start' postgres && bundle install",
+	"postStartCommand": "/usr/lib/postgresql/11/bin/pg_ctl -D /var/postgres/data -l /var/log/postgres/logfile start && bundle install"
+	
 
 }

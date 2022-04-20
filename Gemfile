@@ -61,7 +61,7 @@ gem 'sanitize'
 
 gem 'mailgun-ruby'
 gem 'premailer-rails'  # converts css to inline; required for html emails to look ok
-gem 'nokogiri', '>= 1.13.2'   # must explicitly require this gem for premailer-rails
+gem 'nokogiri', '>= 1.13.2', platforms: :ruby # must explicitly require this gem for premailer-rails
 
 gem 'httparty'
 gem 'jwt'
@@ -75,8 +75,15 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
-gem 'mini_racer','~> 0.2.1', platforms: :ruby
-gem 'libv8', '< 8.0'
+if (RUBY_PLATFORM =~ /aarch/) then
+  # these gem versions support arm
+  gem 'mini_racer', '0.5.0.pre'
+  gem 'libv8-node', '16.10.0.0'
+else
+  # these gem versions don't support arm 
+  gem 'mini_racer', '~> 0.2.1', platforms: :ruby
+  gem 'libv8', '< 8.0'
+end
 
 gem 'hashie'  # powerful methods for searching nested Hashes (ex: params) and more
 
@@ -166,7 +173,9 @@ group :test do
   gem 'email_spec'
   gem 'selenium-webdriver'
 
-  gem 'webdrivers' #, '~> 3.0'
+  # the gem doesn't support arm yet (see: https://github.com/titusfortner/webdrivers/issues/213)
+  gem 'webdrivers' unless (RUBY_PLATFORM =~ /aarch/)
+  
 
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
   gem 'vcr'      # to record and 'playback' (mock) http requests

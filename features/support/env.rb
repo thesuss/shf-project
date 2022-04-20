@@ -1,11 +1,13 @@
 require 'simplecov'
 # ^^ https://github.com/colszowka/simplecov#using-simplecov-for-centralized-config
 
+WEBDRIVERS_INSTALLED = `gem list -i webdrivers`.start_with?('true')
+
 require 'cucumber/rails'
 require 'cucumber/timecop'
 require 'cucumber/rspec/doubles'
 require 'email_spec/cucumber'
-require 'webdrivers/chromedriver'
+require 'webdrivers/chromedriver' if WEBDRIVERS_INSTALLED
 
 # Put the Geocoder into test mode so no actual API calls are made and stub with fake data
 require_relative '../../spec/support/geocoder'
@@ -25,7 +27,7 @@ World(FindHelpers)
 # Configurations
 #
 
-Webdrivers.install_dir = Rails.root.join('features', 'support', 'webdrivers')
+Webdrivers.install_dir = Rails.root.join('features', 'support', 'webdrivers') if WEBDRIVERS_INSTALLED
 
 ActionController::Base.allow_rescue = false
 

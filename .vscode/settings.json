@@ -4,5 +4,7 @@
     "cucumberautocomplete.steps": [
         "features/step_definitions/*.rb"
     ],
-    "cucumberautocomplete.strictGherkinCompletion": true
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "ruby.rubocop.useBundler": false,
+    "solargraph.commandPath": "/home/postgres/.gem/ruby/2.6.0/gems/solargraph-0.44.3/bin/solargraph"
 }
