@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin filters and searches users
 
   As an admin

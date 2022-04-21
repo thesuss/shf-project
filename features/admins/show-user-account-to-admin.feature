@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin sees additional user details that only they can see
 
   As an admin
@@ -69,11 +70,13 @@ Feature: Admin sees additional user details that only they can see
   # -----------------------------------
   # Membership Packet info
 
+
   Scenario: Membership packet sent to a member: show that it was sent and the date
     When I am on the "user details" page for "lars-member@happymutts.com"
     Then I should see t("users.show_info_for_admin_only.member_packet")
     And I should see t("users.show_info_for_admin_only.sent")
     And I should see "2019-03-01"
+
 
 
   Scenario: Membership packet: If a member but no date sent, should show 'Membership packet not sent'
@@ -82,10 +85,12 @@ Feature: Admin sees additional user details that only they can see
     And I should see t("users.show_info_for_admin_only.not_sent")
 
 
+
   Scenario: Membership packet info shows for non-members (maybe they used to be a member)
     When I am on the "user details" page for "rejected@happymutts.com"
     Then I should see t("users.show_info_for_admin_only.member_packet")
     And I should see t("users.show_info_for_admin_only.not_sent")
+
 
 
   Scenario: A member cannot see membership packet info
@@ -93,6 +98,7 @@ Feature: Admin sees additional user details that only they can see
     And I am logged in as "lars-member@happymutts.com"
     And I am on the "user details" page for "lars-member@happymutts.com"
     Then I should not see t("users.show_info_for_admin_only.member_packet")
+
 
 
   Scenario: A user cannot see membership packet info
@@ -105,6 +111,7 @@ Feature: Admin sees additional user details that only they can see
   # -----------------------------------
   # Login info - when, how many times
 
+
   Scenario: Show an admin who has never logged in
     When I am on the "user details" page for "lazy_admin@shf.se"
     Then I should see t("users.show.is_an_admin")
@@ -112,11 +119,13 @@ Feature: Admin sees additional user details that only they can see
     And I should not see t("users.show_info_for_admin_only.last_login")
 
 
+
   Scenario: Show an admin that is currently logged in
     When I am on the "user details" page for "admin@shf.se"
     Then I should see t("users.show.is_an_admin")
     And I should not see t("users.show_info_for_admin_only.user_has_never_signed_in")
     And I should see t("users.show_info_for_admin_only.last_login")
+
 
 
   Scenario: Show an admin that logged in 1 day ago
@@ -127,11 +136,13 @@ Feature: Admin sees additional user details that only they can see
     And I should see t("users.show_info_for_admin_only.last_login")
 
 
+
   Scenario: Show a member who has never logged in
     When I am on the "user details" page for "hannah-member@happymutts.com"
     Then I should not see t("users.show.is_an_admin")
     And I should see t("users.show_info_for_admin_only.user_has_never_signed_in")
     And I should not see t("users.show_info_for_admin_only.last_login")
+
 
 
   Scenario: Show a member that is currently logged in
@@ -142,12 +153,14 @@ Feature: Admin sees additional user details that only they can see
     And I should see t("users.show_info_for_admin_only.last_login")
 
 
+
   Scenario: Show a member that logged 3 days ago
     Given The user "lars-member@happymutts.com" last logged in 3 days ago
     When I am on the "user details" page for "lars-member@happymutts.com"
     Then I should not see t("users.show.is_an_admin")
     And I should not see t("users.show_info_for_admin_only.user_has_never_signed_in")
     And I should see t("users.show_info_for_admin_only.last_login")
+
 
 
   Scenario: Show a member that has logged in 42 times
@@ -158,11 +171,13 @@ Feature: Admin sees additional user details that only they can see
     And I should see t("users.show_info_for_admin_only.last_login")
 
 
+
   Scenario: Show an user who has never logged in
     When I am on the "user details" page for "user-never-logged-in@example.se"
     Then I should not see t("users.show.is_an_admin")
     And I should see t("users.show_info_for_admin_only.user_has_never_signed_in")
     And I should not see t("users.show_info_for_admin_only.last_login")
+
 
 
   Scenario: Show an user that is currently logged in
@@ -171,6 +186,7 @@ Feature: Admin sees additional user details that only they can see
     Then I should not see t("users.show.is_an_admin")
     And I should not see t("users.show_info_for_admin_only.user_has_never_signed_in")
     And I should see t("users.show_info_for_admin_only.last_login")
+
 
 
   Scenario: Show an user that logged in 100 days ago
@@ -184,10 +200,12 @@ Feature: Admin sees additional user details that only they can see
   # -----------------------------------
   # Password reset info
 
+
   Scenario: Show a member that has had her password reset
     Given The user "emma-new-app@bowsers.com" has had her password reset now
     When I am on the "user details" page for "emma-new-app@bowsers.com"
     Then I should see t("users.show_info_for_admin_only.reset_password_sent_at")
+
 
 
   Scenario: Show a member that has never had her password reset
@@ -201,6 +219,7 @@ Feature: Admin sees additional user details that only they can see
   # -----------------------------------
   # Membership number
 
+
   Scenario: Show the membership number for a member
     When I am on the "user details" page for "lars-member@happymutts.com"
     Then I should see t("users.show.membership_number")
@@ -210,15 +229,19 @@ Feature: Admin sees additional user details that only they can see
   # -----------------------------------
   # Membership status notes
 
+
   Scenario: Show membership status notes
     When I am on the "user details" page for "hannah-member@happymutts.com"
     Then I should see t("activerecord.attributes.payment.notes")
     And I should see "This is the membership status note"
 
+
+
   Scenario: Show 'none' if there are no membership status notes
     When I am on the "user details" page for "lars-member@happymutts.com"
     Then I should see t("activerecord.attributes.payment.notes")
     And I should see t("none_plur")
+
 
 
   Scenario: Do not show the membership number when there is none
@@ -231,6 +254,7 @@ Feature: Admin sees additional user details that only they can see
 
   # -----------------------------------
   # Email address and application state
+
 
   Scenario: Show email addresses and application for a user
     When I am on the "user details" page for "emma-new-app@bowsers.com"

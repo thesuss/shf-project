@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin sorts users
 
   As an admin
@@ -40,6 +41,7 @@ Feature: Admin sorts users
     And I am on the "all users" page
 
 
+
   Scenario: Admin sorts users by email
     Given I am on the "all users" page
     When I click on t("users.users_list.email")
@@ -58,6 +60,7 @@ Feature: Admin sorts users
     Then I should see "member-2@example.com" before "member-1@example.com"
     Then I should see "member-1@example.com" before "former-member@happymutts.com"
     Then I should see "former-member@happymutts.com" before "admin@shf.se"
+
 
 
   Scenario: Admin sorts users by membership number
@@ -79,6 +82,7 @@ Feature: Admin sorts users
     Then I should see "member-2@example.com" before "member-1@example.com"
 
 
+
   Scenario: Sort by member packet sent status
     When I click on t("users.users_list.member_packet")
     Then I should see "member-1@example.com" before "not_member1@example.com"
@@ -90,6 +94,7 @@ Feature: Admin sorts users
     Then I should see "member-4-latest-member@example.com" before "member-1@example.com"
     And I should see "member-4-latest-member@example.com" before "member-2@example.com"
     And I should see "member-4-latest-member@example.com" before "former-member@happymutts.com"
+
 
 
   Scenario: Sort by when user was created ( = user registered)
@@ -111,6 +116,7 @@ Feature: Admin sorts users
     Then I should see "former-member@happymutts.com" before "admin@shf.se"
 
 
+
   Scenario: Sort by number of logins
     When I click on t("users.users_list.logged_in_count")
     Then I should see "former-member@happymutts.com" before "member-4-latest-member@example.com"
@@ -130,6 +136,7 @@ Feature: Admin sorts users
     Then I should see "member-4-latest-member@example.com" before "admin@shf.se"
     Then I should see "member-4-latest-member@example.com" before "not_member1@example.com"
     Then I should see "member-4-latest-member@example.com" before "former-member@happymutts.com"
+
 
 
   Scenario: Sort by membership status

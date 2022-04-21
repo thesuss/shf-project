@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin approves a member
 
   As an admin
@@ -57,6 +58,7 @@ Feature: Admin approves a member
 
     And I should see t("shf_applications.accepted")
     Then I can go to the company page for "5562252998"
+
 
   @selenium
   Scenario: Admin approves, member is added to existing company

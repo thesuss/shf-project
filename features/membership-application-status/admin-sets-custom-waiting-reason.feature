@@ -1,3 +1,4 @@
+@selenium
 Feature: Admin sets or enters the reason they are waiting for info from a user
   As an admin
   so that SHF can talk with the user specifically about why they are waiting and know how long they might need to wait,
@@ -34,17 +35,17 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
 
 
     And the following member app waiting reasons exist
-      | name_sv                  | description_sv            | name_en                  | description_en                             | is_custom |
-      | need doc                 | need doc                  | need documentation       | need more documents proving qualifications | false     |
-      | waiting for payment      | still waiting for payment | waiting for payment      | still waiting for payment                  | false     |
+      | name_sv             | description_sv            | name_en             | description_en                             | is_custom |
+      | need doc            | need doc                  | need documentation  | need more documents proving qualifications | false     |
+      | waiting for payment | still waiting for payment | waiting for payment | still waiting for payment                  | false     |
 
 
-
+    And I set the locale to "sv"
 
     And I am logged in as "admin@shf.com"
 
 
-  @selenium @admin
+  @admin @parallel_group1
   Scenario: Admin selects 'need more documentation' as the reason SHF is waiting_for_applicant
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select "need doc" in select list "member_app_waiting_reasons"
@@ -53,7 +54,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     Then "member_app_waiting_reasons" should have "need doc" selected
 
-  @selenium @admin
+  @admin @parallel_group1
   Scenario: Admin selects 'waiting for payment' as the reason SHF is waiting_for_applicant
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select "waiting for payment" in select list "member_app_waiting_reasons"
@@ -63,7 +64,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And "member_app_waiting_reasons" should have "waiting for payment" selected
 
 
-  @selenium @admin
+  @admin @parallel_group1
   Scenario: Admin selects 'other' and enters text as the reason SHF is waiting_for_applicant
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
@@ -78,7 +79,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And "member_app_waiting_reasons" should have t("admin_only.member_app_waiting_reasons.other_custom_reason") selected
 
 
-  @selenium @admin
+  @admin @parallel_group1
   Scenario: Admin selects 'other' and fills in custom text but then changes reason to something else
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
@@ -93,7 +94,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And "member_app_waiting_reasons" should have "waiting for payment" selected
 
 
-  @selenium @admin
+   @admin @parallel_group1
   Scenario: When selected reason is not 'custom other,' the custom text is saved as blank (empty string)
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
@@ -108,14 +109,14 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Then I should not see "This is my reason"
 
 
-  @selenium @member
+  @member
   Scenario: owner cannot see the fields for changing the reason
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     Then I should not see t("shf_applications.need_info.reason_title")
 
 
-#  @selenium_browser @admin
+#  @selenium_browser @admin @parallel_group1
 #  Scenario: Press `back` button before saving custom reason
 #    Given I am on the "landing" page
 #    Then I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"

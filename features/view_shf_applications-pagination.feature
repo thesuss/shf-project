@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin sees as many or few SHF Applications as they want (pagination)
 
   As an admin,

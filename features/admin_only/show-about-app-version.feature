@@ -1,3 +1,4 @@
+@parallel_group1
 Feature: Admin can see what version is running in an 'About' modal
 
   As an admin
@@ -26,6 +27,7 @@ Feature: Admin can see what version is running in an 'About' modal
 
   # ------------------------------------------------------------------------------------------------
 
+  @admin
   Scenario: Show About modal
     Given I am logged in as "admin@shf.se"
     And I am on the "home" page
@@ -37,6 +39,7 @@ Feature: Admin can see what version is running in an 'About' modal
   # -------------------------------------------------------
   # Access to the About menu item
 
+  @admin
   Scenario: Admin can see 'About' in the login menu
     Given I am logged in as "admin@shf.se"
     And I am on the "home" page
@@ -49,10 +52,12 @@ Feature: Admin can see what version is running in an 'About' modal
     And I am now a member
     Then I should not see t("about") in the login menu
 
+
   Scenario: Users (applicants) cannot see 'About' in the login menu
     Given I am logged in as "user@example.com"
     And I am on the "home" page
     Then I should not see t("about") in the login menu
+
 
   Scenario: Visitors cannot see 'About' in the login menu
     Given  I am logged out

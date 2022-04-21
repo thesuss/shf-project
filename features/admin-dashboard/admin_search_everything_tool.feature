@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin can search on everything and save results
 
   As an admin

@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Membership status is color-coded for admin's list of all users
 
   As an admin

@@ -1,3 +1,4 @@
+@parallel_group1
 Feature: Admin manages the list of reasons why SHF is waiting for info from an applicant
 
   As an Admin
@@ -216,7 +217,7 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
     And I should see "this is a long description in English"
     And I should not see "description 1"
 
-
+  @admin
   Scenario: Admin edits a reason but leaves required field name_sv blank (SAD PATH)
     Given I am logged in as "admin@shf.se"
     And I am on the edit member app waiting reason with name_sv "namn 1"
@@ -230,7 +231,7 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
   Scenario: Admin changes a custom reason entered to a 'regular' reason on the list
     Given I am logged in as "admin@shf.se"
     And I am on the edit member app waiting reason with name_sv "namn 1"
-    And I uncheck the checkbox with id "admin_only_member_app_waiting_reason_is_custom"
+    When I uncheck the checkbox with id "admin_only_member_app_waiting_reason_is_custom"
     And I click on the t("save") button
     Then I should see t("admin_only.member_app_waiting_reasons.update.success")
     And I should see t("no")

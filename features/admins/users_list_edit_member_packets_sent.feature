@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin sets when member packets were sent on the all users page
 
   As an admin

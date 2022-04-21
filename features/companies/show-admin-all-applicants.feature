@@ -45,6 +45,7 @@ Feature: Admin sees all applicants connected to a company
 
   # -----------------------------------------------------------------------------------------------
 
+  @parallel_group1 @admin
   Scenario: Admin sees member and applicants section with 3 applicants on Company page
     Given I am logged in as "admin@shf.se"
     When I am on the page for company number "5560360793"
@@ -57,6 +58,7 @@ Feature: Admin sees all applicants connected to a company
     And I should see "Rejected Applicant"
 
 
+  @parallel_group1 @admin
   Scenario: Admin sees links to each person and application and the date each app was last updated
     Given I am logged in as "admin@shf.se"
     When I am on the page for company number "5560360793"

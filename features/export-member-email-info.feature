@@ -51,6 +51,8 @@ Feature: Admin export member information to a CSV file
     When I am on the "membership applications" page
     Then I should see a message telling me I am not allowed to see that page
 
+
+  @admin @parallel_group1
   Scenario: Admin can export
     Given I am logged in as "admin@shf.se"
     And I am on the "landing" page

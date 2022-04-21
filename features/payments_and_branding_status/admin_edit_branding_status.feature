@@ -1,3 +1,4 @@
+@admin @parallel_group1 @selenium
 Feature: Admin edits H-brand license status
 
   As an admin
@@ -26,7 +27,7 @@ Feature: Admin edits H-brand license status
     Given I am logged in as "admin@shf.se"
 
 
-  @selenium @time_adjust
+  @time_adjust @javascript
   Scenario: Admin edits branding status
     Given I am the page for company number "2120000142"
     Then I should see t("companies.show.hbrand_status_paid")

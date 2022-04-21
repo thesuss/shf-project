@@ -26,7 +26,7 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I am logged in as "admin@shf.se"
 
 
-  @admin
+  @admin @parallel_group1
   Scenario:  Admin can edit a SHF document - change the file uploaded
     Given I am on the "new SHF document" page
     And I fill in the translated form with data:
@@ -43,7 +43,7 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I should not see "diploma.pdf"
 
 
-  @admin
+  @admin @parallel_group1
   Scenario:  Admin can edit a SHF document - change the title
     Given I am on the "new SHF document" page
     And I fill in the translated form with data:
@@ -59,7 +59,7 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I should see "Changed title"
 
 
-  @admin
+  @admin @parallel_group1
   Scenario:  Admin can edit a SHF document - change the description
     Given I am on the "new SHF document" page
     And I fill in the translated form with data:

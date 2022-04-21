@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Update the membership status for all users
 
   As an admin

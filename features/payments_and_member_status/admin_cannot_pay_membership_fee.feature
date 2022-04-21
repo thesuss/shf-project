@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin cannot pay a membership fee for a member
 
   As an admin

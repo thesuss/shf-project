@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin pays branding license fee for a company
 
   As an admin
@@ -43,6 +44,7 @@ Feature: Admin pays branding license fee for a company
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "HappyMutts"
     And company number "2120000142" is paid through "2019-12-30"
+
 
     # Note that you must go to the page _after_ the date has been set for this example so that the browser (via cucumber and Timecop) thinks the date it 2018-12-31.
     # Without the 'I am the page for company number "2120000142"' step explicitly in the scenario below, the date will 'be' "2018-01-01" and it will be too early for a payment to be made, and a modal dialog box will come up with that info.

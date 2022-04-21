@@ -75,17 +75,20 @@ Feature: Admin can create a company
 
   # -----------------------------------------------------------------------------------------------
 
-
+  @parallel_group1 @admin
   Scenario: Admin sees all companies listed
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
     Then I should see "No More Snarky Barky"
     And I should see "Bowsers"
 
+
   Scenario: User is not allowed to create a company
     Given I am logged in as "applicant_1@happymutts.com"
     And I am on the "create a new company" page
     Then I should see a message telling me I am not allowed to see that page
+
+
 
   Scenario: Visitor is not allowed to create a company
     Given I am Logged out
@@ -99,7 +102,7 @@ Feature: Admin can create a company
     Then I should see a message telling me I am not allowed to see that page
 
 
-  @time_adjust @dinkurs_fetch
+  @time_adjust @dinkurs_fetch @parallel_group1 @admin
   Scenario: Admin creates a company
     Given I am logged in as "admin@shf.se"
     And the date is set to "2017-10-01"
@@ -134,7 +137,8 @@ Feature: Admin can create a company
     And I should not see t("events.show_not")
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
-  @dinkurs_invalid_key
+
+  @dinkurs_invalid_key @parallel_group1 @admin
   Scenario: Admin creates company with invalid Dinkurs key
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
@@ -147,6 +151,8 @@ Feature: Admin can create a company
     And I should see "Happy Mutts"
     And I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_key")
 
+
+  @parallel_group1 @admin
   Scenario Outline: Admin creates company - when things go wrong
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
@@ -164,7 +170,8 @@ Feature: Admin can create a company
       | Happy Mutts | 5562252998 |            | kicki@.imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                            |
       | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.attributes.company_number.taken") |
 
-  @time_adjust
+
+  @time_adjust @parallel_group1 @admin
   Scenario: Admin edits a company and visitor views changes
     Given the date is set to "2017-10-01"
     And I am logged in as "admin@shf.se"
@@ -199,6 +206,7 @@ Feature: Admin can create a company
     And I should not see t("address_visibility.street_address")
 
 
+  @parallel_group1 @admin
   Scenario Outline: Admin edits a company - when things go wrong (sad case)
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
@@ -215,6 +223,7 @@ Feature: Admin can create a company
       | Happy Mutts | 5560360793 |       | kicki@.imminu | http://www.gladajyckar.se | t("activerecord.attributes.company.email") | t("errors.messages.invalid") |
 
 
+  @parallel_group1 @admin
   Scenario Outline: Admin edits a company: company number is wrong length
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
@@ -229,6 +238,7 @@ Feature: Admin can create a company
       | Happy Mutts | 00         | 0706898525 | kicki@gladajyckar.se | http://www.gladajyckar.se |
 
 
+  @parallel_group1 @admin
   Scenario: Website path is incomplete (does not include http://)
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
@@ -239,6 +249,8 @@ Feature: Admin can create a company
     Then I should see t("companies.update.success")
     And the "www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"
 
+
+  @parallel_group1 @admin
   Scenario: Website path is complete (includes http://)
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"

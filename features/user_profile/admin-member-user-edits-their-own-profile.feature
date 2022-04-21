@@ -32,6 +32,7 @@ Feature: Admins, Members, and Users edit their own User Profile
   # -----------------------------------------------
   # ADMIN edits their own profile
 
+  @admin @parallel_group1
   Scenario: Admin edits their own profile
     Given I am logged in as "admin@random.com"
     And I am on the "landing" page

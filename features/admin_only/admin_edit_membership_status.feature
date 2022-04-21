@@ -1,3 +1,4 @@
+@selenium @parallel_group1 @admin
 Feature: Admin edits membership status, dates, notes (membership info)
 
   As an admin
@@ -53,7 +54,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
 
   # -------------------------------------------------------------------------------------------
 
-  @selenium @time_adjust
+  @time_adjust
   Scenario: Admin edits membership last day and note
     Given I am on the "user details" page for "emma@mutts.com"
     Then the last day of membership for "emma@mutts.com" should be 2017-12-31
@@ -74,7 +75,7 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And the last day of membership for "emma@mutts.com" should be 2018-06-01
 
 
-  @selenium
+
   Scenario: Admin changes the last day and it is before today so the member is no longer a member
     Given the date is set to "2017-11-01"
     And I am on the "user details" page for "emma@mutts.com"
@@ -96,7 +97,6 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And "emma@mutts.com" should not be a member
 
 
-  @selenium
   Scenario: Admin changes lastday for user in grace period (not a member) to a member
     Given I am on the "user details" page for "grace-member@mutts.com"
     Then "grace-member@mutts.com" should be in the grace period
@@ -116,7 +116,6 @@ Feature: Admin edits membership status, dates, notes (membership info)
     And "grace-member@mutts.com" should be a member
 
 
-#  @selenium
 #  Scenario: Admin changes membership status from member to not a member
 #    # This scenario will no longer work. Changing membership status is now much more complex. A new PR must be completed
 #    Given I am on the "user details" page for "bad-member@mutts.com"
@@ -139,7 +138,6 @@ Feature: Admin edits membership status, dates, notes (membership info)
 #    And I should see t("users.show_for_applicant.pay_membership")
 
 
-#  @selenium
 #  Scenario: Admin changes not a member to a member
     # This scenario will no longer work. Changing membership status is now much more complex. A new PR must be completed
 #    Given I am on the "user account" page for "bad-member@mutts.com"
@@ -159,6 +157,5 @@ Feature: Admin edits membership status, dates, notes (membership info)
 #    And I should see "Changed to IS a member."
 
 
-#  @selenium
 #  Scenario: Admin changes not a member to a member and sets a specific last day
 

@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin edits membership durations and timings in App Configuration
 
   As an admin
@@ -29,7 +30,6 @@ Feature: Admin edits membership durations and timings in App Configuration
     And I am logged in as "admin@shf.se"
 
   # ===============================================================================================
-
 
   Example: Admin sees words that describe the durations (membership term, grace period)
     Given I am on the "admin app configuration" page

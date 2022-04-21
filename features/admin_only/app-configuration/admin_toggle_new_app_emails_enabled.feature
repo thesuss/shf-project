@@ -1,3 +1,4 @@
+@selenium  @parallel_group1 @admin
 Feature: Admin enables/disables the emails sent when a new application is received
 
   As an admin
@@ -26,8 +27,8 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
 
     And the App Configuration is not mocked and is seeded
 
+  # ===============================================================================================
 
-  @selenium
   Scenario: Admin disables send new app received emails
     Given I am logged in as "admin@shf.se"
     When I am on the "admin edit app configuration" page
@@ -55,7 +56,7 @@ Feature: Admin enables/disables the emails sent when a new application is receiv
     When I am logged in as "admin@shf.se"
     Then "admin@shf.se" should receive 0 email
 
-  @selenium
+
   Scenario: Admin enables send new app received emails
     Given I am logged in as "admin@shf.se"
     And I am on the "admin edit app configuration" page

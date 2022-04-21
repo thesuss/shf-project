@@ -26,7 +26,7 @@ Feature: Admin can edit details about an uploaded SHF Document
     And I am logged in as "admin@shf.se"
 
 
-  @admin
+  @admin @parallel_group1
   Scenario:  Admin can view all of the details for a SHF document
     Given I am on the "new SHF document" page
     And I fill in the translated form with data:

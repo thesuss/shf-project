@@ -1,3 +1,4 @@
+@admin @selenium @parallel_group1
 Feature: Admin can delete uploaded SHF Documents
 
   As an admin
@@ -26,7 +27,7 @@ Feature: Admin can delete uploaded SHF Documents
     And I am logged in as "admin@shf.se"
 
 
-  @admin @selenium
+
   Scenario:  Admin can delete a SHF document - confirm delete
     Given I am on the "new SHF document" page
     And I fill in the translated form with data:

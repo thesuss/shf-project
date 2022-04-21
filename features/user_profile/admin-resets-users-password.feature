@@ -1,10 +1,9 @@
+@admin @parallel_group1
 Feature:  Admin resets passwords for members and users
 
   As an admin
   So that I can help users that forgot their password (who can't reset it themselves via email)
   I need to be able to reset passwords for users.
-
-
 
 
   Background:
@@ -27,7 +26,7 @@ Feature:  Admin resets passwords for members and users
     And I am logged in as "admin@shf.se"
     And I am on the "all users" page
 
-
+  # ==============================================================================================
   @selenium
   Scenario: A member needs their password reset
     Then I click the icon with CSS class "edit" for the row with "member-emma@happymutts.com"
@@ -37,6 +36,7 @@ Feature:  Admin resets passwords for members and users
     And I fill in t("devise.registrations.edit.current_password") with "admin_password"
     Then I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("admin_only.user_profile.update.success")
+
 
   @selenium
   Scenario: A user needs their password reset
@@ -48,7 +48,8 @@ Feature:  Admin resets passwords for members and users
     Then I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("admin_only.user_profile.update.success")
 
-  @selenium @user
+
+  @selenium
   Scenario: New password and confirmation don't match [SAD PATH]
     Then I click the icon with CSS class "edit" for the row with "user-bob@snarkybarky.se"
     And I fill in t("activerecord.attributes.user.password") with "snarkywoofwoof"
@@ -59,7 +60,8 @@ Feature:  Admin resets passwords for members and users
     And I should see t("admin_only.user_profile.update.error")
     And I should see t("activerecord.errors.models.user.attributes.password_confirmation.confirmation")
 
-  @selenium @user
+
+  @selenium
   Scenario: New password is too short (not valid) [SAD PATH]
     Then I click the icon with CSS class "edit" for the row with "user-bob@snarkybarky.se"
     And I fill in t("activerecord.attributes.user.password") with "woof"
@@ -70,7 +72,8 @@ Feature:  Admin resets passwords for members and users
     And I should see t("admin_only.user_profile.update.error")
     And I should see t("errors.messages.too_short", count: 6)
 
-  @selenium @user
+
+  @selenium
   Scenario: New password and confirmation don't match AND new one is too short [SAD PATH]
     Then I click the icon with CSS class "edit" for the row with "user-bob@snarkybarky.se"
     And I fill in t("activerecord.attributes.user.password") with "woof"

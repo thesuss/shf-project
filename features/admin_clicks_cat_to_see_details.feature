@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Link categories to categories show for an Admin
   As an admin
   In order to see every company that is using the business category

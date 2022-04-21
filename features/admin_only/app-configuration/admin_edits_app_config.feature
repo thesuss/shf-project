@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin edits application configuration
   As an admin
   I want to be able to edit application configuration
@@ -17,6 +18,7 @@ Feature: Admin edits application configuration
     And I am logged in as "admin@random.com"
     And I am on the "admin edit app configuration" page
 
+  # =============================================================================================
 
   Scenario: Admin uploads SHF logo and chairperson signature
     Then I should see t("admin_only.app_configuration.edit.title")
@@ -25,12 +27,14 @@ Feature: Admin edits application configuration
     And I click on t("submit") button
     Then I should see t("admin_only.app_configuration.update.success")
 
+
   Scenario: Admin uploads images for company h-brand
     Then I should see t("admin_only.app_configuration.edit.title")
     And I choose an application configuration "admin_only_app_configuration[h_brand_logo]" file named "h_brand_logo.png" to upload
     And I choose an application configuration "admin_only_app_configuration[sweden_dog_trainers]" file named "sweden_dog_trainers.png" to upload
     And I click on t("submit") button
     Then I should see t("admin_only.app_configuration.update.success")
+
 
   Scenario: Admin edits app configuration and tries to upload non-image file
     Then I should see t("admin_only.app_configuration.edit.title")

@@ -1,3 +1,4 @@
+@selenium  @parallel_group1 @admin
 Feature: Admin becomes a user
 
   As an admin
@@ -40,7 +41,7 @@ Feature: Admin becomes a user
     And I am on the "all users" page
 
 
-  @selenium
+
   Scenario: Admin becomes a user
     Given I should see "member@shf.com"
     And I click on "member@shf.com"

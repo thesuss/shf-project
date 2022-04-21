@@ -100,7 +100,11 @@ ShowMeTheCookies.register_adapter(:selenium_browser, ShowMeTheCookies::SeleniumC
 Before do
   DatabaseCleaner.clean
 
-  # I18n.locale = 'en'
+  # If the locale isn't set, some scenarios may fail because
+  # the original locale may or may not always match the locale of the I18n.t() strings returned.
+  I18n.locale = 'sv'
+
+
   ENV['SHF_BETA'] = 'no'
 
   # shush the ActivityLogger: Don't have it show every message to STDOUT.

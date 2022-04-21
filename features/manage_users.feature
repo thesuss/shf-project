@@ -41,6 +41,7 @@ Feature: Admin can view all users and delete them. Visitors, applicants, members
 
   # ------------------------------------------------------------------------------------------------
 
+  @admin @parallel_group1
   Scenario: Admin can view all users
     Given I am logged in as "admin@shf.se"
     When I am on the "all users" page
@@ -49,7 +50,7 @@ Feature: Admin can view all users and delete them. Visitors, applicants, members
     And I should see "anna@sadmutts.com"
     And I should see "ernt@mutts.com"
 
-  @selenium
+  @selenium @admin @parallel_group1
   Scenario: Admin can delete users
     Given I am logged in as "admin@shf.se"
     When I am on the "all users" page

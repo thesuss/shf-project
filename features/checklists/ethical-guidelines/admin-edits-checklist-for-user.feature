@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin is able to check or uncheck items on a user checklist
 
   As an admin

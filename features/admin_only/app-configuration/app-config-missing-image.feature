@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: App Config has a missing image or images
 
   As an admin
@@ -15,6 +16,7 @@ Feature: App Config has a missing image or images
 
     And the App Configuration is not mocked and is seeded
     And I am logged in as "admin@shf.se"
+
 
 
     Scenario: Missing site meta image

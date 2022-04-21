@@ -53,11 +53,14 @@ Feature: Only the Admin sees the db id for a company, list of companies
 
   # -----------------------------------------------------------------------------------------------
 
+  @parallel_group1 @admin
   Scenario: Admin sees the database id in list of Companies
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
     Then I should see "db id"
 
+
+  @parallel_group1 @admin
   Scenario: Admin sees db id on Company page
     Given I am logged in as "admin@shf.se"
     When I am on the page for company number "5560360793"

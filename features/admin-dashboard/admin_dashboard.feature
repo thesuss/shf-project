@@ -1,3 +1,4 @@
+@admin @parallel_group1 @selenium @admin_dashboard
 Feature: Admin sees the dashboard with summary of important information
 
   As an admin
@@ -127,7 +128,7 @@ Feature: Admin sees the dashboard with summary of important information
   # TODO really test if the the right values are with the right text; perhaps send the number to the t('')
   # TODO how to test for the lines that have a formatted number, then a t('') phrase?
 
-  @selenium @admin_dashboard
+
   Scenario: Admin sees the dashboard with summary info
     Given I am on the "admin dashboard" page
     Then I should see t("admin_only.dashboard.title")

@@ -1,3 +1,4 @@
+@selenium @parallel_group1 @admin
 Feature: Admin edits a user account
 
   As an admin
@@ -45,7 +46,7 @@ Feature: Admin edits a user account
 
     # ---------------------------------------------------------------------------------------------
 
-  @selenium
+
   Scenario: Admin edits membership number
     Given I am on the "edit user account" page for "member@shf.com"
     Then I should see "member@shf.com"
@@ -57,14 +58,14 @@ Feature: Admin edits a user account
     And I should see "1010101"
 
 
-  @selenium
+
   Scenario: Admin sees button to change member status for a member
     Given I am on the "user account" page for "member@shf.com"
     Then I should see t("users.show.is_a_member")
     And I should see t("users.show.edit_member_status")
 
 
-  @selenium
+
   Scenario: Admin sees button to change member status for an applicant that has past payments
     Given I am on the "user account" page for "applicant-with-old-pays@example.com"
     Then I should not see t("users.show.is_a_member")
@@ -72,7 +73,7 @@ Feature: Admin edits a user account
     And I should see t("users.show.edit_member_status")
 
 
-  @selenium
+
   Scenario: Admin does not see button to change member status for an applicant that has no past payments
     Given I am on the "user account" page for "applicant@example.com"
     Then I should not see t("users.show.is_a_member")
@@ -81,7 +82,7 @@ Feature: Admin edits a user account
     And I should see t("payors.admin_cant_edit")
 
 
-  @selenium
+
   Scenario: Admin sees button to change member status for a user with past payments
     Given I am on the "user account" page for "user-with-old-pays@example.com"
     Then I should not see t("users.show.is_a_member")
@@ -89,7 +90,7 @@ Feature: Admin edits a user account
     And I should see t("users.show.edit_member_status")
 
 
-  @selenium
+
   Scenario: Admin does not see button to change member status for a user with no past payments
     Given I am on the "user account" page for "user@example.com"
     Then I should not see t("users.show.is_a_member")

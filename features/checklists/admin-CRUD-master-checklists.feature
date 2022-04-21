@@ -1,3 +1,4 @@
+@parallel_group1 @admin
 Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
   A "Master Checklist" is a basic list that is ordered, and items can be nested
@@ -37,11 +38,10 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
     Given I am logged in as "admin@shf.se"
 
-
-
   # ----------------------
   # VIEW (read) Master checklists
   # UX: Can edit/view all items in the list (linked, buttons, or icons or something)
+
 
   Scenario: See all checklists on the manage checklists page
     Given I am on the "manage checklist masters" page
@@ -70,6 +70,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see "Document Business Categories" in the "archived-items" table
 
 
+
   Scenario: Clicking on an entry name will go to the view for it
     Given I am on the "manage checklist masters" page
     Then I should see t("admin_only.master_checklists.index.title") in the h1 title
@@ -77,11 +78,13 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     Then I should see "SOL entry 0" in the h1 title
 
 
+
   Scenario: Clicking on the displayed text for an entry will go to the view for it
     Given I am on the "manage checklist masters" page
     Then I should see t("admin_only.master_checklists.index.title") in the h1 title
     When I click on "some list" link
     Then I should see "Some other list (SOL)" in the h1 title
+
 
 
   Scenario: The parent list for an entry is shown and clicking on it goes to the view for the parent
@@ -94,6 +97,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
   # -----------------
   # CREATE Master checklists
+
 
   Scenario: Create a new item and do not pick a parent list. It should show on the list of checklists on the manage checklists page at the top level
     Given I am on the "manage checklist masters" page
@@ -109,6 +113,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
     When I am on the "manage checklist masters" page
     Then I should see the item named "A new checklist" in the list of Master Checklist items
+
 
 
   Scenario: Create an item in a list and specify the position. Position should be right and others in the list should be adjusted.
@@ -134,6 +139,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see the item named "SOL entry 2" in the list of Master Checklist items as child 3 of "Some other list (SOL)"
 
 
+
   Scenario: Create an item in a list and do not specify the position. It should be put at the end
     Given I am on the "manage checklist masters" page
     Then I should see t("admin_only.master_checklists.index.title") in the h1 title
@@ -153,6 +159,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     When I am on the "manage checklist masters" page
     When I am on the "manage checklist masters" page
     Then I should see the item named "Another SOL item" in the list of Master Checklist items as child 3 of "Some other list (SOL)"
+
 
 
   Scenario: Create an item in a list and specify the position that is the same as an item now marked as 'no longer in use'. Position should be right and others in the list should be adjusted.
@@ -180,6 +187,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
   # ---------------
   # READ (View) Master checklists
+
 
   Scenario: View a Master Checklist - this info is always shown for all master checklists
     Given I am on the "manage checklist masters" page
@@ -209,6 +217,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     # ------------
     # Buttons at the bottom:
     And I should see t("admin_only.master_checklists.action_buttons.all_list_items")
+
 
 
   Scenario: View a top-level Master Checklist
@@ -242,6 +251,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see t("admin_only.master_checklists.show.new_child_in_list")
 
 
+
   Scenario: View a Master Checklist that has a parent and children
     Given I am on the "manage checklist masters" page
     Then I should see t("admin_only.master_checklists.index.title") in the h1 title
@@ -264,6 +274,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see t("admin_only.master_checklists.show.new_child_in_list")
 
 
+
   Scenario: Master Checklist is in use: show note and Set to Not in Use button (but not delete button)
     Given I am on the "manage checklist masters" page
     When I click on "Section 1"
@@ -274,6 +285,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see t("admin_only.master_checklists.action_buttons.mark_no_longer_used_clone")
     And I should see t("admin_only.master_checklists.delete_button_if_applicable.set_to_not_used")
     And I should not see t("admin_only.master_checklists.delete_button_if_applicable.delete", name: "Section 1")
+
 
 
   Scenario: Show delete button if the list is not in use and all children can be deleted
@@ -287,6 +299,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
   # ---------------
   # UPDATE (Edit) Master checklists
+
 
   Scenario: Rename a checklist that is a sublist and a parent
     Given I am on the "manage checklist masters" page
@@ -313,6 +326,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I click on "SOL subentry 1.1"
     Then I should see "new some list 1 name"
     And I should not see "SOL entry 1"
+
 
 
   Scenario: Change the status to 'no longer used'
@@ -357,6 +371,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
   # ----------------
   # Reordering Master checklists
 
+
   Scenario: Change the list position to the first item in the list. All other items are moved down (positions incremented)
     Given I am on the "manage checklist masters" page
     When I click on "SOL entry 2"
@@ -373,6 +388,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see the item named "SOL subentry 1.1" in the list of Master Checklist items as child 0 of "SOL entry 1"
 
 
+
   Scenario: Change the list position to the last item in the list. All other items are moved up (positions decremented)
     Given I am on the "manage checklist masters" page
     When I click on "SOL entry 0"
@@ -387,6 +403,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
     And I should see the item named "SOL entry 0" in the list of Master Checklist items as child 2 of "Some other list (SOL)"
     And I should see the item named "SOL entry 1" in the list of Master Checklist items as child 0 of "Some other list (SOL)"
     And I should see the item named "SOL subentry 1.1" in the list of Master Checklist items as child 0 of "SOL entry 1"
+
 
 
   Scenario: Change the list position to the middle of the list. Other list item positions are changed appropriately
@@ -408,6 +425,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
   # -----------------
   # DELETE Master checklists
 
+
   Scenario: Delete an item that is a sub-item of a checklist
     Given I am on the "manage checklist masters" page
     When I click on "Provide co nummer"
@@ -418,6 +436,7 @@ Feature: Admin creates, views,  edits, or deletes a Master Checklist item
 
     And I should not see "Provide co nummer" in the "archived-items" table
     And I should see "Submit yer app" in the "archived-items" table
+
 
 
   Scenario: Delete an item that has sub-items (sublists)

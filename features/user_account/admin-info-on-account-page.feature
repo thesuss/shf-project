@@ -1,3 +1,4 @@
+@admin @parallel_group1
 Feature: Admin sees additional info on User Account pages
 
   As an admin
