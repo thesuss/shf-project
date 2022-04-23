@@ -44,8 +44,8 @@
           %th.term-start-date= sort_link(payments_search, :start_date, 'Term Start Date', { default_order: { start_date: :asc } },{ class: 'payments_sort', remote: true } )
           %th.term-end-date= sort_link(payments_search, :expire_date, 'Term End Date', {}, { class: 'payments_sort', remote: true } )
           %th.created-at= sort_link(payments_search, :created_at, 'Date created', {},{ class: 'payments_sort', remote: true } )
-          %th.status HIPS Status
-          %th.hips-id HIPS id
+          %th.status Order Status
+          %th.payment-id Order id
 
       %tbody.panel-body
         = render partial: 'payment', collection: payments

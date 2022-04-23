@@ -221,9 +221,6 @@ Rails.application.routes.draw do
 
   post 'anvandare/betalning/klarna_push', to: 'payments#klarna_push',
        as: :payment_klarna_push
-
-  post 'anvandare/betalning/webhook', to: 'payments#webhook',
-       as: :payment_webhook  # Legacy HIPS
   # ----------------------------------------------------------
 
   # ------- Address as a nested resource within company -----

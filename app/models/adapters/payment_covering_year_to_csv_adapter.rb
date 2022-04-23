@@ -42,7 +42,7 @@ module Adapters
 
       target.append_items company_info(payment)
 
-      target.append_items hips_info(payment)
+      target.append_items payment_processor_info(payment)
 
       target << quote(payment.notes)
 

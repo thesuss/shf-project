@@ -23,7 +23,7 @@ http_interactions:
       message: Unauthorized
     headers:
       Date:
-      - Sun, 03 Oct 2021 13:38:35 GMT
+      - Wed, 27 Oct 2021 10:55:18 GMT
       Content-Type:
       - text/html
       Content-Length:
@@ -31,14 +31,18 @@ http_interactions:
       Connection:
       - keep-alive
       Server:
-      - openresty
+      - envoy
       Www-Authenticate:
       - Basic realm="very closed site"
+      Klarna-Correlation-Id:
+      - 0e6d7eec-8bed-4719-8456-c7ae53893de5
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
+      X-Envoy-Upstream-Service-Time:
+      - '19'
     body:
       encoding: UTF-8
       string: "<html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401
         Authorization Required</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
-  recorded_at: Sun, 03 Oct 2021 13:38:35 GMT
+  recorded_at: Wed, 27 Oct 2021 10:55:18 GMT
 recorded_with: VCR 6.0.0

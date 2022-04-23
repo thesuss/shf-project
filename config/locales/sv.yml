@@ -228,6 +228,9 @@ sv:
         start_date: &start_date Startdatum
         expire_date: &expire_date Utgångsdatum
         notes: &notes Anteckningar
+        payment_processor: &payment_processor Betalmetod
+        hips_id: HIPS id
+        klarna_id: Klarna id
         created: *created
         last_updated: *last_updated
 
@@ -1273,7 +1276,6 @@ sv:
       start_date: *start_date
       end_date: *expire_date
       notes: *notes
-      hips_id: HIPS id
       order_number: &order_number Ordernummer
 
 
@@ -2067,7 +2069,7 @@ sv:
         membership_number: *membership_number
         company_number: *company_number
         payment_date: *payment_date
-        payment_processor: Betalmetod
+        payment_processor: *payment_processor
         product: Produkt
         price: Pris
         no_vat: Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.

@@ -7,10 +7,16 @@ agent:
 global_job_config:
   # Set env vars for all jobs in the pipeline
   env_vars:
-    - name: SHF_HIPS_URL
-      value: "https://api.hips.com/v1/"
     - name: SHF_AWS_S3_BACKUP_TOP_PREFIX
       value: "this/is/the/top/prefix"
+    - name: SHF_KLARNA_CHECKOUT_URL
+      value: 'https://api.playground.klarna.com/checkout/v3/orders/'
+    - name: SHF_KLARNA_ORDER_MGMT_URL
+      value: 'https://api.playground.klarna.com/ordermanagement/v1/orders/'
+    - name: SHF_KLARNA_API_AUTH_USERNAME_DEV
+      value: 'PK37529_9397d245f192'
+    - name: SHF_KLARNA_API_AUTH_PASSWORD_DEV
+      value: 'oQDZtwYlJIqVRi1R'
   # Connect secrets to all jobs in the pipeline
   secrets:
     - name: shf-secrets
@@ -20,8 +26,6 @@ blocks:
     # use in other blocks and future workflows.  @see https://docs.semaphoreci.com/examples/rails-continuous-integration/
     task:
       env_vars:
-        - name: SHF_HIPS_URL
-          value: "https://api.hips.com/v1/"
         - name: SHF_AWS_S3_BACKUP_TOP_PREFIX
           value: "this/is/the/top/prefix"
       jobs:

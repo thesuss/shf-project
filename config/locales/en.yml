@@ -229,6 +229,9 @@ en:
         start_date: &start_date Start Date
         expire_date: &expire_date Expire Date
         notes: &notes Notes
+        payment_processor: &payment_processor Payment processor
+        hips_id: HIPS id
+        klarna_id: Klarna id
         created: *created
         last_updated: *last_updated
 
@@ -1264,7 +1267,6 @@ en:
       start_date: *start_date
       end_date: *expire_date
       notes: *notes
-      hips_id: HIPS id
       order_number: &order_number Order number
 
 
@@ -2063,7 +2065,7 @@ en:
         membership_number: *membership_number
         company_number: *company_number
         payment_date: *payment_date
-        payment_processor: Payment processor
+        payment_processor: *payment_processor
         product: Product
         price: Price
         no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.

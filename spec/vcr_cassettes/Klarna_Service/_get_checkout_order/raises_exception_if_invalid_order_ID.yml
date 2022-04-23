@@ -23,7 +23,7 @@ http_interactions:
       message: Not Found
     headers:
       Date:
-      - Sun, 03 Oct 2021 11:58:29 GMT
+      - Wed, 27 Oct 2021 10:55:21 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -31,21 +31,21 @@ http_interactions:
       Connection:
       - keep-alive
       Server:
-      - openresty
+      - envoy
       Cache-Control:
       - max-age=0, no-cache, no-store
       Pragma:
       - no-cache
       Klarna-Correlation-Id:
-      - 6d16a402-9456-472c-81c2-eeb92febeafd
+      - d1df216b-ae43-4349-b696-8b7d60b341ef
       Render-Time:
       - '1'
       X-Envoy-Upstream-Service-Time:
-      - '1'
+      - '26'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
       string: ''
-  recorded_at: Sun, 03 Oct 2021 11:58:29 GMT
+  recorded_at: Wed, 27 Oct 2021 10:55:21 GMT
 recorded_with: VCR 6.0.0

@@ -20,12 +20,12 @@ class PaymentCoveringYear
   ROUND_PREC = 2
 
 
-  # This is currently defined in config/initializers/hips_service.rb TODO: Should be AppConfiguration value
+  # @fixme This is currently defined in config/initializers/hips_service.rb TODO: Should be AppConfiguration value
   def self.membership_fee_amount
     SHF_MEMBER_FEE
   end
 
-  # This is currently defined in config/initializers/hips_service.rb TODO: Should be AppConfiguration value
+  # @fixme This is currently defined in config/initializers/hips_service.rb TODO: Should be AppConfiguration value
   def self.branding_license_fee_amount
     SHF_BRANDING_FEE
   end

@@ -55,12 +55,6 @@ RSpec.describe PaymentsController, type: :controller do
         .to route_to(controller: 'payments', action: 'klarna_push',
                      id: '1', klarna_id: 'klarna_order_id')
     end
-
-    it 'routes POST /anvandare/betalning/webhook to payments#webhook' do
-      # Legacy HIPS payment status update - remove later
-      expect(post: '/anvandare/betalning/webhook')
-        .to route_to(controller: 'payments', action: 'webhook')
-    end
   end
 
   describe 'POST #create' do
@@ -84,9 +78,11 @@ RSpec.describe PaymentsController, type: :controller do
 
       # Cannot test 'rescue' action directly so need to confirm side effects
 
+      klarna_id_must_exist = "#{ I18n.t('activerecord.attributes.payment.klarna_id')} #{I18n.t('errors.messages.blank') }"
+      fail_message = "#{ I18n.t('activerecord.errors.messages.record_invalid', errors: klarna_id_must_exist) }"
       expect(SHFNotifySlack).to receive(:failure_notification)
                                     .with('PaymentsController#create',
-                                          text: 'Ett fel uppstod: Klarna måste anges')
+                                          text: fail_message)
 
       expect{ request }.to_not change(Payment, :count)
 

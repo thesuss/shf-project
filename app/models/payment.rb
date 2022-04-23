@@ -53,7 +53,8 @@ class Payment < ApplicationRecord
   # order status 'checkout_complete'.  On the SHF side, that translates to a
   # completed payment ('paid') for the user fee (e.g. a membership fee).
   #
-  # NOTE: In May 2021, we switched the payment processor from HIPS to Klarna.
+  # NOTE: In October 2021, we switched the payment processor from HIPS to Klarna.
+  #       Processor-specific status values are noted in the comment for each entry.
 
   ORDER_PAYMENT_STATUS = {
     nil          => 'skapad',                    # created (not processor-specific)
@@ -216,6 +217,10 @@ class Payment < ApplicationRecord
 
   def branding_license_payment?
     self.payment_type == branding_license_payment_type
+  end
+
+  def payment_processor_id
+    klarna_id.present? ? klarna_id : hips_id
   end
 
 

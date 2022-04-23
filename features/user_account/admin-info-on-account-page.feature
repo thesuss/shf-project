@@ -76,7 +76,7 @@ Feature: Admin sees additional info on User Account pages
     And I should see t("payments.payments_list.start_date")
     And I should see t("payments.payments_list.end_date")
     And I should see t("payments.payments_list.notes")
-    And I should see t("payments.payments_list.hips_id")
+    And I should see t("payments.payments_list.order_number")
 
     And I should see "betald" in the row for t("payment.payment_type.member_fee")
     And I should see "2018-01-01" in the row for t("payment.payment_type.member_fee")

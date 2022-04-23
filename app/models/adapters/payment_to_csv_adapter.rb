@@ -38,7 +38,7 @@ module Adapters
 
       target.append_items company_info(payment)
 
-      target.append_items hips_info(payment)
+      target.append_items payment_processor_info(payment)
 
       target << quote(payment.notes)
 
@@ -62,7 +62,7 @@ module Adapters
        'Org.',
        I18n.t('org_nr'),
        I18n.t('status', scope: I18N_PAYMENT_ATTRIBS),
-       'HIPS id',
+       'Payment id',
        I18n.t('notes', scope: I18N_PAYMENT_ATTRIBS)
       ]
     end
@@ -128,7 +128,8 @@ module Adapters
     end
 
 
-    def hips_info(payment)
+    def payment_processor_info(payment)
+      payment.klarna_id.present? ? [payment.status, payment.klarna_id] :
       [payment.status, payment.hips_id]
     end
   end

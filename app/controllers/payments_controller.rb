@@ -132,41 +132,6 @@ class PaymentsController < ApplicationController
     head :ok
   end
 
-  ########################## Legacy HIPS Action ##########################
-  #
-  # Remove this (webhook) after conversion to Klarna and there is no chance
-  # that a status update for a "pending" HIPS order will come in.
-  #
-  ########################################################################
-
-  # This webhook will be called multiple times (7) during the order create and
-  # payment process. We are only interested in the "order.successful" event,
-  # which indicates successful payment.
-  # Later, we can switch to "hooks/webhook_url_on_success" - which will
-  # be triggered *only* by the "order.successful" event.
-  # (That webhook is not available at this time (October 18, 2017)).
-  def webhook
-    payload = JSON.parse(request.body.read)
-
-    return head(:ok) unless payload['event'] == SUCCESSFUL_HIPS_ORDER_EVENT
-
-    resource = HipsService.validate_webhook_origin(payload['jwt'])
-
-    payment_id = resource['merchant_reference']['order_id']
-    hips_id    = resource['id']
-
-    payment = Payment.find(payment_id)
-    payment.update(status: Payment.order_to_payment_status(resource['status']))
-
-    log_hips_activity('Webhook', 'info', payment_id, hips_id)
-
-  rescue RuntimeError, JWT::IncorrectAlgorithm => exception
-    log_hips_activity('Webhook', 'error', payment_id, hips_id, exception)
-
-  ensure
-    head :ok
-  end
-
   private
 
   def handle_order_confirmation(klarna_id, payment_id)
