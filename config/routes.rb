@@ -147,9 +147,18 @@ Rails.application.routes.draw do
 
 
     # User Account.  Only admins can edit (see the route above for /admin)
+    # Note that this sets the default id parameter to :user_id (instead of just :id)
     resources :users, path: 'anvandare', except: [:edit, :update]  do
+
+      # this will add an :id parameter
       member do
         put 'edit_status', to: 'users#edit_status', as: 'edit_status'
+
+        # User Payment Receipts
+        get 'betalning-kvitton', to: 'users#view_payment_receipts',
+            as: 'view_payment_receipts'
+        get 'betalning-kvitton-ladda-ner', to: 'users#download_payment_receipts_pdf',
+            as: 'download_payment_receipts_pdf'
       end
 
       post 'toggle_membership_package_sent', to: 'users#toggle_membership_package_sent'
@@ -206,7 +215,6 @@ Rails.application.routes.draw do
 
     get 'medlemssidor', to: 'shf_documents#minutes_and_static_pages',
                         as: 'member_pages'
-
   end
 
   # We are not using nested resource statements for the following routes

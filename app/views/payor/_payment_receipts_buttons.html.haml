@@ -1,0 +1,20 @@
+:ruby
+  # This partial expects the following local:
+  #   user - the user for the buttons
+
+.payment-receipts
+  .row.mt-2.mb-2.view
+    .col-sm-4
+      = link_to(t('.view.button_title'), view_payment_receipts_user_path(user),
+            class: 'btn btn-sm btn-primary')
+
+  .row.mt-2.mb-2.download-pdf
+    .col-sm-4
+      = link_to( download_payment_receipts_pdf_user_path(user),
+         id: 'download-pdf-button',
+         class: 'btn btn-sm btn-primary') do
+        = file_download_icon(html_options: {'aria-hidden': true})
+        = t('.download.button_title')
+
+    .col
+      %p.instruction= t('.download.instructions')

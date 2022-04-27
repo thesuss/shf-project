@@ -46,7 +46,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
-  config.file_fixture_path = 'spec/fixtures/uploaded_files'
+  # config.file_fixture_path = 'spec/fixtures/uploaded_files'  # @fixme remove this line, make sure to fix any failing tests (probably uploaded_files)
   config.use_transactional_fixtures = false
 
 

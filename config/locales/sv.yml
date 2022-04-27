@@ -72,6 +72,8 @@ sv:
   months: månader
   year: år
   years: år
+  # There is already a key for 'date' so we need to use 'date_word' instead
+  date_word : &date Datum
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker?
 
@@ -100,6 +102,8 @@ sv:
   org_nr: &org_nr Org nr.
 
   complete: &complete komplett
+
+  for: &for för
 
   accordion_label:
     company_search_form:
@@ -228,11 +232,11 @@ sv:
         start_date: &start_date Startdatum
         expire_date: &expire_date Utgångsdatum
         notes: &notes Anteckningar
-        payment_processor: &payment_processor Betalmetod
-        hips_id: HIPS id
-        klarna_id: Klarna id
         created: *created
         last_updated: *last_updated
+        hips_id: &hips_id HIPS id
+        klarna_id: &klarna_id Klarna id
+        payment_processor: &payment_processor Betalmetod
 
       shf_application:
         company_number: &company_number Organisationsnummer
@@ -496,6 +500,13 @@ sv:
   payor:
     term_status:
       admin_user_payments_title: *payments
+
+    payment_receipts_buttons:
+      view:
+        button_title: Visa betalningshistorik
+      download:
+        button_title: Ladda hem kvitton
+        instructions: "Ladda ner en PDF-fil med alla kvitton för alla betalningar du har gjort. Din webbläsare kan ladda ner eller öppna den automatiskt. Ha tålamod. Det tar en stund innan nedladdningen startar."
 
 
   payment:
@@ -879,7 +890,7 @@ sv:
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       hbrand_term_payment: H-märkespremiebetalning
-      hbrand_fee: H-märkespremie
+      hbrand_fee: &hbrand_fee H-märkespremie
       hbrand_term: H-märkespremieperiod
       payment_tooltip: Betald avgift förlänger H-märkningen i ett år.
       branding_fee_expire_date_tooltip: &branding_fee_expire_date_tooltip Efter detta datum går perioden för din H-märkning ut.
@@ -1078,7 +1089,7 @@ sv:
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       membership_fee_payment: betalning av medlemskap
-      membership_fee: medlemskapsavgift
+      membership_fee: &membership_fee medlemsavgift
       membership_term: medlemperiod
       membership_term_last_day: *membership_last_day
       payment_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
@@ -1110,6 +1121,7 @@ sv:
     show_for_member:
       membership_number: *membership_number
       no_membership_number: (inget medlemsnummer)
+      no_payments: &no_payments No payments have been made.
 
     show_for_applicant:
       title: &show_for_applicant_title "Steg mot medlemskap:"
@@ -1251,6 +1263,38 @@ sv:
     destroy:
       success: Användaren raderades framgångsrikt.
 
+    payment_receipts_display:
+      no_payments: &no_successful_payments_receipts No successful payments have been made so there are no receipts.
+
+    view_payment_receipts:
+      title: "Payment receipts for %{name}"
+      is_an_admin: *is_an_admin
+      no_payments: *no_successful_payments_receipts
+      for: *for
+      membership: *membership_fee
+      h_brand: *hbrand_fee
+      h_brand_with_name: &h_brand_with_name H-märke för "%{company}"
+      order_number: &order_number Ordernummer
+      membr_nr: nr.
+      membership_number: *membership_number
+      org_nr: *org_nr
+      company_number: *company_number
+      date: *date
+      payment_processor: *payment_processor
+      product: &product "Vad:"
+      price: &price "Kostnad:"
+      no_vat: &no_vat Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.
+      shf_name: *SHF_name
+      shf_address: *SHF_address
+      shf_orgnumber: *SHF_orgnumber
+
+    download_payment_receipts_pdf:
+      payments: *payments
+      no_payments: *no_successful_payments_receipts
+      success: 'PDF-filen för betalningskvitton nedladdad.'
+      error: 'Det uppstod ett problem med att skapa eller ladda ned PDF-filen för betalningskvitton. Ingen fil nedladdad.'
+
+
   user_profiles:
     edit:
       edit_user_account: *edit_user_account
@@ -1269,14 +1313,18 @@ sv:
       error: Det uppstod ett fel vid hantering av din betalning
 
     payments_list:
-      payment_date: &payment_date Payment date
+      payment_date: &payment_date Betaldatum
       status: *payment_status
-      for: för
+      for: *for
       type: *payment_type
       start_date: *start_date
       end_date: *expire_date
       notes: *notes
-      order_number: &order_number Ordernummer
+      processor: *payment_processor
+      processor_id: Betalmetod id
+      hips_id: *hips_id
+      klarna_id: *klarna_id
+      order_number: *order_number
 
 
   user_checklists:
@@ -2062,17 +2110,17 @@ sv:
         confirmation: &confirmation Bekräftelse på betald %{product}
         subject: *confirmation
         thank_you_for_paying: 'Tack för din inbetalning – Ditt %{product_with_name} är betalt.'
-        membership: medlemskap
-        h_brand: H-märkespremie
-        h_brand_with_name: H-märkespremie för företaget %{company}
+        membership: *membership
+        h_brand: *hbrand_fee
+        h_brand_with_name: *h_brand_with_name
         order_number: *order_number
         membership_number: *membership_number
         company_number: *company_number
         payment_date: *payment_date
         payment_processor: *payment_processor
-        product: Produkt
-        price: Pris
-        no_vat: Ingen moms eftersom Sveriges Hundföretagare är en ideell förening.
+        product: *product
+        price: *price
+        no_vat: *no_vat
         questions: Om du har några frågor kring din betalning eller ditt medlemskap, kontakta oss på
         shf_name: *SHF_name
         shf_address: *SHF_address
@@ -2244,6 +2292,11 @@ sv:
     purchase_terms: Köpvillkor
     purchase_terms_url: aterbetalningsvillkor
 
+
+  pdf:
+    footer:
+      shf: *SHF_name
+      shf_url: *shf_home_url
 
   #----------
   # ERRORS

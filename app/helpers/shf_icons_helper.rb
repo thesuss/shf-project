@@ -104,6 +104,7 @@ module ShfIconsHelper
   FA_PROBLEM = 'times-circle'
   FA_PLUS = 'plus'
   FA_QUESTION = 'question-circle'
+  FA_FILE_DOWNLOAD = 'file-download'
 
   FA_TOOLTIP = 'info-circle' # Note that there is a specific helper method 'fas_tooltip(...) that can be used (Defined in application_helper.rb)
 
@@ -257,6 +258,7 @@ module ShfIconsHelper
       { method_name_start: 'problem', icon: FA_PROBLEM },
       { method_name_start: 'plus', icon: FA_PLUS },
       { method_name_start: 'question', icon: FA_QUESTION, fa_style: 'far' },
+      { method_name_start: 'file_download', icon: FA_FILE_DOWNLOAD },
 
 
       { method_name_start: 'next_arrow', icon: FA_ARROW_RIGHT },
@@ -311,7 +313,7 @@ module ShfIconsHelper
     # and the FontAwesome icon will be method_info[:icon]
     #
     # Parameters are the same as those accepted by the FontAwesome icon() method.
-    # All parameters are keywords and are all optional. ()All are passed on to the
+    # All parameters are keywords and are all optional. All are passed on to the
     #   FontAwesome icon() method.)
     #   html_options:  [Hash] - HTML options to be applied to the icon.  Default = {}
     #   fa_style: [String] - a specific FontAwesome style to use. Default = FA_STYLE_DEFAULT = 'fas'

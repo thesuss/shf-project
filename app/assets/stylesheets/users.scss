@@ -195,3 +195,30 @@ td.is-member span.membership-status {
     margin-left: 1em;
   }
 }
+
+.view_payment_receipts {
+
+  .payments {
+    //border: 1pt solid $border-light-blue;
+    font-size: smaller;
+
+    .entity-number {
+      font-size: smaller;
+    }
+
+    .price-value {
+      font-weight: bold;
+    }
+
+  }
+
+  .table {
+    border: 1pt solid $border-light-blue;
+  }
+
+  .table td ,
+  .table th {
+    border-bottom: 1pt solid $border-light-blue;
+    border-top: 1pt solid $border-light-blue;
+  }
+}

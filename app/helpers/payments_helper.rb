@@ -1,5 +1,6 @@
 module PaymentsHelper
 
+  CURRENCY_STR_KR = 'kr'
 
   # Create a <span> that has the expire date for the entity with the CSS class
   # set based on whether or not the date has expired and a tooltip that explains it.
@@ -30,10 +31,19 @@ module PaymentsHelper
     end
   end
 
+
+  # TODO - this is a smell (checking the class): polymorphism should be used instead. Default implementation should be in a parent class for User and Company
+  def entity_name_and_number_html(entity, i18n_scope)
+    num = entity_value(entity, :membership_number, :company_number)
+    num_title = entity.is_a?(User) ? t('membr_nr', scope: i18n_scope) : t('org_nr', scope: i18n_scope)
+    "#{entity_name(entity)} <span class='entity-number'>#{num_title.downcase} #{num}</span>"
+  end
+
   # TODO - this is a smell (checking the class): polymorphism should be used instead. Default implementation should be in a parent class for User and Company
   def entity_name(entity)
     entity_value(entity, :full_name, :name, I18n.t('name_missing'))
   end
+
 
   # @param entity [User or Company] - the entity with a possible membership expiration date
   # @return [nil | date] - return nil if there is no expiration date (e.g. not a member), else
@@ -42,7 +52,6 @@ module PaymentsHelper
   def entity_expire_date(entity = nil)
     entity_value(entity, :membership_expire_date, :branding_expire_date, nil)
   end
-
 
 
   # @return [String] - the scope (= key) to use when looking up I18n translations
@@ -114,6 +123,55 @@ module PaymentsHelper
   end
 
 
+  def product(payment, scope)
+    payment.membership_payment? ? t('membership', scope: scope).capitalize : t('h_brand', scope: scope)
+  end
+
+  def product_with_name(payment, scope)
+    payment.membership_payment? ? t('membership', scope: scope) : t('h_brand_with_name', scope: scope, company: payment.company&.name)
+  end
+
+  def payment_date(payment)
+    payment.updated_at.in_time_zone('CET').strftime('%Y-%m-%d %H:%M:%S (%Z)')
+  end
+
+  def payment_amount(payment)
+    payment.amount.nil? ? '' : payment.amount / 100.00
+  end
+
+  # @return [String] show the payment amount with ' kr' appended
+  def payment_amount_kr(payment)
+    return '' if payment.amount.nil?
+
+    payment_amount_currency(payment, CURRENCY_STR_KR)
+  end
+
+  # ------------------------------------------
+
+  def plain_payments(payments = [], i18n_scope = '')
+    payments.map do |payment|
+      { id: payment.id,
+        date: payment_date(payment),
+        amount: payment_amount(payment),
+        product: product(payment, i18n_scope),
+        target_entity: entity_name_and_number_html(payment.target_entity, i18n_scope),
+        payment_processor: payment.payment_processor,
+        processor_id: payment.processor_id
+      }
+    end
+  end
+
+  # @return [Hash] a Hash that has the I18n.t value for each key
+  def payment_receipts_i18n_tags(i18n_scope = '')
+    tags = [:payment_date, :price, :product, :for, :payment_processor, :order_number]
+    i18n_tags = {}
+    tags.each do |tag|
+      i18n_tags[tag] = t(tag.to_s, scope: i18n_scope)
+    end
+    i18n_tags
+  end
+
+
   # -----------------------------------------------------------------------------------------------
 
   private
@@ -124,7 +182,7 @@ module PaymentsHelper
   # TODO - this is a smell (checking the class): polymorphism should be used instead.
   #   Default implementation should be in a parent class for User and Company, or included as a mixin.
   #
-  # @return [Object] - the value returned by sending the appropriate method to the entity.
+  # @return [Object, nil] - the value returned by sending the appropriate method to the entity.
   #   return the else_value if the entity is nil or if it is neither a User nor a Company
   def entity_value(entity, user_method, company_method, else_value = nil)
     if entity && (entity.is_a?(User) || entity.is_a?(Company))
@@ -134,4 +192,8 @@ module PaymentsHelper
     end
   end
 
+  # @return [String] payment amount with the currency appended (space in between amount and currency)
+  def payment_amount_currency(payment, currency_str = CURRENCY_STR_KR)
+    "#{payment_amount(payment)} #{currency_str}"
+  end
 end

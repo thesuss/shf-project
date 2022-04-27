@@ -82,7 +82,7 @@ RSpec.describe PaymentsController, type: :controller do
       fail_message = "#{ I18n.t('activerecord.errors.messages.record_invalid', errors: klarna_id_must_exist) }"
       expect(SHFNotifySlack).to receive(:failure_notification)
                                     .with('PaymentsController#create',
-                                          text: fail_message)
+                                          text: 'Ett fel uppstod: Klarna id måste anges')
 
       expect{ request }.to_not change(Payment, :count)
 

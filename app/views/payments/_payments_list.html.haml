@@ -13,7 +13,8 @@
         %th.term-start-date= t('.start_date')
         %th.term-end-date= t('.end_date')
         %th.notes= t('.notes')
-        %th.payment-id= t('.order_number')
+        %th.processor= t('.processor')
+        %th.processor-id= t('.processor_id')
     %tbody
     - payments_list.each do | payment |
       %tr.payment
@@ -24,4 +25,5 @@
         %td.term-start-date= payment.start_date
         %td.term-end-date= payment.expire_date
         %td.notes= payment.notes
-        %td.payment-id= payment.payment_processor_id
+        %td.processor= payment.payment_processor
+        %td.processor-id= payment.processor_id

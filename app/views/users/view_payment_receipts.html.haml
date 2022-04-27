@@ -1,0 +1,12 @@
+:ruby
+  username          = user_name_for_display(@user)
+  admin_user_text   = show_if_user_is_admin(@user, t('.is_an_admin'))
+  title             = t('.title', name: username) + admin_user_text
+  i18n_scope        = 'users.view_payment_receipts'
+
+%header.entry-header
+  = content_title(title, user: @user)
+
+.entry-content.container
+  = render partial: 'payments/payments_receipts_list', locals: { payments: @successful_payments, i18n_scope: i18n_scope }
+  = render partial: 'shared/no-vat-shf-orgnum-address', locals: { i18n_scope: i18n_scope }

@@ -15,7 +15,7 @@ RSpec.describe PaymentMailer, type: :mailer do
 
     it 'shows the payment date' do
       expect(email_sent).to have_body_text(payment.updated_at.in_time_zone('CET').strftime('%Y-%m-%d %H:%M:%S (%Z)'))
-    end  
+    end
 
     it 'shows the amount' do
       expect(email_sent).to have_body_text((test_payment.amount / 100).to_s)
@@ -25,7 +25,7 @@ RSpec.describe PaymentMailer, type: :mailer do
       expect(email_sent).to have_body_text(I18n.t('no_vat', scope: PAYMENT_MADE_SCOPE))
     end
 
-  end    
+  end
 
   let!(:test_user) { create(:member, membership_number: '42', email: 'user@example.com') }
 
@@ -40,15 +40,15 @@ RSpec.describe PaymentMailer, type: :mailer do
     let!(:email_sent) { PaymentMailer.payment_made(test_payment) }
 
     it_behaves_like 'a successfully created email',
-                    I18n.t('subject', scope: PAYMENT_MADE_SCOPE, product: I18n.t('membership', scope: PAYMENT_MADE_SCOPE)),
+                    I18n.t('subject', scope: PAYMENT_MADE_SCOPE, product: I18n.t('membership', scope: PAYMENT_MADE_SCOPE).capitalize),
                     'user@example.com',
                     'Firstname Lastname',
-                    NO_SIGNATURE, 
+                    NO_SIGNATURE,
                     NO_SIGNOFF do
       let(:email_created) { email_sent }
     end
 
-    it_behaves_like 'a mail with common payment info' do 
+    it_behaves_like 'a mail with common payment info' do
       let(:payment) { test_payment }
     end
 
@@ -72,12 +72,12 @@ RSpec.describe PaymentMailer, type: :mailer do
                     I18n.t('subject', scope: PAYMENT_MADE_SCOPE, product: I18n.t('h_brand', scope: PAYMENT_MADE_SCOPE)),
                     'user@example.com',
                     'Firstname Lastname',
-                    NO_SIGNATURE, 
+                    NO_SIGNATURE,
                     NO_SIGNOFF do
       let(:email_created) { email_sent }
     end
-        
-    it_behaves_like 'a mail with common payment info' do 
+
+    it_behaves_like 'a mail with common payment info' do
       let(:payment) { test_payment }
     end
 

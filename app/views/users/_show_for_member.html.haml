@@ -22,10 +22,14 @@
       = membership_last_day_and_value(user.most_recent_membership,
        value_class: expire_date_css_class(user.membership_status_incl_informational))
 
+  - if user.payments.completed.empty?
+    = t('.no_payments')
+  - else
+    = render partial: 'payor/payment_receipts_buttons', locals: { user: user } unless user.payments.empty?
+
   = render partial: 'admin_only_edit_status', locals: { user: user }
 
   = render partial: 'admin_only_payments', locals: { entity: user }
-
 
 = render partial: 'renewal', locals: { user: user } if show_renewal_info
 

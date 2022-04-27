@@ -506,4 +506,22 @@
     // font-size: smaller;
   }
 
+  // print styles
+  @media print {
+    .mailchimp {
+      background-color: $white;
+      background-image: none;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 0;
+
+      height: auto;
+
+      .template-preheader,
+      .template-header {
+        display: none;
+      }
+
+    }
+  }
 }

@@ -32,7 +32,7 @@
         %td.col.payment_date_value{ style: "#{cell_padding}" }= @payment_date
       %tr.row
         %td.col.payment_processor_name{ style: "#{cell_padding}" }= t('payment_processor', scope: message_scope)
-        %td.col.payment_processor_value{ style: "#{cell_padding}" }= 'Klarna'
+        %td.col.payment_processor_value{ style: "#{cell_padding}" }= @processor
       %tr.row
         %td.col.product_name{ style: "#{cell_padding}" }= t('product', scope: message_scope)
         %td.col.product_value{ style: "#{cell_padding}" }= @product_with_name
@@ -40,16 +40,7 @@
         %td.col.price_name{ style: "#{cell_padding}" }= t('price', scope: message_scope)
         %td.col.price_value{ style: "#{cell_padding}" }= @payment_amount
 
-%p
-  = t('no_vat', scope: message_scope)
-
-%p
-  = t('shf_name', scope: message_scope)
-  %br
-  = t('shf_orgnumber', scope: message_scope)
-  %br
-  = t('shf_address', scope: message_scope)
-
+= render partial: 'shared/no-vat-shf-orgnum-address', locals: { i18n_scope: message_scope }
 
 %p
   = t('questions', scope: message_scope)

@@ -401,6 +401,20 @@ RSpec.describe Payment, type: :model do
   end
 
 
+  describe 'processor_id' do
+    it 'gets the payment_processor value' do
+      expect(subject).to receive(:payment_processor).and_return('HIPS')
+      subject.processor_id
+    end
+
+    it 'gets the id based on the payment_processor value with _id appended' do
+      expect(subject).to receive(:payment_processor).and_return('HiPs')
+      expect(subject).to receive(:hips_id).and_return(42)
+      expect(subject.processor_id).to eq(42)
+    end
+  end
+
+
   describe 'membership_payment?' do
     it 'true if the payment is a membership payment' do
       pay = build(:membership_fee_payment )

@@ -1,0 +1,23 @@
+:ruby
+  # This partial expects these locals:
+  #   payments [Array<Payment>] a list of payments to display
+  #   i18n_scope [String] the I18n scope for translations
+
+%table.table.table-sm.table-hover.payments
+  %thead
+    %th.payment-date-name= t('date', scope: i18n_scope)
+    %th.price-name= t('price', scope: i18n_scope)
+    %th.product-name= t('product', scope: i18n_scope)
+    %th.for= t('for', scope: i18n_scope)
+    %th.payment-processor-name= t('payment_processor', scope: i18n_scope)
+    %th.order-number-name= t('order_number', scope: i18n_scope)
+
+  %tbody
+    - payments.each do |payment|
+      %tr.payment{ class: "payment-#{payment.id}" }
+        %td.payment-date-value= payment_date(payment)
+        %td.price-value= payment_amount_kr(payment)
+        %td.product-value=  product(payment, i18n_scope)
+        %td.for= entity_name_and_number_html(payment.target_entity, i18n_scope).html_safe
+        %td.payment-processor-value= payment.payment_processor
+        %td.order-number-value= payment.processor_id

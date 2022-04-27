@@ -476,7 +476,6 @@ a:hover {
 
 body {
   -webkit-font-smoothing: antialiased;
-  background-color: $body-background;
   color: $body-text;
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
@@ -626,6 +625,12 @@ form {
     &.error {
       font-weight: bold;
     }
+  }
+}
+
+@media only screen {
+  body {
+    background-color: $body-background;
   }
 }
 

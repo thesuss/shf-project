@@ -1,0 +1,12 @@
+-# This partial expects this local:
+-#   i18n_scope [String] - the I18n scope to use
+.shf-vat-num-addr
+  %p.no-vat
+    = t('no_vat', scope: i18n_scope)
+
+  %p.shf-org-info
+    = t('shf_name', scope: i18n_scope)
+    %br
+    = t('shf_orgnumber', scope: i18n_scope)
+    %br
+    = t('shf_address', scope: i18n_scope)

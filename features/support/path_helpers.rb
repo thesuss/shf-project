@@ -48,6 +48,13 @@ module PathHelpers
       when 'proof of membership jpg download'
         path = proof_of_membership_path(user, format: :jpg)
 
+      # User Payment Receipts
+      when 'view payment receipts'
+        path = view_payment_receipts_user_path(user)
+      when 'download payment receipts'
+        path = download_payment_receipts_pdf_user_path(user)
+
+
       # SHF application pages
       when 'new application', 'submit new membership application'
         path = new_shf_application_path

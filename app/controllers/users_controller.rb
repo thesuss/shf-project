@@ -4,12 +4,13 @@ class UsersController < ApplicationController
   include SetAppConfiguration
   include PaginationUtility
   include ImagesUtility
+  include Downloader
 
   LOG_FILE = LogfileNamer.name_for('users')
 
   before_action :set_user, except: [:index, :toggle_membership_package_sent]
   before_action :set_app_config, only: [:show, :proof_of_membership, :update, :edit_status]
-  before_action :authorize_user, only: [:show]
+  before_action :authorize_user, only: [:show, :view_payment_receipts, :download_payment_receipts_pdf]
   before_action :allow_iframe_request, only: [:proof_of_membership]
 
   ARE_MEMBERS_CLAUSE = 'member = true'.freeze
@@ -19,6 +20,7 @@ class UsersController < ApplicationController
 
   def show
   end
+
 
   def proof_of_membership
     render_as = request.format.to_sym
@@ -38,6 +40,7 @@ class UsersController < ApplicationController
       show_image(image_html)
     end
   end
+
 
   def index
     authorize User
@@ -104,7 +107,7 @@ class UsersController < ApplicationController
       if user_params[:member] == 'true'
         @user.start_membership!(date: Date.current)
         current_membership = @user.current_membership
-        admin_change_note << t('memberships.auto_added_notes.started_on', first_day: Date.current )
+        admin_change_note << t('memberships.auto_added_notes.started_on', first_day: Date.current)
         if last_day_param != current_membership.last_day
           admin_change_note << change_membership_last_day_and_note(current_membership, last_day_param)
         end
@@ -125,7 +128,6 @@ class UsersController < ApplicationController
       render partial: 'show_for_applicant', locals: { user: @user, current_user: @current_user }
     end
 
-
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
     render partial: 'membership_term_status',
            locals: { user: @user, error: t('users.update.error') }
@@ -141,7 +143,7 @@ class UsersController < ApplicationController
 
     authorize User
 
-    user =  User.find_by_id(params[:user_id])
+    user = User.find_by_id(params[:user_id])
     if user
       user.toggle_membership_packet_status
 
@@ -150,13 +152,14 @@ class UsersController < ApplicationController
       end
 
     else
-      raise ActiveRecord::RecordNotFound,  "User not found! user_id = #{params[:user_id]}"
+      raise ActiveRecord::RecordNotFound, "User not found! user_id = #{params[:user_id]}"
     end
 
   end
 
 
   def destroy
+    # @fixme where is the authorization??
     @user.destroy
 
     ActivityLogger.open(LOG_FILE, 'Manage Users', 'Delete') do |log|
@@ -166,6 +169,42 @@ class UsersController < ApplicationController
     redirect_back(fallback_location: users_path, notice: t('.success'))
   end
 
+
+  def view_payment_receipts
+    @successful_payments = successful_payments(@user)
+    i18n_scope = i18n_scope_for(action_name)
+    payment_receipts_display(@user, @successful_payments, i18n_scope)
+  end
+
+
+  def download_payment_receipts_pdf
+      @successful_payments = successful_payments(@user)
+      i18n_scope = i18n_scope_for(action_name)
+
+      payment_receipts_display(@user, @successful_payments, i18n_scope) do
+
+        stylesheet = Tempfile.open('application-stylesheet') do |f|
+          f.puts(Rails.application.assets["application.css"].to_s)
+          f
+        end
+
+        # add the body tag with its classes so that the stylesheet can be applied correctly
+        view_receipts_html = "<body class='users view_payment_receipts page page-template page-template-page-sidebar-none'>" +
+          "#{render_to_string('view_payment_receipts', layout: false)}" +
+          '</body>'
+
+        pdf = PdfGenerator.instance.pdf(view_receipts_html,
+                                        default_pdf_options.merge(
+                                        { 'no-images': true,
+                                          stylesheet_fn: stylesheet.path}) )
+        stylesheet.unlink # delete the temporary stylesheet file
+
+        pdf_filename = "SHF-#{t('.payments')}-#{Time.now.strftime('%Y%m%dT%H%M')}.pdf"
+
+        # Note that the Rails send_data method (called when downloading a file) calls  _render_
+        download_file(pdf, pdf_filename, success_msg: t('.success'), error_msg: t('.error'))
+      end
+  end
 
 
   private
@@ -198,6 +237,7 @@ class UsersController < ApplicationController
     params.require(:payment).permit(:expire_date, :notes)
   end
 
+
   # Set @user to @current_user for situations where the current user
   # is the one viewing and requesting the controller actions.
   def set_user_to_current_user
@@ -224,10 +264,29 @@ class UsersController < ApplicationController
   def change_membership_last_day_and_note(membership, new_last_day)
     return unless membership
 
-    note = t('memberships.auto_added_notes.last_day_changed',  original_last_day: membership.last_day, new_last_day: new_last_day)
+    note = t('memberships.auto_added_notes.last_day_changed', original_last_day: membership.last_day, new_last_day: new_last_day)
     membership.update!(last_day: new_last_day)
     MembershipStatusUpdater.instance.user_updated(membership.user)
     note
   end
 
+
+  def successful_payments(user)
+    user.payments.completed
+  end
+
+
+  def i18n_scope_for(action)
+    "#{controller_path.tr('/', '.')}.#{action}" # this is from AbstractController::Translation.translate
+  end
+
+
+  def payment_receipts_display(user, user_successful_payments, i18n_scope)
+    if user_successful_payments.blank?
+      helpers.flash_message(:alert, t('no_payments', scope: i18n_scope))
+      redirect_to user
+    else
+      yield if block_given?
+    end
+  end
 end

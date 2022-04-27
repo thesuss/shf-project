@@ -157,15 +157,17 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
     describe 'email with attachments' do
 
+      let(:uploaded_files_dir) { File.join(file_fixture_path, '..', 'uploaded_files') }
+
       it_behaves_like 'delivery is OK' do
         let(:email_response) {
 
           attachment1 = {
-              content: file_fixture('diploma.pdf'),
+              content: File.join(uploaded_files_dir, 'diploma.pdf'),
               mime_type: 'application/pdf',
           }
           attachment2 = {
-              content: file_fixture('microsoft-word.docx'),
+              content: File.join(uploaded_files_dir,'microsoft-word.docx'),
               mime_type: 'application/docx',
           }
 

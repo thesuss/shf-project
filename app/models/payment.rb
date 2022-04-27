@@ -200,6 +200,9 @@ class Payment < ApplicationRecord
     update(notes: (notes.nil? ? deleted_note : "#{notes}#{NOTES_SEPARATOR}#{deleted_note}") )
   end
 
+  def processor_id
+    self.send("#{payment_processor.downcase.to_sym}_id")
+  end
 
   def membership_payment_type
     self.class.membership_payment_type  # this could also be done with delegation

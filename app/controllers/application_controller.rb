@@ -286,4 +286,10 @@ class ApplicationController < ActionController::Base
     raise 'Unsupported request' unless request.xhr?
   end
 
+  # This is not a great class for this, but because I18n.t is called, is ok.
+  def default_pdf_options
+    { 'header-left': "#{I18n.t('pdf.footer.shf')}",
+      'footer-left': "#{I18n.t('pdf.footer.shf_url')}"
+    }
+  end
 end

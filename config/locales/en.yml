@@ -72,6 +72,8 @@ en:
   months: months
   year: year
   years: years
+  # There is already a key for 'date' so we need to use 'date_word' instead
+  date_word : &date Date
 
   confirm_are_you_sure: &are_you_sure_confirm Are you sure?
 
@@ -102,6 +104,8 @@ en:
 
   complete: &complete complete
 
+  for: &for for
+
   accordion_label:
     company_search_form:
       hide: &hide_search Hide search form
@@ -119,9 +123,9 @@ en:
       show: "Change the User's Password"
 
   will_paginate:
-      previous_label: "« Previous"
-      next_label: "Next »"
-      page_gap: "&hellip;"
+    previous_label: "« Previous"
+    next_label: "Next »"
+    page_gap: "&hellip;"
 
   items_per_page_tooltip: 'Select number of items per page'
 
@@ -138,7 +142,7 @@ en:
     one: Please fix this error
     other: Please fix these %{count} errors
     spoofed_media_type: &spoofed_media file name (type) does not match the file
-                        content.  Please use another photo file.
+      content.  Please use another photo file.
 
   my_company:
     one: My Company
@@ -150,7 +154,7 @@ en:
     date_completed: &date_completed Date Completed
 
 
- # Automatic and manual lookup for ActiveRecords:
+  # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
       shf_application:
@@ -229,11 +233,11 @@ en:
         start_date: &start_date Start Date
         expire_date: &expire_date Expire Date
         notes: &notes Notes
-        payment_processor: &payment_processor Payment processor
-        hips_id: HIPS id
-        klarna_id: Klarna id
         created: *created
         last_updated: *last_updated
+        hips_id: &hips_id HIPS id
+        klarna_id: &klarna_id Klarna id
+        payment_processor: &payment_processor Payment processor
 
       shf_application:
         company_number: &company_number "Company number"
@@ -462,7 +466,7 @@ en:
   shared:
     progress_bar:
       complete: *complete
-      progress_complete:  &progress_complete complete
+      progress_complete: &progress_complete complete
 
   about_info:
     title: About this website
@@ -497,6 +501,13 @@ en:
   payor:
     term_status:
       admin_user_payments_title: *payments
+
+    payment_receipts_buttons:
+      view:
+        button_title: View payment all receipts
+      download:
+        button_title: Download payment receipts file
+        instructions: "Download a PDF file with all of the receipts for all payments you have made. Your browser may download or automatically open it. Please be patient; it make take a few moments for the file to be generated."
 
 
   payment:
@@ -594,7 +605,7 @@ en:
       phone_number: Phone number
       company_number: *company_number
       enter_company_number: Enter your company number (or create a new company
-                             if not yet in the system)
+        if not yet in the system)
       contact_email: *contact_email
 
       can_be_same_email: Can be the same that you logged in with, but need not be.
@@ -609,11 +620,11 @@ en:
       upload_button: "Choose files to upload..."
       will_be_uploaded: 'These files will be uploaded when you submit your application:'
       upload_multiple_files: To upload multiple files at once hold down the
-                             control key (Windows) or command key (Mac).
+        control key (Windows) or command key (Mac).
       submit_button_label: *submit
       need_to_enter_name_html: You must have your first and last name defined
-                          in order to create a membership application.
-                          %{edit_profile}.
+        in order to create a membership application.
+        %{edit_profile}.
       file_delivery_selection: 'Please select how you will deliver the files needed for your application:'
       submit_button_explain: Select a file delivery option to enable Submit
       where_to_mail_files: We will email you the address
@@ -728,7 +739,7 @@ en:
 
     shf_application_fields:
       company_numbers_tooltip: You can enter multiple company numbers, separated by
-                               a comma or blank spaces
+        a comma or blank spaces
 
     start_review:
       success: The review has been started.
@@ -869,12 +880,12 @@ en:
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       hbrand_term_payment: H-Brand license fee payment
-      hbrand_fee: H-Brand license fee
+      hbrand_fee: &hbrand_fee H-Brand license fee
       hbrand_term: H-Brand license term
       edit_branding_status: Edit Branding Status
       payment_tooltip: Paying the H-Branding fee will extend the branding license for one year.
       branding_fee_expire_date_tooltip: &branding_fee_expire_date_tooltip Branding license expires after this date
-      term_expire_date_tooltip : *branding_fee_expire_date_tooltip
+      term_expire_date_tooltip: *branding_fee_expire_date_tooltip
       members: Company Members
       dinkurs_fetch_events: Get Dinkurs Events
       dinkurs_fetching: Fetching events ... please wait
@@ -923,10 +934,10 @@ en:
         Set to 'None' for no address visibility.
       org_nr_tooltip: Numbers only (no hyphens)
       dinkurs_show_tooltip: Set this switch to on (toggle to the right) to show
-                            upcoming Dinkurs events on your company page.
+        upcoming Dinkurs events on your company page.
       dinkurs_id_tooltip: If you have a Dinkurs.se account and want to also show
-                          the company events here, enter the Dinkurs.se company key.
-                          (You can leave it blank if you don't have a Dinkurs.se account.)
+        the company events here, enter the Dinkurs.se company key.
+        (You can leave it blank if you don't have a Dinkurs.se account.)
       social_url_ex: "Ex: %{example_url}"
       facebook_url: URL for your Facebook page
       facebook_url_ex_path: "YourFacebookName"
@@ -963,7 +974,7 @@ en:
       delete_confirm: Are you sure you want to delete this address?
       cannot_delete_address: (Company mail address - cannot be deleted)
       delete_address_tooltip: If you want to delete this address, specify
-                              another address as the company mail address.
+        another address as the company mail address.
     update:
       error: There was a problem updating the address.
       success: The address was updated.
@@ -1068,12 +1079,12 @@ en:
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       membership_fee_payment: membership payment
-      membership_fee: membership fee
+      membership_fee: &membership_fee membership fee
       membership_term: membership term
       membership_term_last_day: *membership_last_day
       payment_tooltip: Paying the membership fee will extend your membership for one year.
       membership_expire_date_tooltip: &membership_expire_date_tooltip Membership expires after this date
-      term_expire_date_tooltip : *membership_expire_date_tooltip
+      term_expire_date_tooltip: *membership_expire_date_tooltip
       edit_member_status: &edit_member_status Edit Member Status
       pay_membership: &pay_membership Pay Membership Fee
       edit_user_profile: &edit_user_profile Edit the profile for %{name}
@@ -1099,23 +1110,24 @@ en:
     show_for_member:
       membership_number: *membership_number
       no_membership_number: (no membership number)
+      no_payments: &no_payments No payments have been made.
 
     show_for_applicant:
-        title: &show_for_applicant_title "Steps to SHF Membership:"
-        welcome: "Welcome to Sveriges Hundföretagare!"
-        welcome_want_to_have_benefits: &show_for_applicant_want_to_have_benefits "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
+      title: &show_for_applicant_title "Steps to SHF Membership:"
+      welcome: "Welcome to Sveriges Hundföretagare!"
+      welcome_want_to_have_benefits: &show_for_applicant_want_to_have_benefits "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
 
-        apply_4_membership: *apply_for_membership
-        my_application: &my_application My Application
-        submit_application: Fill out and submit your application.
-        app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
-        app_status_under_review: "Thanks for submitting your application. We're reviewing it. You'll get an email letting you know the status."
-        app_status_waiting_for_applicant: We are waiting for information from you.
-        app_status_ready_for_review: "Thanks for submitting your application and information. We'll start reviewing it soon. You can always email us with questions."
-        app_status_accepted: Your application has been accepted.
-        app_status_rejected: Your application has been denied.
-        pay_membership: *pay_membership
-        when_can_pay:  &when_can_pay Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
+      apply_4_membership: *apply_for_membership
+      my_application: &my_application My Application
+      submit_application: Fill out and submit your application.
+      app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
+      app_status_under_review: "Thanks for submitting your application. We're reviewing it. You'll get an email letting you know the status."
+      app_status_waiting_for_applicant: We are waiting for information from you.
+      app_status_ready_for_review: "Thanks for submitting your application and information. We'll start reviewing it soon. You can always email us with questions."
+      app_status_accepted: Your application has been accepted.
+      app_status_rejected: Your application has been denied.
+      pay_membership: *pay_membership
+      when_can_pay: &when_can_pay Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
 
     show_for_former_member:
       title: *show_for_applicant_title
@@ -1198,12 +1210,12 @@ en:
       member_photo:
         reason: Your photo will be used in your digital "proof of membership".
         format: Your photo file should be in "PNG", "JPG" or "JPEG" format, and be
-                approximately the size of a passport photo (or a bit larger)
-                for best results. (This is flexible, however, as we will resize
-                the photo as needed.)
+          approximately the size of a passport photo (or a bit larger)
+          for best results. (This is flexible, however, as we will resize
+          the photo as needed.)
         upload: Please upload a photo of yourself. Click "Choose File" to do so.
         replace: Your photo file can be changed by simply selecting another
-                 file. Click "Choose File" to do so.
+          file. Click "Choose File" to do so.
 
     search_form:
       membership_number: &membership_number_short No.
@@ -1241,6 +1253,38 @@ en:
     destroy:
       success: User deleted successfully.
 
+    payment_receipts_display:
+      no_payments: &no_successful_payments_receipts No successful payments have been made so there are no receipts.
+
+    view_payment_receipts:
+      title: "Payment receipts for %{name}"
+      is_an_admin: *is_an_admin
+      no_payments: *no_successful_payments_receipts
+      for: *for
+      membership: *membership_fee
+      h_brand: *hbrand_fee
+      h_brand_with_name: &h_brand_with_name H-brand for company "%{company}"
+      order_number: &order_number Order number
+      membr_nr: nr.
+      membership_number: *membership_number
+      org_nr: *org_nr
+      company_number: *company_number
+      date: *date
+      payment_processor: *payment_processor
+      product: &product Product
+      price: &price Price
+      no_vat: &no_vat There is no VAT as Sveriges Hundföretagare is a non-profit organisation.
+      shf_name: *SHF_name
+      shf_address: *SHF_address
+      shf_orgnumber: *SHF_orgnumber
+
+    download_payment_receipts_pdf:
+      payments: *payments
+      no_payments: *no_successful_payments_receipts
+      success: 'Payment receipts PDF file was downloaded.'
+      error: 'There was a problem creating or downloading the payment receipts PDF file.'
+
+
   user_profiles:
     edit:
       edit_user_account: *edit_user_account
@@ -1253,7 +1297,7 @@ en:
 
     confirmation:
       success_html: Payment successfully processed - thank you!
-                    (Return to %{account_page_link})
+        (Return to %{account_page_link})
 
 
     error:
@@ -1262,12 +1306,16 @@ en:
     payments_list:
       payment_date: &payment_date Payment date
       type: *payment_type
-      for: for
+      for: *for
       status: *payment_status
       start_date: *start_date
       end_date: *expire_date
       notes: *notes
-      order_number: &order_number Order number
+      processor: *payment_processor
+      processor_id: Processor id
+      hips_id: *hips_id
+      klarna_id: *klarna_id
+      order_number: *order_number
 
 
   company_locator:
@@ -1286,7 +1334,7 @@ en:
       complete: *progress_complete
 
     missing-checklist-param-error: &missing-checklist-param-error User Checklist missing parameter error!
-    not_found:  &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
+    not_found: &user_checklist_not_found "User Checklist id: %{user_checklist_id} not found"
 
     index:
       title: Checklists for %{name}
@@ -1307,7 +1355,7 @@ en:
 
     all_changed_by_completion_toggle:
       missing-checklist-param-error: *missing-checklist-param-error
-      not_found:  *user_checklist_not_found
+      not_found: *user_checklist_not_found
 
     show_progress:
       read_and_agree: As a member of the Swedish Dog Company, you undertake to follow certain guidelines, called membership commitments. Below is the Member Commitment broken down by heading. You need to tick each heading, and thus verify that you have read, understood, and intend to follow these guidelines.
@@ -1373,7 +1421,7 @@ en:
   shf_documents:
 
     new_shf_document: &new_shf_document New Document
-    new_shf_minutes:  &new_shf_minutes Add Document
+    new_shf_minutes: &new_shf_minutes Add Document
     edit_shf_document: Edit the document details
     view_shf_document: View the document details
     all_shf_documents: All Documents
@@ -1461,7 +1509,7 @@ en:
         title: "Waiting for Information Reason:  %{name_sv} (%{name_en})"
 
       edit:
-        title:  'Edit: %{name_sv} (%{name_en})'
+        title: 'Edit: %{name_sv} (%{name_en})'
         submit_button_label: *save
 
       update:
@@ -1474,7 +1522,7 @@ en:
 
       new_member_app_waiting_reason: &new_app_waiting_reason "New Waiting for Information Reason"
       all_member_app_waiting_reasons: &all_app_waiting_reasons "All Waiting for Information Reasons"
-      view_member_app_waiting_reason:  "View the Waiting for Information Reason"
+      view_member_app_waiting_reason: "View the Waiting for Information Reason"
       edit_member_app_waiting_reason: "Edit the Waiting for Information Reason"
       list_all_member_app_waiting_reasons: "List all Waiting for Information Reasons"
 
@@ -1723,7 +1771,7 @@ en:
 
       update:
         error_cant_change_has_completed: *master_checklist_error_cant_change_has_completed
-        error:  "There was a problem updating the master checklist item %{name}."
+        error: "There was a problem updating the master checklist item %{name}."
         success: "The master list item %{name} was updated."
       index:
         title: &master_checklist_index_title Master Checklists
@@ -1914,7 +1962,7 @@ en:
           these_are_unpaid: "These members are unpaid. Their membership fee was due %{num_months} months ago:"
           full_name: Name
 
-        error_sending:  FIXME - need text to display if there is a problem sending this email
+        error_sending: FIXME - need text to display if there is a problem sending this email
 
 
       new_membership_granted_co_hbrand_paid:
@@ -1936,12 +1984,12 @@ en:
           message_intro: "These members need membership packets sent to them:"
           membership start date: membership start
           categories: *business_categories
-        error_sending:  "ERROR! There was a problem sending the 'Members need packets' alert email"
+        error_sending: "ERROR! There was a problem sending the 'Members need packets' alert email"
 
 
 
     shf_application_mailer:
-      will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."
+      will_see_app_button: "After you log in, you will see a button that will take you to your application where you can upload your files."
 
       acknowledge_received:
         subject: Your application to Sveriges Hundföretagare has been received
@@ -1979,7 +2027,7 @@ en:
         subject: &subject_welcome "Welcome to SHF! You are now a member"
         greeting: *email_greeting
         message_text:
-          welcome:  *subject_welcome
+          welcome: *subject_welcome
           youre_active: "You have been activated as a member in the system. You can login and manage your profile and build your business page."
           can_edit_co_pay: "When you are signed in, you can edit your business page and pay your branding license fee here: "
           access_fb_group: "As a member, you will also have access to our closed Facebook group: "
@@ -2009,12 +2057,12 @@ en:
           company_link_login_msg: &co_pay_after_loggedin "Once you are logged in, go to the company page where you will see the button to pay.  Here is the company page:"
 
       h_branding_fee_past_due:
-          subject: The H-Branding fee for your company is unpaid/past due
-          greeting: *email_greeting
-          message_text:
-            fee_is_unpaid: Please note that your current H-branding fee is unpaid.
-            how_to_pay_fee: *pay_hbrand_be_mapped
-            company_link_login_msg: *co_pay_after_loggedin
+        subject: The H-Branding fee for your company is unpaid/past due
+        greeting: *email_greeting
+        message_text:
+          fee_is_unpaid: Please note that your current H-branding fee is unpaid.
+          how_to_pay_fee: *pay_hbrand_be_mapped
+          company_link_login_msg: *co_pay_after_loggedin
 
       membership_lapsed:
         subject: "Your SHF membership has expired"
@@ -2058,17 +2106,17 @@ en:
         confirmation: &confirmation Confirmation of %{product} payment
         subject: *confirmation
         thank_you_for_paying: 'Thank you for paying: your %{product_with_name} is now paid.'
-        membership: membership
-        h_brand: H-brand
-        h_brand_with_name: H-brand for company "%{company}"
+        membership: *membership
+        h_brand: *hbrand_fee
+        h_brand_with_name: *h_brand_with_name
         order_number: *order_number
         membership_number: *membership_number
         company_number: *company_number
         payment_date: *payment_date
         payment_processor: *payment_processor
-        product: Product
-        price: Price
-        no_vat: There is no VAT as Sveriges Hundföretagare is a non-profit organisation.
+        product: *product
+        price: *price
+        no_vat: *no_vat
         questions: If you have any questions regarding the payment or your membership, contact us at
         shf_name: *SHF_name
         shf_address: *SHF_address
@@ -2214,7 +2262,7 @@ en:
         master_checklists: Master Checklists
         dashboard: Dashboard
         all_uploaded_files: All Uploaded Files
-        update_all_membership_status:  Update Membership Status...
+        update_all_membership_status: Update Membership Status...
 
 
         categories:
@@ -2240,6 +2288,13 @@ en:
     gdpr_and_privacy_url: gdpr-och-personuppgifter
     purchase_terms: Terms of Purchase
     purchase_terms_url: aterbetalningsvillkor
+
+
+  pdf:
+    footer:
+      shf: *SHF_name
+      shf_url: *shf_home_url
+
 
   #----------
   # ERRORS
@@ -2351,55 +2406,55 @@ en:
 
   date:
     abbr_day_names:
-    - Sun
-    - Mon
-    - Tue
-    - Wed
-    - Thu
-    - Fri
-    - Sat
+      - Sun
+      - Mon
+      - Tue
+      - Wed
+      - Thu
+      - Fri
+      - Sat
     abbr_month_names:
-    - Jan
-    - Feb
-    - Mar
-    - Apr
-    - May
-    - Jun
-    - Jul
-    - Aug
-    - Sep
-    - Oct
-    - Nov
-    - Dec
+      - Jan
+      - Feb
+      - Mar
+      - Apr
+      - May
+      - Jun
+      - Jul
+      - Aug
+      - Sep
+      - Oct
+      - Nov
+      - Dec
     day_names:
-    - Sunday
-    - Monday
-    - Tuesday
-    - Wednesday
-    - Thursday
-    - Friday
-    - Saturday
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
     formats:
       default: "%Y-%m-%d"
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    - January
-    - February
-    - March
-    - April
-    - May
-    - June
-    - July
-    - August
-    - September
-    - October
-    - November
-    - December
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
     order:
-    - :year
-    - :month
-    - :day
+      - :year
+      - :month
+      - :day
 
   datetime:
     distance_in_words:

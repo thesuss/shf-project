@@ -8,17 +8,17 @@ namespace :shf do
     # Unicodes that are combined with a letter
     # (The resulting string looks like 1 character with a diacritical/accent, but is actually 2 characters.)
     # @url https://www.codetable.net/Group/combining-diacritical-marks
-    UMLAUT_CODE = 776 # a.k.a. "diaresis"
-    RING_CODE = 778
-    UMLAUT_COMBINED = '' << UMLAUT_CODE
-    RING_COMBINED = '' << RING_CODE
+    UMLAUT_CODE = 776 unless defined?(UMLAUT_CODE)  # a.k.a. "diaresis"
+    RING_CODE = 778 unless defined?(RING_CODE)
+    UMLAUT_COMBINED = '' << UMLAUT_CODE  unless defined?(UMLAUT_COMBINED)
+    RING_COMBINED = '' << RING_CODE unless defined?(RING_COMBINED)
 
-    A_RING_LCASE = 'å'
-    A_RING_UPCASE = 'Å'
-    A_UMLAUT_LCASE = 'ä'
-    A_UMLAUT_UPCASE = 'Ä'
-    O_UMLAUT_LCASE = 'ö'
-    O_UMLAUT_UPCASE = 'Ö'
+    A_RING_LCASE = 'å' unless defined?(A_RING_LCASE)
+    A_RING_UPCASE = 'Å' unless defined?(A_RING_UPCASE)
+    A_UMLAUT_LCASE = 'ä' unless defined?(A_UMLAUT_LCASE)
+    A_UMLAUT_UPCASE = 'Ä' unless defined?(A_UMLAUT_UPCASE)
+    O_UMLAUT_LCASE = 'ö' unless defined?(O_UMLAUT_LCASE)
+    O_UMLAUT_UPCASE = 'Ö' unless defined?(O_UMLAUT_UPCASE)
 
     # Replace all diacritical chars (characters that look like they have an accent mark)
     # with non-diacritical (non-accented) characters

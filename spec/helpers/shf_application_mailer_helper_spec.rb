@@ -82,16 +82,18 @@ RSpec.describe ShfApplicationMailerHelper, type: :helper do
 
     context 'some files uploaded' do
 
+      let(:uploaded_files_dir) { File.join(file_fixture_path, '..', 'uploaded_files') }
+
       let(:shf_app_some_files) { shf_app = create(:shf_application,
                                                   contact_email:  'contact@example.com',
                                                   phone_number:   '1234567 890',
                                                   company_number: '2548397971',
                                                   num_categories: 2)
-      fn1 = file_fixture('diploma.pdf')
+      fn1 = File.join(uploaded_files_dir, 'diploma.pdf')
       shf_app.uploaded_files << create(:uploaded_file_for_application, actual_file: File.open(fn1, 'r'), shf_application: shf_app)
-      fn2 = file_fixture('image.jpg')
+      fn2 = File.join(uploaded_files_dir, 'image.jpg')
       shf_app.uploaded_files << create(:uploaded_file_for_application, actual_file:  File.open(fn2, 'r'), shf_application: shf_app)
-      fn3 = file_fixture('image.gif')
+      fn3 = File.join(uploaded_files_dir, 'image.gif')
       shf_app.uploaded_files << create(:uploaded_file_for_application, actual_file:  File.open(fn3, 'r'), shf_application: shf_app)
 
       shf_app

@@ -18,4 +18,12 @@ class UserPolicy < ApplicationPolicy
   def proof_of_membership?
     show?
   end
+
+  def view_payment_receipts?
+    show?
+  end
+
+  def download_payment_receipts_pdf?
+    show?
+  end
 end

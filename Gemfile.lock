@@ -342,6 +342,7 @@ GEM
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
+    pdfkit (0.8.5)
     pg (1.2.3)
     popper_js (1.14.7)
     premailer (1.15.0)
@@ -560,6 +561,7 @@ GEM
       chronic (>= 0.6.3)
     will_paginate (3.3.1)
     wkhtmltoimage-binary (0.12.5)
+    wkhtmltopdf-binary (0.12.6.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
 
@@ -628,6 +630,7 @@ DEPENDENCIES
   mini_racer (~> 0.2.1)
   nokogiri (>= 1.13.2)
   orgnummer
+  pdfkit
   pg (~> 1.2)
   popper_js (~> 1.14.3)
   premailer-rails
@@ -672,6 +675,7 @@ DEPENDENCIES
   whenever
   will_paginate
   wkhtmltoimage-binary
+  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 2.6.6p146
