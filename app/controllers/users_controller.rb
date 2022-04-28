@@ -184,7 +184,7 @@ class UsersController < ApplicationController
       payment_receipts_display(@user, @successful_payments, i18n_scope) do
 
         stylesheet = Tempfile.open('application-stylesheet') do |f|
-          f.puts(Rails.application.assets["application.css"].to_s)
+          f.puts(ActionController::Base.helpers.asset_path('application.css').to_s)
           f
         end
 
