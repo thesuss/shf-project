@@ -132,7 +132,7 @@ module PaymentsHelper
   end
 
   def payment_date(payment)
-    payment.updated_at.in_time_zone('CET').strftime('%Y-%m-%d %H:%M:%S (%Z)')
+    payment.created_at.in_time_zone('CET').strftime('%Y-%m-%d %H:%M:%S (%Z)')
   end
 
   def payment_amount(payment)
