@@ -73,7 +73,7 @@ blocks:
             - bundle exec rspec
         - name: Cucumber Job1 (Dinkurs, mostly admin)
           commands:
-            - bundle exec cucumber --tags '(@dinkurs_fetch or @dinkurs_invalid_key or @parallel_group1) and not @skip_ci_test'
+            - bundle exec cucumber --tags '(@dinkurs_fetch or @dinkurs_invalid_key or @parallel_group1) and not @skip_ci_test' --format progress
         - name: Cucumber Job2 (all other scenarios)
           commands:
-            - bundle exec cucumber --tags 'not @dinkurs_fetch and not @dinkurs_invalid_key and not @parallel_group1 and not @skip_ci_test'
+            - bundle exec cucumber --tags 'not @dinkurs_fetch and not @dinkurs_invalid_key and not @parallel_group1 and not @skip_ci_test' --format progress
