@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 gem 'dotenv-rails'
-gem 'rails', '~> 5.2.7'
+gem 'rails', '~> 5.2.7.1'
 gem 'bootsnap', require: false
 
 gem 'pg', '~> 1.2'
@@ -80,7 +80,7 @@ if (RUBY_PLATFORM =~ /aarch/) then
   gem 'mini_racer', '0.5.0.pre'
   gem 'libv8-node', '16.10.0.0'
 else
-  # these gem versions don't support arm 
+  # these gem versions don't support arm
   gem 'mini_racer', '~> 0.2.1', platforms: :ruby
   gem 'libv8', '< 8.0'
 end
@@ -179,7 +179,7 @@ group :test do
 
   # the gem doesn't support arm yet (see: https://github.com/titusfortner/webdrivers/issues/213)
   gem 'webdrivers' unless (RUBY_PLATFORM =~ /aarch/)
-  
+
 
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
   gem 'vcr'      # to record and 'playback' (mock) http requests
