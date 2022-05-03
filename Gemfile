@@ -61,7 +61,7 @@ gem 'sanitize'
 
 gem 'mailgun-ruby'
 gem 'premailer-rails'  # converts css to inline; required for html emails to look ok
-gem 'nokogiri', '>= 1.13.2', platforms: :ruby # must explicitly require this gem for premailer-rails
+gem 'nokogiri', '>= 1.13.4', platforms: :ruby # must explicitly require this gem for premailer-rails
 
 gem 'httparty'
 gem 'jwt'
