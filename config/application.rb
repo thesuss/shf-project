@@ -78,6 +78,22 @@ module SHFProject
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+
+    # ------------------------------------------------------------------------------------------------
+    # exception_handler gem
+
+    config.exception_handler = {
+      dev:        false,    # allows you to turn ExceptionHandler "on" in development. default: nil (off) Warning: this will override any errors you get in development!!
+      db:         'errors', # uses this db table name into which exceptions are saved (defaults to nil; 'errors' if true)
+
+      exceptions: {
+        # layout:nil means it will use inherit from ApplicationController's layout (= the default Application layout)
+        all: { layout: nil }
+      }
+    }
+    # ------------------------------------------------------------------------------------------------
+
   end
 
   # Load from sub-folders of "models"

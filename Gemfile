@@ -117,6 +117,9 @@ gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 # gem 'wkhtmltopdf-heroku' if ENV['HEROKU_STAGING']  # is this even needed?
 
+gem 'exception_handler', '~> 0.8.0', git: 'https://github.com/weedySeaDragon/exception_handler'
+
+
 group :development, :test do
   gem 'rubocop',             '= 1.22.1', require: false
   gem 'rubocop-rails',       '= 2.13.2', require: false

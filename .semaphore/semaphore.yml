@@ -26,6 +26,8 @@ blocks:
     # use in other blocks and future workflows.  @see https://docs.semaphoreci.com/examples/rails-continuous-integration/
     task:
       env_vars:
+        - name: RAILS_ENV
+          value: test
         - name: SHF_AWS_S3_BACKUP_TOP_PREFIX
           value: "this/is/the/top/prefix"
       jobs:

@@ -1390,6 +1390,19 @@ en:
       last_day_changed: "Membership last day changed from %{original_last_day} to %{new_last_day}."
 
 
+  exception_handler:
+    exceptions:
+      show:
+        title: &exception_title_default "Uh oh. We ran into a problem"
+        4xx_jpg_attribution: "Photo by <a href='https://unsplash.com/@sharonmccutcheon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Sharon McCutcheon</a> on <a href='https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Unsplash</a>"
+        5xx_jpg_attribution: "Photo by <a href='https://unsplash.com/@klbennett2021?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Krista Bennett</a> on <a href='https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Unsplash</a>"
+        4xx_title: We couldn't fetch that.
+        4xx_message: We couldn't fetch that.
+        5xx_title: *exception_title_default
+        5xx_message: So sorry. We had an error.
+        we_know: Our developers have been notified.
+        click_to_go_home: Click here to go back to the home page.
+
   admin:
     index:
       export: Export all applications to a CSV file

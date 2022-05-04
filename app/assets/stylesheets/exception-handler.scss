@@ -1,0 +1,23 @@
+@import "shf-custom-colors";
+
+.exceptions {
+  text-align: center;
+
+  h1 {
+    color: $warn-red-text;
+  }
+
+  .image-attribution {
+    font-size: smaller;
+  }
+
+  .exception-text {
+    font-size: 150%;
+    font-weight: bold;
+
+    .click-to-go-home {
+      border-bottom-color: $shf-blue;
+      color: $shf-blue;
+    }
+  }
+}

@@ -9,7 +9,23 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
+
+SET default_with_oids = false;
 
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: -
@@ -86,7 +102,7 @@ CREATE TABLE public.app_configurations (
     site_meta_image_height integer DEFAULT 0 NOT NULL,
     og_type character varying DEFAULT 'website'::character varying NOT NULL,
     twitter_card_type character varying DEFAULT 'summary'::character varying NOT NULL,
-    facebook_app_id bigint DEFAULT '1292810030791186'::bigint NOT NULL,
+    facebook_app_id bigint DEFAULT '12345678909876'::bigint NOT NULL,
     site_meta_image_file_name character varying,
     site_meta_image_content_type character varying,
     site_meta_image_file_size bigint,
@@ -444,6 +460,44 @@ CREATE SEQUENCE public.conditions_id_seq
 --
 
 ALTER SEQUENCE public.conditions_id_seq OWNED BY public.conditions.id;
+
+
+--
+-- Name: errors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.errors (
+    id integer NOT NULL,
+    class_name text,
+    status text,
+    message text,
+    trace text,
+    target text,
+    referrer text,
+    params text,
+    user_agent text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.errors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: errors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.errors_id_seq OWNED BY public.errors.id;
 
 
 --
@@ -1212,6 +1266,13 @@ ALTER TABLE ONLY public.conditions ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: errors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.errors ALTER COLUMN id SET DEFAULT nextval('public.errors_id_seq'::regclass);
+
+
+--
 -- Name: events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1401,6 +1462,14 @@ ALTER TABLE ONLY public.company_applications
 
 ALTER TABLE ONLY public.conditions
     ADD CONSTRAINT conditions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: errors errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.errors
+    ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
 
 
 --
@@ -1992,6 +2061,7 @@ ALTER TABLE ONLY public.addresses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('0'),
 ('20161110203212'),
 ('20161111183945'),
 ('20161111185238'),

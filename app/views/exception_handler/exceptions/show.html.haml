@@ -1,0 +1,20 @@
+- content_for :stylesheet_for_view do
+  = stylesheet_link_tag 'exception-handler', media: 'all'
+
+= content_title(displayed_exception_title(@exception), user: current_user)
+
+.entry-content.container
+  .exception
+    .row.justify-content-center.image
+      .col
+        .image
+          = image_tag("exception-handler/#{ exception_image(@exception) }",
+             alt: "#{ exception_image_attribution_text(@exception) }",
+            class: 'image-fluid')
+        .image-attribution= exception_image_attribution_text(@exception).html_safe
+
+    .row.justify-content-center.exception-text
+      .col-md-8
+        %p.exception-message= displayed_exception_message( @exception )
+        %p= link_to(t('.click_to_go_home'), root_url, class: 'click-to-go-home')
+

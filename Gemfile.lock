@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/weedySeaDragon/exception_handler
+  revision: 87ef499bf20aaab7a72e8cd486027feefc5afd6c
+  specs:
+    exception_handler (0.8.1.0)
+      bundler (~> 2)
+      rails (>= 5.2.1)
+      responders
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -616,6 +625,7 @@ DEPENDENCIES
   dotenv-rails
   email_spec
   erb2haml
+  exception_handler (~> 0.8.0)!
   exception_notification
   exception_notification-rake (~> 0.3.0)
   factory_bot_rails

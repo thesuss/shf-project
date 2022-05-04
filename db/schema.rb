@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_04_015347) do
+ActiveRecord::Schema.define(version: 2022_02_16_092946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,19 @@ ActiveRecord::Schema.define(version: 2021_04_04_015347) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "errors", id: :serial, force: :cascade do |t|
+    t.text "class_name"
+    t.text "status"
+    t.text "message"
+    t.text "trace"
+    t.text "target"
+    t.text "referrer"
+    t.text "params"
+    t.text "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.decimal "fee", precision: 8, scale: 2
     t.date "start_date"
@@ -272,6 +285,7 @@ ActiveRecord::Schema.define(version: 2021_04_04_015347) do
     t.text "notes"
     t.string "payment_processor"
     t.string "klarna_id"
+    t.integer "amount"
     t.index ["company_id"], name: "index_payments_on_company_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
   end

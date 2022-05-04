@@ -1391,6 +1391,19 @@ sv:
       ended_on: "Medlemskap slutdatum ändrat till %{new_last_day} och avslutades. Föregående slutdatum var %{original_last_day}."
       last_day_changed: "Slutdatum för medlemskap ändrat från %{original_last_day} till %{new_last_day}."
 
+  exception_handler:
+    exceptions:
+      show:
+        title: &exception_title_default "Ojdå, vi stötte på ett problem."
+        4xx_jpg_attribution: "Foto av <a href='https://unsplash.com/@sharonmccutcheon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Sharon McCutcheon</a> på <a href='https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Unsplash</a>"
+        5xx_jpg_attribution: "Foto av <a href='https://unsplash.com/@klbennett2021?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Krista Bennett</a> på <a href='https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Unsplash</a>"
+        4xx_title: Vi kunde inte hämta sidan.
+        4xx_message: Vi kunde inte hitta den sidan.
+        5xx_title: *exception_title_default
+        5xx_message: Ledsen, sidan har stött på ett problem.
+        we_know: Våra utvecklare har blivit meddelade.
+        click_to_go_home: Klicka här för att gå tillbaka till start.
+
 
   admin:
     index:
