@@ -33,7 +33,7 @@ RSpec.describe HBrandingFeeWillExpireAlert do
         it 'license fee will be due' do
           allow(subject).to receive(:send_on_day_number?).and_return(true)
           allow(co_license_current).to receive(:branding_expire_date).and_return(expired_license_date)
-          allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+          allow(co_license_current).to receive(:earliest_current_member_fee_paid_time).and_return(most_recent_member_payment_start)
           allow(described_class).to receive(:days_today_is_away_from).and_return(1)
 
           expect(RequirementsForHBrandingFeeWillExpire).to receive(:requirements_met?).with(company: co_license_current).and_return(true)
@@ -43,7 +43,7 @@ RSpec.describe HBrandingFeeWillExpireAlert do
         it 'no license fee will be due' do
           expect(subject).not_to receive(:send_on_day_number?)
           expect(co_license_current).not_to receive(:branding_expire_date)
-          expect(co_license_current).not_to receive(:earliest_current_member_fee_paid)
+          expect(co_license_current).not_to receive(:earliest_current_member_fee_paid_time)
           expect(described_class).not_to receive(:days_today_is_away_from)
 
           expect(RequirementsForHBrandingFeeWillExpire).to receive(:requirements_met?).with(company: co_license_current).and_return(false)

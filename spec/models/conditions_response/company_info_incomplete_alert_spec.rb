@@ -30,7 +30,7 @@ RSpec.describe CompanyInfoIncompleteAlert do
                                                          .with({ company: incomplete_co })
                                                          .and_return(true)
           co_earliest_fee_paid = DateTime.new(2020, 12, 8)
-          expect(incomplete_co).to receive(:earliest_current_member_fee_paid)
+          expect(incomplete_co).to receive(:earliest_current_member_fee_paid_time)
                                        .and_return(co_earliest_fee_paid)
           expect(described_class).to receive(:days_today_is_away_from)
                                          .with(co_earliest_fee_paid, timing)
@@ -49,7 +49,7 @@ RSpec.describe CompanyInfoIncompleteAlert do
                                                          .with({ company: complete_co })
                                                          .and_return(false)
 
-          expect(complete_co).not_to receive(:earliest_current_member_fee_paid)
+          expect(complete_co).not_to receive(:earliest_current_member_fee_paid_time)
 
           expect(described_class).not_to receive(:days_today_is_away_from)
 
@@ -71,7 +71,7 @@ RSpec.describe CompanyInfoIncompleteAlert do
                                                          .with({ company: incomplete_co })
                                                          .and_return(true)
           co_earliest_fee_paid = DateTime.new(2020, 12, 8)
-          expect(incomplete_co).not_to receive(:earliest_current_member_fee_paid)
+          expect(incomplete_co).not_to receive(:earliest_current_member_fee_paid_time)
 
           expect(described_class).not_to receive(:days_today_is_away_from)
                                              .with(co_earliest_fee_paid, timing)
@@ -110,7 +110,7 @@ RSpec.describe CompanyInfoIncompleteAlert do
         incomplete_co = instance_double("Company")
         allow(incomplete_co).to receive(:current_members)
                                     .and_return([member1, member2])
-        allow(incomplete_co).to receive(:earliest_current_member_fee_paid)
+        allow(incomplete_co).to receive(:earliest_current_member_fee_paid_time)
                                     .and_return(DateTime.new(2018, 12, 2))
         allow(subject).to receive(:entities_to_check).and_return([incomplete_co])
         allow(RequirementsForCoInfoNotComplete).to receive(:requirements_met?)

@@ -43,42 +43,21 @@ RSpec.describe Company, type: :model do
   let(:cat4) { create(:business_category, name: 'cat4') }
   let(:cat5) { create(:business_category, name: 'cat5') }
   let(:cat6) { create(:business_category, name: 'cat6') }
+  let(:cat7) { create(:business_category, name: 'cat7') }
+  let(:cat8) { create(:business_category, name: 'cat8') }
 
-  let(:applicant1) { create(:user) }
-  let(:applicant2) { create(:user) }
-  let(:applicant3) { create(:user) }
+  let(:current_member_1) { create(:member, membership_status: :current_member) }
+  let(:company_1) { current_member_1.companies.first }
 
+  let(:current_member_2) { create(:member, company_number: company_1.company_number, membership_status: :current_member) }
+  let(:current_member_3) { create(:member, company_number: current_member_1.companies.first.company_number, membership_status: :current_member) }
 
-  let(:m1) do
-    m           = create(:shf_application, :accepted, user: employee1)
-    m.companies = [company_emp_cats]
-    m
-  end
-  let(:m2) do
-    m           = create(:shf_application, :accepted, user: employee2)
-    m.companies = m1.companies.to_a
-    m
-  end
-  let(:m3) do
-    m           = create(:shf_application, :accepted, user: employee3)
-    m.companies = m1.companies.to_a
-    m
-  end
-  let(:m4) do
-    m           = create(:shf_application, :new, user: applicant1)
-    m.companies = m1.companies.to_a
-    m
-  end
-  let(:m5) do
-    m           = create(:shf_application, :under_review, user: applicant2)
-    m.companies = m1.companies.to_a
-    m
-  end
-  let(:m6) do
-    m           = create(:shf_application, :rejected, user: applicant3)
-    m.companies = m1.companies.to_a
-    m
-  end
+  let(:applicant_new) { create(:user_with_membership_app, company_number: company_1.company_number) }
+  let(:applicant_under_review) { create(:user_with_membership_app, application_status: :under_review, company_number: company_1.company_number) }
+  let(:applicant_rejected) { create(:user_with_membership_app, application_status: :rejected, company_number: company_1.company_number) }
+
+  let(:in_grace_pd) { create(:member, company_number: company_1.company_number, membership_status: :in_grace_period) }
+  let(:former_member_1) { create(:member, company_number: company_1.company_number, membership_status: :former_member) }
 
   let(:employee1) { create(:user, member: true) }
   let(:employee2) { create(:user, member: true) }
@@ -252,29 +231,32 @@ RSpec.describe Company, type: :model do
     end
 
 
-    describe '.categories (all categories for users with accepted applications)' do
+    describe '.categories (all categories for current members)' do
 
-      it 'returns 3 employees, 3 non-accepted applicants, each with 1 unique category' do
-        m1.business_categories = [cat1]
-        m2.business_categories = [cat2]
-        m3.business_categories = [cat3]
-        m4.business_categories = [cat4]
-        m5.business_categories = [cat5]
-        m6.business_categories = [cat6]
+      it 'returns 3 current members, 3 non-accepted applicants, each with 1 unique category' do
+        current_member_1.shf_application.business_categories = [cat1]
+        current_member_2.shf_application.business_categories = [cat2]
+        current_member_3.shf_application.business_categories = [cat3]
+        applicant_new.shf_application.business_categories = [cat4]
+        applicant_under_review.shf_application.business_categories = [cat5]
+        applicant_rejected.shf_application.business_categories = [cat6]
+        in_grace_pd.shf_application.business_categories = [cat7]
+        former_member_1.shf_application.business_categories = [cat8]
 
-        expect(company_emp_cats.business_categories.count).to eq 3
-        expect(company_emp_cats.business_categories.map(&:name))
+        expect(company_1.business_categories.count).to eq 3
+        expect(company_1.business_categories.map(&:name))
           .to contain_exactly('cat1', 'cat2', 'cat3')
       end
 
-      it 'returns 3 employees, each with the same category' do
-        m1.business_categories = [cat1]
-        m2.business_categories = [cat1]
-        m3.business_categories = [cat1]
+      it 'returns distinct categories: 1 category if all current members have the same category' do
+        current_member_1.shf_application.business_categories = [cat1]
+        current_member_2.shf_application.business_categories = [cat1]
+        current_member_3.shf_application.business_categories = [cat1]
+        in_grace_pd.shf_application.business_categories = [cat7]
+        former_member_1.shf_application.business_categories = [cat8]
 
-        expect(company_emp_cats.business_categories.distinct.count).to eq 1
-        expect(company_emp_cats.business_categories.count).to eq 3
-        expect(company_emp_cats.business_categories.distinct.map(&:name))
+        expect(company_1.business_categories.count).to eq 1
+        expect(company_1.business_categories.distinct.map(&:name))
           .to contain_exactly('cat1')
       end
     end
@@ -746,77 +728,20 @@ RSpec.describe Company, type: :model do
     end
 
     it 'is empty if all members expiration date has past' do
-      dec31_2018 = jan1_2019 - 1.day
+      no_current_members_co = create(:company)
+      create(:member, company_number: no_current_members_co.company_number, membership_status: :in_grace_period)
+      create(:member, company_number: no_current_members_co.company_number, membership_status: :former_member)
 
-      member_1_exp = create(:member, last_day: dec31_2018, membership_status: :in_grace_period)
-      member_1_co = member_1_exp.shf_application.companies.first
-      create(:payment,
-             :successful,
-             user: member_1_exp,
-             company: member_1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for member_1_exp co branding payment1',
-             start_date:     dec31_2018 - 365,
-             expire_date:    dec31_2018)
-
-      member_2_exp = create(:member, last_day: dec31_2018, membership_status: :in_grace_period,
-                            company_number: member_1_co.company_number)
-      create(:payment,
-             :successful,
-             user: member_2_exp,
-             company: member_1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for member_2_exp co branding payment1',
-             start_date:     dec31_2018 - 365,
-             expire_date:    dec31_2018)
-
-      travel_to(jan1_2019) do
-        expect(member_1_co.users.to_a).to match_array([member_1_exp, member_2_exp])
-        expect(member_1_co.current_members).to be_empty
-      end
+      expect(no_current_members_co.current_members).to be_empty
     end
 
     it 'only returns members with current membership' do
-      grace_period_date = jan1_2019 - 2.years
+      co_mixed_membership = create(:company)
+      current_member = create(:member, company_number: co_mixed_membership.company_number, membership_status: :current_member)
+      create(:member, company_number: co_mixed_membership.company_number, membership_status: :in_grace_period)
+      create(:member, company_number: co_mixed_membership.company_number, membership_status: :former_member)
 
-      member_1 = create(:member, first_day: dec_12_2018)
-      mem1_co  = member_1.shf_application.companies.first
-      create(:payment,
-             :successful,
-             user: member_1,
-             company: mem1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1,mem1_co',
-             start_date:     dec_12_2018,
-             expire_date:    dec_12_2018 + 364)
-
-      member_2_former = create(:member, first_day: jan1_2010, membership_status: :former_member)
-      create(:payment,
-             :successful,
-             user: member_2_former,
-             company: mem1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for member_2_former branding payment, mem1_co',
-             start_date:     jan1_2010,
-             expire_date:    jan1_2010 + 364)
-
-      member_3_grace_period = create(:member, first_day: grace_period_date, membership_status: :in_grace_period)
-      create(:payment,
-             :successful,
-             user: member_3_grace_period,
-             company: mem1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for member_3_grace_period branding payment, mem1_co',
-             start_date:     grace_period_date,
-             expire_date:    grace_period_date + 364)
-
-      ShfApplication.all_states.reject { |s| s == :accepted }.each do |a_state|
-        create(:shf_application, state: a_state, company_number: mem1_co.company_number)
-      end
-
-      travel_to(jan1_2019) do
-        expect(mem1_co.current_members).to match_array([member_1])
-      end
+      expect(co_mixed_membership.current_members).to match_array([current_member])
     end
 
   end
@@ -1160,43 +1085,36 @@ RSpec.describe Company, type: :model do
     let(:cat1_subcat3) { cat1.children.create(name: 'cat1_subcat3') }
 
     before(:each) do
-      m1.business_categories = [cat1]
-      m2.business_categories = [cat2]
-      m3.business_categories = [cat3]
-      m4.business_categories = [cat4]
-      m5.business_categories = [cat5]
-      m6.business_categories = [cat6]
+      current_member_1.shf_application.business_categories = [cat1]
+      current_member_2.shf_application.business_categories = [cat2]
+      current_member_3.shf_application.business_categories = [cat3]
+      applicant_new.shf_application.business_categories = [cat4]
+      applicant_under_review.shf_application.business_categories = [cat5]
+      applicant_rejected.shf_application..business_categories = [cat6]
       cat1_subcat1
       cat1_subcat2
       cat1_subcat3
     end
 
-    it 'returns all categories for members with accepted applications' do
-      expect(company_emp_cats.categories_names(false).count).to eq 3
-      expect(company_emp_cats.categories_names(false))
+
+    it 'returns all categories only for current members' do
+      expect(company_1.categories_names(false).count).to eq 3
+      expect(company_1.categories_names(false))
           .to contain_exactly('cat1', 'cat2', 'cat3')
     end
 
-    it 'returns categories and subcategories for members with accepted applications' do
-      expect(company_emp_cats.categories_names(true).count).to eq 6
-      expect(company_emp_cats.categories_names(true))
+    it 'returns categories and subcategories only for current members' do
+      expect(company_1.categories_names(true).count).to eq 6
+      expect(company_1.categories_names(true))
           .to contain_exactly('cat1', 'cat1_subcat1', 'cat1_subcat2', 'cat1_subcat3', 'cat2', 'cat3')
     end
 
-    it 'does not return categories for non-members with accepted applications' do
-      employee1.update_attribute(:member, false)
-      expect(company_emp_cats.categories_names(false).count).to eq 2
-      expect(company_emp_cats.categories_names(false))
+    it 'does not return categories for non-members' do
+      current_member_1.update_attribute(:membership_status, :in_grace_period)
+      expect(company_1.categories_names(false).count).to eq 2
+      expect(company_1.categories_names(false))
           .to contain_exactly('cat2', 'cat3')
     end
-
-    it 'does not return categories for members with non-accepted applications' do
-      m2.update_attribute(:state, :under_review)
-      expect(company_emp_cats.categories_names(false).count).to eq 2
-      expect(company_emp_cats.categories_names(false))
-          .to contain_exactly('cat1', 'cat3')
-    end
-
   end
 
   describe 'get_short_h_brand_url' do
@@ -1332,82 +1250,34 @@ RSpec.describe Company, type: :model do
   end # describe 'branding_license?'
 
 
-  describe 'earliest_current_member_fee_paid' do
+  describe 'earliest_current_member_fee_paid_time' do
+
+    before(:each) { allow(Membership).to receive(:term_length).and_return(1.year) }
 
     it 'is nil if there are no current members' do
-      expect( (create(:company)).earliest_current_member_fee_paid ).to be_nil
+      expect( (create(:company)).earliest_current_member_fee_paid_time ).to be_nil
     end
 
     it 'is the earliest membership_fee paid date for all current members' do
-      dec_3 = Date.new(2018, 12, 3)
-      dec_5 = Date.new(2018, 12, 5)
+      dec_3 = Time.new(2018, 12, 3)
+      dec_3_expire_date = dec_3 + Membership.term_length
+      dec_5 = Time.new(2018, 12, 5)
+      dec_5_expire_date = dec_5 + Membership.term_length
 
-      member_paid_dec_3_shf_app = create(:shf_application, :accepted)
-      member_paid_dec_3 = member_paid_dec_3_shf_app.user
-      member_paid_dec_3.memberships << create(:membership, user: member_paid_dec_3,
-                                   first_day: dec_3,
-                                   last_day: dec_3 + 364)
-      member_paid_dec_3.membership_status = :current_member
-      co_with_1_member_expires  = member_paid_dec_3_shf_app.companies.first
-      create(:payment,
-             :successful,
-             user: member_paid_dec_3,
-             company: co_with_1_member_expires,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for a member payment, co_with_1_member_expires',
-             start_date:     dec_3,
-             expire_date:    Company.expire_date_for_start_date(dec_3) )
-
-      member_paid_dec_5_shf_app = create(:shf_application, :accepted, company_number: co_with_1_member_expires.company_number)
-      member_paid_dec_5 = member_paid_dec_5_shf_app.user
-      member_paid_dec_5.memberships << create(:membership, user: member_paid_dec_5,
-                                              first_day: dec_5,
-                                              last_day: dec_5 + 364)
-      member_paid_dec_5.membership_status = :current_member
-      create(:payment,
-             :successful,
-             user: member_paid_dec_5,
-             company: co_with_1_member_expires,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for a member payment, co_with_1_member_expires',
-             start_date:     dec_5,
-             expire_date:    Company.expire_date_for_start_date(dec_5) )
-
-      member_dec_3_start = member_paid_dec_3.payment_start_date(Payment::PAYMENT_TYPE_MEMBER)
-      member_dec_3_start_time = Time.utc(member_dec_3_start.year, member_dec_3_start.month, member_dec_3_start.day)
-
-      member_dec_3_expiry = member_paid_dec_3.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
-      member_dec_3_expiry_time = Time.utc(member_dec_3_expiry.year, member_dec_3_expiry.month, member_dec_3_expiry.day)
-
-      day_before_member_dec_3_expiry = member_dec_3_expiry - 1
-      day_before_member_dec_3_expiry_time = Time.utc(day_before_member_dec_3_expiry.year, day_before_member_dec_3_expiry.month, day_before_member_dec_3_expiry.day)
-
-      member_dec_5_start = member_paid_dec_5.payment_start_date(Payment::PAYMENT_TYPE_MEMBER)
-      member_dec_5_start_time = Time.utc(member_dec_5_start.year, member_dec_5_start.month, member_dec_5_start.day)
-
-
-      travel_to( day_before_member_dec_3_expiry_time ) do
-
-        # update membership status based on today's date
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3, send_email: false)
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5, send_email: false)
-
-        expect(co_with_1_member_expires.current_members.size).to eq 2
-        expect( co_with_1_member_expires.earliest_current_member_fee_paid ).to eq member_dec_3_start_time
+      current_member_1.payments.each do |payment|
+        payment.update_attribute(:created_at, dec_5)
+      end
+      current_member_2.payments.each do |payment|
+        payment.update_attribute(:created_at, dec_3)
+      end
+      current_member_3.payments.each do |payment|
+        payment.update_attribute(:created_at, dec_5)
       end
 
-
-      travel_to( member_dec_3_expiry_time) do
-        # update membership status based on today's date
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3, send_email: false)
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5, send_email: false)
-
-        expect(co_with_1_member_expires.current_members.size).to eq 1
-        expect( co_with_1_member_expires.earliest_current_member_fee_paid ).to eq member_dec_5_start_time
-      end
+      expect(company_1.current_members.size).to eq 3
+      expect( company_1.earliest_current_member_fee_paid_time ).to eq dec_3
     end
-
-  end # describe 'earliest_current_member_fee_paid'
+  end
 
 
   describe 'information_complete?' do

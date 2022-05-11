@@ -31,23 +31,18 @@ Feature: Link categories to categories show for an Admin
       | stockholmCo   | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
 
     And the following users exist:
-      | email           | admin | member |
-      | user1@mutts.com |       | true   |
-      | user2@mutts.com |       | true   |
-      | user3@mutts.com |       | true   |
-      | user4@mutts.com |       | true   |
-      | user5@mutts.com |       | true   |
-      | admin@shf.se    | true  | false  |
-
-    Given the following payments exist
-      | user_email      | start_date | expire_date | payment_type | status | hips_id |
-      | user2@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
-      | user3@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | email           | admin | member | membership_status |
+      | user1@mutts.com |       | true   | current_member    |
+      | user2@mutts.com |       | true   | current_member    |
+      | user3@mutts.com |       | true   | current_member    |
+      | user4@mutts.com |       | true   | current_member    |
+      | user5@mutts.com |       | true   | current_member    |
+      | admin@shf.se    | true  | false  |                   |
 
 
     And the following business categories exist
       | name         |
-      | Groomer      |
+      | Grooming     |
       | Psychologist |
       | Trainer      |
       | Rehab        |
@@ -55,12 +50,12 @@ Feature: Link categories to categories show for an Admin
       | JustForFun   |
 
     And the following applications exist:
-      | user_email      | company_number | categories              | state    |
-      | user1@mutts.com | 5560360793     | Groomer, JustForFun     | accepted |
-      | user2@mutts.com | 2120000142     | Groomer, Trainer, Rehab | accepted |
-      | user3@mutts.com | 6914762726     | Psychologist, Groomer   | accepted |
-      | user4@mutts.com | 6613265393     | Groomer                 | accepted |
-      | user5@mutts.com | 2120000142     | Psychologist            | accepted |
+      | user_email      | company_number | categories               | state    |
+      | user1@mutts.com | 5560360793     | Grooming, JustForFun     | accepted |
+      | user2@mutts.com | 2120000142     | Grooming, Trainer, Rehab | accepted |
+      | user3@mutts.com | 6914762726     | Psychologist, Grooming   | accepted |
+      | user4@mutts.com | 6613265393     | Grooming                 | accepted |
+      | user5@mutts.com | 2120000142     | Psychologist             | accepted |
 
     And the following payments exist
       | user_email   | start_date | expire_date | payment_type | status | hips_id | company_number |
@@ -73,14 +68,17 @@ Feature: Link categories to categories show for an Admin
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
 
+  # ===========================================================================================
+
   @selenium
   Scenario: Show company details to admin
     Given I am logged in as "admin@shf.se"
     And I am the page for company number "6914762726"
-    Then I should see "Groomer"
-    And I should see "Psychologist"
-    When I click on "Groomer"
-    Then I should see "Groomer"
+    Then I should see "Grooming" link
+    And I should see "Psychologist" link
+
+    When I click on "Grooming"
+    Then I should see "Grooming"
     And I should see "PsycGroomerCo"
     And I should see "GroomerNext"
     And I should see "kingGroomer"
@@ -91,14 +89,14 @@ Feature: Link categories to categories show for an Admin
     And I should not see "Company5"
 
   @selenium
-  Scenario: Not display company categories as links to a member
+  Scenario: Do not display company categories as links to a member
     Given I am logged in as "user1@mutts.com"
     And I am the page for company number "6914762726"
-    Then I should not see "Groomer" link
+    Then I should not see "Grooming" link
 
   @selenium
-  Scenario: Not display company categories as links to a visitor
+  Scenario: Do not display company categories as links to a visitor
     Given I am logged out
     And I am the page for company number "6914762726"
-    Then I should not see "Groomer" link
+    Then I should not see "Grooming" link
 

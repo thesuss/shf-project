@@ -19,11 +19,10 @@ module PaymentUtility
 
   class_methods do
 
-    # FIXME get from AppConfiguration or Membership... class
-    MEMBERSHIP_TERM_DURATION = 1.year
+    # MEMBERSHIP_TERM_DURATION = Membership.term_length
 
     def membership_term_duration
-      MEMBERSHIP_TERM_DURATION
+      Membership.term_length
     end
 
   end
@@ -31,13 +30,22 @@ module PaymentUtility
 
   included do
 
+    # @return [nil, Date] the earliest created_at date for payments of the given type
     def most_recent_payment(payment_type = self.class::THIS_PAYMENT_TYPE)
-      payments.completed.send(payment_type).order(:created_at).last
+      most_recent_payment_based_on(:created_at, payment_type)
     end
 
-    # TODO: is this used (or going to be used?)
+    # @todo is this used (or going to be used?)
+    # @return [nil, Date] the earliest start date for payments of the given type
+    def most_recent_payment_start_date(payment_type = self.class::THIS_PAYMENT_TYPE)
+      most_recent_payment_based_on(:start_date, payment_type)
+    end
+
+    # @todo is this used (or going to be used?)
+    # @todo rename to 'most_recent_' to be in sync with other most_recent...  methods
+    # @return [nil, Date] the earliest expire date for payments of the given type
     def latest_expiring_payment(payment_type = self.class::THIS_PAYMENT_TYPE)
-      payments.completed.send(payment_type).order(:expire_date).last
+      most_recent_payment_based_on(:expire_date, payment_type)
     end
 
     def has_successful_payments?(payment_type = self.class::THIS_PAYMENT_TYPE)
@@ -195,6 +203,15 @@ module PaymentUtility
   end
 
 
+  # -------------------------------------------------------------------------------------------
+
+  private
+
+  def most_recent_payment_based_on(attribute = :created_at, payment_type = self.class::THIS_PAYMENT_TYPE)
+    payments.completed.send(payment_type).order(attribute).last
+  end
+
+
   # ===========================================================================
 
 
@@ -265,7 +282,7 @@ module PaymentUtility
     # FIXME find all calls, replace with appropriate Membership... class
     def other_date_for_given_date(given_date, is_start_date: true)
       multiplier = is_start_date ? 1 : -1
-      (given_date + (multiplier * MEMBERSHIP_TERM_DURATION) - (multiplier * 1.day))
+      (given_date + (multiplier * membership_term_duration) - (multiplier * 1.day))
     end
 
   end

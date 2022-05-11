@@ -31,7 +31,6 @@ class CompaniesController < ApplicationController
     #   It is not really needed due to the INNER joins with addresses, regions, kommuns
     @all_displayed_companies = @search_params.result(distinct: false)
                                              .send(*scope_for_user)
-                                             .includes(:business_categories)
                                              .includes(addresses: [:region, :kommun])
                                              .joins(addresses: [:region, :kommun])
 

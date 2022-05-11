@@ -40,8 +40,9 @@ class Company < ApplicationRecord
   # ^^ need to retain h-branding payment(s) so that the total amount of $ paid to SHF is correct
   accepts_nested_attributes_for :payments
 
+  # @todo this is a really ugly query. Why does it return multiples? (why is .distinct necessary?) Is there any way to clean it up?
   has_many :business_categories,
-              -> { where("shf_applications.state = 'accepted'") },
+              -> { joins(shf_applications: [:user]).where(users: { membership_status: :current_member }).distinct },
               through: :shf_applications
 
   has_many :addresses, as: :addressable, dependent: :destroy,
@@ -216,7 +217,7 @@ class Company < ApplicationRecord
   #   Be sure to understand how this is used. It might actually be used to get users with _payments_ that are current.
   #   May need to create a method a method that returns all users in a company with current payments that does what this does now.
   def current_members
-    users.select(&:payments_current?) # FIXME is it ok to use membership status current_member instead?  Will need a separate method to work with earliest_current_member_fee_paid
+    users.where(membership_status: :current_member)
   end
 
 
@@ -335,12 +336,13 @@ class Company < ApplicationRecord
 
 
   # This is used to calculate when an H-Branding fee is due if there has not been any H-Branding fee paid yet
-  # TODO: this should go in a class responsible for knowing how to calculate when H-Branding fees are due (perhaps a subclass of PaymentUtility named something like CompanyPaymentsDueCalculator )
+  # @todo this should go in a class responsible for knowing how to calculate when H-Branding fees are due (perhaps a subclass of PaymentUtility named something like CompanyPaymentsDueCalculator )
   #
-  # This really is about the payment and not about the date of the membership(s)
-  # @return nil if there are no current members else the earliest membership_start_date of all current members
-  def earliest_current_member_fee_paid
-    current_members.empty? ? nil : current_members.map(&:membership_start_date).sort.first
+  # This really is about the _payment_ and not about the date of the membership(s)
+  # @return [nil, Time] if there are no current members
+  #   else the earliest membership fee payment.created_at of all current members
+  def earliest_current_member_fee_paid_time # @fixme  find usages
+    current_members.empty? ? nil : current_members.map { |member| member.most_recent_payment(Payment.membership_payment_type)&.created_at }.sort.first
   end
 
 

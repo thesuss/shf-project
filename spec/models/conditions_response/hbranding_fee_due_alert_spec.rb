@@ -33,7 +33,7 @@ RSpec.describe HBrandingFeeDueAlert do
         it 'license fee is due' do
           allow(subject).to receive(:send_on_day_number?).and_return(true)
           allow(co_license_current).to receive(:branding_expire_date).and_return(expired_license_date)
-          allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+          allow(co_license_current).to receive(:earliest_current_member_fee_paid_time).and_return(most_recent_member_payment_start)
           allow(described_class).to receive(:days_today_is_away_from).and_return(1)
 
           expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).with(company: co_license_current).and_return(true)
@@ -43,7 +43,7 @@ RSpec.describe HBrandingFeeDueAlert do
         it 'no license fee is due; returns false and does not check the days away from today' do
           expect(subject).not_to receive(:send_on_day_number?)
           expect(co_license_current).not_to receive(:branding_expire_date)
-          expect(co_license_current).not_to receive(:earliest_current_member_fee_paid)
+          expect(co_license_current).not_to receive(:earliest_current_member_fee_paid_time)
           expect(described_class).not_to receive(:days_today_is_away_from)
 
           expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).with(company: co_license_current).and_return(false)
@@ -62,7 +62,7 @@ RSpec.describe HBrandingFeeDueAlert do
             allow(subject).to receive(:send_on_day_number?).and_return(true)
 
             allow(co_license_expired).to receive(:branding_expire_date).and_return(expired_license_date)
-            allow(co_license_expired).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+            allow(co_license_expired).to receive(:earliest_current_member_fee_paid_time).and_return(most_recent_member_payment_start)
 
             expect(described_class).to receive(:days_today_is_away_from).with(expired_license_date, anything).and_return(1)
 
@@ -76,7 +76,7 @@ RSpec.describe HBrandingFeeDueAlert do
           allow(subject).to receive(:send_on_day_number?).and_return(true)
 
           allow(co_license_current).to receive(:branding_expire_date).and_return(nil)
-          allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+          allow(co_license_current).to receive(:earliest_current_member_fee_paid_time).and_return(most_recent_member_payment_start)
 
           expect(described_class).to receive(:days_today_is_away_from).with(most_recent_member_payment_start, anything).and_return(1)
 
@@ -92,7 +92,7 @@ RSpec.describe HBrandingFeeDueAlert do
             allow(co_no_members).to receive(:branding_license?).and_return(nil)
 
             expect(co_no_members).not_to receive(:branding_expire_date)
-            expect(co_no_members).not_to receive(:earliest_current_member_fee_paid)
+            expect(co_no_members).not_to receive(:earliest_current_member_fee_paid_time)
             expect(subject).not_to receive(:send_on_day_number?)
 
             expect(RequirementsForHBrandingFeeDue).to receive(:requirements_met?).and_return(false)
@@ -106,7 +106,7 @@ RSpec.describe HBrandingFeeDueAlert do
             allow(subject).to receive(:send_on_day_number?).and_return(true)
 
             allow(co_license_current).to receive(:branding_expire_date).and_return(nil)
-            allow(co_license_current).to receive(:earliest_current_member_fee_paid).and_return(most_recent_member_payment_start)
+            allow(co_license_current).to receive(:earliest_current_member_fee_paid_time).and_return(most_recent_member_payment_start)
 
             expect(described_class).to receive(:days_today_is_away_from).with(most_recent_member_payment_start, anything).and_return(1)
 
@@ -166,10 +166,10 @@ RSpec.describe HBrandingFeeDueAlert do
 
             it 'sends email to members in all companies that are past due by 2 days' do
 
-              allow(mock_co1).to receive(:earliest_current_member_fee_paid)
+              allow(mock_co1).to receive(:earliest_current_member_fee_paid_time)
                                      .and_return(earliest_member_fee_paid)
 
-              allow(mock_co2).to receive(:earliest_current_member_fee_paid)
+              allow(mock_co2).to receive(:earliest_current_member_fee_paid_time)
                                      .and_return(earliest_member_fee_paid)
 
 
@@ -199,9 +199,9 @@ RSpec.describe HBrandingFeeDueAlert do
             let(:testing_today) { earliest_member_fee_paid + 3 }  # '+ 3' will not match anything in config[:days]
 
             it 'no email is sent' do
-              allow(mock_co1).to receive(:earliest_current_member_fee_paid)
+              allow(mock_co1).to receive(:earliest_current_member_fee_paid_time)
                                      .and_return(earliest_member_fee_paid)
-              allow(mock_co2).to receive(:earliest_current_member_fee_paid)
+              allow(mock_co2).to receive(:earliest_current_member_fee_paid_time)
                                      .and_return(earliest_member_fee_paid)
 
               allow(subject).to receive(:entities_to_check).and_return([mock_co1,

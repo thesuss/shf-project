@@ -1400,15 +1400,17 @@ RSpec.describe User, type: :model do
   describe 'payment and membership period' do
 
     describe 'most_recent_membership_payment' do
-      it 'returns latest completed payment' do
+      it 'returns latest completed payment based on :created_at' do
         member_payment1
+
+        expect(user).to receive(:most_recent_payment).with(Payment.membership_payment_type)
+                                                     .twice
+                                                     .and_call_original
         expect(user.most_recent_membership_payment).to eq member_payment1
         member_payment2
         expect(user.most_recent_membership_payment).to eq member_payment2
       end
     end
-
-
   end
 
 

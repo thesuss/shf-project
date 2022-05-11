@@ -6,28 +6,29 @@ RSpec.describe CompaniesHelper, type: :helper do
 
   describe 'companies' do
 
-    it '#list_categories' do
-      employee1 = create(:user, member: true)
-      ma1 = create(:shf_application, :accepted, user: employee1, category_name: 'cat1')
+    describe 'list_categories' do
+      let(:double_co) { instance_double(Company, { categories_names: %w[cat1 cat2] }) }
 
-      # not a member
-      ma2 = create(:shf_application, :accepted, user: create(:user, member: false), category_name: 'cat2')
-      ma2.companies = ma1.companies
+      it 'default separator is a space' do
+        expect(helper.list_categories(double_co)).to eq('cat1 cat2')
+      end
 
-      ma3 = create(:shf_application, :accepted, user: create(:user, member: true), category_name: 'cat3')
-      ma3.companies = ma1.companies
+      it 'joins company category names with a separator' do
+        expect(helper.list_categories(double_co, ';')).to eq 'cat1;cat2'
+      end
 
-      cat1 = BusinessCategory.find_by(name: 'cat1')
+      describe 'subcategories' do
 
-      cat1.children.create(name: 'cat1_subcat1')
-      cat1.children.create(name: 'cat1_subcat2')
-      cat1.children.create(name: 'cat1_subcat3')
+        it 'default = does not include them' do
+          expect(double_co).to receive(:categories_names).with(false).and_return(%w[cat1 cat2])
+          expect(helper.list_categories(double_co)).to eq('cat1 cat2')
+        end
 
-      company = ma1.companies.first
-
-      expect(helper.list_categories(company, ' ', true)).to eq 'cat1 cat1_subcat1 cat1_subcat2 cat1_subcat3 cat3'
-      expect(helper.list_categories(company, ' ', false)).to eq 'cat1 cat3'
-      expect(helper.list_categories(company)).not_to include 'Träning'
+        it 'subcategories can be included in list' do
+          expect(double_co).to receive(:categories_names).with(true).and_return(%w[cat1 subcat1-1 cat2])
+          expect(helper.list_categories(double_co, ' ', true)).to eq('cat1 subcat1-1 cat2')
+        end
+      end
     end
   end
 

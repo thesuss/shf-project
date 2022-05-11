@@ -45,7 +45,7 @@ end
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
 
-# These sites are where to download webdrivers.
+# These sites are where to download webdrivers.  @todo are these needed anymore?
 # WebMock and VCR need to 'allow' them.
 webdriver_download_sites = [
     'chromedriver.storage.googleapis.com',
@@ -127,6 +127,7 @@ After { Warden.test_reset! }
 # 'Global' constants and methods available to all steps
 #
 
+# @todo set a standard base directory for file fixtures and use it
 UPLOADED_FILES_DIR = 'spec/fixtures/uploaded_files'.freeze
 
 def path_with_locale(visit_path)
@@ -153,8 +154,10 @@ end
 
 
 # ----------------------------------------------------
-# Uncomment this to show the 20 slowest scenarios
+# Uncomment this to show the [NUM_SLOWEST] slowest scenarios
+# @todo does this work anymore?
 =begin
+NUM_SLOWEST = 100
 scenario_times = {}
 
 Around() do |scenario, block|
@@ -164,7 +167,7 @@ Around() do |scenario, block|
 end
 
 at_exit do
-  max_scenarios = scenario_times.size > 20 ? 20 : scenario_times.size
+  max_scenarios = scenario_times.size > NUM_SLOWEST ? NUM_SLOWEST : scenario_times.size
   puts "------------- Top #{max_scenarios} slowest scenarios -------------"
   sorted_times = scenario_times.sort { |a, b| b[1] <=> a[1] }
   sorted_times[0..max_scenarios - 1].each do |key, value|

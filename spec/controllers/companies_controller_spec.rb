@@ -3,7 +3,7 @@ require 'shared_context/companies'
 
 require File.join(Rails.root, 'app/models/concerns/company_hmarkt_url_generator')
 
-
+# @todo Many (all?) of these could be handled by Cucumber scenarios
 RSpec.describe CompaniesController, type: :controller do
 
   include_context 'create companies'
@@ -13,6 +13,28 @@ RSpec.describe CompaniesController, type: :controller do
   let(:no_query_params) { { "utf8" => "✓" } }
 
   let(:full_page_title) {  'site title | site name' }
+
+
+  let(:business_cat_1) { build(:business_category, name: 'Category 1') }
+  let(:business_cat_2) { build(:business_category, name: 'Category 2') }
+  let(:business_cat_3) { build(:business_category, name: 'Category 3') }
+  let(:member_1) do
+    m = create(:member, company_number: complete_co1.company_number, membership_status: :current_member)
+    m.shf_application.business_categories = [business_cat_1]
+    m
+  end
+
+  let(:member_2) do
+    m = create(:member, company_number: complete_co1.company_number, membership_status: :current_member)
+    m.shf_application.business_categories = [business_cat_2]
+    m
+  end
+
+  let(:former_member) do
+    m = create(:member, company_number: complete_co1.company_number, membership_status: :current_member)
+    m.shf_application.business_categories = [business_cat_3]
+    m
+  end
 
 
   context '#company_h_brand' do
@@ -561,7 +583,7 @@ RSpec.describe CompaniesController, type: :controller do
 
 
       it 'link rel="image_src" is the H-markt image for the company' do
-        co_hmarkt_image_url = company_h_markt_url(complete_co1) # FIXME - this needs to be a permanent image and URL
+        co_hmarkt_image_url = company_h_markt_url(complete_co1) # @fixme - this needs to be a permanent image and URL
         show_co1_response_body
 
         expect(show_co1_response_body).to match(co_hmarkt_image_url)
@@ -601,197 +623,26 @@ RSpec.describe CompaniesController, type: :controller do
 
       describe 'schema.org info' do
 
-        # This is an example of the schema.org information for a Company in ld+json form:
-        #   (I've formatted it with newlines and indents for readability.)
-        #
-        # <script type="application/ld+json">
-        # {
-        #   "@context":"http://schema.org",
-        #   "@type":"LocalBusiness",
-        #   "@id":"https://hitta.sverigeshundforetagre/hundforetag/1",
-        #   "name":"Complete Company 1",
-        #   "description":"This co has a 2 branding payments",
-        #   "url":"https://hitta.sverigeshundforetagre/hundforetag/1",
-        #   "email":"thiscompany@example.com",
-        #   "telephone":"123123123",
-        #   "image":"https://hitta.sverigeshundforetagare.se/hundforetag/1/company_h_brand",
-        #   "address":{
-        #     "@type":"PostalAddress",
-        #     "streetAddress":"Hundforetagarevägen 1",
-        #     "postalCode":"310 40",
-        #     "addressRegion":"MyString",
-        #     "addressLocality":"Harplinge",
-        #     "addressCountry":"Sverige"
-        #   },
-        #   "geo":{
-        #     "@type":"GeoCoordinates",
-        #     "latitude":56.7422437,
-        #     "longitude":12.7206453
-        #   },
-        #   "knowsLanguage":"sv-SE"
-        #   "knowsAbout"=>
-        #     ["Hund Business Category 3",
-        #     "Hund Business Category 2",
-        #     "Hund Business Category 1"]
-        #   }
-        # }
-        # </script>
-
-        it 'is in ld+json format in a <script> tag' do
+        it 'is in the header of the company show page' do
           complete_co1
-          show_co1_response_body
 
-          script_regexp = /<script type=\"application\/ld\+json\">(\s)*(?<company_ld_json>.*)(\s)*<\/script>/
-          match         = script_regexp.match(show_co1_response_body)
-          expect(match.captures.size).to eq 1
+          mock_meta_adapter = instance_double(CompanyMetaInfoAdapter)
+          expect(mock_meta_adapter).to receive(:title).at_least(1).times.and_return('company name')
+          expect(mock_meta_adapter).to receive(:description).and_return('company description')
+          expect(mock_meta_adapter).to receive(:keywords).and_return('company keywords')
+          expect(mock_meta_adapter).to receive(:og).and_return({ title: 'company title', description: 'company description'})
 
-          # turn the matched string into a Hash so we can compare info no matter the order
-          co_ld_json = JSON.parse(match.named_captures['company_ld_json'])
+          allow(CompanyMetaInfoAdapter).to receive(:new).with(complete_co1)
+                                                        .and_return(mock_meta_adapter)
+          mock_adapter = instance_double(Adapters::CompanyToSchemaLocalBusiness)
+          expect(Adapters::CompanyToSchemaLocalBusiness).to receive(:new).with(complete_co1, anything)
+                                                                         .and_return(mock_adapter)
+          mock_biz_schema = instance_double(SchemaDotOrg::LocalBusiness)
+          expect(mock_adapter).to receive(:as_target).and_return(mock_biz_schema)
+          expect(mock_biz_schema).to receive(:to_ld_json).and_return('This is the ld+json schema for the company')
 
-          shf_company_url = /#{@controller.request.base_url}\/hundforetag\/#{complete_co1.id}/
-
-          expect(co_ld_json.key?('@context')).to be_truthy
-          expect(co_ld_json['@context']).to eq 'http://schema.org'
-
-          expect(co_ld_json.key?('@type')).to be_truthy
-          expect(co_ld_json['@type']).to eq 'LocalBusiness'
-
-          expect(co_ld_json.key?('@id')).to be_truthy
-          expect(co_ld_json['@id']).to match(shf_company_url)
-
-          expect(co_ld_json.key?('name')).to be_truthy
-          expect(co_ld_json['name']).to eq complete_co1.name
-
-          expect(co_ld_json.key?('description')).to be_truthy
-          expect(co_ld_json['description']).to eq complete_co1.description
-
-          expect(co_ld_json.key?('url')).to be_truthy
-          expect(co_ld_json['url']).to match(shf_company_url)
-
-          expect(co_ld_json.key?('email')).to be_truthy
-          expect(co_ld_json['email']).to eq complete_co1.email
-
-          expect(co_ld_json.key?('telephone')).to be_truthy
-          expect(co_ld_json['telephone']).to eq complete_co1.phone_number
-
-          expect(co_ld_json.key?('knowsLanguage')).to be_truthy
-          expect(co_ld_json['knowsLanguage']).to eq 'sv-SE'
-
-          # prepend each category with I18n.t('dog') so that the search engines can respond
-          # when someone searches on "dog <whatever>"
-          expect(co_ld_json.key?('knowsAbout')).to be_truthy
-          expect(co_ld_json['knowsAbout']).to match_array(complete_co1.
-              business_categories.map { |category| "#{I18n.t('dog').capitalize} #{category.name}" })
-
-          expect(co_ld_json.key?('address')).to be_truthy
-          expect(co_ld_json['address']).to be_a Hash
-
-          address_hash = co_ld_json['address']
-          expect(address_hash.key?('@type')).to be_truthy
-          expect(address_hash['@type']).to eq 'PostalAddress'
-
-          expect(address_hash.key?('streetAddress')).to be_truthy
-          expect(address_hash['streetAddress']).to eq 'Hundforetagarevägen 1'
-
-          expect(address_hash.key?('postalCode')).to be_truthy
-          expect(address_hash['postalCode']).to eq '310 40'
-
-          expect(address_hash.key?('addressRegion')).to be_truthy
-          expect(address_hash['addressRegion']).to eq 'MyString'
-
-          expect(address_hash.key?('addressLocality')).to be_truthy
-          expect(address_hash['addressLocality']).to eq 'Harplinge'
-
-          expect(address_hash.key?('addressCountry')).to be_truthy
-          expect(address_hash['addressCountry']).to eq 'Sverige'
-
-          expect(co_ld_json.key?('geo')).to be_truthy
-          expect(co_ld_json['geo']).to be_a Hash
-
-          geo_hash = co_ld_json['geo']
-          expect(geo_hash.key?('@type')).to be_truthy
-          expect(geo_hash['@type']).to eq 'GeoCoordinates'
-
-          expect(geo_hash.key?('longitude')).to be_truthy
-          expect(geo_hash['latitude']).to eq 56.7422437
-          expect(geo_hash.key?('longitude')).to be_truthy
-          expect(geo_hash['longitude']).to eq 12.7206453
-
-
-          expect(co_ld_json.key?('image')).to be_truthy
-          #    expect(co_ld_json['image']).to eq 'permanent url with a permanent image so search engines can find and display it'
-
+          expect(show_co1_response_body).to include('This is the ld+json schema for the company')
         end
-
-
-        it 'company with 3 addresses: uses main address for address, lists all 3 addresses as locations' do
-
-          company_3_addrs
-          show_co3_response_body
-
-          script_regexp = /<script type=\"application\/ld\+json\">(\s)*(?<company_ld_json>.*)(\s)*<\/script>/
-          match         = script_regexp.match(response.body)
-          expect(match.captures.size).to eq 1
-
-          # turn the matched string into a Hash so we can compare info no matter the order
-          co_ld_json = JSON.parse(match.named_captures['company_ld_json'])
-
-          expect(co_ld_json.key?('name')).to be_truthy
-          expect(co_ld_json['name']).to eq company_3_addrs.name
-
-          expect(co_ld_json.key?('address')).to be_truthy
-          expect(co_ld_json['address']).to be_a Hash
-
-          address_hash = co_ld_json['address']
-          expect(address_hash.key?('@type')).to be_truthy
-          expect(address_hash['@type']).to eq 'PostalAddress'
-
-          main_addr = company_3_addrs.main_address
-
-          expect(address_hash.key?('streetAddress')).to be_truthy
-          expect(address_hash['streetAddress']).to eq main_addr.street_address
-
-          expect(address_hash.key?('postalCode')).to be_truthy
-          expect(address_hash['postalCode']).to eq main_addr.post_code
-
-          expect(address_hash.key?('addressRegion')).to be_truthy
-          expect(address_hash['addressRegion']).to eq main_addr.region.name
-
-          expect(address_hash.key?('addressLocality')).to be_truthy
-          expect(address_hash['addressLocality']).to eq main_addr.city #main_addr.kommun.name
-
-          expect(address_hash.key?('addressCountry')).to be_truthy
-          expect(address_hash['addressCountry']).to eq main_addr.country
-
-          expect(co_ld_json.key?('geo')).to be_truthy
-          expect(co_ld_json['geo']).to be_a Hash
-
-          geo_hash = co_ld_json['geo']
-          expect(geo_hash.key?('@type')).to be_truthy
-          expect(geo_hash['@type']).to eq 'GeoCoordinates'
-
-          expect(geo_hash.key?('longitude')).to be_truthy
-          expect(geo_hash['latitude']).to eq main_addr.latitude
-          expect(geo_hash.key?('longitude')).to be_truthy
-          expect(geo_hash['longitude']).to eq main_addr.longitude
-
-          location = co_ld_json['location']
-          expect(location).to be_a Array
-          expect(location.size).to eq 3
-
-          # expect 3 places, all with addresses and geo information
-          3.times do |i|
-            expect(location[i]['@type']).to eq 'Place'
-
-            expect(location[i].key?('address')).to be_truthy
-            expect(location[i]['address']['@type']).to eq 'PostalAddress'
-
-            expect(location[i].key?('geo')).to be_truthy
-            expect(location[i]['geo']['@type']).to eq 'GeoCoordinates'
-          end
-
-        end
-
 
         it 'schema.org info for a company with multiple images' do
           pending("images will be done in a separate story/PR")

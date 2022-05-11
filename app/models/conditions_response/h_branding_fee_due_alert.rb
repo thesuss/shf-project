@@ -20,7 +20,7 @@ class HBrandingFeeDueAlert < CompanyEmailAlert
       due = if (latest_payment_expiry = company.branding_expire_date)
               latest_payment_expiry
             else
-              company.earliest_current_member_fee_paid
+              company.earliest_current_member_fee_paid_time
             end
 
       day_to_check = self.class.days_today_is_away_from(due, timing)

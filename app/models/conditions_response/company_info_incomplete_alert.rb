@@ -17,7 +17,7 @@ class CompanyInfoIncompleteAlert < CompanyEmailAlert
     if RequirementsForCoInfoNotComplete.requirements_met?({company: company}) &&
       !company.current_members.empty?
 
-      earliest_date = company.earliest_current_member_fee_paid
+      earliest_date = company.earliest_current_member_fee_paid_time
 
       day_to_check = self.class.days_today_is_away_from(earliest_date, timing)
       send_on_day_number?(day_to_check, config)

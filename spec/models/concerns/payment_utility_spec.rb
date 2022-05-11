@@ -18,7 +18,6 @@ RSpec.describe 'PaymentUtility', type: :model do
 
   let(:company_for_user_unsuccessful_this_year) { user_unsuccessful_this_year.shf_application.companies.first }
 
-
   # ==================================
   #  Today = DECEMBER 1 for EVERY EXAMPLE
   around(:each) do |example|
@@ -26,6 +25,8 @@ RSpec.describe 'PaymentUtility', type: :model do
     example.run
     Timecop.return
   end
+
+  # before(:each) {  allow(Membership).to receive(:term_length).and_return(1.year) }
 
 
   describe 'most_recent_payment' do
@@ -41,9 +42,22 @@ RSpec.describe 'PaymentUtility', type: :model do
       most_recent_membership_payment = user_pays_every_nov30.most_recent_payment(branding_license_fee)
       expect(most_recent_membership_payment.created_at).to eq(nov_30)
     end
-
   end
 
+
+  describe 'most_recent_payment_start_date' do
+    it 'nil if there are no payments' do
+      expect(user_no_payments.most_recent_payment_start_date(membership_fee)).to be_nil
+      expect(user_no_payments.most_recent_payment_start_date(branding_license_fee)).to be_nil
+    end
+
+    it 'most recent payment start_date (Date) ' do
+      most_recent_membership_payment = user_pays_every_nov30.most_recent_payment_start_date(membership_fee)
+      expect(most_recent_membership_payment.start_date).to eq(nov_30)
+      most_recent_membership_payment = user_pays_every_nov30.most_recent_payment_start_date(branding_license_fee)
+      expect(most_recent_membership_payment.start_date).to eq(nov_30)
+    end
+  end
 
   describe 'latest_expiring_payment' do
     it 'returns nil if there are no payments' do

@@ -17,68 +17,12 @@ RSpec.describe CompanyEmailAlert do
   let(:jun1) { Date.new(2019, 6, 1) }
   let(:jun6) { Date.new(2019, 6, 6) }
 
-  let(:all_companies) do
-    [ create(:company, name: 'company1'),
-      create(:company, name: 'company2'),
-      create(:company)
-    ]
-  end
+  let(:c1_all_paid) { create(:company, name: 'company1') }
+  let(:member1_c1_exp_jun6) { create(:member, membership_status: :current_member, last_day: jun6, company_number: c1_all_paid.company_number, email: 'member1_c1_exp_jun6@example.com' )}
 
-  let(:c1_all_paid) { all_companies.first }
-
-  let(:member1_c1_exp_jun6) do
-      shf_accepted_app = create(:shf_application, :accepted, company_number: c1_all_paid.company_number)
-      member = shf_accepted_app.user
-
-      create(:membership_fee_payment,
-             :successful,
-             user:        member,
-             company: c1_all_paid,
-             start_date:  jun6 - 364,
-             expire_date: jun6)
-      create(:h_branding_fee_payment,
-             :successful,
-             user:        member,
-             company: c1_all_paid,
-             start_date:  jun6 - 364,
-             expire_date: jun6)
-      member
-  end
-
-
-  let(:c2_2_members) { all_companies.detect{|c| c.name == 'company2'}}
-
-  let(:member1_c2_exp_jun6) do
-    shf_accepted_app = create(:shf_application, :accepted, company_number: c2_2_members.company_number)
-    member = shf_accepted_app.user
-    member.memberships << create(:membership, user: member,
-                                 first_day: jun6 - 364,
-                                 last_day: jun6)
-    member.membership_status = :current_member
-    create(:membership_fee_payment,
-           :successful,
-           user:        member,
-           company: c2_2_members,
-           start_date:  jun6 - 364,
-           expire_date: jun6)
-    member
-  end
-
-  let(:member2_c2_exp_jun1) do
-    shf_accepted_app = create(:shf_application, :accepted, company_number: c2_2_members.company_number)
-    member = shf_accepted_app.user
-    member.memberships << create(:membership, user: member,
-                                 first_day: jun1 - 364,
-                                 last_day: jun1)
-    member.membership_status = :current_member
-    create(:membership_fee_payment,
-           :successful,
-           user:        member,
-           company: c2_2_members,
-           start_date:  jun1 - 364,
-           expire_date: jun1)
-    member
-  end
+  let(:c2_2_members) { create(:company, name: 'company2') }
+  let(:member1_c2_exp_jun6) { create(:member, membership_status: :current_member, last_day: jun6, company_number: c2_2_members.company_number, email: 'member_lastday_jun_6@example.com') }
+  let(:member2_c2_exp_jun1) { create(:member, membership_status: :current_member, last_day: jun1, company_number: c2_2_members.company_number, email: 'member_lastday_jun_1@example.com') }
 
 
   describe '.send_email' do

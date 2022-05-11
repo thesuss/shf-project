@@ -42,27 +42,15 @@ RSpec.describe RequirementsForHBrandingFeeDue, type: :model do
 
 
     context 'company has current members' do
+      let(:paid_membership_only) { create(:member, membership_status: :current_member, first_day: jan_1)}
+      let(:paid_member_co) { paid_membership_only.companies.first }
+
 
       context 'branding fee not paid' do
-
-        let(:paid_membership_only) {
-          member = create(:member_with_membership_app)
-          create(:membership_fee_payment,
-                 :successful,
-                 user:        member,
-                 start_date:  jan_1,
-                 expire_date: User.expire_date_for_start_date(jan_1))
-          member
-        }
-
-        let(:paid_member_co) { paid_membership_only.companies.first }
-
         it 'is true (fee is due)' do
-          paid_membership_only
           expect(subject.requirements_met?({ company: paid_member_co })).to be_truthy
         end
-
-      end # context 'branding fee not paid'
+      end
 
 
       context 'branding fee paid ' do
@@ -76,57 +64,37 @@ RSpec.describe RequirementsForHBrandingFeeDue, type: :model do
                    user:        member,
                    start_date:  jan_1,
                    expire_date: User.expire_date_for_start_date(jan_1))
-            create(:h_branding_fee_payment,
-                   :successful,
-                   user:        member,
-                   company:     member.companies.first,
-                   start_date:  jan_1,
-                   expire_date: User.expire_date_for_start_date(jan_1))
+
             member
           }
 
-          let(:paid_member_co) { paid_both_current.companies.first }
-
-
           it 'is false (no fee due)' do
-            paid_both_current
+            create(:h_branding_fee_payment,
+                   :successful,
+                   user:        paid_membership_only,
+                   company:     paid_member_co,
+                   start_date:  jan_1,
+                   expire_date: User.expire_date_for_start_date(jan_1))
+
             expect(subject.requirements_met?({ company: paid_member_co })).to be_falsey
           end
-
-        end # context 'branding fee has not expired'
+        end
 
 
         context 'branding fee has expired' do
-
-          let(:paid_both_but_hfee_expired) {
-            member = create(:member_with_membership_app)
-            create(:membership_fee_payment,
-                   :successful,
-                   user:        member,
-                   start_date:  jan_1,
-                   expire_date: User.expire_date_for_start_date(jan_1))
+          it 'is true (fee is due)' do
             create(:h_branding_fee_payment,
                    :successful,
-                   user:        member,
-                   company:     member.companies.first,
+                   user:        paid_membership_only,
+                   company:     paid_member_co,
                    start_date:  jan_2 - 500,
                    expire_date: User.expire_date_for_start_date(jan_2 - 500))
-            member
-          }
 
-          let(:exp_fee_co) { paid_both_but_hfee_expired.companies.first }
-
-          it 'is true (fee is due)' do
-            paid_both_but_hfee_expired
-            expect(subject.requirements_met?({ company: exp_fee_co })).to be_truthy
+            expect(subject.requirements_met?({ company: paid_member_co })).to be_truthy
           end
-
-        end # context 'branding fee has expired'
-
+        end
       end # 'branding fee paid'
 
     end #  context 'company has current members'
-
   end # describe '.requirements_met?'
-
 end
