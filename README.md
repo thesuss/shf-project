@@ -31,7 +31,7 @@ This project runs on a Ruby on Rails stack with postgreSQL as the repository.
 
 - ruby - check Gemfile for current version (2.5.1 as of November, 2018)
 - rails - check Gemfile for current version (5.2.1 as of November, 2018)
-- Postgresql DB
+- Postgresql DB version 11
 - imagemagick https://www.imagemagick.org
 
 Required for integration tests (cucumber + capybara):
