@@ -38,10 +38,10 @@
 
     .row
       .col
-        - if @company.categories.any?
+        - if @company.current_categories.any?
           .categories
-            = render 'business_categories/as_list',
-              categories: @company.business_categories.roots.distinct
+            = render 'business_categories/as_list', categories: @company.current_categories
+
         - if payment_visible_for_user?(current_user, @company)
           %hr
             .branding-license
@@ -82,7 +82,7 @@
 
     - user_can_edit = policy(@company).update?
 
-    = render 'company_members', company: @company, applications: @applications
+    = render 'current_members', company: @company, members: @current_members
     = render 'company_applicants', company: @company, applications: @applications if current_user.admin?
 
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit

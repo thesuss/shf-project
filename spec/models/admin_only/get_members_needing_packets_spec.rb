@@ -5,7 +5,7 @@ require 'shared_context/users'
 
 RSpec.describe AdminOnly::GetMembersNeedingPackets do
 
-  # TODO: Can any of the queries or objects be mocked?
+  # @todo Can any of the queries or objects be mocked?
   describe '.members with no welcome packet sent' do
 
     include_context 'create users'
@@ -15,9 +15,7 @@ RSpec.describe AdminOnly::GetMembersNeedingPackets do
     let(:payment_start_date) { Date.today - 10 }
 
     def create_member_with_payments(payment_start, first_name = '')
-      mem_no_pkt = create_member_with_payments_on([payment_start])
-      mem_no_pkt.update(first_name: first_name)
-      mem_no_pkt
+      create(:member, first_day: payment_start, first_name: first_name)
     end
 
     let(:applicant) do
@@ -26,26 +24,27 @@ RSpec.describe AdminOnly::GetMembersNeedingPackets do
       appl
     end
 
-    let(:member_no_pkt_1) { create_member_with_payments(payment_start_date, 'No Pkt 1') }
-    let(:member_no_pkt_2) { create_member_with_payments(payment_start_date + 1, 'No Pkt 2') }
-    let(:member_expired) { create_member_with_payments(payment_start_date - 400, 'Expired') }
+    let(:member_no_pkt_1) { create(:member, first_day: payment_start_date, first_name:  'No Pkt 1') }
+    let(:member_no_pkt_2) { create(:member, first_day: payment_start_date + 1, first_name:  'No Pkt 2')}
+    let(:member_expired) {  create(:member, first_day: payment_start_date - 400, first_name: 'Expired') }
     let(:member_pkt_sent) do
-      mem_pkt_sent =  create_member_with_payments(payment_start_date, 'Pkt Sent')
+      mem_pkt_sent =  create(:member, first_day: payment_start_date, first_name:  'Pkt Sent')
       mem_pkt_sent.update(date_membership_packet_sent: payment_start_date)
       mem_pkt_sent
     end
 
-    let(:companies_with_members) do
-      co1 = member_no_pkt_1.shf_application.companies.first
-      co2 = member_no_pkt_2.shf_application.companies.first
-      co3_pkt_sent = member_pkt_sent.shf_application.companies.first
-      [co1, co2, co3_pkt_sent]
-    end
+    let(:co1) { member_no_pkt_1.shf_application.companies.first }
+    let(:co2) { member_no_pkt_2.shf_application.companies.first }
+    let(:co3_pkt_sent) { member_pkt_sent.shf_application.companies.first }
+
+    let(:companies_with_members) { [co1, co2, co3_pkt_sent] }
 
     before(:each) do
-      # make this be true no matter what.
-      allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?)
-                                       .and_return(true)
+      allow(co1).to receive(:current_members).and_return([member_no_pkt_1])
+      allow(co2).to receive(:current_members).and_return([member_no_pkt_2])
+      allow(co3_pkt_sent).to receive(:current_members).and_return([member_pkt_sent])
+
+      allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(true)
     end
 
     it 'calls Company.current_with_current_members to get the list of current members in current (licensed) Companies' do

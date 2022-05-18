@@ -83,6 +83,7 @@ class CompaniesController < ApplicationController
 
       @applications = @company.shf_applications
                               .includes(:user, :business_categories, :shfapplications_business_categories)
+      @current_members = @company.current_members
 
       show_events_list if request.xhr?
 
@@ -233,6 +234,7 @@ class CompaniesController < ApplicationController
 
     payment = @company.most_recent_branding_payment
     payment.update!(payment_params) if payment
+    @company.membership_changed
 
     render partial: 'branding_term_status', locals: { company: @company }
 

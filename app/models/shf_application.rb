@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative File.join('..', 'services', 'address_exporter')
 
 require 'observer'
@@ -76,7 +78,7 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  # TODO don't need this. AASM provides a scope for each defined state
+  # @todo don't need this. AASM provides a scope for each defined state
   def self.in_state(app_state)
     where(state: app_state)
   end
@@ -90,7 +92,7 @@ class ShfApplication < ApplicationRecord
   # ---------------------
   # AASM (State machine)
 
-  # FIXME - should 'being_destroyed' really be a state? These represent business (domain) states, not implementations.
+  # @fixme - should 'being_destroyed' really be a state? These represent business (domain) states, not implementations.
   #   If an application is in the 'being_destroyed' state in the db, then that represents an error (it was not able to be destroyed successfully),
   #   not a state/status that exists in the 'real world' (business/domain).
   aasm column: 'state' do
@@ -195,9 +197,9 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  # FIXME where is this used?
+  # @fixme where is this used?
   def not_a_member?
-    user.not_a_member? # TODO should delegate
+    user.not_a_member? # @todo should delegate
   end
 
   def company_numbers
@@ -208,7 +210,7 @@ class ShfApplication < ApplicationRecord
     companies.order(:id).map(&:name).join(', ')
   end
 
-  # TODO change this to work with a specific company, not the last one
+  # @todo change this to work with a specific company, not the last one
   def company_branding_fee_paid?
     companies.last&.branding_license?
   end
@@ -259,7 +261,7 @@ class ShfApplication < ApplicationRecord
     user.update(membership_number: nil)
 
     update(when_approved: nil)
-    destroy_uploaded_files # FIXME why destroy these?  Don't they need to be kept in case the applicant wants to talk about them?
+    destroy_uploaded_files # @fixme why destroy these?  Don't they need to be kept in case the applicant wants to talk about them?
   end
 
 

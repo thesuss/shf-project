@@ -13,7 +13,7 @@ class Membership < ApplicationRecord
   #    "former member."  This may mean that there are different behaviours/actions/expectations.
   #    (Ex: a different welcome email might be sent out.)
   #
-  FIRST_MEMBERSHIP_TIMELIMIT = 2.years
+  FIRST_MEMBERSHIP_TIMELIMIT = 2.years # @todo get from AppConfiguration
 
   after_save :clear_proof_of_membership_jpg_cache, if: Proc.new { saved_change_to_last_day? }
 

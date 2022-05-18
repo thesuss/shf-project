@@ -8,6 +8,9 @@ Feature: Link categories to categories show for an Admin
 
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
+    And the App Configuration is not mocked and is seeded
+
+    Given the date is set to "2017-06-06"
 
     Given the following regions exist:
       | name         |
@@ -57,16 +60,48 @@ Feature: Link categories to categories show for an Admin
       | user4@mutts.com | 6613265393     | Grooming                 | accepted |
       | user5@mutts.com | 2120000142     | Psychologist             | accepted |
 
+    Given these files have been uploaded:
+      | user_email      | file name | description                               |
+      | user1@mutts.com | image.png | Image of a class completion certification |
+      | user2@mutts.com | image.png | Image of a class completion certification |
+      | user3@mutts.com | image.png | Image of a class completion certification |
+      | user4@mutts.com | image.png | Image of a class completion certification |
+      | user5@mutts.com | image.png | Image of a class completion certification |
+
+    And the following users have agreed to the Membership Ethical Guidelines:
+      | email           | date agreed to |
+      | user1@mutts.com |                |
+      | user2@mutts.com |                |
+      | user3@mutts.com |                |
+      | user4@mutts.com |                |
+      | user5@mutts.com |                |
+
+
     And the following payments exist
-      | user_email   | start_date | expire_date | payment_type | status | hips_id | company_number |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6613265393     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6222279082     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 8025085252     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6914762726     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
-      | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
+      | user_email      | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | user1@mutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+      | user2@mutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+      | user3@mutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+      | user4@mutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+      | user5@mutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6613265393     |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6222279082     |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 8025085252     |
+      | user3@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6914762726     |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
+      | admin@shf.se    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
+
+
+    And the following memberships exist:
+      | email           | first_day  | last_day   |
+      | user1@mutts.com | 2017-01-01 | 2017-12-31 |
+      | user2@mutts.com | 2017-01-01 | 2017-12-31 |
+      | user3@mutts.com | 2017-01-01 | 2017-12-31 |
+      | user4@mutts.com | 2017-01-01 | 2017-12-31 |
+      | user5@mutts.com | 2017-01-01 | 2017-12-31 |
+
 
   # ===========================================================================================
 

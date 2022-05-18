@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'observer'
+
 # ===============================================================================================
 # User
 #
@@ -22,6 +26,7 @@ class User < ApplicationRecord
   include PaymentUtility
   include ImagesUtility
   include AASM
+  include Observable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -30,6 +35,7 @@ class User < ApplicationRecord
 
   before_destroy :adjust_related_info_for_destroy
 
+  after_initialize :add_observers
   after_update :clear_proof_of_membership_jpg_cache,
                if: Proc.new { saved_change_to_member_photo_file_name? ||
                  saved_change_to_first_name? ||
@@ -99,6 +105,7 @@ class User < ApplicationRecord
 
   scope :application_accepted, -> { joins(:shf_application).where(shf_applications: { state: 'accepted' }) }
 
+  # @fixme should this be used anymore? If it's not, remove it
   scope :membership_payment_current, -> { joins(:payments).where("payments.status = '#{Payment::SUCCESSFUL}' AND payments.payment_type = ? AND  payments.expire_date > ?", Payment::PAYMENT_TYPE_MEMBER, Date.current) }
 
   scope :agreed_to_membership_guidelines, -> { where(id: UserChecklist.top_level_for_current_membership_guidelines.completed.pluck(:user_id)) }
@@ -151,7 +158,7 @@ class User < ApplicationRecord
     state :in_grace_period
     state :former_member
 
-    after_all_transitions :set_membership_changed_info
+    after_all_transitions :membership_changed
 
     # You can pass the (keyword) arguments
     #    date: <Date>
@@ -180,8 +187,11 @@ class User < ApplicationRecord
     end
   end
 
-  # This can be used to write info to logs
-  def set_membership_changed_info
+
+  def membership_changed
+    changed # have to set the Observer status to changed so we can notify
+    notify_observers(self, aasm.from_state, aasm.to_state)
+    # This can be used to write info to logs
     @membership_changed_info = "membership status changed from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
@@ -190,6 +200,13 @@ class User < ApplicationRecord
   end
 
   # ----------------------------------------------------------------------------------
+
+  def add_observers
+    add_observer DbViews::CurrentCompany, :membership_status_changed
+    add_observer DbViews::MemberAndCategory, :membership_status_changed
+    add_observer DbViews::CompanyAndMember, :membership_status_changed
+    add_observer DbViews::CompanyAndCategory, :membership_status_changed
+  end
 
   def memberships_manager
     @memberships_manager ||= MembershipsManager.new

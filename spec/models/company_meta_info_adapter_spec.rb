@@ -6,8 +6,7 @@ RSpec.describe CompanyMetaInfoAdapter do
   let(:double_cat1) { instance_double(BusinessCategory, name: 'cat1') }
   let(:double_cat2) { instance_double(BusinessCategory, name: 'cat2') }
   let(:co_double) { instance_double(Company, { name: 'Co name', description: 'Co description',
-                                               business_categories: [double_cat1, double_cat2],
-                                               categories_names: ['cat1', 'cat2']}) }
+                                               current_category_names: ['cat1', 'cat2']}) }
 
   subject { described_class.new(co_double) }
 
@@ -58,8 +57,8 @@ RSpec.describe CompanyMetaInfoAdapter do
   describe 'keywords' do
 
     context "not blank" do
-      it "company.categories_names" do
-        expect(co_double).to receive(:categories_names)
+      it "calls company.current_category_names" do
+        expect(co_double).to receive(:current_category_names)
         expect(subject.keywords).to eq 'cat1, cat2'
       end
     end
@@ -67,7 +66,7 @@ RSpec.describe CompanyMetaInfoAdapter do
     context 'blank' do
 
       it 'is the AppConfiguration AppConfiguration site_meta_description' do
-        blank_cat_names_co = instance_double(Company, categories_names: ['  ', ' ', '', nil])
+        blank_cat_names_co = instance_double(Company, current_category_names: ['  ', ' ', '', nil])
         expect(described_class.new(blank_cat_names_co).keywords).to eq AdminOnly::AppConfiguration.config_to_use.site_meta_keywords
       end
     end

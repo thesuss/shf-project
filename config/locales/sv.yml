@@ -906,7 +906,7 @@ sv:
       this_info_missing: "Denna information saknas:"
       complete: *complete
 
-    company_members:
+    current_members:
       title: &co_members Företagsmedlemmar
       business_categories: *business_categories
       is_member: *member

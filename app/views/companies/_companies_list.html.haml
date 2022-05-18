@@ -42,7 +42,7 @@
         - companies.each do |company|
           %tr.company{class: company.information_complete? ? '' : 'not-complete' }
             %td.categories
-              = safe_join(company.categories_names(false), tag.br)
+              = safe_join(company.current_category_names(false), tag.br)
             %td.name= link_to company_display_name(company), company
             %td.region
               = safe_join(company.addresses_region_names, tag.br)

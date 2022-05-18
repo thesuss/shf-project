@@ -47,10 +47,16 @@ RSpec.describe Company, type: :model do
   let(:cat8) { create(:business_category, name: 'cat8') }
 
   let(:current_member_1) { create(:member, membership_status: :current_member) }
-  let(:company_1) { current_member_1.companies.first }
+  let(:company_1_org_nr) { current_member_1.companies.first.company_number }
+  let(:current_member_2) { create(:member, company_number: company_1_org_nr, membership_status: :current_member) }
+  let(:current_member_3) { create(:member, company_number: company_1_org_nr, membership_status: :current_member) }
 
-  let(:current_member_2) { create(:member, company_number: company_1.company_number, membership_status: :current_member) }
-  let(:current_member_3) { create(:member, company_number: current_member_1.companies.first.company_number, membership_status: :current_member) }
+  let(:company_1) do
+    co = current_member_1.companies.first
+    allow(co).to receive(:current_members).and_return([current_member_1, current_member_2, current_member_3])
+    co
+  end
+
 
   let(:applicant_new) { create(:user_with_membership_app, company_number: company_1.company_number) }
   let(:applicant_under_review) { create(:user_with_membership_app, application_status: :under_review, company_number: company_1.company_number) }
@@ -723,6 +729,15 @@ RSpec.describe Company, type: :model do
 
   describe 'current_members' do
 
+    it '(env== test) current members are users that are current members' do
+      current_member = create(:member, membership_status: :current_member)
+      co = current_member.companies.first
+      create(:member, company_number: co.company_number, membership_status: :in_grace_period)
+      another_current_member = create(:member, company_number: co.company_number, membership_status: :current_member)
+
+      expect(co.current_members).to match_array([current_member, another_current_member])
+    end
+
     it 'is empty if no members' do
       expect(build(:company).current_members).to be_empty
     end
@@ -740,7 +755,9 @@ RSpec.describe Company, type: :model do
       current_member = create(:member, company_number: co_mixed_membership.company_number, membership_status: :current_member)
       create(:member, company_number: co_mixed_membership.company_number, membership_status: :in_grace_period)
       create(:member, company_number: co_mixed_membership.company_number, membership_status: :former_member)
-
+      # refresh all materialized views because that's where the list of current members comes from
+      DbViews::MemberAndCategory.refresh
+      DbViews::CompanyAndMember.refresh
       expect(co_mixed_membership.current_members).to match_array([current_member])
     end
 
@@ -1255,14 +1272,14 @@ RSpec.describe Company, type: :model do
     before(:each) { allow(Membership).to receive(:term_length).and_return(1.year) }
 
     it 'is nil if there are no current members' do
-      expect( (create(:company)).earliest_current_member_fee_paid_time ).to be_nil
+      co = build(:company)
+      allow(co).to receive(:current_members).and_return([])
+      expect( co.earliest_current_member_fee_paid_time ).to be_nil
     end
 
     it 'is the earliest membership_fee paid date for all current members' do
       dec_3 = Time.new(2018, 12, 3)
-      dec_3_expire_date = dec_3 + Membership.term_length
       dec_5 = Time.new(2018, 12, 5)
-      dec_5_expire_date = dec_5 + Membership.term_length
 
       current_member_1.payments.each do |payment|
         payment.update_attribute(:created_at, dec_5)
@@ -1296,6 +1313,26 @@ RSpec.describe Company, type: :model do
       expect(RequirementsForCoInfoComplete).to receive(:missing_info)
                                                  .with({company: co})
       co.missing_information
+    end
+  end
+
+  describe 'membership_changed' do
+
+    it 'notifies observers with self' do
+      given_co = build(:company)
+      expect(given_co).to receive(:notify_observers).with(given_co, nil, nil)
+      given_co.membership_changed
+    end
+
+    describe 'observers notified' do
+      it 'materialized views that involve the company membership status are refreshed' do
+        expect(DbViews::CurrentCompany).to receive(:company_status_changed)
+        expect(DbViews::CompanyAndMember).to receive(:company_status_changed)
+
+        DbViews::MemberAndCategory.refresh # must populate this because CompanyAndCategory depends on it
+        expect(DbViews::CompanyAndCategory).to receive(:company_status_changed)
+        build(:company).membership_changed
+      end
     end
   end
 

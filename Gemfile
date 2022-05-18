@@ -6,6 +6,8 @@ gem 'rails', '~> 5.2.7.1'
 gem 'bootsnap', require: false
 
 gem 'pg', '~> 1.2'
+gem 'scenic' # DB views and materialized views
+
 gem 'sass-rails'
 
 gem 'uglifier', '>= 1.3.0'

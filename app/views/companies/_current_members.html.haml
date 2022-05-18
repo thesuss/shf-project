@@ -1,0 +1,29 @@
+:ruby
+  # This partial expects these locals:
+  # members [Array<User>] the list of members for the company (membership status = current member)
+  #
+- unless members.blank?
+  .row
+    .col-12.company_member
+      .table-responsive-lg
+        %table.table.table-sm.table-hover.company-members
+          %thead
+            %tr
+              %th.text-nowrap= t('.title')
+              %th= t('.business_categories')
+              - if current_user.admin?
+                %th= t('.is_member')
+                %th= t('.app status')
+          - members.each do |member|
+            - shf_application = member.shf_application
+            - app_admin_only_css = shf_application&.accepted? ? '' : 'admin-only'
+            %tbody
+              %tr.member{ class: "#{app_admin_only_css}" }
+                - if current_user.admin?
+                  %td= link_to(member.full_name, member)
+                - else
+                  %td= member.full_name
+                %td= business_categories_str(shf_application)
+                - if current_user.admin?
+                  %td.admin-only= yes_no_span(member.current_member?)
+                  %td.admin-only= link_to(t("activerecord.attributes.shf_application.state/#{shf_application.state}"), shf_application)

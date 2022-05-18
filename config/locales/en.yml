@@ -897,7 +897,7 @@ en:
       this_info_missing: "This information is missing:"
       complete: *complete
 
-    company_members:
+    current_members:
       title: &co_members Company Members
       business_categories: *business_categories
       is_member: *member

@@ -65,9 +65,9 @@ module Adapters
     private
 
     def adapt_business_categories(adaptee)
-      return nil if adaptee.business_categories.empty?
+      return nil if adaptee.current_categories.empty?
 
-      adaptee.business_categories.map { |category| "#{I18n.t('dog').capitalize} #{category.name}" }
+      adaptee.current_categories.map { |category| "#{I18n.t('dog').capitalize} #{category.name}" }
     end
   end
 

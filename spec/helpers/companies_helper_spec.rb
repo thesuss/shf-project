@@ -7,7 +7,7 @@ RSpec.describe CompaniesHelper, type: :helper do
   describe 'companies' do
 
     describe 'list_categories' do
-      let(:double_co) { instance_double(Company, { categories_names: %w[cat1 cat2] }) }
+      let(:double_co) { instance_double(Company, { current_category_names: %w[cat1 cat2] }) }
 
       it 'default separator is a space' do
         expect(helper.list_categories(double_co)).to eq('cat1 cat2')
@@ -20,12 +20,12 @@ RSpec.describe CompaniesHelper, type: :helper do
       describe 'subcategories' do
 
         it 'default = does not include them' do
-          expect(double_co).to receive(:categories_names).with(false).and_return(%w[cat1 cat2])
+          expect(double_co).to receive(:current_category_names).with(false).and_return(%w[cat1 cat2])
           expect(helper.list_categories(double_co)).to eq('cat1 cat2')
         end
 
         it 'subcategories can be included in list' do
-          expect(double_co).to receive(:categories_names).with(true).and_return(%w[cat1 subcat1-1 cat2])
+          expect(double_co).to receive(:current_category_names).with(true).and_return(%w[cat1 subcat1-1 cat2])
           expect(helper.list_categories(double_co, ' ', true)).to eq('cat1 subcat1-1 cat2')
         end
       end

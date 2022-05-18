@@ -13,11 +13,12 @@ require 'create_membership_seq_if_needed'
 require 'shared_context/mock_app_configuration'
 require 'shared_context/stub_paperclip_methods_dynamic'
 
-require 'support/geocoder'  # Put Geocoder into test mode (mock responses)
+require 'support/geocoder' # Put Geocoder into test mode (mock responses)
 
 
 ActiveRecord::Migration.maintain_test_schema!
 
+NO_DBCLEANER_TAG = :no_db_cleaner
 
 RSpec.configure do |config|
 
@@ -49,7 +50,6 @@ RSpec.configure do |config|
   # config.file_fixture_path = 'spec/fixtures/uploaded_files'  # @fixme remove this line, make sure to fix any failing tests (probably uploaded_files)
   config.use_transactional_fixtures = false
 
-
   #
   # other related configurations (not RSpec directly)
   #
@@ -60,7 +60,6 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
-
 
   #
   # before / after hooks
@@ -79,12 +78,13 @@ RSpec.configure do |config|
         uncommitted transaction data setup over the spec's database connection.
       MSG
     end
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :transaction unless self.class.metadata[NO_DBCLEANER_TAG]
+    DatabaseCleaner.clean_with(:truncation) unless self.class.metadata[NO_DBCLEANER_TAG]
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
+    DatabaseCleaner.start unless self.class.metadata[NO_DBCLEANER_TAG]
+
     create_user_membership_num_seq_if_needed
 
     # shush the ActivityLogger: Don't have it show every message to STDOUT.
@@ -97,8 +97,8 @@ RSpec.configure do |config|
     allow(AdminOnly::AppConfiguration).to receive(:instance).and_return(MockAppConfig)
   end
 
-  config.before(:each, :js => true) do
-    DatabaseCleaner.strategy = :truncation
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :truncation unless self.class.metadata[NO_DBCLEANER_TAG]
   end
 
   config.before(:each, type: :feature) do
@@ -110,12 +110,13 @@ RSpec.configure do |config|
       # Driver is probably for an external browser with an app
       # under test that does *not* share a database connection with the
       # specs, so use truncation strategy.
-      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.strategy = :truncation unless self.class.metadata[NO_DBCLEANER_TAG]
     end
   end
 
   config.append_after(:each) do
-    DatabaseCleaner.clean
+    DatabaseCleaner.clean unless self.class.metadata[NO_DBCLEANER_TAG]
     I18n.locale = I18n.default_locale
   end
+
 end

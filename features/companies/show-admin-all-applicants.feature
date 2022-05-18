@@ -12,12 +12,12 @@ Feature: Admin sees all applicants connected to a company
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                              | admin | member | agreed_to_membership_guidelines | first_name   | last_name |
-      | member@example.com                 |       | true   | yes                             | Current      | Member    |
-      | applicant-new@example.com          |       | false  | yes                             | New          | Applicant |
-      | applicant-under-review@example.com |       | false  | yes                             | Under Review | Applicant |
-      | applicant-rejected@example.com     |       | false  | yes                             | Rejected     | Applicant |
-      | admin@shf.se                       | true  | false  | yes                             | Admin        | Admin     |
+      | email                              | admin | membership_status | member | agreed_to_membership_guidelines | first_name   | last_name |
+      | member@example.com                 |       | current_member    | true   | yes                             | Current      | Member    |
+      | applicant-new@example.com          |       | not_a_member      | false  | yes                             | New          | Applicant |
+      | applicant-under-review@example.com |       |                   | false  | yes                             | Under Review | Applicant |
+      | applicant-rejected@example.com     |       |                   | false  | yes                             | Rejected     | Applicant |
+      | admin@shf.se                       | true  |                   | false  | yes                             | Admin        | Admin     |
 
     And the following business categories exist
       | name    |
@@ -43,6 +43,7 @@ Feature: Admin sees all applicants connected to a company
 
     # And the following memberships exist:
 
+    And the db views are refreshed
   # -----------------------------------------------------------------------------------------------
 
   @parallel_group1 @admin
@@ -50,7 +51,7 @@ Feature: Admin sees all applicants connected to a company
     Given I am logged in as "admin@shf.se"
     When I am on the page for company number "5560360793"
     Then I should see "No More Snarky Barky" in the h1 title
-    And I should see t("companies.company_members.title")
+    And I should see t("companies.current_members.title")
     And I should see "Current Member"
     And I should see t("companies.company_applicants.title")
     And I should see "New Applicant"

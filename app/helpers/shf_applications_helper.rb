@@ -28,9 +28,23 @@ module ShfApplicationsHelper
     shf_app_aasm.state_object_for_name(shf_app_aasm.current_state).localized_name
   end
 
+  def company_business_categories_str(company)
+    cats_str = ''
+    company&.current_business_categories&.roots.order(:name).each do |category|
+      cats_str += ', ' unless cats_str.empty?
+      cats_str += category.name
+      sub_cats = company&.current_business_categories(category)
+
+      cats_str += subcategories_list_in_parens(sub_cats)
+    end
+    cats_str
+  end
+
   def business_categories_str(application)
     cats_str = ''
-    application.business_categories.roots.order(:name).each do |category|
+    return cats_str if application.blank?
+
+    application.business_categories&.roots.order(:name).each do |category|
       cats_str += ', ' unless cats_str.empty?
       cats_str += category.name
       sub_cats = application.business_subcategories(category)

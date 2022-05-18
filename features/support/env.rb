@@ -104,7 +104,6 @@ Before do
   # the original locale may or may not always match the locale of the I18n.t() strings returned.
   I18n.locale = 'sv'
 
-
   ENV['SHF_BETA'] = 'no'
 
   # shush the ActivityLogger: Don't have it show every message to STDOUT.

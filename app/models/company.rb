@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'observer'
 require_relative File.join('..', 'services', 'address_exporter')
 
 # ===============================================================================================
@@ -5,16 +8,15 @@ require_relative File.join('..', 'services', 'address_exporter')
 #
 # @responsibility  A Company in the dog industry.
 #
-# TODO data consistency check:  every company should have at least 1 application
-# FIXME: Company should use Membership (CompanyMembership < Membership)
+# @todo data consistency check:  every company should have at least 1 application
+# @fixme Company should use Membership (CompanyMembership < Membership)
 #
 #
 class Company < ApplicationRecord
   include PaymentUtility
-
   include HasSwedishOrganization
-
   include Dinkurs::Errors
+  include Observable
 
   before_destroy :destroy_checks
 
@@ -28,6 +30,7 @@ class Company < ApplicationRecord
 
   validates :dinkurs_company_id, dinkurs_id: true
 
+  after_initialize :add_observers
   before_save :sanitize_website, :sanitize_description
 
   has_many :company_applications
@@ -41,6 +44,7 @@ class Company < ApplicationRecord
   accepts_nested_attributes_for :payments
 
   # @todo this is a really ugly query. Why does it return multiples? (why is .distinct necessary?) Is there any way to clean it up?
+  # This should only be used in testing when materialized views cannot be used.
   has_many :business_categories,
               -> { joins(shf_applications: [:user]).where(users: { membership_status: :current_member }).distinct },
               through: :shf_applications
@@ -75,7 +79,7 @@ class Company < ApplicationRecord
   scope :no_address_or_lacks_region, -> { where.not(id: Address.company_address.has_region.pluck(:addressable_id)) }
 
 
-  # FIXME find all calls, replace with appropriate Membership... class method
+  # @fixme find all calls, replace with appropriate Membership... class method
   def self.next_branding_payment_dates(company_id)
     next_payment_dates(company_id, THIS_PAYMENT_TYPE)
   end
@@ -126,13 +130,14 @@ class Company < ApplicationRecord
   end
 
 
-  # TODO: yuck
+  # @todo yuck
   def self.with_members
     where(id: CompanyApplication.where(shf_application: [ShfApplication.where(user: User.current_member)]).pluck(:company_id))
   end
 
   # Criteria limiting visibility of companies to non-admin users
-  # TODO rename this to current_with_current_members or in_good_standing_with_current_members (Company should not be responsible for knowing what is 'searchable' in the UI)
+  # @todo rename this to current_with_current_members or in_good_standing_with_current_members (Company should not be responsible for knowing what is 'searchable' in the UI)
+  # @fixme use materialized view instead CurrentCompany
   def self.searchable
     information_complete.with_members.branding_licensed
   end
@@ -179,12 +184,23 @@ class Company < ApplicationRecord
 
   alias_method :current_membership, :most_recent_payment
 
-  # TODO rename this to current_with_current_members? or in_good_standing_with_current_members? (Company should not be responsible for knowing what is 'searchable' in the UI)
-  # FIXME does not seem to be used
+  # @todo rename this to current_with_current_members? or in_good_standing_with_current_members? (Company should not be responsible for knowing what is 'searchable' in the UI)
+  # @fixme does not seem to be used
   def searchable?
     branding_license_current? && current_members.any?
   end
   alias_method :current_with_current_members?, :searchable?
+
+  def add_observers
+    add_observer DbViews::CurrentCompany, :company_status_changed
+    add_observer DbViews::CompanyAndMember, :company_status_changed
+    add_observer DbViews::CompanyAndCategory, :company_status_changed
+  end
+
+  def membership_changed
+    changed # required so observers will be notified
+    notify_observers(self, nil, nil)
+  end
 
   def in_good_standing?
     information_complete? && branding_license_current?
@@ -204,7 +220,6 @@ class Company < ApplicationRecord
   end
 
 
-  # FIXME user Membership current?
   def approved_applications_from_members
     # Returns ActiveRecord Relation
     shf_applications.accepted.joins(:user)
@@ -213,11 +228,12 @@ class Company < ApplicationRecord
 
 
   # @return all members in the company whose membership are current (paid, not expired)
-  # FIXME: be careful when replacing this with a query/method that returns users based on membership vs. payments.
-  #   Be sure to understand how this is used. It might actually be used to get users with _payments_ that are current.
-  #   May need to create a method a method that returns all users in a company with current payments that does what this does now.
   def current_members
-    users.where(membership_status: :current_member)
+    if Rails.env.test?
+      users.where(membership_status: :current_member)
+    else
+      DbViews::CompanyAndMember.where(company_id: id).map(&:member)
+    end
   end
 
 
@@ -265,6 +281,41 @@ class Company < ApplicationRecord
   end
 
 
+  # This depends on materialized views in the database, which are created based on the current DB time.
+  # That cannot be easily stubbed during tests, so instead we have a conditional to see if we're doing tests.
+  # Ugly.
+  # But the alternative to this is to change ALL of the cucumber features to use dates based on an offset from Date.current (so that a materialzed view created based on the db CURRENT_DATE is always going to yield correct results)
+  def current_categories(include_subcategories = false)
+    categories = if Rails.env.test?
+                   business_categories
+                 else
+                   DbViews::CompanyAndCategory.where(company_id: id).map(&:business_category)
+                 end
+    include_subcategories ? categories : categories.select{|category| category.ancestry.blank? }
+  end
+
+
+  # Ex with production data (2022-05-13):
+  #  happyco = Company.where(company_number: '5590281829').first
+  #  happyco.current_category_names
+  #  # => ["Hundfysioterapeut", "Hundinstruktör"  , "Hundmassör", "Hundpsykolog"]
+  #
+  # @param [True, False] include_subcategories Should subcategories also be returned?
+  # @return [Array<String>] a sorted list of the names of the categories for this company,
+  #   where the categories are only those for the _current members_ of this company
+  def current_category_names(include_subcategories = false)
+
+    return current_categories(include_subcategories).map(&:name).uniq.sort unless include_subcategories
+
+    names = []
+    cats.each do |category|
+      names << category.name
+      names += category.children.order(:name).pluck(:name)
+    end
+    names
+  end
+
+
   def categories_names(include_subcategories=false)
     # Fetch category names only for accepted applications from members
     cats = categories.roots
@@ -286,19 +337,19 @@ class Company < ApplicationRecord
   end
 
 
-  # FIXME only show if address visibility allows it
+  # @fixme only show if address visibility allows it
   def addresses_region_names
     addresses.joins(:region).select('regions.name').distinct.pluck('regions.name')
   end
 
 
-  # FIXME only show if address visibility allows it
+  # @fixme only show if address visibility allows it
   def kommuns_names
     addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
 
-  # FIXME only show if address visibility allows it
+  # @fixme only show if address visibility allows it
   def cities_names
     addresses.select(:city).distinct.pluck(:city)
   end
@@ -308,28 +359,28 @@ class Company < ApplicationRecord
     most_recent_payment(THIS_PAYMENT_TYPE)
   end
 
-  # FIXME find all calls, replace with appropriate Membership... class method (current.last_day)
+  # @fixme find all calls, replace with appropriate Membership... class method (current.last_day)
   def branding_expire_date
     payment_expire_date(THIS_PAYMENT_TYPE)
   end
 
-  # TODO this should not be the responsibility of the Company class. Need a MembershipManager class for this. (or common Membership class...)
-  # FIXME change calls to either payment_notes or current_membership.notes
+  # @todo this should not be the responsibility of the Company class. Need a MembershipManager class for this. (or common Membership class...)
+  # @fixme change calls to either payment_notes or current_membership.notes
   def branding_payment_notes
     payment_notes(THIS_PAYMENT_TYPE)
   end
 
-  # FIXME find all calls, replace with appropriate Membership... class method
+  # @fixme find all calls, replace with appropriate Membership... class method
   # @return [Boolean] - true only if there is a branding_expire_date and it is in the future (from today)
   def branding_license?
-    # TODO can use payment_term_expired?(THIS_PAYMENT_TYPE)
+    # @todo can use payment_term_expired?(THIS_PAYMENT_TYPE)
     branding_expire_date&.future? == true # == true prevents this from ever returning nil
   end
   alias_method :branding_license_current?, :branding_license?
 
 
-  # TODO this should not be the responsibility of the Company class. Need a MembershipManager class for this. (or common Membership class...)
-  # FIXME change calls to either payment_notes or current_membership.notes
+  # @todo this should not be the responsibility of the Company class. Need a MembershipManager class for this. (or common Membership class...)
+  # @fixme change calls to either payment_notes or current_membership.notes
   def membership_payment_notes
     payment_notes(THIS_PAYMENT_TYPE)
   end
@@ -370,7 +421,7 @@ class Company < ApplicationRecord
 
 
 
-  # FIXME - the company member(s) need to set this.  Picking the 'first' one is arbitrary and may be wrong
+  # @fixme - the company member(s) need to set this.  Picking the 'first' one is arbitrary and may be wrong
   def main_address
 
     return addresses.mail_address.includes(:region)[0] if addresses.mail_address.exists?

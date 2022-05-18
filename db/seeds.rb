@@ -49,6 +49,12 @@ def log_msg(severity, activity_msg, text)
   end
 end
 
+def log_info(activity_msg, text)
+  ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, activity_msg) do |log|
+    log.info(text)
+  end
+end
+
 
 def seed_model_with_seeder(model_klass, seeder, log_activity = model_klass.name)
   ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, log_activity) do |log|
@@ -63,10 +69,14 @@ def seed_model_with_seeder(model_klass, seeder, log_activity = model_klass.name)
   end
 end
 
-
+def refresh_views_and_show_totals(log)
+  refresh_db_materialized_views
+  log_totals_created(log)
+end
 
 def log_totals_created(log)
-  log.info('------------------------------------------------------------------------------')
+  separator = '------------------------------------------------------------------------------'
+  log.info(separator)
   log.info("Users in the db: #{User.count}")
   log.info("  applicants:      #{User.not_a_member.count}")
   log.info("  current members: #{User.current_member.count}")
@@ -78,14 +88,31 @@ def log_totals_created(log)
   states.sort.each do |state|
     log.info("  #{state}: #{ShfApplication.where(state: state).count }")
   end
+  log.info("\n")
+  log.info("Companies in the db: #{Company.count}")
+  log.info("Companies in good standing: #{DbViews::CurrentCompany.count}")
+  log.info(separator)
 end
 
+
+def refresh_db_materialized_views
+  # ensure all files are loaded so that when we ask for subclasses (below), we get all classes
+  Dir.glob('**/*.rb',base: Rails.root.join('app', 'models', 'db_views')).each{|f| require f}
+
+  # Order matters when refreshing the views because some depend on others.
+  DbViews::MemberAndCategory.refresh
+  DbViews::CompanyAndMember.refresh
+  DbViews::CurrentCompany.refresh
+  DbViews::CompanyAndCategory.refresh
+
+
+end
 
 # ----------------------------------------------------------------------------------------
 
 
 begin
-  log_msg('info', 'START', ">>> SEEDING ENVIRONMENT: #{Rails.env}")
+  log_info('START', ">>> SEEDING ENVIRONMENT: #{Rails.env}")
 
   unless Rails.env.development? || Rails.env.production? ||
     Rails.env.test? || ENV['HEROKU_STAGING']
@@ -156,11 +183,13 @@ begin
 
       # The admin has already been created.  That counts as 1 User
       SeedHelpers::UsersFactory.new(static_data, log).seed_users_and_members(number_of_random_users_and_members - 1)
-      log_totals_created(log)
     end
   end
 
-  log_msg('info', 'FINISH', MSG_SEED_COMPLETE)
+  ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Totals') do |log|
+    refresh_views_and_show_totals(log)
+    log_info('FINISH', MSG_SEED_COMPLETE)
+  end
 
 rescue => error
 

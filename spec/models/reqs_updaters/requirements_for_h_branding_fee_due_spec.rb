@@ -27,7 +27,7 @@ RSpec.describe RequirementsForHBrandingFeeDue, type: :model do
     let(:jan_2) { Date.new(2019, 1, 2) }
 
     around(:each) do |example|
-      Timecop.freeze(jan_2) do
+      travel_to(jan_2) do
         example.run
       end
     end
@@ -36,14 +36,20 @@ RSpec.describe RequirementsForHBrandingFeeDue, type: :model do
     context 'company does not have current members - is always false' do
 
       it 'is false (no fee due)' do
-        expect(subject.requirements_met?({ company: create(:company) })).to be_falsey
+        co = build(:company)
+        allow(co).to receive(:current_members).and_return([])
+        expect(subject.requirements_met?({ company: co })).to be_falsey
       end
     end
 
 
     context 'company has current members' do
       let(:paid_membership_only) { create(:member, membership_status: :current_member, first_day: jan_1)}
-      let(:paid_member_co) { paid_membership_only.companies.first }
+      let(:paid_member_co) do
+        co = paid_membership_only.companies.first
+        allow(co).to receive(:current_members).and_return([paid_membership_only])
+        co
+      end
 
 
       context 'branding fee not paid' do
@@ -95,6 +101,6 @@ RSpec.describe RequirementsForHBrandingFeeDue, type: :model do
         end
       end # 'branding fee paid'
 
-    end #  context 'company has current members'
-  end # describe '.requirements_met?'
+    end
+  end
 end

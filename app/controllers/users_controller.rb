@@ -256,6 +256,7 @@ class UsersController < ApplicationController
     note = t('memberships.auto_added_notes.ended_on', new_last_day: last_day, original_last_day: membership.last_day)
     user.update!(membership_status: :not_a_member, member: false)
     membership.update!(last_day: last_day)
+    user.membership_changed  # let the user do whatever needs to be done
     MembershipStatusUpdater.instance.user_updated(membership.user)
     note
   end

@@ -12,9 +12,9 @@ RSpec.describe Adapters::CompanyToSchemaLocalBusiness do
                                id: '101',
                                email: 'Co email',
                                phone_number: 'Co 12345',
-                               business_categories: [cat1_double, cat2_double],
                                main_address: addr1_double,
-                               addresses: [addr1_double, addr2_double]
+                               addresses: [addr1_double, addr2_double],
+                               current_categories: [cat1_double, cat2_double]
     })
   end
   let(:dot_org_address_double) { instance_double(SchemaDotOrg::PostalAddress) }
@@ -77,7 +77,7 @@ RSpec.describe Adapters::CompanyToSchemaLocalBusiness do
     describe 'knowsAbout' do
 
       it 'is nil if there are no business categories' do
-        allow(co_double).to receive(:business_categories).and_return([])
+        allow(co_double).to receive(:current_categories).and_return([])
         result = subject.set_target_attributes(new_target_schema)
         expect(result.knowsAbout).to be_nil
       end

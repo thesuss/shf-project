@@ -7,7 +7,7 @@ module CompaniesHelper
 
 
   def list_categories(company, separator=' ', include_subcategories=false)
-    company.categories_names(include_subcategories).join(separator)
+    company.current_category_names(include_subcategories).join(separator)
   end
 
 

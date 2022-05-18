@@ -1300,6 +1300,40 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'membership_changed' do
+    let(:mock_aasm) do
+      mock = instance_double(AASM::InstanceBase)
+      allow(mock).to receive(:from_state).and_return('from state')
+      allow(mock).to receive(:to_state).and_return('to state')
+      allow(mock).to receive(:current_event).and_return('current aasm event')
+      mock
+    end
+
+    it 'notifies observers with self, the previous membership state and the new membership state' do
+      given_user = build(:user)
+
+      allow(given_user).to receive(:aasm).and_return(mock_aasm)
+      expect(given_user).to receive(:notify_observers).with(given_user, 'from state', 'to state')
+      given_user.membership_changed
+    end
+
+    it 'sets the membership_changed_info string' do
+      given_user = build(:user)
+      expect(given_user.membership_changed_info).to be_empty
+      given_user.membership_changed
+      expect(given_user.membership_changed_info).not_to be_empty
+    end
+
+    describe 'observers notified' do
+      it 'materialized views that involve the membership are refreshed' do
+        expect(DbViews::CurrentCompany).to receive(:membership_status_changed)
+        expect(DbViews::MemberAndCategory).to receive(:membership_status_changed)
+        expect(DbViews::CompanyAndMember).to receive(:membership_status_changed)
+        expect(DbViews::CompanyAndCategory).to receive(:membership_status_changed)
+        build(:user).membership_changed
+      end
+    end
+  end
 
   describe 'start_membership_on' do
     it 'calls Memberships::NewIndividualMembershipActions for the user and the first_day' do

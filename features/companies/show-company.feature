@@ -15,6 +15,8 @@ Feature: Show company page - display different info depending on role
 
   Background:
 
+    Given the db views are refreshed
+
     Given the date is set to "2019-06-06"
     Given the Membership Ethical Guidelines Master Checklist exists
 
@@ -40,15 +42,15 @@ Feature: Show company page - display different info depending on role
       | Company8                              | 7736362901     | hello@company-8.com        | Stockholm    | Alingsås | Harplinge | street_address |
 
     And the following users exist:
-      | email                            | admin | membership_status | member |
-      | member-1@addr-all-visible-1.com  |       | current_member    | true   |
-      | member@company-2.com             |       | current_member    | true   |
-      | applicant-6@addr-not-visible.com |       |                   | false  |
-      | member-6@addr-not-visible.com    |       | current_member    | true   |
-      | member-no-payments@company-3.com |       | current_member    | true   |
-      | member-no-payments@company-2.com |       | current_member    | true   |
-      | member-2@addr-all-visible-1.com  |       | current_member    | true   |
-      | admin@shf.se                     | true  |                   | false  |
+      | email                            | admin | membership_status | member | first_name              | last_name      |
+      | member-1@addr-all-visible-1.com  |       | current_member    | true   | member_1                | current_member |
+      | member@company-2.com             |       | current_member    | true   | member@company2         | current_member |
+      | applicant-6@addr-not-visible.com |       |                   | false  | applicant_6             | applicant      |
+      | member-6@addr-not-visible.com    |       | current_member    | true   | member-6                | current_member |
+      | member-no-payments@company-3.com |       | current_member    | true   | member-no-payments Co 2 | current_member |
+      | member-no-payments@company-2.com |       | current_member    | true   | member-no-payments Co 3 | current_member |
+      | member-2@addr-all-visible-1.com  |       | current_member    | true   | member 2                | current_member |
+      | admin@shf.se                     | true  |                   | false  | admin                   | admin          |
 
 
     And the following business categories exist
@@ -93,6 +95,7 @@ Feature: Show company page - display different info depending on role
       | member-6@addr-not-visible.com   | 2019-10-1  | 2019-12-31 |
       | member-2@addr-all-visible-1.com | 2019-01-01 | 2019-12-31 |
 
+    Given the db views are refreshed
    # --------------------------------------------------------------------------------------------
 
   Scenario: Show company details to a visitor, but don't show the org nr.
@@ -102,7 +105,8 @@ Feature: Show company page - display different info depending on role
     And I should see "Co.1 - Addr Visible to Street Address"
     And I should see "Groomer"
     And I should see t("companies.show.members")
-    And I should see "Firstname Lastname"
+    And I should see "member_1 current_member"
+    And I should see "member 2 current_member"
     And I should see "hello@company-1.com"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"

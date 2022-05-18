@@ -32,7 +32,7 @@ RSpec.describe RequirementsForHBrandingFeeWillExpire, type: :model do
 
 
     around(:each) do |example|
-      Timecop.freeze(jan_2) do
+      travel_to(jan_2) do
         example.run
       end
     end
@@ -41,14 +41,20 @@ RSpec.describe RequirementsForHBrandingFeeWillExpire, type: :model do
     context 'company does not have current members - is always false' do
 
       it 'is false (no fee due)' do
-        expect(subject.requirements_met?({ company: create(:company) })).to be_falsey
+        co = build(:company)
+        allow(co).to receive(:current_members).and_return([])
+        expect(subject.requirements_met?({ company: co })).to be_falsey
       end
     end
 
 
     context 'company has current members' do
       let(:paid_membership_only) { create(:member, membership_status: :current_member, first_day: jan_1) }
-      let(:paid_member_co) { paid_membership_only.companies.first }
+      let(:paid_member_co) do
+        co = paid_membership_only.companies.first
+        allow(co).to receive(:current_members).and_return([paid_membership_only])
+        co
+      end
 
 
       context 'branding fee not paid' do
@@ -110,13 +116,14 @@ RSpec.describe RequirementsForHBrandingFeeWillExpire, type: :model do
         member
       }
 
-      let(:co_memberships_expired) { membership_expired.companies.first }
+      let(:co_memberships_expired) do
+        co = membership_expired.companies.first
+        allow(co).to receive(:current_members).and_return([])
+        co
+      end
 
       it 'is false' do
-        Timecop.freeze(jan_5_2020) do
-          membership_expired
           expect(subject.requirements_met?({ company: co_memberships_expired })).to be_falsey
-        end
       end
     end
 

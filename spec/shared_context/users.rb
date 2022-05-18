@@ -96,6 +96,7 @@ RSpec.shared_context 'create users' do
   #  successful member fee and branding license payments made on each
   #  of the payment_start_dates.
   #
+  # @fixme replace this with factory method create(:member, first_day: )
   # @param [Array] payment_start_dates - list of start dates [Date] for
   #  successful member fee and branding license payments to be created.
   #  Timecop will freeze the time to this date so the payments will be 'created' on this date.

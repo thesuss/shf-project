@@ -198,6 +198,15 @@ And(/save and open a screenshot/) do
   save_and_open_screenshot
 end
 
+
+Given(/the db views are refreshed/) do
+  DbViews::MemberAndCategory.refresh
+  DbViews::CurrentCompany.refresh
+  DbViews::CompanyAndMember.refresh
+  DbViews::CompanyAndCategory.refresh
+
+end
+
 Given(/^the date is set to "([^"]*)"$/) do |date|
   Timecop.freeze( Time.find_zone("UTC").parse(date))
 end

@@ -53,6 +53,7 @@ RSpec.describe CompanyEmailAlert do
       it 'delivers email to each member and logs each one' do
         member1_c2_exp_jun6
         member2_c2_exp_jun1
+        allow(c2_2_members).to receive(:current_members).and_return([member1_c2_exp_jun6, member2_c2_exp_jun1])
 
         allow(subject).to receive(:mailer_method).and_return(:h_branding_fee_past_due)
 
@@ -77,6 +78,7 @@ RSpec.describe CompanyEmailAlert do
         member1_c2_exp_jun6
         member2_c2_exp_jun1
 
+        allow(c2_2_members).to receive(:current_members).and_return([member1_c2_exp_jun6, member2_c2_exp_jun1])
         allow(subject).to receive(:mailer_method).and_return(:h_branding_fee_past_due)
 
         expect(subject.mailer_class).to receive(:h_branding_fee_past_due)
@@ -129,13 +131,13 @@ RSpec.describe CompanyEmailAlert do
 
 
   it '.company_recipients returns all current_members' do
-    Timecop.freeze(jan1)
+    travel_to jan1 do
+      member1_c2_exp_jun6
+      member2_c2_exp_jun1
 
-    member1_c2_exp_jun6
-    member2_c2_exp_jun1
-    expect(subject.company_recipients(c2_2_members)).to match_array([member1_c2_exp_jun6, member2_c2_exp_jun1])
-
-    Timecop.return
+      expect(c2_2_members).to receive(:current_members).and_return([member1_c2_exp_jun6, member2_c2_exp_jun1])
+      expect(subject.company_recipients(c2_2_members)).to match_array([member1_c2_exp_jun6, member2_c2_exp_jun1])
+    end
   end
 
 
