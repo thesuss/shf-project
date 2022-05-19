@@ -128,7 +128,7 @@ class BusinessCategoriesController < ApplicationController
 
 
   def update
-    saved = @business_category.update_attributes(business_category_params)
+    saved = @business_category.update_attributes(business_category_params) # @todo why is 'update_attributes' used?
 
     respond_to do |format|
       format.html do

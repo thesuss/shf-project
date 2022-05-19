@@ -42,7 +42,6 @@ class User < ApplicationRecord
                  saved_change_to_last_name? ||
                  saved_change_to_membership_number? }
 
-
   has_one :shf_application, dependent: :destroy
   accepts_nested_attributes_for :shf_application, update_only: true
 
@@ -74,7 +73,6 @@ class User < ApplicationRecord
   validates :membership_number, uniqueness: true, allow_blank: true
   validates :email, email: true
 
-
   THIS_PAYMENT_TYPE = Payment::PAYMENT_TYPE_MEMBER
   MOST_RECENT_UPLOAD_METHOD = :created_at
 
@@ -94,7 +92,6 @@ class User < ApplicationRecord
                                                                 (Date.current + num_days))
                                                          .order('payments.expire_date')
                                                          .references(:payments) }
-
 
   scope :company_hbrand_expires_in_x_days, -> (num_days) { includes(:payments)
                                                              .where(successful_payment_with_type_and_expire_date,
@@ -119,11 +116,13 @@ class User < ApplicationRecord
     next_membership_payment_dates(user_id).first
   end
 
+
   # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
   # @fixme find all calls, replace with appropriate Membership... class
   def self.next_membership_payment_dates(user_id)
     next_payment_dates(user_id, THIS_PAYMENT_TYPE)
   end
+
 
   def self.clear_all_proof_of_membership_jpg_caches
     all.each do |user|
@@ -142,12 +141,14 @@ class User < ApplicationRecord
     aasm.states.map(&:name)
   end
 
+
   # All memberships statuses _and_ 'expires_soon' ('Expires soon' is not a "real" status. It is not
   #   used to track or transition to/from statuses, but it is informative to show to admins and
   #   members.  It is just _informational_.
   def self.membership_statuses_incl_informational
     aasm.states.map(&:name) + MembershipsManager.informational_statuses
   end
+
 
   # ----------------------------------------------------------------------------------------------
   # Act As State Machine (AASM)
@@ -195,9 +196,11 @@ class User < ApplicationRecord
     @membership_changed_info = "membership status changed from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
+
   def membership_changed_info
     @membership_changed_info ||= ''
   end
+
 
   # ----------------------------------------------------------------------------------
 
@@ -212,6 +215,7 @@ class User < ApplicationRecord
     @memberships_manager ||= MembershipsManager.new
   end
 
+
   # @return [nil | Membership] - the oldest membership that covers today (Date.current)
   #   nil if no memberships are found
   def current_membership
@@ -224,21 +228,26 @@ class User < ApplicationRecord
     memberships_manager.most_recent_membership(self)
   end
 
+
   def cache_key(type)
     "user_#{id}_cache_#{type}"
   end
+
 
   def proof_of_membership_jpg
     Rails.cache.read(cache_key('pom'))
   end
 
+
   def proof_of_membership_jpg=(image)
     Rails.cache.write(cache_key('pom'), image)
   end
 
+
   def clear_proof_of_membership_jpg_cache
     Rails.cache.delete(cache_key('pom'))
   end
+
 
   def updating_without_name_changes
     # Not a new record and not saving changes to either first or last name
@@ -250,9 +259,11 @@ class User < ApplicationRecord
       will_save_change_to_attribute?('last_name'))
   end
 
+
   def most_recent_membership_payment
     most_recent_payment(THIS_PAYMENT_TYPE)
   end
+
 
   # Make this a current member.
   # Do nothing if the user is already a current member.
@@ -282,6 +293,7 @@ class User < ApplicationRecord
     Memberships::BecomeFormerIndividualMemberActions.for_user(self, first_day: date, send_email: send_email)
   end
 
+
   def restore_from_grace_period(send_email: true)
     Memberships::RestoreIndividualMemberActions.for_user(self, send_email: send_email)
   end
@@ -293,8 +305,9 @@ class User < ApplicationRecord
     memberships_manager.most_recent_membership_first_day(self)
     # payment_start_date(THIS_PAYMENT_TYPE)
   end
-  alias_method :membership_first_day, :membership_start_date
 
+
+  alias_method :membership_first_day, :membership_start_date
 
   # Returns the last day of the most recent membership, where "most recent" means
   #  the one that is current
@@ -302,6 +315,8 @@ class User < ApplicationRecord
     memberships_manager.most_recent_membership_last_day(self)
     # payment_expire_date(THIS_PAYMENT_TYPE)
   end
+
+
   alias_method :membership_last_day, :membership_expire_date
 
   # @todo this should not be the responsibility of the User class. Need a MembershipManager class for this.
@@ -324,6 +339,7 @@ class User < ApplicationRecord
     !!membership_expire_date&.future? # using '!!' will turn a nil into false
   end
 
+
   alias_method :payments_current?, :membership_current?
 
 
@@ -341,11 +357,11 @@ class User < ApplicationRecord
   end
 
 
-
   # The membership term has expired, but are they still within a 'grace period'?
   def membership_expired_in_grace_period?(this_date = Date.current)
     memberships_manager.membership_in_grace_period?(self, this_date)
   end
+
 
   # the date is after the renewal grace period;
   def membership_past_grace_period_end?(this_date = Date.current)
@@ -376,8 +392,6 @@ class User < ApplicationRecord
   end
 
 
-
-
   # Business rule: user can pay membership fee if:
   # 1. the user is not the admin (an admin cannot make a payment for a member or user)
   #      AND
@@ -396,6 +410,7 @@ class User < ApplicationRecord
     end
   end
 
+
   # A user can pay a renewal membership fee if
   #   they are a current member OR are within the renewal grace period
   #   AND they have met all of the requirements for renewing,
@@ -407,6 +422,7 @@ class User < ApplicationRecord
       RequirementsForRenewal.requirements_excluding_payments_met?(self)
   end
 
+
   # A user can pay a (new) membership fee if:
   #   they are not a member OR they are a former member
   #   AND they have met all of the requirements for membership,
@@ -417,6 +433,7 @@ class User < ApplicationRecord
     (not_a_member? || former_member?) &&
       RequirementsForMembership.requirements_excluding_payments_met?(self)
   end
+
 
   # Business rule: user can pay h-brand license fee if:
   # 1. user is an admin
@@ -430,6 +447,7 @@ class User < ApplicationRecord
     admin? || in_company?(company) #|| has_approved_app_for_company?(company)
   end
 
+
   # Is this user allowed to do (check off/agree to) the membership guidelines?
   #
   # Ask the UserChecklistManager (this is a cheap,explicit version of delegating)
@@ -439,50 +457,61 @@ class User < ApplicationRecord
     UserChecklistManager.can_user_do_membership_guidelines?(self)
   end
 
+
   def member_fee_payment_due?
     member? && !payments_current?
   end
+
 
   def has_shf_application?
     !!shf_application&.valid?
   end
 
+
   def has_approved_shf_application?
     !!shf_application&.accepted?
   end
+
 
   def member_or_admin?
     admin? || member?
   end
 
+
   def has_company_in_good_standing?
     companies.select(&:in_good_standing?).any?
   end
+
 
   def in_company?(company)
     in_company_numbered?(company.company_number)
   end
 
+
   def in_company_numbered?(company_num)
     current_member? && has_approved_app_for_company_number?(company_num)
   end
+
 
   def companies_with_approved_app
     companies.select { |co| has_approved_app_for_company?(co) }
   end
 
+
   def has_approved_app_for_company?(company)
     has_approved_app_for_company_number?(company.company_number)
   end
 
+
   def has_approved_app_for_company_number?(company_num)
-   Company.find_by(company_number: company_num).accepted_applicants.include?(self)
+    Company.find_by(company_number: company_num).accepted_applicants.include?(self)
   end
 
   # @todo this currently only checks the one ShfApplication that the user can have; must modify when user can have 1+ apps
   def has_app_for_company?(company)
     has_app_for_company_number?(company.company_number)
   end
+
 
   def has_app_for_company_number?(company_num)
     apps_for_company_number(company_num)&.any?
@@ -504,6 +533,7 @@ class User < ApplicationRecord
     result.nil? ? [] : [shf_application].sort(&sort_apps_by_when_approved)
   end
 
+
   SORT_BY_MOST_RECENT_APPROVED_DATE = lambda { |app1, app2| app2.when_approved <=> app1.when_approved }
 
   # @return [Lambda] - the block (lambda) to use to sort shf_applications by the when_approved date
@@ -511,23 +541,28 @@ class User < ApplicationRecord
     SORT_BY_MOST_RECENT_APPROVED_DATE
   end
 
+
   # Warning! This will _create guideline checklist entries if needed_
   # @fixme rename so this is obvious. Use/create a different method to check with no side effects
   def membership_guidelines_checklist_done?
     UserChecklistManager.completed_membership_guidelines_checklist?(self)
   end
 
+
   def full_name
     "#{first_name} #{last_name}"
   end
+
 
   def has_full_name?
     first_name.present? && last_name.present?
   end
 
+
   ransacker :padded_membership_number do
     Arel.sql("lpad(membership_number, 20, '0')")
   end
+
 
   def get_short_proof_of_membership_url(url)
     found = self.short_proof_of_membership_url
@@ -541,9 +576,11 @@ class User < ApplicationRecord
     end
   end
 
+
   def membership_packet_sent?
     !date_membership_packet_sent.nil?
   end
+
 
   # Toggle whether or not a membership package was sent to this user.
   #
@@ -572,6 +609,7 @@ class User < ApplicationRecord
   def file_uploaded_during_right_time?
     return false if uploaded_files.blank?
 
+    # The STATE_ constants below are defined by the AASM gem based on the states defined
     case membership_status
       when STATE_CURRENT_MEMBER
         file_uploaded_during_this_membership_term?
@@ -584,6 +622,7 @@ class User < ApplicationRecord
     end
   end
 
+
   # @todo this doesn't belong in User.  but not sure yet where it does belong.
   # @return [true,false]
   def file_uploaded_during_this_membership_term?
@@ -591,8 +630,6 @@ class User < ApplicationRecord
 
     file_uploaded_in_range?(first_day: current_membership.first_day, last_day: current_membership.last_day)
   end
-
-
 
 
   # Was a file uploaded by the user on or after the given date AND on or before the given end date?
@@ -657,6 +694,7 @@ class User < ApplicationRecord
     end
   end
 
+
   # @param [Date, DateTime, Time] the_date The starting date for all the uploaded files (on or after this date)
   #
   # @return [Array<UploadedFile>]
@@ -677,14 +715,17 @@ class User < ApplicationRecord
     uploaded_files.order(most_recent_upload_method)&.last
   end
 
+
   def most_recent_upload_method
     self.class.most_recent_upload_method
   end
+
 
   # The fact that this can no longer be private is a smell that it should be refactored out into a separate class
   def issue_membership_number
     self.membership_number = self.membership_number.blank? ? get_next_membership_number : self.membership_number
   end
+
 
   def adjust_related_info_for_destroy
     remove_photo_from_filesystem
@@ -693,9 +734,9 @@ class User < ApplicationRecord
     destroy_uploaded_files
   end
 
+
   # ===============================================================================================
   private
-
 
   # @return [Array<UploadedFile>] list of all uploaded files that satisfy the given block.
   #   Is an empty Array if no block is given.
@@ -711,10 +752,12 @@ class User < ApplicationRecord
     self.class.connection.execute("SELECT nextval('membership_number_seq')").getvalue(0, 0).to_s
   end
 
+
   # remove the associated member photo from the file system by setting it to nil
   def remove_photo_from_filesystem
     member_photo = nil
   end
+
 
   def destroy_uploaded_files
     uploaded_files.each do |uploaded_file|
@@ -723,6 +766,7 @@ class User < ApplicationRecord
     end
     save
   end
+
 
   def cleanup_paperclip_error_messages
     # Remove base-attribute error message(s) to avoid duplicate error messages

@@ -11,30 +11,25 @@ module AdminOnly
     before_action :authorize_master_checklist_class, only: [:index, :index_as_table,
                                                             :new, :create]
 
-
     def index
       authorize_master_checklist_class
       @master_checklists = MasterChecklist.in_use
       @no_longer_in_use = MasterChecklist.not_in_use
     end
 
-
     def index_as_table
       authorize_master_checklist_class
       @master_checklists = MasterChecklist.all_as_array_nested_by_name
     end
-
 
     def show
       @max_list_position_zerobased = max_position_in_this_list(@master_checklist)
       @no_longer_in_use = @master_checklist.children.not_in_use
     end
 
-
     def new
       @master_checklist = MasterChecklist.new
       parent_id = params.fetch('parent', false) ? params['parent'].to_i : nil
-
 
       @master_checklist.list_position = next_list_position_for(parent_id)
       @master_checklist.parent = MasterChecklist.find(parent_id) if parent_id
@@ -46,12 +41,10 @@ module AdminOnly
       @all_allowable_parents = all_allowable_parents
     end
 
-
     def edit
       @max_list_position_zerobased = max_position_in_this_list(@master_checklist)
       @all_allowable_parents = all_allowable_parents
     end
-
 
     def create
       params_with_corrected_list_pos = params_with_corrected_list_pos(master_checklist_params)
@@ -76,7 +69,6 @@ module AdminOnly
         end
       end
     end
-
 
     # TODO DRY this up.  specifically: error conditions.
     # FIXME need to warn if there are completed user checklists and ... trying to change fields that cannot be changed if there are already completed items
@@ -128,7 +120,6 @@ module AdminOnly
 
     end
 
-
     def destroy
       if @master_checklist.destroy
         respond_to do |format|
@@ -148,7 +139,6 @@ module AdminOnly
       end
 
     end
-
 
     # Set the master checklist to 'no longer in use'
     def set_to_no_longer_used
@@ -182,13 +172,11 @@ module AdminOnly
           end
         end
 
-
       else
         raise MasterChecklistNotFoundError, t('.not_found', id: id_only_param[:id])
       end
 
     end
-
 
     # Return the next list position allowed for a MasterChecklist with a given id.
     # This is _not zero based._  The first list position is ONE, not zero
@@ -197,7 +185,7 @@ module AdminOnly
     # This uses handle_xhr_request and passes in a block to execute (yield) and
     # returns a Hash of information to be merged with the XHR response data.
     #
-    # @return [JSON] - JSON: integer - the number of children for an MasterChecklist.  0 (zero) if there are no children
+    # @return [JSON, Nil] - JSON: integer - the number of children for an MasterChecklist.  0 (zero) if there are no children
     def next_one_based_list_position
 
       handle_xhr_request do
@@ -220,14 +208,13 @@ module AdminOnly
 
     end
 
-
     # Change the state of is_in_use to it's opposite and the date it was changed (now).
     # This uses handle_xhr_request and passes in a block to execute (yield) and
     # returns a Hash of information to be merged with the XHR response data.
     #
     # TODO This method was used during development, but may no longer be needed. Deleting an item takes the place of this.
     #
-    # @return [JSON] - the value of is_in_use [Boolean] and is_in_use_changed_at: the date this was changed (now)
+    # @return [JSON, Nil] - the value of is_in_use [Boolean] and is_in_use_changed_at: the date this was changed (now)
     def toggle_in_use
 
       handle_xhr_request do |checklist_master|
@@ -247,23 +234,19 @@ module AdminOnly
       end
     end
 
-
     private
 
     def authorize_master_checklist
       authorize @master_checklist
     end
 
-
     def authorize_master_checklist_class
       authorize MasterChecklist
     end
 
-
     def set_master_checklist
       @master_checklist = MasterChecklist.find(params[:id])
     end
-
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def master_checklist_params
@@ -277,16 +260,13 @@ module AdminOnly
                                                           :master_checklist_type_id)
     end
 
-
     def parent_checklist_param
       params.permit(:parent)
     end
 
-
     def id_only_param
       params.require(:id)
     end
-
 
     # @return [Array[OrderedListItem]] - list of all OrderedListEntries
     #   that could be a parent to @master_checklist;
@@ -294,11 +274,9 @@ module AdminOnly
       @master_checklist.allowable_parents(all_ordered_list_entries)
     end
 
-
     def all_ordered_list_entries
       MasterChecklist.all_as_array_nested_by_name
     end
-
 
     # Given the parent_id, return the list position for a new master checklist
     # If parent_id is nil,
@@ -317,11 +295,9 @@ module AdminOnly
       end
     end
 
-
     def params_with_corrected_list_pos(checklist_params)
       checklist_params.merge({ list_position: corrected_list_position(checklist_params) })
     end
-
 
     # Change the value of the list position to ZERO BASED (subtract 1).
     # Set a default list position if none given:
@@ -346,12 +322,10 @@ module AdminOnly
       list_position.to_s
     end
 
-
     # FIXME - this returns a mix of last_postion and _next_position.   Pick one.
     def max_position_in_this_list(master_checklist)
       master_checklist.ancestors? ? master_checklist.parent.last_used_list_position : MasterChecklist.top_level_next_list_position
     end
-
 
     # Insert this item into a parent is if there is a parent list for this item
     # TODO - does this belong here or in the MasterChecklist?  (or perhaps some of this belongs in MasterChecklist?)
@@ -365,7 +339,6 @@ module AdminOnly
         parent_list.insert(@master_checklist, @master_checklist.list_position)
       end
     end
-
 
     # Template method (wrapper) for doing an XHR request.
     # Expects the yeild to return a Hash of information; this Hash will be merged
@@ -399,7 +372,6 @@ module AdminOnly
 
       render json: response_data
     end
-
 
     def validate_and_authorize_xhr
       validate_xhr_request

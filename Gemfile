@@ -76,7 +76,8 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
-if (RUBY_PLATFORM =~ /aarch/) then
+# rubocop:disable Bundler/DuplicatedGem
+if RUBY_PLATFORM =~ /aarch/
   # these gem versions support arm
   gem 'mini_racer', '0.5.0.pre'
   gem 'libv8-node', '16.10.0.0'
@@ -85,6 +86,8 @@ else
   gem 'mini_racer', '~> 0.2.1', platforms: :ruby
   gem 'libv8', '< 8.0'
 end
+# rubocop:enable Bundler/DuplicatedGem
+
 
 gem 'hashie'  # powerful methods for searching nested Hashes (ex: params) and more
 
@@ -103,11 +106,15 @@ gem 'sitemap_generator'
 
 gem 'whenever', require: false
 
-# Query ActiveRecord by time (ex:  Payment.by_year(2019), Payment.between_times(Time.zone.now - 3.hours, Time.zone.now)) # all posts in last 3 hours
+# Query ActiveRecord by time
+# (ex:  Payment.by_year(2019), Payment.between_times(Time.zone.now - 3.hours, Time.zone.now))
+# # all posts in last 3 hours
 gem 'by_star'
 
 
-# This is used by capybara, webmock, and more.  It is listed here only so we can specify the version that addresses a security vulnerability. (see entry in Github advisory db: https://github.com/advisories/GHSA-jxhc-q857-3j6g)
+# This is used by capybara, webmock, and more.
+# It is listed here only so we can specify the version that addresses a security vulnerability.
+# (see entry in Github advisory db: https://github.com/advisories/GHSA-jxhc-q857-3j6g)
 gem 'addressable', '>= 2.8.0'
 
 # Use this even in production to help examine data in the production system
@@ -127,6 +134,7 @@ group :development, :test do
   gem 'rubocop',             '= 1.22.1', require: false
   gem 'rubocop-rails',       '= 2.13.2', require: false
   gem 'rubocop-rspec',       '= 2.9.0', require: false
+  gem 'rubocop-rake', require: false
   gem 'rubocop-performance', '= 1.13.2', require: false
 
   gem 'rspec-rails'
@@ -159,7 +167,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'erb2haml'
-  gem 'capistrano'#, '~> 3.11'
+  gem 'capistrano' #, '~> 3.11'
   gem 'capistrano-bundler' #, '~> 1.6'
   gem 'capistrano-rails' #, '~> 1.4'
   gem 'capistrano-rbenv' #, '~> 2.0'
@@ -184,7 +192,7 @@ group :test do
   gem 'selenium-webdriver'
 
   # the gem doesn't support arm yet (see: https://github.com/titusfortner/webdrivers/issues/213)
-  gem 'webdrivers' unless (RUBY_PLATFORM =~ /aarch/)
+  gem 'webdrivers' unless RUBY_PLATFORM =~ /aarch/  # Performance/RegexpMatch
 
 
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
