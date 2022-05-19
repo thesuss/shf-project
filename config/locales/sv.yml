@@ -959,7 +959,7 @@ sv:
       submit_button_label: Uppdatera status
 
     company_create_modal:
-      company_number: Nytt företagsnummer
+      company_number: Organisationsnummer
 
     company_name: Företagsnamn
     telephone_number: Telefonnummer

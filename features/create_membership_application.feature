@@ -41,9 +41,9 @@ Feature: Create a new membership application
     And the Membership Ethical Guidelines Master Checklist exists
 
     And the following companies exist:
-      | name                 | company_number | email                  | region     |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
-      | Good Dog Spot        | 2120000142     | spot@gooddog.com       | Stockholm  |
+      | name                 | company_number | email                  | region    |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm |
+      | Good Dog Spot        | 2120000142     | spot@gooddog.com       | Stockholm |
 
     And the following applications exist:
       | user_email        | company_number | state    | categories |
@@ -230,9 +230,9 @@ Feature: Create a new membership application
     And I should not see t("shf_applications.uploads.please_upload_again")
 
     Scenarios:
-      | c_email       | phone      | model_attribute                                                   | error                            |
-      |               | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.blank")       |
-      |               | 0706898525 | t("activerecord.attributes.shf_application.business_categories")  | t("errors.messages.blank")       |
+      | c_email | phone      | model_attribute                                                  | error                      |
+      |         | 0706898525 | t("activerecord.attributes.shf_application.contact_email")       | t("errors.messages.blank") |
+      |         | 0706898525 | t("activerecord.attributes.shf_application.business_categories") | t("errors.messages.blank") |
 
 # The following 2 scenarios cannot happen.  No submission will happen because javascript will not validate the contact email field (form field = f.email_field
 #      | kicki@.imminu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
@@ -253,49 +253,61 @@ Feature: Create a new membership application
     Then I should see t("shf_applications.uploads.please_upload_again")
 
     Scenarios:
-      | c_email       | phone      |
-      |               | 0706898525 |
-      |               | 0706898525 |
-      | kicki@imminu  | 0706898525 |
+      | c_email      | phone      |
+      |              | 0706898525 |
+      |              | 0706898525 |
+      | kicki@imminu | 0706898525 |
       # | kickiimmi.nu  | 0706898525 |
 
 
-
-
   @selenium
-  Scenario Outline: Apply for membership - when things go wrong with company create [SAD PATH]
+  Scenario: SAD PATH: No orgNr in the create a company modal
     Given I am on the "new application" page
     And I fill in the translated form with data:
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
-      | <c_email>                          | <phone>                           |
+      | "kicki@immi.nu"                    | 0706898525                        |
 
     And I select files delivery radio button "files_uploaded"
 
-    # Create new company in modal
-    Then I want to create a new company
+    # Create new company in the  modal
+    When I want to create a new company
     And I click on t("companies.new.title")
-    And I fill in the translated form with data:
-      | companies.company_create_modal.company_number | companies.show.email |
-      | <c_number>                                    | <c_email>            |
-
+    # company number is left blank
+    And I fill in t("companies.show.email") with "kicki@immi.nu"
     And I click on t("companies.create.create_submit")
 
-    Then I should see error <model_attribute> <error>
+    Then I should see error t("activerecord.attributes.company.company_number") t("errors.messages.blank")
     And I should receive no emails
     And "admin@shf.se" should receive no emails
 
-    Scenarios:
-      | c_number   | c_email       | phone      | model_attribute                                     | error                        |
-      |            | kicki@immi.nu | 0706898525 | t("activerecord.attributes.company.company_number") | t("errors.messages.blank")   |
-      | 5562252998 |               | 0706898525 | t("activerecord.attributes.company.email")          | t("errors.messages.invalid") |
+
+  @selenium
+  Scenario: SAD PATH: No company email in the create a company modal
+    Given I am on the "new application" page
+    And I fill in the translated form with data:
+      | shf_applications.new.contact_email | shf_applications.new.phone_number |
+      | "kicki@immi.nu"                    | 0706898525                        |
+
+    And I select files delivery radio button "files_uploaded"
+
+    # Create new company in the modal
+    When I want to create a new company
+    And I click on t("companies.new.title")
+    # company contact email is left blank
+    And I fill in "company-number-in-modal" with "5562252998"
+    And I click on t("companies.create.create_submit")
+
+    Then I should see error t("activerecord.attributes.company.email") t("errors.messages.invalid")
+    And I should receive no emails
+    And "admin@shf.se" should receive no emails
 
 
+  @selenium
   Scenario: Apply for membership: company number wrong length (no uploads) [SAD PATH]
     Given I am on the "new application" page
 
     # Create new company in modal
     And I click on t("companies.new.title")
-
     And I fill in "company-number-in-modal" with "00"
     And I fill in t("companies.show.email") with "kicki@immi.nu"
 
@@ -309,7 +321,7 @@ Feature: Create a new membership application
 
     And I fill in the translated form with data:
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
-      | hello@voof.se                         | 0706898525                          |
+      | hello@voof.se                      | 0706898525                        |
 
     And I select files delivery radio button "files_uploaded"
 
@@ -341,7 +353,7 @@ Feature: Create a new membership application
     And I should see t("business_categories.index.add_subcategory")
     When I fill in the translated form with data:
       | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
-      | overall grooming                               | full service grooming                                    |
+      | overall grooming                               | full service grooming                                 |
 
     When I click on t("save")
     Then I should see "overall grooming"
