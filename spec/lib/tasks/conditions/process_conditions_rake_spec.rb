@@ -122,9 +122,8 @@ RSpec.describe 'conditions/process_conditions shf:process_conditions', type: :ta
         expect(mock_log).to receive(:error).with(/#{EXPECTED_PROCESSING_EXCEPTION_LOG_ENTRY}/)
         expect(mock_log).to receive(:error).with(/Class: #{invalid_condition[0][:class_name]}/)
 
-        expect { subject.invoke }.not_to raise_error
+        subject.invoke
       end
-
     end
 
     describe 'processing AND slack notification failures does not stop condition processing' do
@@ -134,28 +133,25 @@ RSpec.describe 'conditions/process_conditions shf:process_conditions', type: :ta
         Condition.create!(invalid_condition)
 
         # Slack notification error that will be raised:
-        allow(SHFNotifySlack).to receive(:notification)
-                                   .and_raise(Slack::Notifier::APIError)
+        allow(SHFNotifySlack).to receive(:notification).and_raise(Slack::Notifier::APIError)
 
         # should never create a SlackNotifier during this test
         expect(Slack::Notifier).not_to receive(:new)
 
         valid_conditions.each do |condition|
-          expect(mock_log).to receive(:info).with(/#{condition[:class_name]}/)
+          expect(mock_log).to receive(:info).with(/Alerts::#{condition[:class_name]}/)
         end
 
-        expect(mock_log).to receive(:error).with(/#{EXPECTED_PROCESSING_EXCEPTION_LOG_ENTRY}/)
         expect(mock_log).to receive(:error).with(/Class: #{invalid_condition[0][:class_name]}/)
+        expect(mock_log).to receive(:error).with(/#{EXPECTED_PROCESSING_EXCEPTION_LOG_ENTRY}/)
 
         # Slack notification errors:
         EXPECTED_SLACK_EXCEPTION_LOG_ENTRIES.each do |slack_error|
           expect(mock_log).to receive(:error).with(/#{slack_error}/)
         end
 
-        expect { subject.invoke }.not_to raise_error
+        subject.invoke
       end
-
     end
-
   end
 end

@@ -146,7 +146,7 @@ class User < ApplicationRecord
   #   used to track or transition to/from statuses, but it is informative to show to admins and
   #   members.  It is just _informational_.
   def self.membership_statuses_incl_informational
-    aasm.states.map(&:name) + MembershipsManager.informational_statuses
+    aasm.states.map(&:name) + Memberships::MembershipsManager.informational_statuses
   end
 
 
@@ -212,7 +212,7 @@ class User < ApplicationRecord
   end
 
   def memberships_manager
-    @memberships_manager ||= MembershipsManager.new
+    @memberships_manager ||= Memberships::MembershipsManager.new
   end
 
 
@@ -327,7 +327,7 @@ class User < ApplicationRecord
 
 
   def member_in_good_standing?(date = Date.current)
-    RequirementsForMembership.requirements_met?(user: self, date: date)
+    Reqs::RequirementsForMembership.requirements_met?(user: self, date: date)
   end
 
 
@@ -375,7 +375,7 @@ class User < ApplicationRecord
   #
   def membership_status_incl_informational(this_membership = most_recent_membership)
     if membership_expires_soon?(this_membership)
-      MembershipsManager.expires_soon_status
+      Memberships::MembershipsManager.expires_soon_status
     else
       membership_status
     end
@@ -419,7 +419,7 @@ class User < ApplicationRecord
     return false if admin?
 
     (current_member? || in_grace_period?) &&
-      RequirementsForRenewal.requirements_excluding_payments_met?(self)
+      Reqs::RequirementsForRenewal.requirements_excluding_payments_met?(self)
   end
 
 
@@ -431,7 +431,7 @@ class User < ApplicationRecord
     return false if admin?
 
     (not_a_member? || former_member?) &&
-      RequirementsForMembership.requirements_excluding_payments_met?(self)
+      Reqs::RequirementsForMembership.requirements_excluding_payments_met?(self)
   end
 
 
@@ -730,7 +730,7 @@ class User < ApplicationRecord
   def adjust_related_info_for_destroy
     remove_photo_from_filesystem
     record_deleted_payorinfo_in_payment_notes(self.class, email)
-    MembershipsManager.create_archived_memberships_for(self)
+    Memberships::MembershipsManager.create_archived_memberships_for(self)
     destroy_uploaded_files
   end
 

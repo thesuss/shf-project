@@ -106,7 +106,7 @@ FactoryBot.define do
         Membership.create(user: member,
                           first_day: actual_first_day,
                           last_day: actual_last_day)
-        member.membership_status = User::STATE_CURRENT_MEMBER if MembershipsManager.new.has_membership_on?(member, Date.current)
+        member.membership_status = User::STATE_CURRENT_MEMBER if Memberships::MembershipsManager.new.has_membership_on?(member, Date.current)
 
         create(:membership_fee_payment, user: member,
                start_date: actual_first_day,

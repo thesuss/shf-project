@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'email_spec/rspec'
 require 'shared_context/unstub_paperclip_all_run_commands'
@@ -141,7 +143,7 @@ RSpec.describe User, type: :model do
         it 'creates a membership with last day = expiration date' do
           expiry = Date.current + 100
           new_member = create(:member_with_expiration_date, expiration_date: expiry)
-          expect(MembershipsManager.most_recent_membership(new_member).last_day).to eq(expiry)
+          expect(Memberships::MembershipsManager.most_recent_membership(new_member).last_day).to eq(expiry)
         end
 
         it 'sets membership status to current_member if the member has a Membership that covers Date.current' do
@@ -351,7 +353,7 @@ RSpec.describe User, type: :model do
 
     it 'memberships are archived before they are deleted' do
       member = create(:member_with_membership_app)
-      expect(MembershipsManager).to receive(:create_archived_memberships_for)
+      expect(Memberships::MembershipsManager).to receive(:create_archived_memberships_for)
                                               .with(member)
       member.destroy
     end
@@ -654,7 +656,7 @@ RSpec.describe User, type: :model do
 
 
   describe 'current_membership' do
-    it 'calls MembershipsManager to get the oldest membership covering Date.current (today)' do
+    it 'calls Memberships::MembershipsManager to get the oldest membership covering Date.current (today)' do
       expect(user.memberships_manager).to receive(:membership_on)
                                             .with(user, Date.current)
       user.current_membership
@@ -1508,7 +1510,7 @@ RSpec.describe User, type: :model do
       before(:each) { allow(u).to receive(:current_member?).and_return(true) }
 
       it 'returns the value of RequirementsForRenewal.requirements_excluding_payments_met?(self)' do
-        expect(RequirementsForRenewal).to receive(:requirements_excluding_payments_met?)
+        expect(Reqs::RequirementsForRenewal).to receive(:requirements_excluding_payments_met?)
                                             .with(u)
                                             .and_return(true)
         expect(u.allowed_to_pay_renewal_member_fee?).to be_truthy
@@ -1519,7 +1521,7 @@ RSpec.describe User, type: :model do
       before(:each) { allow(u).to receive(:in_grace_period?).and_return(true) }
 
       it 'returns the value of RequirementsForRenewal.requirements_excluding_payments_met?(self)' do
-        expect(RequirementsForRenewal).to receive(:requirements_excluding_payments_met?)
+        expect(Reqs::RequirementsForRenewal).to receive(:requirements_excluding_payments_met?)
                                                .with(u)
                                                .and_return(true)
         expect(u.allowed_to_pay_renewal_member_fee?).to be_truthy
@@ -1548,7 +1550,7 @@ RSpec.describe User, type: :model do
         before(:each) { allow(member).to receive(:not_a_member?).and_return(true) }
 
         it 'returns the value of RequirementsForMembership.requirements_excluding_payments_met?(self)' do
-          expect(RequirementsForMembership).to receive(:requirements_excluding_payments_met?)
+          expect(Reqs::RequirementsForMembership).to receive(:requirements_excluding_payments_met?)
                                                  .with(member)
                                                  .and_return(true)
           expect(member.allowed_to_pay_new_membership_fee?).to be_truthy
@@ -1559,7 +1561,7 @@ RSpec.describe User, type: :model do
         before(:each) { allow(member).to receive(:former_member?).and_return(true) }
 
         it 'returns the value of RequirementsForMembership.requirements_excluding_payments_met?(self)' do
-          expect(RequirementsForMembership).to receive(:requirements_excluding_payments_met?)
+          expect(Reqs::RequirementsForMembership).to receive(:requirements_excluding_payments_met?)
                                                  .with(member)
                                                  .and_return(true)
           expect(member.allowed_to_pay_new_membership_fee?).to be_truthy
@@ -1681,13 +1683,13 @@ RSpec.describe User, type: :model do
     it 'RequirementsForMembership is checked with the user and given date' do
       given_date = Date.current - 1
       u = build(:user)
-      expect(RequirementsForMembership).to receive(:requirements_met?).with(user: u, date: given_date)
+      expect(Reqs::RequirementsForMembership).to receive(:requirements_met?).with(user: u, date: given_date)
       u.member_in_good_standing?(given_date)
     end
 
     it 'default date is Date.current' do
       u = build(:user)
-      expect(RequirementsForMembership).to receive(:requirements_met?).with(user: u, date: Date.current)
+      expect(Reqs::RequirementsForMembership).to receive(:requirements_met?).with(user: u, date: Date.current)
       u.member_in_good_standing?
     end
   end
@@ -1819,19 +1821,19 @@ RSpec.describe User, type: :model do
     context 'the given membership expires soon' do
       it 'is the expires soon status' do
         member = create(:member, expiration_date: Date.current - 1.day)
-        mock_memberships_mgr = double(MembershipsManager, membership_on: member.most_recent_membership)
+        mock_memberships_mgr = double(Memberships::MembershipsManager, membership_on: member.most_recent_membership)
         allow(member).to receive(:memberships_manager).and_return(mock_memberships_mgr)
         allow(mock_memberships_mgr).to receive(:most_recent_membership).and_return(member.memberships.last)
 
         expect(mock_memberships_mgr).to receive(:expires_soon?).and_return(true)
-        expect(member.membership_status_incl_informational).to eq(MembershipsManager.expires_soon_status)
+        expect(member.membership_status_incl_informational).to eq(Memberships::MembershipsManager.expires_soon_status)
       end
     end
 
     context 'the given membership does not expire soon' do
       it 'is the membership status of the given membership' do
         member = create(:member, expiration_date: Date.current - 1.day)
-        mock_memberships_mgr = double(MembershipsManager, membership_on: member.current_membership)
+        mock_memberships_mgr = double(Memberships::MembershipsManager, membership_on: member.current_membership)
         allow(member).to receive(:memberships_manager).and_return(mock_memberships_mgr)
         allow(mock_memberships_mgr).to receive(:most_recent_membership).and_return(member.memberships.last)
 

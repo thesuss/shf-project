@@ -13,7 +13,6 @@ namespace :shf do
       end
     end
 
-
     use_slack_notification = true
 
     ActivityLogger.open(LogfileNamer.name_for(Condition), 'SHF_TASK', 'Conditions') do |log|
@@ -25,7 +24,20 @@ namespace :shf do
 
         unless condition.class_name == class_name
           class_name = condition.class_name
-          klass = class_name.constantize
+          klass = class_name.safe_constantize
+
+          if klass.nil?
+            original_class_name = class_name.dup
+            # check to see if this is an Alert
+            class_name = "Alerts::#{class_name}"
+            klass = class_name.safe_constantize
+
+            # if there still is no constant, raise an error with the original class_name (it's not an Alert)
+            if klass.nil?
+              class_name = original_class_name
+              class_name.constantize
+            end
+          end
         end
 
         log.info("#{class_name} ...")
@@ -38,8 +50,8 @@ namespace :shf do
           process_klass(klass, condition, log, use_slack_notification: use_slack_notification)
         end
 
-      # If the problem is because of Slack Notification .... log it and continue.
-      # Do not let it stop the processing.
+        # If the problem is because of Slack Notification .... log it and continue.
+        # Do not let it stop the processing.
       rescue Slack::Notifier::APIError => slack_error
         use_slack_notification = false
         log.error("Slack::Notifier::APIError Exception: #{slack_error.inspect}")
@@ -47,9 +59,9 @@ namespace :shf do
         log.error('Retrying the previous condition...')
         retry
 
-      # .... Otherwise, an exception was raised during condition processing -
-      #      log the error and continue with condition processing.
-      #      (If Slack connection is up, we'll have already notified via that).
+        # .... Otherwise, an exception was raised during condition processing -
+        #      log the error and continue with condition processing.
+        #      (If Slack connection is up, we'll have already notified via that).
       rescue StandardError => e
         log.error("Class: #{class_name}")
         log.error("Exception: #{e}:  #{e.inspect}")

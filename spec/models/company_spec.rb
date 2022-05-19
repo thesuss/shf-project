@@ -1300,7 +1300,7 @@ RSpec.describe Company, type: :model do
   describe 'information_complete?' do
     it 'calls RequirementsForCoInfoComplete.requirements_met?' do
       co = build(:company)
-      expect(RequirementsForCoInfoComplete).to receive(:requirements_met?)
+      expect(Reqs::RequirementsForCoInfoComplete).to receive(:requirements_met?)
                                                  .with({company: co})
       co.information_complete?
     end
@@ -1310,7 +1310,7 @@ RSpec.describe Company, type: :model do
   describe 'missing_information' do
     it 'gets the list of missing information text from RequirementsForCoInfoComplete.missing_errors' do
       co = build(:company)
-      expect(RequirementsForCoInfoComplete).to receive(:missing_info)
+      expect(Reqs::RequirementsForCoInfoComplete).to receive(:missing_info)
                                                  .with({company: co})
       co.missing_information
     end
@@ -1363,7 +1363,7 @@ RSpec.describe Company, type: :model do
   describe 'information_complete?' do
     it 'is the result of RequirementsForCoInfoComplete.requirements_met?' do
       co = build(:company)
-      expect(RequirementsForCoInfoComplete).to receive(:requirements_met?).with(company: co)
+      expect(Reqs::RequirementsForCoInfoComplete).to receive(:requirements_met?).with(company: co)
       co.information_complete?
     end
   end

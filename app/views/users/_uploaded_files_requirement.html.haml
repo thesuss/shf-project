@@ -17,7 +17,7 @@
   %p.done= complete_check_icon(html_options: {class: 'is-complete'}) + t("users.uploaded_files_requirement.#{user.membership_status}.have_been_uploaded")
   .row.justify-content-center.uploaded-files
     .col-11.required-uploaded-files
-      = render partial: 'uploaded_files/small_table_files_list', locals: { uploaded_files: RequirementsForRenewal.docs_uploaded_for_renewal(user) }
+      = render partial: 'uploaded_files/small_table_files_list', locals: { uploaded_files: Reqs::RequirementsForRenewal.docs_uploaded_for_renewal(user) }
 
 - else
   - upload_btn_title = t('users.uploaded_files_requirement.upload_file')

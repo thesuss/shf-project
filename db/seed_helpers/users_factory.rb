@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative('../seed_helpers.rb')
 require_relative '../require_all_seeders_and_helpers'
 
@@ -57,7 +59,7 @@ module SeedHelpers
 
 
     def self.grace_period_to_days
-      MembershipsManager.grace_period.to_i / 1.day.to_i
+      Memberships::MembershipsManager.grace_period.to_i / 1.day.to_i
     end
 
     def self.default_payment_processor
@@ -155,7 +157,7 @@ module SeedHelpers
       make_members_paid_through(Date.current + 1.day)
       make_members_paid_through(Date.current + 1.month)
 
-      earliest_renew_days = MembershipsManager.days_can_renew_early
+      earliest_renew_days = Memberships::MembershipsManager.days_can_renew_early
       make_members_paid_through(Date.current + earliest_renew_days)
       make_members_paid_through(Date.current + earliest_renew_days + 1)
 
@@ -190,7 +192,7 @@ module SeedHelpers
     # separate from payments.
     # @return [Array<User>] The members created.
     def make_predefined_in_grace_period_members
-      grace_pd_first_day = Date.current - MembershipsManager.grace_period + 1.day
+      grace_pd_first_day = Date.current - Memberships::MembershipsManager.grace_period + 1.day
       firstname_start = 'GracePeriod-since'
       make_members_paid_through(grace_pd_first_day, lastname: GRACEPERIODMEMBER_LNAME,
                                 firstname_prefix: firstname_start)
@@ -205,7 +207,7 @@ module SeedHelpers
     #   as well.
     # @return [Array<User>] The members created.
     def make_predefined_former_members
-      most_recent_last_day = Date.current - MembershipsManager.grace_period
+      most_recent_last_day = Date.current - Memberships::MembershipsManager.grace_period
       make_members_paid_through(most_recent_last_day - 1.day,
                                 lastname: FORMERMEMBER_LNAME,
                                 firstname_prefix: FORMERMEMBER_FNAME_PREFIX)
@@ -277,7 +279,7 @@ module SeedHelpers
 
       new_members = []
       num_former_members.times do |i|
-        last_day = Date.current - MembershipsManager.grace_period - (Random.rand(1..700))
+        last_day = Date.current - Memberships::MembershipsManager.grace_period - (Random.rand(1..700))
         new_members.concat(make_members_paid_through(last_day,
                                                      firstname_prefix: "#{FORMERMEMBER_FNAME_PREFIX}#{i}",
                                                      lastname: name_with_random(FORMERMEMBER_LNAME)))

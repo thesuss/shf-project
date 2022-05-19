@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require_relative File.join(Rails.root, 'db', 'seeders', 'app_configuration_seeder')
 require_relative File.join(__dir__, '..', 'shared_context', 'mock_app_configuration')
@@ -46,8 +48,8 @@ def stub_membership_terms_and_days
   # stub these so AppConfiguration is not called:
   allow(SeedHelpers::UsersFactory).to receive(:term_length_to_days).and_return(TERM_LENGTH_DAYS)
   allow(SeedHelpers::UsersFactory).to receive(:grace_period_to_days).and_return(GRACE_PERIOD_DAYS)
-  allow(MembershipsManager).to receive(:days_can_renew_early).and_return(CAN_RENEW_EARLY_DAYS)
-  allow(MembershipsManager).to receive(:is_expiring_soon_amount).and_return(EXPIRING_SOON_DAYS)
+  allow(Memberships::MembershipsManager).to receive(:days_can_renew_early).and_return(CAN_RENEW_EARLY_DAYS)
+  allow(Memberships::MembershipsManager).to receive(:is_expiring_soon_amount).and_return(EXPIRING_SOON_DAYS)
 end
 
 

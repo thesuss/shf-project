@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../../app/models/logfile_namer'
+require_relative '../../app/services/logfile_namer'
 
 
 RSpec.describe UsersController, type: :controller do

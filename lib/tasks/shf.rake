@@ -425,11 +425,11 @@ namespace :shf do
     def can_renew_results(members_to_renew, renewal_date = Date.current)
       renewal_results = []
       (members_to_renew).each do |u|
-        req_result = RequirementsForRenewal.requirements_excluding_payments_met?(u, renewal_date)
+        req_result = Reqs::RequirementsForRenewal.requirements_excluding_payments_met?(u, renewal_date)
         renewal_results << {
           user_id: u.id,
           result: req_result,
-          failure_reason: RequirementsForRenewal.failed_requirements
+          failure_reason: Reqs::RequirementsForRenewal.failed_requirements
         }
       end
       renewal_results
@@ -456,13 +456,13 @@ namespace :shf do
 
     reqs_for_renewal_results = []
     (can_renew_today).sort_by{|u| u.id}.each do |u|
-      req_result = RequirementsForRenewal.requirements_excluding_payments_met?(u, check_renewal_date)
+      req_result = Reqs::RequirementsForRenewal.requirements_excluding_payments_met?(u, check_renewal_date)
       reqs_for_renewal_results << {
         user_id: u.id,
         most_recent_membership_first_day: u.most_recent_membership&.first_day,
         most_recent_membership_last_day: u.most_recent_membership&.last_day,
         result: req_result,
-        failure_reason: RequirementsForRenewal.failed_requirements
+        failure_reason: Reqs::RequirementsForRenewal.failed_requirements
       }
     end
 

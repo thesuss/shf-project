@@ -207,7 +207,7 @@ class Company < ApplicationRecord
   end
 
   def information_complete?
-    RequirementsForCoInfoComplete.requirements_met? company: self
+   Reqs::RequirementsForCoInfoComplete.requirements_met? company: self
   end
   # alias_method :information_complete?, :complete?
 
@@ -216,7 +216,7 @@ class Company < ApplicationRecord
   end
 
   def missing_information
-    RequirementsForCoInfoComplete.missing_info company: self
+   Reqs::RequirementsForCoInfoComplete.missing_info company: self
   end
 
 
