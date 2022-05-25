@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.6'
+ruby '2.7.6'
 
 gem 'dotenv-rails'
 gem 'rails', '~> 5.2.7.1'
@@ -83,8 +83,8 @@ if RUBY_PLATFORM =~ /aarch/
   gem 'libv8-node', '16.10.0.0'
 else
   # these gem versions don't support arm
-  gem 'mini_racer', '~> 0.2.1', platforms: :ruby
-  gem 'libv8', '< 8.0'
+  gem 'mini_racer', platforms: :ruby
+  gem 'libv8-node', platforms: :ruby # use libv8-node to be in sync with aarch (ARM) architecture
 end
 # rubocop:enable Bundler/DuplicatedGem
 

@@ -20,6 +20,10 @@ module UpdatedAtRange
     #
     # @return all objects where updated_at: >= start date AND updated_at: <= end_date
     def self.updated_in_date_range(start_date, end_date)
+      # even though ruby >= 2.7 allows the start of a Range to be empty,
+      # ActiveRecord (postgres BETWEEN command) does not.
+      raise ArgumentError, "start_date cannot be nil (start_date = #{start_date}, end_date = #{end_date})" if start_date.blank?
+
       if !!end_date
         where(updated_at: start_date..end_date)
       else

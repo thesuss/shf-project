@@ -44,6 +44,14 @@ end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+# WebMock will keep opening connections, eventually causing Capybara to throw a "too many open files..." error
+#  (It will look something like this: Too many open files - socket(2) for "127.0.0.1" port 9518)  (Errno::EMFILE)
+#
+# To fix/stop this, use the following line:
+#   @see https://github.com/bblimke/webmock/blob/master/README.md#connecting-on-nethttpstart
+#   @see https://github.com/teamcapybara/capybara#gotchas
+#
+WebMock.allow_net_connect!(net_http_connect_on_start: true)
 
 # These sites are where to download webdrivers.  @todo are these needed anymore?
 # WebMock and VCR need to 'allow' them.

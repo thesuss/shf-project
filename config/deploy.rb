@@ -18,9 +18,8 @@
 
 # config valid only for Capistrano 3.11
 lock '~> 3.11'
-
 set :rbenv_type, :user
-set :rbenv_ruby, '2.6.6'
+set :rbenv_ruby, '2.7.6'
 
 set :application, 'shf'
 set :repo_url, ENV['SHF_GIT_REPO']
@@ -31,8 +30,6 @@ set :deploy_to, ENV['SHF_APP_PATH']
 # Ensure the binstubs (files in /bin) are generated on each deploy. (From capistrano-bundle gem: https://github.com/capistrano/bundler)
 set :bundle_binstubs, -> { shared_path.join('bin') }
 
-# Ubuntu 20.04 seems to leave less memory available, so set the number of bundle install jobs to just 2 to save memory
-set :bundle_jobs, 2
 # So we can see exactly what happens for debugging, do not use the default --quiet flag
 set :bundle_flags, ''
 

@@ -164,27 +164,42 @@ class User < ApplicationRecord
     # You can pass the (keyword) arguments
     #    date: <Date>
     #    send_email: [true | false]
-    # to methods that are called
-    # @see https://github.com/aasm/aasm#callbacks
+    # to methods that are called.
+    # Ex:
+    #   user.renew!(date: next_membership_start_date, send_email: send_email)
+    #  or
+    #   user.start_grace_period!(send_email: send_email)
+    #
+    #   @see https://github.com/aasm/aasm#callbacks
+    #
+    # Splats are confusing. Sometimes they _deconstruct_ and array, sometimes they _construct_,
+    # and sometimes they coerce items to an Array.
+    # In the after: args below, we use code like this: Proc.new {|*args| <method>(*args)
+    #   |*args| is taking whatever is passed in as an argument and coercing it into an Array
+    #   <method>(*args) is _constructing_ an Array from args
+    #
+    #   @see https://thoughtbot.com/blog/ruby-splat-operator
+    #   @see https://www.honeybadger.io/blog/ruby-splat-array-manipulation-destructuring/
+    #
 
     event :start_membership do
-      transitions from: [:not_a_member, :current_member, :former_member], to: :current_member, after: Proc.new {|*args| start_membership_on(*args) }
+      transitions from: [:not_a_member, :current_member, :former_member], to: :current_member, after: Proc.new {|args| start_membership_on(**args) }
     end
 
     event :renew do
-      transitions from: [:current_member, :in_grace_period], to: :current_member, after: Proc.new {|*args| renew_membership_on(*args) }
+      transitions from: [:current_member, :in_grace_period], to: :current_member, after: Proc.new {|args| renew_membership_on(**args) }
     end
 
     event :start_grace_period do
-      transitions from: :current_member, to: :in_grace_period, after: Proc.new {|*args| enter_grace_period(*args) }
+      transitions from: :current_member, to: :in_grace_period, after: Proc.new {|args| enter_grace_period(**args) }
     end
 
     event :make_former_member do
-      transitions from: :in_grace_period, to: :former_member, after: Proc.new {|*args| become_former_member(*args) }
+      transitions from: :in_grace_period, to: :former_member, after: Proc.new {|args| become_former_member(**args) }
     end
 
     event :restore_membership do
-      transitions from: :in_grace_period, to: :current_member, after: Proc.new {|*args| restore_from_grace_period(*args) }
+      transitions from: :in_grace_period, to: :current_member, after: Proc.new {|args| restore_from_grace_period(**args) }
     end
   end
 

@@ -36,17 +36,18 @@ blocks:
             - checkout
             - wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
             - sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
-            - sem-version ruby 2.6.6
+            - sem-version ruby 2.7.6
             - cache restore
             - gem install bundler:2.2.21
             - bundle config set path 'vendor/bundle'
             - bundle install
-            - cp /usr/local/bin/wkhtmltoimage vendor/bundle/ruby/2.6.0/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64
+            - cp /usr/local/bin/wkhtmltoimage vendor/bundle/ruby/2.7.0/gems/wkhtmltoimage-binary-0.12.5/libexec/wkhtmltoimage-amd64
             - cache store
+      # is the above cp ... wkhtmltoimage statement necessary?
 
   - name: 'Tests'
     # This block runs three jobs in parallel and they both share common
-    # setup steps. We can group them in a prologue.
+    # setup steps. We group the common setup steps in a prologue.
     # See https://docs.semaphoreci.com/reference/pipeline-yaml-reference/#prologue
     task:
       prologue:
@@ -59,7 +60,7 @@ blocks:
           # Start Postgres database service.
           # See https://docs.semaphoreci.com/reference/toolbox-reference/#sem-service
           - sem-service start postgres 11 --username=postgres --password=
-          - sem-version ruby 2.6.6
+          - sem-version ruby 2.7.6
 
           - gem install bundler:2.2.21  # this is not in the project Gemfile
           # Bundler requires 'install' to run even though cache has been restored.

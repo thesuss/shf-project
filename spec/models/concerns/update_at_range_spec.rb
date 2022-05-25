@@ -70,7 +70,7 @@ RSpec.describe 'UpdateAtRange' do
 
   context 'invalid arguments' do
     it 'raises exception if start_date is nil: ArgumentError: bad value for range' do
-      expect{class_that_includes.updated_in_date_range(nil, end_date)}.to raise_exception ArgumentError, 'bad value for range'
+      expect{class_that_includes.updated_in_date_range(nil, end_date)}.to raise_exception ArgumentError, /start_date cannot be nil/
     end
 
     it 'raises exception if start_date is not a date: ArgumentError: bad value for range' do
