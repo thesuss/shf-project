@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Membership, type: :model do
-  let(:user1) { create(:user, first_name: 'User1') }
-  let(:user2) { create(:user, first_name: 'User2') }
+  let(:owner1) { create(:user, first_name: 'User1') }
+  let(:owner2) { create(:user, first_name: 'User2') }
 
   let(:aug30_2020) { Date.new(2020, 8, 30) }
   let(:sept1_2020) { Date.new(2020, 9, 1) }
@@ -17,19 +17,19 @@ RSpec.describe Membership, type: :model do
   let(:sept1_2023) { Date.new(2023, 9, 1) }
   let(:aug30_2024) { Date.new(2024, 8, 30) }
 
-  let(:u1membership_202109) { create(:membership, user: user1,
+  let(:u1membership_202109) { create(:membership, owner: owner1,
                                      member_number: 'u1membership_202109',
                                      first_day: sept1_2021,
                                      last_day: aug30_2022) }
-  let(:u1membership_202209) { create(:membership, user: user1,
+  let(:u1membership_202209) { create(:membership, owner: owner1,
                                      member_number: 'u1membership_202209',
                                      first_day: sept1_2022,
                                      last_day: aug30_2023) }
-  let(:u2membership_202009) { create(:membership, user: user2,
+  let(:u2membership_202009) { create(:membership, owner: owner2,
                                      member_number: 'u2membership_202009',
                                      first_day: sept1_2020,
                                      last_day: aug30_2021) }
-  let(:u2membership_202109) { create(:membership, user: user2,
+  let(:u2membership_202109) { create(:membership, owner: owner2,
                                      member_number: 'u2membership_202109',
                                      first_day: sept1_2021,
                                      last_day: aug30_2022) }
@@ -58,11 +58,11 @@ RSpec.describe Membership, type: :model do
 
     it 'sorted by :last_day (asc) then :id (asc), oldest last_day is first' do
       make_all_memberships
-      u1membership_202109_2yrs_long = create(:membership, user: user1,
+      u1membership_202109_2yrs_long = create(:membership, owner: owner1,
                                          member_number: 'u1membership_202109_2yrs_long',
                                          first_day: sept1_2021,
                                          last_day: aug30_2023)
-      u1membership_202209_2yrs_long = create(:membership, user: user1,
+      u1membership_202209_2yrs_long = create(:membership, owner: owner1,
                                          member_number: 'u1membership_202209_2yrs_long',
                                          first_day: sept1_2022,
                                          last_day: aug30_2024)
@@ -75,15 +75,15 @@ RSpec.describe Membership, type: :model do
   end
 
 
-  describe '.for_user_covering_date' do
-    it 'where user is the given user' do
+  describe '.for_owner_covering_date' do
+    it 'where owner is the given owner' do
       make_all_memberships
-      expect(described_class.for_user_covering_date(user2, sept1_2021).to_a).to match_array([u2membership_202109])
+      expect(described_class.for_owner_covering_date(owner2, sept1_2021).to_a).to match_array([u2membership_202109])
     end
 
     it 'calls .covering_date with the given date' do
       expect(described_class).to receive(:covering_date).with(sept2_2021)
-      described_class.for_user_covering_date(user1, sept2_2021)
+      described_class.for_owner_covering_date(owner1, sept2_2021)
     end
   end
 
@@ -108,21 +108,21 @@ RSpec.describe Membership, type: :model do
   end
 
 
-  describe '.for_user_starting_on_or_after' do
+  describe '.for_owner_starting_on_or_after' do
 
-    it 'only returns memberships for the user' do
+    it 'only returns memberships for the owner' do
       make_all_memberships
-      expect(described_class.for_user_starting_on_or_after(user1).map(&:user).include?(user2)).to be_falsey
+      expect(described_class.for_owner_starting_on_or_after(owner1).map(&:owner).include?(owner2)).to be_falsey
     end
 
     it 'default first_day is Date.current' do
       expect(described_class).to receive(:starting_on_or_after).with(Date.current)
-      described_class.for_user_starting_on_or_after(user1)
+      described_class.for_owner_starting_on_or_after(owner1)
     end
 
     it 'only returns memberships with the first day on or after the first_day' do
       make_all_memberships
-      expect(described_class.for_user_starting_on_or_after(user1, sept1_2021).map(&:first_day))
+      expect(described_class.for_owner_starting_on_or_after(owner1, sept1_2021).map(&:first_day))
         .to match_array([sept1_2021, sept1_2022])
     end
   end
@@ -204,11 +204,11 @@ RSpec.describe Membership, type: :model do
     end
 
 
-    it 'true if no other memberships for this user' do
+    it 'true if no other memberships for this owner' do
       expect(u1membership_202109.first_membership?(time_period: (Date.current - sept1_2021))).to be_truthy
     end
 
-    context 'at least one other memberships for this user' do
+    context 'at least one other memberships for this owner' do
       before(:each) { make_all_memberships }
 
       it 'false if there is one within the given time frame' do
@@ -226,21 +226,21 @@ RSpec.describe Membership, type: :model do
     let(:start_date) { sept1_2022 }
     let(:given_time_period) { 1.year }
 
-    it 'calls the class method (scope) to get all memberships for this user, starting on or after starting date - time_period' do
-      expect(described_class).to receive(:for_user_starting_on_or_after)
-                                   .with(u1membership_202209.user, start_date - given_time_period)
+    it 'calls the class method (scope) to get all memberships for this owner, starting on or after starting date - time_period' do
+      expect(described_class).to receive(:for_owner_starting_on_or_after)
+                                   .with(u1membership_202209.owner, start_date - given_time_period)
       u1membership_202209.any_membership_within(given_time_period, starting_date: start_date)
     end
 
     it 'default time period is the time limit for the definition of a first membership' do
-      expect(described_class).to receive(:for_user_starting_on_or_after)
-                                   .with(u1membership_202209.user, start_date - Membership.first_membership_time_period)
+      expect(described_class).to receive(:for_owner_starting_on_or_after)
+                                   .with(u1membership_202209.owner, start_date - Membership.first_membership_time_period)
       u1membership_202209.any_membership_within(starting_date: start_date)
     end
 
     it 'default starting date is Date.current' do
-      expect(described_class).to receive(:for_user_starting_on_or_after)
-                                   .with(u1membership_202209.user, Date.current - given_time_period)
+      expect(described_class).to receive(:for_owner_starting_on_or_after)
+                                   .with(u1membership_202209.owner, Date.current - given_time_period)
       u1membership_202209.any_membership_within(given_time_period)
     end
   end

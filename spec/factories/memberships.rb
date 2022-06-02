@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :membership do
-    user
+    owner { build(:user) }
     member_number { "1234 some number" }
     first_day { Time.zone.now - 11.months }
     last_day { Time.zone.now + 1.months - 1.day }

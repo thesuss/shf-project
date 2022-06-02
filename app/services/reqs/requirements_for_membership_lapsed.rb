@@ -21,19 +21,15 @@ module Reqs
   #
   #--------------------------
   #
-  class RequirementsForMembershipLapsed < AbstractRequirements
-
-    def self.has_expected_arguments?(args)
-      args_have_keys?(args, [:user])
-    end
+  class RequirementsForMembershipLapsed < AbstractReqsForMember
 
     # A Membership has lapsed if
     #   they are now in the (renewal) grace period
     # OR
     #   they are a former member
     def self.requirements_met?(args)
-      user = args[:user]
-      user.in_grace_period? || user.former_member?
+      entity = args[:entity]
+      entity.in_grace_period? || entity.former_member?
     end
 
   end

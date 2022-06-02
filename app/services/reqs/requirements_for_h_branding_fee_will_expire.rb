@@ -17,24 +17,22 @@ module Reqs
   #
   #  Only 1 is needed for the system.
   #
+  # @fixme how is this any different from checking that a company is in good standing / current?
+  #
   # @author Ashley Engelund (ashley@ashleycaroline.com  weedySeaDragon @ github)
   # @date   2019-03-05
   # @file requirements_for_h_branding_fee_will_expire.rb
   #
   #--------------------------
 
-  class RequirementsForHBrandingFeeWillExpire < AbstractRequirements
-
-    def self.has_expected_arguments?(args)
-      args_have_keys?(args, [:company])
-    end
+  class RequirementsForHBrandingFeeWillExpire < AbstractReqsForMember
 
     # The _prerequisites_ are met for for an H-Branding fee to expire in the future
     # if there are current members in the company
     #  AND the branding_license IS current
-    # FIXME: this means the company is in good standing (or the company is a current_member)
+    # @fixme this means the company is in good standing (or the company is a current_member). Use that method instead?
     def self.requirements_met?(args)
-      company = args[:company]
+      company = args[:entity]
       company.current_members.any? && company.branding_license?
     end
 

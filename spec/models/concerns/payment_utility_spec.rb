@@ -75,6 +75,49 @@ RSpec.describe 'PaymentUtility', type: :model do
   end
 
 
+  describe 'payments_current_as_of? checks (membership) payment status as of a given date' do
+
+    it 'is false if nil is the given date' do
+      expect((build :user).payments_current_as_of?(nil)).to be_falsey
+    end
+
+    context 'payments have not expired yet' do
+
+      let(:paid_member) { create(:member, first_day: jan_1) }
+
+      it 'true as of dec 1, start = jan 1, expire = dec 31' do
+        expect(paid_member.membership_expire_date).to eq dec_31
+        expect(paid_member.payments_current_as_of?(dec_1)).to be_truthy
+      end
+    end
+
+    context 'testing dates right before, on, and after expire_date' do
+
+      let(:paid_expires_today_member) { create(:member, first_day: lastyear_dec_3) }
+
+      it 'true as of nov 30, start = dec 3 last year, expire = dec 2' do
+        expect(paid_expires_today_member.membership_expire_date).to eq dec_2
+        expect(paid_expires_today_member.payments_current_as_of?(nov_30)).to be_truthy
+      end
+
+      it 'true as of dec 1, start = dec 3 last year, expire = dec 2' do
+        expect(paid_expires_today_member.membership_expire_date).to eq dec_2
+        expect(paid_expires_today_member.payments_current_as_of?(dec_1)).to be_truthy
+      end
+
+      it 'false as of dec 2, start = dec 3 last year, expire = dec 2' do
+        expect(paid_expires_today_member.membership_expire_date).to eq dec_2
+        expect(paid_expires_today_member.payments_current_as_of?(dec_2)).to be_falsey
+      end
+
+      it 'false today = dec 3, start = dec 3 last year, expire = dec 2' do
+        expect(paid_expires_today_member.membership_expire_date).to eq dec_2
+        expect(paid_expires_today_member.payments_current_as_of?(dec_3)).to be_falsey
+      end
+    end
+  end
+
+
   describe 'payment_start_date' do
 
     it 'is nil if no payments' do

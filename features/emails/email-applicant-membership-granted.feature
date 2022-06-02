@@ -13,9 +13,9 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email              | admin |
+      | email           | admin |
       | member@mutts.se |       |
-      | admin@shf.com      | true  |
+      | admin@shf.com   | true  |
 
 
     And the following business categories exist
@@ -31,7 +31,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
       | Happy Mutts | 5562252998     | voof@happymutts.se | Stockholm |
 
     And the following applications exist:
-      | user_email         | company_number | categories | state    |
+      | user_email      | company_number | categories | state    |
       | member@mutts.se | 5562252998     | Groomer    | accepted |
 
 
@@ -55,6 +55,8 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     Then I am on the "user account" page
     And I should see "2018-12-31"
     And I should be a member
+    # email 1 = 'Bekräftelse på betald Medlemskap' (payment confirmation for membership)
+    # email 2 = 'Välkommen som medlem i Sveriges Hundföretagare' membership granted (welcome to SHF)
     Then "member@mutts.se" should receive 2 emails
     And I am logged in as "member@mutts.se"
     And I open the email

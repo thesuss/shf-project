@@ -943,7 +943,7 @@ RSpec.describe Company, type: :model do
     end
 
 
-    describe '.self.next_branding_payment_dates' do
+    describe '.self.next_membership_payment_dates' do
 
       around(:each) do |example|
         travel_to(payment_date_2018) do
@@ -952,23 +952,23 @@ RSpec.describe Company, type: :model do
       end
 
       it "returns today's date for first payment start date" do
-        expect(Company.next_branding_payment_dates(complete_co1.id)[0]).to eq Time.zone.today
+        expect(Company.next_membership_payment_dates(complete_co1.id)[0]).to eq Time.zone.today
       end
 
       it 'returns one year later for first payment expire date' do
-        expect(Company.next_branding_payment_dates(complete_co1.id)[1])
+        expect(Company.next_membership_payment_dates(complete_co1.id)[1])
             .to eq Time.zone.today + 1.year - 1.day
       end
 
       it 'returns date-after-expiration for second payment start date' do
         payment1_co1
-        expect(Company.next_branding_payment_dates(complete_co1.id)[0])
+        expect(Company.next_membership_payment_dates(complete_co1.id)[0])
             .to eq Time.zone.today + 1.year
       end
 
       it 'returns one year later for second payment expire date' do
         payment1_co1
-        expect(Company.next_branding_payment_dates(complete_co1.id)[1])
+        expect(Company.next_membership_payment_dates(complete_co1.id)[1])
             .to eq Time.zone.today + 1.year + 1.year - 1.day
       end
 
@@ -978,7 +978,7 @@ RSpec.describe Company, type: :model do
           payment1_co1
           travel_back # travel back from the travel_to around each example
           travel_to(payment_date_2020) do
-            expect(Company.next_branding_payment_dates(complete_co1.id)[0])
+            expect(Company.next_membership_payment_dates(complete_co1.id)[0])
               .to eq payment_date_2020
           end
         end
@@ -987,7 +987,7 @@ RSpec.describe Company, type: :model do
           payment1_co1
           travel_back # travel back from the travel_to around each example
           travel_to(payment_date_2020) do
-            expect(Company.next_branding_payment_dates(complete_co1.id)[1])
+            expect(Company.next_membership_payment_dates(complete_co1.id)[1])
               .to eq payment_date_2020 + 1.year - 1.day
           end
         end
@@ -1298,20 +1298,18 @@ RSpec.describe Company, type: :model do
 
 
   describe 'information_complete?' do
-    it 'calls RequirementsForCoInfoComplete.requirements_met?' do
+    it 'is the result of CoInfoCompleteReqs.requirements_met?' do
       co = build(:company)
-      expect(Reqs::RequirementsForCoInfoComplete).to receive(:requirements_met?)
-                                                 .with({company: co})
+      expect(Reqs::CoInfoCompleteReqs).to receive(:satisfied?).with(entity: co)
       co.information_complete?
     end
   end
 
 
   describe 'missing_information' do
-    it 'gets the list of missing information text from RequirementsForCoInfoComplete.missing_errors' do
+    it 'gets the list of missing information text from CoInfoCompleteReqs.missing_errors' do
       co = build(:company)
-      expect(Reqs::RequirementsForCoInfoComplete).to receive(:missing_info)
-                                                 .with({company: co})
+      expect(Reqs::CoInfoCompleteReqs).to receive(:missing_info).with({entity: co})
       co.missing_information
     end
   end
@@ -1358,16 +1356,6 @@ RSpec.describe Company, type: :model do
       expect(co.in_good_standing?).to be_falsey
     end
   end
-
-
-  describe 'information_complete?' do
-    it 'is the result of RequirementsForCoInfoComplete.requirements_met?' do
-      co = build(:company)
-      expect(Reqs::RequirementsForCoInfoComplete).to receive(:requirements_met?).with(company: co)
-      co.information_complete?
-    end
-  end
-
 
   describe 'searchable?' do
     let(:co) { build(:company) }

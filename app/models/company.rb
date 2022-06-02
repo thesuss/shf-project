@@ -13,6 +13,7 @@ require_relative File.join('..', 'services', 'address_exporter')
 #
 #
 class Company < ApplicationRecord
+  include IsMember
   include PaymentUtility
   include HasSwedishOrganization
   include Dinkurs::Errors
@@ -39,6 +40,8 @@ class Company < ApplicationRecord
   has_many :users, through: :shf_applications
   has_many :events, dependent: :destroy
 
+  has_many :memberships, as: :owner, dependent: :destroy, class_name: "CompanyMembership"
+
   has_many :payments, dependent: :nullify
   # ^^ need to retain h-branding payment(s) so that the total amount of $ paid to SHF is correct
   accepts_nested_attributes_for :payments
@@ -46,8 +49,8 @@ class Company < ApplicationRecord
   # @todo this is a really ugly query. Why does it return multiples? (why is .distinct necessary?) Is there any way to clean it up?
   # This should only be used in testing when materialized views cannot be used.
   has_many :business_categories,
-              -> { joins(shf_applications: [:user]).where(users: { membership_status: :current_member }).distinct },
-              through: :shf_applications
+           -> { joins(shf_applications: [:user]).where(users: { membership_status: :current_member }).distinct },
+           through: :shf_applications
 
   has_many :addresses, as: :addressable, dependent: :destroy,
            inverse_of: :addressable
@@ -63,7 +66,6 @@ class Company < ApplicationRecord
   alias_method :categories, :business_categories
   delegate :visible, to: :addresses, prefix: true
 
-
   THIS_PAYMENT_TYPE = Payment::PAYMENT_TYPE_BRANDING
 
   scope :has_name, -> { where.not(name:nil).where.not(name: '') }
@@ -78,9 +80,8 @@ class Company < ApplicationRecord
   # This includes Companies that have no addresses:
   scope :no_address_or_lacks_region, -> { where.not(id: Address.company_address.has_region.pluck(:addressable_id)) }
 
-
   # @fixme find all calls, replace with appropriate Membership... class method
-  def self.next_branding_payment_dates(company_id)
+  def self.next_membership_payment_dates(company_id)
     next_payment_dates(company_id, THIS_PAYMENT_TYPE)
   end
 
@@ -90,7 +91,6 @@ class Company < ApplicationRecord
 
   # -----------------------------------------------------------------------------------------------
 
-
   def self.clear_all_h_brand_jpg_caches
     all.each do |company|
       company.clear_h_brand_jpg_cache
@@ -98,7 +98,7 @@ class Company < ApplicationRecord
   end
 
   # Note: If the rules/definition for a 'complete' company changes, this scope
-  # must be changed in addition to the code in RequirementsForCoInfoComplete
+  # must be changed in addition to the code in CoInfoCompleteReqs
   #
   # A company has a name (not nil, not an empty string)
   #  AND
@@ -108,27 +108,27 @@ class Company < ApplicationRecord
   def self.information_complete
     has_name.addresses_have_region
   end
-  singleton_class.alias_method :complete_information, :information_complete
 
+  singleton_class.alias_method :complete_information, :information_complete
 
   def self.not_complete
     blank_name.or(self.no_address_or_lacks_region)
   end
+
   singleton_class.alias_method :not_complete_information, :not_complete
 
   def self.branding_licensed
     # All companies (distinct) with at least one unexpired branding payment
     joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
   end
-  singleton_class.alias_method :branding_license_current, :branding_licensed
 
+  singleton_class.alias_method :branding_license_current, :branding_licensed
 
   def self.address_visible
     # Return ActiveRecord::Relation object for all companies (distinct) with at
     # least one visible address
     joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
   end
-
 
   # @todo yuck
   def self.with_members
@@ -145,13 +145,11 @@ class Company < ApplicationRecord
   singleton_class.alias_method :current_with_current_members, :searchable
   singleton_class.alias_method :in_good_standing, :searchable
 
-
   # all companies at these addresses (array of Address)
   def self.at_addresses(addresses)
     joins(:addresses)
-        .where(id: addresses.map(&:addressable_id) )
+      .where(id: addresses.map(&:addressable_id))
   end
-
 
   def self.with_dinkurs_id
     where.not(dinkurs_company_id: [nil, '']).order(:id)
@@ -167,7 +165,6 @@ class Company < ApplicationRecord
     "case when companies.name <> '' AND addresses.addressable_type = 'Company' AND addresses.region_id IS NOT NULL then TRUE else FALSE END".freeze
   end
 
-
   def self.sort_by_information_complete(sort_direction = :asc)
     joins(:addresses).order(Arel.sql("#{is_complete_case_boolean} #{sort_direction.to_s.upcase}"))
   end
@@ -182,6 +179,7 @@ class Company < ApplicationRecord
 
   # ===============================================================================================
 
+  # @fixme - change to Membership (is now just getting info from a Payment)
   alias_method :current_membership, :most_recent_payment
 
   # @todo rename this to current_with_current_members? or in_good_standing_with_current_members? (Company should not be responsible for knowing what is 'searchable' in the UI)
@@ -189,12 +187,23 @@ class Company < ApplicationRecord
   def searchable?
     branding_license_current? && current_members.any?
   end
+
   alias_method :current_with_current_members?, :searchable?
 
   def add_observers
     add_observer DbViews::CurrentCompany, :company_status_changed
     add_observer DbViews::CompanyAndMember, :company_status_changed
     add_observer DbViews::CompanyAndCategory, :company_status_changed
+  end
+
+  # The Requirements class that has all the requirements for membership
+  def requirements_for_membership
+    Reqs::CompanyMembershipReqs
+  end
+
+  # The Requirements class that has all the requirements for renewal
+  def requirements_for_renewal
+    Reqs::CompanyRenewalReqs
   end
 
   def membership_changed
@@ -207,8 +216,9 @@ class Company < ApplicationRecord
   end
 
   def information_complete?
-   Reqs::RequirementsForCoInfoComplete.requirements_met? company: self
+   Reqs::CoInfoCompleteReqs.satisfied? entity: self
   end
+
   # alias_method :information_complete?, :complete?
 
   def missing_region?
@@ -216,12 +226,13 @@ class Company < ApplicationRecord
   end
 
   def missing_information
-   Reqs::RequirementsForCoInfoComplete.missing_info company: self
+   Reqs::CoInfoCompleteReqs.missing_info entity: self
   end
 
 
+  # @fixme can we use a Materialized view?
+  # @return [ActiveRecord::Relation]
   def approved_applications_from_members
-    # Returns ActiveRecord Relation
     shf_applications.accepted.joins(:user)
       .order('users.last_name').where('users.member = ?', true)
   end
@@ -236,14 +247,12 @@ class Company < ApplicationRecord
     end
   end
 
-
   # @return [Array[User]] - all users in the company with accepted applications
   def accepted_applicants
     return [] if shf_applications.empty?
 
     shf_applications.select(&:accepted?).map(&:user)
   end
-
 
   def valid_key_and_fetch_dinkurs_events?(on_update: true)
     return true if on_update and !will_save_change_to_attribute?('dinkurs_company_id')
@@ -262,24 +271,20 @@ class Company < ApplicationRecord
     return result
   end
 
-
   def fetch_dinkurs_events
     events.clear
     return if dinkurs_company_id.blank?
     Dinkurs::EventsCreator.new(self, events_start_date).call
   end
 
-
   def events_start_date
     # Fetch events that start on or after this date
     1.day.ago.to_date
   end
 
-
   def any_visible_addresses?
     addresses_visible.any?
   end
-
 
   # This depends on materialized views in the database, which are created based on the current DB time.
   # That cannot be easily stubbed during tests, so instead we have a conditional to see if we're doing tests.
@@ -291,9 +296,8 @@ class Company < ApplicationRecord
                  else
                    DbViews::CompanyAndCategory.where(company_id: id).map(&:business_category)
                  end
-    include_subcategories ? categories : categories.select{|category| category.ancestry.blank? }
+    include_subcategories ? categories : categories.select { |category| category.ancestry.blank? }
   end
-
 
   # Ex with production data (2022-05-13):
   #  happyco = Company.where(company_number: '5590281829').first
@@ -336,25 +340,22 @@ class Company < ApplicationRecord
     names
   end
 
-
   # @fixme only show if address visibility allows it
   def addresses_region_names
     addresses.joins(:region).select('regions.name').distinct.pluck('regions.name')
   end
-
 
   # @fixme only show if address visibility allows it
   def kommuns_names
     addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
-
   # @fixme only show if address visibility allows it
   def cities_names
     addresses.select(:city).distinct.pluck(:city)
   end
 
-
+  # @fixme replace with most_recent_membership_payment everywhere
   def most_recent_branding_payment
     most_recent_payment(THIS_PAYMENT_TYPE)
   end
@@ -376,8 +377,8 @@ class Company < ApplicationRecord
     # @todo can use payment_term_expired?(THIS_PAYMENT_TYPE)
     branding_expire_date&.future? == true # == true prevents this from ever returning nil
   end
-  alias_method :branding_license_current?, :branding_license?
 
+  alias_method :branding_license_current?, :branding_license?
 
   # @todo this should not be the responsibility of the Company class. Need a MembershipManager class for this. (or common Membership class...)
   # @fixme change calls to either payment_notes or current_membership.notes
@@ -385,10 +386,9 @@ class Company < ApplicationRecord
     payment_notes(THIS_PAYMENT_TYPE)
   end
 
-
   # This is used to calculate when an H-Branding fee is due if there has not been any H-Branding fee paid yet
   # @todo this should go in a class responsible for knowing how to calculate when H-Branding fees are due (perhaps a subclass of PaymentUtility named something like CompanyPaymentsDueCalculator )
-  #
+  # @fixme
   # This really is about the _payment_ and not about the date of the membership(s)
   # @return [nil, Time] if there are no current members
   #   else the earliest membership fee payment.created_at of all current members
@@ -397,13 +397,15 @@ class Company < ApplicationRecord
   end
 
 
-  def destroy_checks
-
-    error_if_has_applications?
-
-    record_deleted_payorinfo_in_payment_notes
+  def next_membership_payment_dates
+    self.class.next_membership_payment_dates(self.id)
   end
 
+
+  def destroy_checks
+    error_if_has_applications?
+    record_deleted_payorinfo_in_payment_notes
+  end
 
   # do not delete a Company if it has ShfApplications that are accepted
   def error_if_has_applications?
@@ -414,12 +416,8 @@ class Company < ApplicationRecord
       # Rails 5: must throw
       throw(:abort)
     end
-
     true
-
   end
-
-
 
   # @fixme - the company member(s) need to set this.  Picking the 'first' one is arbitrary and may be wrong
   def main_address
@@ -433,11 +431,9 @@ class Company < ApplicationRecord
     new_address
   end
 
-
   def se_mailing_csv_str
-      AddressExporter.se_mailing_csv_str( main_address )
+    AddressExporter.se_mailing_csv_str(main_address)
   end
-
 
   def get_short_h_brand_url(url)
     found = self.short_h_brand_url
@@ -451,29 +447,29 @@ class Company < ApplicationRecord
     end
   end
 
-
+  # @fixme use cache methods in IsMember. Will invalidate cache entries? task to recreate them all
   def cache_key(type)
     "company_#{id}_cache_#{type}"
   end
 
+  # @fixme use cache methods in IsMember. Will invalidate cache entries? task to recreate them all
   def h_brand_jpg
     Rails.cache.read(cache_key('h_brand'))
   end
 
+  # @fixme use cache methods in IsMember. Will invalidate cache entries? task to recreate them all
   def h_brand_jpg=(image)
     Rails.cache.write(cache_key('h_brand'), image)
   end
 
+  # @fixme use cache methods in IsMember. Will invalidate cache entries? task to recreate them all
   def clear_h_brand_jpg_cache
     Rails.cache.delete(cache_key('h_brand'))
   end
 
-
   # ===============================================================================================
 
-
   private
-
 
   # clean the value for the website so we don't store potential XSS
   #  strip out anything that might start with 'script' (like 'javascript')
@@ -481,7 +477,6 @@ class Company < ApplicationRecord
   def sanitize_website
     self.website = InputSanitizer.sanitize_url(website)
   end
-
 
   def sanitize_description
     self.description = InputSanitizer.sanitize_html(description)

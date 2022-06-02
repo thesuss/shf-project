@@ -58,7 +58,7 @@ And(/^I complete the branding payment for "([^"]*)"$/) do |company_name|
 
     company = Company.find_by_name(company_name)
 
-    start_date, expire_date = Company.next_branding_payment_dates(company.id)
+    start_date, expire_date = Company.next_membership_payment_dates(company.id)
 
     payment = FactoryBot.create(:payment, user: @user, company: company,
                                 payment_type: 'branding_fee',

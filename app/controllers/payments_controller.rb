@@ -24,7 +24,7 @@ class PaymentsController < ApplicationController
       paid_item = I18n.t('payment.payment_type.member_fee')
       item_price = SHF_MEMBER_FEE
     else
-      start_date, expire_date = Company.next_branding_payment_dates(company_id)
+      start_date, expire_date = Company.next_membership_payment_dates(company_id)
       paid_item = I18n.t('payment.payment_type.branding_fee')
       item_price = SHF_BRANDING_FEE
     end

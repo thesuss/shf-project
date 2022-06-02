@@ -5,14 +5,14 @@ module MembershipHelper
                               value_class: default_field_value_css_class)
 
     expire_date = membership&.last_day
-    t_scope = i18n_scope  # entity.is_a?(User) ? 'users' : 'companies' # TODO - should use polymorphism to handle this
+    t_scope = i18n_scope  # entity.is_a?(User) ? 'users' : 'companies' # @fixme - should use polymorphism to handle this
 
     expire_after_tooltip_title = t("#{t_scope}.show.term_expire_date_tooltip")
     expire_label = t("#{t_scope}.show.membership_term_last_day")
 
     if expire_date
       value_classes = [value_class, default_field_value_css_class]
-      value_classes << 'maybe' if membership.user.membership_expires_soon?(membership)
+      value_classes << 'maybe' if membership.owner.membership_expires_soon?(membership)
       tag.div do
         concat tag.span "#{expire_label}: ", class: label_class
         concat tag.span "#{expire_date}", class: value_classes

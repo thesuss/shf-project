@@ -28,7 +28,7 @@ RSpec.shared_context 'create companies' do
 
 
   let(:payment1_co1) do
-    start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
+    start_date, expire_date = Company.next_membership_payment_dates(complete_co1.id)
     create(:payment,
            :successful,
            user:         user,
@@ -39,7 +39,7 @@ RSpec.shared_context 'create companies' do
            expire_date:  expire_date)
   end
   let(:payment2) do
-    start_date, expire_date = Company.next_branding_payment_dates(complete_co1.id)
+    start_date, expire_date = Company.next_membership_payment_dates(complete_co1.id)
     create(:payment,
            :successful,
            user:         user,

@@ -21,7 +21,7 @@ module Reqs
   #
   #--------------------------
 
-  class RequirementsForMembership < AbstractReqsForMembership
+  class RequirementsForMembership < AbstractReqsForUserMembership
 
     def self.requirements_excluding_payments_met?(user, _date = Date.current)
       user.may_start_membership? &&

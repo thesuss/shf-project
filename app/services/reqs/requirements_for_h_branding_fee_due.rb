@@ -23,18 +23,11 @@ module Reqs
 
   class RequirementsForHBrandingFeeDue < AbstractRequirements
 
-    def self.has_expected_arguments?(args)
-      args_have_keys?(args, [:company])
-    end
-
     # An H-Branding fee is due if there are current members in the company
     # AND the branding_licenses is not current
     def self.requirements_met?(args)
-      company = args[:company]
-
+      company = args[:entity]
       (!company.current_members.empty? && !company.branding_license?)
-
     end
-
   end
 end

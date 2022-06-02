@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :archived_membership do
+  factory :archived_user_membership do
     belonged_to_first_name { 'FormerUser-FirstName' }
     belonged_to_last_name { 'FormerUser-LastName' }
     belonged_to_email { 'former_user@example.com' }

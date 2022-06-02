@@ -5,7 +5,7 @@ RSpec.describe AdminAlerter do
 
   let(:mock_email_msg) { instance_double('Mail::Message', deliver: true) }
   let!(:new_membership) { build(:membership) }
-  let!(:given_user) { new_membership.user }
+  let!(:given_user) { new_membership.owner }
   let(:branding_fee_payment) { build(:h_branding_fee_payment, user: given_user) }
   let(:membership_payment) { build(:membership_fee_payment, user: given_user) }
 
@@ -137,7 +137,7 @@ RSpec.describe AdminAlerter do
 
       it 'does nothing if is not the first membership' do
         allow(new_membership).to receive(:first_membership?).and_return(false)
-        allow(given_user).to receive(:memberships).and_return([new_membership, build(:membership, user: given_user)])
+        allow(given_user).to receive(:memberships).and_return([new_membership, build(:membership, owner: given_user)])
 
         expect(AdminMailer).not_to receive(:new_membership_granted_co_hbrand_paid)
         subject.alert_admin_if_first_membership_with_good_co(given_user)

@@ -13,7 +13,7 @@ RSpec.describe Memberships::MembershipActions do
   end
 
 
-  describe '.for_user?' do
+  describe '.for_entity?' do
     before(:each) { allow(described_class).to receive(:log_message_success).and_return('MembershipAction was successful.') }
 
 
@@ -24,7 +24,7 @@ RSpec.describe Memberships::MembershipActions do
         expect(described_class).to receive(:other_keyword_args_valid?)
                                      .with(some_other_arg: 'some value').and_return(true)
 
-        described_class.for_user('user', some_other_arg: 'some value')
+        described_class.for_entity('some entity', some_other_arg: 'some value')
       end
     end
 
@@ -36,32 +36,34 @@ RSpec.describe Memberships::MembershipActions do
 
       it 'opens the log file and starts writing' do
         expect(ActivityLogger).to receive(:open)
-                                    .with(described_class.log_filename,
-                                          described_class.name,
-                                          described_class.log_message_success,
-                                          false)
-        described_class.for_user('user')
+                                    .with(described_class.log_filename, described_class.name, described_class.log_message_success, false)
+        described_class.for_entity('some entity')
       end
 
       it 'calls accomplish_actions to do whatever needs to be done for this action' do
         expect(described_class).to receive(:accomplish_actions)
-                                    .with('user',
-                                          send_email: true,
-                                          this_arg: 'this_value',
-                                          that_arg: 'that_value')
-        described_class.for_user('user', send_email: true, this_arg: 'this_value', that_arg: 'that_value')
+                                    .with('some entity', send_email: true, this_arg: 'this_value', that_arg: 'that_value')
+                                    .and_return(true)
+        described_class.for_entity('some entity', send_email: true, this_arg: 'this_value', that_arg: 'that_value')
       end
 
-      it 'writes success message only if actions were successful' do
-        allow(described_class).to receive(:accomplish_actions)
-                                    .and_return(true)
-        expect(mock_log).to receive(:info).with("#{described_class.log_message_success}: \"some_user\"")
-        described_class.for_user('some_user')
+      context 'actions failed' do
+        it 'raises an error' do
+          allow(described_class).to receive(:accomplish_actions).and_return(false)
+          expect(mock_log).not_to receive(:info).with("#{described_class.log_message_success}: \"some_user\"")
 
-        allow(described_class).to receive(:accomplish_actions)
-                                    .and_return(false)
-        expect(mock_log).not_to receive(:info).with("#{described_class.log_message_success}: \"some_user\"")
-        described_class.for_user('some_user')
+          expect{ described_class.for_entity('some_user') }.to raise_error Memberships::MembershipActionError
+        end
+      end
+
+
+      context 'actions successful' do
+        it 'writes success message' do
+          allow(described_class).to receive(:accomplish_actions).and_return(true)
+
+          expect(mock_log).to receive(:info).with("#{described_class.log_message_success}: \"some_user\"")
+          described_class.for_entity('some_user')
+        end
       end
     end
 
@@ -77,7 +79,7 @@ RSpec.describe Memberships::MembershipActions do
 
   describe '.accomplish_actions' do
     it 'raises an error saying the subclasses must implement this' do
-      expect { described_class.accomplish_actions('user') }.to raise_error(NoMethodError)
+      expect { described_class.accomplish_actions('some entity') }.to raise_error(NoMethodError)
     end
   end
 

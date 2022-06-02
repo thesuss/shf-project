@@ -7,9 +7,12 @@ module Memberships
   #
   # @responsibility Manage memberships for a User; respond to queries about Memberships
   #
+  # @fixme use @owner so that owner doesn't have to be passed in all the time.
+  # @fixme should all methods be class methods?  delegate all instance methods to class methods?
+  #
+  # @todo refactor: pull out those that deal with the membership term (dates, length) into separate module or class
   # @todo should the methods checking about a date be in the Membership class?
   # @todo should this be renamed to MembershipsTermManager?  This is mostly about dates for the term
-  # @todo move this to /services folder; it is all behavior and no data persistence
   #
   # @author Ashley Engelund (ashley.engelund@gmail.com  weedySeaDragon @ github)
   # @date   2/16/21
@@ -32,10 +35,12 @@ module Memberships
 
     # =============================================================================================
 
+    # @fixme move to IsMember (that's where the statuses are -- with the state machine)
     def self.expires_soon_status
       EXPIRES_SOON_STATUS
     end
 
+    # @fixme move to IsMember (that's where the statuses are -- with the state machine)
     def self.informational_statuses
       INFORMATIONAL_MEMBERSHIP_STATUSES
     end
@@ -61,12 +66,12 @@ module Memberships
       AdminOnly::AppConfiguration.config_to_use.membership_expiring_soon_days.to_i.days
     end
 
-    # Create an ArchivedMembership for every Membership for the user
+    # Create an archived membership for every Membership for the entity
     #
-    # @return [true, false] - return false if any failed, else true if all succeeded
-    def self.create_archived_memberships_for(user)
-      user.memberships.each do |membership|
-        ArchivedMembership.create_from(membership)
+    # @return [true] - true if everything succeeded, else errors will be raised by ArchivedMembershipFactory
+    def self.create_archived_memberships_for(entity)
+      entity.memberships.each do |membership|
+        ArchivedMembershipFactory.create_from(membership)
       end
       true # no errors were raised
     end
@@ -77,13 +82,15 @@ module Memberships
     # Did the user pay for multiple Memberships in advance? Have they paid for a Membership beyond
     # the current Memberships?
     #
+    # @fixme - rename to paid_in_advance?
     # @return [true,false]
-    def self.user_paid_in_advance?(user)
-      user.current_membership.present? &&
-        Reqs::RequirementsForRenewal.payment_requirements_met?(user,
-                                                         user.current_membership.last_day.to_date + 1.day)
+    def self.user_paid_in_advance?(owner)
+      owner.current_membership.present? &&
+        owner.requirements_for_renewal
+             .payment_requirements_met?(owner, owner.current_membership.last_day.to_date + 1.day)
     end
 
+    # @todo move to IsMember ?
     # @return [nil, Membership] nil if no Memberships, else the one with the latest last day
     def self.most_recent_membership(user)
       memberships = user.memberships
@@ -103,11 +110,10 @@ module Memberships
     def self.membership_on(user, this_date = Date.current)
       return nil if this_date.nil? || user.nil?
 
-      Membership.for_user_covering_date(user, this_date.to_date)&.first
+      Membership.for_owner_covering_date(user, this_date.to_date)&.first
     end
 
-    # @todo Unsure if this responsibility belongs here - since it has to do with a _membership_
-    # or in the UserChecklistManager since it has to do with _member guidelines checklist._
+    # @fixme Since it only applies to a User move to UserChecklistManager since it has to do with _member guidelines checklist._ ?
     #
     # If the date agreed to was before the date when the Memberships were fully implemented,
     # the date is valid (= true)
@@ -128,7 +134,7 @@ module Memberships
       return true if date_as_date < UserChecklistManager.membership_guidelines_required_date.to_date
 
       if date_as_date <= membership.first_day.to_date
-        previous_membership = membership.user.memberships.reject { |m| m == membership }.sort_by(&:last_day).last
+        previous_membership = membership.owner.memberships.reject { |m| m == membership }.max_by(&:last_day)
         if previous_membership.present?
           date_as_date >= previous_membership.last_day.to_date - days_can_renew_early
         else
@@ -141,12 +147,12 @@ module Memberships
 
     # ---------------------------------------------------------------------------------
 
-    # @return [nil, Membership] call the class method of the same name
+    # @return [nil, Membership] call the class method of the same name (manual delegation)
     def most_recent_membership(user)
       self.class.most_recent_membership(user)
     end
 
-    # @return [Symbol] call the class method of the same name
+    # @return [Symbol] call the class method of the same name (manual delegation)
     def most_recent_membership_method
       self.class.most_recent_membership_method
     end
@@ -157,10 +163,10 @@ module Memberships
     def has_membership_on?(user, this_date)
       return false if this_date.nil?
 
-      Membership.for_user_covering_date(user, this_date.to_date).exists?
+      Membership.for_owner_covering_date(user, this_date.to_date).exists?
     end
 
-    # @return [nil, Membership] call class method of the same name
+    # @return [nil, Membership] call class method of the same name (manual delegation)
     def membership_on(user, this_date = Date.current)
       self.class.membership_on(user, this_date.to_date)
     end
@@ -189,7 +195,7 @@ module Memberships
 
     # Is the given date after the end of the grace period for the user's membership?
     #
-    # @param [Object] user The user that owns the membership
+    # @param [AbstractMember] user The entity that owns the membership
     # @param [Date] this_date The given date to check. (default = Date.current)
     # @param [Membership, nil] membership The membership to check (default is the user's most_recent_membership)
     # @return [true, false]
@@ -201,7 +207,7 @@ module Memberships
       this_date.to_date > (membership.last_day.to_date + grace_period)
     end
 
-    # @return [Integer] call the class method of the same name
+    # @return [Integer] call the class method of the same name (manual delegation)
     def grace_period
       self.class.grace_period
     end
@@ -230,18 +236,20 @@ module Memberships
     end
 
     # The first day of the user's most recent Membership.  return nil if there is no most recent Membership
+    # @todo move to IsMember ?
     # @return [nil, Date]
     def most_recent_membership_first_day(user)
       most_recent_membership(user)&.first_day&.to_date
     end
 
     # The last day of the user's most recent Membership.  return nil if there is no most recent Membership
+    # @todo move to IsMember ?
     # @return [nil, Date]
     def most_recent_membership_last_day(user)
       most_recent_membership(user)&.last_day&.to_date
     end
 
-    # @return [Duration] calls the class method of the same name
+    # @return [Duration] calls the class method of the same name (manual delegation)
     def days_can_renew_early
       self.class.days_can_renew_early
     end
@@ -250,11 +258,19 @@ module Memberships
     #  true if the user is a member
     #     AND today is on or after the (last day - the expiring soon amount)
     #
-    # @param [User] user the User that owns the membership
+    # @param [Member] owner the entity that owns the membership
     # @param [Membership, nil] membership The membership to check. default is the user's most recent membership
     # @return [true, false]
-    def expires_soon?(user, membership = most_recent_membership(user))
-      user.current_member? && membership.present? && ((membership.last_day.to_date - self.class.is_expiring_soon_amount) <= Date.current)
+    def expires_soon?(owner, membership = most_recent_membership(owner))
+      owner.current_member? && membership.present? && ((membership.last_day.to_date - self.class.is_expiring_soon_amount) <= Date.current)
+    end
+
+    def expires_soon_status
+      self.class.expires_soon_status
+    end
+
+    def create_archived_memberships_for(entity)
+      self.class.create_archived_memberships_for(entity)
     end
 
   end

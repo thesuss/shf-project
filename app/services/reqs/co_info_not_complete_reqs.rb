@@ -4,7 +4,7 @@ module Reqs
 
   #--------------------------
   #
-  # @class RequirementsForCoInfoNotComplete
+  # @class CoInfoNotCompleteReqs
   #
   # @desc Responsibility: Knows when the required information for a company
   #       is _not_ complete
@@ -18,18 +18,18 @@ module Reqs
   #
   # @author Ashley Engelund (ashley@ashleycaroline.com  weedySeaDragon @ github)
   # @date   2019-02-06
-  # @file requirements_for_co_info_not_complete.rb
+  # @file co_info_not_complete_reqs.rb
   #
   #--------------------------
 
-  class RequirementsForCoInfoNotComplete < AbstractOppositeRequirements
+  class CoInfoNotCompleteReqs < AbstractOppositeRequirements
 
     def self.opposite_class
-      Reqs::RequirementsForCoInfoComplete
+      Reqs::CoInfoCompleteReqs
     end
 
   end
 
 
-  # RequirementsForCoInfoNotComplete
+  # CoInfoNotCompleteReqs
 end

@@ -36,7 +36,7 @@ LOGMSG_USER_UPDATED = 'User updated' unless defined? LOGMSG_USER_UPDATED
 # The Observer pattern is used to send notifications (methods) when something
 # 'interesting' has changed.  When the MembershipStatusUpdater receives one of these
 # notifications, it checks the membership to see if it needs to be changed (updated
-# or revoked).  It does this via the :check_requirements_and_act({ user: user })
+# or revoked).  It does this via the :check_requirements_and_act({ entity: user })
 # method.  (This method is the public interface and main method for all
 # Updater classes.)
 #
@@ -53,6 +53,7 @@ LOGMSG_USER_UPDATED = 'User updated' unless defined? LOGMSG_USER_UPDATED
 #   into 1 Observer class keeps it open to extension changes (just this class)
 #   but closed to having to modify lots of code when the requirements change
 #
+# @fixme what about sending email when updating membership status for a Company?
 #--------------------------
 
 class MembershipStatusUpdater
@@ -71,18 +72,16 @@ class MembershipStatusUpdater
     update_membership_status(shf_app.user, shf_app, logmsg_app_updated, send_email: send_email)
   end
 
-
   # Check to see if the user can now be granted membership or renewed.
+  # @fixme don't always check_grant... for the payment.user It might be a Company
   def payment_made(payment, send_email: send_email_default)
     check_grant_membership_or_renew(payment.user, payment, logmsg_payment_made, send_email: send_email) if payment.membership_payment?
   end
-
 
   # Check to see if the user can now be granted membership or renewed.
   def checklist_completed(checklist_root, send_email: send_email_default)
     check_grant_membership_or_renew(checklist_root.user, checklist_root, logmsg_checklist_completed, send_email: send_email)
   end
-
 
   def user_updated(user, send_email: send_email_default)
     update_membership_status(user, user, logmsg_user_updated, send_email: send_email)
@@ -91,45 +90,43 @@ class MembershipStatusUpdater
   # end of Notifications received from observed classes
   # -----------------------------------------------------------------------------------
 
-
-  def check_grant_renew_and_status(given_user, notifier = nil, reason_update_happened = nil,
+  def check_grant_renew_and_status(entity, notifier = nil, reason_update_happened = nil,
                                    send_email: send_email_default)
 
-    check_grant_membership_or_renew(given_user, notifier, reason_update_happened,
+    check_grant_membership_or_renew(entity, notifier, reason_update_happened,
                                     send_email: send_email)
 
-    update_membership_status(given_user, notifier, reason_update_happened,
+    update_membership_status(entity, notifier, reason_update_happened,
                              send_email: send_email)
   end
 
-
-  def check_grant_membership_or_renew(given_user, notifier = nil, reason_update_happened = nil,
+  # A payment is made by the payor, for the membership_entity
+  def check_grant_membership_or_renew(membership_entity, notifier = nil, reason_update_happened = nil,
                                       send_email: send_email_default)
     today = Date.current
 
-    log_and_check("#{__method__}", given_user, [notifier], notifier, reason_update_happened) do |user, _other_args, log|
+    log_and_check("#{__method__}", membership_entity, [notifier], notifier, reason_update_happened) do |entity, _other_args, log|
       # next_membership_start_date =  user.membership_expire_date.nil? ? today : user.membership_expire_date + 1.day
-      if user.membership_expire_date.nil? || user.membership_expire_date < today
-        next_membership_start_date = today
-      else
-        next_membership_start_date = user.membership_expire_date + 1
-      end
+      next_membership_start_date = if entity.membership_expire_date.nil? || entity.membership_expire_date < today
+                                     today
+                                   else
+                                     entity.membership_expire_date + 1
+                                   end
 
-      if user.not_a_member? || user.former_member?
-        if Reqs::RequirementsForMembership.satisfied?(user: user)
-          user.start_membership!(date: next_membership_start_date, send_email: send_email)
-          log.info(user.membership_changed_info)
+      if entity.not_a_member? || entity.former_member?
+        if entity.requirements_for_membership.satisfied?(entity: entity)
+          entity.start_membership!(date: next_membership_start_date, send_email: send_email)
+          log.info(entity.membership_changed_info)
         end
 
-      elsif user.current_member? || user.in_grace_period?
-        if Reqs::RequirementsForRenewal.satisfied?(user: user)
-          user.renew!(date: next_membership_start_date, send_email: send_email)
-          log.info(user.membership_changed_info)
+      elsif entity.current_member? || entity.in_grace_period?
+        if entity.requirements_for_renewal.satisfied?(entity: entity)
+          entity.renew!(date: next_membership_start_date, send_email: send_email)
+          log.info(entity.membership_changed_info)
         end
       end
     end
   end
-
 
   #  This is the main method for checking and changing the membership status.
   #     TODO: for a given date
@@ -138,70 +135,63 @@ class MembershipStatusUpdater
                                send_email: send_email_default)
     today = Date.current
 
-    log_and_check("#{__method__}", given_user, [notifier], notifier, reason_update_happened) do |user, _other_args, log|
+    log_and_check("#{__method__}", given_user, [notifier], notifier, reason_update_happened) do |entity, _other_args, log|
 
-      if user.current_member?
-        if user.membership_expired_in_grace_period?(today)
-          user.start_grace_period!(send_email: send_email)
-          log.info(user.membership_changed_info)
+      if entity.current_member?
+        if entity.membership_expired_in_grace_period?(today)
+          entity.start_grace_period!(send_email: send_email)
+          log.info(entity.membership_changed_info)
 
-        elsif user.membership_past_grace_period_end?(today)
+        elsif entity.membership_past_grace_period_end?(today)
           # This should only happen when seeding. But just in case the membership status has not been updated for
           # a while and so hasn't transitioned to in_grace_period, we'll do it manually now and then
           # go on and transition to a former member
-          user.start_grace_period!(send_email: send_email)
-          log.info(user.membership_changed_info)
-          user.make_former_member!(send_email: send_email)
-          log.info(user.membership_changed_info)
+          entity.start_grace_period!(send_email: send_email)
+          log.info(entity.membership_changed_info)
+          entity.make_former_member!(send_email: send_email)
+          log.info(entity.membership_changed_info)
         end
 
-      elsif user.in_grace_period?
-        if user.membership_past_grace_period_end?(today)
-          user.make_former_member!(send_email: send_email)
-          log.info(user.membership_changed_info)
+      elsif entity.in_grace_period?
+        if entity.membership_past_grace_period_end?(today)
+          entity.make_former_member!(send_email: send_email)
+          log.info(entity.membership_changed_info)
         end
-        if user.membership_current?
-          user.restore_membership!(send_email: send_email)
-          log.info(user.membership_changed_info)
+        if entity.membership_current?
+          entity.restore_membership!(send_email: send_email)
+          log.info(entity.membership_changed_info)
         end
       end
     end
   end
 
-
-  def log_and_check(calling_method, user, other_args, notifier, reason_update_happened)
+  def log_and_check(calling_method, membership_entity, other_args, notifier, reason_update_happened)
     ActivityLogger.open(log_filename, self.class.to_s, calling_method, false) do |log|
-      log.info("#{calling_method} for #{user.inspect}")
+      log.info("#{calling_method} for #{membership_entity.inspect}")
       log.info("#{reason_update_happened}: #{notifier.inspect}") unless notifier.blank?
-      yield(user, other_args, log) if block_given?
+      yield(membership_entity, other_args, log) if block_given?
     end
   end
-
 
   def send_email_default
     SEND_EMAIL_DEFAULT
   end
 
-
   def logmsg_app_updated
     LOGMSG_APP_UPDATED
   end
-
 
   def logmsg_user_updated
     LOGMSG_USER_UPDATED
   end
 
-
   def logmsg_payment_made
     LOGMSG_PAYMENT_MADE
   end
 
-
   def logmsg_checklist_completed
     LOGMSG_CHECKLIST_COMPLETED
   end
-
 
   # -----------------------------------------------------------------------------------------------
 

@@ -1,8 +1,12 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require 'spec_helper'
+require_relative File.join('..', '..', '..', 'app', 'services', 'reqs', 'abstract_requirements')
+require 'hashie'
+
 
 module Reqs
   RSpec.describe AbstractRequirements do
-
     let(:subject) { AbstractRequirements }
 
     describe '.satisfied?' do
@@ -35,6 +39,30 @@ module Reqs
         allow(subject).to receive(:has_expected_arguments?).and_return(false)
         allow(subject).to receive(:requirements_met?).and_return(false)
         expect(subject.satisfied?('blorf')).to be_falsey
+      end
+    end
+
+    describe '.has_expected_arguments?' do
+
+      it 'true if args has expected :entity key' do
+        expect(subject).to receive(:args_have_keys?).with({ entity: 'some entity' }, [:entity]).and_call_original
+        expect(subject.has_expected_arguments?({ entity: 'some entity' })).to be_truthy
+      end
+
+      it 'false if args does not have expected :entity key' do
+        expect(subject.has_expected_arguments?({ not_entity: 'not some entity' })).to be_falsey
+      end
+
+      it 'false if args is nil' do
+        expect(subject.has_expected_arguments?(nil)).to be_falsey
+      end
+
+      context 'has :entity key' do
+        before(:each) { allow(subject).to receive(:args_have_keys?).and_return(true) }
+
+        it 'raises an error if entity is nil' do
+          expect { subject.has_expected_arguments?(entity: nil) }.to raise_error(ArgumentError, /entity is nil/)
+        end
       end
     end
 
@@ -84,16 +112,11 @@ module Reqs
 
     end
 
-    describe 'subclasses must define; raises NoMethodError' do
-
-      it '.has_expected_arguments?(_args)' do
-        expect { subject.has_expected_arguments?({}) }.to raise_error NoMethodError
-      end
+    describe 'subclasses must define these methods; raises NoMethodError if not' do
 
       it '.requirements_met?(_args)' do
         expect { subject.requirements_met?({}) }.to raise_error NoMethodError
       end
-
     end
   end
 end

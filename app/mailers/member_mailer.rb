@@ -3,7 +3,7 @@
 class MemberMailer < ApplicationMailer
 
 
-  def membership_granted(member)
+  def membership_granted(member,  *other_args)
 
     set_mail_info __method__, member
     @member = member
@@ -11,7 +11,7 @@ class MemberMailer < ApplicationMailer
   end
 
 
-  def membership_renewed(member)
+  def membership_renewed(member, *other_args)
     set_mail_info __method__, member
     @member = member
     @company = member.companies.first

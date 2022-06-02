@@ -93,8 +93,7 @@ class Payment < ApplicationRecord
 
   scope PAYMENT_TYPE_BRANDING.to_sym, -> { where(payment_type: PAYMENT_TYPE_BRANDING) }
 
-  after_update :clear_proof_of_membership_image_cache,
-               if: Proc.new { saved_change_to_expire_date? }
+  after_update :clear_proof_of_membership_image_cache, if: proc { saved_change_to_expire_date? }
 
 
   def self.membership_payment_type

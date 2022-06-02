@@ -127,7 +127,7 @@ RSpec.shared_context 'create users' do
     # make any other Memberships and payments with the remaining payment start dates given:
     (payment_start_dates - [first_payment_start_date]).each do | payment_start_date |
       travel_to(payment_start_date) do
-        new_member.memberships << create(:membership, user: new_member, first_day: payment_start_date)
+        new_member.memberships << create(:membership, owner: new_member, first_day: payment_start_date)
         membership_fee_expiry = User.expire_date_for_start_date(payment_start_date)
         create(:membership_fee_payment,
                :successful,

@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 module Reqs
+  # @fixme mock and stub so that Unit tests do not hit the db and Intgration tests do it only minimally
+  #   esp. Checklists, Memberships
   RSpec.describe RequirementsForRenewal do
-
     let(:subject) { RequirementsForRenewal }
 
-    let(:yesterday) { Date.current - 1.day }
     let(:user) { build(:user) }
     let(:current_member) { build(:member, membership_status: 'current_member') }
     let(:member_in_grace_pd) do
@@ -15,6 +15,8 @@ module Reqs
       allow(grace_user).to receive(:most_recent_membership).and_return(build(:membership))
       grace_user
     end
+
+    let(:yesterday) { Date.current - 1.day }
 
     # All user membership statuses that are not current_member or in grace period
     STATUSES_NOT_CURRENT_OR_GRACE_PD =
@@ -132,7 +134,7 @@ module Reqs
 
       describe '.current_membership_short_str' do
         it 'calls .short_membership_str with the current membership for the given user' do
-          faux_membership = build(:membership, user: user)
+          faux_membership = build(:membership, owner: user)
           allow(user).to receive(:current_membership).and_return(faux_membership)
           expect(described_class).to receive(:short_membership_str).with(faux_membership)
           described_class.current_membership_short_str(user)
@@ -141,7 +143,7 @@ module Reqs
 
       describe '.most_recent_membership_short_str' do
         it 'calls .short_membership_str with the current membership for the given user' do
-          faux_membership = build(:membership, user: user)
+          faux_membership = build(:membership, owner: user)
           allow(user).to receive(:current_membership).and_return(nil)
           allow(user).to receive(:most_recent_membership).and_return(faux_membership)
           expect(described_class).to receive(:short_membership_str).with(faux_membership)
@@ -155,7 +157,7 @@ module Reqs
         end
 
         it "is 'membership_id: first_day - last_day'" do
-          faux_membership = create(:membership, user: user)
+          faux_membership = create(:membership, owner: user)
           first_day = faux_membership.first_day.strftime('%Y-%m-%d')
           last_day = faux_membership.last_day.strftime('%Y-%m-%d')
           expect(described_class.short_membership_str(faux_membership)).to match(/\[(\d)+\] #{first_day} - #{last_day}/)
@@ -261,86 +263,6 @@ module Reqs
           expect(subject.payment_requirements_met?(u)).to be_falsey
         end
       end
-
-      describe '.record_requirement_failure' do
-        let(:u) { build(:user) }
-        let(:given_date) { Date.current }
-
-        it 'calls the method on the object with the method arguments e.g. obj.method(method_args)' do
-          expect(u).to receive(:valid_date_for_renewal?)
-                         .with(given_date)
-                         .and_return(true)
-          described_class.record_requirement_failure(u, :valid_date_for_renewal?, given_date, 'string describing the failure')
-        end
-
-        context 'result is falsey' do
-          before(:each) do
-            allow(u).to receive(:valid_date_for_renewal?)
-                          .with(given_date)
-                          .and_return(false)
-          end
-
-          it 'records the failure' do
-            expect(described_class).to receive(:record_failure)
-                                         .with(:valid_date_for_renewal?, 'string describing the failure', [given_date])
-            described_class.record_requirement_failure(u, :valid_date_for_renewal?, given_date, 'string describing the failure')
-          end
-        end
-
-        it 'returns the result from calling the method' do
-          allow(described_class).to receive(:record_failure)
-
-          allow(u).to receive(:valid_date_for_renewal?)
-                        .with(given_date)
-                        .and_return(true)
-          expect(described_class.record_requirement_failure(u, :valid_date_for_renewal?, given_date, 'string describing the failure')).to be_truthy
-
-          allow(u).to receive(:valid_date_for_renewal?)
-                        .with(given_date)
-                        .and_return(nil)
-          expect(described_class.record_requirement_failure(u, :valid_date_for_renewal?, given_date, 'string describing the failure')).to be_nil
-
-          allow(u).to receive(:valid_date_for_renewal?)
-                        .with(given_date)
-                        .and_return('blorf')
-          expect(described_class.record_requirement_failure(u, :valid_date_for_renewal?, given_date, 'string describing the failure')).to eq('blorf')
-        end
-
-      end
-
-      describe '.record_failure' do
-        it 'appends a Hash of failure info to the list of failed_requirements' do
-          described_class.reset_failed_requirements
-          described_class.record_failure(:method_name, 'failure string', 1, 2, 3)
-          expect(described_class.failed_requirements).to match_array([{ method: :method_name,
-                                                                        string: 'failure string',
-                                                                        method_args: '[1, 2, 3]' }])
-        end
-      end
-
-      describe '.failed_requirements' do
-        it 'returns the (class) failed requirements' do
-          described_class.reset_failed_requirements
-          described_class.record_failure(:method_name, 'failure string', 1, 2, 3)
-          described_class.record_failure(:method_name, 'failure string2', 12, 22, 32)
-          expect(described_class.failed_requirements).to match_array([{ method: :method_name,
-                                                                        string: 'failure string',
-                                                                        method_args: '[1, 2, 3]' },
-                                                                      { method: :method_name,
-                                                                        string: 'failure string2',
-                                                                        method_args: '[12, 22, 32]' }])
-        end
-      end
-
-      describe '.reset_failed_requirements' do
-
-        it 'sets @@failed_requirements to an empty array' do
-          described_class.record_failure(:some_method, 'failure string', [1, 2, 3])
-          expect(described_class.failed_requirements).not_to be_empty
-          described_class.reset_failed_requirements
-          expect(described_class.failed_requirements).to be_empty
-        end
-      end
     end
     # ------------------------------------------------------------------------------------------
 
@@ -355,7 +277,7 @@ module Reqs
 
         it 'always false if has never made a payment' do
           approved_app = create(:shf_application, :accepted)
-          expect(subject.requirements_met?({ user: approved_app.user })).to be_falsey
+          expect(subject.requirements_met?({ entity: build(:user) })).to be_falsey
         end
 
         context 'has approved application' do
@@ -385,7 +307,7 @@ module Reqs
                     expect(subject.requirements_excluding_payments_met?(current_member)).to be_truthy
                     expect(subject.payment_requirements_met?(current_member)).to be_truthy
 
-                    expect(subject.requirements_met?({ user: current_member })).to be_truthy
+                    expect(subject.requirements_met?({ entity: current_member })).to be_truthy
                   end
                 end
 
@@ -393,7 +315,7 @@ module Reqs
                   # set today to a day that is too early to renew
                   travel_to(last_day - days_can_renew_early - 2) do
                     expect(current_member.today_is_valid_renewal_date?).to be_falsey
-                    expect(subject.requirements_met?({ user: current_member })).to be_falsey
+                    expect(subject.requirements_met?({ entity: current_member })).to be_falsey
                   end
                 end
               end
@@ -411,13 +333,13 @@ module Reqs
 
                   # set today to a date that is past the grace period
                   travel_to(Date.current + grace_period_length + 1.day) do
-                    expect(subject.requirements_met?({ user: former_member })).to be_falsey
+                    expect(subject.requirements_met?({ entity: former_member })).to be_falsey
                   end
                 end
               end
 
               it 'false if membership payment not made' do
-                expect(subject.requirements_met?({ user: approved_applicant })).to be_falsey
+                expect(subject.requirements_met?({ entity: approved_applicant })).to be_falsey
               end
             end
 
@@ -436,7 +358,7 @@ module Reqs
                   expect(subject.requirements_excluding_payments_met?(approved_and_paid)).to be_falsey
                   expect(subject.payment_requirements_met?(approved_and_paid)).to be_truthy
 
-                  expect(subject.requirements_met?({ user: approved_and_paid })).to be_falsey
+                  expect(subject.requirements_met?({ entity: approved_and_paid })).to be_falsey
                 end
               end
             end
@@ -448,7 +370,7 @@ module Reqs
 
             it 'always false' do
               approved_and_paid = create(:member_with_expiration_date, expiration_date: Date.current + 100)
-              expect(subject.requirements_met?(user: approved_and_paid)).to be_falsey
+              expect(subject.requirements_met?(entity: approved_and_paid)).to be_falsey
             end
           end
         end
@@ -472,7 +394,7 @@ module Reqs
                          start_date: start_date,
                          expire_date: expire_date)
 
-                  expect(subject.requirements_met?({ user: unapproved_user })).to be_falsey
+                  expect(subject.requirements_met?({ entity: unapproved_user })).to be_falsey
                 end
 
                 it "false if membership payment made and it HAS expired FIXME" do
@@ -488,14 +410,14 @@ module Reqs
                          expire_date: expire_date)
 
                   travel_to(expire_date + 1.day) do
-                    expect(subject.requirements_met?({ user: unapproved_and_paid })).to be_falsey
+                    expect(subject.requirements_met?({ entity: unapproved_and_paid })).to be_falsey
                   end
                 end
 
                 it "false if membership payment not made" do
                   unapproved_app = create(:shf_application, state: app_state)
                   unapproved_applicant = unapproved_app.user
-                  expect(subject.requirements_met?({ user: unapproved_applicant })).to be_falsey
+                  expect(subject.requirements_met?({ entity: unapproved_applicant })).to be_falsey
                 end
               end
             end
@@ -525,11 +447,11 @@ module Reqs
         def can_renew_results(members_to_renew, renewal_date = Date.current)
           renewal_results = []
           (members_to_renew).each do |u|
-            req_result = Reqs::RequirementsForRenewal.requirements_excluding_payments_met?(u, renewal_date)
+            req_result = u.requirements_for_renewal.requirements_excluding_payments_met?(u, renewal_date)
             renewal_results << {
               user_id: u.id,
               result: req_result,
-              failure_reason: Reqs::RequirementsForRenewal.failed_requirements
+              failure_reason: u.requirements_for_renewal.failed_requirements
             }
           end
           renewal_results

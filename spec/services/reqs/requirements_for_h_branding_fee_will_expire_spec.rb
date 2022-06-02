@@ -4,20 +4,6 @@ module Reqs
   RSpec.describe RequirementsForHBrandingFeeWillExpire do
     let(:subject) { Reqs::RequirementsForHBrandingFeeWillExpire }
 
-    describe '.has_expected_arguments?' do
-
-      it 'args has expected :company key' do
-        expect(subject.has_expected_arguments?({ company: 'some co' })).to be_truthy
-      end
-
-      it 'args does not have expected :company key' do
-        expect(subject.has_expected_arguments?({ not_co: 'not some co' })).to be_falsey
-      end
-
-      it 'args is nil' do
-        expect(subject.has_expected_arguments?(nil)).to be_falsey
-      end
-    end
 
     describe '.requirements_met?' do
 
@@ -35,12 +21,12 @@ module Reqs
         end
       end
 
-      context 'company does not have current members - is always false' do
+      context 'always false if company does not have current members' do
 
         it 'is false (no fee due)' do
           co = build(:company)
           allow(co).to receive(:current_members).and_return([])
-          expect(subject.requirements_met?({ company: co })).to be_falsey
+          expect(subject.requirements_met?({ entity: co })).to be_falsey
         end
       end
 
@@ -54,7 +40,7 @@ module Reqs
 
         context 'branding fee not paid' do
           it 'is false' do
-            expect(subject.requirements_met?({ company: paid_member_co })).to be_falsey
+            expect(subject.requirements_met?({ entity: paid_member_co })).to be_falsey
           end
         end
 
@@ -68,7 +54,7 @@ module Reqs
                      company: paid_member_co,
                      start_date: jan_1,
                      expire_date: Company.expire_date_for_start_date(jan_1))
-              expect(subject.requirements_met?({ company: paid_member_co })).to be_truthy
+              expect(subject.requirements_met?({ entity: paid_member_co })).to be_truthy
             end
           end
 
@@ -82,43 +68,11 @@ module Reqs
                      start_date: jan_2_500_days_ago,
                      expire_date: Company.expire_date_for_start_date(jan_2_500_days_ago))
 
-              expect(subject.requirements_met?({ company: paid_member_co })).to be_falsey
+              expect(subject.requirements_met?({ entity: paid_member_co })).to be_falsey
             end
           end
-
         end # 'branding fee paid'
-
       end #  context 'company has current members'
-
-      context 'does not have current members' do
-
-        let(:membership_expired) {
-          member = create(:member, first_day: jan_1)
-          create(:membership_fee_payment,
-                 :successful,
-                 user: member,
-                 start_date: jan_1,
-                 expire_date: User.expire_date_for_start_date(jan_1))
-          create(:h_branding_fee_payment,
-                 :successful,
-                 user: member,
-                 company: member.companies.first,
-                 start_date: june_19,
-                 expire_date: Company.expire_date_for_start_date(june_19))
-          member
-        }
-
-        let(:co_memberships_expired) do
-          co = membership_expired.companies.first
-          allow(co).to receive(:current_members).and_return([])
-          co
-        end
-
-        it 'is false' do
-          expect(subject.requirements_met?({ company: co_memberships_expired })).to be_falsey
-        end
-      end
-
     end
   end
 end

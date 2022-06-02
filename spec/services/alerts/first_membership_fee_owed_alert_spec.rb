@@ -106,13 +106,13 @@ module Alerts
                                           .and_return(mock_app1)
 
               allow(Reqs::RequirementsForFirstMembershipFeeOwed).to receive(:requirements_met?)
-                                                                      .with(user: mock_applicant1)
+                                                                      .with(entity: mock_applicant1)
                                                                       .and_return(true)
               allow(Reqs::RequirementsForFirstMembershipFeeOwed).to receive(:requirements_met?)
-                                                                      .with(user: mock_applicant2)
+                                                                      .with(entity: mock_applicant2)
                                                                       .and_return(true)
               allow(Reqs::RequirementsForFirstMembershipFeeOwed).to receive(:requirements_met?)
-                                                                      .with(user: mock_member_paid)
+                                                                      .with(entity: mock_member_paid)
                                                                       .and_return(false)
             end
 

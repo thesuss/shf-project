@@ -2,23 +2,7 @@ require 'rails_helper'
 
 module Reqs
   RSpec.describe RequirementsForHBrandingFeeDue do
-
     let(:subject) { Reqs::RequirementsForHBrandingFeeDue }
-
-    describe '.has_expected_arguments?' do
-
-      it 'args has expected :company key' do
-        expect(subject.has_expected_arguments?({ company: 'some co' })).to be_truthy
-      end
-
-      it 'args does not have expected :company key' do
-        expect(subject.has_expected_arguments?({ not_co: 'not some co' })).to be_falsey
-      end
-
-      it 'args is nil' do
-        expect(subject.has_expected_arguments?(nil)).to be_falsey
-      end
-    end
 
     describe '.requirements_met?' do
 
@@ -36,7 +20,7 @@ module Reqs
         it 'is false (no fee due)' do
           co = build(:company)
           allow(co).to receive(:current_members).and_return([])
-          expect(subject.requirements_met?({ company: co })).to be_falsey
+          expect(subject.satisfied?({ company: co })).to be_falsey
         end
       end
 
@@ -50,7 +34,7 @@ module Reqs
 
         context 'branding fee not paid' do
           it 'is true (fee is due)' do
-            expect(subject.requirements_met?({ company: paid_member_co })).to be_truthy
+            expect(subject.requirements_met?({ entity: paid_member_co })).to be_truthy
           end
         end
 
@@ -77,7 +61,7 @@ module Reqs
                      start_date: jan_1,
                      expire_date: User.expire_date_for_start_date(jan_1))
 
-              expect(subject.requirements_met?({ company: paid_member_co })).to be_falsey
+              expect(subject.requirements_met?({ entity: paid_member_co })).to be_falsey
             end
           end
 
@@ -90,7 +74,7 @@ module Reqs
                      start_date: jan_2 - 500,
                      expire_date: User.expire_date_for_start_date(jan_2 - 500))
 
-              expect(subject.requirements_met?({ company: paid_member_co })).to be_truthy
+              expect(subject.requirements_met?({ entity: paid_member_co })).to be_truthy
             end
           end
         end # 'branding fee paid'

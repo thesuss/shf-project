@@ -92,7 +92,7 @@ module UsersHelper
 
   # Include informational statuses displayed in the legend.
   # They are  useful to show in the legend and in a view.
-  # @see MembershipsManager
+  # @see Memberships::MembershipsManager
   #
   # TODO: sort these in a way that is helpful
   #

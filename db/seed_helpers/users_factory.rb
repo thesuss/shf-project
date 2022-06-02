@@ -368,11 +368,11 @@ module SeedHelpers
         new_hmarkt_payment_method = :new_hips_hmarkt_payment
       end
 
-      term_last_day = Membership.last_day_from_first(term_first_day)
+      term_last_day = Membership.last_day_from_first(term_first_day) # @fixme use MembershipsManager ?
       user.payments << @payments_factory.send(new_membership_payment_method, user, term_first_day, term_last_day)
       user.companies.first.payments << @payments_factory.send(new_hmarkt_payment_method, user, term_first_day, term_last_day)
 
-      user.memberships << Membership.create!(user: user, first_day: term_first_day, last_day: term_last_day)
+      user.memberships << Membership.create!(owner: user, first_day: term_first_day, last_day: term_last_day)  # @fixme create the right type of Membership (UserMembership)
 
       user.reload
       user

@@ -14,7 +14,7 @@ RSpec.describe PaymentMailer, type: :mailer do
     end
 
     it 'shows the payment date' do
-      expect(email_sent).to have_body_text(payment.updated_at.in_time_zone('CET').strftime('%Y-%m-%d %H:%M:%S (%Z)'))
+      expect(email_sent).to have_body_text(payment.updated_at.in_time_zone('Stockholm').strftime('%Y-%m-%d %H:%M:%S (%Z)'))
     end
 
     it 'shows the amount' do

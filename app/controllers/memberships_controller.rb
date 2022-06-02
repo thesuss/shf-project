@@ -14,7 +14,7 @@ class MembershipsController < ApplicationController
 
   # GET /memberships/new
   def new
-    @membership = Membership.new
+    @membership = Membership.new # @fixme create the correct type of membership
   end
 
   # GET /memberships/1/edit
@@ -24,7 +24,7 @@ class MembershipsController < ApplicationController
   # POST /memberships
   # POST /memberships.json
   def create
-    @membership = Membership.new(membership_params)
+    @membership = Membership.new(membership_params)  # @fixme create the correct type of membership
 
     respond_to do |format|
       if @membership.save

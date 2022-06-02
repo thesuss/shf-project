@@ -1,33 +1,9 @@
 require 'rails_helper'
-require 'shared_context/named_dates'
 
 module Reqs
   RSpec.describe AbstractReqsForMembership do
-    include_context 'named dates'
-
-    before(:each) do
-      # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
-      # if a ShfApplication is accepted.
-      allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
-    end
-
     let(:subject) { AbstractReqsForMembership }
-    let(:user) { build(:user) }
-
-    describe '.has_expected_arguments?' do
-
-      it 'args has expected :user key' do
-        expect(subject.has_expected_arguments?({ user: 'some user' })).to be_truthy
-      end
-
-      it 'args does not have expected :user key' do
-        expect(subject.has_expected_arguments?({ not_user: 'not some user' })).to be_falsey
-      end
-
-      it 'args is nil' do
-        expect(subject.has_expected_arguments?(nil)).to be_falsey
-      end
-    end
+    let(:entity) { build(:user) }
 
     describe '.requirements_excluding_payments_met?' do
 
@@ -36,53 +12,26 @@ module Reqs
       end
     end
 
-    describe '.requirements_met?' do
-
-      it 'for a specific date: passes that date to the methods called' do
-        expect(subject).to receive(:requirements_excluding_payments_met?)
-                             .with(user, yesterday)
-                             .and_return(true)
-        expect(subject).to receive(:payment_requirements_met?)
-                             .with(user, yesterday)
-                             .and_return(true)
-        expect(subject.requirements_met?(user: user, date: yesterday)).to be_truthy
-      end
-
-      it 'all non-payment requirements && all payment requirements' do
-        expect(subject).to receive(:requirements_excluding_payments_met?).with(user, anything)
-                                                                         .and_return(true)
-        expect(subject).to receive(:payment_requirements_met?).with(user, anything)
-                                                              .and_return(true)
-        expect(subject.requirements_met?(user: user)).to be_truthy
-      end
-    end
-
     describe '.payment_requirements_met?' do
 
       it 'result = user.payments_current_as_of?' do
-        u = build(:user)
-        expect(u).to receive(:payments_current_as_of?).and_return(true)
-        expect(subject.payment_requirements_met?(u)).to be_truthy
+        entity = build(:user)
+        expect(entity).to receive(:payments_current_as_of?).and_return(true)
+        expect(subject.payment_requirements_met?(entity)).to be_truthy
 
-        expect(u).to receive(:payments_current_as_of?).and_return(false)
-        expect(subject.payment_requirements_met?(u)).to be_falsey
+        expect(entity).to receive(:payments_current_as_of?).and_return(false)
+        expect(subject.payment_requirements_met?(entity)).to be_falsey
       end
 
       it 'for a specific date: it passes that date to payments_current_as_of?' do
-        u = build(:user)
-        expect(u).to receive(:payments_current_as_of?)
-                       .with(yesterday).and_return(true)
-        expect(subject.payment_requirements_met?(u, yesterday)).to be_truthy
-        expect(u).to receive(:payments_current_as_of?)
-                       .with(yesterday).and_return(false)
-        expect(subject.payment_requirements_met?(u, yesterday)).to be_falsey
-      end
-    end
-
-    describe '.membership_guidelines_checklist_done?' do
-      it 'asks the user if membership_guidelines_checklist_done?' do
-        expect(user).to receive(:membership_guidelines_checklist_done?)
-        subject.membership_guidelines_checklist_done?(user)
+        entity = build(:user)
+        yesterday = Date.current - 1.day
+        expect(entity).to receive(:payments_current_as_of?)
+                            .with(yesterday).and_return(true)
+        expect(subject.payment_requirements_met?(entity, yesterday)).to be_truthy
+        expect(entity).to receive(:payments_current_as_of?)
+                            .with(yesterday).and_return(false)
+        expect(subject.payment_requirements_met?(entity, yesterday)).to be_falsey
       end
     end
   end

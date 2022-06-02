@@ -2,25 +2,9 @@ require 'rails_helper'
 
 module Reqs
   RSpec.describe RequirementsForFirstMembershipFeeOwed do
-
     let(:subject) { Reqs::RequirementsForFirstMembershipFeeOwed }
 
     let(:user) { create(:user) }
-
-    describe '.has_expected_arguments?' do
-
-      it 'args has expected :user key' do
-        expect(subject.has_expected_arguments?({ user: 'some user' })).to be_truthy
-      end
-
-      it 'args does not have expected :user key' do
-        expect(subject.has_expected_arguments?({ not_user: 'not some user' })).to be_falsey
-      end
-
-      it 'args is nil' do
-        expect(subject.has_expected_arguments?(nil)).to be_falsey
-      end
-    end
 
     describe '.requirements_met?' do
 
@@ -29,7 +13,7 @@ module Reqs
         it 'no approved application' do
           shf_app = create(:shf_application)
           user = shf_app.user
-          expect(subject.requirements_met?({ user: user })).to be_falsey
+          expect(subject.requirements_met?({ entity: user })).to be_falsey
         end
 
         it 'membership term is current' do
@@ -41,7 +25,7 @@ module Reqs
                  start_date: start_date,
                  expire_date: User.expire_date_for_start_date(start_date))
 
-          expect(subject.requirements_met?({ user: current_member })).to be_falsey
+          expect(subject.requirements_met?({ entity: current_member })).to be_falsey
         end
 
         it 'membership term has expired and application was approved before the last membership payment made' do
@@ -57,7 +41,7 @@ module Reqs
                  expire_date: User.expire_date_for_start_date(start_date_last_year))
 
           expect(past_member.payments_current?).to be_falsey
-          expect(subject.requirements_met?({ user: past_member })).to be_falsey
+          expect(subject.requirements_met?({ entity: past_member })).to be_falsey
         end
       end
 
@@ -72,7 +56,7 @@ module Reqs
         end
 
         it 'has an approved application but has no membership fee payments' do
-          expect(subject.requirements_met?({ user: user_with_approved_app })).to be_truthy
+          expect(subject.requirements_met?({ entity: user_with_approved_app })).to be_truthy
         end
 
         it 'has an application approved after previous membership term has expired AND membership fee paid' do
@@ -83,11 +67,10 @@ module Reqs
                  start_date: User.start_date_for_expire_date(expire_date_last_month),
                  expire_date: expire_date_last_month)
 
-          expect(subject.requirements_met?({ user: user_with_approved_app })).to be_truthy
+          expect(subject.requirements_met?({ entity: user_with_approved_app })).to be_truthy
         end
       end
 
     end
-
   end
 end

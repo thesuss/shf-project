@@ -23,16 +23,16 @@ module Reqs
   #
   #--------------------------
 
-  class RequirementsForRevokingMembership < AbstractRequirements
+  class RequirementsForRevokingMembership < AbstractReqsForMember
 
     def self.has_expected_arguments?(args)
-      args_have_keys?(args, [:user])
+      args_have_keys?(args, [:entity])
     end
 
     # Can only revoke membership if the user is a member (else there is nothing to revoke)
     #  AND the user (a member) is not a member in good standing.
     def self.requirements_met?(args)
-      user = args[:user]
+      user = args[:entity]
       date = args[:date]
       user.member? && !user.member_in_good_standing?(date)
     end

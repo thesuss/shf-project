@@ -25,7 +25,7 @@
               find_or_create_method: UserChecklistManager.find_or_create_guidelines_method(user.membership_status, is_renewal: true) }
 
           %li.step.upload-qualification-file= render partial: 'uploaded_files_requirement.html.haml',
-            locals: { user: user, docs_uploaded: Reqs::RequirementsForRenewal.docs_uploaded?(user) }
+            locals: { user: user, docs_uploaded: user.requirements_for_renewal.docs_uploaded?(user) }
 
           %li.step.pay-membership-fee
             - if current_user.allowed_to_pay_renewal_member_fee?

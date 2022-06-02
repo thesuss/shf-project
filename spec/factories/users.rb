@@ -103,7 +103,7 @@ FactoryBot.define do
           actual_last_day = given_last_day.nil? ? Membership.last_day_from_first(actual_first_day) : given_last_day
         end
 
-        Membership.create(user: member,
+        Membership.create(owner: member,
                           first_day: actual_first_day,
                           last_day: actual_last_day)
         member.membership_status = User::STATE_CURRENT_MEMBER if Memberships::MembershipsManager.new.has_membership_on?(member, Date.current)

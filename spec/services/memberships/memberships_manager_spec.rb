@@ -54,11 +54,11 @@ module Memberships
     end
 
     describe '.create_archived_memberships_for' do
-      it 'creates an ArchivedMembership for every Membership for a user' do
-        expect(ArchivedMembership.count).to eq(0)
+      it 'gives each membership to the ArchivedMembershipFactory' do
         member = create(:member)
-        create(:membership, user: member, last_day: member.membership_expire_date - 1.day)
-        expect { described_class.create_archived_memberships_for(member) }.to change(ArchivedMembership, :count).by(2)
+        create(:membership, owner: member, last_day: member.membership_expire_date - 1.day)
+        expect(ArchivedMembershipFactory).to receive(:create_from).twice
+        described_class.create_archived_memberships_for(member)
       end
     end
 
@@ -76,24 +76,30 @@ module Memberships
 
       context 'user does have a current membership' do
         let(:current_member) { create(:user, membership_status: User::STATE_CURRENT_MEMBER) }
-        let(:current_membership) { create(:membership, user: current_member,
+        let(:current_membership) { create(:membership, owner: current_member,
                                           first_day: jan_1,
                                           last_day: dec_31) }
         before(:each) { allow(current_member).to receive(:current_membership).and_return(current_membership) }
 
         it 'true if renewal payment requirements were met for the day after the last day of the current membership' do
-          expect(Reqs::RequirementsForRenewal).to receive(:payment_requirements_met?)
-                                              .with(current_member,
-                                                    current_membership.last_day + 1.day)
-                                              .and_return(true)
+          mock_renew_requirements = double(Reqs::AbstractReqsForMembership)
+          allow(current_member).to receive(:requirements_for_renewal).and_return(mock_renew_requirements)
+
+          expect(mock_renew_requirements).to receive(:payment_requirements_met?)
+                                               .with(current_member,
+                                                     current_membership.last_day + 1.day)
+                                               .and_return(true)
           expect(described_class.user_paid_in_advance?(current_member)).to be_truthy
         end
 
         it 'false otherwise' do
-          expect(Reqs::RequirementsForRenewal).to receive(:payment_requirements_met?)
-                                              .with(current_member,
-                                                    current_membership.last_day + 1.day)
-                                              .and_return(false)
+          mock_renew_requirements = double(Reqs::AbstractReqsForMembership)
+          allow(current_member).to receive(:requirements_for_renewal).and_return(mock_renew_requirements)
+
+          expect(mock_renew_requirements).to receive(:payment_requirements_met?)
+                                               .with(current_member,
+                                                     current_membership.last_day + 1.day)
+                                               .and_return(false)
           expect(described_class.user_paid_in_advance?(current_member)).to be_falsey
         end
       end
@@ -153,8 +159,8 @@ module Memberships
 
       context 'given user is not nil and given date is not nil' do
         context 'a membership exists for the given date' do
-          it 'calls Membership.for_user_covering_date to get the oldest membership that includes that date' do
-            expect(Membership).to receive(:for_user_covering_date)
+          it 'calls Membership.for_owner_covering_date to get the oldest membership that includes that date' do
+            expect(Membership).to receive(:for_owner_covering_date)
                                     .with(user, Date.current)
                                     .and_return(mock_memberships)
             allow(mock_memberships).to receive(:first).and_return(mock_membership)
@@ -163,7 +169,7 @@ module Memberships
         end
 
         it 'nil if no membership exists for the given date' do
-          expect(Membership).to receive(:for_user_covering_date)
+          expect(Membership).to receive(:for_owner_covering_date)
                                   .with(user, Date.current)
                                   .and_return(nil)
 
@@ -180,7 +186,7 @@ module Memberships
       end
       let!(:cutoff_date) { UserChecklistManager.membership_guidelines_required_date }
       let(:current_member) { create(:user, membership_status: User::STATE_CURRENT_MEMBER) }
-      let(:current_membership) { create(:membership, user: current_member,
+      let(:current_membership) { create(:membership, owner: current_member,
                                         first_day: jan_1,
                                         last_day: dec_31) }
 
@@ -214,14 +220,14 @@ module Memberships
 
             # first membership
             before(:each) do
-              create(:membership, user: current_member,
+              create(:membership, owner: current_member,
                      first_day: Date.new(jan_1.year - 2, 1, 1),
                      last_day: Date.new(jan_1.year - 2, 12, 31)
               )
             end
 
             let!(:second_membership) do
-              create(:membership, user: current_member,
+              create(:membership, owner: current_member,
                      first_day: Date.new(jan_1.year - 1, 1, 1),
                      last_day: Date.new(jan_1.year - 1, 12, 31))
             end
@@ -272,14 +278,14 @@ module Memberships
 
       context 'given user is not nil and given date is not nil' do
 
-        it 'calls Membership.for_user_covering_date to get any memberships that covered that date' do
+        it 'calls Membership.for_owner_covering_date to get any memberships that covered that date' do
           allow(mock_memberships).to receive(:exists?)
-          expect(Membership).to receive(:for_user_covering_date).and_return(mock_memberships)
+          expect(Membership).to receive(:for_owner_covering_date).and_return(mock_memberships)
           subject.has_membership_on?(user, Date.current)
         end
 
-        it 'returns the value of .exists? for the records that Membership.for_user_covering_date returns' do
-          allow(Membership).to receive(:for_user_covering_date).and_return(mock_memberships)
+        it 'returns the value of .exists? for the records that Membership.for_owner_covering_date returns' do
+          allow(Membership).to receive(:for_owner_covering_date).and_return(mock_memberships)
           expect(mock_memberships).to receive(:exists?).and_return(true)
           subject.has_membership_on?(user, Date.current)
         end

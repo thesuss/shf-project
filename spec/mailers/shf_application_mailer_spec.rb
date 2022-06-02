@@ -68,7 +68,7 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
       let(:co_branding_paid) {
         co = create(:company, name: 'Paid Branding Company')
 
-        start_date, _expire_date = Company.next_branding_payment_dates(co.id)
+        start_date, _expire_date = Company.next_membership_payment_dates(co.id)
 
         payment_success = Payment.order_to_payment_status('successful')
 
@@ -85,7 +85,7 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
 
 
       def make_branding_payment(a_company)
-        start_date, _expire_date = Company.next_branding_payment_dates(a_company.id)
+        start_date, _expire_date = Company.next_membership_payment_dates(a_company.id)
         create(:payment, user: user1, status: payment_success, company: a_company,
                payment_type: Payment::PAYMENT_TYPE_BRANDING,
                notes: 'this company has paid their branding licensing fee on time',
@@ -124,7 +124,7 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
     it 'shows information submitted in the application' do
         expect(email_sent).to have_body_text(I18n.t('mailers.shf_application_mailer.acknowledge_received.your_submitted_info'))
     end
-    
+
     it_behaves_like 'it shows how to login and the page to upload files' do
       let(:email_created) { email_sent }
     end

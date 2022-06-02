@@ -27,7 +27,6 @@ module PaymentUtility
 
   end
 
-
   included do
 
     # @return [nil, Date] the earliest created_at date for payments of the given type
@@ -52,21 +51,27 @@ module PaymentUtility
       payments.completed.send(payment_type).any?
     end
 
+    # @todo once Membership class has_many :payments, then we can check via those payments
+    def payments_current_as_of?(this_date)
+      return false if this_date.nil?
+
+      membership_payment_expire_date = most_recent_payment_expiry(self.class::THIS_PAYMENT_TYPE)
+      !membership_payment_expire_date.nil? && (membership_payment_expire_date > this_date)
+    end
 
     def payment_start_date(payment_type = self.class::THIS_PAYMENT_TYPE)
       most_recent_payment(payment_type)&.start_date
     end
 
-
     def payment_expire_date(payment_type = self.class::THIS_PAYMENT_TYPE)
       most_recent_payment(payment_type)&.expire_date
     end
 
+    alias_method :most_recent_payment_expiry, :payment_expire_date
 
     def payment_notes(payment_type = self.class::THIS_PAYMENT_TYPE)
       most_recent_payment(payment_type)&.notes
     end
-
 
     # Has the term expired for this payment type?
     # true only if there have been successful payments (= there was a term)
@@ -78,7 +83,6 @@ module PaymentUtility
       expires = payment_expire_date(payment_type)
       has_successful_payments? && !expires.future?
     end
-
 
     # A payment 'should' be made if the payment term has expired
     #      OR
@@ -138,7 +142,6 @@ module PaymentUtility
       payment_term_expired?(payment_type) || Time.zone.now >= cutoff_date
     end
 
-
     # Is it "too early" to pay now?  "too early" is determined by the Application Configuration
     #
     # @param [String] payment_type - the type of payment this is
@@ -148,7 +151,6 @@ module PaymentUtility
                           should_pay_cutoff: AdminOnly::AppConfiguration.config_to_use.payment_too_soon_days.days)
       !should_pay_now?(payment_type: payment_type, should_pay_cutoff: should_pay_cutoff)
     end
-
 
     # Logic for determining the payment due status.
     # This puts the logic here in one place, and
@@ -182,8 +184,6 @@ module PaymentUtility
       end
     end
 
-
-
     # This is our current rule:  an admin cannot edit the membership status if there are no successful payments in this system [2019-12-05];
     #   reviewed in Team meeting 2020-06-18 (see the notes there)
     def admin_can_edit_status?
@@ -191,7 +191,6 @@ module PaymentUtility
     end
 
   end
-
 
   # record info about this user in any associated payments so payment history for this user is not lost
   def record_deleted_payorinfo_in_payment_notes(payor_class = self.class,
@@ -202,7 +201,6 @@ module PaymentUtility
     end
   end
 
-
   # -------------------------------------------------------------------------------------------
 
   private
@@ -211,9 +209,7 @@ module PaymentUtility
     payments.completed.send(payment_type).order(attribute).last
   end
 
-
   # ===========================================================================
-
 
   #   - FIXME how to store this date if/when the member is no longer a current member?
   #
@@ -246,20 +242,17 @@ module PaymentUtility
       [start_date, expire_date]
     end
 
-
     # Calculate the expiration date given a start date
     # FIXME find all calls, replace with appropriate Membership... class
     def expire_date_for_start_date(start_date)
       other_date_for_given_date(start_date, is_start_date: true)
     end
 
-
     # Helper method for cases where we have the expire date (ex: in tests)
     # FIXME find all calls, replace with appropriate Membership... class
     def start_date_for_expire_date(expire_date)
       other_date_for_given_date(expire_date, is_start_date: false)
     end
-
 
     # THIS IS THE KEY RULE ABOUT WHEN PAYMENTS EXPIRE
     #

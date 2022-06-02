@@ -187,7 +187,7 @@ module AdminOnly
 
       most_recent_payment = user.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
 
-      most_recent_payment.nil? || Reqs::RequirementsForMembershipLapsed.requirements_met?({ user: user })
+      most_recent_payment.nil? || Reqs::RequirementsForMembershipLapsed.requirements_met?({ entity: user })
     end
 
   end

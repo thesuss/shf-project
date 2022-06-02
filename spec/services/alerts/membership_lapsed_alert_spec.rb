@@ -49,7 +49,7 @@ module Alerts
                                 .and_call_original
 
             expect(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                               .with(user: member1)
+                                                               .with(entity: member1)
                                                                .and_return(true)
             expect(subject.send_alert_this_day?(timing, config, member1)).to be_truthy
           end
@@ -62,7 +62,7 @@ module Alerts
                                 .and_call_original
 
             expect(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                               .with(user: member1)
+                                                               .with(entity: member1)
                                                                .and_return(false)
             expect(subject.send_alert_this_day?(timing, config, member1)).to be_falsey
           end
@@ -70,7 +70,7 @@ module Alerts
 
         it 'uses the membership expire date as the basis for calculating the days from today' do
           allow(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                            .with(user: member1)
+                                                            .with(entity: member1)
                                                             .and_return(true)
           allow(subject).to receive(:send_on_day_number?)
                               .with(3, config)
@@ -84,7 +84,7 @@ module Alerts
 
         it 'calls send_on_day_number? with the day to check and the configuration' do
           allow(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                            .with(user: member1)
+                                                            .with(entity: member1)
                                                             .and_return(true)
           allow(described_class).to receive(:days_today_is_away_from)
                                       .with(membership_expiry, timing)
@@ -146,13 +146,13 @@ module Alerts
 
             before(:each) do
               allow(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                                .with(user: member1)
+                                                                .with(entity: member1)
                                                                 .and_return(true)
               allow(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                                .with(user: member2)
+                                                                .with(entity: member2)
                                                                 .and_return(true)
               allow(Reqs::RequirementsForMembershipLapsed).to receive(:requirements_met?)
-                                                                .with(user: member_not_expired)
+                                                                .with(entity: member_not_expired)
                                                                 .and_return(false)
 
               allow(subject).to receive(:entities_to_check).and_return([member1,

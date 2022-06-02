@@ -15,21 +15,19 @@ module Reqs
   # @file requirements_forrequirements_for_member_unpaid_for_x_months_.rb
   #
   #--------------------------
-  class RequirementsForMemberUnpaidMoreThanXMonths < AbstractRequirements
+  class RequirementsForMemberUnpaidMoreThanXMonths < AbstractReqsForMember
 
     def self.has_expected_arguments?(args)
-      args_have_keys?(args, [:user, :num_months])
+      super && args_have_keys?(args, [:num_months])
     end
 
     # This user's membership has lapsed and the expiration date is more than 6 months ago
     def self.requirements_met?(args)
-
-      user = args[:user]
+      user = args[:entity]
       num_months = args[:num_months]
-      return false unless Reqs::RequirementsForMembershipLapsed.requirements_met?({ user: user })
+      return false unless Reqs::RequirementsForMembershipLapsed.requirements_met?({ entity: user })
 
       user.membership_expire_date < Time.zone.now.months_ago(num_months).to_date
     end
-
   end
 end

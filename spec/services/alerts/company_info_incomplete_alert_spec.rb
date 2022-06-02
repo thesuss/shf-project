@@ -25,7 +25,7 @@ module Alerts
           it 'requirements are met' do
             incomplete_co = instance_double("Company")
             allow(incomplete_co).to receive(:current_members).and_return(['some member'])
-            allow(Reqs::RequirementsForCoInfoNotComplete).to receive(:requirements_met?)
+            allow(Reqs::CoInfoNotCompleteReqs).to receive(:requirements_met?)
                                                                .with({ company: incomplete_co })
                                                                .and_return(true)
             co_earliest_fee_paid = DateTime.new(2020, 12, 8)
@@ -44,7 +44,7 @@ module Alerts
           it 'requirements are not met (returns false immediately)' do
             complete_co = instance_double("Company")
             allow(complete_co).to receive(:current_members).and_return(['some member'])
-            allow(Reqs::RequirementsForCoInfoNotComplete).to receive(:requirements_met?)
+            allow(Reqs::CoInfoNotCompleteReqs).to receive(:requirements_met?)
                                                                .with({ company: complete_co })
                                                                .and_return(false)
 
@@ -66,7 +66,7 @@ module Alerts
 
             incomplete_co = instance_double("Company")
             allow(incomplete_co).to receive(:current_members).and_return([])
-            allow(Reqs::RequirementsForCoInfoNotComplete).to receive(:requirements_met?)
+            allow(Reqs::CoInfoNotCompleteReqs).to receive(:requirements_met?)
                                                                .with({ company: incomplete_co })
                                                                .and_return(true)
             co_earliest_fee_paid = DateTime.new(2020, 12, 8)
@@ -110,7 +110,7 @@ module Alerts
           allow(incomplete_co).to receive(:earliest_current_member_fee_paid_time)
                                     .and_return(DateTime.new(2018, 12, 2))
           allow(subject).to receive(:entities_to_check).and_return([incomplete_co])
-          allow(Reqs::RequirementsForCoInfoNotComplete).to receive(:requirements_met?)
+          allow(Reqs::CoInfoNotCompleteReqs).to receive(:requirements_met?)
                                                              .with({ company: incomplete_co })
                                                              .and_return(true)
 

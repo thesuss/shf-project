@@ -11,7 +11,7 @@
   fee_name_payment: t('companies.show.hbrand_term_payment'),
   term_name: t('companies.show.hbrand_term'),
   term_end: company.branding_expire_date,
-  next_term_end: Company.next_branding_payment_dates(company.id).last,
+  next_term_end: Company.next_membership_payment_dates(company.id).last,
   can_make_payment: current_user.allowed_to_pay_hbrand_fee?(company),
   payment_text: t('menus.nav.company.pay_branding_fee'),
   payment_action_path: payment_action_path,

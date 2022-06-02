@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require_relative 'renewal_with_fail_info'
+
 module Reqs
 
   #--------------------------
   #
-  # RequirementsForRenewal
+  # @class RequirementsForRenewal
   #
   # @responsibility Knows what the requirements are for a Member to renew membership.
   #
@@ -18,16 +20,16 @@ module Reqs
   #
   #  Only 1 is needed for the system.
   #
-  # @todo Make this a Singleton so that we don't need to use a class variable to store the failed requirements info
-  #
   # @author Ashley Engelund (ashley@ashleycaroline.com  weedySeaDragon @ github)
   # @date   12/08/20
   #
   #--------------------------
 
-  class RequirementsForRenewal < AbstractReqsForMembership
+  class RequirementsForRenewal < AbstractReqsForUserMembership
 
-    @@failed_requirements = []
+    include RenewalWithFailInfo
+
+    @failed_requirements = []
 
     # check all requirements except the payment.
     # Wrap each requirement method in record_requirement_failure so we can record the reason why
@@ -94,62 +96,6 @@ module Reqs
     # @return [true,false]
     def self.agreed_to_membership_terms?(user)
       UserChecklistManager.completed_membership_guidelines_checklist_for_renewal?(user)
-    end
-
-    # Call the method with the given arguments.
-    # If the result is falsey, record the failure
-    # @return [true, false] the result from the method
-    def self.record_requirement_failure(obj, method, *method_args, failure_string)
-      result_boolean = method_args.compact.empty? ? obj.send(method) : obj.send(method, *method_args)
-      record_failure(method, failure_string, method_args) unless !!result_boolean
-      result_boolean
-    end
-
-    # store the failure information in @failed_requirements
-    # @todo The result (Success | Failure) should be a Result object (instead of a simple Hash. Then it can respond better.)
-    #
-    # @return [Array<Hash>] List of hashes, where each Hash has a :string (value = a String that describes what failed)
-    #    :method (value = Symbol of the method that failed), and :method_args (value = [String] method_args.inspect (so the string representation is saved, not the objects themselves))
-    def self.record_failure(method_name, failure_string, *method_args)
-      @@failed_requirements << { method: method_name.to_sym,
-                                 string: failure_string,
-                                 method_args: method_args.inspect }
-    end
-
-    # Get a short info string for the current membership for the given user. Used for debugging and to see if a user can renew.
-    # @param [User] user Get the most recent membership for this user
-    # @return [String]
-    def self.current_membership_short_str(user)
-      "curr.mship: #{ short_membership_str(user.current_membership)}"
-    end
-
-    # Get a short info string for the most recent membership for the given user.  Used for debugging and to see if a user can renew.
-    # @param [User] user Get the most recent membership for this user
-    # @return [String]
-    def self.most_recent_membership_short_str(user)
-      "most recent mship: #{short_membership_str(user.most_recent_membership)}"
-    end
-
-    #  Get a short info string for the given membership; shows id, first day and last day. Used for debugging and to see if a membership can be renewed
-    # @param [Membership | Nil ] membership The membership to use for the string
-    # @return [String] The info string for the membership. Is 'nil' if the membership is nil
-    def self.short_membership_str(membership)
-      return 'nil' if membership.nil?
-
-      "[#{membership.id}] #{membership.first_day} - #{membership.last_day}"
-    end
-
-    # Return a list of why the requirements methods failed.
-    # This is a work in progress; this is just an initial idea.
-    #
-    # @return [Array<Hash>] List of hashes, where each Hash has a :string (value = a String that describes what failed)
-    #    :method (value = Symbol of the method that failed), and :method_args (value = list of arguments passed to the method)
-    def self.failed_requirements
-      @@failed_requirements
-    end
-
-    def self.reset_failed_requirements
-      @@failed_requirements = []
     end
   end
 end

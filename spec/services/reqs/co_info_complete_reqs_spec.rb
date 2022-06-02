@@ -1,24 +1,10 @@
 require 'rails_helper'
 
 module Reqs
-  RSpec.describe RequirementsForCoInfoComplete do
+  RSpec.describe CoInfoCompleteReqs do
 
-    let(:subject) { Reqs::RequirementsForCoInfoComplete }
+    let(:subject) { Reqs::CoInfoCompleteReqs }
 
-    describe '.has_expected_arguments?' do
-
-      it 'args has expected :company key' do
-        expect(subject.has_expected_arguments?({ company: 'some co' })).to be_truthy
-      end
-
-      it 'args does not have expected :company key' do
-        expect(subject.has_expected_arguments?({ not_co: 'not some co' })).to be_falsey
-      end
-
-      it 'args is nil' do
-        expect(subject.has_expected_arguments?(nil)).to be_falsey
-      end
-    end
 
     describe '.requirements_met?' do
 
@@ -26,12 +12,12 @@ module Reqs
 
         it 'one address: true' do
           new_co = create(:company, region: create(:region))
-          expect(subject.requirements_met?({ company: new_co })).to be_truthy
+          expect(subject.requirements_met?({ entity: new_co })).to be_truthy
         end
 
         it '3 addresses (all with Regions): true' do
           new_co = create(:company, num_addresses: 3, region: create(:region))
-          expect(subject.requirements_met?({ company: new_co })).to be_truthy
+          expect(subject.requirements_met?({ entity: new_co })).to be_truthy
         end
 
       end
@@ -39,16 +25,15 @@ module Reqs
       it 'company name is blank: false' do
         new_co = create(:company, region: create(:region))
         new_co.name = ''
-        expect(subject.requirements_met?({ company: new_co })).to be_falsey
+        expect(subject.requirements_met?({ entity: new_co })).to be_falsey
       end
 
       it 'one of the addresses has a region that is nil: false' do
         new_co = create(:company, num_addresses: 3, region: create(:region))
         new_co.addresses.last.region = nil
-        expect(subject.requirements_met?({ company: new_co })).to be_falsey
+        expect(subject.requirements_met?({ entity: new_co })).to be_falsey
       end
-
-    end # describe '.requirements_met?'
+    end
 
     describe '.missing_info' do
 
@@ -64,7 +49,7 @@ module Reqs
           co_no_name = build(:company)
           co_no_name.name = ''
 
-          expect(subject.missing_info(company: co_no_name)).to match_array([I18n.t('activerecord.attributes.company.name')])
+          expect(subject.missing_info(entity: co_no_name)).to match_array([I18n.t('activerecord.attributes.company.name')])
         end
       end
 
@@ -73,13 +58,13 @@ module Reqs
           co_no_region = build(:company)
           co_no_region.addresses.first.region = nil
 
-          expect(subject.missing_info(company: co_no_region)).to match_array([I18n.t('activerecord.attributes.address.region')])
+          expect(subject.missing_info(entity: co_no_region)).to match_array([I18n.t('activerecord.attributes.address.region')])
         end
       end
 
       context 'no information is missing' do
         it 'returns an empty list' do
-          expect(subject.missing_info(company: build(:company))).to be_empty
+          expect(subject.missing_info(entity: build(:company))).to be_empty
         end
       end
     end

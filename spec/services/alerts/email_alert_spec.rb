@@ -191,7 +191,7 @@ module Alerts
         Rails.configuration.action_mailer.delivery_method = :mailgun
         ApplicationMailer.mailgun_client.enable_test_mode!
 
-        allow(Memberships::MembershipActions).to receive(:for_user)
+        allow(Memberships::MembershipActions).to receive(:for_entity)
                                                    .and_return(true)
       end
 

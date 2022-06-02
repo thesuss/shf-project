@@ -5,7 +5,7 @@
   .entry-content
     .instructions= t('shf_applications.new.instructions_html')
 
-    = render partial: 'membership_number', locals: { user: @shf_application.user }
+    = render partial: 'membership_number', locals: { owner: @shf_application.user }
 
     = form_for @shf_application do |f|
 

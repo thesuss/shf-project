@@ -7,7 +7,7 @@
       .col
         %h2= @shf_application.user.full_name
 
-        = render partial: 'membership_number', locals: { user: @shf_application.user }
+        = render partial: 'membership_number', locals: { owner: @shf_application.user }
 
         %p= field_or_none("#{t('activerecord.attributes.user.email')}",
                           mail_to(@shf_application.user.email),

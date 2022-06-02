@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 module Reqs
+  # @fixme mock and stub so that Unit tests do not hit the db and Intgration tests do it only minimally
+  #   esp. Checklists, Memberships
   RSpec.describe RequirementsForMembership do
 
     before(:each) do
@@ -96,7 +98,7 @@ module Reqs
                      start_date: start_date,
                      expire_date: expire_date)
 
-              expect(subject.requirements_met?({ user: approved_and_paid })).to be_truthy
+              expect(subject.requirements_met?({ entity: approved_and_paid })).to be_truthy
             end
 
             it 'false if membership payment made and it HAS expired' do
@@ -111,12 +113,12 @@ module Reqs
                      expire_date: expire_date)
 
               travel_to(expire_date + 1.day) do
-                expect(subject.requirements_met?({ user: approved_and_paid })).to be_falsey
+                expect(subject.requirements_met?({ entity: approved_and_paid })).to be_falsey
               end
             end
 
             it 'false if membership payment not made' do
-              expect(subject.requirements_met?({ user: approved_applicant })).to be_falsey
+              expect(subject.requirements_met?({ entity: approved_applicant })).to be_falsey
             end
           end
 
@@ -134,7 +136,7 @@ module Reqs
                      start_date: start_date,
                      expire_date: expire_date)
 
-              expect(subject.requirements_met?({ user: approved_and_paid })).to be_falsey
+              expect(subject.requirements_met?({ entity: approved_and_paid })).to be_falsey
             end
 
             it 'false if membership payment made and it HAS expired' do
@@ -149,12 +151,12 @@ module Reqs
                      expire_date: expire_date)
 
               travel_to(expire_date + 1.day) do
-                expect(subject.requirements_met?({ user: approved_and_paid })).to be_falsey
+                expect(subject.requirements_met?({ entity: approved_and_paid })).to be_falsey
               end
             end
 
             it 'false if membership payment not made' do
-              expect(subject.requirements_met?({ user: approved_applicant })).to be_falsey
+              expect(subject.requirements_met?({ entity: approved_applicant })).to be_falsey
             end
           end
         end
@@ -178,7 +180,7 @@ module Reqs
                          start_date: start_date,
                          expire_date: expire_date)
 
-                  expect(subject.requirements_met?({ user: unapproved_user })).to be_falsey
+                  expect(subject.requirements_met?({ entity: unapproved_user })).to be_falsey
                 end
 
                 it "false if membership payment made and it HAS expired" do
@@ -193,14 +195,14 @@ module Reqs
                          expire_date: expire_date)
 
                   travel_to(expire_date + 1.day) do
-                    expect(subject.requirements_met?({ user: unapproved_and_paid })).to be_falsey
+                    expect(subject.requirements_met?({ entity: unapproved_and_paid })).to be_falsey
                   end
                 end
 
                 it "false if membership payment not made" do
                   unapproved_app = create(:shf_application, state: app_state)
                   unapproved_applicant = unapproved_app.user
-                  expect(subject.requirements_met?({ user: unapproved_applicant })).to be_falsey
+                  expect(subject.requirements_met?({ entity: unapproved_applicant })).to be_falsey
                 end
               end
             end

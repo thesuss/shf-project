@@ -242,7 +242,7 @@ RSpec.describe UserChecklistManager do
 
 
             it 'true if most recent agreed to date was within the window for the current membership' do
-              current_membership = create(:membership, user: current_member,
+              current_membership = create(:membership, owner: current_member,
                                           first_day: agreed_after_cutoff_date_1.date_completed,
                                           last_day: Date.current + 1.day)
 
@@ -261,7 +261,7 @@ RSpec.describe UserChecklistManager do
             end
 
             it 'false most recent agreed to date is not within window for agreeing ' do
-              current_membership = create(:membership, user: current_member,
+              current_membership = create(:membership, owner: current_member,
                                           first_day: (agreed_after_cutoff_date_1.date_completed - 1.day),
                                           last_day: Date.current + 1.day)
               allow(Memberships::MembershipsManager).to receive(:most_recent_membership)
@@ -369,7 +369,7 @@ RSpec.describe UserChecklistManager do
       before(:each) { allow(described_class).to receive(:membership_guidelines_required_date).and_return(yesterday) }
 
       it 'gets the most recent completed guideline date' do
-        faux_membership = build(:membership, user: current_member, last_day: Date.new(2021,1,1))
+        faux_membership = build(:membership, owner: current_member, last_day: Date.new(2021,1,1))
         allow(current_member).to receive(:current_membership).and_return(faux_membership)
         allow(described_class).to receive(:checklist_complete_after?)
 
@@ -381,7 +381,7 @@ RSpec.describe UserChecklistManager do
       end
 
       context 'the first day of membership is before when guidelines were required' do
-        let(:membership_starts_b4_guidelines_reqd) { build(:membership, user: current_member, first_day:(yesterday - 1.week)) }
+        let(:membership_starts_b4_guidelines_reqd) { build(:membership, owner: current_member, first_day:(yesterday - 1.week)) }
         before(:each) { allow(current_member).to receive(:current_membership).and_return(membership_starts_b4_guidelines_reqd) }
 
         it 'true if the most recent completed guidelines were before the guidelines were fully implemented' do
@@ -408,7 +408,7 @@ RSpec.describe UserChecklistManager do
       end
 
       context 'the first day of membership is when the guidelines were required' do
-        let(:membership_starts_on_guidelines_reqd) { build(:membership, user: current_member, first_day: yesterday) }
+        let(:membership_starts_on_guidelines_reqd) { build(:membership, owner: current_member, first_day: yesterday) }
         let(:most_recent_completed_guideline) { build(:user_checklist, date_completed: (yesterday + 1.day)) }
         before(:each) { allow(current_member).to receive(:current_membership).and_return(membership_starts_on_guidelines_reqd) }
 
@@ -424,7 +424,7 @@ RSpec.describe UserChecklistManager do
 
 
       context 'the first day of membership is after when guidelines were required' do
-        let(:membership_starts_after_guidelines_reqd) { build(:membership, user: current_member, first_day:(yesterday + 1.day)) }
+        let(:membership_starts_after_guidelines_reqd) { build(:membership, owner: current_member, first_day:(yesterday + 1.day)) }
         let(:most_recent_completed_guideline) { build(:user_checklist, date_completed: (yesterday + 1.day)) }
         before(:each) { allow(current_member).to receive(:current_membership).and_return(membership_starts_after_guidelines_reqd) }
 
@@ -455,7 +455,7 @@ RSpec.describe UserChecklistManager do
       let(:user_in_grace_pd) { build(:user, membership_status: IN_GRACE_PERIOD_STATUS) }
 
       it 'calls checklist_completed_after? with the 2nd day of the most recent membership' do
-        faux_membership = build(:membership, user: user_in_grace_pd, last_day: Date.new(2021,1,1))
+        faux_membership = build(:membership, owner: user_in_grace_pd, last_day: Date.new(2021,1,1))
         allow(user_in_grace_pd).to receive(:in_grace_period?).and_return(true)
         allow(user_in_grace_pd).to receive(:most_recent_membership).and_return(faux_membership)
 
@@ -562,7 +562,7 @@ RSpec.describe UserChecklistManager do
 
 
   describe '.find_or_create_on_or_after_latest_membership_start' do
-    let(:latest_membership) { build(:membership, user: user, first_day: yesterday) }
+    let(:latest_membership) { build(:membership, owner: user, first_day: yesterday) }
 
     let(:most_recent_checklist) { build(:user_checklist, :completed, user: user,
                                         date_completed: completion_date_20200102) }
@@ -596,7 +596,7 @@ RSpec.describe UserChecklistManager do
   describe '.find_or_create_on_or_after_current_membership_start' do
 
     context 'the user has a current membership' do
-      let(:current_membership) { build(:membership, user: user, first_day: yesterday) }
+      let(:current_membership) { build(:membership, owner: user, first_day: yesterday) }
       let(:most_recent_checklist) { build(:user_checklist, :completed, user: user,
                                           date_completed: completion_date_20200102) }
       before(:each) do
@@ -634,7 +634,7 @@ RSpec.describe UserChecklistManager do
 
 
   describe '.find_or_create_after_latest_membership_last_day' do
-    let(:latest_membership) { build(:membership, user: user, last_day: yesterday) }
+    let(:latest_membership) { build(:membership, owner: user, last_day: yesterday) }
 
     it 'gets the last day of the most recent membership for the user' do
       allow(described_class).to receive(:create_for_user_if_needed)
@@ -663,7 +663,7 @@ RSpec.describe UserChecklistManager do
   describe '.find_or_create_on_or_after' do
     let(:u) { build(:user) }
     let(:given_date) { Date.current }
-    let(:latest_membership) { build(:membership, user: u, last_day: yesterday) }
+    let(:latest_membership) { build(:membership, owner: u, last_day: yesterday) }
     let(:most_recent_checklist) { build(:user_checklist, :completed, user: user,
                                         date_completed: (yesterday)) }
 
@@ -955,7 +955,7 @@ RSpec.describe UserChecklistManager do
   end
 
   describe '.checklist_done_on_or_after_latest_membership_start?' do
-    let(:latest_membership) { build(:membership, user: user, first_day: yesterday) }
+    let(:latest_membership) { build(:membership, owner: user, first_day: yesterday) }
 
     let(:most_recent_checklist) { build(:user_checklist, :completed, user: user,
                                         date_completed: completion_date_20200102) }

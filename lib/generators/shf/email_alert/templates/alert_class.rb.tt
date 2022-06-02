@@ -20,8 +20,8 @@ class <%= alert_class_name %>  < UserEmailAlert
   def send_alert_this_day?(timing, config, user)
 
     # FIXME: if this alert needs to be sent to all members of a company, arguments has should at least include company:
-    #   if RequirementsForHBrandingFeeDue.requirements_met?({company: company})
-    if ReqsFor<%= alert_class_name %>.requirements_met?({user: user})
+    #   if RequirementsForHBrandingFeeDue.requirements_met?({entity: company})
+    if ReqsFor<%= alert_class_name %>.satisfied?({entity: user})
 
       # FIXME: the first argument should be the point in time you need to check (ex: user.membership_expire_date)
       day_to_check = self.class.days_today_is_away_from( FIXME_INSERT_ARGUMENT, timing)

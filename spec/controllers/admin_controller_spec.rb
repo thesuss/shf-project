@@ -131,24 +131,24 @@ RSpec.describe AdminController, type: :controller do
                                   last_name:  "Last#{app_state.name}",
                                   email:      "#{app_state.name}@example.com")
 
-            m = FactoryBot.create :shf_application,
+            app = FactoryBot.create :shf_application,
                                   contact_email: "#{app_state.name}@example.com",
                                   state:         app_state.name,
                                   user:          u
 
-            member1_info = "#{m.contact_email},#{u.first_name},#{u.last_name},#{u.membership_number},#{u.date_membership_packet_sent}," + I18n.t("shf_applications.state.#{app_state.name}")
+            member1_info = "#{app.contact_email},#{u.first_name},#{u.last_name},#{u.membership_number},#{u.date_membership_packet_sent}," + I18n.t("shf_applications.state.#{app_state.name}")
 
 
             result_str << member1_info + ','
 
             # state date
-            result_str << (m.updated_at.strftime('%F'))
+            result_str << (app.updated_at.strftime('%F'))
             result_str << ','
             result_str << ','
 
-            result_str << "\"#{m.business_categories[0].name}\","
+            result_str << "\"#{app.business_categories[0].name}\","
 
-            result_str << (m.companies.empty? ? '' : '"' + m.companies.last.name + '"')
+            result_str << (app.companies.empty? ? '' : '"' + app.companies.last.name + '"')
 
             result_str << ','
 
@@ -156,21 +156,22 @@ RSpec.describe AdminController, type: :controller do
             # say Paid if member fee is paid, otherwise make link to where it is paid
             result_str << '"' + paid_or_payment_url(u.payments_current?, user_path(u)) + '"'
             result_str << ','
-            result_str << '"' + (never_paid_if_blank(m.user.membership_expire_date)) + '",'
+            result_str << '"' + (never_paid_if_blank(app.user.membership_expire_date)) + '",'
             result_str << ','
 
             # H-branding fee
-            if m.companies.empty?
+            if
+            app.companies.empty?
               result_str << "-,#{I18n.t('admin.export_ansokan_csv.never_paid')},"
             else
               # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
-              result_str << '"' + paid_or_payment_url(m.companies.last.branding_license?, company_path(m.companies.last.id)) + '"'
+              result_str << '"' + paid_or_payment_url(app.companies.last.branding_license?, company_path(app.companies.last.id)) + '"'
               result_str << ','
-              result_str << '"' + (never_paid_if_blank(m.user.membership_expire_date)) + '",'
+              result_str << '"' + (never_paid_if_blank(app.user.membership_expire_date)) + '",'
             end
 
 
-            result_str << m.se_mailing_csv_str + "\n"
+            result_str << app.se_mailing_csv_str + "\n"
 
           end
 
