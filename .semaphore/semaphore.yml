@@ -34,8 +34,13 @@ blocks:
         - name: Create cache with Bundle install, local files
           commands:
             - checkout
+            # Install wkhtml
             - wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
             - sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
+            # wkhtmltox requires libpng12.so which is no longer included in Ubuntu 18 or 20 (and beyond)
+            # @see https://www.linuxuprising.com/2018/05/fix-libpng12-0-missing-in-ubuntu-1804.html
+            - wget http://ppa.launchpad.net/linuxuprising/libpng12/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1+1~ppa0~focal_amd64.deb
+            - sudo apt install ./libpng12-0_1.2.54-1ubuntu1.1+1~ppa0~focal_amd64.deb
             - sem-version ruby 2.7.6
             - cache restore
             - gem install bundler:2.2.21
