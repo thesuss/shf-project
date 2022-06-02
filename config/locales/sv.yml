@@ -297,6 +297,7 @@ sv:
         description: *description
         subcategory: &subcategory Underkategori
         subcategories: Underkategorier
+        apply_qs_url: &category_addtl_qs_link Link for additional questions
 
       shf_document:
         title: &title Titel
@@ -1008,7 +1009,6 @@ sv:
               Redigera företaget för att aktivera visning av händelser.)
 
   business_categories:
-
     index:
       title: &business_category Företagstyp
       name: *business_category_name
@@ -1029,7 +1029,9 @@ sv:
 
     new:
       title: Ny företagstyp (kategori)
+      name: *business_category_name
       description: *description
+      apply_qs_url: *category_addtl_qs_link
       no_one_applied_category: *category_no_one_applied
 
 
@@ -1057,6 +1059,21 @@ sv:
     new_business_category: Skapa ny företagstyp (kategori)
     new_business_subcategory: Ny underkategori
     all_business_categories: Alla kategorier
+
+    cat_table_head:
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
+
+    category_new_row:
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
+
+    category_edit_row:
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
 
   users:
     edit_user_account: &edit_user_account Redigera kontot för %{name}

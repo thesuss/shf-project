@@ -293,12 +293,12 @@ en:
         dinkurs_key: &dinkurs_company_key Dinkurs Company key
         dinkurs_company_id: Dinkurs company key
 
-
       business_category:
         name: &business_category_name  Name
         description: *description
         subcategory: &subcategory Subcategory
         subcategories: Subcategories
+        apply_qs_url: &category_addtl_qs_link  Link for additional questions
 
       shf_document:
         title: &title Title
@@ -999,7 +999,6 @@ en:
     show_not: (Showing Dinkurs events on this page has been disabled.  Edit the company to enable that.)
 
   business_categories:
-
     index:
       title: Company Categories
       name: *business_category_name
@@ -1020,7 +1019,9 @@ en:
 
     new:
       title: New business category
+      name: *business_category_name
       description: *description
+      apply_qs_url: *category_addtl_qs_link
       no_one_applied_category: *category_no_one_applied
 
     create:
@@ -1047,6 +1048,22 @@ en:
     new_business_category: New business category
     new_business_subcategory: New subcategory
     all_business_categories: All categories
+
+    cat_table_head:
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
+
+    category_new_row:
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
+
+    category_edit_row:
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
+
 
   users:
     edit_user_account: &edit_user_account "Edit the account for %{name}"
