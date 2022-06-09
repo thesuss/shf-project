@@ -106,34 +106,27 @@ class ShfApplicationsController < ApplicationController
   end
 
 
+  # @todo this logic is ugly. clean. it. up.
   def create
-    @shf_application = ShfApplication.new(shf_application_params
-                                          .merge(user: current_user))
+    @shf_application = ShfApplication.new(shf_application_params.merge(user: current_user))
 
     numbers_str = params[:company_number]
-
-    companies_and_numbers, all_valid = validate_company_numbers(@shf_application,
-                                                                numbers_str)
-
+    companies_and_numbers, all_valid = validate_company_numbers(@shf_application, numbers_str)
     @shf_application.companies = companies_and_numbers[:companies] if all_valid
 
     file_delivery_selected = user_selected_file_delivery_option?
 
     if all_valid && @shf_application.save
+      addtl_qs_info = helpers.instructions_for_additional_category_qs(@shf_application, 'shf_applications.create')
 
       if process_upload_files_without_error?(params)
-
-        unless set_flash_messages_for_missing_application_files?(@shf_application,
-                                                                file_delivery_selected,
-                                                                'create')
-          helpers.flash_message(:notice,
-                                t('.success', email_address: @shf_application.contact_email))
-        end
-
+        set_flash_messages_incl_application_files(@shf_application, file_delivery_selected, 'create')
+        helpers.flash_message(:notice, addtl_qs_info)
         redirect_to user_path(@shf_application.user)
 
       else
         helpers.flash_message(:notice, t('.success_with_file_problem'))
+        helpers.flash_message(:notice, addtl_qs_info)
         load_update_objects(numbers_str)
         render :edit
       end
@@ -145,29 +138,20 @@ class ShfApplicationsController < ApplicationController
   end
 
 
+  # @fixme if a new category(-ies) has been selected, show instructions, send email with link(s)
   def update
     numbers_str = params[:company_number]
 
-    companies_and_numbers, all_valid = validate_company_numbers(@shf_application,
-                                                                numbers_str)
-
+    companies_and_numbers, all_valid = validate_company_numbers(@shf_application, numbers_str)
     @shf_application.companies = companies_and_numbers[:companies] if all_valid
 
     file_delivery_selected = user_selected_file_delivery_option?
 
     if all_valid && @shf_application.update(shf_application_params) && process_upload_files_without_error?(params)
-
       check_and_mark_if_ready_for_review(params['shf_application'])
-
-      unless set_flash_messages_for_missing_application_files?(@shf_application,
-                                                              file_delivery_selected,
-                                                              'update')
-        helpers.flash_message(:notice, t('.success'))
-      end
-
+      set_flash_messages_incl_application_files(@shf_application, file_delivery_selected, 'update')
       redirect_to define_path(evaluate_update(params))
     else
-
       create_or_update_error(t('.error'), companies_and_numbers, numbers_str, :edit)
     end
   end
@@ -258,31 +242,28 @@ class ShfApplicationsController < ApplicationController
 
   private
 
-  def set_flash_messages_for_missing_application_files?(shf_application,
-                                                       file_delivery_selected,
-                                                       action)
+  # Append message to flash if the applicant needs to be warned/notified that they need to still provide files.
+  def set_flash_messages_incl_application_files(shf_application, file_delivery_selected, action)
+    i18n_scope = "shf_applications.#{action}"
 
-    return false if shf_application.uploaded_files.present?
+    if shf_application.uploaded_files.present?
+      helpers.flash_message(:notice, t("#{i18n_scope}.success", email_address: @shf_application.contact_email))
+      false
+    else
+      helpers.flash_message(:notice, t("#{i18n_scope}.success_with_app_files_missing"))
+      if file_delivery_selected
+        if shf_application.file_delivery_method.default_option
+          helpers.flash_message(:warn, t("#{i18n_scope}.upload_file_or_select_method"))
+        else
+          helpers.flash_message(:warn, t("#{i18n_scope}.remember_to_deliver_files"))
+        end
 
-    helpers.flash_message(:notice,
-      t("shf_applications.#{action}.success_with_app_files_missing"))
-
-    if file_delivery_selected
-
-      if shf_application.file_delivery_method.default_option
-        helpers.flash_message(:warn,
-          t("shf_applications.#{action}.upload_file_or_select_method"))
       else
-        helpers.flash_message(:warn,
-          t("shf_applications.#{action}.remember_to_deliver_files"))
+        helpers.flash_message(:warn, t("#{i18n_scope}.upload_file_or_select_method"))
       end
 
-    else
-
-      helpers.flash_message(:warn,
-        t("shf_applications.#{action}.upload_file_or_select_method"))
+      true
     end
-    true
   end
 
   def user_selected_file_delivery_option?
@@ -343,10 +324,10 @@ class ShfApplicationsController < ApplicationController
     @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES
   end
 
-
+  # Returns true if no errors, false otherwise
+  # (*true* return value does NOT mean that one or more files were actually uploaded)
+  # @return [True, False]
   def process_upload_files_without_error?(params)
-    # Returns true if no errors, false otherwise
-    # (*true* return value does NOT mean that one or more files were actually uploaded)
 
     successful = true
 

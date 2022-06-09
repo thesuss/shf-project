@@ -13,3 +13,4 @@
   %hr
 
   = render 'mailers_shared/newapp_login_upload_files_instruction', email: @recipient_email
+  = render 'additional_questions_for_categories', categories: @shf_application.business_categories, i18n_scope: i18n_scope
