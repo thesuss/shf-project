@@ -12,6 +12,10 @@ class ShfApplicationMailer < ApplicationMailer
     send_mail_for __method__, shf_application, t('mailers.shf_application_mailer.app_approved.subject')
   end
 
+  def additional_qs_for_biz_cats(shf_application, added_biz_categories)
+    @added_biz_categories = added_biz_categories
+    send_mail_for __method__, shf_application, t('mailers.shf_application_mailer.additional_qs_for_biz_cats.subject')
+  end
   # --------------------------------------------------------------------------------------------------
 
   private

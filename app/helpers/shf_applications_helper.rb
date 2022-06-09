@@ -101,11 +101,13 @@ module ShfApplicationsHelper
     "btn btn-sm btn-outline-primary #{other_css_str}"
   end
 
-  # Return the instructions for answering additional questions for categories in the shf application
-  # @return [String] Instructions for answering additonal questions for each category in the application, with HTML tags
-  def instructions_for_additional_category_qs(shf_app, i18n_scope)
+  # Return the instructions for answering additional questions for the given business categories
+  # @return [String] Instructions for answering additional questions for each business category, with HTML tags
+  # @param [Array<BusinessCategory>] business_categories - list of business categories to show
+  # @param [String] i18n_scope - scope for looking up the message(s) to display
+  def instructions_for_additional_category_qs(business_categories, i18n_scope)
     instructions = I18n.t("#{i18n_scope}.success_more_questions_instructions")
-    "<div class='addtl-category-qs'><p class='addtl-category-qs-instructions'>#{instructions}</p>#{links_for_more_category_questions(shf_app.business_categories)}</div>"
+    "<div class='addtl-category-qs'><p class='addtl-category-qs-instructions'>#{instructions}</p>#{links_for_more_category_questions(business_categories)}</div>"
   end
 
   # @return [String] HTML string with a <ul> for the categories, <li> for each category and the category linklink

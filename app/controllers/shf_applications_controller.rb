@@ -106,27 +106,25 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  # @todo this logic is ugly. clean. it. up.
+  # @fixme this logic is ugly. clean. it. up.
   def create
     @shf_application = ShfApplication.new(shf_application_params.merge(user: current_user))
 
     numbers_str = params[:company_number]
-    companies_and_numbers, all_valid = validate_company_numbers(@shf_application, numbers_str)
-    @shf_application.companies = companies_and_numbers[:companies] if all_valid
+    companies_and_numbers, co_nums_valid = validate_company_numbers(@shf_application, numbers_str)
+    @shf_application.companies = companies_and_numbers[:companies] if co_nums_valid
 
     file_delivery_selected = user_selected_file_delivery_option?
 
-    if all_valid && @shf_application.save
-      addtl_qs_info = helpers.instructions_for_additional_category_qs(@shf_application, 'shf_applications.create')
+    if co_nums_valid && @shf_application.save
+      add_biz_category_addtl_qs_to_flash(@shf_application.business_categories)
 
       if process_upload_files_without_error?(params)
         set_flash_messages_incl_application_files(@shf_application, file_delivery_selected, 'create')
-        helpers.flash_message(:notice, addtl_qs_info)
         redirect_to user_path(@shf_application.user)
 
       else
         helpers.flash_message(:notice, t('.success_with_file_problem'))
-        helpers.flash_message(:notice, addtl_qs_info)
         load_update_objects(numbers_str)
         render :edit
       end
@@ -138,17 +136,22 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  # @fixme if a new category(-ies) has been selected, show instructions, send email with link(s)
+  # @fixme duplicates code in create method
+  # @todo Rails 7 is able to track changes to associations. Use that capability instead of manually checking the business_categories than have changed with original_biz_cat_ids and post_save_biz_cat_ids
   def update
     numbers_str = params[:company_number]
-
-    companies_and_numbers, all_valid = validate_company_numbers(@shf_application, numbers_str)
-    @shf_application.companies = companies_and_numbers[:companies] if all_valid
+    companies_and_numbers, co_nums_valid = validate_company_numbers(@shf_application, numbers_str)
+    @shf_application.companies = companies_and_numbers[:companies] if co_nums_valid
 
     file_delivery_selected = user_selected_file_delivery_option?
 
-    if all_valid && @shf_application.update(shf_application_params) && process_upload_files_without_error?(params)
+    original_biz_cat_ids = @shf_application.business_categories.pluck(:id)
+    if co_nums_valid && @shf_application.update(shf_application_params) && process_upload_files_without_error?(params)
       check_and_mark_if_ready_for_review(params['shf_application'])
+
+      post_save_biz_cat_ids = @shf_application.business_categories.pluck(:id)
+      show_and_email_for_new_biz_cats(@shf_application, original_biz_cat_ids, post_save_biz_cat_ids)
+
       set_flash_messages_incl_application_files(@shf_application, file_delivery_selected, 'update')
       redirect_to define_path(evaluate_update(params))
     else
@@ -243,6 +246,7 @@ class ShfApplicationsController < ApplicationController
   private
 
   # Append message to flash if the applicant needs to be warned/notified that they need to still provide files.
+  # @todo rename to something like 'append...' or 'add..' instead of 'set'
   def set_flash_messages_incl_application_files(shf_application, file_delivery_selected, action)
     i18n_scope = "shf_applications.#{action}"
 
@@ -266,6 +270,12 @@ class ShfApplicationsController < ApplicationController
     end
   end
 
+  # Add instructions and info to flash message about additional questions for the business categories
+  def add_biz_category_addtl_qs_to_flash(biz_categories)
+    addtl_qs_info = helpers.instructions_for_additional_category_qs(biz_categories, 'shf_applications.create')
+    helpers.flash_message(:notice, addtl_qs_info)
+  end
+
   def user_selected_file_delivery_option?
     file_delivery_selected = false
 
@@ -280,11 +290,13 @@ class ShfApplicationsController < ApplicationController
     file_delivery_selected
   end
 
+  # @todo rename because this is onlyabout deleting/destroying
   def define_path(user_deleted_file)
     return edit_shf_application_path(@shf_application) if user_deleted_file
     shf_application_path(@shf_application)
   end
 
+  # @todo rename because this is only about deleting/destroying
   def evaluate_update(params)
     params.dig(:shf_application, :uploaded_files_attributes)&.key?('_destroy')
   end
@@ -308,7 +320,7 @@ class ShfApplicationsController < ApplicationController
   def check_and_mark_if_ready_for_review(app_params)
     return unless app_params
 
-    if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != "0"
+    if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != '0'
       @shf_application.is_ready_for_review!
     end
   end
@@ -376,7 +388,7 @@ class ShfApplicationsController < ApplicationController
     # validation - for the file delivery method - to the model errors hash.
     # This means model errors will have 2 errors for the same problem (File
     # delivery method not selected by the user).  This line removes one of those:
-    @shf_application.errors.delete(:"user.shf_application.file_delivery_method")
+    @shf_application.errors.delete(:'user.shf_application.file_delivery_method')
 
     @shf_application = add_company_errors_to_model(@shf_application,
                                                    companies_and_numbers)
@@ -457,9 +469,19 @@ class ShfApplicationsController < ApplicationController
     [{ companies: companies, numbers: numbers }, ! companies.include?(nil)]
   end
 
+  # Show info about and email links for additional questions for categories that were added
+  def show_and_email_for_new_biz_cats(shf_app, original_biz_ids, post_save_biz_ids)
+    new_biz_cat_ids = post_save_biz_ids - original_biz_ids
+    new_biz_cats = BusinessCategory.where(id: new_biz_cat_ids)
+    add_biz_category_addtl_qs_to_flash(new_biz_cats) unless new_biz_cat_ids.empty?
+    begin
+      ShfApplicationMailer.additional_qs_for_biz_cats(shf_app, new_biz_cats).deliver_now
+    rescue => _mail_error
+      helpers.flash_message(:error, t('mailers.shf_application_mailer.additional_qs_for_biz_cats.error_sending', email: shf_app.user.email))
+    end
+  end
 
   def send_new_app_emails(new_shf_app)
-
     begin
       ShfApplicationMailer.acknowledge_received(new_shf_app).deliver_now
     rescue => _mail_error
@@ -469,7 +491,6 @@ class ShfApplicationsController < ApplicationController
     # No rescue for the following because if there is a problem sending email to the admin,
     # do not display an error to the user
     send_new_shf_application_notice_to_admins(new_shf_app) if AdminOnly::AppConfiguration.config_to_use.email_admin_new_app_received_enabled
-
   end
 
 
@@ -478,5 +499,6 @@ class ShfApplicationsController < ApplicationController
       AdminMailer.new_shf_application_received(new_shf_app, admin).deliver_now
     end
   end
+
 
 end
