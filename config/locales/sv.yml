@@ -658,6 +658,8 @@ sv:
       success_with_app_files_missing: "!! Din ansökan laddades upp men den saknar filer !!"
       upload_file_or_select_method: *upload_files
       remember_to_deliver_files: *chosen_method
+      success_more_questions_instructions: *category_more_qs_instructions
+      success_category_link: *category_link
 
     show:
       title: Ansökan från %{user_full_name}
@@ -2036,8 +2038,8 @@ sv:
 
       acknowledge_received:
         subject: Din ansökan till Sveriges Hundföretagare är mottagen
-        message_text: "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
-        your_submitted_info: "Här är vad du har laddat upp:"
+        message_text: &app_been_recieved "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
+        your_submitted_info: &your_submitted_info "Här är vad du har laddat upp:"
         review_after_recevied_files: *review_after_recevied_files
         upload_choice_intro: "Ditt val för att tillhandahålla underlag: "
         need_to_upload: "Du måste ladda upp dina filer. Här är hur:"
@@ -2045,7 +2047,6 @@ sv:
         error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
         more_questions_instructions: *category_more_qs_instructions
         category_link: *category_link
-
 
       app_approved:
         subject: Din ansökan till Sveriges Hundföretagare är godkänd.
@@ -2057,6 +2058,14 @@ sv:
           h_branding_not_paid: "När detta är gjort behöver du göra färdigt din företagssida och betala din H-märkesavgift. Mer information om hur du gör det kommer i ett mail efter att du betalt din medlemsavgift."
           thanks:  "Tack för att du vill vara medlem och bidrar till ett kvalitetssäkrat hundsverige."
           error_sending: *shf_email_error
+
+      additional_qs_for_biz_cats:
+        subject: Additional questions for new Sveriges Hundföretagare business categories
+        message_text:
+          youve_add_categories: Thanks for updating your application. You've added new business categories.
+          more_questions_instructions: *category_more_qs_instructions
+          your_submitted_info: *your_submitted_info
+        error_sending: *shf_email_error
 
 
     member_mailer:

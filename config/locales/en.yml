@@ -652,6 +652,8 @@ en:
       success_with_app_files_missing: YOUR APPLICATION WAS UPDATED, BUT REQUIRED FILES ARE MISSING
       upload_file_or_select_method: *upload_files
       remember_to_deliver_files: *chosen_method
+      success_more_questions_instructions: *category_more_qs_instructions
+      success_category_link: *category_link
 
     show:
       title: Application from %{user_full_name}
@@ -2031,8 +2033,8 @@ en:
 
       acknowledge_received:
         subject: Your application to Sveriges Hundföretagare has been received
-        message_text: "Your application has been received.  We are all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
-        your_submitted_info: "As a reminder, here is what you submitted:"
+        message_text: &app_been_recieved "Your application has been received.  We are all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
+        your_submitted_info: &your_submitted_info "As a reminder, here is what you submitted:"
         review_after_recevied_files: *review_after_recevied_files
         upload_choice_intro: "Your choice for providing files: "
         need_to_upload: "You need to upload your files. Here's how:"
@@ -2052,6 +2054,13 @@ en:
           thanks: "Thank you for wanting to be a member and contributing to a Sweden with an ethical dog industry."
           error_sending: *shf_email_error
 
+      additional_qs_for_biz_cats:
+        subject: Additional questions for new Sveriges Hundföretagare business categories
+        message_text:
+          youve_add_categories: Thanks for updating your application. You've added new business categories.
+          more_questions_instructions: *category_more_qs_instructions
+          your_submitted_info: *your_submitted_info
+        error_sending: *shf_email_error
 
     member_mailer:
       member_account_link: "%{account_link} (You may need to login first before the link works. Your login is %{login_email}.)"
