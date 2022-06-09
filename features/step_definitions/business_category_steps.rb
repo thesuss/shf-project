@@ -2,9 +2,8 @@ And(/^the following business categories exist$/) do |table|
   table.hashes.each do |business_category|
 
     subcategories = business_category.delete('subcategories')
-    link_for_addtl_category_qs = business_category.delete('link for additional questions')
 
-    cat = FactoryBot.create(:business_category, business_category, apply_qs_url: link_for_addtl_category_qs)
+    cat = FactoryBot.create(:business_category, business_category)
     if subcategories
       subcategories.split(/\s*,\s*/).each do |subcategory_name|
         FactoryBot.create(:business_category, name: subcategory_name, parent_id: cat.id)
