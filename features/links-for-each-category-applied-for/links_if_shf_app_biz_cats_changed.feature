@@ -64,7 +64,7 @@ Feature: Applicant sees links and gets email about additional questions if busin
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.success")
     And I should not see t("shf_applications.update.success_more_questions_instructions")
-    And "applicant@example.com" should receive no email with subject t("shf_application_mailer.additional_qs_for_biz_cats.subject")
+    And "applicant@example.com" should receive no email with subject t("mailers.shf_application_mailer.additional_qs_for_biz_cats.subject")
 
 
   @selenium @applicant @user
@@ -74,4 +74,4 @@ Feature: Applicant sees links and gets email about additional questions if busin
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.success")
     And I should not see t("shf_applications.update.success_more_questions_instructions")
-    And "applicant@example.com" should receive no email with subject t("shf_application_mailer.additional_qs_for_biz_cats.subject")
+    And "applicant@example.com" should receive no email with subject t("mailers.shf_application_mailer.additional_qs_for_biz_cats.subject")

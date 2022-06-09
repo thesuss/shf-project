@@ -240,7 +240,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
   describe 'instructions_for_additional_category_qs' do
     it 'gets the links for all of the shf application categories' do
       expect(helper).to receive(:links_for_more_category_questions).with(app_3_cats.business_categories)
-      helper.instructions_for_additional_category_qs(app_3_cats, 'sv.shf_applications.create')
+      helper.instructions_for_additional_category_qs(app_3_cats.business_categories, 'sv.shf_applications.create')
     end
   end
 
