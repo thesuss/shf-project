@@ -617,11 +617,7 @@ sv:
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
-      application_dog_category: &application_dog_category "Ansöker som:"
-      clue_selected_categories: &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
 
-      upload_files_section:  Underlag för att styrka min ansökan
-      upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
       upload_files: 'Ladda upp filer från datorn (VIKTIGT)'
       upload_allowed_file_types: *upload_allowed_types
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
@@ -646,6 +642,8 @@ sv:
       success_with_app_files_missing: "!! Din ansökan har sparats, men den saknar nödvändiga filer !!"
       upload_file_or_select_method: &upload_files Var god ladda upp filer eller välj en annan leveransmetod
       remember_to_deliver_files: &chosen_method Kom ihåg att leverera filer via den valda leveransmetoden
+      success_more_questions_instructions: &category_more_qs_instructions "You will now have to fill out a Google form for each category, in which you guarantee that you have gone through all the required subjects and elements required for approval. Your application is not complete until you have filled out your form(-s)."
+      success_category_link: &category_link "%{category}: %{link}"
 
     edit:
       title: Redigera ansökan om medlemskap
@@ -746,8 +744,16 @@ sv:
       company_name: *name
 
     shf_application_fields:
-      company_numbers_tooltip: Du kan ange flera företagsnummer, åtskilda av
-                               ett kommatecken eller tomma mellanslag
+      company_numbers_tooltip: Du kan ange flera företagsnummer, åtskilda av ett kommatecken eller tomma mellanslag
+      business_categories:
+        section_title: &business_categories_title "Ansöker som:"
+        instructions:  &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
+        instructions2: You will need to submit documentation the proves you are qualified in each category you select. Instructions are in the next section.
+      supporting_files:
+        section_title: Underlag för att styrka min ansökan
+        instructions: "Please upload evidence which proves that your have successfully completed all the education that you mentioned in the category-forms. A common type of evidence is signed diplomas. You can take a picture of your diploma or scan it into your computer. "
+        email_membership_with_qs: "If you’re having trouble with this, please send an email to "
+
 
     start_review:
       success: Granskningen har påbörjats.
@@ -1051,9 +1057,12 @@ sv:
 
     form:
       save: *save
+      name: *business_category
+      description: *description
+      apply_qs_url: *category_addtl_qs_link
 
     form_collection_checkboxes:
-      title: *application_dog_category
+      title: *business_categories_title
       clue_selected_categories: *clue_selected_categories
 
     new_business_category: Skapa ny företagstyp (kategori)
@@ -2034,6 +2043,9 @@ sv:
         need_to_upload: "Du måste ladda upp dina filer. Här är hur:"
         can_upload_more: "Du kan ladda upp fler filer. Här är hur:"
         error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
+        more_questions_instructions: *category_more_qs_instructions
+        category_link: *category_link
+
 
       app_approved:
         subject: Din ansökan till Sveriges Hundföretagare är godkänd.
