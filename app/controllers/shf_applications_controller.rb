@@ -472,8 +472,10 @@ class ShfApplicationsController < ApplicationController
   # Show info about and email links for additional questions for categories that were added
   def show_and_email_for_new_biz_cats(shf_app, original_biz_ids, post_save_biz_ids)
     new_biz_cat_ids = post_save_biz_ids - original_biz_ids
+    return if new_biz_cat_ids.empty?
+
     new_biz_cats = BusinessCategory.where(id: new_biz_cat_ids)
-    add_biz_category_addtl_qs_to_flash(new_biz_cats) unless new_biz_cat_ids.empty?
+    add_biz_category_addtl_qs_to_flash(new_biz_cats)
     begin
       ShfApplicationMailer.additional_qs_for_biz_cats(shf_app, new_biz_cats).deliver_now
     rescue => _mail_error
