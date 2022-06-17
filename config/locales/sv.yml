@@ -2062,7 +2062,7 @@ sv:
       additional_qs_for_biz_cats:
         subject: Ytterligare frågor för nya Sveriges Hundföretagare kategorier
         message_text:
-          youve_add_categories: Tack för att du uppdaterat din ansökan. Du har lagt till ny(a) kategori(er).
+          youve_add_categories: Tack för att du uppdaterat din ansökan. Du har ansökt om ny(a) kategori(er).
           more_questions_instructions: *category_more_qs_instructions
           your_submitted_info: *your_submitted_info
         error_sending: *shf_email_error
