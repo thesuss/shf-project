@@ -297,7 +297,7 @@ sv:
         description: *description
         subcategory: &subcategory Underkategori
         subcategories: Underkategorier
-        apply_qs_url: &category_addtl_qs_link Link for additional questions
+        apply_qs_url: &category_addtl_qs_link Länk till formulär
 
       shf_document:
         title: &title Titel
@@ -642,7 +642,7 @@ sv:
       success_with_app_files_missing: "!! Din ansökan har sparats, men den saknar nödvändiga filer !!"
       upload_file_or_select_method: &upload_files Var god ladda upp filer eller välj en annan leveransmetod
       remember_to_deliver_files: &chosen_method Kom ihåg att leverera filer via den valda leveransmetoden
-      success_more_questions_instructions: &category_more_qs_instructions "You will now have to fill out a Google form for each category, in which you guarantee that you have gone through all the required subjects and elements required for approval. Your application is not complete until you have filled out your form(-s)."
+      success_more_questions_instructions: &category_more_qs_instructions "Har du inte bifogat formulär från din utbildare behöver du nu fylla i ett Google formulär for varje kategori, där du intygar att du har behörighet för allt inom den kategorin. Din ansökan är inte klar förrän du skickat in relevant(a) formulär."
       success_category_link: &category_link "%{category}: %{link}"
 
     edit:
@@ -750,11 +750,11 @@ sv:
       business_categories:
         section_title: &business_categories_title "Ansöker som:"
         instructions:  &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
-        instructions2: You will need to submit documentation the proves you are qualified in each category you select. Instructions are in the next section.
+        instructions2: Du behöver bifoga underlag som visar att du är behörig för den/de kategori(er) du väljer. Instruktioner nedan.
       supporting_files:
         section_title: Underlag för att styrka min ansökan
-        instructions: "Please upload evidence which proves that your have successfully completed all the education that you mentioned in the category-forms. A common type of evidence is signed diplomas. You can take a picture of your diploma or scan it into your computer. "
-        email_membership_with_qs: "If you’re having trouble with this, please send an email to "
+        instructions: "Ladda upp underlag som visar att du har genomfört all relevant utbildning. Ett vanligt underlag är signerade examensbevis. Du kan ta ett foto på ditt examensbevis eller skanna in det i din dator."
+        email_membership_with_qs: "Om du upplever problem, skriv en rad till: "
 
 
     start_review:
@@ -2060,9 +2060,9 @@ sv:
           error_sending: *shf_email_error
 
       additional_qs_for_biz_cats:
-        subject: Additional questions for new Sveriges Hundföretagare business categories
+        subject: Ytterligare frågor för nya Sveriges Hundföretagare kategorier
         message_text:
-          youve_add_categories: Thanks for updating your application. You've added new business categories.
+          youve_add_categories: Tack för att du uppdaterat din ansökan. Du har lagt till ny(a) kategori(er).
           more_questions_instructions: *category_more_qs_instructions
           your_submitted_info: *your_submitted_info
         error_sending: *shf_email_error
